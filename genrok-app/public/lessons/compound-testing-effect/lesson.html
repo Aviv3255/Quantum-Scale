@@ -12,12 +12,12 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #f97316; --accent-dark: #ea580c; --accent-light: #fb923c; --accent-rgb: 249, 115, 22; }
+    :root { --accent: #8B5CF6; --accent-dark: #7C3AED; --accent-light: #A78BFA; --accent-rgb: 139, 92, 246; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -34,138 +34,91 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(start); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.floor(count)}{suffix}</span>;
-    };
-
-    // Compound Growth Visualization
-    const CompoundGrowthSlide = ({ data }) => {
-      const weeks = data.weeks || 52;
-      const weeklyIncrease = data.weeklyIncrease || 0.01;
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 border-2 border-orange-200 rounded-xl p-6">
-                <p className="text-xs uppercase tracking-wider text-orange-600 mb-2">Starting Point</p>
-                <div className="text-4xl font-bold text-orange-900 mb-2">100%</div>
-                <p className="text-sm text-orange-700">Baseline conversion rate</p>
-              </div>
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-6">
-                <p className="text-xs uppercase tracking-wider text-green-600 mb-2">After {weeks} Weeks</p>
-                <div className="text-4xl font-bold text-green-900 mb-2">
-                  <AnimatedCounter target={Math.pow(1 + weeklyIncrease, weeks) * 100} suffix="%" decimals={0} duration={2500} />
-                </div>
-                <p className="text-sm text-green-700">+{weeklyIncrease * 100}% improvement per week</p>
-              </div>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-              <div className="bg-neutral-900 rounded-xl p-6">
-                <p className="text-neutral-400 text-sm mb-4">The Math Behind the Magic</p>
-                <div className="space-y-3 text-sm text-neutral-300">
-                  <p>Week 1: 100% × 1.01 = 101%</p>
-                  <p>Week 2: 101% × 1.01 = 102.01%</p>
-                  <p>Week 3: 102.01% × 1.01 = 103.03%</p>
-                  <p className="text-neutral-500 italic">...</p>
-                  <p className="text-orange-400 font-bold border-t border-neutral-700 pt-3">Week {weeks}: {(Math.pow(1 + weeklyIncrease, weeks) * 100).toFixed(0)}%</p>
-                </div>
-                <p className="text-xs text-neutral-500 mt-4 italic">{data.insight}</p>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      );
-    };
-
-    // Comparison: Random vs Systematic
-    const ComparisonSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">✗</div>
-              <h3 className="font-bold text-red-700">{data.random.title}</h3>
-            </div>
-            <div className="space-y-3 mb-4">
-              {data.random.items.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white rounded-lg p-3 border border-red-100">
-                  <p className="text-sm text-neutral-700">{item}</p>
-                </motion.div>
-              ))}
-            </div>
-            <p className="text-sm text-red-700 italic font-medium">{data.random.insight}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-lg">✓</div>
-              <h3 className="font-bold text-green-700">{data.systematic.title}</h3>
-            </div>
-            <div className="space-y-3 mb-4">
-              {data.systematic.items.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="bg-white rounded-lg p-3 border border-green-100">
-                  <p className="text-sm text-neutral-700">{item}</p>
-                </motion.div>
-              ))}
-            </div>
-            <p className="text-sm text-green-700 italic font-medium">{data.systematic.insight}</p>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    // Timeline Visualization
-    const TimelineSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="space-y-4">
-          {data.timeline.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative pl-12">
-              <div className="absolute left-0 top-1 w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-xs font-bold">
-                {item.week}
-              </div>
-              <div className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-orange-300 transition-all">
-                <div className="flex items-start justify-between mb-2">
-                  <h3 className="font-bold text-neutral-900 text-sm">{item.test}</h3>
-                  <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">{item.improvement}</span>
-                </div>
-                <p className="text-neutral-600 text-xs">{item.description}</p>
-              </div>
-              {i < data.timeline.length - 1 && (
-                <div className="absolute left-4 top-10 w-0.5 h-4 bg-gradient-to-b from-orange-300 to-transparent"></div>
-              )}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
     const LESSON_CONFIG = {
       id: 'compound-testing-effect',
       title: 'The Compound Testing Effect',
-      description: 'Why 1% improvements tested weekly equal 67% improvement in a year. The psychology of systematic testing vs random changes.',
-      accentColor: '#f97316',
+      description: 'Why 1% improvements tested weekly equal 67% improvement in a year',
+      accentColor: '#8B5CF6',
       duration: '7 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more conversion optimization tactics.' }
+      nextLesson: { id: 'consumption-conversion', title: 'Consumption Conversion', teaser: 'Turn product usage into repeat purchases.' }
     };
 
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -194,35 +147,54 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why 1% weekly improvements compound to 67% annual growth', 'The psychology difference between random changes and systematic testing', 'How to build a testing system that generates compounding wins'] },
-      { type: 'hook', headline: 'Most stores make random changes. The best stores run systematic tests.', subtext: 'One generates noise. The other generates compound growth. Think about it: If you improve your conversion rate by just 1% every week through A/B testing, you do not end the year 52% better. You end it 67% better. That is compound interest for your business. Random tweaks might get lucky once. Systematic testing wins every single week. The gains stack. The momentum builds. And after a year, you are not competing with stores making random changes anymore. You are in a completely different league.' },
-      { type: 'content', title: 'The Compound Testing Effect', body: 'Here is the psychology most people miss: Small improvements do not add up. They multiply. Week 1: You test button colors. Win: +1.2% conversion. Week 2: You test headline copy. Win: +0.8% conversion. Week 3: You test image placement. Win: +1.5% conversion. These are not three separate 1% wins that total 3%. They stack ON TOP of each other. 100 × 1.012 × 1.008 × 1.015 = 103.5%. Each win becomes the new baseline. The next win builds on ALL previous wins. That is compounding.' },
-      { type: 'compound-growth', title: '1% Weekly = 67% Yearly', weeks: 52, weeklyIncrease: 0.01, insight: 'Small systematic wins compound into massive advantages over time.' },
-      { type: 'content', title: 'Why Random Changes Fail', body: 'Random changes feel productive. You tweak the homepage. You adjust the pricing page. You change the CTA button. You feel busy. You feel like you are improving. But here is the problem: You have no idea what worked. You changed five things. Conversion went up 2%. Which change did it? Was it even the changes? Maybe it was seasonal traffic. Maybe it was a viral post. You learned nothing. You cannot repeat it. You are guessing.' },
-      { type: 'comparison', title: 'Random Changes vs Systematic Testing', random: { title: 'Random Changes', items: ['Change multiple things at once', 'No control group, no data', 'Cannot isolate what worked', 'Rely on gut feelings', 'Inconsistent, unpredictable results'], insight: 'You might get lucky once. But you cannot repeat it.' }, systematic: { title: 'Systematic Testing', items: ['Test one variable at a time', 'Run A/B tests with control groups', 'Measure exact impact of each change', 'Build knowledge week after week', 'Predictable, compounding improvements'], insight: 'Every test teaches. Every win stacks. Progress compounds.' }},
-      { type: 'content', title: 'The Psychology of Systematic Testing', body: 'Systematic testing works because of cumulative knowledge. Each test is not just about winning. It is about learning. You learn what your customers respond to. You learn what language resonates. You learn which friction points matter most. This knowledge accumulates. By week 10, you are not testing random ideas. You are testing informed hypotheses based on nine weeks of data. Your hit rate increases. Your wins get bigger. The compound effect accelerates.' },
-      { type: 'content', title: 'The Math That Changes Everything', body: 'Let us do the math. Store A makes random changes. Sometimes they work (+3%), sometimes they do not (-1%). No pattern. No data. Average annual improvement: Maybe 5-10% if lucky. Store B runs systematic A/B tests. Average win per test: +1%. Tests per week: 1. Weeks per year: 52. Annual improvement: 67%. Not 52%. Sixty-seven percent. Because each win compounds on the last. That is not a small edge. That is a different business entirely.' },
-      { type: 'timeline', title: 'A Year of Systematic Testing', timeline: [
-        { week: 'W1', test: 'Button Color Test', improvement: '+1.2%', description: 'Orange CTA button beat black by 1.2%. Learned: High contrast wins.' },
-        { week: 'W2', test: 'Headline Copy Test', improvement: '+0.8%', description: 'Benefit-focused headline beat feature list. Learned: Outcomes over specs.' },
-        { week: 'W3', test: 'Image Placement', improvement: '+1.5%', description: 'Product image above fold beat below fold. Learned: Visuals drive decisions.' },
-        { week: 'W4', test: 'Social Proof Position', improvement: '+0.9%', description: 'Reviews near CTA beat reviews at bottom. Learned: Proximity to action matters.' },
-        { week: 'W12', test: 'Checkout Flow Test', improvement: '+2.1%', description: 'One-page checkout beat multi-step. Learned: Friction kills conversions.' }
+      { type: 'hook', headline: 'Most stores make random changes. The best stores run systematic tests.', subtext: 'One generates noise. The other generates compound growth. If you improve your conversion rate by just 1% every week through A/B testing, you do not end the year 52% better. You end it 67% better. That is compound interest for your business. Random tweaks might get lucky once. Systematic testing wins every single week.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'right' },
+      { type: 'compound-visual', title: 'The Power of Compound Growth', subtitle: 'This is not linear math. This is exponential.' },
+      { type: 'stat-countdown', title: 'The Numbers That Change Everything', stats: [
+        { value: 1, suffix: '%', label: 'Weekly Improvement', subtext: 'Small, consistent wins', color: '#8B5CF6' },
+        { value: 52, suffix: '', label: 'Weeks Per Year', subtext: 'Opportunities to improve', color: '#3B82F6' },
+        { value: 67, suffix: '%', label: 'Annual Growth', subtext: 'Compound effect result', color: '#22C55E' }
       ]},
-      { type: 'content', title: 'Why This Is Pure Psychology', body: 'The Compound Testing Effect works because of how humans learn. Random action creates no pattern. No pattern means no learning. No learning means no improvement. Systematic testing creates patterns. Patterns reveal truths about customer behavior. Truths inform better tests. Better tests produce bigger wins. The cycle accelerates. You are not just testing for conversion lifts. You are building a knowledge engine that gets smarter every week.' },
-      { type: 'cards', title: 'What Makes a Good A/B Test', items: [
-        { title: 'One Variable at a Time', description: 'Change ONLY the thing you are testing. Otherwise you cannot know what worked.' },
-        { title: 'Sufficient Sample Size', description: 'Run tests long enough to reach statistical significance. Usually 1-2 weeks minimum.' },
-        { title: 'Clear Hypothesis', description: 'Test with intent: "I believe X will improve Y because customers value Z."' },
-        { title: 'Document Everything', description: 'Record what you tested, results, and insights. Build your knowledge base.' },
-        { title: 'Implement Winners Fast', description: 'Do not let winning tests sit. Deploy them and move to the next test.' }
+      { type: 'content', title: 'The Compound Testing Effect', body: 'Here is the psychology most people miss: Small improvements do not add up. They multiply. Week 1: You test button colors. Win: +1.2% conversion. Week 2: You test headline copy. Win: +0.8% conversion. Week 3: You test image placement. Win: +1.5% conversion. These are not three separate 1% wins that total 3%. They stack ON TOP of each other. 100 × 1.012 × 1.008 × 1.015 = 103.5%. Each win becomes the new baseline. The next win builds on ALL previous wins.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_having_a_lightbulb_moment_pure_100_white_backg_bd88fbc3-b501-446f-a37f-09b80e6320fc_3.mp4', characterPosition: 'left' },
+      { type: 'comparison-cards', title: 'Random Changes vs Systematic Testing', left: { label: 'RANDOM CHANGES', iconComponent: 'Shuffle', value: '~5%', subtext: 'annual improvement', percentage: 'Maybe', items: ['Change multiple things at once', 'No control group, no data', 'Cannot isolate what worked', 'Rely on gut feelings'], color: '#EF4444' }, right: { label: 'SYSTEMATIC TESTING', iconComponent: 'Target', value: '67%', subtext: 'annual improvement', percentage: 'Guaranteed', items: ['Test one variable at a time', 'A/B tests with control groups', 'Measure exact impact', 'Build knowledge weekly'], color: '#22C55E' } },
+      { type: 'growth-timeline', title: 'Your Year of Compounding Wins', timeline: [
+        { week: 'W1', test: 'Button Color Test', lift: 1.2, result: 101.2, description: 'Orange CTA beat black by 1.2%', icon: 'Palette' },
+        { week: 'W2', test: 'Headline Copy', lift: 0.8, result: 102.0, description: 'Benefit-focused beat feature list', icon: 'Type' },
+        { week: 'W4', test: 'Image Placement', lift: 1.5, result: 103.5, description: 'Above fold beat below fold', icon: 'Image' },
+        { week: 'W12', test: 'Checkout Flow', lift: 2.1, result: 113.4, description: 'One-page beat multi-step', icon: 'ShoppingCart' },
+        { week: 'W26', test: 'Social Proof', lift: 1.8, result: 129.4, description: 'Reviews near CTA won', icon: 'Star' },
+        { week: 'W52', test: 'Final Result', lift: 0, result: 167.8, description: '67.8% total compound growth', icon: 'Trophy' }
       ]},
-      { type: 'content', title: 'What to Test First', body: 'Start with high-impact, low-effort tests. Headlines and CTAs convert or kill sales, and they take 10 minutes to change. Product images drive instant reactions. Test the main image. Button colors create friction or flow. Test high-contrast options. Social proof positioning affects trust. Test where reviews appear. Do not start by rebuilding your entire site. Start by testing the elements customers see in the first 3 seconds. That is where most decisions happen.' },
-      { type: 'example', scenario: 'Store Running Systematic Tests for 6 Months', before: { label: 'Random Changes (Competitor)', text: 'Competitor redesigns their site every few months. Big launches. Lots of effort. No testing. Conversion improves 8% over 6 months. They celebrate. They think they won.' }, after: { label: 'Systematic Testing (You)', text: 'You run one small A/B test per week. Each test averages +1% lift. After 26 weeks of compounding wins, conversion improves 29%. Competitor has no idea how you are winning.' }, insight: 'Systematic beats dramatic. Compound growth beats one-time pushes. Consistency wins.' },
-      { type: 'tool', title: 'Run A/B Tests Without Slowing Down Your Store', toolName: 'ABConvert', toolUrl: 'https://apps.shopify.com/abconvert?mref=lsbqcbva', image: 'https://cdn.shopify.com/app-store/listing_images/aef1fcdb084bd0bcb57bae8e6be1f10a/icon/COqx8ffckogDEAE=.png', body: 'Zero-code A/B testing tool for Shopify. Test headlines, buttons, images, and layouts without a developer. Built-in statistical significance calculator. Automatically rolls out winners. Fast, lightweight, designed for eCommerce.', questions: ['Do you currently test changes before deploying them?', 'Are you guessing which version will convert better?', 'Do you want compounding growth instead of random wins?'], insight: 'Manual testing takes hours. Systematic testing with the right tool takes minutes. The compound effect starts week one.' },
-      { type: 'quiz', question: 'Why does 1% weekly improvement result in 67% annual growth instead of 52%?', options: ['Because you run more tests as you get better', 'Because each win compounds on top of all previous wins', 'Because customers respond better over time', 'Because 67% sounds better than 52%'], correctIndex: 1, feedback: { correct: 'Exactly right! Each win compounds on all previous wins. Week 1: 100 × 1.01 = 101. Week 2: 101 × 1.01 = 102.01. Week 3: 102.01 × 1.01 = 103.03. By week 52, you are not at 152. You are at 167. Each improvement becomes the new baseline. The next improvement builds on THAT. This is why systematic testing destroys random changes. The gains multiply instead of adding.', incorrect: 'Not quite. The answer is compounding. When you improve by 1% in week one, your baseline is now 101%. When you improve by 1% in week two, you are improving 101%, not 100%. That gives you 102.01%, not 102%. Each win stacks on ALL previous wins. By week 52, the compound effect has multiplied your gains from 52% to 67%. This is the same math that makes compound interest so powerful.' }},
-      { type: 'completion', sources: [{ name: 'Start A/B Testing Your Store', url: 'https://apps.shopify.com/abconvert?mref=lsbqcbva' }] }
+      { type: 'before-after', title: 'The Two Paths Forward', before: [
+        'Changing multiple things hoping something works',
+        'No data, no learning, no pattern',
+        'Occasional lucky wins that cannot be repeated',
+        'Stuck at the same conversion rate',
+        'Competing on price because you have no edge'
+      ], after: [
+        'Testing one variable at a time with data',
+        'Building a knowledge library of what works',
+        'Predictable, repeatable improvements',
+        'Conversion rate grows every single week',
+        'Compound advantage competitors cannot match'
+      ]},
+      { type: 'strategy-steps', title: 'The 4-Step Testing System', steps: [
+        { number: 1, title: 'HYPOTHESIZE', icon: 'Lightbulb', color: '#8B5CF6', description: 'Start with a hypothesis: "Changing X will improve Y because customers value Z." Never test randomly.' },
+        { number: 2, title: 'ISOLATE', icon: 'Focus', color: '#3B82F6', description: 'Test ONE variable at a time. If you change two things and conversions go up, you cannot know which change worked.' },
+        { number: 3, title: 'MEASURE', icon: 'BarChart2', color: '#22C55E', description: 'Run tests for 7-14 days minimum. Get statistically significant results. Use proper A/B testing tools.' },
+        { number: 4, title: 'DOCUMENT', icon: 'FileText', color: '#F59E0B', description: 'Record every test, result, and insight. Your testing library becomes your competitive advantage.' }
+      ]},
+      { type: 'tool-integration', title: 'Accurate Data = Real Compound Growth', subtitle: 'Your A/B tests are only as good as your data', tool: { name: 'Triple Whale', description: 'External attribution that tells you which test variant ACTUALLY won - not Meta guessing', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/triple-whale-dashboard.png', link: 'https://www.triplewhale.com/', features: ['True conversion data, not platform estimates', 'Know which A/B variant really won', 'Avoid compounding losses from bad data', 'First-party pixel for accuracy'] } },
+      { type: 'tool-integration', title: 'Run Your Weekly Tests', subtitle: 'The tool that makes systematic testing easy', tool: { name: 'ABConvert', description: 'Shopify A/B testing app that lets you test prices, images, copy, and layouts in minutes', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/abconvert-screenshot.png', link: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel', features: ['Test prices, images, headlines, CTAs', 'Statistical significance calculator', 'No coding required', 'Results in your Shopify admin'] } },
+      { type: 'what-to-test', title: 'What to Test First', categories: [
+        { name: 'High Impact Tests', icon: 'Zap', color: '#22C55E', items: ['Headlines & value propositions', 'CTA button text and color', 'Product images (main image)', 'Price points and anchoring'] },
+        { name: 'Medium Impact Tests', icon: 'Target', color: '#3B82F6', items: ['Social proof placement', 'Product description length', 'Trust badges position', 'Free shipping threshold'] },
+        { name: 'Lower Impact Tests', icon: 'Sparkles', color: '#8B5CF6', items: ['Font sizes and spacing', 'Color variations', 'Icon styles', 'Footer content'] }
+      ], insight: 'Start with high-impact tests. These affect decisions in the first 3 seconds.' },
+      { type: 'quiz', question: 'Why does 1% weekly improvement result in 67% annual growth instead of 52%?', options: ['Because you run more tests as you get better', 'Because each win compounds on top of all previous wins', 'Because customers respond better over time', 'Because 67% is a marketing number'], correctIndex: 1, feedback: { correct: 'Exactly right! Each win compounds on all previous wins. Week 1: 100 × 1.01 = 101. Week 2: 101 × 1.01 = 102.01. Week 3: 102.01 × 1.01 = 103.03. By week 52, you are not at 152. You are at 167. Each improvement becomes the new baseline. The next improvement builds on THAT. This is why systematic testing destroys random changes.', incorrect: 'Not quite. The answer is compounding. When you improve by 1% in week one, your baseline is now 101%. When you improve by 1% in week two, you are improving 101%, not 100%. That gives you 102.01%, not 102%. Each win stacks on ALL previous wins. By week 52, the compound effect has multiplied your gains from 52% to 67%.' }},
+      { type: 'completion', sources: [{ name: 'Triple Whale (Accurate Attribution)', url: 'https://www.triplewhale.com/' }, { name: 'ABConvert (A/B Testing)', url: 'https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel' }] }
     ];
 
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -232,8 +204,453 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      // Premium icons
+      Target: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Shuffle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>,
+      Trophy: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      BarChart2: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
+      Lightbulb: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Focus: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>,
+      FileText: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+      Palette: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></svg>,
+      Type: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>,
+      Image: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
+      ShoppingCart: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      Star: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Sparkles: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
+      Database: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
     };
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.floor(count)}{suffix}</span>;
+    };
+
+    // Animated Growth Ring - Shows compound effect visually
+    const AnimatedGrowthRing = ({ startValue = 100, endValue = 167, color = '#8B5CF6' }) => {
+      const [animated, setAnimated] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setAnimated(true), 300); return () => clearTimeout(timer); }, []);
+      const radius = 70;
+      const circumference = 2 * Math.PI * radius;
+      const percentage = ((endValue - startValue) / startValue) * 100;
+
+      return (
+        <div className="relative">
+          <svg width="180" height="180" className="transform -rotate-90">
+            <circle cx="90" cy="90" r={radius} fill="none" stroke="#1f1f1f" strokeWidth="16" />
+            <motion.circle
+              cx="90" cy="90" r={radius} fill="none" stroke={color} strokeWidth="16" strokeLinecap="round"
+              initial={{ strokeDasharray: circumference, strokeDashoffset: circumference }}
+              animate={animated ? { strokeDashoffset: circumference - (circumference * (percentage / 100)) } : {}}
+              transition={{ duration: 2, ease: 'easeOut' }}
+              style={{ filter: `drop-shadow(0 0 12px ${color})` }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-3xl font-bold text-white">{animated ? <AnimatedCounter target={endValue} suffix="%" duration={2000} /> : '100%'}</span>
+            <span className="text-xs text-neutral-400 uppercase tracking-wider">Growth</span>
+          </div>
+        </div>
+      );
+    };
+
+    // Compound Visual Slide - Elite design with dual rings
+    const CompoundVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
+            <Icons.TrendingUp size={14} color="#8B5CF6" />
+            <span>The Math</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-2xl p-8 md:p-12" style={{ background: '#0a0a0a', border: '1px solid #222', boxShadow: '0 0 40px rgba(139, 92, 246, 0.15)' }}>
+          <div className="flex items-center justify-center gap-8 md:gap-16 flex-wrap">
+            {/* Linear Growth Ring (what people expect) */}
+            <div className="text-center">
+              <div className="relative mb-4">
+                <svg width="160" height="160" className="transform -rotate-90">
+                  <circle cx="80" cy="80" r="60" fill="none" stroke="#1f1f1f" strokeWidth="14" />
+                  <motion.circle cx="80" cy="80" r="60" fill="none" stroke="#6B7280" strokeWidth="14" strokeLinecap="round"
+                    initial={{ strokeDasharray: 377, strokeDashoffset: 377 }}
+                    animate={{ strokeDashoffset: 377 - (377 * 0.52) }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-2xl font-bold text-neutral-400"><AnimatedCounter target={52} suffix="%" duration={1500} /></span>
+                  <span className="text-[10px] text-neutral-500 uppercase">Linear</span>
+                </div>
+              </div>
+              <p className="text-neutral-500 text-xs">What people expect</p>
+            </div>
+
+            {/* Arrow */}
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8 }} className="text-neutral-500 hidden md:block">
+              <svg width="60" height="24" viewBox="0 0 60 24" fill="none">
+                <path d="M0 12H52M52 12L42 2M52 12L42 22" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+            </motion.div>
+
+            {/* Compound Growth Ring (reality) */}
+            <div className="text-center">
+              <div className="relative mb-4">
+                <svg width="160" height="160" className="transform -rotate-90">
+                  <circle cx="80" cy="80" r="60" fill="none" stroke="#1f1f1f" strokeWidth="14" />
+                  <motion.circle cx="80" cy="80" r="60" fill="none" stroke="#22C55E" strokeWidth="14" strokeLinecap="round"
+                    initial={{ strokeDasharray: 377, strokeDashoffset: 377 }}
+                    animate={{ strokeDashoffset: 377 - (377 * 0.67) }}
+                    transition={{ duration: 1.8, ease: 'easeOut', delay: 0.3 }}
+                    style={{ filter: 'drop-shadow(0 0 12px #22C55E)' }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-2xl font-bold text-white"><AnimatedCounter target={67} suffix="%" duration={1800} /></span>
+                  <span className="text-[10px] text-green-400 uppercase">Compound</span>
+                </div>
+              </div>
+              <p className="text-green-400 text-xs font-medium">What actually happens</p>
+            </div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }} className="mt-8 text-center">
+            <p className="text-neutral-400 text-sm">1% weekly × 52 weeks = <span className="text-white font-bold">67% compound growth</span>, not 52%</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Stat Countdown Slide - Big animated numbers
+    const StatCountdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
+            <Icons.BarChart2 size={14} color="#8B5CF6" />
+            <span>Key Numbers</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {data.stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + i * 0.15 }}
+              className="rounded-2xl p-6 text-center relative overflow-hidden"
+              style={{ background: '#0a0a0a', border: `1px solid ${stat.color}40`, boxShadow: `0 0 30px ${stat.color}15` }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1 opacity-80" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }}></div>
+              <div className="absolute top-4 right-4 w-20 h-20 rounded-full blur-3xl opacity-20" style={{ background: stat.color }}></div>
+
+              <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: stat.color }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={1500 + i * 300} />
+              </div>
+              <p className="text-white font-semibold text-sm mb-1">{stat.label}</p>
+              <p className="text-neutral-500 text-xs">{stat.subtext}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="mt-8 text-center">
+          <p className="text-neutral-600 text-sm">Small wins. Big compound effect. <span className="font-semibold text-neutral-800">Every week counts.</span></p>
+        </motion.div>
+      </div>
+    );
+
+    // Comparison Cards Slide - Random vs Systematic
+    const ComparisonCardsSlide = ({ data }) => {
+      const LeftIcon = Icons[data.left.iconComponent] || Icons.Shuffle;
+      const RightIcon = Icons[data.right.iconComponent] || Icons.Target;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Left Card - Bad */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${data.left.color}40` }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${data.left.color}20`, border: `1px solid ${data.left.color}` }}>
+                  <LeftIcon size={24} color={data.left.color} />
+                </div>
+                <div>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider" style={{ background: `${data.left.color}20`, color: data.left.color }}>{data.left.label}</span>
+                  <div className="flex items-baseline gap-1 mt-1">
+                    <span className="text-2xl font-bold" style={{ color: data.left.color }}>{data.left.value}</span>
+                    <span className="text-neutral-500 text-xs">{data.left.subtext}</span>
+                  </div>
+                </div>
+              </div>
+              <ul className="space-y-2">
+                {data.left.items.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.08 }} className="flex items-center gap-2 text-neutral-400 text-sm">
+                    <Icons.X />
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Right Card - Good */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${data.right.color}40`, boxShadow: `0 0 30px ${data.right.color}15` }}>
+              <div className="absolute top-0 left-0 w-full h-1 opacity-80" style={{ background: `linear-gradient(90deg, transparent, ${data.right.color}, transparent)` }}></div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${data.right.color}20`, border: `1px solid ${data.right.color}` }}>
+                  <RightIcon size={24} color={data.right.color} />
+                </div>
+                <div>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider" style={{ background: `${data.right.color}20`, color: data.right.color }}>{data.right.label}</span>
+                  <div className="flex items-baseline gap-1 mt-1">
+                    <span className="text-2xl font-bold" style={{ color: data.right.color }}>{data.right.value}</span>
+                    <span className="text-neutral-500 text-xs">{data.right.subtext}</span>
+                  </div>
+                </div>
+              </div>
+              <ul className="space-y-2">
+                {data.right.items.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.08 }} className="flex items-center gap-2 text-neutral-300 text-sm">
+                    <span style={{ color: data.right.color }}><Icons.Check /></span>
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Growth Timeline Slide - Visual journey
+    const GrowthTimelineSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto py-6 slide-scroll overflow-y-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
+            <Icons.TrendingUp size={14} color="#8B5CF6" />
+            <span>Your Growth Journey</span>
+          </div>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {data.timeline.map((item, i) => {
+            const ItemIcon = Icons[item.icon] || Icons.Zap;
+            const isLast = i === data.timeline.length - 1;
+            const color = isLast ? '#22C55E' : '#8B5CF6';
+
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                className="rounded-xl p-4 relative overflow-hidden"
+                style={{ background: '#0a0a0a', border: `1px solid ${color}30`, boxShadow: isLast ? `0 0 20px ${color}20` : 'none' }}
+              >
+                {isLast && <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}></div>}
+
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${color}20` }}>
+                    <ItemIcon size={16} color={color} />
+                  </div>
+                  <span className="text-[10px] font-bold tracking-wider" style={{ color: color }}>{item.week}</span>
+                </div>
+
+                <h3 className="text-white font-semibold text-sm mb-1">{item.test}</h3>
+                <p className="text-neutral-500 text-xs mb-2">{item.description}</p>
+
+                <div className="flex items-center justify-between">
+                  {item.lift > 0 && <span className="text-xs" style={{ color: '#22C55E' }}>+{item.lift}%</span>}
+                  <span className="text-sm font-bold" style={{ color: isLast ? '#22C55E' : 'white' }}>{item.result}%</span>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+
+    // Before After Slide
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Before */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #fef2f2, #fee2e2)', border: '1px solid #fecaca' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-bold text-red-700">Random Changes</span>
+            </div>
+            <ul className="space-y-3">
+              {data.before.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.08 }} className="flex items-start gap-2 text-red-800 text-sm">
+                  <span className="text-red-400 mt-0.5">•</span>
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* After */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)', border: '1px solid #bbf7d0' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-bold text-green-700">Systematic Testing</span>
+            </div>
+            <ul className="space-y-3">
+              {data.after.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 + i * 0.08 }} className="flex items-start gap-2 text-green-800 text-sm">
+                  <span className="text-green-500 mt-0.5"><Icons.Check /></span>
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Strategy Steps Slide
+    const StrategyStepsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-6xl mx-auto py-6 slide-scroll overflow-y-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8B5CF6' }}>
+            <Icons.Zap />
+            <span>The System</span>
+          </div>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-4 gap-4">
+          {data.steps.map((step, i) => {
+            const StepIcon = Icons[step.icon] || Icons.Zap;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 + i * 0.1 }}
+                className="rounded-xl p-4 relative overflow-hidden"
+                style={{ background: '#0a0a0a', border: `1px solid ${step.color}40`, boxShadow: `0 0 20px ${step.color}10` }}
+              >
+                <div className="absolute top-0 left-0 w-full h-1 opacity-80" style={{ background: `linear-gradient(90deg, transparent, ${step.color}, transparent)` }}></div>
+
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold" style={{ background: `${step.color}20`, border: `1px solid ${step.color}`, color: step.color }}>
+                    {step.number}
+                  </div>
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${step.color}15` }}>
+                    <StepIcon size={16} color={step.color} />
+                  </div>
+                </div>
+
+                <h3 className="text-base font-bold text-white mb-2" style={{ textShadow: `0 0 20px ${step.color}30` }}>{step.title}</h3>
+                <p className="text-neutral-400 text-xs leading-relaxed">{step.description}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+
+    // Tool Integration Slide
+    const ToolIntegrationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto py-6 slide-scroll overflow-y-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3B82F6' }}>
+            <Icons.Database size={14} color="#3B82F6" />
+            <span>Recommended Tool</span>
+          </div>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black mb-1">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 flex flex-col md:flex-row gap-5 items-center" style={{ background: '#0a0a0a', border: '1px solid #3B82F630', boxShadow: '0 0 30px rgba(59, 130, 246, 0.08)' }}>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(59, 130, 246, 0.15)', border: '1px solid #3B82F6' }}>
+                <Icons.Database size={20} color="#3B82F6" />
+              </div>
+              <div>
+                <h3 className="text-white font-bold">{data.tool.name}</h3>
+              </div>
+            </div>
+            <p className="text-neutral-400 text-sm mb-4">{data.tool.description}</p>
+            <ul className="space-y-2 mb-4">
+              {data.tool.features.map((feature, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.08 }} className="flex items-center gap-2 text-neutral-300 text-sm">
+                  <span className="text-green-400"><Icons.Check /></span>
+                  {feature}
+                </motion.li>
+              ))}
+            </ul>
+            <a href={data.tool.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all hover:opacity-90" style={{ background: 'linear-gradient(135deg, #3B82F6, #2563EB)', color: 'white' }}>
+              <span>Try {data.tool.name}</span>
+              <Icons.ExternalLink />
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // What to Test Slide
+    const WhatToTestSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto py-6 slide-scroll overflow-y-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-4 mb-4">
+          {data.categories.map((cat, i) => {
+            const CatIcon = Icons[cat.icon] || Icons.Zap;
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }} className="rounded-xl p-4" style={{ background: '#0a0a0a', border: `1px solid ${cat.color}30` }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${cat.color}20` }}>
+                    <CatIcon size={16} color={cat.color} />
+                  </div>
+                  <h3 className="text-white font-semibold text-sm">{cat.name}</h3>
+                </div>
+                <ul className="space-y-2">
+                  {cat.items.map((item, j) => (
+                    <li key={j} className="text-neutral-400 text-xs flex items-center gap-2">
+                      <span style={{ color: cat.color }}>•</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05))', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+          <p className="text-neutral-700 text-sm"><Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // Standard Slides
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -242,10 +659,10 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.2)' }}>
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
               <ul className="space-y-1.5 md:space-y-2">
                 {data.learningGoals.map((goal, i) => (
@@ -263,91 +680,48 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}><Icons.Zap />The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+              Key Concept
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white flex items-center justify-center p-8">
-            <img src={data.image} alt={data.toolName} className="w-32 h-32 object-contain" />
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '45%', maxHeight: '350px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Start Testing Your Store</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </motion.div>
+        )}
+      </div>
     );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
@@ -365,7 +739,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -397,8 +771,8 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why systematic A/B testing beats random changes. Small 1% weekly improvements compound into 67% annual growth. Each test teaches. Each win stacks. The momentum builds. Start testing one element this week and watch your conversion rate compound.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the compound testing effect. 1% weekly improvements compound to 67% annual growth. Start testing one element this week.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4" style={{ boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.15)' }}>
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
@@ -416,7 +790,7 @@
             </div>
           </motion.div>
         )}
-      </motion.div>
+      </div>
     );
 
     const LessonApp = () => {
@@ -431,6 +805,15 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -462,12 +845,14 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'compound-growth': return <CompoundGrowthSlide data={slide} />;
-          case 'comparison': return <ComparisonSlide data={slide} />;
-          case 'timeline': return <TimelineSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'compound-visual': return <CompoundVisualSlide data={slide} />;
+          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
+          case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
+          case 'growth-timeline': return <GrowthTimelineSlide data={slide} />;
+          case 'before-after': return <BeforeAfterSlide data={slide} />;
+          case 'strategy-steps': return <StrategyStepsSlide data={slide} />;
+          case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
+          case 'what-to-test': return <WhatToTestSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -483,6 +868,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

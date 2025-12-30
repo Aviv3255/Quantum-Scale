@@ -45,6 +45,81 @@
       nextLesson: { id: 'email-vs-sms', title: 'Email vs SMS Revenue', teaser: 'Which channel generates more revenue? The answer will surprise you.' }
     };
 
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
+
     // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
@@ -101,7 +176,7 @@
         { value: 85, suffix: '%', label: 'Recovery Potential', subtext: 'When conversation happens' },
         { value: 7, prefix: '$', label: 'Revenue/Recipient', subtext: 'Industry average range' }
       ]},
-      { type: 'content', title: 'The AI Conversation Advantage', body: 'What makes AI SMS different? It starts a REAL conversation. Customer asks "Do you have it in blue?" AI answers "Yes, here\'s the link." Customer asks "Does it ship to Canada?" AI responds "Yes, 5-7 days." It handles objections in real-time. Customer says shipping is too expensive - AI can offer a code. Not sure about sizing - AI sends the guide. Questions about legitimacy - AI shares reviews. Email sends one message and waits. AI converses and converts.' },
+      { type: 'content', title: 'The AI Conversation Advantage', body: 'What makes AI SMS different? It starts a REAL conversation. Customer asks "Do you have it in blue?" AI answers "Yes, here\'s the link." Customer asks "Does it ship to Canada?" AI responds "Yes, 5-7 days." It handles objections in real-time. Customer says shipping is too expensive - AI can offer a code. Not sure about sizing - AI sends the guide. Questions about legitimacy - AI shares reviews. Email sends one message and waits. AI converses and converts.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_listening_carefully_hand_cupped_to_ear_100_pur_01938e87-bc4d-4e54-8675-cf6bdcd739c2_3.mp4', characterPosition: 'right'},
       { type: 'process-flow', title: 'Typical AI SMS Cart Recovery Flow', steps: [
         { icon: '🛒', label: 'Cart Abandoned', time: 'Hour 0' },
         { icon: '✉️', label: 'Email Sent', time: '1 hour' },
@@ -109,13 +184,13 @@
         { icon: '🤝', label: 'Conversation', time: '2-5 min' },
         { icon: '✅', label: 'Purchase', time: 'Same day' }
       ]},
-      { type: 'example', scenario: 'Real AI SMS Cart Recovery', before: { label: 'Email Approach', text: '"Hey! You left items in your cart. Complete your order now and get 10% off. [Link]"' }, after: { label: 'AI SMS Conversation', text: 'AI: "Hey! Still interested in the Blue Sneakers?" Customer: "Yeah but shipping is $15" AI: "I can give you free shipping today. Want me to apply it?" Customer: "Yes please" AI: "Done! Here\'s your cart: [Link]"' }, insight: 'AI removes objections in real-time. Email just sends a template and hopes.' },
+      { type: 'example', scenario: 'Real AI SMS Cart Recovery', before: { label: 'Email Approach', text: '"Hey! You left items in your cart. Complete your order now and get 10% off. [Link]"' }, after: { label: 'AI SMS Conversation', text: 'AI: "Hey! Still interested in the Blue Sneakers?" Customer: "Yeah but shipping is $15" AI: "I can give you free shipping today. Want me to apply it?" Customer: "Yes please" AI: "Done! Here\'s your cart: [Link]"' }, insight: 'AI removes objections in real-time. Email just sends a template and hopes.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'right'},
       { type: 'highlight-box', title: 'The Critical Compliance Issue', body: 'SMS has strict legal requirements under TCPA. If you spam customers, use wrong tactics, or don\'t get proper consent, you risk serious legal consequences. One lawsuit can cost $500-$1,500 per message.', highlight: 'The wrong SMS platform or strategy can create legal liability. The right one, done compliantly, drives revenue.' },
       { type: 'cards', title: 'SMS Compliance Essentials', items: [
         { title: 'Explicit Consent', description: 'Customer must opt-in specifically for SMS. Email consent doesn\'t count. Checkbox must be clear and separate.' },
         { title: 'Message Limits', description: 'Don\'t spam. 3-4 cart recovery messages max. Respect timing. No messages after 9 PM local time.' },
         { title: 'Easy Opt-Out', description: 'Every message needs clear unsubscribe instructions. "Reply STOP to unsubscribe" must always work.' }
-      ]},
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_his_head_no_disapproving_gesture_--ar__6571be48-3bd3-4ed5-ba27-8bdadb01795a_3.mp4', characterPosition: 'right'},
       { type: 'before-after', title: 'The Winning Strategy: Layered Recovery', before: [
         'Single-channel approach',
         'Email OR SMS only',
@@ -129,16 +204,24 @@
         'Potential 40-60% lift',
         'Maximum cart recovery'
       ]},
-      { type: 'content', title: 'Proven Recovery Systems Exist', body: 'Successful brands have spent years perfecting cart recovery timing, message sequences, and AI conversation flows. Industry best practices show that combining Email and SMS in the right sequence, with proper compliance and real-time AI conversations, can achieve recovery rates significantly higher than email alone. Most brands guess. Winning brands follow proven systems.' },
-      { type: 'cta', title: 'Learn the Complete Recovery System', ctaText: 'See the Method', ctaUrl: 'https://quantum-scale.co/pages/test3', body: 'Discover the exact timing, message sequences, and AI conversation flows that top brands use for cart recovery.', insight: 'Detailed breakdown of proven recovery sequences, optimal timing, and compliant implementation.' },
+      { type: 'content', title: 'Proven Recovery Systems Exist', body: 'Successful brands have spent years perfecting cart recovery timing, message sequences, and AI conversation flows. Industry best practices show that combining Email and SMS in the right sequence, with proper compliance and real-time AI conversations, can achieve recovery rates significantly higher than email alone. Most brands guess. Winning brands follow proven systems.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'left'},
+      { type: 'implementation', title: 'Setting Up AI SMS Cart Recovery', concept: 'The psychology is clear: SMS lands in personal space, gets opened within 3 minutes, and AI conversations handle objections in real-time. Email sends a template and hopes. SMS starts a dialogue and converts.', steps: ['Set up AI-powered SMS alongside your email recovery flow - they work together, not against each other', 'Configure timing: Email at 1 hour, SMS at 4 hours after abandonment', 'Enable two-way conversations so AI can answer questions like "Does it ship to Canada?" or "Any discount?"', 'Track revenue per recipient to see the 3-4x difference between channels'], insight: 'Stores using AI SMS recover 10-20% of abandoned carts that email would never touch. Same traffic, more revenue.', toolName: 'TxtCart', toolUrl: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
       { type: 'quiz', question: 'What\'s the typical AI SMS recovery rate potential vs Email?', options: ['AI SMS: 65% vs Email: 50%', 'AI SMS: up to 85% vs Email: 60%', 'AI SMS: 75% vs Email: 55%', 'Both have similar rates around 60%'], correctIndex: 1, feedback: { correct: 'Exactly! Industry data shows AI SMS can recover up to 85% of carts when opened vs Email\'s typical 60%. Combined with AI SMS\'s 91-97% open rate (vs Email\'s 25-27%), this explains the $7-8 per recipient potential compared to Email\'s $2.6 average. Winners often use BOTH channels in a layered strategy for maximum recovery.', incorrect: 'Not quite. Industry benchmarks show AI SMS can achieve up to 85% cart recovery vs Email\'s typical 60%. Combined with AI SMS\'s 91-97% open rate (vs Email\'s 25-27%), that\'s why AI SMS shows $7-8 per recipient potential vs Email\'s $2.6 average. The winning approach? Use BOTH channels strategically.' }},
-      { type: 'completion', sources: [{ name: 'Learn the Complete Recovery System', url: 'https://quantum-scale.co/pages/test3' }] }
+      { type: 'completion', sources: [{ name: 'TxtCart (AI SMS Recovery)', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' }, { name: 'Klaviyo (Email Flows)', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }] }
     ];
 
     // Animated Components
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, delay = 0 }) => {
       const [count, setCount] = useState(0);
+      const [started, setStarted] = useState(false);
+
       useEffect(() => {
+        const startTimer = setTimeout(() => setStarted(true), delay * 1000);
+        return () => clearTimeout(startTimer);
+      }, [delay]);
+
+      useEffect(() => {
+        if (!started) return;
         let start = 0;
         const increment = target / (duration / 16);
         const timer = setInterval(() => {
@@ -147,17 +230,24 @@
           else { setCount(Math.floor(start)); }
         }, 16);
         return () => clearInterval(timer);
-      }, [target, duration]);
+      }, [started, target, duration]);
       return <span>{prefix}{count}{suffix}</span>;
     };
 
     const FunnelVisual = ({ stages }) => (
-      <div className="space-y-2">
+      <div className="space-y-2 px-4 md:px-0">
         {stages.map((stage, i) => (
-          <motion.div key={i} initial={{ scaleX: 0, opacity: 0 }} animate={{ scaleX: 1, opacity: 1 }} transition={{ delay: 0.2 + i * 0.2 }} className="mx-auto rounded-lg p-3 text-center text-white font-medium" style={{ width: `${100 - i * 20}%`, background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, opacity: 1 - i * 0.15 }}>
-            <div className="flex justify-between items-center px-2">
-              <span className="text-sm">{stage.label}</span>
-              <span className="font-bold text-sm">{stage.value}</span>
+          <motion.div key={i} initial={{ scaleX: 0, opacity: 0 }} animate={{ scaleX: 1, opacity: 1 }} transition={{ delay: 0.2 + i * 0.15 }}
+            className="mx-auto rounded-lg p-2.5 md:p-3 text-center text-white font-medium"
+            style={{
+              width: `${Math.max(100 - i * 15, 40)}%`,
+              background: i === stages.length - 1 ? 'linear-gradient(135deg, #EF4444, #DC2626)' : `linear-gradient(135deg, var(--accent), var(--accent-dark))`,
+              opacity: 1 - i * 0.1,
+              boxShadow: i === stages.length - 1 ? '0 4px 20px rgba(239,68,68,0.3)' : '0 4px 20px rgba(var(--accent-rgb),0.2)'
+            }}>
+            <div className="flex justify-between items-center px-1 md:px-2">
+              <span className="text-xs md:text-sm truncate mr-2">{stage.label}</span>
+              <span className="font-bold text-xs md:text-sm whitespace-nowrap">{stage.value}</span>
             </div>
           </motion.div>
         ))}
@@ -221,11 +311,13 @@
     const StatCountdownSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-4 md:gap-6">
           {data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-              <div className="text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
-                <AnimatedCounter target={stat.value} suffix={stat.suffix} prefix={stat.prefix} />
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+              className="bg-neutral-900 rounded-xl p-5 md:p-6 text-center"
+              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} prefix={stat.prefix} delay={0.3 + i * 0.2} />
               </div>
               <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
               <div className="text-xs text-neutral-400">{stat.subtext}</div>
@@ -237,7 +329,7 @@
 
     const HighlightBoxSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title relative z-10 text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-6 text-center" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
           <p className="text-white text-lg font-bold">{data.highlight}</p>
@@ -262,6 +354,7 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      MessageCircle: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -293,29 +386,60 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          </motion.div>
+        )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      <div className="h-full relative flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
     const ExampleSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
           <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
           <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
+        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5">
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">E</div><span className="font-semibold text-blue-700 text-sm">{data.before.label}</span></div>
             <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
@@ -376,9 +500,9 @@
     };
 
     const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+      <div className="h-full relative flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+        <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
           {data.items.map((item, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
@@ -386,6 +510,18 @@
             </motion.div>
           ))}
         </div>
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
@@ -405,6 +541,37 @@
       </div>
     );
 
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.MessageCircle /> Implementation
+          </span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
+        <div className="space-y-2.5 mb-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+        {data.toolUrl && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
+              <span>Tool: {data.toolName}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        )}
+      </div>
+    );
+
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -419,8 +586,8 @@
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <div className="h-full flex flex-col justify-center px-10 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -487,6 +654,16 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
+
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
@@ -521,6 +698,7 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'cta': return <CTASlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'funnel-visual': return <FunnelVisualSlide data={slide} />;
           case 'before-after': return <BeforeAfterSlide data={slide} />;
           case 'process-flow': return <ProcessFlowSlide data={slide} />;
@@ -541,10 +719,11 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
-            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
-            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+            {showPrev && <button onClick={prevSlide} className="absolute left-2 md:left-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 rounded-full bg-neutral-100/80 md:bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-400 md:text-neutral-500 hover:text-neutral-700 transition-all z-10 backdrop-blur-sm md:backdrop-blur-none"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-2 md:right-5 top-1/2 -translate-y-1/2 w-8 h-8 md:w-12 md:h-12 rounded-full bg-neutral-100/80 md:bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-400 md:text-neutral-500 hover:text-neutral-700 transition-all z-10 backdrop-blur-sm md:backdrop-blur-none"><Icons.ArrowRight /></button>}
           </div>
           <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">

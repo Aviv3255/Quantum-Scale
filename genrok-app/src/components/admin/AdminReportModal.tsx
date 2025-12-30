@@ -13,6 +13,8 @@ interface AdminReportModalProps {
 }
 
 export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReportModalProps) {
+  console.log('[AdminReportModal] Render - isOpen:', isOpen, 'lessonContext:', lessonContext);
+
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<'normal' | 'urgent'>('normal');

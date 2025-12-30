@@ -57,6 +57,81 @@
       }
     };
 
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
+
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -90,43 +165,97 @@
         'The "Missing Piece Effect" that makes accessories feel essential',
         'Building product ladders that maximize customer lifetime value'
       ]},
-      { type: 'hook', headline: 'Apple doesn\'t sell products. They engineer spending.', subtext: 'Customer walks in for the $329 iPad. Walks out with the $749 iPad Air, $129 AirPods, and a $49 case. This isn\'t luck. It\'s the Ascension Ladder - a pricing architecture that makes customers climb from entry to premium, one logical step at a time.' },
+      { type: 'hook', headline: 'Apple doesn\'t sell products. They engineer spending.', subtext: 'Customer walks in for the $329 iPad. Walks out with the $749 iPad Air, $129 AirPods, and a $49 case. This isn\'t luck. It\'s the Ascension Ladder - a pricing architecture that makes customers climb from entry to premium, one logical step at a time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
       { type: 'content', title: 'The iPad Trap: A Masterclass', body: 'Here\'s how it works: Entry iPad at $329 looks perfect. Until you see it has the old Lightning port (outdated) and only 64GB storage (fills fast). For $120 more, you get USB-C and peace of mind. Now you\'re at $449. But wait - for $150 more you get 256GB storage. That\'s future-proofing. You\'re at $599. Suddenly, the $599 base iPad and $599 iPad Air are the same price. One\'s a "base" model, one\'s "Air". Which sounds better? You upgrade to Air. Now you\'re at $749 - more than double where you started.' },
       { type: 'visual', title: 'The Ladder In Action', visualType: 'ladder', data: [
         { price: '$329', label: 'Entry iPad', feature: 'Lightning port, 64GB', color: '#94a3b8', concern: 'Outdated port, low storage' },
         { price: '$449', label: 'Step 1', feature: 'USB-C upgrade', color: '#8b5cf6', concern: 'Only 64GB still...' },
         { price: '$599', label: 'Step 2', feature: '256GB storage', color: '#ec4899', concern: 'Wait, same as Air?' },
         { price: '$749', label: 'iPad Air', feature: 'Premium model', color: '#10b981', isBest: true }
-      ]},
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
       { type: 'content', title: 'Why Your Brain Climbs Willingly', body: 'Each step feels logical. You\'re not being upsold - you\'re making smart decisions. $120 for future-proof port? Reasonable. $150 for 4x storage? Math checks out. Same price for better model? No-brainer. By the time you\'re at $749, you\'ve justified every increase. You\'re not spending more. You\'re buying better.' },
       { type: 'cards', title: 'The Two Deadly Mistakes', items: [
         { title: 'Mistake 1: Single Product', description: 'Selling one thing at one price forces a yes/no decision. Half your traffic says no. You\'ve lost them forever. No second chance, no ladder to climb.' },
         { title: 'Mistake 2: Random Bundles', description: 'Throwing products together without logic. "Buy these 3 random things!" doesn\'t work. Customers need to see the progression, feel the upgrade path.' }
       ]},
       { type: 'example', scenario: 'DTC Skincare Brand', before: { label: 'Single Product Trap', text: 'Product: Anti-aging serum - $89\n\nResult:\n- 3% conversion rate\n- $89 average order value\n- One-time buyers\n- No clear upsell path' }, after: { label: 'With Ascension Ladder', text: 'Entry: Starter serum - $49\nStep 1: Complete trio - $129\nStep 2: Full regimen (6 items) - $249\nPremium: Subscription + coaching - $149/mo\n\nResult:\n- 11% conversion (+267%)\n- $178 average order value (+100%)\n- 34% subscribe to premium tier' }, insight: 'Same brand, same products. Structured ladder made the difference.' },
-      { type: 'content', title: 'Strategy 1: The Missing Piece Effect', body: 'Apple sells iPhone without charger. AirPods without case. iPad without keyboard. Each product whispers: "You need the next thing to complete this." The base purchase isn\'t broken - it\'s just incomplete. And completion is always one more purchase away. Your customer doesn\'t feel tricked. They feel smart for "optimizing" their setup.' },
+      { type: 'content', title: 'Strategy 1: The Missing Piece Effect', body: 'Apple sells iPhone without charger. AirPods without case. iPad without keyboard. Each product whispers: "You need the next thing to complete this." The base purchase isn\'t broken - it\'s just incomplete. And completion is always one more purchase away. Your customer doesn\'t feel tricked. They feel smart for "optimizing" their setup.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
       { type: 'visual', title: 'The Missing Piece Psychology', visualType: 'stats', data: [
         { value: '67%', label: 'buy accessories', subtext: 'Within 30 days of main purchase' },
         { value: '2.8x', label: 'higher LTV', subtext: 'Customers who climb the ladder' },
         { value: '43%', label: 'never stop', subtext: 'Continue buying ecosystem products' }
-      ]},
-      { type: 'content', title: 'Strategy 2: The Ecosystem Prison', body: 'Once you\'re in, leaving hurts. iMessage only works with iPhone. iCloud syncs seamlessly. AirPods connect instantly. Switching to Android means losing all of this. The pain of leaving exceeds the pain of paying. So you stay. And you upgrade. And you buy more accessories. You\'re not trapped - you\'re invested.' },
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'right'},
+      { type: 'content', title: 'Strategy 2: The Ecosystem Prison', body: 'Once you\'re in, leaving hurts. iMessage only works with iPhone. iCloud syncs seamlessly. AirPods connect instantly. Switching to Android means losing all of this. The pain of leaving exceeds the pain of paying. So you stay. And you upgrade. And you buy more accessories. You\'re not trapped - you\'re invested.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'left'},
       { type: 'cards', title: 'Building Your Ladder (Step-by-Step)', items: [
         { title: 'Step 1: Map The Journey', description: 'What\'s the entry point? What\'s the dream purchase? Plot every logical step between them. Each tier solves a real objection or adds clear value.' },
         { title: 'Step 2: Price The Gaps', description: 'Gaps should feel small enough to justify but big enough to matter. $30-50 jumps work for sub-$200 products. $100-200 jumps for premium items.' },
         { title: 'Step 3: Create "Bridges"', description: 'Make adjacent tiers comparable. "For just $X more..." works when the difference is obvious. Show the contrast clearly.' },
         { title: 'Step 4: Anchor High', description: 'Show the premium option first. $2,299 iPad Pro makes $749 Air feel responsible. The high anchor reframes everything below it.' }
-      ]},
-      { type: 'example', scenario: 'Your Store: Fitness Equipment', before: { label: 'Without Ladder', text: 'Products:\n- Resistance bands: $29\n- Yoga mat: $49\n- Dumbbells: $89\n\nCustomers buy one thing. Never return.' }, after: { label: 'With Ladder', text: 'Entry: Starter band set - $29\nLevel 1: Home essentials kit - $79\nLevel 2: Complete gym bundle - $189\nPremium: Full setup + app - $299\n\nBridge: "You have bands. Add mat + weights for complete home gym for just $50 more than buying separately."' }, insight: 'Turn one-time buyers into ecosystem customers.' },
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'left'},
+      { type: 'example', scenario: 'Your Store: Fitness Equipment', before: { label: 'Without Ladder', text: 'Products:\n- Resistance bands: $29\n- Yoga mat: $49\n- Dumbbells: $89\n\nCustomers buy one thing. Never return.' }, after: { label: 'With Ladder', text: 'Entry: Starter band set - $29\nLevel 1: Home essentials kit - $79\nLevel 2: Complete gym bundle - $189\nPremium: Full setup + app - $299\n\nBridge: "You have bands. Add mat + weights for complete home gym for just $50 more than buying separately."' }, insight: 'Turn one-time buyers into ecosystem customers.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
       { type: 'visual', title: 'Where To Use Ladders', visualType: 'comparison', data: {
         left: { label: 'Physical Products', value: 'Starter → Bundle → Complete', result: 'Each tier completes the setup', color: '#8b5cf6' },
         right: { label: 'Digital Products', value: 'Basic → Pro → Enterprise', result: 'Features unlock at each level', color: '#ec4899' },
         center: { label: 'Services', value: 'DIY → Done-With-You → Done-For-You', result: 'Support increases with price', color: '#10b981' }
-      }},
+      }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
       { type: 'content', title: 'The Golden Rules', body: 'Rule 1: Never have just one price point. Give them a ladder to climb. Rule 2: Each step must feel logical, not forced. They should want to climb. Rule 3: Make the gaps small enough to justify, big enough to profit. Rule 4: Show them what they\'re missing, not what they\'re spending. Rule 5: Build an ecosystem - make leaving painful, staying rewarding.' },
       { type: 'quiz', question: 'Why does the $599 iPad base model exist when the $599 iPad Air is clearly better?', options: ['To give budget-conscious customers an option at that price', 'To make the Air look like an obvious upgrade at the same price', 'Because manufacturing costs are identical', 'To fill shelf space in Apple stores'], correctIndex: 1, feedback: { correct: 'Exactly! The base $599 iPad exists only to create a "same price, better model" moment. When you see identical prices but different tiers, your brain screams "upgrade!" Apple engineered this comparison to push you up the ladder.', incorrect: 'Not quite. The $599 base model is a strategic bridge - it exists to make the $599 Air look like a no-brainer upgrade. Same price, better tier = instant psychological trigger to climb higher.' }},
       { type: 'completion' }
     ];
+
+    // ============================================
+    // ANIMATED COUNTER (Elite Pattern)
+    // ============================================
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      const [hasAnimated, setHasAnimated] = useState(false);
+
+      useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) {
+            setCount(target);
+            clearInterval(timer);
+          } else {
+            setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start));
+          }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals, hasAnimated]);
+
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
+    };
+
+    // ============================================
+    // ANIMATED PROGRESS BAR (Elite Pattern)
+    // ============================================
+    const AnimatedProgressBar = ({ percent, color, delay = 0, glowColor }) => {
+      const [width, setWidth] = useState(0);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setWidth(percent), delay * 1000);
+        return () => clearTimeout(timer);
+      }, [percent, delay]);
+
+      return (
+        <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${width}%` }}
+            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1], delay: delay }}
+            className="h-full rounded-full"
+            style={{
+              background: `linear-gradient(90deg, ${color}, ${color}dd)`,
+              boxShadow: glowColor ? `0 0 10px ${glowColor}` : 'none'
+            }}
+          />
+        </div>
+      );
+    };
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -151,7 +280,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
@@ -172,29 +301,60 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          </motion.div>
+        )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
     const ExampleSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
           <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
           <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
+        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
             <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
@@ -212,53 +372,39 @@
 
     const LadderVisual = ({ data }) => (
       <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Ladder In Action</motion.h2>
-        <div className="flex flex-col items-center gap-3 relative">
-          {data.map((step, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 + i * 0.15 }}
-              className="relative"
-            >
-              {/* Connecting line */}
-              {i < data.length - 1 && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-full w-0.5 h-3 bg-neutral-300"></div>
-              )}
-
-              {/* Step card */}
-              <div
-                className={`rounded-xl p-4 md:p-5 min-w-[280px] md:min-w-[360px] border-2 ${step.isBest ? 'ring-4 ring-offset-2' : ''}`}
-                style={{
-                  background: step.isBest ? `linear-gradient(135deg, ${step.color}, ${step.color}dd)` : '#fff',
-                  borderColor: step.color,
-                  ringColor: step.isBest ? step.color : 'transparent'
-                }}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Icons.TrendingUp />
-                    <span className={`font-bold text-lg ${step.isBest ? 'text-white' : 'text-neutral-900'}`}>{step.label}</span>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">The Ladder In Action</motion.h2>
+        <div className="bg-[#0a0a0a] rounded-3xl p-6 md:p-8" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(var(--accent-rgb), 0.1)' }}>
+          <div className="flex flex-col items-center gap-4 relative">
+            {data.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
+                {i < data.length - 1 && (
+                  <motion.div initial={{ height: 0 }} animate={{ height: 16 }} transition={{ delay: 0.3 + i * 0.15, duration: 0.3 }}
+                    className="absolute left-1/2 -translate-x-1/2 top-full w-1 rounded-full"
+                    style={{ background: `linear-gradient(to bottom, ${step.color}, ${data[i+1].color})`, boxShadow: `0 0 8px ${step.color}50` }} />
+                )}
+                <div className={`rounded-xl p-4 md:p-5 min-w-[280px] md:min-w-[360px] border-2 ${step.isBest ? 'ring-4 ring-offset-2 ring-offset-[#0a0a0a]' : ''}`}
+                  style={{ background: step.isBest ? `linear-gradient(135deg, ${step.color}, ${step.color}dd)` : '#1a1a1a', borderColor: step.color, ringColor: step.isBest ? step.color : 'transparent', boxShadow: step.isBest ? `0 4px 24px ${step.color}60` : `0 2px 12px ${step.color}20` }}>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="text-white"><Icons.TrendingUp /></div>
+                      <span className="font-bold text-lg text-white">{step.label}</span>
+                    </div>
+                    <span className="text-2xl font-bold" style={{ color: step.isBest ? 'white' : step.color }}>{step.price}</span>
                   </div>
-                  <span className={`text-2xl font-bold ${step.isBest ? 'text-white' : 'text-neutral-900'}`}>{step.price}</span>
+                  <p className={`text-sm mb-1 ${step.isBest ? 'text-white/90' : 'text-neutral-400'}`}>{step.feature}</p>
+                  {step.concern && !step.isBest && <p className="text-xs text-red-400 italic mt-2">⚠️ {step.concern}</p>}
+                  {step.isBest && <div className="mt-2 px-3 py-1 bg-white/20 rounded-lg text-white text-xs font-bold text-center uppercase tracking-wider">Best Value</div>}
                 </div>
-                <p className={`text-sm mb-1 ${step.isBest ? 'text-white/90' : 'text-neutral-600'}`}>{step.feature}</p>
-                {step.concern && !step.isBest && (
-                  <p className="text-xs text-red-500 italic mt-2">⚠️ {step.concern}</p>
-                )}
-                {step.isBest && (
-                  <div className="mt-2 px-2 py-1 bg-white/20 rounded-lg text-white text-xs font-semibold text-center">
-                    BEST VALUE
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }} className="mt-6 text-center">
+            <div className="inline-flex items-center gap-3 bg-neutral-900 rounded-xl px-5 py-3" style={{ boxShadow: '0 4px 16px rgba(var(--accent-rgb), 0.2)' }}>
+              <span className="text-neutral-400 text-sm">Price increase:</span>
+              <span className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>+<AnimatedCounter target={128} suffix="%" /></span>
+            </div>
+          </motion.div>
         </div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-8 text-neutral-500 text-sm max-w-md">
-          Each step feels logical. By the time you reach $749, you've justified every increase.
-        </motion.p>
       </div>
     );
 
@@ -271,7 +417,7 @@
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
             <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
                 <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
                 <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
                 <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
@@ -281,7 +427,7 @@
                 <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
                 <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
                 <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
                 <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
                 <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
@@ -291,17 +437,32 @@
         );
       }
       if (data.visualType === 'stats') {
+        const parseStatValue = (value) => {
+          if (value.includes('%')) return { num: parseInt(value), suffix: '%' };
+          if (value.includes('x')) return { num: parseFloat(value), suffix: 'x', decimals: 1 };
+          return { num: parseInt(value), suffix: '' };
+        };
         return (
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
             <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
+              {data.data.map((stat, i) => {
+                const parsed = parseStatValue(stat.value);
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                    className="bg-[#0a0a0a] rounded-xl p-6 text-center"
+                    style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.3), 0 0 40px rgba(var(--accent-rgb), 0.1)' }}>
+                    <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 30px rgba(var(--accent-rgb), 0.4)' }}>
+                      <AnimatedCounter target={parsed.num} suffix={parsed.suffix} decimals={parsed.decimals || 0} />
+                    </div>
+                    <div className="text-sm font-semibold text-white mb-2">{stat.label}</div>
+                    <div className="text-xs text-neutral-500">{stat.subtext}</div>
+                    <div className="mt-3">
+                      <AnimatedProgressBar percent={parsed.num > 10 ? parsed.num : parsed.num * 30} color="var(--accent)" delay={0.3 + i * 0.1} glowColor="rgba(var(--accent-rgb), 0.5)" />
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         );
@@ -312,9 +473,9 @@
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
+        <div className="grid md:grid-cols-2 gap-3 relative z-10">
           {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
               <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
             </motion.div>
@@ -343,7 +504,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -397,6 +558,16 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
+
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
@@ -445,6 +616,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

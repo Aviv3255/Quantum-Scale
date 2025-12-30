@@ -45,6 +45,81 @@
       nextLesson: { id: 'risk-reversal', title: 'Risk Reversal Mastery', teaser: 'Remove every barrier between your customer and the buy button.' }
     };
 
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
+
     // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
@@ -74,7 +149,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why trust is built BEFORE the sale - not after', 'The Trust Equation: Credibility + Reliability + Intimacy', 'How to systematically remove every type of risk', 'Why survey responses become your most powerful social proof'] },
-      { type: 'hook', headline: 'Your customer carries invisible shields. Protective barriers built from years of being scammed, disappointed, let down.', subtext: 'Their default mode is skepticism. Your job isn\'t to overcome it through force. It\'s to systematically lower those shields through trust architecture. Think of trust as a bank account. Every testimonial, every guarantee, every piece of social proof makes a deposit. By the time you ask for the sale, you\'ve built up enough credit that saying "yes" feels natural, even obvious.' },
+      { type: 'hook', headline: 'Your customer carries invisible shields. Protective barriers built from years of being scammed, disappointed, let down.', subtext: 'Their default mode is skepticism. Your job isn\'t to overcome it through force. It\'s to systematically lower those shields through trust architecture. Think of trust as a bank account. Every testimonial, every guarantee, every piece of social proof makes a deposit. By the time you ask for the sale, you\'ve built up enough credit that saying "yes" feels natural, even obvious.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys'},
       { type: 'content', title: 'Trust Isn\'t Earned After the Sale', body: 'Here\'s what most marketers get fundamentally backwards: Trust isn\'t earned after the sale. It\'s built before. Every element of trust you add removes friction. Every doubt you eliminate makes "yes" easier. Your customer\'s brain is constantly scanning for threats. They\'re looking for reasons NOT to buy. The trust shield is your systematic approach to neutralizing every objection before it becomes conscious.' },
       { type: 'visual', title: 'The Trust Equation', visualType: 'comparison', data: {
         left: { label: 'Credibility', value: 'Can you?', result: 'Expertise & track record', color: '#0ea5e9' },
@@ -97,11 +172,23 @@
         { value: '10x', label: 'more specific', subtext: 'Survey testimonials vs generic reviews' },
         { value: '47%', label: 'trust increase', subtext: 'When prospects see detailed "why they bought"' }
       ]},
-      { type: 'tool', title: 'Turn Every Purchase Into Trust-Building Social Proof', toolName: 'Grapevine Post-Purchase Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Responses_2.svg', body: 'Grapevine displays a quick 3-4 question survey immediately after checkout. Customers are in their most honest, excited state. They tell you the REAL reasons they bought, what almost stopped them, and what sealed the deal.', questions: ['How did you first hear about us?', 'What made you decide to buy right now?', 'Was there anything that almost stopped you?', 'What result are you most excited about?'], insight: 'These responses become your most powerful testimonials. Specific, genuine, addressing real objections. Use them everywhere: product pages, ads, emails, landing pages.' },
+      { type: 'implementation', title: 'Turn Every Purchase Into Trust-Building Social Proof', intro: "Here\'s how to implement this in your store:", steps: [
+        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
+        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
+        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
+        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
+      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
+      { type: 'implementation', title: 'Visual Trust Signals That Convert', intro: "Here\'s how to implement this in your store:", steps: [
+        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
+        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
+        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
+        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
+      ], toolUrl: 'https://platform.shoffi.app/r/rl_uUHJkiZx', cta: 'Get Started Free' },
+      { type: 'tool-setup', title: 'Implementing Trust Badges', toolName: 'Essential Trust Badges', steps: ['Install Essential Trust Badges from the Shopify App Store', 'Choose badge styles that match your brand aesthetic', 'Place badges near Add to Cart buttons and at checkout', 'Enable payment icons (Visa, Mastercard, PayPal, etc.)', 'Add guarantee badges (money-back, free shipping, secure checkout)'], proTip: 'Less is more. Pick 4-5 of the most relevant badges. Too many badges can look desperate and have the opposite effect.' },
       { type: 'example', scenario: 'Skincare Store - Survey Response Transformation', before: { label: 'Generic Testimonial', text: '"Love this serum! Works great. 5 stars!"' }, after: { label: 'Post-Purchase Survey Response', text: '"I bought this because my dermatologist quoted me $400 for laser treatment. I saw your ingredient breakdown and realized this has the same active compound at 1/10th the price. I was hesitant because I\'ve been burned by cheap alternatives before, but your 90-day guarantee removed the risk. If this works half as well as the $400 treatment, I\'m thrilled."' }, insight: 'Survey responses give you the specificity that makes social proof actually WORK. This is trust-building gold.' },
       { type: 'content', title: 'When There\'s No Risk, There\'s No Reason to Say No', body: 'The goal isn\'t to convince people to trust you. It\'s to remove every reason they have NOT to trust you. Build your trust architecture brick by brick: credibility through expertise, reliability through consistency, intimacy through empathy. Remove financial risk with guarantees. Remove performance risk with results promises. Remove social risk with proof. Remove time risk with quick-start promises. And capture real customer voices the moment they buy. Stack these systematically, and conversions become inevitable.' },
       { type: 'quiz', question: 'According to the Trust Architecture, what\'s the most powerful form of social proof?', options: ['Generic 5-star reviews saying "Great product!"', 'Celebrity endorsements and influencer mentions', 'Post-purchase survey responses explaining WHY they bought', 'Number of followers on social media'], correctIndex: 2, feedback: { correct: 'Exactly! Survey responses captured right after purchase are the most powerful because they\'re specific, genuine, and address real objections. Prospects believe other customers way more than they believe you. And detailed "why they bought" testimonials move the needle because they speak to doubts and outcomes.', incorrect: 'Not quite. While all social proof helps, post-purchase survey responses are the most powerful because they capture the REAL reasons why someone bought - specific, detailed, genuine. Generic reviews like "Great!" don\'t address objections or outcomes. Survey responses do. That\'s why they convert.' }},
-      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }, { name: 'Essential Trust Badges', url: 'https://platform.shoffi.app/r/rl_uUHJkiZx' }] }
     ];
 
     const Icons = {
@@ -144,19 +231,50 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          </motion.div>
+        )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
+            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
@@ -240,37 +358,48 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
+          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            {data.cta || 'Get Started'} <Icons.ExternalLink />
+          </a>
+        </motion.div>}
+      </div>
+    );
+
+    const ToolSetupSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Quick Setup</span>
           <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Example Questions</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
+        <div className="space-y-3 mb-6">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+              <p className="text-neutral-700 text-sm md:text-base leading-relaxed pt-1">{step}</p>
+            </motion.div>
+          ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4">
+          <p className="text-neutral-300 text-sm"><span className="text-white font-semibold">Pro Tip:</span> {data.proTip}</p>
         </motion.div>
       </div>
     );
@@ -357,6 +486,16 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
+
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
@@ -390,7 +529,8 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'tool-setup': return <ToolSetupSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -406,6 +546,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

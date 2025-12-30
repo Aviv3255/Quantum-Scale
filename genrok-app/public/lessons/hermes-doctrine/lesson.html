@@ -1,88 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Hermès Infinite Game - Hermes Doctrine</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- React & ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
-    <!-- Babel Standalone -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <!-- Framer Motion -->
-    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
-
-    <!-- Shared Greetings -->
-    <script src="../shared/greetings.js"></script>
-
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #FAFAFA;
-            overflow-x: hidden;
-        }
-
-        .fraunces {
-            font-family: 'Fraunces', serif;
-            font-weight: 900;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #f97316; --accent-dark: #e55f02; --accent-light: #ff872a; --accent-rgb: 249, 115, 22; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { motion, AnimatePresence } = window.Motion;
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-        // Supabase celebration GIFs
-        const celebrationGifs = [
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-1.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-2.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-3.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-4.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-5.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-6.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-7.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/celebration-gifs/celebration-8.gif'
-        ];
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
-        const empathyGifs = [
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-1.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-2.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-3.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-4.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-5.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-6.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-7.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-8.gif',
-            'https://piyqflxtoanikreaeklb.supabase.co/storage/v1/object/public/empathy-gifs/empathy-9.gif'
-        ];
+    const LESSON_CONFIG = {
+      id: 'hermes-doctrine',
+      title: 'Lesson',
+      description: '',
+      accentColor: '#f97316',
+      duration: '5 min',
+      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
+    };
 
-        const ACCENT_COLOR = '#C0A062'; // Luxury gold for Hermès
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
 
-        const slides = [
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
             {
                 type: 'welcome',
                 title: 'The Hermès Infinite Game',
                 subtitle: 'Fashion chases trends and dies. Luxury builds timelessness and wins forever.',
-                accentText: 'Hermes Doctrine'
+                accentText: 'Hermes Doctrine',
+                brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hermes-logo-1.png',
+                brandName: 'Hermès'
             },
             {
                 type: 'hook',
@@ -125,7 +195,7 @@
                         description: 'Stock crashed 40% in 2023. Brand value eroded. Short-term greed destroyed long-term equity. Classic fashion brand mistake.'
                     }
                 ]
-            },
+            , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runL4Kiyy-A1lI_He_is_waving_a_red_flag_100_c6c04ad4-c9e2-4a37-81cc-c7da0ca2b396_2.mp4', characterPosition: 'right'},
             {
                 type: 'content',
                 title: 'The Hermès Model: Timeless Heritage',
@@ -261,458 +331,314 @@
             }
         ];
 
-        function Lesson() {
-            const [currentSlide, setCurrentSlide] = useState(0);
-            const [direction, setDirection] = useState(1);
-            const [selectedAnswer, setSelectedAnswer] = useState(null);
-            const [showExplanation, setShowExplanation] = useState(false);
-            const [userName, setUserName] = useState('');
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+    };
 
-            useEffect(() => {
-                const name = window.getStoredUserName ? window.getStoredUserName() : '';
-                setUserName(name);
-            }, []);
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
-            const slideVariants = {
-                enter: (direction) => ({
-                    x: direction > 0 ? 1000 : -1000,
-                    opacity: 0
-                }),
-                center: {
-                    x: 0,
-                    opacity: 1
-                },
-                exit: (direction) => ({
-                    x: direction < 0 ? 1000 : -1000,
-                    opacity: 0
-                })
-            };
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
 
-            const nextSlide = () => {
-                setDirection(1);
-                setSelectedAnswer(null);
-                setShowExplanation(false);
-                setCurrentSlide((prev) => Math.min(prev + 1, slides.length - 1));
-            };
+    const HookSlide = ({ data }) => (
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          </motion.div>
+        )}
+      </div>
+    );
 
-            const prevSlide = () => {
-                setDirection(-1);
-                setSelectedAnswer(null);
-                setShowExplanation(false);
-                setCurrentSlide((prev) => Math.max(prev - 1, 0));
-            };
+    
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
 
-            const handleAnswerSelect = (index) => {
-                setSelectedAnswer(index);
-                setShowExplanation(true);
-            };
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+      </div>
+    );
 
-            const slide = slides[currentSlide];
-            const progress = ((currentSlide + 1) / slides.length) * 100;
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
+      </div>
+    );
 
-            return (
-                <div className="min-h-screen flex flex-col" style={{ background: '#FAFAFA' }}>
-                    {/* Progress Bar */}
-                    <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-                        <motion.div
-                            className="h-full"
-                            style={{ background: ACCENT_COLOR }}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${progress}%` }}
-                            transition={{ duration: 0.3 }}
-                        />
-                    </div>
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'stats') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
+                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        );
+      }
+      return null;
+    };
 
-                    {/* Main Content */}
-                    <div className="flex-1 flex items-center justify-center p-4 md:p-8 pt-12">
-                        <div className="w-full max-w-4xl">
-                            <AnimatePresence mode="wait" custom={direction}>
-                                <motion.div
-                                    key={currentSlide}
-                                    custom={direction}
-                                    variants={slideVariants}
-                                    initial="enter"
-                                    animate="center"
-                                    exit="exit"
-                                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-                                >
-                                    {slide.type === 'welcome' && (
-                                        <div className="text-center space-y-8 py-12">
-                                            <motion.div
-                                                initial={{ scale: 0.9, opacity: 0 }}
-                                                animate={{ scale: 1, opacity: 1 }}
-                                                transition={{ delay: 0.2 }}
-                                            >
-                                                <div className="inline-block px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider mb-6"
-                                                     style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
-                                                    {slide.accentText}
-                                                </div>
-                                                <h1 className="fraunces text-5xl md:text-7xl mb-6" style={{ color: '#000' }}>
-                                                    {slide.title}
-                                                </h1>
-                                                <p className="text-xl md:text-2xl" style={{ color: '#86868B' }}>
-                                                    {slide.subtitle}
-                                                </p>
-                                            </motion.div>
-                                        </div>
-                                    )}
+    const CardsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
+              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
 
-                                    {slide.type === 'hook' && (
-                                        <div className="space-y-8">
-                                            <div className="text-center space-y-4 mb-12">
-                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
-                                                    {slide.question}
-                                                </h2>
-                                            </div>
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
 
-                                            <div className="grid gap-4 max-w-2xl mx-auto">
-                                                {slide.options.map((option, index) => (
-                                                    <motion.button
-                                                        key={index}
-                                                        onClick={() => handleAnswerSelect(index)}
-                                                        className="p-6 rounded-2xl text-left transition-all duration-300"
-                                                        style={{
-                                                            background: selectedAnswer === index
-                                                                ? (index === slide.correctIndex ? '#34C75920' : '#FF3B3020')
-                                                                : '#FFFFFF',
-                                                            border: selectedAnswer === index
-                                                                ? `2px solid ${index === slide.correctIndex ? '#34C759' : '#FF3B30'}`
-                                                                : '2px solid #F5F5F7'
-                                                        }}
-                                                        whileHover={{ scale: 1.02 }}
-                                                        whileTap={{ scale: 0.98 }}
-                                                        disabled={selectedAnswer !== null}
-                                                    >
-                                                        <span className="text-lg font-medium" style={{ color: '#1D1D1F' }}>
-                                                            {option}
-                                                        </span>
-                                                    </motion.button>
-                                                ))}
-                                            </div>
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
-                                            {showExplanation && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 20 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    className="mt-8 p-8 rounded-2xl space-y-4"
-                                                    style={{ background: '#FFFFFF' }}
-                                                >
-                                                    <div className="flex items-start gap-4">
-                                                        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
-                                                            <img
-                                                                src={selectedAnswer === slide.correctIndex
-                                                                    ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
-                                                                    : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
-                                                                }
-                                                                alt="reaction"
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        </div>
-                                                        <div className="flex-1">
-                                                            <p className="text-lg mb-4" style={{ color: '#1D1D1F' }}>
-                                                                {slide.explanation}
-                                                            </p>
-                                                            <div className="p-4 rounded-xl" style={{ background: `${ACCENT_COLOR}10` }}>
-                                                                <p className="font-semibold" style={{ color: ACCENT_COLOR }}>
-                                                                    {slide.insight}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </div>
-                                    )}
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
 
-                                    {slide.type === 'content' && (
-                                        <div className="max-w-3xl mx-auto space-y-8">
-                                            <div className="text-center mb-12">
-                                                <h2 className="fraunces text-4xl md:text-5xl mb-6" style={{ color: '#000' }}>
-                                                    {slide.title}
-                                                </h2>
-                                                <p className="text-xl" style={{ color: '#86868B' }}>
-                                                    {slide.content}
-                                                </p>
-                                            </div>
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+        {data?.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
+            <div className="space-y-1.5">
+              {data.sources.map((source, i) => (
+                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
+                  {source.name}
+                  <Icons.ExternalLink />
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </div>
+    );
 
-                                            <div className="space-y-4">
-                                                {slide.points.map((point, index) => (
-                                                    <motion.div
-                                                        key={index}
-                                                        initial={{ opacity: 0, x: -20 }}
-                                                        animate={{ opacity: 1, x: 0 }}
-                                                        transition={{ delay: index * 0.1 }}
-                                                        className="flex gap-4 p-6 rounded-2xl"
-                                                        style={{ background: '#FFFFFF' }}
-                                                    >
-                                                        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
-                                                             style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
-                                                            <span className="font-bold">{index + 1}</span>
-                                                        </div>
-                                                        <p className="text-lg" style={{ color: '#1D1D1F' }}>
-                                                            {point}
-                                                        </p>
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
 
-                                    {slide.type === 'visual' && (
-                                        <div className="max-w-3xl mx-auto space-y-8">
-                                            <div className="text-center mb-12">
-                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
-                                                    {slide.title}
-                                                </h2>
-                                            </div>
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
 
-                                            <div className="space-y-6">
-                                                {slide.examples.map((example, index) => (
-                                                    <motion.div
-                                                        key={index}
-                                                        initial={{ opacity: 0, y: 20 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        transition={{ delay: index * 0.15 }}
-                                                        className="p-8 rounded-2xl"
-                                                        style={{ background: '#FFFFFF' }}
-                                                    >
-                                                        <div className="text-xs font-bold uppercase tracking-wider mb-3"
-                                                             style={{ color: ACCENT_COLOR }}>
-                                                            {example.label}
-                                                        </div>
-                                                        <p className="text-lg" style={{ color: '#1D1D1F' }}>
-                                                            {example.description}
-                                                        </p>
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-                                    {slide.type === 'cards' && (
-                                        <div className="max-w-4xl mx-auto space-y-8">
-                                            <div className="text-center mb-12">
-                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
-                                                    {slide.title}
-                                                </h2>
-                                            </div>
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
 
-                                            <div className="grid md:grid-cols-2 gap-6">
-                                                {slide.cards.map((card, index) => (
-                                                    <motion.div
-                                                        key={index}
-                                                        initial={{ opacity: 0, scale: 0.9 }}
-                                                        animate={{ opacity: 1, scale: 1 }}
-                                                        transition={{ delay: index * 0.1 }}
-                                                        className="p-6 rounded-2xl"
-                                                        style={{ background: '#FFFFFF' }}
-                                                        whileHover={{ scale: 1.03 }}
-                                                    >
-                                                        <h3 className="font-bold text-xl mb-3" style={{ color: '#000' }}>
-                                                            {card.title}
-                                                        </h3>
-                                                        <p style={{ color: '#86868B' }}>
-                                                            {card.description}
-                                                        </p>
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
 
-                                    {slide.type === 'example' && (
-                                        <div className="max-w-3xl mx-auto space-y-8">
-                                            <div className="text-center mb-12">
-                                                <h2 className="fraunces text-4xl md:text-5xl mb-6" style={{ color: '#000' }}>
-                                                    {slide.title}
-                                                </h2>
-                                                <p className="text-xl" style={{ color: '#86868B' }}>
-                                                    {slide.scenario}
-                                                </p>
-                                            </div>
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
 
-                                            <div className="space-y-6">
-                                                {slide.approaches.map((approach, index) => (
-                                                    <motion.div
-                                                        key={index}
-                                                        initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                                                        animate={{ opacity: 1, x: 0 }}
-                                                        transition={{ delay: index * 0.2 }}
-                                                        className="p-8 rounded-2xl"
-                                                        style={{ background: '#FFFFFF' }}
-                                                    >
-                                                        <div className="text-xs font-bold uppercase tracking-wider mb-3"
-                                                             style={{ color: ACCENT_COLOR }}>
-                                                            {approach.label}
-                                                        </div>
-                                                        <p className="text-lg mb-4" style={{ color: '#1D1D1F' }}>
-                                                            {approach.description}
-                                                        </p>
-                                                        <div className="p-4 rounded-xl" style={{ background: '#F5F5F7' }}>
-                                                            <p className="font-semibold" style={{ color: '#86868B' }}>
-                                                                {approach.result}
-                                                            </p>
-                                                        </div>
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
 
-                                    {slide.type === 'quiz' && (
-                                        <div className="space-y-8">
-                                            <div className="text-center space-y-4 mb-12">
-                                                <h2 className="fraunces text-4xl md:text-5xl" style={{ color: '#000' }}>
-                                                    {slide.question}
-                                                </h2>
-                                            </div>
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
 
-                                            <div className="grid gap-4 max-w-2xl mx-auto">
-                                                {slide.options.map((option, index) => (
-                                                    <motion.button
-                                                        key={index}
-                                                        onClick={() => handleAnswerSelect(index)}
-                                                        className="p-6 rounded-2xl text-left transition-all duration-300"
-                                                        style={{
-                                                            background: selectedAnswer === index
-                                                                ? (index === slide.correctIndex ? '#34C75920' : '#FF3B3020')
-                                                                : '#FFFFFF',
-                                                            border: selectedAnswer === index
-                                                                ? `2px solid ${index === slide.correctIndex ? '#34C759' : '#FF3B30'}`
-                                                                : '2px solid #F5F5F7'
-                                                        }}
-                                                        whileHover={{ scale: 1.02 }}
-                                                        whileTap={{ scale: 0.98 }}
-                                                        disabled={selectedAnswer !== null}
-                                                    >
-                                                        <span className="text-lg font-medium" style={{ color: '#1D1D1F' }}>
-                                                            {option}
-                                                        </span>
-                                                    </motion.button>
-                                                ))}
-                                            </div>
-
-                                            {showExplanation && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 20 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    className="mt-8 p-8 rounded-2xl space-y-4"
-                                                    style={{ background: '#FFFFFF' }}
-                                                >
-                                                    <div className="flex items-start gap-4">
-                                                        <div className="flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden">
-                                                            <img
-                                                                src={selectedAnswer === slide.correctIndex
-                                                                    ? celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)]
-                                                                    : empathyGifs[Math.floor(Math.random() * empathyGifs.length)]
-                                                                }
-                                                                alt="reaction"
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        </div>
-                                                        <div className="flex-1">
-                                                            <p className="text-lg font-semibold" style={{ color: '#1D1D1F' }}>
-                                                                {selectedAnswer === slide.correctIndex ? slide.celebration : slide.empathy}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </div>
-                                    )}
-
-                                    {slide.type === 'completion' && (
-                                        <div className="text-center space-y-8 py-12 max-w-3xl mx-auto">
-                                            <motion.div
-                                                initial={{ scale: 0 }}
-                                                animate={{ scale: 1 }}
-                                                transition={{ type: "spring", duration: 0.6 }}
-                                                className="w-24 h-24 mx-auto rounded-full flex items-center justify-center text-4xl mb-8"
-                                                style={{ background: `${ACCENT_COLOR}20` }}
-                                            >
-                                                👑
-                                            </motion.div>
-
-                                            <h2 className="fraunces text-4xl md:text-6xl mb-6" style={{ color: '#000' }}>
-                                                {slide.title}
-                                            </h2>
-
-                                            <p className="text-xl mb-8" style={{ color: '#86868B' }}>
-                                                {slide.summary}
-                                            </p>
-
-                                            <div className="p-8 rounded-2xl mb-8" style={{ background: `${ACCENT_COLOR}10` }}>
-                                                <p className="text-xl font-semibold" style={{ color: ACCENT_COLOR }}>
-                                                    {slide.keyTakeaway}
-                                                </p>
-                                            </div>
-
-                                            <div className="text-left space-y-4 p-8 rounded-2xl" style={{ background: '#FFFFFF' }}>
-                                                <h3 className="font-bold text-xl mb-4" style={{ color: '#000' }}>
-                                                    Next Steps:
-                                                </h3>
-                                                {slide.nextSteps.map((step, index) => (
-                                                    <div key={index} className="flex gap-3 items-start">
-                                                        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-sm"
-                                                             style={{ background: `${ACCENT_COLOR}20`, color: ACCENT_COLOR }}>
-                                                            {index + 1}
-                                                        </div>
-                                                        <p style={{ color: '#1D1D1F' }}>{step}</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
-                                </motion.div>
-                            </AnimatePresence>
-                        </div>
-                    </div>
-
-                    {/* Navigation */}
-                    <div className="fixed bottom-8 left-0 right-0 flex items-center justify-center gap-4 px-4">
-                        <button
-                            onClick={prevSlide}
-                            disabled={currentSlide === 0}
-                            className="px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-30"
-                            style={{
-                                background: '#FFFFFF',
-                                color: '#000',
-                                border: '2px solid #F5F5F7'
-                            }}
-                        >
-                            Previous
-                        </button>
-
-                        <div className="flex gap-2">
-                            {slides.map((_, index) => (
-                                <div
-                                    key={index}
-                                    className="w-2 h-2 rounded-full transition-all duration-300"
-                                    style={{
-                                        background: index === currentSlide ? ACCENT_COLOR : '#E5E5E7'
-                                    }}
-                                />
-                            ))}
-                        </div>
-
-                        <button
-                            onClick={nextSlide}
-                            disabled={currentSlide === slides.length - 1}
-                            className="px-6 py-3 rounded-full font-semibold transition-all duration-300 disabled:opacity-30"
-                            style={{
-                                background: ACCENT_COLOR,
-                                color: '#FFFFFF'
-                            }}
-                        >
-                            {currentSlide === slides.length - 1 ? 'Complete' : 'Next'}
-                        </button>
-                    </div>
-                </div>
-            );
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'example': return <ExampleSlide data={slide} />;
+          case 'visual': return <VisualSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
         }
+      };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<Lesson />);
-    </script>
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
 </body>
 </html>

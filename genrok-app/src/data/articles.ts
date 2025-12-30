@@ -6903,6 +6903,467 @@ Five stages: Uninformed Optimism → Informed Pessimism → Valley of Despair �
       buttons: [
         { text: 'Open Interactive Lesson', url: '/lessons/biz-valley-protocol/lesson.html' }
       ]
+    },
+    // New Business lessons - The LTV:CAC Playbook
+    {
+      id: 901,
+      thumbnail: '/images/lessons/biz-high-margin-fortress.png',
+      title: 'The High Margin Fortress',
+      intro: 'Build a margin moat that competitors can\'t cross. High margins fund everything else.',
+      directUrl: '/learn/lessons/biz-high-margin-fortress',
+      content: `## The Margin Moat
+
+High margins aren't just about profit—they're about survival and dominance.
+
+**Why Margin Matters:**
+- Funds customer acquisition
+- Absorbs market shocks
+- Enables premium positioning
+- Creates competitive moats
+
+**The Fortress Strategy:**
+Build margins so high that competitors can't afford to compete with you on value.
+
+**Open the interactive lesson to build your margin fortress.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-high-margin-fortress/lesson.html' }
+      ]
+    },
+    {
+      id: 902,
+      thumbnail: '/images/lessons/biz-ridge-wallet-protocol.png',
+      title: 'The Ridge Wallet Protocol',
+      intro: 'How Ridge solved the one-product problem and unlocked infinite LTV through strategic expansion.',
+      directUrl: '/learn/lessons/biz-ridge-wallet-protocol',
+      content: `## The Product Expansion Playbook
+
+Ridge Wallet faced a problem: How do you grow when customers only need one wallet?
+
+**The Solution:**
+Strategic product expansion into adjacent categories that serve the same customer.
+
+**Key Principles:**
+- Same customer, new products
+- Maintain brand identity
+- Expand without diluting
+- Create purchase cycles
+
+**Open the interactive lesson to learn the Ridge Protocol.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-ridge-wallet-protocol/lesson.html' }
+      ]
+    },
+    {
+      id: 903,
+      thumbnail: '/images/lessons/biz-20-domination.png',
+      title: 'The 20% Domination Rule',
+      intro: '20% of your customers generate 80% of your revenue. Find them. Clone them. Dominate.',
+      directUrl: '/learn/lessons/biz-20-domination',
+      content: `## The Pareto Principle in Action
+
+Not all customers are created equal. A small minority drives the majority of your business.
+
+**The 80/20 Reality:**
+- 20% of customers = 80% of revenue
+- Top 5% = often 50%+ of profit
+- Most businesses ignore this
+
+**The Domination Strategy:**
+Identify your top 20%, understand what makes them different, and build your entire business around finding more of them.
+
+**Open the interactive lesson to master the 20% Domination Rule.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-20-domination/lesson.html' }
+      ]
+    },
+    {
+      id: 904,
+      thumbnail: '/images/lessons/biz-channel-mix-formula.png',
+      title: 'The Channel Mix Formula',
+      intro: 'Stop spreading budget thin. Master the optimal channel allocation for maximum ROI.',
+      directUrl: '/learn/lessons/biz-channel-mix-formula',
+      content: `## Budget Allocation Mastery
+
+Most businesses waste money by spreading budget across too many channels without a strategy.
+
+**The Formula:**
+Allocate budget based on proven ROI, not gut feeling or FOMO.
+
+**Channel Strategy:**
+- Meta (FB/IG): Primary acquisition
+- TikTok: Discovery and virality
+- Google: High-intent capture
+- Influencer: Brand building
+
+**Open the interactive lesson to master your channel mix.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-channel-mix-formula/lesson.html' }
+      ]
+    },
+    {
+      id: 905,
+      thumbnail: '/images/lessons/biz-next-best-dollar.png',
+      title: 'The Next Best Dollar',
+      intro: 'Think like a capital allocator, not a channel manager. Deploy every dollar for maximum return.',
+      directUrl: '/learn/lessons/biz-next-best-dollar',
+      content: `## Capital Allocation Mindset
+
+Stop managing channels. Start allocating capital.
+
+**The Shift:**
+- Channel managers optimize in silos
+- Capital allocators optimize the portfolio
+- One thinks tactically, the other strategically
+
+**The Question:**
+"Where should I spend my next dollar to generate the highest possible return?"
+
+This single question changes everything.
+
+**Open the interactive lesson to think like a capital allocator.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-next-best-dollar/lesson.html' }
+      ]
+    },
+    {
+      id: 906,
+      thumbnail: '/images/lessons/biz-authenticity-engine.png',
+      title: 'The Authenticity Engine',
+      intro: 'The compounding force that makes your brand impossible to replicate.',
+      directUrl: '/learn/lessons/biz-authenticity-engine',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Authenticity Engine
+
+Authenticity is not a marketing tactic. It is a compounding force that makes your brand impossible to replicate.
+
+**The Physics of Authenticity:**
+- Authenticity compounds over time
+- Copycats can steal tactics, but never your story
+- Real connections create price-proof customers
+
+**Open the interactive lesson to build your authenticity engine.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-authenticity-engine/lesson.html' }
+      ]
+    },
+    {
+      id: 907,
+      thumbnail: '/images/lessons/biz-creator-army.png',
+      title: 'The Creator Army',
+      intro: 'Build 500+ micro-creators instead of hiring expensive agencies.',
+      directUrl: '/learn/lessons/biz-creator-army',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Creator Army
+
+Why pay one agency when you can build an army of 500+ creators who sell for you?
+
+**The Power of Micro-Creators:**
+- 500 small creators > 1 big agency
+- Network effect compounds reach
+- Turn customers into salespeople
+
+**Open the interactive lesson to build your creator army.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-creator-army/lesson.html' }
+      ]
+    },
+    {
+      id: 908,
+      thumbnail: '/images/lessons/biz-mission-driven-brand.png',
+      title: 'The Mission-Driven Brand',
+      intro: 'Why brands with a cause outperform everyone else.',
+      directUrl: '/learn/lessons/biz-mission-driven-brand',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Mission-Driven Brand
+
+Brands with a mission don't just sell products. They create movements.
+
+**The Mission Advantage:**
+- Mission creates emotional connection
+- Transactions become relationships
+- Purpose drives repeat purchases
+
+**Open the interactive lesson to discover your brand mission.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-mission-driven-brand/lesson.html' }
+      ]
+    },
+    {
+      id: 909,
+      thumbnail: '/images/lessons/biz-savage-mentality.png',
+      title: 'The Savage Mentality',
+      intro: 'The relentless execution mindset that separates winners from dreamers.',
+      directUrl: '/learn/lessons/biz-savage-mentality',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Savage Mentality
+
+Most entrepreneurs cope with failure. Elite entrepreneurs get pissed off and take action.
+
+**The Savage Difference:**
+- Action over cope
+- Adapt immediately, don't blame
+- Zero excuses, maximum execution
+
+**Open the interactive lesson to unlock the savage mentality.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-savage-mentality/lesson.html' }
+      ]
+    },
+    {
+      id: 910,
+      thumbnail: '/images/lessons/biz-systems-architect.png',
+      title: 'The Systems Architect',
+      intro: 'The transition from player to systems architect that unlocks $10M+.',
+      directUrl: '/learn/lessons/biz-systems-architect',
+      specialFeatures: [
+        { value: '6 min', label: 'Duration' },
+        { value: 'Business', label: 'Focus' }
+      ],
+      content: `## The Systems Architect
+
+Getting to $1M/month is a marketing challenge. Getting to $10M/month is a systems and people challenge.
+
+**The Architect Framework:**
+- Hire A-players over volume
+- Build teams around winners
+- Align incentives beyond money
+
+**Open the interactive lesson to become a systems architect.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-systems-architect/lesson.html' }
+      ]
+    },
+    // Infinite Money Game PDF lessons
+    {
+      id: 249,
+      thumbnail: '/images/lessons/biz-90-percent-trap.png',
+      title: 'The 90% Trap',
+      intro: 'Why 90% of stores guess their way to failure—while 1% use math to print money.',
+      directUrl: '/learn/lessons/biz-90-percent-trap',
+      content: `## The Fatal Mistake
+
+90% of eCommerce stores operate on pure guesswork.
+
+They don't know their real CAC. They don't know their true LTV. They make decisions based on feelings, not data.
+
+**The 1% who win?**
+
+They run their business like a math equation. They know exactly what a customer is worth. They know exactly what they can spend to acquire one.
+
+**The difference?**
+- Guessers burn money hoping ads work
+- Operators invest money knowing the return
+
+**Open the interactive lesson to escape the 90% trap.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-90-percent-trap/lesson.html' }
+      ]
+    },
+    {
+      id: 250,
+      thumbnail: '/images/lessons/biz-animal-mindset.png',
+      title: 'The Animal Mindset',
+      intro: 'How Davie Fogarty built a $500M empire through relentless action—not perfect planning.',
+      directUrl: '/learn/lessons/biz-animal-mindset',
+      content: `## The Fogarty Philosophy
+
+Davie Fogarty didn't build The Oodie and a portfolio of 10+ brands by planning perfectly.
+
+He built it by moving like an animal.
+
+**The Animal Mindset:**
+- Action beats analysis
+- Speed beats perfection
+- Volume beats precision
+- Done beats planned
+
+While others plan, animals execute. While others analyze, animals test. While others wait for perfect conditions, animals create them.
+
+**Open the interactive lesson to adopt the Animal Mindset.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-animal-mindset/lesson.html' }
+      ]
+    },
+    {
+      id: 251,
+      thumbnail: '/images/lessons/biz-channel-cac-decoder.png',
+      title: 'Channel CAC Decoder',
+      intro: 'Why your blended CAC is lying to you—and how to find your real acquisition costs.',
+      directUrl: '/learn/lessons/biz-channel-cac-decoder',
+      content: `## The Blended CAC Lie
+
+Your blended CAC says $45.
+
+But that number hides the truth:
+- Meta: $28 CAC
+- Google: $38 CAC
+- TikTok: $67 CAC
+- Influencer: $52 CAC
+
+**The problem?**
+
+You're making budget decisions based on an average that doesn't exist. You're scaling channels that lose money and cutting channels that make it.
+
+**The fix:** Decode your CAC by channel, by cohort, by month.
+
+**Open the interactive lesson to decode your real CAC.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-channel-cac-decoder/lesson.html' }
+      ]
+    },
+    {
+      id: 252,
+      thumbnail: '/images/lessons/biz-6-to-1-problem.png',
+      title: 'The 6:1 Problem',
+      intro: 'Why your "amazing" LTV:CAC ratio might be killing your growth potential.',
+      directUrl: '/learn/lessons/biz-6-to-1-problem',
+      content: `## The Hidden Problem
+
+A 6:1 LTV:CAC ratio sounds amazing.
+
+But here's what it really means: You're UNDERSPENDING on acquisition.
+
+**The math:**
+- 6:1 ratio with $100k/month spend = 100 new customers
+- 3:1 ratio with $200k/month spend = 200 new customers
+
+Same margin. Double the customers. Double the future revenue.
+
+**High ratios aren't a win—they're a warning sign.**
+
+You're leaving growth on the table. Competitors with 3:1 ratios are scaling faster, capturing market share, and building bigger audiences.
+
+**Open the interactive lesson to fix the 6:1 problem.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-6-to-1-problem/lesson.html' }
+      ]
+    },
+    {
+      id: 253,
+      thumbnail: '/images/lessons/biz-survival-cycle.png',
+      title: 'The Survival Cycle',
+      intro: 'The doom loop that kills 97% of stores—and how to escape before it\'s too late.',
+      directUrl: '/learn/lessons/biz-survival-cycle',
+      content: `## The Doom Loop
+
+Most stores are trapped in a survival cycle:
+
+1. **Spend on ads** → Get some customers
+2. **Low LTV** → Customers don't return
+3. **Rising CAC** → Ads get more expensive
+4. **Shrinking margins** → Less money to reinvest
+5. **Desperate discounts** → Further margin erosion
+6. **Back to step 1** → With less money
+
+This loop gets tighter every month until the business dies.
+
+**The escape?** Break the cycle by fixing LTV FIRST, not by spending more on ads.
+
+**Open the interactive lesson to escape the survival cycle.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-survival-cycle/lesson.html' }
+      ]
+    },
+    {
+      id: 254,
+      thumbnail: '/images/lessons/biz-infinite-money-glitch.png',
+      title: 'The Infinite Money Glitch',
+      intro: 'The self-fueling growth flywheel that turns your business into a money-printing machine.',
+      directUrl: '/learn/lessons/biz-infinite-money-glitch',
+      content: `## The Flywheel Effect
+
+When LTV exceeds 3x CAC, something magical happens:
+
+**The Infinite Money Glitch activates.**
+
+Every customer you acquire generates enough profit to acquire 3 more. Those 3 acquire 9 more. Those 9 acquire 27 more.
+
+**The math:**
+- Month 1: 1 customer
+- Month 2: 3 customers
+- Month 3: 9 customers
+- Month 4: 27 customers
+- Month 5: 81 customers
+
+This isn't theory. This is how billion-dollar DTC brands are built.
+
+**Requirements:**
+- LTV must exceed 3x CAC
+- Reinvestment discipline must be absolute
+- Systems must scale with volume
+
+**Open the interactive lesson to activate your flywheel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-infinite-money-glitch/lesson.html' }
+      ]
+    },
+    {
+      id: 255,
+      thumbnail: '/images/lessons/biz-price-anchoring.png',
+      title: 'Price Anchoring Power',
+      intro: 'Why your $47 offer looks irresistible when sitting next to a $297 option.',
+      directUrl: '/learn/lessons/biz-price-anchoring',
+      content: `## The Anchor Effect
+
+Your brain doesn't know what anything is worth.
+
+It only knows what something is worth **compared to something else**.
+
+**The 6X Rule:**
+
+Your anchor should be 5-6x higher than your main offer. This creates the perfect contrast:
+
+- $594 anchor makes $99 feel like a steal
+- $997 VIP makes $197 feel like a no-brainer
+- $2,997 coaching makes $497 course feel cheap
+
+**The result?**
+- 23-47% higher AOV
+- Fewer price objections
+- Higher perceived value
+
+**Open the interactive lesson to master price anchoring.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-price-anchoring/lesson.html' }
+      ]
+    },
+    {
+      id: 256,
+      thumbnail: '/images/lessons/biz-look-back-window.png',
+      title: 'The Look-Back Window',
+      intro: 'Why your 30-day data is lying to you—and the time window that reveals the truth.',
+      directUrl: '/learn/lessons/biz-look-back-window',
+      content: `## The 30-Day Lie
+
+Your analytics dashboard shows a 30-day snapshot.
+
+But your best customers make purchases on day 45, day 90, day 180...
+
+**Same customer, different windows:**
+- 30-day view: $70 LTV → "This channel barely works"
+- 90-day view: $159 LTV → "This is promising"
+- 365-day view: $634 LTV → "This is our BEST channel!"
+
+**The wrong window = wrong decisions.**
+
+You're cutting profitable channels because you can't see the full picture. You're scaling losers because they look good short-term.
+
+**Open the interactive lesson to master look-back windows.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/biz-look-back-window/lesson.html' }
+      ]
     }
   ];
 

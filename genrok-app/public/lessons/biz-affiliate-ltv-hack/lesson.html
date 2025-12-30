@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Affiliate LTV Hack - Quantum Scale</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11/dist/framer-motion.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #FFFFFF;
+            --text-primary: #000000;
+            --text-secondary: #1a1a1a;
+            --text-muted: #666666;
+            --accent-primary: #3B82F6;
+            --accent-hover: #2563EB;
+            --block-bg: #000000;
+            --block-text: #FFFFFF;
+            --block-accent: #3B82F6;
+            --block-secondary: #60A5FA;
+            --success: #10B981;
+            --border-light: #E5E7EB;
+            --space-4: 16px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-12: 48px;
+            --space-16: 64px;
+            --space-20: 80px;
+            --space-24: 96px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .lesson-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-20) var(--space-6);
+        }
+
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-12) 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 64px;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--space-6);
+        }
+
+        h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: var(--space-6);
+        }
+
+        h3 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: var(--text-muted);
+            margin-bottom: var(--space-8);
+            line-height: 1.5;
+        }
+
+        .label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-primary);
+            margin-bottom: var(--space-4);
+        }
+
+        /* Dark Block Styling */
+        .dark-block {
+            background: var(--block-bg);
+            color: var(--block-text);
+            border-radius: var(--radius-xl);
+            padding: var(--space-12);
+            margin: var(--space-8) 0;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.16);
+        }
+
+        .dark-block h3 {
+            color: var(--block-text);
+        }
+
+        .highlight-blue {
+            color: var(--block-accent);
+            font-weight: 700;
+        }
+
+        .highlight-light-blue {
+            color: var(--block-secondary);
+        }
+
+        /* Flow Diagram Styling */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-node {
+            flex: 1;
+            min-width: 200px;
+            background: var(--bg-primary);
+            border: 3px solid var(--block-accent);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            text-align: center;
+            position: relative;
+        }
+
+        .flow-node-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto var(--space-4);
+            background: var(--block-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-arrow {
+            font-size: 40px;
+            color: var(--block-secondary);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Grid Layout for Benefits */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+
+        .benefit-card {
+            background: var(--block-bg);
+            color: var(--block-text);
+            padding: var(--space-8);
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--block-accent);
+        }
+
+        .benefit-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--block-accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-4);
+            font-size: 24px;
+        }
+
+        /* Win-Win-Win Visual */
+        .win-visual {
+            display: flex;
+            justify-content: space-around;
+            align-items: stretch;
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+            flex-wrap: wrap;
+        }
+
+        .win-card {
+            flex: 1;
+            min-width: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: var(--space-8);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+        }
+
+        .win-card.blue { background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); }
+        .win-card.green { background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
+        .win-card.purple { background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); }
+
+        /* Implementation Steps */
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin: var(--space-8) 0;
+        }
+
+        .steps-list li {
+            counter-increment: step-counter;
+            position: relative;
+            padding: var(--space-6);
+            padding-left: var(--space-20);
+            margin-bottom: var(--space-4);
+            background: #FAFAFA;
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--accent-primary);
+        }
+
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: var(--space-6);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--accent-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        /* Quiz Styling */
+        .quiz-option {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .quiz-option.correct {
+            background: #D1FAE5;
+            border-color: var(--success);
+        }
+
+        .quiz-option.incorrect {
+            background: #FEE2E2;
+            border-color: #EF4444;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-12);
+            gap: var(--space-4);
+        }
+
+        .btn {
+            padding: var(--space-4) var(--space-8);
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 2px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border-light);
+            z-index: 1000;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 40px; }
+            h2 { font-size: 32px; }
+            h3 { font-size: 24px; }
+            .subtitle { font-size: 18px; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .stagger-1 { animation-delay: 0.1s; opacity: 0; }
+        .stagger-2 { animation-delay: 0.2s; opacity: 0; }
+        .stagger-3 { animation-delay: 0.3s; opacity: 0; }
+        .stagger-4 { animation-delay: 0.4s; opacity: 0; }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="lesson-container">
+        <!-- Slide 1: Welcome -->
+        <div class="slide active" data-slide="1">
+            <div class="label">BUSINESS STRATEGY</div>
+            <h1>The Affiliate LTV Hack</h1>
+            <p class="subtitle">Earn Without Selling: Increase Customer Lifetime Value Through Strategic Partnerships</p>
+            <div class="dark-block">
+                <p style="font-size: 20px; margin-bottom: 16px;">📚 <strong>What You'll Learn:</strong></p>
+                <ul style="font-size: 18px; line-height: 2; padding-left: 24px;">
+                    <li>How to increase LTV without selling more products</li>
+                    <li>Finding complementary (non-competing) partners</li>
+                    <li>Setting up profitable affiliate revenue streams</li>
+                    <li>Creating win-win-win scenarios for everyone</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 2: Hook -->
+        <div class="slide" data-slide="2">
+            <h2>What if you could increase LTV<br>without selling anything new?</h2>
+            <p class="subtitle">Most brands think increasing Customer Lifetime Value means creating more products. But there's a smarter way...</p>
+
+            <div class="dark-block">
+                <h3 style="color: #60A5FA; margin-bottom: 24px;">The Traditional Approach (Hard)</h3>
+                <ul style="font-size: 18px; line-height: 2; padding-left: 24px;">
+                    <li>❌ Develop new products (time-consuming)</li>
+                    <li>❌ Manage more inventory (risky)</li>
+                    <li>❌ Handle fulfillment (complex)</li>
+                    <li>❌ Take on all the risk (expensive)</li>
+                </ul>
+
+                <div style="height: 2px; background: #333; margin: 32px 0;"></div>
+
+                <h3 style="color: #3B82F6; margin-bottom: 24px;">The Affiliate LTV Hack (Smart)</h3>
+                <ul style="font-size: 18px; line-height: 2; padding-left: 24px;">
+                    <li>✅ Partner with complementary brands</li>
+                    <li>✅ No inventory needed</li>
+                    <li>✅ No fulfillment headaches</li>
+                    <li>✅ Pure profit with zero risk</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 3: The Unconventional Play -->
+        <div class="slide" data-slide="3">
+            <div class="label">LTV STRATEGY #3</div>
+            <h2>The Unconventional Play</h2>
+            <p class="subtitle">Increase LTV WITHOUT selling your own products</p>
+
+            <div class="dark-block">
+                <h3 style="margin-bottom: 32px;">The Core Concept</h3>
+                <p style="font-size: 20px; line-height: 1.8; margin-bottom: 24px;">
+                    <span class="highlight-blue">Affiliate Marketing</span> means referring your customers to
+                    <span class="highlight-light-blue">complementary, non-competing products or services</span>
+                    and earning a commission on every sale.
+                </p>
+
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid #3B82F6;">
+                    <p style="font-size: 18px; line-height: 1.8;">
+                        <strong>Key Insight:</strong> You're not just making money—you're <em>adding value</em> to your customer by introducing them to solutions they actually need.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: How It Works - Flow Diagram -->
+        <div class="slide" data-slide="4">
+            <h2>How Affiliate Marketing Works</h2>
+            <p class="subtitle">The complete referral flow in action</p>
+
+            <div class="dark-block">
+                <div class="flow-diagram">
+                    <div class="flow-node animate-in stagger-1">
+                        <div class="flow-node-icon">
+                            <svg width="32" height="32" fill="white" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                            </svg>
+                        </div>
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Your Brand</h4>
+                        <p style="font-size: 14px; color: #666;">You have a customer base</p>
+                    </div>
+
+                    <div class="flow-arrow animate-in stagger-2">→</div>
+
+                    <div class="flow-node animate-in stagger-2">
+                        <div class="flow-node-icon">
+                            <svg width="32" height="32" fill="white" viewBox="0 0 24 24">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                        </div>
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Customer Referral</h4>
+                        <p style="font-size: 14px; color: #666;">You recommend partner product</p>
+                    </div>
+
+                    <div class="flow-arrow animate-in stagger-3">→</div>
+
+                    <div class="flow-node animate-in stagger-3">
+                        <div class="flow-node-icon">
+                            <svg width="32" height="32" fill="white" viewBox="0 0 24 24">
+                                <path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/>
+                            </svg>
+                        </div>
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Partner Brand</h4>
+                        <p style="font-size: 14px; color: #666;">They make the sale</p>
+                    </div>
+
+                    <div class="flow-arrow animate-in stagger-4">→</div>
+
+                    <div class="flow-node animate-in stagger-4">
+                        <div class="flow-node-icon">
+                            <svg width="32" height="32" fill="white" viewBox="0 0 24 24">
+                                <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                            </svg>
+                        </div>
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">You Earn Commission</h4>
+                        <p style="font-size: 14px; color: #666;">Pure profit, zero work</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 48px; padding: 24px; background: rgba(59, 130, 246, 0.1); border-radius: 12px; text-align: center;">
+                    <p style="font-size: 18px; font-weight: 600;">
+                        💡 <span class="highlight-blue">The customer gets value, the partner gets a sale, and you get paid.</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Finding the Right Partners -->
+        <div class="slide" data-slide="5">
+            <h2>Finding the Right Partners</h2>
+            <p class="subtitle">Complementary, not competing</p>
+
+            <div class="dark-block">
+                <h3 style="color: #10B981; margin-bottom: 24px;">✅ Good Partner Examples</h3>
+                <div class="benefits-grid" style="margin-bottom: 48px;">
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid #10B981;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white;">Complementary Services</h4>
+                        <p style="font-size: 14px; line-height: 1.6;">Enhance what you offer without competing directly</p>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid #10B981;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white;">Related Products</h4>
+                        <p style="font-size: 14px; line-height: 1.6;">Products your customers need but you don't sell</p>
+                    </div>
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid #10B981;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white;">Premium Upgrades</h4>
+                        <p style="font-size: 14px; line-height: 1.6;">Higher-tier solutions for advanced customers</p>
+                    </div>
+                </div>
+
+                <h3 style="color: #EF4444; margin-bottom: 24px;">❌ Bad Partner Examples</h3>
+                <div class="benefits-grid">
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid #EF4444;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white;">Direct Competitors</h4>
+                        <p style="font-size: 14px; line-height: 1.6;">Selling the exact same products you do</p>
+                    </div>
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid #EF4444;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white;">Low-Quality Brands</h4>
+                        <p style="font-size: 14px; line-height: 1.6;">Products that could damage your reputation</p>
+                    </div>
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 24px; border-radius: 12px; border-left: 4px solid #EF4444;">
+                        <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: white;">Irrelevant Products</h4>
+                        <p style="font-size: 14px; line-height: 1.6;">Items your customers have no interest in</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Real Example - Skincare to Dermatologist -->
+        <div class="slide" data-slide="6">
+            <div class="label">REAL-WORLD EXAMPLE</div>
+            <h2>Skincare Brand → Dermatologist</h2>
+            <p class="subtitle">A perfect complementary partnership</p>
+
+            <div class="dark-block">
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 32px; align-items: center; margin-bottom: 32px;">
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 32px; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🧴</div>
+                        <h4 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: #3B82F6;">Skincare Brand</h4>
+                        <p style="font-size: 14px; line-height: 1.6;">Sells premium skincare products online</p>
+                    </div>
+
+                    <div style="font-size: 40px; color: #60A5FA;">→</div>
+
+                    <div style="background: rgba(16, 185, 129, 0.1); padding: 32px; border-radius: 12px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">👨‍⚕️</div>
+                        <h4 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: #10B981;">Dermatologist</h4>
+                        <p style="font-size: 14px; line-height: 1.6;">Professional skin consultations</p>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 24px; color: #60A5FA;">How It Works:</h3>
+                <ol style="font-size: 18px; line-height: 2; padding-left: 24px; margin-bottom: 32px;">
+                    <li>Skincare brand includes dermatologist recommendation in post-purchase email</li>
+                    <li>Customer books consultation using unique referral link</li>
+                    <li>Dermatologist provides professional skin analysis</li>
+                    <li>Brand earns 20% commission on consultation fee</li>
+                    <li>Customer gets personalized expert advice (high value!)</li>
+                </ol>
+
+                <div style="background: rgba(59, 130, 246, 0.15); padding: 24px; border-radius: 12px; border-left: 4px solid #3B82F6;">
+                    <p style="font-size: 18px; line-height: 1.8;">
+                        <strong>Result:</strong> Customer gets professional guidance (which increases product effectiveness),
+                        dermatologist gets new patients, and the skincare brand earns passive income while
+                        <span class="highlight-blue">increasing customer satisfaction and retention</span>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Win-Win-Win Visual -->
+        <div class="slide" data-slide="7">
+            <h2>The Triple Win</h2>
+            <p class="subtitle">Everyone benefits from strategic affiliate partnerships</p>
+
+            <div class="win-visual">
+                <div class="win-card blue animate-in stagger-1">
+                    <div style="font-size: 56px; margin-bottom: 16px;">💰</div>
+                    <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">You Win</h3>
+                    <ul style="text-align: left; font-size: 16px; line-height: 2; padding-left: 24px;">
+                        <li>Increased LTV without new products</li>
+                        <li>Pure profit (no inventory/fulfillment)</li>
+                        <li>Stronger customer relationships</li>
+                        <li>Zero risk, all reward</li>
+                    </ul>
+                </div>
+
+                <div class="win-card green animate-in stagger-2">
+                    <div style="font-size: 56px; margin-bottom: 16px;">😊</div>
+                    <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">Customer Wins</h3>
+                    <ul style="text-align: left; font-size: 16px; line-height: 2; padding-left: 24px;">
+                        <li>Discovers valuable solutions</li>
+                        <li>Gets trusted recommendations</li>
+                        <li>Solves problems faster</li>
+                        <li>Better overall experience</li>
+                    </ul>
+                </div>
+
+                <div class="win-card purple animate-in stagger-3">
+                    <div style="font-size: 56px; margin-bottom: 16px;">🤝</div>
+                    <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 16px;">Partner Wins</h3>
+                    <ul style="text-align: left; font-size: 16px; line-height: 2; padding-left: 24px;">
+                        <li>Gains qualified customers</li>
+                        <li>Pre-warmed leads (high trust)</li>
+                        <li>Lower acquisition costs</li>
+                        <li>Scalable growth channel</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="dark-block" style="margin-top: 48px;">
+                <p style="font-size: 20px; line-height: 1.8; text-align: center;">
+                    <span class="highlight-blue">This is the power of the Affiliate LTV Hack:</span><br>
+                    You create value for everyone involved while building a sustainable revenue stream.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Implementation Guide -->
+        <div class="slide" data-slide="8">
+            <h2>How to Implement This Strategy</h2>
+            <p class="subtitle">Step-by-step guide to setting up affiliate partnerships</p>
+
+            <ul class="steps-list">
+                <li>
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Identify Customer Needs</strong>
+                    <p style="color: #666; font-size: 14px;">Survey your customers or analyze support tickets to find common questions or needs you don't fulfill.</p>
+                </li>
+                <li>
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Research Complementary Brands</strong>
+                    <p style="color: #666; font-size: 14px;">Find high-quality brands that serve those needs without competing with your core products.</p>
+                </li>
+                <li>
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Reach Out to Potential Partners</strong>
+                    <p style="color: #666; font-size: 14px;">Present the win-win opportunity: you bring them customers, they pay you commission.</p>
+                </li>
+                <li>
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Negotiate Commission Structure</strong>
+                    <p style="color: #666; font-size: 14px;">Typical rates: 10-30% for services, 5-15% for physical products. Negotiate based on order value.</p>
+                </li>
+                <li>
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Set Up Tracking & Links</strong>
+                    <p style="color: #666; font-size: 14px;">Use affiliate platforms (ShareASale, Impact, Refersion) or custom tracking codes to ensure proper attribution.</p>
+                </li>
+                <li>
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Integrate into Customer Journey</strong>
+                    <p style="color: #666; font-size: 14px;">Add recommendations to post-purchase emails, thank you pages, newsletters, or inside product packaging.</p>
+                </li>
+                <li>
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Test & Optimize</strong>
+                    <p style="color: #666; font-size: 14px;">Monitor click-through and conversion rates. A/B test messaging, placement, and timing.</p>
+                </li>
+                <li>
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">Scale What Works</strong>
+                    <p style="color: #666; font-size: 14px;">Once you find winning partnerships, expand: add more touchpoints, negotiate better rates, find similar partners.</p>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Slide 9: Key Takeaways -->
+        <div class="slide" data-slide="9">
+            <h2>Key Takeaways</h2>
+            <p class="subtitle">What you need to remember</p>
+
+            <div class="benefits-grid">
+                <div class="benefit-card animate-in stagger-1">
+                    <div class="benefit-icon">💡</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">The Core Strategy</h4>
+                    <p style="font-size: 14px; line-height: 1.7;">Affiliate marketing lets you increase LTV by recommending complementary products/services without inventory or fulfillment.</p>
+                </div>
+
+                <div class="benefit-card animate-in stagger-2">
+                    <div class="benefit-icon">🎯</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">Partner Selection</h4>
+                    <p style="font-size: 14px; line-height: 1.7;">Choose complementary, not competing brands. Quality matters—your reputation is on the line.</p>
+                </div>
+
+                <div class="benefit-card animate-in stagger-3">
+                    <div class="benefit-icon">🤝</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">Win-Win-Win</h4>
+                    <p style="font-size: 14px; line-height: 1.7;">Successful partnerships create value for you, your customer, and your partner. Everyone benefits.</p>
+                </div>
+
+                <div class="benefit-card animate-in stagger-4">
+                    <div class="benefit-icon">📈</div>
+                    <h4 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">Pure Profit</h4>
+                    <p style="font-size: 14px; line-height: 1.7;">Zero inventory, zero fulfillment, zero risk. Just referral links and commission payments.</p>
+                </div>
+            </div>
+
+            <div class="dark-block" style="margin-top: 48px;">
+                <h3 style="margin-bottom: 24px; color: #60A5FA;">Action Step</h3>
+                <p style="font-size: 18px; line-height: 1.8; margin-bottom: 24px;">
+                    Before moving on, write down 3 complementary products or services your customers might need but you don't currently offer.
+                </p>
+                <div style="background: rgba(59, 130, 246, 0.1); padding: 24px; border-radius: 12px;">
+                    <p style="font-size: 16px; line-height: 1.7; font-style: italic;">
+                        Remember: The best affiliate partnerships feel like helpful recommendations, not pushy sales.
+                        Your customers should thank you for introducing them to these solutions.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Quiz -->
+        <div class="slide" data-slide="10">
+            <h2>Knowledge Check</h2>
+            <p class="subtitle">Test your understanding of the Affiliate LTV Hack</p>
+
+            <div class="dark-block">
+                <h3 style="margin-bottom: 32px;">Which of these is the BEST example of a complementary affiliate partnership?</h3>
+
+                <div class="quiz-option" data-correct="false">
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">A) A coffee shop partnering with another coffee brand</strong>
+                    <p style="color: #666; font-size: 14px;">This is a direct competitor—it would cannibalize your own sales.</p>
+                </div>
+
+                <div class="quiz-option" data-correct="true">
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">B) A yoga studio partnering with a premium yoga mat brand</strong>
+                    <p style="color: #666; font-size: 14px;">✅ Complementary! Students need mats, but the studio doesn't sell them. Perfect fit.</p>
+                </div>
+
+                <div class="quiz-option" data-correct="false">
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">C) A tech company partnering with a random fashion brand</strong>
+                    <p style="color: #666; font-size: 14px;">Not relevant—tech customers aren't necessarily interested in fashion. Poor targeting.</p>
+                </div>
+
+                <div class="quiz-option" data-correct="false">
+                    <strong style="font-size: 18px; display: block; margin-bottom: 8px;">D) A high-end brand partnering with a low-quality discount service</strong>
+                    <p style="color: #666; font-size: 14px;">Brand mismatch—this could damage your reputation and customer trust.</p>
+                </div>
+
+                <div id="quizFeedback" style="margin-top: 32px; padding: 24px; border-radius: 12px; display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Completion -->
+        <div class="slide" data-slide="11">
+            <div style="text-align: center;">
+                <div style="font-size: 80px; margin-bottom: 24px;">🎉</div>
+                <h1>Lesson Complete!</h1>
+                <p class="subtitle">You've mastered the Affiliate LTV Hack</p>
+            </div>
+
+            <div class="dark-block">
+                <h3 style="margin-bottom: 24px; text-align: center; color: #60A5FA;">What You've Learned</h3>
+                <div style="display: grid; gap: 24px; margin-bottom: 32px;">
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 24px; border-radius: 12px;">
+                        <strong style="font-size: 18px; color: #3B82F6;">✓</strong> How to increase LTV without creating new products
+                    </div>
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 24px; border-radius: 12px;">
+                        <strong style="font-size: 18px; color: #3B82F6;">✓</strong> How to identify complementary (non-competing) partnership opportunities
+                    </div>
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 24px; border-radius: 12px;">
+                        <strong style="font-size: 18px; color: #3B82F6;">✓</strong> The win-win-win structure of successful affiliate partnerships
+                    </div>
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 24px; border-radius: 12px;">
+                        <strong style="font-size: 18px; color: #3B82F6;">✓</strong> Step-by-step implementation process for affiliate programs
+                    </div>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); padding: 32px; border-radius: 12px; text-align: center; border: 2px solid #10B981;">
+                    <p style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #10B981;">🚀 Next Steps</p>
+                    <p style="font-size: 16px; line-height: 1.8;">
+                        Make a list of 5-10 complementary brands in your industry. Research their affiliate programs.
+                        Reach out to your top 3 choices this week and propose a partnership. Start small, prove the concept, then scale.
+                    </p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 48px;">
+                <button class="btn btn-primary" onclick="window.location.href='/learn'" style="font-size: 18px; padding: 20px 48px;">
+                    Back to Learning Center
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-buttons">
+        <button class="btn btn-secondary" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span id="slideCounter" style="color: #666; font-size: 14px; font-weight: 600;"></span>
+        </div>
+        <button class="btn btn-primary" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = document.querySelectorAll('.slide').length;
+
+        function updateSlide() {
+            // Send slide update to parent for admin issue tracking
+            window.parent.postMessage({
+                type: 'LESSON_SLIDE_UPDATE',
+                slideIndex: currentSlide - 1, // Convert 1-based to 0-based
+                slideType: 'content',
+                lessonSlug: window.location.pathname.split('/').filter(Boolean).pop()?.replace('/lesson.html', '') || 'unknown'
+            }, '*');
+
+            // Hide all slides
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+
+            // Show current slide
+            const current = document.querySelector(`[data-slide="${currentSlide}"]`);
+            if (current) {
+                current.classList.add('active');
+
+                // Trigger animations
+                setTimeout(() => {
+                    current.querySelectorAll('.animate-in').forEach(el => {
+                        el.style.opacity = '1';
+                    });
+                }, 100);
+            }
+
+            // Update progress bar
+            const progress = (currentSlide / totalSlides) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            // Update counter
+            document.getElementById('slideCounter').textContent = `${currentSlide} / ${totalSlides}`;
+
+            // Update buttons
+            document.getElementById('prevBtn').disabled = currentSlide === 1;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 1 && newSlide <= totalSlides) {
+                currentSlide = newSlide;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Quiz functionality
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const isCorrect = this.getAttribute('data-correct') === 'true';
+                const feedback = document.getElementById('quizFeedback');
+
+                // Remove previous states
+                document.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('correct', 'incorrect');
+                });
+
+                // Add state
+                this.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+                // Show feedback
+                feedback.style.display = 'block';
+                if (isCorrect) {
+                    feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                    feedback.style.borderLeft = '4px solid #10B981';
+                    feedback.innerHTML = `
+                        <strong style="color: #10B981; font-size: 20px;">🎉 Correct!</strong>
+                        <p style="margin-top: 12px; font-size: 16px; line-height: 1.7;">
+                            A yoga studio partnering with a premium yoga mat brand is the perfect example of a complementary partnership.
+                            The studio adds value for students (they need mats), the mat brand gets qualified customers,
+                            and the studio earns commission—all without inventory or fulfillment.
+                        </p>
+                    `;
+                } else {
+                    feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                    feedback.style.borderLeft = '4px solid #EF4444';
+                    feedback.innerHTML = `
+                        <strong style="color: #EF4444; font-size: 20px;">Not quite.</strong>
+                        <p style="margin-top: 12px; font-size: 16px; line-height: 1.7;">
+                            Look for partnerships that are <strong>complementary, not competing</strong>.
+                            The yoga studio and mat brand example is correct because students need mats but the studio doesn't sell them.
+                        </p>
+                    `;
+                }
+            });
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>

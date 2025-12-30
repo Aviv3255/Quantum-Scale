@@ -148,6 +148,81 @@
       nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Continue learning psychological design strategies.' }
     };
 
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
+
     // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
@@ -177,7 +252,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why owned audiences compound while rented audiences drain', 'The psychology of platform dependency and algorithm anxiety', 'How to build direct relationships that survive any platform change'] },
-      { type: 'hook', headline: 'One algorithm change can kill your entire business overnight.', subtext: 'You wake up. Check your phone. Your ad account is restricted. No explanation. No appeal. Just gone. Or Instagram changes the algorithm. Your reach drops 80% overnight. Years of audience building. Vanished. This is the terror of rented audiences. You built your business on someone else\'s land. They change the rules. You lose everything. Email lists are different. They are yours. No platform can take them. No algorithm can hide them. When you own the relationship, you own your business.' },
+      { type: 'hook', headline: 'One algorithm change can kill your entire business overnight.', subtext: 'You wake up. Check your phone. Your ad account is restricted. No explanation. No appeal. Just gone. Or Instagram changes the algorithm. Your reach drops 80% overnight. Years of audience building. Vanished. This is the terror of rented audiences. You built your business on someone else\'s land. They change the rules. You lose everything. Email lists are different. They are yours. No platform can take them. No algorithm can hide them. When you own the relationship, you own your business.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Klaviyo-primary-logo-charcoal.svg.png', brandName: 'Klaviyo'},
       { type: 'content', title: 'The Psychological Truth About Platforms', body: 'Every minute you spend building on someone else\'s platform, you are renting. Renting attention. Renting reach. Renting the ability to communicate with your own customers. And the landlord can change the rules anytime. Raise the rent (increase ad costs). Change the locks (restrict your account). Demolish the building (shut down the platform). You have zero control. This creates constant anxiety. "Will my ads still work tomorrow?" "What if they ban my account?" "What happens when reach drops again?" The psychology of rented audiences is fear-based. You are always one decision away from losing everything.' },
       { type: 'platform-risk', title: 'Rented vs Owned Audiences', rented: { title: 'Rented (Platform-Dependent)', items: ['Algorithm decides who sees your content', 'Can be banned or restricted anytime', 'Reach decreases as platform monetizes', 'You pay more every year for same results', 'Zero guarantee of access tomorrow'], insight: 'You are building on rented land. The platform owns the relationship.' }, owned: { title: 'Owned (Direct Relationship)', items: ['You control who sees your message', 'No one can ban or restrict you', 'Reach stays consistent over time', 'Cost per email decreases as list grows', 'Guaranteed access to your audience'], insight: 'You own the relationship. No platform can take it away.' }},
       { type: 'content', title: 'Why Email Feels Like Insurance', body: 'Here is the mental shift: Email is not just marketing. It is business insurance. Insurance against algorithm changes. Insurance against ad account bans. Insurance against platform collapses. When you have 50,000 email subscribers, you have direct access to 50,000 people who said yes to hearing from you. No Facebook needed. No Instagram required. No Google approval necessary. You write. You send. They receive. That is a direct relationship. And direct relationships are the only real business asset you control.' },
@@ -200,9 +275,9 @@
         { title: 'Platform Independence', description: 'If Instagram dies tomorrow, your business survives. You still have direct access to your audience.' },
         { title: 'Predictable Revenue', description: 'You can forecast revenue because you control reach. Send email, get sales. Reliable and repeatable.' }
       ]},
-      { type: 'tool', title: 'Build Your Owned Audience', toolName: 'Klaviyo', toolUrl: 'https://www.klaviyo.com/', body: 'Klaviyo is built for eCommerce email marketing. Automated flows for welcome sequences, abandoned carts, post-purchase follow-ups. Segmentation to send the right message to the right people. Analytics to see exactly what drives revenue. Your list becomes a revenue engine, not just a broadcast tool.', questions: ['Are you 100% dependent on paid ads or social platforms?', 'Do you have a way to reach customers if your ad account gets banned?', 'Are you building an asset that compounds, or just renting attention?'], insight: 'Every email subscriber is a direct relationship no platform can take away. Build the list, own the business.' },
+      { type: 'implementation', title: 'Building Your Platform-Proof Email System', concept: 'The psychology is clear: owned audiences compound because each subscriber represents a permanent, direct relationship. No algorithm decides if they see your message. No platform can revoke access. Here is how to build that insurance policy.', steps: ['Set up email capture on every touchpoint - product pages, checkout, popups, content downloads. Every visitor is a potential owned relationship.', 'Create a welcome sequence that delivers immediate value. First impressions determine if subscribers become engaged readers or ghost followers.', 'Build automated flows for key moments: abandoned carts, post-purchase, win-back campaigns. Let the system nurture relationships 24/7.', 'Segment your list by behavior and purchase history. The right message to the right person at the right time is the difference between spam and revenue.'], insight: 'Brands with mature email programs generate 30-40% of revenue from owned channels. That is revenue no platform can take away.', toolName: 'Klaviyo', toolUrl: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' },
       { type: 'quiz', question: 'Why do owned audiences (email lists) compound while rented audiences (ads, social media) drain?', options: ['Email is free and ads cost money', 'Owned audiences grow in value over time while rented audiences reset every campaign', 'Email subscribers buy more than social media followers', 'Platforms intentionally sabotage businesses'], correctIndex: 1, feedback: { correct: 'Exactly. Owned audiences compound because every new subscriber adds permanent reach. Month 1 you email 1,000 people. Month 12 you email 20,000. Same effort, 20x reach. Rented audiences reset every time. You pay for 1,000 ad clicks today. Tomorrow? Pay again. You own nothing. Rented attention drains. Owned attention compounds. That is the fundamental difference.', incorrect: 'Not quite. The answer is that owned audiences grow in value over time while rented audiences reset every campaign. When you build an email list, each subscriber is permanent reach. You can email them monthly for years. Rented audiences (ads, social) reset constantly. You pay for reach, it disappears, you pay again. No compounding. Only draining. Owned audiences are assets. Rented audiences are expenses.' }},
-      { type: 'completion', sources: [{ name: 'Start Building Your Email List', url: 'https://www.klaviyo.com/' }] }
+      { type: 'completion', sources: [{ name: 'Klaviyo (Email Marketing)', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }] }
     ];
 
     const Icons = {
@@ -214,6 +289,7 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Mail: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -245,19 +321,50 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          </motion.div>
+        )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
+            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
@@ -297,33 +404,34 @@
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
+    const ImplementationSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.Mail /> Implementation
+          </span>
           <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-4">
-          <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-          <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-            <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
-            <ul className="space-y-1.5">
-              {data.questions.map((q, i) => (
-                <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                  <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                  {q}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] w-full md:w-auto" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-            <span>Learn More About {data.toolName}</span>
-            <Icons.ExternalLink />
-          </a>
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
+        <div className="space-y-2.5 mb-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.toolUrl && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
+              <span>Tool: {data.toolName}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        )}
       </div>
     );
 
@@ -409,6 +517,16 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
+
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
@@ -444,7 +562,7 @@
           case 'platform-risk': return <PlatformRiskSlide data={slide} />;
           case 'stats-comparison': return <StatsComparisonSlide data={slide} />;
           case 'pro-tip': return <ProTipSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -460,6 +578,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

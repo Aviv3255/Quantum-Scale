@@ -12,12 +12,12 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #64748b; --accent-dark: #475569; --accent-light: #94a3b8; --accent-rgb: 100, 116, 139; }
+    :root { --accent: #D97706; --accent-dark: #B45309; --accent-light: #F59E0B; --accent-rgb: 217, 119, 6; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -36,89 +36,177 @@
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.floor(count)}{suffix}</span>;
+    };
+
     const LESSON_CONFIG = {
       id: 'copywriters-codex',
       title: "The Copywriter's Codex",
       description: 'A synthesized playbook from the masters. Five parts. One path to mastery.',
-      accentColor: '#64748b',
+      accentColor: '#D97706',
       duration: '12 min',
-      nextLesson: { id: 'customer-voice-mining', title: 'Voice of Customer Mining', teaser: 'Learn how to mine customer insights that make copy write itself.' }
+      nextLesson: { id: 'cost-of-standing-still', title: 'Cost of Standing Still', teaser: 'Turn inaction into your most powerful selling point.' }
     };
 
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
       { type: 'welcome', learningGoals: ['The First Commandment: It\'s not about you', 'The Three Canons every sentence must pass', 'The Strategic Blueprint: turn objections into copy', 'Elite psychological techniques from the masters', 'How to build your portfolio through practice'] },
-      { type: 'hook', headline: 'Five copywriting masters. One synthesized playbook. Zero fluff.', subtext: 'This isn\'t theory. It\'s the distilled wisdom of legends like Eugene Schwartz, Gary Halbert, Ted Nicholas, Alex Hormozi, and Jim Edwards. Everything that actually moves the needle, condensed into five actionable parts you can use immediately.' },
-      { type: 'content', title: 'Part 1: The First Commandment', body: 'The single biggest mistake copywriters make: they forget the reader. Your prospect is asking one question the entire time: "What\'s In It For Me?" You have 4-6 lines to answer this. Fail, and they\'re gone. Every word must obsess over the reader, not your product.' },
-      { type: 'cards', title: 'The WIIFM Test', items: [
-        { title: 'Line 1-2', description: 'Hook them with their pain or desire. Make it about THEM.' },
-        { title: 'Line 3-4', description: 'Promise a transformation. Show the gap between Point A (pain) and Point B (desire).' },
-        { title: 'Line 5-6', description: 'Give them a reason to keep reading. Build curiosity or urgency.' }
+      { type: 'hook', headline: 'Five copywriting masters. One synthesized playbook. Zero fluff.', subtext: 'This isn\'t theory. It\'s the distilled wisdom of legends like Eugene Schwartz, Gary Halbert, Ted Nicholas, Alex Hormozi, and Jim Edwards. Everything that actually moves the needle, condensed into five actionable parts.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'right' },
+      { type: 'stat-countdown', title: 'The Cost of Bad Copy', stats: [
+        { value: 4, suffix: ' sec', label: 'Attention Window', subtext: 'Before they\'re gone' },
+        { value: 97, suffix: '%', label: 'Skip Past', subtext: 'Generic headlines' },
+        { value: 1, suffix: '', label: 'Chance', subtext: 'To get it right' }
+      ]},
+      { type: 'codex-path', title: 'The Five Parts of Mastery', parts: [
+        { number: 1, name: 'The First Commandment', desc: 'WIIFM - What\'s In It For Me?', icon: '👤' },
+        { number: 2, name: 'The Three Canons', desc: 'Visual, Falsifiable, Unique', icon: '📜' },
+        { number: 3, name: 'The Strategic Blueprint', desc: 'Objections become structure', icon: '🏗️' },
+        { number: 4, name: 'Elite Techniques', desc: 'Master psychological triggers', icon: '⚡' },
+        { number: 5, name: 'Build Your Career', desc: 'Practice before clients', icon: '🚀' }
+      ]},
+      { type: 'part-intro', partNumber: 1, title: 'Part 1: The First Commandment', subtitle: 'WIIFM - What\'s In It For Me?', content: 'The single biggest mistake copywriters make: they forget the reader. Your prospect is asking one question the entire time: "What\'s In It For Me?" You have 4-6 lines to answer this. Fail, and they\'re gone.' },
+      { type: 'wiifm-test', title: 'The WIIFM Test', lines: [
+        { range: 'Lines 1-2', action: 'Hook them with their pain or desire', key: 'Make it about THEM' },
+        { range: 'Lines 3-4', action: 'Promise a transformation', key: 'Show Point A → Point B' },
+        { range: 'Lines 5-6', action: 'Give them a reason to keep reading', key: 'Build curiosity or urgency' }
       ]},
       { type: 'example', scenario: 'Testing WIIFM', before: { label: 'Fails WIIFM (Product-focused)', text: '"Our platform uses AI and advanced algorithms to optimize your workflow with cutting-edge technology."' }, after: { label: 'Passes WIIFM (Reader-focused)', text: '"You\'re working 60-hour weeks and still behind. What if you could reclaim 20 hours without hiring anyone?"' }, insight: 'One talks about the product. The other talks about the reader\'s life.' },
-      { type: 'content', title: 'Structural Tension', body: 'Great marketing doesn\'t push. It pulls. You create tension between where they are (Point A: pain) and where they want to be (Point B: desire). That gap is magnetic. Your copy becomes the bridge. The wider and clearer the gap, the stronger the pull.' },
-      { type: 'content', title: 'Part 2: The Three Canons', body: 'Every sentence you write must pass this three-part test. If it fails even one, delete it. This is how pros separate great copy from generic noise. The Three Canons: Can I visualize it? Can I falsify it? Can nobody else say it?' },
-      { type: 'cards', title: 'The Three Tests', items: [
-        { title: 'Canon 1: Visual', description: 'Can I see it in my mind? Concrete beats abstract. "Red button" beats "innovative design."' },
-        { title: 'Canon 2: Falsifiable', description: 'Can it be proven or disproven? "Increases sales 37%" beats "boosts performance."' },
-        { title: 'Canon 3: Unique', description: 'Can only YOU say this? Specificity is the antidote to commodification.' }
+      { type: 'part-intro', partNumber: 2, title: 'Part 2: The Three Canons', subtitle: 'Every sentence must pass this test', content: 'If a sentence fails even one canon, delete it. This is how pros separate great copy from generic noise.' },
+      { type: 'three-canons', title: 'The Three Canons', canons: [
+        { name: 'VISUAL', question: 'Can I see it in my mind?', example: '"Red button" beats "innovative design"', icon: '👁️', color: '#F59E0B' },
+        { name: 'FALSIFIABLE', question: 'Can it be proven or disproven?', example: '"Increases sales 37%" beats "boosts performance"', icon: '✓', color: '#10B981' },
+        { name: 'UNIQUE', question: 'Can only YOU say this?', example: 'Specificity is the antidote to commodification', icon: '⭐', color: '#8B5CF6' }
       ]},
       { type: 'example', scenario: 'Three Canons in Action', before: { label: 'Fails All Three', text: '"Our revolutionary platform delivers unparalleled results through innovative solutions."' }, after: { label: 'Passes All Three', text: '"Worn by supermodels in London and dads in Ohio." (New Balance ad)' }, insight: 'You can picture it. You can verify it. Nobody else can say it. That\'s the standard.' },
-      { type: 'content', title: 'Part 3: The Strategic Blueprint', body: 'Here\'s the secret: your customer\'s objections ARE your copy structure. Most copywriters ignore objections and hope they go away. Pros weaponize them. List every reason someone won\'t buy. Then turn each objection into a subheading that reframes it as a benefit.' },
-      { type: 'cards', title: 'The 5-Step Copy-Boarding System', items: [
-        { title: 'Step 1: Big Idea', description: 'What\'s the one dominant thought that demands attention?' },
-        { title: 'Step 2: Objection Audit', description: 'List every reason they won\'t buy. Be brutal and honest.' },
-        { title: 'Step 3: Organize', description: 'Group objections by theme. Prioritize by importance.' },
-        { title: 'Step 4: Reframe', description: 'Turn each objection into a subheading that answers it.' },
-        { title: 'Step 5: Fill with Proof', description: 'Use CPPPB: Claims, Proof, Picture, Push, Bridge to next section.' }
+      { type: 'part-intro', partNumber: 3, title: 'Part 3: The Strategic Blueprint', subtitle: 'Your objections ARE your structure', content: 'Most copywriters ignore objections and hope they go away. Pros weaponize them. List every reason someone won\'t buy. Then turn each objection into a subheading that reframes it as a benefit.' },
+      { type: 'blueprint-steps', title: 'The 5-Step Copy-Boarding System', steps: [
+        { step: 1, title: 'Big Idea', desc: 'What\'s the one dominant thought that demands attention?' },
+        { step: 2, title: 'Objection Audit', desc: 'List every reason they won\'t buy. Be brutal and honest.' },
+        { step: 3, title: 'Organize', desc: 'Group objections by theme. Prioritize by importance.' },
+        { step: 4, title: 'Reframe', desc: 'Turn each objection into a subheading that answers it.' },
+        { step: 5, title: 'Fill with Proof', desc: 'Use CPPPB: Claims, Proof, Picture, Push, Bridge.' }
       ]},
-      { type: 'example', scenario: 'Objection to Headline', before: { label: 'Customer Objection', text: '"That sounds like too much work."' }, after: { label: 'Reframed as Subheading', text: '"Set Up in 60 Seconds (Seriously)" or "Zero Learning Curve, Maximum Results"' }, insight: 'Their doubt becomes your headline. Answer it before they even ask.' },
-      { type: 'content', title: 'Part 4: Elite Techniques', body: 'Three psychological triggers from the masters. Use these sparingly but strategically. Each one is a force multiplier when deployed correctly. Learn the structure, practice the pattern, deploy when it fits naturally.' },
-      { type: 'cards', title: 'The Master Techniques', items: [
-        { title: 'Damaging Admission (Hormozi)', description: 'Structure: [Negative], but [Positive]. Example: "Yes, our software is ugly... but it\'ll make you $10K/month." Why it works: The word "but" amplifies. Owning negatives makes positives more believable.' },
-        { title: 'Hidden Benefit (Nicholas)', description: 'Sell the benefit OF the benefit. Don\'t sell "how to form a corporation." Sell "the ultimate tax shelter." Find the god-like power they truly desire.' },
-        { title: 'Stealth Close (Edwards)', description: 'Structure: "By the way..." Example: "By the way, it\'s not too late to join the workshop..." Why it works: Low-pressure. Feels like a helpful aside, not a hard sell.' }
+      { type: 'example', scenario: 'Objection to Headline', before: { label: 'Customer Objection', text: '"That sounds like too much work."' }, after: { label: 'Reframed as Subheading', text: '"Set Up in 60 Seconds (Seriously)" or "Zero Learning Curve, Maximum Results"' }, insight: 'Their doubt becomes your headline. Answer it before they even ask.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_having_a_lightbulb_moment_pure_100_white_backg_bd88fbc3-b501-446f-a37f-09b80e6320fc_3.mp4', characterPosition: 'left' },
+      { type: 'part-intro', partNumber: 4, title: 'Part 4: Elite Techniques', subtitle: 'Psychological triggers from the masters', content: 'Three techniques. Use sparingly but strategically. Each one is a force multiplier when deployed correctly.' },
+      { type: 'master-techniques', title: 'The Master Techniques', techniques: [
+        { master: 'Hormozi', name: 'Damaging Admission', structure: '[Negative], but [Positive]', example: '"Yes, our software is ugly... but it\'ll make you $10K/month."', why: 'The word "but" amplifies. Owning negatives makes positives more believable.' },
+        { master: 'Nicholas', name: 'Hidden Benefit', structure: 'Benefit OF the benefit', example: 'Don\'t sell "how to form a corporation." Sell "the ultimate tax shelter."', why: 'Find the god-like power they truly desire.' },
+        { master: 'Edwards', name: 'Stealth Close', structure: '"By the way..."', example: '"By the way, it\'s not too late to join the workshop..."', why: 'Low-pressure. Feels like a helpful aside, not a hard sell.' }
       ]},
-      { type: 'content', title: 'Part 5: Build Your Career', body: 'Here\'s the truth nobody tells beginners: your portfolio is built through practice, not clients. Write before you have work. Use prompts. Rewrite famous ads. Copy winning sales pages by hand. The pros practiced relentlessly before landing their first gig. You should too.' },
-      { type: 'cards', title: '30-Day Portfolio Builder', items: [
-        { title: 'Week 1: Headlines', description: 'Write 10 headlines daily. Different products, different angles. Study winning examples.' },
-        { title: 'Week 2: Bullets', description: 'Write 20 benefit bullets daily. Practice turning features into emotional outcomes.' },
-        { title: 'Week 3: Long-form', description: 'Write one sales page per day. Different niches. Use the Blueprint system.' },
-        { title: 'Week 4: Rewrite Masters', description: 'Hand-copy classic ads. Then rewrite them in your voice. Compare and learn.' }
+      { type: 'part-intro', partNumber: 5, title: 'Part 5: Build Your Career', subtitle: 'Practice before clients', content: 'Your portfolio is built through practice, not clients. Write before you have work. The pros practiced relentlessly before landing their first gig. You should too.' },
+      { type: 'portfolio-builder', title: '30-Day Portfolio Builder', weeks: [
+        { week: 1, focus: 'Headlines', task: 'Write 10 headlines daily. Different products, different angles.', icon: '📝' },
+        { week: 2, focus: 'Bullets', task: 'Write 20 benefit bullets daily. Features → emotional outcomes.', icon: '🎯' },
+        { week: 3, focus: 'Long-form', task: 'Write one sales page per day. Different niches.', icon: '📄' },
+        { week: 4, focus: 'Rewrite Masters', task: 'Hand-copy classic ads. Then rewrite in your voice.', icon: '✍️' }
       ]},
-      { type: 'content', title: 'The Holy Shift', body: 'Write copy that can\'t be copied. That\'s the standard. When you combine these five parts obsess over the reader, craft sentences that pass the Three Canons, build arguments from objections, deploy elite triggers, and practice relentlessly you create something unique. Your voice. Your style. Your mastery.' },
-      { type: 'visual', title: 'The Complete Path', visualType: 'stats', data: [
-        { value: '1', label: 'Commandment', subtext: 'It\'s not about you' },
-        { value: '3', label: 'Canons', subtext: 'Every sentence tested' },
-        { value: '5', label: 'Steps', subtext: 'Objections to structure' }
+      { type: 'bigStatement', pretext: 'The ultimate goal:', statement: 'Write copy that can\'t be copied.', posttext: 'When you combine all five parts you create something unique. Your voice. Your style. Your mastery.' },
+      { type: 'codex-summary', title: 'The Complete Codex', items: [
+        { number: '1', label: 'Commandment', value: 'WIIFM' },
+        { number: '3', label: 'Canons', value: 'Visual • Falsifiable • Unique' },
+        { number: '5', label: 'Steps', value: 'Objections → Structure' }
       ]},
-      { type: 'quiz', question: 'According to the Copywriter\'s Codex, what\'s the first question your reader is always asking?', options: ['How much does this cost?', 'What\'s In It For Me?', 'Is this product high quality?', 'What are other people saying?'], correctIndex: 1, feedback: { correct: 'Exactly! WIIFM is the lens through which every prospect reads your copy. Answer it in the first 4-6 lines or lose them forever. This is the First Commandment: obsess over the reader, not your product.', incorrect: 'Not quite. The reader\'s dominant question is always "What\'s In It For Me?" They don\'t care about your features, price, or social proof until you answer WIIFM first. Nail that in the first 4-6 lines or they\'re gone.' }},
+      { type: 'quiz', question: 'According to the Copywriter\'s Codex, what\'s the first question your reader is always asking?', options: ['How much does this cost?', 'What\'s In It For Me?', 'Is this product high quality?', 'What are other people saying?'], correctIndex: 1, feedback: { correct: 'Exactly! WIIFM is the lens through which every prospect reads your copy. Answer it in the first 4-6 lines or lose them forever.', incorrect: 'Not quite. The reader\'s dominant question is always "What\'s In It For Me?" They don\'t care about features, price, or social proof until you answer WIIFM first.' }},
       { type: 'completion' }
     ];
 
@@ -129,6 +217,7 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Quote: () => <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" opacity="0.15"><path d="M11 7H7a4 4 0 0 0-4 4v7h7v-7H6a2 2 0 0 1 2-2h3V7zm10 0h-4a4 4 0 0 0-4 4v7h7v-7h-4a2 2 0 0 1 2-2h3V7z"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -139,7 +228,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
@@ -160,75 +249,260 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Zap /> The Hook
+            </span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+    const StatCountdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 md:mb-8">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.Zap /> The Problem
+          </span>
+          <h2 className="slide-title text-xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }}
+              className="rounded-2xl p-6 text-center relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(217, 119, 6, 0.15), 0 8px 32px rgba(0,0,0,0.4)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 30px rgba(217, 119, 6, 0.5)' }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+              </div>
+              <p className="text-white font-semibold text-sm md:text-base mb-1">{stat.label}</p>
+              <p className="text-neutral-400 text-xs">{stat.subtext}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const CodexPathSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-0">
+          {data.parts.map((part, i) => (
+            <React.Fragment key={i}>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="flex flex-col items-center text-center w-full md:w-auto">
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center text-2xl mb-2"
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)', boxShadow: '0 0 20px rgba(217, 119, 6, 0.2)' }}>
+                  {part.icon}
+                </div>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white mb-1" style={{ background: 'var(--accent)' }}>{part.number}</div>
+                <h4 className="text-black font-bold text-xs md:text-sm mb-1">{part.name}</h4>
+                <p className="text-neutral-500 text-[10px] max-w-[120px]">{part.desc}</p>
+              </motion.div>
+              {i < data.parts.length - 1 && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  className="hidden md:flex items-center justify-center px-2">
+                  <div className="w-8 h-0.5" style={{ background: 'linear-gradient(90deg, var(--accent), transparent)' }} />
+                </motion.div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    );
+
+    const PartIntroSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto text-center slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+          className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-4"
+          style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(217, 119, 6, 0.4)' }}>
+          {data.partNumber}
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-2xl md:text-4xl text-black mb-2">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl font-medium mb-4" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.content}</motion.p>
+      </div>
+    );
+
+    const WIIFMTestSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="space-y-3">
+          {data.lines.map((line, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl p-4 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(217, 119, 6, 0.3)' }}>
+              <div className="flex items-start gap-4">
+                <div className="px-3 py-1 rounded-lg text-sm font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>{line.range}</div>
+                <div>
+                  <p className="text-white font-medium text-sm mb-1">{line.action}</p>
+                  <p className="text-xs" style={{ color: 'var(--accent)' }}>{line.key}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const ThreeCanonsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.canons.map((canon, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl p-5 text-center relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `2px solid ${canon.color}40`, boxShadow: `0 0 25px ${canon.color}20` }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${canon.color}, transparent)` }} />
+              <span className="text-3xl block mb-3">{canon.icon}</span>
+              <h4 className="font-bold text-white text-lg mb-2">{canon.name}</h4>
+              <p className="text-neutral-300 text-sm mb-3">{canon.question}</p>
+              <p className="text-xs italic" style={{ color: canon.color }}>{canon.example}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const BlueprintStepsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="space-y-2">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+              className="rounded-xl p-4 flex items-start gap-4"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(217, 119, 6, 0.2)' }}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>{step.step}</div>
+              <div>
+                <h4 className="text-white font-bold text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-400 text-xs">{step.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const MasterTechniquesSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="space-y-3">
+          {data.techniques.map((tech, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl p-4 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(217, 119, 6, 0.3)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-start gap-3">
+                <div className="px-2 py-1 rounded text-xs font-bold text-black flex-shrink-0" style={{ background: 'var(--accent)' }}>{tech.master}</div>
+                <div className="flex-1">
+                  <h4 className="text-white font-bold text-sm mb-1">{tech.name}</h4>
+                  <p className="text-xs mb-2" style={{ color: 'var(--accent)' }}>Structure: {tech.structure}</p>
+                  <p className="text-neutral-300 text-xs italic mb-2">"{tech.example}"</p>
+                  <p className="text-neutral-500 text-xs">{tech.why}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const PortfolioBuilderSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-3">
+          {data.weeks.map((week, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+              className="rounded-xl p-4 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(217, 119, 6, 0.2)' }}>
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">{week.icon}</span>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'var(--accent)', color: 'black' }}>Week {week.week}</span>
+                    <span className="text-white font-bold text-sm">{week.focus}</span>
+                  </div>
+                  <p className="text-neutral-400 text-xs">{week.task}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const BigStatementSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm md:text-base text-neutral-500 mb-4 uppercase tracking-wider">{data.pretext}</motion.p>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="relative mb-6">
+          <div className="absolute -left-4 -top-2"><Icons.Quote /></div>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black text-center leading-tight px-6">{data.statement}</h2>
+          <div className="absolute -right-4 -bottom-2 rotate-180"><Icons.Quote /></div>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg md:text-xl text-neutral-700 text-center font-medium max-w-2xl">{data.posttext}</motion.p>
+      </div>
+    );
+
+    const CodexSummarySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.items.map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl p-6 text-center"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(217, 119, 6, 0.15), 0 8px 32px rgba(0,0,0,0.4)' }}>
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(217, 119, 6, 0.4)' }}>{item.number}</div>
+              <div className="text-sm font-semibold text-white mb-1">{item.label}</div>
+              <div className="text-xs text-neutral-400">{item.value}</div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     );
 
     const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+              <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
+              <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
             </motion.div>
-          ))}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+              <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
+              <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+            </motion.div>
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+            <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+          </motion.div>
         </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '40%', maxHeight: '300px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
@@ -279,7 +553,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now have the complete playbook: obsess over the reader, craft sentences that pass the Three Canons, build arguments from objections, deploy elite triggers, and practice relentlessly. Write copy that can't be copied.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now have the complete playbook: obsess over the reader, craft sentences that pass the Three Canons, build arguments from objections, deploy elite triggers, and practice relentlessly.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -300,6 +574,10 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      useEffect(() => {
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
+      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -330,10 +608,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
+          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
+          case 'codex-path': return <CodexPathSlide data={slide} />;
+          case 'part-intro': return <PartIntroSlide data={slide} />;
+          case 'wiifm-test': return <WIIFMTestSlide data={slide} />;
+          case 'three-canons': return <ThreeCanonsSlide data={slide} />;
+          case 'blueprint-steps': return <BlueprintStepsSlide data={slide} />;
+          case 'master-techniques': return <MasterTechniquesSlide data={slide} />;
+          case 'portfolio-builder': return <PortfolioBuilderSlide data={slide} />;
+          case 'bigStatement': return <BigStatementSlide data={slide} />;
+          case 'codex-summary': return <CodexSummarySlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -349,6 +634,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

@@ -36,14 +36,140 @@
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.floor(count)}{suffix}</span>;
+    };
+
+    // Animated Pyramid Layer
+    const AnimatedPyramidLayer = ({ layer, index, total, isActive, onClick }) => {
+      const widthPercent = 30 + (index * 25);
+      const colors = {
+        'apex': { bg: 'linear-gradient(135deg, #6366f1, #4f46e5)', glow: 'rgba(99, 102, 241, 0.4)' },
+        'core': { bg: 'linear-gradient(135deg, #818cf8, #6366f1)', glow: 'rgba(129, 140, 248, 0.3)' },
+        'foundation': { bg: 'linear-gradient(135deg, #a5b4fc, #818cf8)', glow: 'rgba(165, 180, 252, 0.3)' }
+      };
+      const layerColor = colors[layer.type] || colors.foundation;
+
+      return (
+        <motion.div
+          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.2 + (total - index - 1) * 0.15, duration: 0.5 }}
+          onClick={onClick}
+          className="cursor-pointer transition-all duration-300"
+          style={{ width: `${widthPercent}%` }}
+          whileHover={{ scale: 1.02 }}
+        >
+          <div
+            className="py-4 md:py-5 px-4 md:px-6 text-center text-white rounded-xl transition-all duration-300"
+            style={{
+              background: layerColor.bg,
+              boxShadow: isActive ? `0 0 30px ${layerColor.glow}, 0 8px 32px rgba(0,0,0,0.3)` : '0 4px 20px rgba(0,0,0,0.2)',
+              border: isActive ? '2px solid rgba(255,255,255,0.3)' : '2px solid transparent'
+            }}
+          >
+            <h4 className="font-bold text-sm md:text-lg mb-1">{layer.name}</h4>
+            <p className="text-white/70 text-[10px] md:text-xs hidden md:block">{layer.shortDesc}</p>
+          </div>
+        </motion.div>
+      );
+    };
+
     const LESSON_CONFIG = {
       id: 'conviction-architecture',
       title: 'Conviction Architecture',
       description: 'The 3-layer pyramid that separates amateur marketers from masters of influence. Build messaging that converts consistently.',
       accentColor: '#6366f1',
       duration: '10 min',
-      nextLesson: { id: 'marketers-delusion', title: 'Explore More Lessons', teaser: 'Continue your journey into the psychology of sales and master the art of ethical influence.' }
+      nextLesson: { id: 'copywriters-codex', title: 'Copywriter\'s Codex', teaser: 'Master the art of words that sell.' }
     };
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -51,52 +177,49 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
       { type: 'welcome', learningGoals: ['The 3-layer pyramid of conversion mastery', 'Why stories sell identities, not just products', 'How to build proof that creates fierce loyalty'] },
-      { type: 'hook', headline: 'Mastery isn\'t in the tactics. It\'s in the architecture.', subtext: 'You can learn every psychological trick in the book. Every headline formula. Every persuasion technique. But without the right architecture underneath, it all crumbles. The masters build from the foundation up—and that\'s what separates consistent converters from random luck.' },
-      { type: 'pyramid', title: 'The Psychological Architecture of Conversion', layers: [
-        { level: 3, name: 'THE MECHANICS', description: 'Engineering a decision using the Pain-Dream framework with precision.', color: '#6366f1', size: 'small' },
-        { level: 2, name: 'THE METHOD', description: 'Forging your communication into an instrument of authority and certainty to create safety.', color: '#818cf8', size: 'medium' },
-        { level: 1, name: 'THE MINDSET', description: 'A radical, external focus on the customer\'s inner world.', color: '#a5b4fc', size: 'large' }
+      { type: 'hook', headline: 'Mastery isn\'t in the tactics. It\'s in the architecture.', subtext: 'You can learn every psychological trick in the book. Every headline formula. Every persuasion technique. But without the right architecture underneath, it all crumbles. The masters build from the foundation up—and that\'s what separates consistent converters from random luck.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'right' },
+      { type: 'stat-countdown', title: 'The Cost of Missing Architecture', stats: [
+        { value: 97, suffix: '%', label: 'Marketers Fail', subtext: 'Without proper foundation' },
+        { value: 3, suffix: 'x', label: 'More Consistent', subtext: 'With architectural approach' },
+        { value: 1, prefix: '', suffix: '', label: 'Truth Matters', subtext: 'Trust is everything' }
+      ]},
+      { type: 'pyramid-visual', title: 'The Psychological Architecture of Conversion', layers: [
+        { type: 'apex', name: 'THE MECHANICS', shortDesc: 'Pain-Dream precision', fullDesc: 'Engineering a decision using the Pain-Dream framework with precision. Only NOW do tactics matter. With the foundation and core in place, you can engineer decisions using frameworks with precision.', icon: '⚙️' },
+        { type: 'core', name: 'THE METHOD', shortDesc: 'Authority & certainty', fullDesc: 'Forging your communication into an instrument of authority and certainty to create safety. Your customer\'s subconscious needs to feel safe before it can say "yes."', icon: '🎯' },
+        { type: 'foundation', name: 'THE MINDSET', shortDesc: 'Customer focus', fullDesc: 'A radical, external focus on the customer\'s inner world. Not your product. Not your features. Not your story. Their pains, dreams, language, and identity.', icon: '💭' }
       ], footer: 'When the foundation and core are strong, the mechanics work with precision and integrity.' },
-      { type: 'content', title: 'Layer 1: The Mindset (Foundation)', body: 'Everything starts here. A radical, external focus on the customer\'s inner world. Not your product. Not your features. Not your story. Their pains, their dreams, their language, their identity. Without this foundation, every tactic you build on top will eventually collapse. The Mindset is the ground truth that makes everything else work.' },
-      { type: 'content', title: 'Layer 2: The Method (Core)', body: 'With the right mindset, you forge your communication into an instrument of authority and certainty. This is where you learn to transfer conviction, project confidence, and create psychological safety. Your customer\'s subconscious needs to feel safe before it can say "yes." The Method teaches you to create that safety systematically.' },
-      { type: 'content', title: 'Layer 3: The Mechanics (Apex)', body: 'Only NOW do tactics matter. With the foundation and core in place, you can engineer decisions using frameworks like Pain-Dream-Bridge with precision. The mechanics become powerful because they\'re built on solid architecture. Without the layers below, these same tactics feel manipulative and fall flat.' },
+      { type: 'layer-deep-dive', layerIndex: 2, title: 'Layer 1: The Mindset (Foundation)', icon: '💭', color: '#a5b4fc', content: 'Everything starts here. A radical, external focus on the customer\'s inner world. Not your product. Not your features. Not your story. Their pains, their dreams, their language, their identity. Without this foundation, every tactic you build on top will eventually collapse.', keyPoint: 'The Mindset is the ground truth that makes everything else work.' },
+      { type: 'layer-deep-dive', layerIndex: 1, title: 'Layer 2: The Method (Core)', icon: '🎯', color: '#818cf8', content: 'With the right mindset, you forge your communication into an instrument of authority and certainty. This is where you learn to transfer conviction, project confidence, and create psychological safety.', keyPoint: 'Your customer\'s subconscious needs to feel safe before it can say "yes."' },
+      { type: 'layer-deep-dive', layerIndex: 0, title: 'Layer 3: The Mechanics (Apex)', icon: '⚙️', color: '#6366f1', content: 'Only NOW do tactics matter. With the foundation and core in place, you can engineer decisions using frameworks like Pain-Dream-Bridge with precision. The mechanics become powerful because they\'re built on solid architecture.', keyPoint: 'Without the layers below, these same tactics feel manipulative and fall flat.' },
       { type: 'bigStatement', pretext: 'The key insight:', statement: 'Story sells an identity, not just a product.', posttext: 'You aren\'t just selling a product. You\'re selling admission to a new identity: "I am the kind of person who has solved this problem."' },
-      { type: 'twoColumn', title: 'Good vs. Lethal Proof', leftTitle: 'Good (Reviews)', leftDescription: 'A wall of testimonials is good. "Great product, works as advertised." Five stars. Builds credibility but doesn\'t transform.', rightTitle: 'Lethal (Story)', rightDescription: 'A relatable customer success story is lethal. "I finally feel like myself again." Video testimonials showing transformation. Makes the journey feel attainable.' },
-      { type: 'cards', title: 'Engineering Proof & Identity', items: [
-        { title: 'Pain-Dream-Bridge Script', description: 'Guide customers to tell their story: "Describe your frustration before (Pain). What were you hoping for? (Dream). How did our product serve as the bridge?" Use these video snippets in your ads.' },
-        { title: 'Objection-Handling Cases', description: 'Find customers who had a common objection ("I thought it was too expensive...") and feature their story about why they were wrong. More powerful than you saying it yourself.' },
-        { title: 'Build Your "Tribe"', description: 'Create a private community for customers. This solidifies their new identity, creates community, and becomes a perpetual engine for social proof and user-generated content.' }
+      { type: 'identity-transformation', title: 'The Identity Shift', before: { label: 'Before', states: ['Frustrated', 'Uncertain', 'Stuck', 'Hoping'] }, after: { label: 'After', states: ['Confident', 'Certain', 'Free', 'Achieving'] }, insight: 'When customers identify with a brand, an attack on that brand feels like an attack on themselves. This creates fierce loyalty.' },
+      { type: 'proof-comparison', title: 'Good vs. Lethal Proof', leftTitle: 'Good (Reviews)', leftIcon: '⭐', leftItems: ['"Great product, works as advertised"', 'Five stars', 'Builds credibility', 'Doesn\'t transform'], rightTitle: 'Lethal (Story)', rightIcon: '🔥', rightItems: ['"I finally feel like myself again"', 'Video testimonials', 'Shows transformation', 'Makes journey feel attainable'] },
+      { type: 'strategy-cards', title: 'Engineering Proof & Identity', items: [
+        { icon: '🎬', title: 'Pain-Dream-Bridge Script', description: 'Guide customers to tell their story: "Describe your frustration before (Pain). What were you hoping for? (Dream). How did our product serve as the bridge?"' },
+        { icon: '🛡️', title: 'Objection-Handling Cases', description: 'Find customers who had a common objection ("I thought it was too expensive...") and feature their story about why they were wrong.' },
+        { icon: '👥', title: 'Build Your "Tribe"', description: 'Create a private community for customers. This solidifies their new identity, creates community, and becomes a perpetual engine for social proof.' }
       ]},
-      { type: 'content', title: 'The Identity Shift', body: 'As research on brands like Apple shows, when customers identify with a brand, an attack on that brand feels like an attack on themselves. This creates fierce loyalty. You\'re not just selling them a product—you\'re inviting them into a tribe. They buy once because of the product. They stay forever because of the identity.' },
-      { type: 'example', scenario: 'Customer Testimonial - Identity-Based', before: { label: 'Product-Focused (Good)', text: '"Great product! Fast shipping, nice packaging. The quality is excellent and I would recommend it to anyone looking for this type of item."' }, after: { label: 'Identity-Focused (Lethal)', text: '"I finally feel like myself again. My friends keep asking what changed. For the first time in years, I actually look forward to getting dressed in the morning. This didn\'t just change my wardrobe—it changed how I see myself."' }, insight: 'The first talks about the product. The second talks about who they BECAME. That\'s the identity shift that creates customers for life.' },
+      { type: 'example', scenario: 'Customer Testimonial - Identity-Based', before: { label: 'Product-Focused (Good)', text: '"Great product! Fast shipping, nice packaging. The quality is excellent and I would recommend it to anyone."' }, after: { label: 'Identity-Focused (Lethal)', text: '"I finally feel like myself again. My friends keep asking what changed. For the first time in years, I actually look forward to getting dressed. This didn\'t just change my wardrobe—it changed how I see myself."' }, insight: 'The first talks about the product. The second talks about who they BECAME. That\'s the identity shift that creates customers for life.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sharing_with_a_friend_two_monkeys_one_explaini_b30f53d7-8f44-4b0a-8c27-ad2e11f08a64_1.mp4', characterPosition: 'left' },
       { type: 'bigStatement', pretext: 'The ethical foundation:', statement: 'Trust, built on solving real problems, is the only sustainable advantage.', posttext: 'Manipulative tactics are built on pressure and confusion. Ethical influence is about being congruent—understanding their problems so deeply that you can guide them to a decision that genuinely improves their lives.' },
-      { type: 'visual', title: 'The Complete Architecture', visualType: 'stats', data: [
-        { value: 'MINDSET', label: 'Foundation', subtext: 'External focus on customer\'s inner world' },
-        { value: 'METHOD', label: 'Core', subtext: 'Authority, certainty, and safety' },
-        { value: 'MECHANICS', label: 'Apex', subtext: 'Pain-Dream precision tactics' }
+      { type: 'architecture-summary', title: 'The Complete Architecture', layers: [
+        { name: 'MINDSET', label: 'Foundation', description: 'External focus on customer\'s inner world', color: '#a5b4fc' },
+        { name: 'METHOD', label: 'Core', description: 'Authority, certainty, and safety', color: '#818cf8' },
+        { name: 'MECHANICS', label: 'Apex', description: 'Pain-Dream precision tactics', color: '#6366f1' }
       ]},
-      { type: 'quiz', question: 'In the Psychological Architecture of Conversion, what is "The Mindset" layer?', options: ['Advanced copywriting techniques', 'A radical focus on the customer\'s inner world', 'Pricing and positioning strategy', 'Social media marketing tactics'], correctIndex: 1, feedback: { correct: 'Exactly! The Mindset is the foundation—a radical, external focus on the customer\'s inner world. Not your product, not your features, but THEIR pains, dreams, language, and identity. Without this foundation, every tactic built on top eventually crumbles.', incorrect: 'Not quite. The Mindset is the foundation of the pyramid—a radical, external focus on the customer\'s inner world. Their pains, their dreams, their language, their identity. Without this foundation, tactics don\'t work consistently.' } },
+      { type: 'quiz', question: 'In the Psychological Architecture of Conversion, what is "The Mindset" layer?', options: ['Advanced copywriting techniques', 'A radical focus on the customer\'s inner world', 'Pricing and positioning strategy', 'Social media marketing tactics'], correctIndex: 1, feedback: { correct: 'Exactly! The Mindset is the foundation—a radical, external focus on the customer\'s inner world. Not your product, not your features, but THEIR pains, dreams, language, and identity.', incorrect: 'Not quite. The Mindset is the foundation of the pyramid—a radical, external focus on the customer\'s inner world. Their pains, their dreams, their language, their identity.' } },
       { type: 'completion', sources: [] }
     ];
 
@@ -107,9 +230,9 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
       Quote: () => <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" opacity="0.15"><path d="M11 7H7a4 4 0 0 0-4 4v7h7v-7H6a2 2 0 0 1 2-2h3V7zm10 0h-4a4 4 0 0 0-4 4v7h7v-7h-4a2 2 0 0 1 2-2h3V7z"/></svg>,
+      ArrowUpRight: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -120,7 +243,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
@@ -141,30 +264,112 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-          <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Zap /> The Hook
+            </span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
-    const PyramidSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl lg:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="flex flex-col items-center gap-2">
-          {data.layers.map((layer, i) => {
-            const width = layer.size === 'small' ? 'w-48 md:w-64' : layer.size === 'medium' ? 'w-64 md:w-80' : 'w-80 md:w-96';
-            return (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.15 }} className={`${width} py-4 px-4 text-center text-white rounded-lg`} style={{ background: layer.color }}>
-                <h4 className="font-bold text-sm md:text-base mb-1">{layer.name}</h4>
-                <p className="text-white/80 text-[10px] md:text-xs">{layer.description}</p>
-              </motion.div>
-            );
-          })}
+    const StatCountdownSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 md:mb-8">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+            <Icons.Zap /> The Problem
+          </span>
+          <h2 className="slide-title text-xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }}
+              className="rounded-2xl p-6 text-center"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(99, 102, 241, 0.15), 0 8px 32px rgba(0,0,0,0.4)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 30px rgba(99, 102, 241, 0.5)' }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} prefix={stat.prefix} />
+              </div>
+              <p className="text-white font-semibold text-sm md:text-base mb-1">{stat.label}</p>
+              <p className="text-neutral-400 text-xs">{stat.subtext}</p>
+            </motion.div>
+          ))}
         </div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-neutral-600 text-sm text-center mt-6 max-w-lg mx-auto">{data.footer}</motion.p>
+      </div>
+    );
+
+    const PyramidVisualSlide = ({ data }) => {
+      const [activeLayer, setActiveLayer] = useState(null);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-lg md:text-2xl text-black text-center mb-4 md:mb-6">{data.title}</motion.h2>
+
+          <div className="flex flex-col items-center gap-2 md:gap-3 mb-4">
+            {data.layers.map((layer, i) => (
+              <AnimatedPyramidLayer
+                key={i}
+                layer={layer}
+                index={i}
+                total={data.layers.length}
+                isActive={activeLayer === i}
+                onClick={() => setActiveLayer(activeLayer === i ? null : i)}
+              />
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            {activeLayer !== null && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="rounded-xl p-4 text-center max-w-lg mx-auto"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  border: '1px solid rgba(99, 102, 241, 0.3)'
+                }}
+              >
+                <span className="text-2xl mb-2 block">{data.layers[activeLayer].icon}</span>
+                <p className="text-white text-sm leading-relaxed">{data.layers[activeLayer].fullDesc}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {activeLayer === null && (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-neutral-500 text-sm text-center mt-2">
+              Click a layer to explore
+            </motion.p>
+          )}
+
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-neutral-600 text-sm text-center mt-4 max-w-lg mx-auto">{data.footer}</motion.p>
+        </div>
+      );
+    };
+
+    const LayerDeepDiveSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto" style={{ background: `linear-gradient(135deg, ${data.color}, ${data.color}99)`, boxShadow: `0 0 30px ${data.color}40` }}>
+          {data.icon}
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-base md:text-lg text-neutral-600 leading-relaxed text-center mb-6">{data.content}</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `2px solid ${data.color}40` }}>
+          <p className="text-white font-medium text-sm md:text-base">{data.keyPoint}</p>
+        </motion.div>
       </div>
     );
 
@@ -180,37 +385,106 @@
       </div>
     );
 
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+    const IdentityTransformationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+        <div className="flex items-center justify-center gap-4 md:gap-8 mb-6">
+          {/* Before */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="flex-1 max-w-xs">
+            <div className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #374151, #4b5563)', border: '2px solid #6b7280' }}>
+              <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">{data.before.label}</p>
+              <div className="space-y-2">
+                {data.before.states.map((state, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="bg-neutral-700/50 rounded-lg py-2 px-3">
+                    <span className="text-neutral-300 text-sm">{state}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Arrow */}
+          <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4, type: 'spring' }} className="flex-shrink-0">
+            <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 20px rgba(99, 102, 241, 0.4)' }}>
+              <Icons.ArrowRight />
+            </div>
+          </motion.div>
+
+          {/* After */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="flex-1 max-w-xs">
+            <div className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)', boxShadow: '0 0 30px rgba(99, 102, 241, 0.2)' }}>
+              <p className="text-xs uppercase tracking-wider mb-3" style={{ color: 'var(--accent)' }}>{data.after.label}</p>
+              <div className="space-y-2">
+                {data.after.states.map((state, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.05 }} className="rounded-lg py-2 px-3" style={{ background: 'rgba(99, 102, 241, 0.2)' }}>
+                    <span className="text-white text-sm font-medium">{state}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 text-center max-w-lg mx-auto">
+          <p className="text-neutral-300 text-sm">{data.insight}</p>
+        </motion.div>
       </div>
     );
 
-    const TwoColumnSlide = ({ data }) => (
+    const ProofComparisonSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
         <div className="grid md:grid-cols-2 gap-4">
+          {/* Good */}
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-xl p-5">
-            <h3 className="font-bold text-neutral-700 text-lg mb-3">{data.leftTitle}</h3>
-            <p className="text-neutral-600 text-sm leading-relaxed">{data.leftDescription}</p>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-2xl">{data.leftIcon}</span>
+              <h3 className="font-bold text-neutral-700 text-lg">{data.leftTitle}</h3>
+            </div>
+            <div className="space-y-2">
+              {data.leftItems.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + i * 0.05 }} className="flex items-start gap-2">
+                  <span className="text-neutral-400 text-xs mt-1">•</span>
+                  <span className="text-neutral-600 text-sm">{item}</span>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="border-2 rounded-xl p-5" style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05))', borderColor: 'var(--accent)' }}>
-            <h3 className="font-bold text-lg mb-3" style={{ color: 'var(--accent)' }}>{data.rightTitle}</h3>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.rightDescription}</p>
+
+          {/* Lethal */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05))', border: '2px solid var(--accent)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-2xl">{data.rightIcon}</span>
+              <h3 className="font-bold text-lg" style={{ color: 'var(--accent)' }}>{data.rightTitle}</h3>
+            </div>
+            <div className="space-y-2">
+              {data.rightItems.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.05 }} className="flex items-start gap-2">
+                  <span style={{ color: 'var(--accent)' }} className="text-xs mt-1">✓</span>
+                  <span className="text-neutral-700 text-sm font-medium">{item}</span>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
     );
 
-    const CardsSlide = ({ data }) => (
+    const StrategyCardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-4">
           {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl p-5 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(99, 102, 241, 0.3)', boxShadow: '0 0 20px rgba(99, 102, 241, 0.1)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <span className="text-3xl mb-3 block">{item.icon}</span>
+              <h3 className="text-white font-bold text-base mb-2">{item.title}</h3>
+              <p className="text-neutral-400 text-xs leading-relaxed">{item.description}</p>
             </motion.div>
           ))}
         </div>
@@ -218,46 +492,56 @@
     );
 
     const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><span className="font-semibold text-neutral-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-600 text-sm leading-relaxed italic">{data.before.text}</p>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-indigo-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-xl p-5">
+              <div className="flex items-center gap-2 mb-3"><span className="font-semibold text-neutral-700 text-sm">{data.before.label}</span></div>
+              <p className="text-neutral-600 text-sm leading-relaxed italic">{data.before.text}</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05))', border: '2px solid var(--accent)' }}>
+              <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div><span className="font-semibold text-sm" style={{ color: 'var(--accent)' }}>{data.after.label}</span></div>
+              <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+            </motion.div>
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+            <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '40%', maxHeight: '300px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-2xl md:text-3xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
+    const ArchitectureSummarySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.layers.map((layer, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl p-6 text-center"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: `0 0 30px ${layer.color}30, 0 8px 32px rgba(0,0,0,0.4)` }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${layer.color}, transparent)` }} />
+              <div className="text-2xl md:text-3xl font-bold mb-2" style={{ color: layer.color, textShadow: `0 0 20px ${layer.color}50` }}>{layer.name}</div>
+              <div className="text-xs md:text-sm font-semibold text-white mb-1">{layer.label}</div>
+              <div className="text-[10px] md:text-xs text-neutral-400">{layer.description}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -274,7 +558,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -305,26 +589,13 @@
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Series Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You've mastered the Psychological Architecture of Conversion. Remember: Mindset (customer focus) → Method (authority & certainty) → Mechanics (pain-dream precision). Build from the foundation up, and your marketing will convert consistently—not randomly.</motion.p>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You've mastered the Psychological Architecture of Conversion. Remember: Mindset (customer focus) → Method (authority & certainty) → Mechanics (pain-dream precision). Build from the foundation up.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Key Takeaway</p>
           <h3 className="text-white font-bold text-lg mb-1">Trust built on solving real problems is the only sustainable advantage.</h3>
           <p className="text-neutral-400 text-xs">Ethical influence is about being congruent—not manipulative.</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -340,6 +611,10 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      useEffect(() => {
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
+      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -370,13 +645,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'pyramid': return <PyramidSlide data={slide} />;
+          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
+          case 'pyramid-visual': return <PyramidVisualSlide data={slide} />;
+          case 'layer-deep-dive': return <LayerDeepDiveSlide data={slide} />;
           case 'bigStatement': return <BigStatementSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'twoColumn': return <TwoColumnSlide data={slide} />;
+          case 'identity-transformation': return <IdentityTransformationSlide data={slide} />;
+          case 'proof-comparison': return <ProofComparisonSlide data={slide} />;
+          case 'strategy-cards': return <StrategyCardsSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'architecture-summary': return <ArchitectureSummarySlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -392,6 +669,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

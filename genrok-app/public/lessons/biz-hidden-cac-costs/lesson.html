@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hidden Costs Killing Your Margins | Quantum Scale</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Framer Motion -->
+    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.0.8/dist/framer-motion.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Colors */
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #FAFAFA;
+            --text-primary: #000000;
+            --text-secondary: #1a1a1a;
+            --text-muted: #666666;
+            --accent-primary: #EF4444;
+            --accent-hover: #DC2626;
+            --block-bg: #000000;
+            --block-text: #FFFFFF;
+            --border-light: #E5E7EB;
+            --success: #10B981;
+            --warning: #F59E0B;
+
+            /* Typography */
+            --font-display: 'Fraunces', serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+            /* Spacing */
+            --space-4: 16px;
+            --space-6: 24px;
+            --space-8: 32px;
+            --space-10: 40px;
+            --space-12: 48px;
+            --space-16: 64px;
+            --space-20: 80px;
+
+            /* Radius */
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .lesson-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-20) var(--space-6);
+        }
+
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-12) 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide.exiting {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* Typography */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: var(--space-6);
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-6);
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-family: var(--font-body);
+            font-size: clamp(20px, 2.5vw, 28px);
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: var(--space-4);
+        }
+
+        .subtitle {
+            font-size: clamp(18px, 2vw, 24px);
+            color: var(--text-muted);
+            margin-bottom: var(--space-8);
+            line-height: 1.5;
+        }
+
+        .accent-text {
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+
+        /* Dark Blocks */
+        .dark-block {
+            background: var(--block-bg);
+            color: var(--block-text);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            margin: var(--space-8) 0;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            margin-bottom: var(--space-4);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        /* Channel Cards */
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-6);
+            margin: var(--space-8) 0;
+        }
+
+        .channel-card {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+            transition: all 0.3s ease;
+        }
+
+        .channel-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 8px 24px rgba(239,68,68,0.1);
+            transform: translateY(-4px);
+        }
+
+        .channel-name {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-4);
+            font-weight: 600;
+        }
+
+        .channel-cac {
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--accent-primary);
+            margin: var(--space-4) 0;
+        }
+
+        .channel-breakdown {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-top: var(--space-4);
+            padding-top: var(--space-4);
+            border-top: 1px solid var(--border-light);
+        }
+
+        /* Formula Display */
+        .formula-container {
+            background: var(--block-bg);
+            color: var(--block-text);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            margin: var(--space-8) 0;
+            text-align: center;
+        }
+
+        .formula {
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: 600;
+            line-height: 2;
+            margin: var(--space-6) 0;
+        }
+
+        .formula-part {
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            margin: 4px;
+        }
+
+        .formula-highlight {
+            color: var(--accent-primary);
+            font-weight: 700;
+        }
+
+        /* Before/After Comparison */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-8);
+            margin: var(--space-8) 0;
+        }
+
+        .comparison-card {
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            text-align: center;
+        }
+
+        .comparison-card.before {
+            background: #FEE2E2;
+            border: 2px solid var(--accent-primary);
+        }
+
+        .comparison-card.after {
+            background: #D1FAE5;
+            border: 2px solid var(--success);
+        }
+
+        .comparison-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+            margin-bottom: var(--space-4);
+        }
+
+        .comparison-amount {
+            font-size: 48px;
+            font-weight: 800;
+            margin: var(--space-4) 0;
+        }
+
+        /* Implementation Steps */
+        .step-list {
+            counter-reset: step-counter;
+            list-style: none;
+            margin: var(--space-8) 0;
+        }
+
+        .step-item {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: var(--space-6);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .step-item::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            background: var(--block-bg);
+            color: var(--block-text);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .step-content {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Quiz */
+        .quiz-container {
+            max-width: 800px;
+            margin: var(--space-8) auto;
+        }
+
+        .quiz-question {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: var(--space-8);
+            text-align: center;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-4);
+        }
+
+        .quiz-option {
+            background: var(--bg-primary);
+            border: 2px solid var(--border-light);
+            border-radius: var(--radius-md);
+            padding: var(--space-6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--accent-primary);
+            transform: translateX(8px);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: #D1FAE5;
+        }
+
+        .quiz-option.incorrect {
+            border-color: var(--accent-primary);
+            background: #FEE2E2;
+        }
+
+        /* Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: var(--space-12);
+            gap: var(--space-4);
+        }
+
+        button {
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 600;
+            padding: 16px 32px;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--block-bg);
+            color: var(--block-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--text-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .btn-accent {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(239,68,68,0.3);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--border-light);
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-primary);
+            transition: width 0.3s ease;
+        }
+
+        /* Icon Styles */
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            background: var(--block-bg);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-6);
+        }
+
+        .icon-svg {
+            width: 48px;
+            height: 48px;
+            stroke: var(--block-text);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: #FEF3C7;
+            border-left: 4px solid var(--warning);
+            padding: var(--space-6);
+            border-radius: var(--radius-md);
+            margin: var(--space-8) 0;
+        }
+
+        .highlight-box strong {
+            color: var(--warning);
+            font-size: 18px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .lesson-container {
+                padding: var(--space-12) var(--space-4);
+            }
+
+            .comparison-grid,
+            .channel-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-item {
+                padding-left: 80px;
+            }
+
+            .step-item::before {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="lesson-container">
+        <!-- Slide 1: Welcome -->
+        <div class="slide active" data-slide="1">
+            <div class="icon-container">
+                <svg class="icon-svg" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                    <path d="M2 17L12 22L22 17"/>
+                    <path d="M2 12L12 17L22 12"/>
+                </svg>
+            </div>
+            <h1 style="text-align: center;">The Hidden Costs<br/>Killing Your Margins</h1>
+            <p class="subtitle" style="text-align: center; max-width: 700px; margin: 0 auto var(--space-8);">
+                You're bleeding money and don't even know it. Let's uncover the hidden costs that are silently destroying your CAC calculations.
+            </p>
+            <div style="text-align: center;">
+                <button class="btn-accent" onclick="nextSlide()">Start Learning →</button>
+            </div>
+        </div>
+
+        <!-- Slide 2: Hook -->
+        <div class="slide" data-slide="2">
+            <h2>You think your CAC is <span class="accent-text">$25</span></h2>
+            <h2>It's actually <span class="accent-text">$187</span></h2>
+
+            <div class="dark-block" style="margin-top: var(--space-12);">
+                <h3 style="color: white; margin-bottom: var(--space-6);">Here's what's really happening:</h3>
+                <div style="display: grid; gap: var(--space-4); font-size: 18px; line-height: 1.8;">
+                    <div>✗ You're only counting ad spend</div>
+                    <div>✗ You're ignoring payroll costs</div>
+                    <div>✗ You're forgetting software subscriptions</div>
+                    <div>✗ You're not tracking your own time</div>
+                    <div>✗ You're missing agency/contractor fees</div>
+                </div>
+            </div>
+
+            <p class="subtitle" style="margin-top: var(--space-8);">
+                Most businesses underestimate their Customer Acquisition Cost by <strong>5-10x</strong>. That's not a typo.
+            </p>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
+                <button class="btn-primary" onclick="nextSlide()">Continue →</button>
+            </div>
+        </div>
+
+        <!-- Slide 3: CAC Definition -->
+        <div class="slide" data-slide="3">
+            <h2>CAC is NOT just ad spend</h2>
+            <p class="subtitle">It's the TOTAL cost to acquire ONE customer</p>
+
+            <div class="highlight-box">
+                <strong>Critical Truth:</strong> If you're only tracking ad spend, you're making decisions with incomplete data. And incomplete data = bad decisions = burned cash.
+            </div>
+
+            <div class="card" style="margin-top: var(--space-8);">
+                <h3>What CAC Actually Includes:</h3>
+                <div style="display: grid; gap: var(--space-4); margin-top: var(--space-6); font-size: 16px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
+                        <span><strong>Ad Spend:</strong> Meta, Google, TikTok, etc.</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
+                        <span><strong>Sales & Marketing Payroll:</strong> Your team's salaries</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
+                        <span><strong>Software & Tools:</strong> CRMs, email platforms, analytics</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
+                        <span><strong>Commissions & Bonuses:</strong> Performance incentives</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
+                        <span><strong>Agency Fees:</strong> External marketing help</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
+                        <span><strong>Your Time:</strong> Yes, this counts too</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
+                <button class="btn-primary" onclick="nextSlide()">See The Formula →</button>
+            </div>
+        </div>
+
+        <!-- Slide 4: The Full Formula -->
+        <div class="slide" data-slide="4">
+            <h2 style="text-align: center;">The Real CAC Formula</h2>
+
+            <div class="formula-container">
+                <div class="formula">
+                    <div class="formula-part">Ad Spend</div>
+                    <span style="color: var(--accent-primary); font-size: 32px;">+</span>
+                    <div class="formula-part">Sales/Marketing Payroll</div>
+                    <span style="color: var(--accent-primary); font-size: 32px;">+</span>
+                    <div class="formula-part">Software & Tools</div>
+                    <span style="color: var(--accent-primary); font-size: 32px;">+</span>
+                    <div class="formula-part">Commissions</div>
+                </div>
+
+                <div style="font-size: 48px; color: var(--accent-primary); margin: var(--space-6) 0;">÷</div>
+
+                <div class="formula">
+                    <div class="formula-part formula-highlight">New Customers from that Channel</div>
+                </div>
+
+                <div style="font-size: 64px; font-weight: 800; margin-top: var(--space-8); color: var(--accent-primary);">= TRUE CAC</div>
+            </div>
+
+            <div class="card" style="margin-top: var(--space-8); background: var(--bg-secondary);">
+                <p style="font-size: 18px; text-align: center; color: var(--text-secondary);">
+                    <strong>Pro Tip:</strong> Calculate CAC per channel, not as a blended average. Your Meta ads might have $30 CAC while your cold outreach has $1,000+ CAC.
+                </p>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
+                <button class="btn-primary" onclick="nextSlide()">Continue →</button>
+            </div>
+        </div>
+
+        <!-- Slide 5: Founder's Trap -->
+        <div class="slide" data-slide="5">
+            <h2>The Founder's Trap</h2>
+            <p class="subtitle">Your time has a cost. Stop pretending it's free.</p>
+
+            <div class="dark-block">
+                <h3 style="color: white;">Scenario: You're running all your marketing yourself</h3>
+
+                <div style="margin-top: var(--space-8); font-size: 18px; line-height: 2;">
+                    <div style="margin-bottom: var(--space-4);">
+                        <span style="opacity: 0.7;">You spend</span> <strong style="color: var(--accent-primary);">20 hours/week</strong> <span style="opacity: 0.7;">on marketing</span>
+                    </div>
+                    <div style="margin-bottom: var(--space-4);">
+                        <span style="opacity: 0.7;">A marketing manager costs</span> <strong style="color: var(--accent-primary);">$60,000/year</strong>
+                    </div>
+                    <div style="margin-bottom: var(--space-4);">
+                        <span style="opacity: 0.7;">That's</span> <strong style="color: var(--accent-primary);">$30/hour</strong> <span style="opacity: 0.7;">replacement cost</span>
+                    </div>
+                    <div style="margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid rgba(255,255,255,0.2);">
+                        <span style="opacity: 0.7;">Your hidden monthly cost:</span> <strong style="color: var(--accent-primary); font-size: 32px;">$2,400</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="margin-top: var(--space-8);">
+                <strong>Reality Check:</strong> If you're doing the work yourself, you're not saving money—you're just hiding the cost. Calculate your replacement cost and add it to your CAC. Your REAL numbers might shock you.
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
+                <button class="btn-primary" onclick="nextSlide()">See Real Examples →</button>
+            </div>
+        </div>
+
+        <!-- Slide 6: Channel Comparison -->
+        <div class="slide" data-slide="6">
+            <h2>CAC By Channel: Real Numbers</h2>
+            <p class="subtitle">Same business, same month, wildly different CAC</p>
+
+            <div class="channel-grid">
+                <div class="channel-card">
+                    <div class="channel-name">Paid Ads</div>
+                    <div class="channel-cac">$25</div>
+                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-4);">500 customers acquired</div>
+                    <div class="channel-breakdown">
+                        <div>Ad Spend: $10,000</div>
+                        <div>Payroll: $2,000</div>
+                        <div>Tools: $500</div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--text-primary);">Total: $12,500 ÷ 500</div>
+                    </div>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-name">Cold Outreach</div>
+                    <div class="channel-cac">$1,031</div>
+                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-4);">4 customers acquired</div>
+                    <div class="channel-breakdown">
+                        <div>Software: $500</div>
+                        <div>SDR Payroll: $3,000</div>
+                        <div>Commissions: $625</div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--text-primary);">Total: $4,125 ÷ 4</div>
+                    </div>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-name">Warm Outreach</div>
+                    <div class="channel-cac">$100</div>
+                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-4);">5 customers acquired</div>
+                    <div class="channel-breakdown">
+                        <div>Setter Payroll: $500</div>
+                        <div>Software: $0</div>
+                        <div>Other: $0</div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--text-primary);">Total: $500 ÷ 5</div>
+                    </div>
+                </div>
+
+                <div class="channel-card">
+                    <div class="channel-name">Free Content</div>
+                    <div class="channel-cac">$77.50</div>
+                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-4);">20 customers acquired</div>
+                    <div class="channel-breakdown">
+                        <div>Creator Time: $1,200</div>
+                        <div>Editing/Tools: $300</div>
+                        <div>Other: $50</div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--text-primary);">Total: $1,550 ÷ 20</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="background: var(--bg-secondary); margin-top: var(--space-8);">
+                <p style="font-size: 18px; text-align: center;">
+                    <strong>Key Insight:</strong> "Free" content isn't free. Cold outreach can be 40x more expensive than paid ads. You can't optimize what you don't measure.
+                </p>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
+                <button class="btn-primary" onclick="nextSlide()">Continue →</button>
+            </div>
+        </div>
+
+        <!-- Slide 7: Before/After -->
+        <div class="slide" data-slide="7">
+            <h2 style="text-align: center;">What You Think vs Reality</h2>
+
+            <div class="comparison-grid" style="margin-top: var(--space-12);">
+                <div class="comparison-card before">
+                    <div class="comparison-label" style="color: var(--accent-primary);">WHAT YOU THINK</div>
+                    <div class="comparison-amount" style="color: var(--accent-primary);">$30</div>
+                    <p style="font-size: 16px; color: var(--text-secondary); margin-top: var(--space-4);">Just counting ad spend</p>
+
+                    <div style="margin-top: var(--space-6); text-align: left; font-size: 14px; color: var(--text-secondary);">
+                        <div style="margin-bottom: 8px;">✓ Facebook Ads: $15,000</div>
+                        <div style="margin-bottom: 8px;">✓ 500 customers</div>
+                        <div style="margin-bottom: 8px;">✓ CAC = $30</div>
+                        <div style="margin-top: var(--space-4); font-weight: 700; color: var(--accent-primary);">✗ Missing 80% of costs</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card after">
+                    <div class="comparison-label" style="color: var(--success);">REALITY</div>
+                    <div class="comparison-amount" style="color: var(--success);">$187</div>
+                    <p style="font-size: 16px; color: var(--text-secondary); margin-top: var(--space-4);">ALL costs included</p>
+
+                    <div style="margin-top: var(--space-6); text-align: left; font-size: 14px; color: var(--text-secondary);">
+                        <div style="margin-bottom: 8px;">Ad Spend: $15,000</div>
+                        <div style="margin-bottom: 8px;">Marketing Payroll: $60,000</div>
+                        <div style="margin-bottom: 8px;">Software: $5,000</div>
+                        <div style="margin-bottom: 8px;">Agency: $13,500</div>
+                        <div style="margin-top: var(--space-4); font-weight: 700; color: var(--success);">✓ True CAC = $187</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dark-block" style="margin-top: var(--space-12); text-align: center;">
+                <h3 style="color: white; margin-bottom: var(--space-4);">This changes EVERYTHING</h3>
+                <p style="font-size: 18px; opacity: 0.9;">
+                    If your LTV is $150 and you think your CAC is $30, you're celebrating.<br/>
+                    But if your REAL CAC is $187? You're losing $37 on every customer.
+                </p>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
+                <button class="btn-primary" onclick="nextSlide()">How To Fix This →</button>
+            </div>
+        </div>
+
+        <!-- Slide 8: Implementation Guide -->
+        <div class="slide" data-slide="8">
+            <h2>Calculate Your True CAC</h2>
+            <p class="subtitle">Follow these steps to uncover your real numbers</p>
+
+            <ul class="step-list">
+                <li class="step-item">
+                    <div class="step-content">
+                        <strong>List ALL your acquisition channels</strong><br/>
+                        <span style="color: var(--text-muted);">Paid ads, organic, partnerships, cold outreach, content, etc.</span>
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-content">
+                        <strong>Track costs per channel for 30 days</strong><br/>
+                        <span style="color: var(--text-muted);">Ad spend, payroll, software, commissions, your time (use replacement cost)</span>
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-content">
+                        <strong>Count new customers per channel</strong><br/>
+                        <span style="color: var(--text-muted);">Use attribution properly—first touch, last touch, or multi-touch based on your model</span>
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-content">
+                        <strong>Calculate: Total Costs ÷ New Customers</strong><br/>
+                        <span style="color: var(--text-muted);">Do this separately for EACH channel, not as a blended average</span>
+                    </div>
+                </li>
+                <li class="step-item">
+                    <div class="step-content">
+                        <strong>Compare to your LTV</strong><br/>
+                        <span style="color: var(--text-muted);">Healthy ratio: LTV should be 3x+ your CAC. Below 2x? You're in trouble.</span>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="highlight-box" style="margin-top: var(--space-8);">
+                <strong>Action Item:</strong> Set up a spreadsheet TODAY. Track this for the next 30 days. You'll be shocked at what you discover.
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
+                <button class="btn-primary" onclick="nextSlide()">Test Your Knowledge →</button>
+            </div>
+        </div>
+
+        <!-- Slide 9: Quiz -->
+        <div class="slide" data-slide="9">
+            <div class="quiz-container">
+                <h2 style="text-align: center; margin-bottom: var(--space-12);">Quick Knowledge Check</h2>
+
+                <div class="quiz-question">
+                    You spend $10,000 on ads, $5,000 on a VA managing them, and $500 on software. You get 250 customers. What's your CAC?
+                </div>
+
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="selectAnswer(this, false)">
+                        A) $40 (just ad spend ÷ customers)
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false)">
+                        B) $42 (ad spend + software ÷ customers)
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, true)">
+                        C) $62 (all costs ÷ customers)
+                    </div>
+                    <div class="quiz-option" onclick="selectAnswer(this, false)">
+                        D) $50 (average of all the above)
+                    </div>
+                </div>
+
+                <div id="quizFeedback" style="margin-top: var(--space-8); padding: var(--space-6); border-radius: var(--radius-md); display: none;"></div>
+            </div>
+
+            <div class="nav-buttons">
+                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
+                <button class="btn-primary" id="quizNext" onclick="nextSlide()" style="display: none;">Continue →</button>
+            </div>
+        </div>
+
+        <!-- Slide 10: Completion -->
+        <div class="slide" data-slide="10">
+            <div style="text-align: center;">
+                <div class="icon-container" style="background: var(--success);">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path d="M20 6L9 17L4 12"/>
+                    </svg>
+                </div>
+
+                <h1>You've Uncovered the Truth</h1>
+                <p class="subtitle" style="max-width: 700px; margin: 0 auto var(--space-12);">
+                    You now know how to calculate your TRUE CAC—not the fantasy number that's been lying to you.
+                </p>
+
+                <div class="card" style="max-width: 600px; margin: 0 auto var(--space-8); text-align: left;">
+                    <h3 style="margin-bottom: var(--space-6);">What You Learned:</h3>
+                    <div style="display: grid; gap: var(--space-4); font-size: 16px;">
+                        <div>✓ CAC includes ALL costs (not just ad spend)</div>
+                        <div>✓ Your time has a replacement cost</div>
+                        <div>✓ Different channels have wildly different CAC</div>
+                        <div>✓ The real formula: (Ad Spend + Payroll + Software + Commissions) ÷ New Customers</div>
+                        <div>✓ How to track and optimize per channel</div>
+                    </div>
+                </div>
+
+                <div class="dark-block" style="max-width: 600px; margin: 0 auto var(--space-8);">
+                    <h3 style="color: white; margin-bottom: var(--space-4);">Next Step</h3>
+                    <p style="font-size: 18px; opacity: 0.9;">
+                        Open a spreadsheet right now. List your channels. Track your costs for 30 days. Calculate your TRUE CAC. Then decide which channels to double down on (and which to kill).
+                    </p>
+                </div>
+
+                <button class="btn-accent" onclick="window.location.href='/learn'">
+                    Back to Learning Center
+                </button>
+            </div>
+
+            <div class="nav-buttons" style="justify-content: center;">
+                <button class="btn-secondary" onclick="prevSlide()">← Review Lesson</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 10;
+
+        function updateProgress() {
+            const progress = (currentSlide / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showSlide(slideNumber) {
+            // Hide all slides
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(slide => {
+                slide.classList.remove('active', 'exiting');
+            });
+
+            // Show target slide
+            const targetSlide = document.querySelector(`[data-slide="${slideNumber}"]`);
+            if (targetSlide) {
+                targetSlide.classList.add('active');
+                currentSlide = slideNumber;
+                updateProgress();
+
+                // Send slide update to parent for admin issue tracking
+                window.parent.postMessage({
+                    type: 'LESSON_SLIDE_UPDATE',
+                    slideIndex: currentSlide - 1, // Convert 1-based to 0-based
+                    slideType: 'content',
+                    lessonSlug: window.location.pathname.split('/').filter(Boolean).pop()?.replace('/lesson.html', '') || 'unknown'
+                }, '*');
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function selectAnswer(element, isCorrect) {
+            // Disable all options
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            // Mark selected answer
+            if (isCorrect) {
+                element.classList.add('correct');
+                showFeedback(true);
+            } else {
+                element.classList.add('incorrect');
+                // Highlight correct answer
+                options[2].classList.add('correct');
+                showFeedback(false);
+            }
+
+            // Show next button
+            document.getElementById('quizNext').style.display = 'block';
+        }
+
+        function showFeedback(isCorrect) {
+            const feedback = document.getElementById('quizFeedback');
+            feedback.style.display = 'block';
+
+            if (isCorrect) {
+                feedback.style.background = '#D1FAE5';
+                feedback.style.border = '2px solid var(--success)';
+                feedback.innerHTML = `
+                    <strong style="color: var(--success); font-size: 20px;">Correct! 🎉</strong>
+                    <p style="margin-top: 12px; color: var(--text-secondary);">
+                        You calculated: ($10,000 + $5,000 + $500) ÷ 250 = $62 CAC<br/>
+                        This is the REAL CAC that includes all costs, not just ad spend.
+                    </p>
+                `;
+            } else {
+                feedback.style.background = '#FEE2E2';
+                feedback.style.border = '2px solid var(--accent-primary)';
+                feedback.innerHTML = `
+                    <strong style="color: var(--accent-primary); font-size: 20px;">Not quite</strong>
+                    <p style="margin-top: 12px; color: var(--text-secondary);">
+                        Remember: CAC includes ALL costs.<br/>
+                        $10,000 (ads) + $5,000 (VA) + $500 (software) = $15,500 total<br/>
+                        $15,500 ÷ 250 customers = <strong>$62 CAC</strong>
+                    </p>
+                `;
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

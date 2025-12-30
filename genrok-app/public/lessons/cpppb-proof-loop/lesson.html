@@ -55,7 +55,22 @@
 
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'Builder';
+
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };      return params.get('userName') || 'Builder';
     };
 
     const LESSON_CONFIG = {
@@ -70,6 +85,81 @@
         teaser: 'Three simple tests that separate forgettable fluff from copy that converts.'
       }
     };
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    // Per-slide bug reporting for admin users
+    let __isAdmin = false;
+
+    // Listen for admin status from parent
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') {
+        __isAdmin = e.data.isAdmin;
+      }
+    });
+
+    // Request admin status on load
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+    }
+
+    // Admin Report Button Component
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
+
+      const handleReport = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ADMIN_REPORT_REQUEST',
+            slideIndex: slideIndex,
+            slideType: slideType,
+            lessonSlug: LESSON_CONFIG.id,
+            elementId: slideType + '-' + slideIndex
+          }, '*');
+        }
+      };
+
+      return (
+        <button
+          onClick={handleReport}
+          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            width: '32px',
+            height: '32px',
+            borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)',
+            color: 'white',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
+        </button>
+      );
+    };
+    // ============ END ADMIN REPORTER SYSTEM ============
+
 
     // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
@@ -106,7 +196,7 @@
         'The exact sequence that mirrors how humans build trust',
         'How 10%+ conversion stores structure their persuasion'
       ]},
-      { type: 'hook', title: 'Your Product Page Has a Fatal Flaw', body: 'You lead with your promise. "Double your sales!" Great hook, right? Wrong. The customer\'s defense shields just activated. Here we go again, they think.', punchline: 'Trust isn\'t random. It follows a sequence.' },
+      { type: 'hook', title: 'Your Product Page Has a Fatal Flaw', body: 'You lead with your promise. "Double your sales!" Great hook, right? Wrong. The customer\'s defense shields just activated. Here we go again, they think.', punchline: 'Trust isn\'t random. It follows a sequence.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Facebook' },
       { type: 'content', subtitle: 'The Problem', title: 'Random Order = Zero Trust', body: 'Most stores throw elements randomly on their pages. A promise here, some proof there, maybe credibility at the end. It\'s like building a house by nailing the roof on first.', highlight: { label: 'The Reality', text: 'The message never lands with full impact because the structure can\'t support itself.' }},
       { type: 'content', subtitle: 'The Solution', title: 'CPPPB: The Trust Blueprint', body: 'Five elements. One sequence. Tested across thousands of campaigns. This isn\'t theory - it\'s the architecture of persuasion.', callout: 'Order matters as much as content. Skip a step, collapse the whole structure.' },
       { type: 'visual', visualType: 'sequence' },
@@ -115,7 +205,7 @@
       { type: 'content', subtitle: 'Element 2', title: 'Problem: Prove You Understand', body: 'Describe their frustration better than they can. When you articulate their exact pain, they think: "Finally, someone who gets it."', callout: 'This isn\'t about your product yet. It\'s about their world.' },
       { type: 'example', subtitle: 'Problem Example', bad: { label: 'Generic', text: '"Tired of bad coffee?"' }, good: { label: 'Specific', text: '"3pm hits. Eyes heavy. That gas station coffee is making you nauseous, but you need caffeine to finish your shift..."' }, insight: 'The specific version proves you\'ve lived their experience. Generic questions? They scroll past.' },
       { type: 'content', subtitle: 'Element 3', title: 'Promise: Paint the Transformation', body: 'NOW you can make your promise. But not "buy our product" - promise them a changed life, a solved problem, a better version of themselves.', highlight: { label: 'The Key', text: 'Promise the outcome, not the product.' }},
-      { type: 'content', subtitle: 'Element 4', title: 'Proof: Stack Until Disbelief Dies', body: 'Testimonials. Case studies. Screenshots. Numbers. Before/after photos. Stack them until "yeah right" becomes "holy shit, maybe."', callout: 'One testimonial = nice story. Ten testimonials = undeniable pattern.' },
+      { type: 'content', subtitle: 'Element 4', title: 'Proof: Stack Until Disbelief Dies', body: 'Testimonials. Case studies. Screenshots. Numbers. Before/after photos. Stack them until "yeah right" becomes "holy shit, maybe."', callout: 'One testimonial = nice story. Ten testimonials = undeniable pattern.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sharing_with_a_friend_two_monkeys_one_explaini_b30f53d7-8f44-4b0a-8c27-ad2e11f08a64_1.mp4', characterPosition: 'right'},
       { type: 'example', subtitle: 'Proof Example', bad: { label: 'Weak', text: '"Customers love us!"' }, good: { label: 'Undeniable', text: '"127,492 orders last month. 4.9 stars from 23,847 reviews. 94% reorder within 60 days."' }, insight: 'Vague love is forgettable. Specific numbers? They can\'t argue with math.' },
       { type: 'content', subtitle: 'Element 5', title: 'Benefits: Translate to Their Life', body: 'Finally, translate everything into what it means for THEM. Not "200-hour battery" - "Never worry about charging on vacation."', highlight: { label: 'The Shift', text: 'Features tell. Benefits sell. Outcomes close.' }},
       { type: 'visual', visualType: 'comparison' },
@@ -129,7 +219,7 @@
         { icon: 'page', title: 'Product Pages', desc: 'Structure your entire Shopify page with CPPPB as the backbone.' },
         { icon: 'email', title: 'Email Sequences', desc: 'Spread each element across 5 emails for maximum impact.' },
         { icon: 'ad', title: 'Facebook Ads', desc: 'Condense CPPPB into 3 powerful paragraphs in long-form ads.' }
-      ]},
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'left'},
       { type: 'quiz', question: 'Why must Credibility come BEFORE Promise in the CPPPB sequence?', options: ['Because credibility is easier to write', 'Because promises without trust trigger defense shields', 'Because Google ranks credible content higher', 'Because longer content converts better'], correctIndex: 1, feedback: { correct: 'Exactly! When you lead with promises before establishing credibility, the customer\'s skepticism activates. "Here we go again." But establish trust FIRST, and that same promise lands with full impact. The sequence mirrors how humans naturally grant trust.', incorrect: 'Not quite. The correct answer is about trust and defense mechanisms. When you promise results before establishing credibility, customers activate their skepticism shields. But establish authority FIRST, prove you understand their problem, THEN make the promise - and it lands with 10X the force.' }},
       { type: 'completion' }
     ];
@@ -191,7 +281,7 @@
         <div className="w-full max-w-3xl">
           <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">Wrong vs Right Order</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-2xl p-6 border border-neutral-200">
+            <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-2xl p-6 border border-neutral-200">
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-12 h-12 rounded-xl bg-neutral-200 flex items-center justify-center text-neutral-400"><Icons.X /></div>
                 <div>
@@ -209,7 +299,7 @@
               </div>
               <p className="text-red-400 text-sm font-medium pt-3 border-t border-neutral-200">Defense shields activated immediately</p>
             </motion.div>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="rounded-2xl p-6 border-2" style={{ background: 'white', borderColor: 'var(--accent)' }}>
+            <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="rounded-2xl p-6 border-2" style={{ background: 'white', borderColor: 'var(--accent)' }}>
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Check /></div>
                 <div>
@@ -242,7 +332,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
@@ -263,15 +353,33 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-600 text-lg md:text-xl leading-relaxed mb-8">{data.body}</motion.p>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-6">
-          <p className="text-2xl md:text-3xl font-bold text-center" style={{ color: 'var(--accent)' }}>{data.punchline}</p>
-        </motion.div>
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '52%', maxHeight: '400px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          </motion.div>
+        )}
       </div>
     );
 
+    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-sm font-medium uppercase tracking-wider mb-3" style={{ color: 'var(--accent)' }}>{data.subtitle}</motion.p>}
@@ -282,6 +390,19 @@
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22 }} className="bg-neutral-900 rounded-xl p-6 mt-3">
             <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">{data.highlight.label}</p>
             <p className="text-xl md:text-2xl font-bold" style={{ color: 'var(--accent)' }}>{data.highlight.text}</p>
+          </motion.div>
+        )}
+      
+        {data.characterVideo && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+            style={{ height: '35%', maxHeight: '280px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
           </motion.div>
         )}
       </div>
@@ -310,37 +431,50 @@
       </div>
     );
 
-    const VisualSlide = ({ data }) => (
-      <div className="h-full flex items-center justify-center">
-        {data.visualType === 'sequence' && <SequenceVisual />}
-        {data.visualType === 'comparison' && <ComparisonVisual />}
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => {
-      const getIcon = (iconName) => {
-        const icons = { c: Icons.Shield, p: Icons.Target, proof: Icons.FileText, page: Icons.FileText, email: Icons.Mail, ad: Icons.Megaphone };
-        const IconComp = icons[iconName];
-        return IconComp ? <IconComp /> : null;
-      };
-      return (
-        <div className="h-full flex flex-col justify-center px-8 md:px-12 slide-scroll overflow-y-auto py-10">
-          <div className="text-center mb-6">
-            {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-neutral-500 text-sm mb-2">{data.subtitle}</motion.p>}
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-2xl md:text-3xl text-black">{data.title}</motion.h2>
+    const VisualSlide = ({ data }) => {
+      if (data.visualType === 'stats') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
+              {data.data.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+                  <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
+                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
+                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
-            {data.cards.map((card, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-neutral-50 rounded-xl p-5 border border-neutral-100">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))`, color: 'var(--accent)' }}>{getIcon(card.icon)}</div>
-                <h4 className="font-semibold text-black text-base mb-2">{card.title}</h4>
-                <p className="text-neutral-500 text-sm leading-relaxed">{card.desc}</p>
+        );
+      }
+      return null;
+    };
+
+    const CardsSlide = ({ data }) => (
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 hover:shadow-lg transition-all">
+                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
+                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
               </motion.div>
             ))}
           </div>
         </div>
-      );
-    };
+        {data.characterVideo && (
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
+            style={{ height: '45%', maxHeight: '350px' }}>
+            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+              <source src={data.characterVideo} type="video/mp4" />
+            </video>
+          </motion.div>
+        )}
+      </div>
+    );
 
     const QuoteSlide = ({ data }) => (
       <div className="h-full flex items-center justify-center px-8 slide-scroll overflow-y-auto py-10">
@@ -370,7 +504,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -421,6 +555,16 @@
       const showGif = useCallback((url, height, side) => { setGifConfig({ url, height, side }); }, []);
       const hideGif = useCallback(() => { setGifConfig(null); }, []);
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
@@ -464,6 +608,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

@@ -11,38 +11,49 @@ export function useAdmin() {
 
   useEffect(() => {
     async function checkAdminStatus() {
-      console.log('[useAdmin] Checking admin status, user:', user?.id);
+      console.log('[useAdmin] ========== ADMIN CHECK START ==========');
+      console.log('[useAdmin] User object:', user);
+      console.log('[useAdmin] User ID:', user?.id);
+      console.log('[useAdmin] User email:', user?.email);
 
       if (!user?.id) {
-        console.log('[useAdmin] No user ID, setting isAdmin=false');
+        console.log('[useAdmin] NO USER ID - setting isAdmin=false');
         setIsAdmin(false);
         setIsLoading(false);
         return;
       }
 
       try {
+        console.log('[useAdmin] Querying profiles table for id:', user.id);
         const { data, error } = await supabase
-          .from('user_profiles')
-          .select('is_admin')
-          .eq('user_id', user.id)
+          .from('profiles')
+          .select('id, email, is_admin')
+          .eq('id', user.id)
           .single();
 
-        const result = data as { is_admin: boolean | null } | null;
-        console.log('[useAdmin] Query result:', { data: result, error });
+        const profile = data as { id: string; email: string; is_admin: boolean | null } | null;
+        console.log('[useAdmin] RAW RESPONSE - data:', profile);
+        console.log('[useAdmin] RAW RESPONSE - error:', error);
 
         if (error) {
-          console.error('[useAdmin] Error:', error);
+          console.error('[useAdmin] QUERY ERROR:', error.message, error.code, error.details);
+          setIsAdmin(false);
+        } else if (!profile) {
+          console.log('[useAdmin] NO DATA RETURNED - profile may not exist');
           setIsAdmin(false);
         } else {
-          const adminStatus = result?.is_admin === true;
-          console.log('[useAdmin] Setting isAdmin:', adminStatus);
+          console.log('[useAdmin] Profile found:', profile);
+          console.log('[useAdmin] is_admin value:', profile.is_admin, 'type:', typeof profile.is_admin);
+          const adminStatus = profile.is_admin === true;
+          console.log('[useAdmin] SETTING isAdmin to:', adminStatus);
           setIsAdmin(adminStatus);
         }
       } catch (err) {
-        console.error('[useAdmin] Catch error:', err);
+        console.error('[useAdmin] CATCH ERROR:', err);
         setIsAdmin(false);
       } finally {
         setIsLoading(false);
+        console.log('[useAdmin] ========== ADMIN CHECK END ==========');
       }
     }
 

@@ -47,4 +47,5 @@ export interface LessonSlideContext {
   lessonSlug: string;
   slideIndex: number;
   slideType: string;
+  elementId?: string; // For per-element reporting (e.g., 'HookSlide-2', 'QuizSlide-5')
 }
