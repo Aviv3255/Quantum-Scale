@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useState, useMemo, useRef, useCallback } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter, useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Maximize2, Minimize2 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
-import { useAdmin } from '@/hooks/useAdmin';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getUserProfile } from '@/lib/supabase';
 
@@ -435,10 +434,8 @@ export default function LessonPage() {
   const searchParams = useSearchParams();
   const slug = params.slug as string;
   const { user, isLoading } = useAuthStore();
-  const { isAdmin, isLoading: adminLoading } = useAdmin();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [userName, setUserName] = useState<string>('Builder');
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // Get slide parameter for deep linking (from admin issue direct links)
   const slideParam = searchParams.get('slide');
@@ -447,18 +444,9 @@ export default function LessonPage() {
   const lesson = useMemo(() => lessonMeta[slug], [slug]);
   const lessonExists = Boolean(lesson);
 
-  // Send admin status to iframe when it's ready or when admin status changes
-  const sendAdminStatusToIframe = useCallback(() => {
-    if (iframeRef.current?.contentWindow && !adminLoading) {
-      console.log('[LessonPage] Sending ADMIN_STATUS to iframe:', isAdmin);
-      iframeRef.current.contentWindow.postMessage({ type: 'ADMIN_STATUS', isAdmin }, '*');
-    }
-  }, [isAdmin, adminLoading]);
-
-  // Listen for messages from the lesson iframe
+  // Listen for slide updates from the lesson iframe (for admin issue tracking)
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      // Handle slide updates
       if (event.data?.type === 'LESSON_SLIDE_UPDATE') {
         // Dispatch custom event for AdminReportButton to capture
         window.dispatchEvent(new CustomEvent('lessonSlideContext', {
@@ -469,27 +457,11 @@ export default function LessonPage() {
           }
         }));
       }
-
-      // Handle admin status check request from iframe (DIRECT handling as backup)
-      if (event.data?.type === 'CHECK_ADMIN_STATUS') {
-        console.log('[LessonPage] Received CHECK_ADMIN_STATUS, responding with isAdmin:', isAdmin);
-        if (event.source && !adminLoading) {
-          (event.source as Window).postMessage({ type: 'ADMIN_STATUS', isAdmin }, '*');
-        }
-      }
     };
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, [slug, isAdmin, adminLoading]);
-
-  // Send admin status to iframe when admin check completes
-  useEffect(() => {
-    if (!adminLoading) {
-      console.log('[LessonPage] Admin check complete, sending status to iframe:', isAdmin);
-      sendAdminStatusToIframe();
-    }
-  }, [adminLoading, isAdmin, sendAdminStatusToIframe]);
+  }, [slug]);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -590,13 +562,11 @@ export default function LessonPage() {
           }`}
         >
           <iframe
-            ref={iframeRef}
             src={lessonUrl}
             className="w-full h-full border-0"
             title={lesson.title}
             allow="fullscreen"
             sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
-            onLoad={sendAdminStatusToIframe}
           />
         </div>
       </div>
