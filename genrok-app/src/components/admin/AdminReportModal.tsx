@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Bug, MapPin, AlertTriangle } from 'lucide-react';
+import { X, Bug, MapPin, AlertTriangle, CheckSquare } from 'lucide-react';
 import { createIssue, generateDirectLink, detectPageType } from '@/lib/adminIssues';
 import type { LessonSlideContext } from '@/types/admin';
 
@@ -20,6 +20,7 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
   const [priority, setPriority] = useState<'normal' | 'urgent'>('normal');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [usePlaywright, setUsePlaywright] = useState(true);
 
   const pageUrl = typeof window !== 'undefined' ? window.location.pathname : '';
   const pageType = detectPageType(pageUrl);
@@ -52,7 +53,7 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
         page_type: pageType,
         lesson_slug: lessonContext?.lessonSlug || null,
         slide_index: lessonContext?.slideIndex ?? null,
-        section_id: null,
+        section_id: usePlaywright ? 'playwright_validate' : null,
         title: title.trim(),
         description: description.trim(),
         priority,
@@ -63,6 +64,7 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
       setTitle('');
       setDescription('');
       setPriority('normal');
+      setUsePlaywright(true);
       onClose();
     } catch (err) {
       console.error('Error creating issue:', err);
@@ -179,6 +181,26 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
                     <AlertTriangle className="w-4 h-4" />
                     Urgent
                   </button>
+                </div>
+              </div>
+
+              {/* Playwright Validation Checkbox */}
+              <div
+                onClick={() => setUsePlaywright(!usePlaywright)}
+                className="flex items-center gap-3 p-4 rounded-xl border border-neutral-200 cursor-pointer hover:bg-neutral-50 transition-colors"
+              >
+                <div className={`w-5 h-5 rounded flex items-center justify-center transition-colors ${
+                  usePlaywright ? 'bg-neutral-900' : 'bg-neutral-100 border border-neutral-300'
+                }`}>
+                  {usePlaywright && <CheckSquare className="w-4 h-4 text-white" />}
+                </div>
+                <div className="flex-1">
+                  <span className="text-sm font-medium text-neutral-700">
+                    Use Playwright to validate fix
+                  </span>
+                  <p className="text-xs text-neutral-500 mt-0.5">
+                    Claude will use browser automation to verify the issue is fixed
+                  </p>
                 </div>
               </div>
 
