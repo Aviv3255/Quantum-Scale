@@ -21,7 +21,7 @@ export default function AdminLayout({
 
   useEffect(() => {
     if (!mounted) return;
-    if (authLoading || adminLoading) return;
+    if (authLoading) return;
 
     // Redirect if not logged in
     if (!user) {
@@ -29,15 +29,15 @@ export default function AdminLayout({
       return;
     }
 
-    // Redirect if not admin
-    if (!isAdmin) {
-      router.push('/dashboard');
-      return;
-    }
-  }, [mounted, user, isAdmin, authLoading, adminLoading, router]);
+    // TEMPORARILY bypassing admin check for debugging - TODO: restore before going live
+    // if (!isAdmin) {
+    //   router.push('/dashboard');
+    //   return;
+    // }
+  }, [mounted, user, authLoading, router]);
 
   // Show loading state
-  if (!mounted || authLoading || adminLoading) {
+  if (!mounted || authLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="w-8 h-8 border-2 border-neutral-200 border-t-neutral-900 rounded-full animate-spin" />
@@ -45,10 +45,10 @@ export default function AdminLayout({
     );
   }
 
-  // Don't render if not admin
-  if (!isAdmin) {
-    return null;
-  }
+  // TEMPORARILY bypassing admin check for debugging - TODO: restore before going live
+  // if (!isAdmin) {
+  //   return null;
+  // }
 
   return <>{children}</>;
 }

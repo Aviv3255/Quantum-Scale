@@ -86,7 +86,10 @@ export function AdminReportButton() {
     <>
       {/* Floating Report Button */}
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => {
+          console.log('[AdminReportButton] Button clicked! Opening modal...');
+          setIsModalOpen(true);
+        }}
         style={{
           position: 'fixed',
           bottom: '24px',
