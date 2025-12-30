@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11/dist/framer-motion.js"></script>
     <style>
         * {
             margin: 0;
@@ -111,16 +110,29 @@
 
         /* Dark Block Styling */
         .dark-block {
-            background: var(--block-bg);
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
             color: var(--block-text);
             border-radius: var(--radius-xl);
             padding: var(--space-12);
             margin: var(--space-8) 0;
-            box-shadow: 0 24px 48px rgba(0,0,0,0.16);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 40px rgba(59,130,246,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--block-accent), transparent);
         }
 
         .dark-block h3 {
             color: var(--block-text);
+            text-shadow: 0 0 20px rgba(59,130,246,0.3);
         }
 
         .highlight-blue {
@@ -145,23 +157,45 @@
         .flow-node {
             flex: 1;
             min-width: 200px;
-            background: var(--bg-primary);
-            border: 3px solid var(--block-accent);
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            border: 1px solid rgba(59, 130, 246, 0.3);
             border-radius: var(--radius-lg);
             padding: var(--space-6);
             text-align: center;
             position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 30px rgba(59, 130, 246, 0.1);
+        }
+
+        .flow-node::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--block-accent), transparent);
+        }
+
+        .flow-node h4 {
+            color: var(--block-text);
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .flow-node p {
+            color: #9ca3af;
         }
 
         .flow-node-icon {
             width: 64px;
             height: 64px;
             margin: 0 auto var(--space-4);
-            background: var(--block-accent);
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.4);
         }
 
         .flow-arrow {
@@ -184,23 +218,41 @@
         }
 
         .benefit-card {
-            background: var(--block-bg);
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
             color: var(--block-text);
             padding: var(--space-8);
             border-radius: var(--radius-lg);
-            border-left: 4px solid var(--block-accent);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(59, 130, 246, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--block-accent), transparent);
+        }
+
+        .benefit-card h4 {
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
         }
 
         .benefit-icon {
             width: 48px;
             height: 48px;
-            background: var(--block-accent);
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
             border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: var(--space-4);
             font-size: 24px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
         }
 
         /* Win-Win-Win Visual */
@@ -216,17 +268,51 @@
         .win-card {
             flex: 1;
             min-width: 250px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
             color: white;
             padding: var(--space-8);
             border-radius: var(--radius-lg);
             text-align: center;
-            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 40px rgba(102, 126, 234, 0.15);
         }
 
-        .win-card.blue { background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%); }
-        .win-card.green { background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
-        .win-card.purple { background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); }
+        .win-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #667eea, transparent);
+        }
+
+        .win-card h3 {
+            text-shadow: 0 0 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .win-card.blue {
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 40px rgba(59, 130, 246, 0.2);
+        }
+        .win-card.blue::before { background: linear-gradient(90deg, transparent, #3B82F6, transparent); }
+        .win-card.blue h3 { text-shadow: 0 0 25px rgba(59, 130, 246, 0.4); }
+
+        .win-card.green {
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 40px rgba(16, 185, 129, 0.2);
+        }
+        .win-card.green::before { background: linear-gradient(90deg, transparent, #10B981, transparent); }
+        .win-card.green h3 { text-shadow: 0 0 25px rgba(16, 185, 129, 0.4); }
+
+        .win-card.purple {
+            border-color: rgba(139, 92, 246, 0.3);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 40px rgba(139, 92, 246, 0.2);
+        }
+        .win-card.purple::before { background: linear-gradient(90deg, transparent, #8B5CF6, transparent); }
+        .win-card.purple h3 { text-shadow: 0 0 25px rgba(139, 92, 246, 0.4); }
 
         /* Implementation Steps */
         .steps-list {
@@ -241,9 +327,11 @@
             padding: var(--space-6);
             padding-left: var(--space-20);
             margin-bottom: var(--space-4);
-            background: #FAFAFA;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            color: var(--block-text);
             border-radius: var(--radius-lg);
-            border-left: 4px solid var(--accent-primary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3), 0 0 20px rgba(59, 130, 246, 0.08);
         }
 
         .steps-list li::before {
@@ -254,7 +342,7 @@
             transform: translateY(-50%);
             width: 40px;
             height: 40px;
-            background: var(--accent-primary);
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -262,33 +350,54 @@
             justify-content: center;
             font-weight: 700;
             font-size: 18px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .steps-list li strong {
+            color: var(--block-text);
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+        }
+
+        .steps-list li p {
+            color: #9ca3af;
         }
 
         /* Quiz Styling */
         .quiz-option {
-            background: white;
-            border: 2px solid var(--border-light);
+            background: linear-gradient(135deg, #111, #1a1a1a);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-lg);
             padding: var(--space-6);
             margin-bottom: var(--space-4);
             cursor: pointer;
             transition: all 0.3s ease;
+            color: var(--block-text);
         }
 
         .quiz-option:hover {
             border-color: var(--accent-primary);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25), 0 0 30px rgba(59, 130, 246, 0.1);
             transform: translateY(-2px);
         }
 
+        .quiz-option strong {
+            color: var(--block-text);
+        }
+
+        .quiz-option p {
+            color: #9ca3af;
+        }
+
         .quiz-option.correct {
-            background: #D1FAE5;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
             border-color: var(--success);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
         }
 
         .quiz-option.incorrect {
-            background: #FEE2E2;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
             border-color: #EF4444;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
         }
 
         /* Navigation */
