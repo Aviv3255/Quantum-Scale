@@ -1,1013 +1,708 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Hidden Costs Killing Your Margins | Quantum Scale</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <!-- Framer Motion -->
-    <script src="https://cdn.jsdelivr.net/npm/framer-motion@11.0.8/dist/framer-motion.js"></script>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            /* Colors */
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #FAFAFA;
-            --text-primary: #000000;
-            --text-secondary: #1a1a1a;
-            --text-muted: #666666;
-            --accent-primary: #EF4444;
-            --accent-hover: #DC2626;
-            --block-bg: #000000;
-            --block-text: #FFFFFF;
-            --border-light: #E5E7EB;
-            --success: #10B981;
-            --warning: #F59E0B;
-
-            /* Typography */
-            --font-display: 'Fraunces', serif;
-            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-
-            /* Spacing */
-            --space-4: 16px;
-            --space-6: 24px;
-            --space-8: 32px;
-            --space-10: 40px;
-            --space-12: 48px;
-            --space-16: 64px;
-            --space-20: 80px;
-
-            /* Radius */
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .lesson-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--space-20) var(--space-6);
-        }
-
-        .slide {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: var(--space-12) 0;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .slide.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .slide.exiting {
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-
-        /* Typography */
-        h1 {
-            font-family: var(--font-display);
-            font-size: clamp(40px, 6vw, 72px);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: var(--space-6);
-            letter-spacing: -0.02em;
-        }
-
-        h2 {
-            font-family: var(--font-display);
-            font-size: clamp(32px, 4vw, 48px);
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: var(--space-6);
-            letter-spacing: -0.01em;
-        }
-
-        h3 {
-            font-family: var(--font-body);
-            font-size: clamp(20px, 2.5vw, 28px);
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: var(--space-4);
-        }
-
-        .subtitle {
-            font-size: clamp(18px, 2vw, 24px);
-            color: var(--text-muted);
-            margin-bottom: var(--space-8);
-            line-height: 1.5;
-        }
-
-        .accent-text {
-            color: var(--accent-primary);
-            font-weight: 700;
-        }
-
-        /* Dark Blocks */
-        .dark-block {
-            background: var(--block-bg);
-            color: var(--block-text);
-            border-radius: var(--radius-lg);
-            padding: var(--space-8);
-            margin: var(--space-8) 0;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: var(--space-6);
-            margin-bottom: var(--space-4);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transform: translateY(-2px);
-        }
-
-        /* Channel Cards */
-        .channel-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--space-6);
-            margin: var(--space-8) 0;
-        }
-
-        .channel-card {
-            background: var(--bg-primary);
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-lg);
-            padding: var(--space-6);
-            transition: all 0.3s ease;
-        }
-
-        .channel-card:hover {
-            border-color: var(--accent-primary);
-            box-shadow: 0 8px 24px rgba(239,68,68,0.1);
-            transform: translateY(-4px);
-        }
-
-        .channel-name {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin-bottom: var(--space-4);
-            font-weight: 600;
-        }
-
-        .channel-cac {
-            font-size: 40px;
-            font-weight: 800;
-            color: var(--accent-primary);
-            margin: var(--space-4) 0;
-        }
-
-        .channel-breakdown {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-top: var(--space-4);
-            padding-top: var(--space-4);
-            border-top: 1px solid var(--border-light);
-        }
-
-        /* Formula Display */
-        .formula-container {
-            background: var(--block-bg);
-            color: var(--block-text);
-            border-radius: var(--radius-lg);
-            padding: var(--space-8);
-            margin: var(--space-8) 0;
-            text-align: center;
-        }
-
-        .formula {
-            font-size: clamp(16px, 2vw, 20px);
-            font-weight: 600;
-            line-height: 2;
-            margin: var(--space-6) 0;
-        }
-
-        .formula-part {
-            display: inline-block;
-            padding: 8px 16px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            margin: 4px;
-        }
-
-        .formula-highlight {
-            color: var(--accent-primary);
-            font-weight: 700;
-        }
-
-        /* Before/After Comparison */
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-8);
-            margin: var(--space-8) 0;
-        }
-
-        .comparison-card {
-            border-radius: var(--radius-lg);
-            padding: var(--space-8);
-            text-align: center;
-        }
-
-        .comparison-card.before {
-            background: #FEE2E2;
-            border: 2px solid var(--accent-primary);
-        }
-
-        .comparison-card.after {
-            background: #D1FAE5;
-            border: 2px solid var(--success);
-        }
-
-        .comparison-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 700;
-            margin-bottom: var(--space-4);
-        }
-
-        .comparison-amount {
-            font-size: 48px;
-            font-weight: 800;
-            margin: var(--space-4) 0;
-        }
-
-        /* Implementation Steps */
-        .step-list {
-            counter-reset: step-counter;
-            list-style: none;
-            margin: var(--space-8) 0;
-        }
-
-        .step-item {
-            counter-increment: step-counter;
-            position: relative;
-            padding-left: 80px;
-            margin-bottom: var(--space-6);
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-        }
-
-        .step-item::before {
-            content: counter(step-counter);
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 60px;
-            height: 60px;
-            background: var(--block-bg);
-            color: var(--block-text);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 800;
-        }
-
-        .step-content {
-            font-size: 18px;
-            line-height: 1.6;
-        }
-
-        /* Quiz */
-        .quiz-container {
-            max-width: 800px;
-            margin: var(--space-8) auto;
-        }
-
-        .quiz-question {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: var(--space-8);
-            text-align: center;
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-4);
-        }
-
-        .quiz-option {
-            background: var(--bg-primary);
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-md);
-            padding: var(--space-6);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-        }
-
-        .quiz-option:hover {
-            border-color: var(--accent-primary);
-            transform: translateX(8px);
-        }
-
-        .quiz-option.correct {
-            border-color: var(--success);
-            background: #D1FAE5;
-        }
-
-        .quiz-option.incorrect {
-            border-color: var(--accent-primary);
-            background: #FEE2E2;
-        }
-
-        /* Buttons */
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: var(--space-12);
-            gap: var(--space-4);
-        }
-
-        button {
-            font-family: var(--font-body);
-            font-size: 16px;
-            font-weight: 600;
-            padding: 16px 32px;
-            border-radius: var(--radius-md);
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: var(--block-bg);
-            color: var(--block-text);
-        }
-
-        .btn-primary:hover {
-            background: var(--text-secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        }
-
-        .btn-secondary {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            border: 2px solid var(--border-light);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--text-primary);
-            transform: translateY(-2px);
-        }
-
-        .btn-accent {
-            background: var(--accent-primary);
-            color: white;
-        }
-
-        .btn-accent:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(239,68,68,0.3);
-        }
-
-        /* Progress Bar */
-        .progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--border-light);
-            z-index: 1000;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: var(--accent-primary);
-            transition: width 0.3s ease;
-        }
-
-        /* Icon Styles */
-        .icon-container {
-            width: 80px;
-            height: 80px;
-            background: var(--block-bg);
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto var(--space-6);
-        }
-
-        .icon-svg {
-            width: 48px;
-            height: 48px;
-            stroke: var(--block-text);
-            stroke-width: 2;
-            fill: none;
-        }
-
-        /* Highlight Box */
-        .highlight-box {
-            background: #FEF3C7;
-            border-left: 4px solid var(--warning);
-            padding: var(--space-6);
-            border-radius: var(--radius-md);
-            margin: var(--space-8) 0;
-        }
-
-        .highlight-box strong {
-            color: var(--warning);
-            font-size: 18px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .lesson-container {
-                padding: var(--space-12) var(--space-4);
-            }
-
-            .comparison-grid,
-            .channel-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .step-item {
-                padding-left: 80px;
-            }
-
-            .step-item::before {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-in {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        .stagger-1 { animation-delay: 0.1s; }
-        .stagger-2 { animation-delay: 0.2s; }
-        .stagger-3 { animation-delay: 0.3s; }
-        .stagger-4 { animation-delay: 0.4s; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Hidden CAC Costs | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #ef4444; --accent-dark: #dc2626; --accent-light: #f87171; --accent-rgb: 239, 68, 68; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body>
-    <!-- Progress Bar -->
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
+  <div id="root"></div>
 
-    <div class="lesson-container">
-        <!-- Slide 1: Welcome -->
-        <div class="slide active" data-slide="1">
-            <div class="icon-container">
-                <svg class="icon-svg" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                    <path d="M2 17L12 22L22 17"/>
-                    <path d="M2 12L12 17L22 12"/>
-                </svg>
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
+
+    const LESSON_CONFIG = {
+      id: 'biz-hidden-cac-costs',
+      title: 'The Hidden CAC Costs',
+      description: 'You think your CAC is $25. It\'s actually $187.',
+      accentColor: '#ef4444',
+      duration: '6 min',
+      nextLesson: { id: 'biz-infinite-money-loop', title: 'The Infinite Money Loop', teaser: 'How to turn every customer into a marketing engine.' }
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why your CAC is probably 5-10x higher than you think', 'The hidden costs most businesses ignore', 'How to calculate TRUE CAC by channel'] },
+      { type: 'hook', headline: 'You think your CAC is $25. It\'s actually $187.', subtext: 'Most businesses underestimate their Customer Acquisition Cost by 5-10x. That\'s not a typo. You\'re only counting ad spend while ignoring payroll, software, commissions, agency fees, and your own time. These hidden costs are silently destroying your margins.' },
+      { type: 'iceberg', title: 'The CAC Iceberg' },
+      { type: 'content', title: 'CAC is NOT Just Ad Spend', body: 'Customer Acquisition Cost includes EVERYTHING it takes to acquire one customer: ad spend, sales & marketing payroll, software subscriptions, commissions, agency fees, and yes—your own time. If you\'re only tracking ad spend, you\'re making decisions with incomplete data.' },
+      { type: 'cost-reveal', title: 'The Hidden Cost Stack' },
+      { type: 'content', title: 'The Founder\'s Trap', body: 'You spend 20 hours/week on marketing. A marketing manager costs $60K/year ($30/hour). That\'s $2,400/month in hidden costs you\'re not counting. If you\'re doing the work yourself, you\'re not saving money—you\'re hiding the cost.' },
+      { type: 'channel-comparison', title: 'CAC By Channel: Real Numbers' },
+      { type: 'before-after', title: 'What You Think vs Reality' },
+      { type: 'cards', title: 'Calculate Your True CAC', items: [
+        { title: 'List ALL Channels', description: 'Paid ads, organic, partnerships, cold outreach, content—every way you acquire customers.' },
+        { title: 'Track ALL Costs', description: 'Ad spend, payroll, software, commissions, your time (use replacement cost).' },
+        { title: 'Count Per Channel', description: 'New customers from EACH channel separately—not blended averages.' },
+        { title: 'Compare to LTV', description: 'Healthy ratio: LTV should be 3x+ your CAC. Below 2x? You\'re in trouble.' }
+      ]},
+      { type: 'quiz', question: 'You spend $10K on ads, $5K on a VA, $500 on software. You get 250 customers. What\'s your TRUE CAC?', options: ['$40 (just ad spend)', '$42 (ads + software)', '$62 (all costs)', '$50 (average)'], correctIndex: 2, feedback: { correct: 'Exactly! ($10,000 + $5,000 + $500) ÷ 250 = $62. This is the REAL CAC that includes all costs, not just ad spend.', incorrect: 'Remember: CAC includes ALL costs. $10,000 (ads) + $5,000 (VA) + $500 (software) = $15,500 total. $15,500 ÷ 250 = $62 TRUE CAC.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      DollarSign: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Users: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Settings: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      Clock2: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Briefcase: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+      Target: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      AlertTriangle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Eye: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      EyeOff: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+    };
+
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // ============ CUSTOM ELITE SLIDES ============
+
+    // CAC Iceberg Slide - Visible costs vs hidden costs below the surface
+    const IcebergSlide = ({ data }) => {
+      const visibleCosts = [
+        { label: 'Ad Spend', value: '$25', color: '#3b82f6' }
+      ];
+      const hiddenCosts = [
+        { label: 'Marketing Payroll', value: '$80', color: '#ef4444' },
+        { label: 'Software & Tools', value: '$25', color: '#f59e0b' },
+        { label: 'Agency Fees', value: '$30', color: '#8b5cf6' },
+        { label: 'Your Time', value: '$27', color: '#22c55e' },
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.AlertTriangle size={14} color="var(--accent)" />
+              <span>The Truth</span>
             </div>
-            <h1 style="text-align: center;">The Hidden Costs<br/>Killing Your Margins</h1>
-            <p class="subtitle" style="text-align: center; max-width: 700px; margin: 0 auto var(--space-8);">
-                You're bleeding money and don't even know it. Let's uncover the hidden costs that are silently destroying your CAC calculations.
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="relative mx-auto" style={{ width: '100%', maxWidth: '500px', height: '400px' }}>
+            {/* Water line */}
+            <motion.div
+              className="absolute left-0 right-0 h-1"
+              style={{ top: '120px', background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)', zIndex: 10 }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 1, delay: 0.5 }}
+            />
+            <div className="absolute left-4 text-xs text-blue-500 font-semibold" style={{ top: '108px' }}>WATERLINE</div>
+
+            {/* Above water - Visible */}
+            <motion.div
+              className="absolute left-1/2 -translate-x-1/2 rounded-t-2xl flex flex-col items-center justify-center"
+              style={{ top: '20px', width: '180px', height: '100px', background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
+              initial={{ opacity: 0, y: -30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <div className="flex items-center gap-1 mb-1">
+                <Icons.Eye size={16} color="white" />
+                <span className="text-xs text-white/80 uppercase tracking-wider">Visible</span>
+              </div>
+              <div className="text-3xl font-bold text-white">$25</div>
+              <div className="text-xs text-white/70">Ad Spend Only</div>
+            </motion.div>
+
+            {/* Below water - Hidden (larger) */}
+            <motion.div
+              className="absolute left-1/2 -translate-x-1/2 rounded-b-3xl overflow-hidden"
+              style={{ top: '121px', width: '320px', height: '260px', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(239, 68, 68, 0.3)' }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }}></div>
+
+              <div className="flex items-center justify-center gap-1 mt-4 mb-2">
+                <Icons.EyeOff size={16} color="#ef4444" />
+                <span className="text-xs text-red-400 uppercase tracking-wider">Hidden Costs</span>
+              </div>
+
+              <div className="text-4xl font-bold text-center mb-4" style={{ color: '#ef4444' }}>+$162</div>
+
+              <div className="space-y-2 px-4">
+                {hiddenCosts.map((cost, i) => (
+                  <motion.div
+                    key={i}
+                    className="flex items-center justify-between px-3 py-2 rounded-lg"
+                    style={{ background: `${cost.color}15`, border: `1px solid ${cost.color}30` }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 + i * 0.1 }}
+                  >
+                    <span className="text-xs text-neutral-300">{cost.label}</span>
+                    <span className="text-sm font-bold" style={{ color: cost.color }}>{cost.value}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div
+                className="absolute bottom-4 left-0 right-0 text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.3 }}
+              >
+                <div className="text-xs text-neutral-500">TRUE CAC</div>
+                <div className="text-2xl font-bold text-white">$187</div>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5 }} className="text-center text-neutral-500 text-sm mt-4 max-w-md mx-auto">
+            What you see is just the tip. The real costs lurk below the surface.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // Cost Reveal Slide - Animated stack revealing hidden costs
+    const CostRevealSlide = ({ data }) => {
+      const [revealedCount, setRevealedCount] = useState(0);
+
+      const costs = [
+        { label: 'Ad Spend', value: 15000, icon: Icons.Target, color: '#3b82f6', description: 'What most people count' },
+        { label: 'Marketing Payroll', value: 60000, icon: Icons.Users, color: '#ef4444', description: 'Your team\'s salaries' },
+        { label: 'Software & Tools', value: 5000, icon: Icons.Settings, color: '#f59e0b', description: 'CRMs, analytics, etc.' },
+        { label: 'Agency Fees', value: 13500, icon: Icons.Briefcase, color: '#8b5cf6', description: 'External help' },
+        { label: 'Your Time', value: 28800, icon: Icons.Clock2, color: '#22c55e', description: '20 hrs/week × $30/hr × 12 mo' },
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setRevealedCount(c => c < costs.length ? c + 1 : c);
+        }, 800);
+        return () => clearInterval(timer);
+      }, []);
+
+      const totalRevealed = costs.slice(0, revealedCount).reduce((sum, c) => sum + c.value, 0);
+      const customers = 500;
+      const currentCAC = revealedCount > 0 ? Math.round(totalRevealed / customers) : 0;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.DollarSign size={14} color="var(--accent)" />
+              <span>Cost Breakdown</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 items-center">
+            {/* Cost Stack */}
+            <div className="space-y-3">
+              {costs.map((cost, i) => {
+                const isRevealed = i < revealedCount;
+                const IconComponent = cost.icon;
+                return (
+                  <motion.div
+                    key={i}
+                    className="rounded-xl p-4 relative overflow-hidden"
+                    style={{
+                      background: isRevealed ? 'linear-gradient(135deg, #0a0a0a, #1a1a1a)' : '#f5f5f5',
+                      border: isRevealed ? `1px solid ${cost.color}40` : '1px solid #e5e5e5',
+                      boxShadow: isRevealed ? `0 0 20px ${cost.color}15` : 'none'
+                    }}
+                    initial={{ opacity: 0.5 }}
+                    animate={{ opacity: 1, scale: isRevealed ? 1 : 0.98 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {isRevealed && <div className="absolute top-0 left-0 w-full h-0.5" style={{ background: `linear-gradient(90deg, transparent, ${cost.color}, transparent)` }}></div>}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: isRevealed ? `${cost.color}20` : '#e5e5e5' }}>
+                          <IconComponent size={20} color={isRevealed ? cost.color : '#999'} />
+                        </div>
+                        <div>
+                          <div className={`font-semibold text-sm ${isRevealed ? 'text-white' : 'text-neutral-400'}`}>{cost.label}</div>
+                          <div className={`text-xs ${isRevealed ? 'text-neutral-400' : 'text-neutral-300'}`}>{cost.description}</div>
+                        </div>
+                      </div>
+                      <motion.div
+                        className="text-xl font-bold"
+                        style={{ color: isRevealed ? cost.color : '#ccc' }}
+                        animate={{ scale: isRevealed ? [1, 1.1, 1] : 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        ${(cost.value / 1000).toFixed(1)}K
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Running Total */}
+            <div className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+              <div className="text-xs text-neutral-400 uppercase tracking-wider mb-2">Annual Marketing Costs</div>
+              <motion.div
+                className="text-4xl md:text-5xl font-bold mb-4"
+                style={{ color: 'var(--accent)' }}
+                key={totalRevealed}
+              >
+                ${totalRevealed.toLocaleString()}
+              </motion.div>
+
+              <div className="border-t border-neutral-700 pt-4 mt-4">
+                <div className="text-xs text-neutral-400 mb-1">÷ {customers} customers =</div>
+                <div className="text-xs text-neutral-400 uppercase tracking-wider mb-2">TRUE CAC</div>
+                <motion.div
+                  className="text-5xl md:text-6xl font-bold text-white"
+                  key={currentCAC}
+                  animate={{ scale: [1, 1.05, 1] }}
+                >
+                  ${currentCAC}
+                </motion.div>
+              </div>
+
+              {revealedCount >= costs.length && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 px-4 py-2 rounded-lg inline-block"
+                  style={{ background: 'rgba(239, 68, 68, 0.2)', border: '1px solid rgba(239, 68, 68, 0.3)' }}
+                >
+                  <span className="text-sm text-red-400 font-semibold">7.5x higher than ad spend alone!</span>
+                </motion.div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // Channel CAC Comparison Slide
+    const ChannelComparisonSlide = ({ data }) => {
+      const channels = [
+        { name: 'Paid Ads', cac: 25, customers: 500, color: '#22c55e', costs: { ads: 10000, payroll: 2000, tools: 500 } },
+        { name: 'Free Content', cac: 78, customers: 20, color: '#3b82f6', costs: { creator: 1200, editing: 350 } },
+        { name: 'Warm Outreach', cac: 100, customers: 5, color: '#f59e0b', costs: { setter: 500 } },
+        { name: 'Cold Outreach', cac: 1031, customers: 4, color: '#ef4444', costs: { software: 500, sdr: 3000, commission: 625 } },
+      ];
+
+      const maxCAC = Math.max(...channels.map(c => c.cac));
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.TrendingUp size={14} color="var(--accent)" />
+              <span>Channel Analysis</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+            <p className="text-neutral-500 text-sm mt-2">Same business, same month, wildly different CAC</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {channels.map((channel, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 + i * 0.1 }}
+                className="rounded-2xl p-5 relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: `1px solid ${channel.color}30` }}
+              >
+                <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${channel.color}, transparent)` }}></div>
+
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div className="text-xs text-neutral-400 uppercase tracking-wider">{channel.name}</div>
+                    <div className="text-xs text-neutral-500 mt-1">{channel.customers} customers</div>
+                  </div>
+                  <div className="text-3xl font-bold" style={{ color: channel.color }}>${channel.cac}</div>
+                </div>
+
+                {/* CAC Bar */}
+                <div className="h-3 rounded-full overflow-hidden mb-3" style={{ background: '#333' }}>
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{ background: `linear-gradient(90deg, ${channel.color}, ${channel.color}aa)` }}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${Math.min((channel.cac / maxCAC) * 100, 100)}%` }}
+                    transition={{ duration: 1, delay: 0.5 + i * 0.1 }}
+                  />
+                </div>
+
+                <div className="text-xs text-neutral-500">
+                  {Object.entries(channel.costs).map(([key, value], j) => (
+                    <span key={key}>
+                      {key}: ${value.toLocaleString()}{j < Object.entries(channel.costs).length - 1 ? ' • ' : ''}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="rounded-xl p-4 mt-6 text-center" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+            <p className="text-neutral-700 text-sm font-medium">
+              Cold outreach is <span className="text-red-500 font-bold">41x more expensive</span> than paid ads. You can't optimize what you don't measure.
             </p>
-            <div style="text-align: center;">
-                <button class="btn-accent" onclick="nextSlide()">Start Learning →</button>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Before/After Comparison Slide
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* What You Think */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #fee2e2, #fecaca)', border: '2px solid #ef4444' }}
+          >
+            <div className="text-xs text-red-600 uppercase tracking-wider font-bold mb-4">What You Think</div>
+            <div className="text-6xl font-bold text-red-500 mb-4">$30</div>
+            <div className="text-sm text-red-700 mb-4">Just counting ad spend</div>
+
+            <div className="space-y-2 text-sm text-red-800">
+              <div className="flex items-center gap-2"><Icons.Check /><span>Facebook Ads: $15,000</span></div>
+              <div className="flex items-center gap-2"><Icons.Check /><span>500 customers</span></div>
+              <div className="flex items-center gap-2"><Icons.Check /><span>CAC = $30</span></div>
             </div>
+
+            <div className="mt-4 pt-4 border-t border-red-300">
+              <div className="flex items-center gap-2 text-red-600 font-bold">
+                <Icons.X />
+                <span>Missing 80% of costs!</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Reality */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+            className="rounded-2xl p-6 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #d1fae5, #a7f3d0)', border: '2px solid #22c55e' }}
+          >
+            <div className="text-xs text-green-700 uppercase tracking-wider font-bold mb-4">Reality</div>
+            <div className="text-6xl font-bold text-green-600 mb-4">$187</div>
+            <div className="text-sm text-green-700 mb-4">ALL costs included</div>
+
+            <div className="space-y-2 text-sm text-green-800">
+              <div>Ad Spend: $15,000</div>
+              <div>Marketing Payroll: $60,000</div>
+              <div>Software: $5,000</div>
+              <div>Agency: $13,500</div>
+            </div>
+
+            <div className="mt-4 pt-4 border-t border-green-400">
+              <div className="flex items-center gap-2 text-green-700 font-bold">
+                <Icons.Check />
+                <span>True CAC = $187</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
-        <!-- Slide 2: Hook -->
-        <div class="slide" data-slide="2">
-            <h2>You think your CAC is <span class="accent-text">$25</span></h2>
-            <h2>It's actually <span class="accent-text">$187</span></h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="rounded-xl p-5 mt-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <p className="text-white text-base font-medium">
+            If your LTV is $150 and you think your CAC is $30, you're celebrating.<br/>
+            But if your REAL CAC is $187? <span className="text-red-400">You're losing $37 on every customer.</span>
+          </p>
+        </motion.div>
+      </div>
+    );
+    // ============ END CUSTOM ELITE SLIDES ============
 
-            <div class="dark-block" style="margin-top: var(--space-12);">
-                <h3 style="color: white; margin-bottom: var(--space-6);">Here's what's really happening:</h3>
-                <div style="display: grid; gap: var(--space-4); font-size: 18px; line-height: 1.8;">
-                    <div>✗ You're only counting ad spend</div>
-                    <div>✗ You're ignoring payroll costs</div>
-                    <div>✗ You're forgetting software subscriptions</div>
-                    <div>✗ You're not tracking your own time</div>
-                    <div>✗ You're missing agency/contractor fees</div>
-                </div>
-            </div>
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
-            <p class="subtitle" style="margin-top: var(--space-8);">
-                Most businesses underestimate their Customer Acquisition Cost by <strong>5-10x</strong>. That's not a typo.
-            </p>
-
-            <div class="nav-buttons">
-                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
-                <button class="btn-primary" onclick="nextSlide()">Continue →</button>
-            </div>
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
         </div>
+      );
+    };
 
-        <!-- Slide 3: CAC Definition -->
-        <div class="slide" data-slide="3">
-            <h2>CAC is NOT just ad spend</h2>
-            <p class="subtitle">It's the TOTAL cost to acquire ONE customer</p>
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
 
-            <div class="highlight-box">
-                <strong>Critical Truth:</strong> If you're only tracking ad spend, you're making decisions with incomplete data. And incomplete data = bad decisions = burned cash.
-            </div>
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
+      </div>
+    );
 
-            <div class="card" style="margin-top: var(--space-8);">
-                <h3>What CAC Actually Includes:</h3>
-                <div style="display: grid; gap: var(--space-4); margin-top: var(--space-6); font-size: 16px;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
-                        <span><strong>Ad Spend:</strong> Meta, Google, TikTok, etc.</span>
+    const CardsSlide = ({ data }) => {
+      const cardsData = data.cards || data.items || [];
+      const cardColors = ['#ef4444', '#f59e0b', '#22c55e', '#3b82f6'];
+      const cardIcons = [Icons.Target, Icons.DollarSign, Icons.Users, Icons.TrendingUp];
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {cardsData.map((item, i) => {
+              const color = cardColors[i % cardColors.length];
+              const IconComponent = cardIcons[i % cardIcons.length];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 + i * 0.1 }} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: `1px solid ${color}30` }}>
+                  <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}></div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${color}15`, border: `1px solid ${color}40` }}>
+                      <IconComponent size={20} color={color} />
                     </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
-                        <span><strong>Sales & Marketing Payroll:</strong> Your team's salaries</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
-                        <span><strong>Software & Tools:</strong> CRMs, email platforms, analytics</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
-                        <span><strong>Commissions & Bonuses:</strong> Performance incentives</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
-                        <span><strong>Agency Fees:</strong> External marketing help</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <div style="width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%;"></div>
-                        <span><strong>Your Time:</strong> Yes, this counts too</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
-                <button class="btn-primary" onclick="nextSlide()">See The Formula →</button>
-            </div>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase" style={{ background: `${color}20`, color: color }}>{`0${i + 1}`}</span>
+                  </div>
+                  <h3 className="font-bold text-white mb-2 text-base">{item.title}</h3>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{item.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
+      );
+    };
 
-        <!-- Slide 4: The Full Formula -->
-        <div class="slide" data-slide="4">
-            <h2 style="text-align: center;">The Real CAC Formula</h2>
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
 
-            <div class="formula-container">
-                <div class="formula">
-                    <div class="formula-part">Ad Spend</div>
-                    <span style="color: var(--accent-primary); font-size: 32px;">+</span>
-                    <div class="formula-part">Sales/Marketing Payroll</div>
-                    <span style="color: var(--accent-primary); font-size: 32px;">+</span>
-                    <div class="formula-part">Software & Tools</div>
-                    <span style="color: var(--accent-primary); font-size: 32px;">+</span>
-                    <div class="formula-part">Commissions</div>
-                </div>
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
-                <div style="font-size: 48px; color: var(--accent-primary); margin: var(--space-6) 0;">÷</div>
-
-                <div class="formula">
-                    <div class="formula-part formula-highlight">New Customers from that Channel</div>
-                </div>
-
-                <div style="font-size: 64px; font-weight: 800; margin-top: var(--space-8); color: var(--accent-primary);">= TRUE CAC</div>
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
             </div>
-
-            <div class="card" style="margin-top: var(--space-8); background: var(--bg-secondary);">
-                <p style="font-size: 18px; text-align: center; color: var(--text-secondary);">
-                    <strong>Pro Tip:</strong> Calculate CAC per channel, not as a blended average. Your Meta ads might have $30 CAC while your cold outreach has $1,000+ CAC.
-                </p>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
-                <button class="btn-primary" onclick="nextSlide()">Continue →</button>
-            </div>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
+      );
+    };
 
-        <!-- Slide 5: Founder's Trap -->
-        <div class="slide" data-slide="5">
-            <h2>The Founder's Trap</h2>
-            <p class="subtitle">Your time has a cost. Stop pretending it's free.</p>
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know how to calculate your TRUE CAC—not the fantasy number. Track all costs, measure by channel, and make decisions with complete data.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
 
-            <div class="dark-block">
-                <h3 style="color: white;">Scenario: You're running all your marketing yourself</h3>
+    const LessonApp = () => {
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
+      const [direction, setDirection] = useState(1);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
 
-                <div style="margin-top: var(--space-8); font-size: 18px; line-height: 2;">
-                    <div style="margin-bottom: var(--space-4);">
-                        <span style="opacity: 0.7;">You spend</span> <strong style="color: var(--accent-primary);">20 hours/week</strong> <span style="opacity: 0.7;">on marketing</span>
-                    </div>
-                    <div style="margin-bottom: var(--space-4);">
-                        <span style="opacity: 0.7;">A marketing manager costs</span> <strong style="color: var(--accent-primary);">$60,000/year</strong>
-                    </div>
-                    <div style="margin-bottom: var(--space-4);">
-                        <span style="opacity: 0.7;">That's</span> <strong style="color: var(--accent-primary);">$30/hour</strong> <span style="opacity: 0.7;">replacement cost</span>
-                    </div>
-                    <div style="margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid rgba(255,255,255,0.2);">
-                        <span style="opacity: 0.7;">Your hidden monthly cost:</span> <strong style="color: var(--accent-primary); font-size: 32px;">$2,400</strong>
-                    </div>
-                </div>
-            </div>
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
 
-            <div class="highlight-box" style="margin-top: var(--space-8);">
-                <strong>Reality Check:</strong> If you're doing the work yourself, you're not saving money—you're just hiding the cost. Calculate your replacement cost and add it to your CAC. Your REAL numbers might shock you.
-            </div>
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-            <div class="nav-buttons">
-                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
-                <button class="btn-primary" onclick="nextSlide()">See Real Examples →</button>
-            </div>
-        </div>
+      useEffect(() => {
+        window.parent.postMessage({
+          type: 'LESSON_SLIDE_UPDATE',
+          slideIndex: currentSlide,
+          slideType: slides[currentSlide]?.type,
+          lessonSlug: LESSON_CONFIG.id
+        }, '*');
+      }, [currentSlide]);
 
-        <!-- Slide 6: Channel Comparison -->
-        <div class="slide" data-slide="6">
-            <h2>CAC By Channel: Real Numbers</h2>
-            <p class="subtitle">Same business, same month, wildly different CAC</p>
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
 
-            <div class="channel-grid">
-                <div class="channel-card">
-                    <div class="channel-name">Paid Ads</div>
-                    <div class="channel-cac">$25</div>
-                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-4);">500 customers acquired</div>
-                    <div class="channel-breakdown">
-                        <div>Ad Spend: $10,000</div>
-                        <div>Payroll: $2,000</div>
-                        <div>Tools: $500</div>
-                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--text-primary);">Total: $12,500 ÷ 500</div>
-                    </div>
-                </div>
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
 
-                <div class="channel-card">
-                    <div class="channel-name">Cold Outreach</div>
-                    <div class="channel-cac">$1,031</div>
-                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-4);">4 customers acquired</div>
-                    <div class="channel-breakdown">
-                        <div>Software: $500</div>
-                        <div>SDR Payroll: $3,000</div>
-                        <div>Commissions: $625</div>
-                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--text-primary);">Total: $4,125 ÷ 4</div>
-                    </div>
-                </div>
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
 
-                <div class="channel-card">
-                    <div class="channel-name">Warm Outreach</div>
-                    <div class="channel-cac">$100</div>
-                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-4);">5 customers acquired</div>
-                    <div class="channel-breakdown">
-                        <div>Setter Payroll: $500</div>
-                        <div>Software: $0</div>
-                        <div>Other: $0</div>
-                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--text-primary);">Total: $500 ÷ 5</div>
-                    </div>
-                </div>
+      const slideVariants = {
+        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+      };
 
-                <div class="channel-card">
-                    <div class="channel-name">Free Content</div>
-                    <div class="channel-cac">$77.50</div>
-                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-4);">20 customers acquired</div>
-                    <div class="channel-breakdown">
-                        <div>Creator Time: $1,200</div>
-                        <div>Editing/Tools: $300</div>
-                        <div>Other: $50</div>
-                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light); font-weight: 600; color: var(--text-primary);">Total: $1,550 ÷ 20</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card" style="background: var(--bg-secondary); margin-top: var(--space-8);">
-                <p style="font-size: 18px; text-align: center;">
-                    <strong>Key Insight:</strong> "Free" content isn't free. Cold outreach can be 40x more expensive than paid ads. You can't optimize what you don't measure.
-                </p>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
-                <button class="btn-primary" onclick="nextSlide()">Continue →</button>
-            </div>
-        </div>
-
-        <!-- Slide 7: Before/After -->
-        <div class="slide" data-slide="7">
-            <h2 style="text-align: center;">What You Think vs Reality</h2>
-
-            <div class="comparison-grid" style="margin-top: var(--space-12);">
-                <div class="comparison-card before">
-                    <div class="comparison-label" style="color: var(--accent-primary);">WHAT YOU THINK</div>
-                    <div class="comparison-amount" style="color: var(--accent-primary);">$30</div>
-                    <p style="font-size: 16px; color: var(--text-secondary); margin-top: var(--space-4);">Just counting ad spend</p>
-
-                    <div style="margin-top: var(--space-6); text-align: left; font-size: 14px; color: var(--text-secondary);">
-                        <div style="margin-bottom: 8px;">✓ Facebook Ads: $15,000</div>
-                        <div style="margin-bottom: 8px;">✓ 500 customers</div>
-                        <div style="margin-bottom: 8px;">✓ CAC = $30</div>
-                        <div style="margin-top: var(--space-4); font-weight: 700; color: var(--accent-primary);">✗ Missing 80% of costs</div>
-                    </div>
-                </div>
-
-                <div class="comparison-card after">
-                    <div class="comparison-label" style="color: var(--success);">REALITY</div>
-                    <div class="comparison-amount" style="color: var(--success);">$187</div>
-                    <p style="font-size: 16px; color: var(--text-secondary); margin-top: var(--space-4);">ALL costs included</p>
-
-                    <div style="margin-top: var(--space-6); text-align: left; font-size: 14px; color: var(--text-secondary);">
-                        <div style="margin-bottom: 8px;">Ad Spend: $15,000</div>
-                        <div style="margin-bottom: 8px;">Marketing Payroll: $60,000</div>
-                        <div style="margin-bottom: 8px;">Software: $5,000</div>
-                        <div style="margin-bottom: 8px;">Agency: $13,500</div>
-                        <div style="margin-top: var(--space-4); font-weight: 700; color: var(--success);">✓ True CAC = $187</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dark-block" style="margin-top: var(--space-12); text-align: center;">
-                <h3 style="color: white; margin-bottom: var(--space-4);">This changes EVERYTHING</h3>
-                <p style="font-size: 18px; opacity: 0.9;">
-                    If your LTV is $150 and you think your CAC is $30, you're celebrating.<br/>
-                    But if your REAL CAC is $187? You're losing $37 on every customer.
-                </p>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
-                <button class="btn-primary" onclick="nextSlide()">How To Fix This →</button>
-            </div>
-        </div>
-
-        <!-- Slide 8: Implementation Guide -->
-        <div class="slide" data-slide="8">
-            <h2>Calculate Your True CAC</h2>
-            <p class="subtitle">Follow these steps to uncover your real numbers</p>
-
-            <ul class="step-list">
-                <li class="step-item">
-                    <div class="step-content">
-                        <strong>List ALL your acquisition channels</strong><br/>
-                        <span style="color: var(--text-muted);">Paid ads, organic, partnerships, cold outreach, content, etc.</span>
-                    </div>
-                </li>
-                <li class="step-item">
-                    <div class="step-content">
-                        <strong>Track costs per channel for 30 days</strong><br/>
-                        <span style="color: var(--text-muted);">Ad spend, payroll, software, commissions, your time (use replacement cost)</span>
-                    </div>
-                </li>
-                <li class="step-item">
-                    <div class="step-content">
-                        <strong>Count new customers per channel</strong><br/>
-                        <span style="color: var(--text-muted);">Use attribution properly—first touch, last touch, or multi-touch based on your model</span>
-                    </div>
-                </li>
-                <li class="step-item">
-                    <div class="step-content">
-                        <strong>Calculate: Total Costs ÷ New Customers</strong><br/>
-                        <span style="color: var(--text-muted);">Do this separately for EACH channel, not as a blended average</span>
-                    </div>
-                </li>
-                <li class="step-item">
-                    <div class="step-content">
-                        <strong>Compare to your LTV</strong><br/>
-                        <span style="color: var(--text-muted);">Healthy ratio: LTV should be 3x+ your CAC. Below 2x? You're in trouble.</span>
-                    </div>
-                </li>
-            </ul>
-
-            <div class="highlight-box" style="margin-top: var(--space-8);">
-                <strong>Action Item:</strong> Set up a spreadsheet TODAY. Track this for the next 30 days. You'll be shocked at what you discover.
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
-                <button class="btn-primary" onclick="nextSlide()">Test Your Knowledge →</button>
-            </div>
-        </div>
-
-        <!-- Slide 9: Quiz -->
-        <div class="slide" data-slide="9">
-            <div class="quiz-container">
-                <h2 style="text-align: center; margin-bottom: var(--space-12);">Quick Knowledge Check</h2>
-
-                <div class="quiz-question">
-                    You spend $10,000 on ads, $5,000 on a VA managing them, and $500 on software. You get 250 customers. What's your CAC?
-                </div>
-
-                <div class="quiz-options">
-                    <div class="quiz-option" onclick="selectAnswer(this, false)">
-                        A) $40 (just ad spend ÷ customers)
-                    </div>
-                    <div class="quiz-option" onclick="selectAnswer(this, false)">
-                        B) $42 (ad spend + software ÷ customers)
-                    </div>
-                    <div class="quiz-option" onclick="selectAnswer(this, true)">
-                        C) $62 (all costs ÷ customers)
-                    </div>
-                    <div class="quiz-option" onclick="selectAnswer(this, false)">
-                        D) $50 (average of all the above)
-                    </div>
-                </div>
-
-                <div id="quizFeedback" style="margin-top: var(--space-8); padding: var(--space-6); border-radius: var(--radius-md); display: none;"></div>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn-secondary" onclick="prevSlide()">← Back</button>
-                <button class="btn-primary" id="quizNext" onclick="nextSlide()" style="display: none;">Continue →</button>
-            </div>
-        </div>
-
-        <!-- Slide 10: Completion -->
-        <div class="slide" data-slide="10">
-            <div style="text-align: center;">
-                <div class="icon-container" style="background: var(--success);">
-                    <svg class="icon-svg" viewBox="0 0 24 24">
-                        <path d="M20 6L9 17L4 12"/>
-                    </svg>
-                </div>
-
-                <h1>You've Uncovered the Truth</h1>
-                <p class="subtitle" style="max-width: 700px; margin: 0 auto var(--space-12);">
-                    You now know how to calculate your TRUE CAC—not the fantasy number that's been lying to you.
-                </p>
-
-                <div class="card" style="max-width: 600px; margin: 0 auto var(--space-8); text-align: left;">
-                    <h3 style="margin-bottom: var(--space-6);">What You Learned:</h3>
-                    <div style="display: grid; gap: var(--space-4); font-size: 16px;">
-                        <div>✓ CAC includes ALL costs (not just ad spend)</div>
-                        <div>✓ Your time has a replacement cost</div>
-                        <div>✓ Different channels have wildly different CAC</div>
-                        <div>✓ The real formula: (Ad Spend + Payroll + Software + Commissions) ÷ New Customers</div>
-                        <div>✓ How to track and optimize per channel</div>
-                    </div>
-                </div>
-
-                <div class="dark-block" style="max-width: 600px; margin: 0 auto var(--space-8);">
-                    <h3 style="color: white; margin-bottom: var(--space-4);">Next Step</h3>
-                    <p style="font-size: 18px; opacity: 0.9;">
-                        Open a spreadsheet right now. List your channels. Track your costs for 30 days. Calculate your TRUE CAC. Then decide which channels to double down on (and which to kill).
-                    </p>
-                </div>
-
-                <button class="btn-accent" onclick="window.location.href='/learn'">
-                    Back to Learning Center
-                </button>
-            </div>
-
-            <div class="nav-buttons" style="justify-content: center;">
-                <button class="btn-secondary" onclick="prevSlide()">← Review Lesson</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentSlide = 1;
-        const totalSlides = 10;
-
-        function updateProgress() {
-            const progress = (currentSlide / totalSlides) * 100;
-            document.getElementById('progressBar').style.width = progress + '%';
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'content': return <ContentSlide data={slide} />;
+          case 'iceberg': return <IcebergSlide data={slide} />;
+          case 'cost-reveal': return <CostRevealSlide data={slide} />;
+          case 'channel-comparison': return <ChannelComparisonSlide data={slide} />;
+          case 'before-after': return <BeforeAfterSlide data={slide} />;
+          case 'cards': return <CardsSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          default: return null;
         }
+      };
 
-        function showSlide(slideNumber) {
-            // Hide all slides
-            const slides = document.querySelectorAll('.slide');
-            slides.forEach(slide => {
-                slide.classList.remove('active', 'exiting');
-            });
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
 
-            // Show target slide
-            const targetSlide = document.querySelector(`[data-slide="${slideNumber}"]`);
-            if (targetSlide) {
-                targetSlide.classList.add('active');
-                currentSlide = slideNumber;
-                updateProgress();
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
+                  <source src={gifConfig.url} type="video/mp4" />
+                </video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
 
-                // Send slide update to parent for admin issue tracking
-                window.parent.postMessage({
-                    type: 'LESSON_SLIDE_UPDATE',
-                    slideIndex: currentSlide - 1, // Convert 1-based to 0-based
-                    slideType: 'content',
-                    lessonSlug: window.location.pathname.split('/').filter(Boolean).pop()?.replace('/lesson.html', '') || 'unknown'
-                }, '*');
-
-                // Scroll to top
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        function nextSlide() {
-            if (currentSlide < totalSlides) {
-                showSlide(currentSlide + 1);
-            }
-        }
-
-        function prevSlide() {
-            if (currentSlide > 1) {
-                showSlide(currentSlide - 1);
-            }
-        }
-
-        function selectAnswer(element, isCorrect) {
-            // Disable all options
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach(opt => {
-                opt.style.pointerEvents = 'none';
-            });
-
-            // Mark selected answer
-            if (isCorrect) {
-                element.classList.add('correct');
-                showFeedback(true);
-            } else {
-                element.classList.add('incorrect');
-                // Highlight correct answer
-                options[2].classList.add('correct');
-                showFeedback(false);
-            }
-
-            // Show next button
-            document.getElementById('quizNext').style.display = 'block';
-        }
-
-        function showFeedback(isCorrect) {
-            const feedback = document.getElementById('quizFeedback');
-            feedback.style.display = 'block';
-
-            if (isCorrect) {
-                feedback.style.background = '#D1FAE5';
-                feedback.style.border = '2px solid var(--success)';
-                feedback.innerHTML = `
-                    <strong style="color: var(--success); font-size: 20px;">Correct! 🎉</strong>
-                    <p style="margin-top: 12px; color: var(--text-secondary);">
-                        You calculated: ($10,000 + $5,000 + $500) ÷ 250 = $62 CAC<br/>
-                        This is the REAL CAC that includes all costs, not just ad spend.
-                    </p>
-                `;
-            } else {
-                feedback.style.background = '#FEE2E2';
-                feedback.style.border = '2px solid var(--accent-primary)';
-                feedback.innerHTML = `
-                    <strong style="color: var(--accent-primary); font-size: 20px;">Not quite</strong>
-                    <p style="margin-top: 12px; color: var(--text-secondary);">
-                        Remember: CAC includes ALL costs.<br/>
-                        $10,000 (ads) + $5,000 (VA) + $500 (software) = $15,500 total<br/>
-                        $15,500 ÷ 250 customers = <strong>$62 CAC</strong>
-                    </p>
-                `;
-            }
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
-
-        // Initialize
-        updateProgress();
-    </script>
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+  </script>
 </body>
 </html>
