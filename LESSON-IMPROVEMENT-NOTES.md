@@ -5,6 +5,12 @@
 
 ## CRITICAL RULES
 
+### DO NOT TOUCH THE TEMPLATE INFRASTRUCTURE!
+- **The general template is SHARED across all 300 lessons**
+- DO NOT modify: Progress dots, navigation arrows, quiz system, welcome slide, completion slide, gif system
+- ONLY add/improve CUSTOM SLIDE COMPONENTS for content slides
+- The template infrastructure (WelcomeSlide, QuizSlide, CompletionSlide, LessonApp, etc.) stays the same
+
 ### Slide Backgrounds - ALWAYS WHITE!
 - **Slide backgrounds must ALWAYS be pure white (#FFFFFF or bg-white)**
 - Dark gradient styling is ONLY for cards, blocks, and components INSIDE slides
@@ -79,11 +85,21 @@ Each lesson has unique content - create custom components that match THAT conten
 
 ---
 
+## Animation Philosophy
+- **Animations DON'T need to be complex/dynamic** - just world-class visual illustrations
+- Focus on STATIC visual design excellence, not fancy animations
+- Simple entrance animations (opacity, y) are enough
+- The goal is stunning visuals, not moving parts
+- A beautiful static layout beats a mediocre animated one
+
+---
+
 ## Common Mistakes to Avoid
 - Adding too many character videos (MAX 2 per lesson!)
 - Not studying reference lessons first
 - Forgetting to commit after each improvement
 - Making changes without understanding the reference patterns
+- Over-engineering animations - keep it simple and beautiful
 
 ---
 
