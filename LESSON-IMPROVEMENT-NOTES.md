@@ -5,6 +5,12 @@
 
 ## CRITICAL RULES
 
+### Slide Backgrounds - ALWAYS WHITE!
+- **Slide backgrounds must ALWAYS be pure white (#FFFFFF or bg-white)**
+- Dark gradient styling is ONLY for cards, blocks, and components INSIDE slides
+- NEVER use dark backgrounds for the entire slide
+- This maintains visual consistency across the platform
+
 ### Character GIFs/Videos
 - **MAX 2 character videos per lesson** (Welcome slide NOT included)
 - Welcome slide always has its own character video (from greetings.js)
