@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (60 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (61 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -138,17 +138,17 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 58 | biz-awareness-sweet-spot | 9 | Elite (Improved Dec 31) |
 | 59 | biz-barbell-strategy | 9 | Elite (Improved Dec 31) |
 | 60 | biz-brand-ltv-engine | 9 | Elite (Improved Dec 31) |
+| 61 | biz-brand-temple | 9 | Elite (Improved Dec 31) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (241 lessons remaining)
+## CATEGORY 2: NEED IMPROVEMENT (240 lessons remaining)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
 | 19 | biz-authenticity-engine | 4 |
-| 24 | biz-brand-temple | 4 |
 | 25 | biz-cash-conversion | 5 |
 | 26 | biz-channel-cac-decoder | 7 |
 | 27 | biz-closer-framework | 5 |
