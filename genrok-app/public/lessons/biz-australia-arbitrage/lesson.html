@@ -153,18 +153,14 @@
       { type: 'hook', headline: 'Davie Fogarty found a weighted blanket on AliExpress. One boosted post. 15x ROAS.', subtext: 'But the magic wasn\'t the product. It was the market. He took a winning US trend and launched it in Australia—a less competitive market with superior unit economics from day one. This is geographic arbitrage. And it\'s how The Oodie scaled to nearly $1B in sales.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hq720__1_-removebg-preview.png', personName: 'Davie Fogarty' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/The_Oodie_logo.webp', brandName: 'The Oodie'},
       { type: 'content', title: 'The Founder of The Oodie', body: 'Davie Fogarty built one of the world\'s fastest-growing eCommerce brands. Not by inventing something new. Not by raising venture capital. By finding a winning product, validating it in a less competitive market, and exploiting the economic advantage to scale aggressively.' },
       { type: 'example', scenario: 'The Catalyst Moment', before: { label: 'US Market', text: 'Weighted blankets were already trending in the US. High demand. But also HIGH competition. CPMs were expensive. CAC was climbing. Hard to break through.' }, after: { label: 'Australia Market', text: 'Same product. Same demand. But LOW competition. CPMs were cheap. CAC was fraction of US. 15x ROAS from a single boosted Facebook post. Instant validation.' }, insight: 'Same product, different market = superior economics. This is arbitrage.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'The Australia Arbitrage Strategy', body: 'Take a winning trend from a high-competition market like the US. Launch it in a low-competition market like Australia. The demand is there. But the supply isn\'t. You get better ad performance, lower CAC, higher ROAS, and faster validation—all because you chose the RIGHT market first.' },
-      { type: 'visual', title: 'Competition Determines Your Economics', visualType: 'comparison', data: {
-        left: { label: 'High Competition', value: 'US', result: 'Expensive CAC', color: '#ef4444' },
-        right: { label: 'Low Competition', value: 'Australia', result: 'Cheap CAC', color: '#22c55e' },
-        center: { label: 'Winner', value: 'Arbitrage', result: 'Better economics', color: '#06b6d4' }
-      }},
+      { type: 'arbitrage-map', title: 'US vs Australia: The Numbers', body: 'Take a winning trend from a high-competition market like the US. Launch it in a low-competition market like Australia.' },
+      { type: 'roas-multiplier', title: 'Same $1, Different Returns' },
       { type: 'cards', title: 'Why Geographic Arbitrage Works', items: [
         { title: 'Lower CPMs', description: 'Less competition means cheaper ad costs. You can test more creatives for less money.' },
         { title: 'Higher ROAS', description: 'Same product, better economics. Every dollar goes further in a less saturated market.' },
         { title: 'Faster Validation', description: 'You prove the model works BEFORE scaling globally. Less risk, more confidence.' }
       ]},
-      { type: 'content', title: 'This Wasn\'t Luck. It Was Strategy.', body: 'Fogarty didn\'t stumble into 15x ROAS. He engineered it by choosing the right market at the right time. The initial "bump" of profitability wasn\'t luck—it was validation of a superior model that allowed him to reinvest aggressively and scale to $1B.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_in_agreement_approving_nod_100_pure_wh_be253664-9147-4cef-ae06-aa315b9f0ff5_1.mp4', characterPosition: 'left'},
+      { type: 'arbitrage-formula', title: 'The Arbitrage Formula' },
       { type: 'visual', title: 'The Profitability Ladder', visualType: 'stats', data: [
         { value: '1x-3x', label: 'break even', subtext: 'You survive' },
         { value: '5x-10x', label: 'scale confidently', subtext: 'Reinvest profits' },
@@ -183,6 +179,415 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Target: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Crown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Globe: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      DollarSign: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Rocket: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>,
+      Users: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Map: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>,
+      ArrowRightCircle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>,
+      BarChart: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+    };
+
+    // ============ CUSTOM ELITE SLIDES ============
+
+    // Geographic Arbitrage World Map Visualization
+    const ArbitrageMapSlide = ({ data }) => {
+      const [showAustralia, setShowAustralia] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowAustralia(true), 800);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Map size={14} color="var(--accent)" />
+              <span>Geographic Arbitrage</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          {/* Side-by-side market comparison */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* US Market - Crowded */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 0 30px rgba(239, 68, 68, 0.1)' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }}></div>
+
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)' }}>
+                  <span className="text-2xl">🇺🇸</span>
+                </div>
+                <div>
+                  <div className="font-bold text-white text-lg">United States</div>
+                  <div className="text-xs text-red-400 uppercase tracking-wider">High Competition</div>
+                </div>
+              </div>
+
+              {/* Crowded competitor dots */}
+              <div className="relative h-24 mb-5 rounded-xl overflow-hidden" style={{ background: 'rgba(239, 68, 68, 0.05)' }}>
+                {[...Array(25)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.4 + i * 0.03 }}
+                    className="absolute w-3 h-3 rounded-full"
+                    style={{
+                      background: '#ef4444',
+                      left: `${10 + (i % 5) * 18}%`,
+                      top: `${15 + Math.floor(i / 5) * 18}%`,
+                      opacity: 0.7
+                    }}
+                  />
+                ))}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-red-400 text-sm font-bold bg-black/80 px-3 py-1 rounded-full">CROWDED</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">CPM</span>
+                  <span className="text-red-400 font-bold">$45+</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">CAC</span>
+                  <span className="text-red-400 font-bold">$80+</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Typical ROAS</span>
+                  <span className="text-red-400 font-bold">2-3x</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Australia Market - Open */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: showAustralia ? 1 : 0, x: showAustralia ? 0 : 30 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(34, 197, 94, 0.3)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.1)' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }}></div>
+
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.15)', border: '1px solid rgba(34, 197, 94, 0.4)' }}>
+                  <span className="text-2xl">🇦🇺</span>
+                </div>
+                <div>
+                  <div className="font-bold text-white text-lg">Australia</div>
+                  <div className="text-xs text-green-400 uppercase tracking-wider">Low Competition</div>
+                </div>
+              </div>
+
+              {/* Sparse competitor dots */}
+              <div className="relative h-24 mb-5 rounded-xl overflow-hidden" style={{ background: 'rgba(34, 197, 94, 0.05)' }}>
+                {[...Array(4)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.8 + i * 0.1 }}
+                    className="absolute w-3 h-3 rounded-full"
+                    style={{
+                      background: '#22c55e',
+                      left: `${20 + i * 22}%`,
+                      top: `${35 + (i % 2) * 25}%`,
+                      opacity: 0.7
+                    }}
+                  />
+                ))}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-green-400 text-sm font-bold bg-black/80 px-3 py-1 rounded-full">WIDE OPEN</span>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">CPM</span>
+                  <span className="text-green-400 font-bold">$8-12</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">CAC</span>
+                  <span className="text-green-400 font-bold">$15-25</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">ROAS</span>
+                  <motion.span
+                    initial={{ scale: 1 }}
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    className="text-green-400 font-bold text-lg"
+                  >15x</motion.span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="text-center text-neutral-500 text-sm mt-6"
+          >
+            Same product. Same demand. Different market = 5x better economics.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ROAS Multiplier Visualization
+    const ROASMultiplierSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.DollarSign size={14} color="var(--accent)" />
+              <span>Return Comparison</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
+            {/* Investment */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-6 text-center relative"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(var(--accent-rgb), 0.3)', minWidth: '140px' }}
+            >
+              <div className="text-neutral-500 text-xs uppercase tracking-wider mb-2">You Invest</div>
+              <div className="text-4xl font-bold text-white">$1</div>
+            </motion.div>
+
+            {/* Arrow */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Icons.ArrowRightCircle size={40} color="var(--accent)" />
+            </motion.div>
+
+            {/* Returns comparison */}
+            <div className="flex flex-col gap-4">
+              {/* US Return */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 }}
+                className="rounded-2xl p-5 flex items-center gap-4 relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(239, 68, 68, 0.3)' }}
+              >
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.15)' }}>
+                  <span className="text-xl">🇺🇸</span>
+                </div>
+                <div>
+                  <div className="text-xs text-red-400 uppercase tracking-wider">US Return</div>
+                  <div className="text-2xl font-bold text-white">$2-3</div>
+                </div>
+                <div className="ml-4 px-3 py-1 rounded-full text-xs font-bold" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>2-3x</div>
+              </motion.div>
+
+              {/* Australia Return */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                animate={{ opacity: showResult ? 1 : 0.3, x: 0, scale: showResult ? 1.05 : 1 }}
+                transition={{ delay: 1, type: 'spring' }}
+                className="rounded-2xl p-5 flex items-center gap-4 relative overflow-hidden"
+                style={{
+                  background: showResult ? 'linear-gradient(135deg, rgba(34, 197, 94, 0.1), #0a0a0a)' : 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+                  border: `1px solid ${showResult ? 'rgba(34, 197, 94, 0.5)' : 'rgba(34, 197, 94, 0.3)'}`,
+                  boxShadow: showResult ? '0 0 40px rgba(34, 197, 94, 0.2)' : 'none'
+                }}
+              >
+                <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }}></div>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.15)' }}>
+                  <span className="text-xl">🇦🇺</span>
+                </div>
+                <div>
+                  <div className="text-xs text-green-400 uppercase tracking-wider">Australia Return</div>
+                  <div className="text-2xl font-bold text-white">$15</div>
+                </div>
+                <motion.div
+                  animate={showResult ? { scale: [1, 1.2, 1] } : {}}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                  className="ml-4 px-3 py-1 rounded-full text-xs font-bold"
+                  style={{ background: 'rgba(34, 197, 94, 0.2)', color: '#22c55e' }}
+                >15x</motion.div>
+              </motion.div>
+            </div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: showResult ? 1 : 0, y: showResult ? 0 : 20 }}
+            transition={{ delay: 1.8 }}
+            className="text-center mt-8"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)' }}>
+              <Icons.TrendingUp size={18} color="#22c55e" />
+              <span className="text-green-400 font-semibold">5x better returns from the same $1</span>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Arbitrage Formula Visualization
+    const ArbitrageFormulaSlide = ({ data }) => {
+      const [step, setStep] = useState(0);
+
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setStep(1), 500),
+          setTimeout(() => setStep(2), 1200),
+          setTimeout(() => setStep(3), 1900),
+        ];
+        return () => timers.forEach(t => clearTimeout(t));
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>The Formula</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          {/* Formula visualization */}
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6 mb-8">
+            {/* Winning Product */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: step >= 1 ? 1 : 0.2, y: step >= 1 ? 0 : 30 }}
+              className="rounded-2xl p-5 text-center relative overflow-hidden"
+              style={{
+                background: step >= 1 ? 'linear-gradient(135deg, #0a0a0a, #1a1a1a)' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: `1px solid ${step >= 1 ? 'rgba(59, 130, 246, 0.5)' : 'rgba(59, 130, 246, 0.2)'}`,
+                minWidth: '160px'
+              }}
+            >
+              {step >= 1 && <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }}></div>}
+              <div className="text-3xl mb-2">🛍️</div>
+              <div className="font-bold text-white mb-1">Winning Product</div>
+              <div className="text-xs text-blue-400">Proven in big market</div>
+            </motion.div>
+
+            {/* Plus */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: step >= 1 ? 1 : 0.2, scale: step >= 1 ? 1 : 0.5 }}
+              className="text-3xl font-bold text-neutral-400"
+            >+</motion.div>
+
+            {/* Less Competition */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: step >= 2 ? 1 : 0.2, y: step >= 2 ? 0 : 30 }}
+              className="rounded-2xl p-5 text-center relative overflow-hidden"
+              style={{
+                background: step >= 2 ? 'linear-gradient(135deg, #0a0a0a, #1a1a1a)' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: `1px solid ${step >= 2 ? 'rgba(249, 115, 22, 0.5)' : 'rgba(249, 115, 22, 0.2)'}`,
+                minWidth: '160px'
+              }}
+            >
+              {step >= 2 && <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #f97316, transparent)' }}></div>}
+              <div className="text-3xl mb-2">🌏</div>
+              <div className="font-bold text-white mb-1">Less Competition</div>
+              <div className="text-xs text-orange-400">Smaller market</div>
+            </motion.div>
+
+            {/* Equals */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: step >= 2 ? 1 : 0.2, scale: step >= 2 ? 1 : 0.5 }}
+              className="text-3xl font-bold text-neutral-400"
+            >=</motion.div>
+
+            {/* Better Economics */}
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              animate={{
+                opacity: step >= 3 ? 1 : 0.2,
+                y: step >= 3 ? 0 : 30,
+                scale: step >= 3 ? 1.05 : 0.9
+              }}
+              transition={{ type: 'spring', stiffness: 200 }}
+              className="rounded-2xl p-5 text-center relative overflow-hidden"
+              style={{
+                background: step >= 3 ? 'linear-gradient(135deg, rgba(34, 197, 94, 0.1), #0a0a0a)' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: `1px solid ${step >= 3 ? 'rgba(34, 197, 94, 0.5)' : 'rgba(34, 197, 94, 0.2)'}`,
+                boxShadow: step >= 3 ? '0 0 40px rgba(34, 197, 94, 0.2)' : 'none',
+                minWidth: '180px'
+              }}
+            >
+              {step >= 3 && <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }}></div>}
+              <motion.div
+                animate={step >= 3 ? { rotate: [0, 10, -10, 0] } : {}}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="text-3xl mb-2"
+              >💰</motion.div>
+              <div className="font-bold text-white mb-1">Better Economics</div>
+              <div className="text-xs text-green-400">15x ROAS</div>
+            </motion.div>
+          </div>
+
+          {/* Bottom insight */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: step >= 3 ? 1 : 0, y: step >= 3 ? 0 : 20 }}
+            className="text-center"
+          >
+            <div className="rounded-xl p-4 inline-block" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+              <p className="text-neutral-300 text-sm">
+                <span className="font-bold text-white">The Oodie</span> = Weighted blanket (proven in US) + Australia (less competition) = <span className="text-green-400 font-bold">$1B brand</span>
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ END CUSTOM ELITE SLIDES ============
+
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -266,23 +671,49 @@
     );
 
     const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black" style={{ fontFamily: "'Fraunces', serif" }}>{data.scenario}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+            <Icons.Globe size={14} color="var(--accent)" />
+            <span>Geographic Arbitrage</span>
+          </div>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.scenario}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+        <div className="grid md:grid-cols-2 gap-5 mb-6 relative z-10">
+          {/* Before - US Market */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 0 30px rgba(239, 68, 68, 0.08)' }}>
+            <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }}></div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)' }}>
+                <Icons.TrendingDown size={20} color="#ef4444" />
+              </div>
+              <div>
+                <span className="font-bold text-white text-sm">{data.before.label}</span>
+                <span className="block text-[10px] text-red-400 uppercase tracking-wider">High Competition</span>
+              </div>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.before.text}</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          {/* After - Australia Market */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(34, 197, 94, 0.3)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.08)' }}>
+            <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }}></div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.15)', border: '1px solid rgba(34, 197, 94, 0.4)' }}>
+                <Icons.TrendingUp size={20} color="#22c55e" />
+              </div>
+              <div>
+                <span className="font-bold text-white text-sm">{data.after.label}</span>
+                <span className="block text-[10px] text-green-400 uppercase tracking-wider">Low Competition</span>
+              </div>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.after.text}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="rounded-xl p-4 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+          <p className="text-neutral-700 text-sm font-medium flex items-center justify-center gap-2">
+            <Icons.Zap />
+            <span>{data.insight}</span>
+          </p>
         </motion.div>
       </div>
     );
@@ -290,23 +721,52 @@
     const VisualSlide = ({ data }) => {
       if (data.visualType === 'comparison') {
         return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8" style={{ fontFamily: "'Fraunces', serif" }}>{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+                <Icons.Globe size={14} color="var(--accent)" />
+                <span>Market Selection</span>
+              </div>
+              <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+            </motion.div>
+            <div className="grid grid-cols-3 gap-4 md:gap-6 items-center">
+              {/* High Competition - Left */}
+              <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="rounded-2xl p-5 md:p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(239, 68, 68, 0.3)', boxShadow: '0 0 30px rgba(239, 68, 68, 0.1)' }}>
+                <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }}></div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.15)' }}>
+                    <Icons.TrendingDown size={18} color="#ef4444" />
+                  </div>
+                  <span className="text-xs font-semibold text-red-400 uppercase tracking-wider">{data.data.left.label}</span>
+                </div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.left.value}</div>
+                <div className="text-sm text-red-400 font-medium">{data.data.left.result}</div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
+
+              {/* Winner - Center */}
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.25 }} className="rounded-2xl p-6 md:p-8 relative overflow-hidden transform scale-105" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.4)' }}>
+                <div className="absolute inset-0 opacity-20" style={{ background: 'radial-gradient(circle at center, white 0%, transparent 70%)' }}></div>
+                <div className="relative z-10 text-center">
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.2)' }}>
+                    <Icons.Crown size={24} color="white" />
+                  </div>
+                  <div className="text-4xl md:text-5xl font-bold text-white mb-2">{data.data.center.value}</div>
+                  <div className="text-sm font-semibold text-white/90 mb-1">{data.data.center.label}</div>
+                  <div className="text-xs text-white/70">{data.data.center.result}</div>
+                </div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
+
+              {/* Low Competition - Right */}
+              <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.35 }} className="rounded-2xl p-5 md:p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(34, 197, 94, 0.3)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.1)' }}>
+                <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }}></div>
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.15)' }}>
+                    <Icons.TrendingUp size={18} color="#22c55e" />
+                  </div>
+                  <span className="text-xs font-semibold text-green-400 uppercase tracking-wider">{data.data.right.label}</span>
+                </div>
+                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.right.value}</div>
+                <div className="text-sm text-green-400 font-medium">{data.data.right.result}</div>
               </motion.div>
             </div>
           </div>
@@ -314,17 +774,33 @@
       }
       if (data.visualType === 'stats') {
         return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8" style={{ fontFamily: "'Fraunces', serif" }}>{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+                <Icons.Rocket size={14} color="var(--accent)" />
+                <span>ROAS Levels</span>
+              </div>
+              <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+            </motion.div>
+            <div className="grid md:grid-cols-3 gap-5">
+              {data.data.map((stat, i) => {
+                const colors = ['#6b7280', '#f59e0b', '#22c55e'];
+                const color = colors[i] || 'var(--accent)';
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.12 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: `1px solid ${color}40`, boxShadow: `0 0 30px ${color}15` }}>
+                    <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}></div>
+                    <div className="text-center">
+                      <div className="text-4xl md:text-5xl font-bold mb-3" style={{ color: color, textShadow: `0 0 30px ${color}50` }}>{stat.value}</div>
+                      <div className="text-sm font-semibold text-white mb-1 uppercase tracking-wider">{stat.label}</div>
+                      <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-center text-neutral-500 text-sm mt-6 max-w-md mx-auto">
+              At 15x+ ROAS, you have infinite runway to test, scale, and dominate.
+            </motion.p>
           </div>
         );
       }
@@ -333,17 +809,36 @@
 
     const CardsSlide = ({ data }) => {
       const cardsData = data.cards || data.items || [];
+      const cardColors = ['#06b6d4', '#3b82f6', '#22c55e', '#f59e0b'];
+      const cardIcons = [Icons.DollarSign, Icons.Rocket, Icons.Target];
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6" style={{ fontFamily: "'Fraunces', serif" }}>{data.title}</motion.h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap />
+              <span>Key Benefits</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
           <div className={`grid gap-4 relative z-10 ${cardsData.length === 5 ? 'md:grid-cols-3' : cardsData.length === 3 ? 'md:grid-cols-3' : cardsData.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-            {cardsData.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-colors">
-                {item.icon && <div className="text-2xl mb-2">{item.icon}</div>}
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
+            {cardsData.map((item, i) => {
+              const color = cardColors[i % cardColors.length];
+              const IconComponent = cardIcons[i % cardIcons.length];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 + i * 0.1 }} className="rounded-2xl p-5 relative overflow-hidden group" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: `1px solid ${color}30`, boxShadow: `0 0 25px ${color}10` }}>
+                  <div className="absolute top-0 left-0 w-full h-1 opacity-80" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}></div>
+                  <div className="absolute top-0 right-0 w-20 h-20 rounded-full blur-3xl opacity-10 group-hover:opacity-20 transition-opacity" style={{ background: color }}></div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${color}15`, border: `1px solid ${color}40` }}>
+                      <IconComponent size={20} color={color} />
+                    </div>
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wider uppercase" style={{ background: `${color}20`, color: color }}>{`0${i + 1}`}</span>
+                  </div>
+                  <h3 className="font-bold text-white mb-2 text-base md:text-lg" style={{ textShadow: `0 0 20px ${color}20` }}>{item.title}</h3>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{item.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       );
@@ -461,6 +956,9 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'arbitrage-map': return <ArbitrageMapSlide data={slide} />;
+          case 'roas-multiplier': return <ROASMultiplierSlide data={slide} />;
+          case 'arbitrage-formula': return <ArbitrageFormulaSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
