@@ -52,7 +52,7 @@ const dreamTeamTools: Tool[] = [
     role: 'Abandoned Cart Recovery',
     shortDescription: 'Automatic abandoned cart recovery with AI - a merciless conversion machine. Sends a highly personalized SMS to customers after cart abandonment, engages in personal conversation as a customer service rep, and offers coupon codes.',
     installUrl: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva',
-    logo: 'https://cdn.shopify.com/app-store/listing_images/8c3c3d0a3b3c3e3f3g3h3i3j3k3l3m3n/icon/CLHx8aD85fYCEAE=.png',
+    logo: 'https://cdn.shopify.com/app-store/listing_images/d4c5c9f8ac0b4a1b5ce5f51e7f7682b3/icon/CLHx8aD85fYCEAE=.png',
     hasExpandableInfo: false,
   },
   {
@@ -83,7 +83,7 @@ const dreamTeamTools: Tool[] = [
     role: 'Backup Private Agent',
     shortDescription: 'Backup agent (same principles as Mate). Always connect this one to your store as well to compare prices on certain orders and choose the agent offering the same product at a lower price.',
     installUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq',
-    logo: 'https://www.hypersku.com/assets/images/logo.png',
+    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hypersku-logo.png',
     hasExpandableInfo: true,
     infoContent: {
       paragraphs: [
@@ -104,7 +104,7 @@ const dreamTeamTools: Tool[] = [
     role: 'Email Marketing Powerhouse',
     shortDescription: 'The world\'s most advanced email marketing tool with integrations for all eCommerce platforms, thousands of Shopify apps, and the most advanced BI and AI capabilities.',
     installUrl: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner',
-    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/klaviyo-logo.png?v=1700000000',
+    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/klaviyo-logo.png',
     hasExpandableInfo: false,
   },
   {
@@ -132,7 +132,7 @@ const dreamTeamTools: Tool[] = [
     role: 'Customer Intelligence',
     shortDescription: 'Who is your customer? What does he like? What drove him to buy - and what almost stopped him? Stop guessing and start knowing.',
     installUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva',
-    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121408.753.png?v=1760087656',
+    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/grapevine-logo.png',
     hasExpandableInfo: true,
     infoContent: {
       paragraphs: [
