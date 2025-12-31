@@ -143,17 +143,17 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 63 | biz-channel-cac-decoder | 9 | Elite (Improved Dec 31) |
 | 64 | biz-closer-framework | 9 | Elite (Improved Dec 31) |
 | 65 | biz-counter-position | 9 | Elite (Improved Dec 31) |
+| 66 | biz-authenticity-engine | 9 | Elite (Improved Dec 31) |
+| 67 | biz-courage-variable | 9 | Elite (Improved Dec 31) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (236 lessons remaining)
+## CATEGORY 2: NEED IMPROVEMENT (234 lessons remaining)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
-| 19 | biz-authenticity-engine | 4 |
-| 29 | biz-courage-variable | 5 |
 | 30 | biz-creative-targeting | 5 |
 | 31 | biz-creator-army | 5 |
 | 32 | biz-empathy-engine | 5 |
@@ -416,8 +416,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 56 |
-| Need Improvement | 245 |
+| Improved / Don't Need Improvement | 67 |
+| Need Improvement | 234 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **308** |
 
