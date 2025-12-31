@@ -12,7 +12,6 @@ import {
   ZoomIn,
   ZoomOut,
   Maximize2,
-  Store,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -35,12 +34,13 @@ interface Tool {
   specialBadge?: string;
 }
 
+// S/S/S Copy - Stupid Simple Sexy: Short, punchy, value-focused
 const dreamTeamTools: Tool[] = [
   {
     id: 1,
     name: 'DataDrew',
-    role: 'Advanced Data Analytics',
-    shortDescription: 'A completely free app. Advanced data monitoring including LTV across all time periods, Re-purchase rate, and more. Unstoppable power in ads with Top Spenders audiences and RFM Segments that can be exported directly from the app.',
+    role: 'Analytics',
+    shortDescription: 'Free LTV tracking. Export top spenders to ads. Know your numbers or lose.',
     installUrl: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Satoshi_3.jpg?v=1761567329',
     hasExpandableInfo: false,
@@ -49,26 +49,25 @@ const dreamTeamTools: Tool[] = [
   {
     id: 2,
     name: 'TxtCart',
-    role: 'Abandoned Cart Recovery',
-    shortDescription: 'Automatic abandoned cart recovery with AI - a merciless conversion machine. Sends a highly personalized SMS to customers after cart abandonment, engages in personal conversation as a customer service rep, and offers coupon codes.',
+    role: 'Cart Recovery',
+    shortDescription: 'AI texts abandoned carts. Talks like a human. Recovers sales on autopilot.',
     installUrl: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva',
-    logo: 'https://cdn.shopify.com/app-store/listing_images/d4c5c9f8ac0b4a1b5ce5f51e7f7682b3/icon/CLHx8aD85fYCEAE=.png',
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121029.783.png?v=1760087435',
     hasExpandableInfo: false,
   },
   {
     id: 3,
     name: 'Mate',
-    role: 'Primary Private Agent',
-    shortDescription: 'Private agent/fulfillment company for dropshippers, one of the world\'s leading companies. Worldwide shipping in 5-7 days, home delivery, quality control, package consolidation, branding, no monthly fees, no commitment.',
+    role: 'Private Agent',
+    shortDescription: '5-day global shipping. No fees. No minimums. Your AliExpress replacement.',
     installUrl: 'https://erp.matedropshipping.com/login?invite_id=915',
     logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/COag0vSJxoUDEAE=.png',
     hasExpandableInfo: true,
     infoContent: {
       paragraphs: [
-        'One of the main obstacles preventing eCommerce stores from scaling is their dependence on AliExpress: inconsistent shipping times, long delivery windows, poor support, damaged products, no home delivery, and multiple separate packages.',
-        'Private Agent changes the game entirely: By partnering with one of the largest fulfillment companies in the world (serving over 220,000 clients), this private logistics service allows you to ship globally within an average of 5 days.',
-        'Everything is handled through a dedicated personal agent - with no monthly fees, no minimum order quantity, and no upfront payments.',
-        'Registering through our link grants you direct access to a personal WhatsApp support representative and exclusive partnership terms.',
+        'AliExpress is killing your business. Long shipping, damaged products, angry customers.',
+        'Mate ships globally in 5 days. Personal WhatsApp agent. Zero monthly fees. Zero commitment.',
+        'Our link = exclusive partnership terms + dedicated support.',
       ],
     },
     warehouseImages: [
@@ -80,16 +79,16 @@ const dreamTeamTools: Tool[] = [
   {
     id: 4,
     name: 'HyperSKU',
-    role: 'Backup Private Agent',
-    shortDescription: 'Backup agent (same principles as Mate). Always connect this one to your store as well to compare prices on certain orders and choose the agent offering the same product at a lower price.',
+    role: 'Backup Agent',
+    shortDescription: 'Compare prices. Pick the cheaper agent per order. Always have a backup.',
     installUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq',
-    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/hypersku-logo.png',
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T115639.885.png?v=1760086613',
     hasExpandableInfo: true,
     infoContent: {
       paragraphs: [
-        'Having a backup private agent is crucial for any serious eCommerce operation.',
-        'HyperSKU offers the same world-class fulfillment services as Mate, allowing you to compare prices and choose the best option for each order.',
-        'No monthly fees, no minimum order quantity, and no upfront payments.',
+        'Never depend on one agent. Compare prices per order.',
+        'Same benefits as Mate: fast shipping, quality control, no fees.',
+        'Smart sellers use both.',
       ],
     },
     warehouseImages: [
@@ -101,17 +100,17 @@ const dreamTeamTools: Tool[] = [
   {
     id: 5,
     name: 'Klaviyo',
-    role: 'Email Marketing Powerhouse',
-    shortDescription: 'The world\'s most advanced email marketing tool with integrations for all eCommerce platforms, thousands of Shopify apps, and the most advanced BI and AI capabilities.',
+    role: 'Email Marketing',
+    shortDescription: 'The email tool that prints money. Flows, segments, AI. Industry standard.',
     installUrl: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner',
-    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/klaviyo-logo.png',
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121113.691.png?v=1760087483',
     hasExpandableInfo: false,
   },
   {
     id: 6,
     name: 'KeepCart',
-    role: 'Coupon Code Blocker',
-    shortDescription: 'Blocks 125+ coupon code browser extensions from your site. This is literally money on the floor - protect your margins from unauthorized discount leaks.',
+    role: 'Coupon Blocker',
+    shortDescription: 'Blocks Honey + 125 extensions. Your margins are leaking. Plug the hole.',
     installUrl: 'https://platform.shoffi.app/r/rl_U2L0seLE',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122003.978.png?v=1760088020',
     hasExpandableInfo: false,
@@ -120,7 +119,7 @@ const dreamTeamTools: Tool[] = [
     id: 7,
     name: 'Cart Upsell',
     role: 'AOV Booster',
-    shortDescription: 'Half backend, half frontend, but a very simple and essential step that increases AOV by $5-8 on average. Add 20 lightweight products priced up to $50.',
+    shortDescription: 'Starbucks checkout trick. Impulse items at cart. +$5-8 per order.',
     installUrl: 'https://platform.shoffi.app/r/rl_cm697iNI',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Satoshi_2.jpg?v=1761567244',
     hasExpandableInfo: false,
@@ -128,29 +127,24 @@ const dreamTeamTools: Tool[] = [
   },
   {
     id: 8,
-    name: 'Grapevine Surveys',
-    role: 'Customer Intelligence',
-    shortDescription: 'Who is your customer? What does he like? What drove him to buy - and what almost stopped him? Stop guessing and start knowing.',
+    name: 'Grapevine',
+    role: 'Customer Intel',
+    shortDescription: 'Ask buyers why they bought. Triple your conversion with their answers.',
     installUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva',
-    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/grapevine-logo.png',
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121408.753.png?v=1760087656',
     hasExpandableInfo: true,
     infoContent: {
       paragraphs: [
-        'Almost no one stops to ask the simplest, most important question: What does the customer really think?',
-        'This data is worth its weight in gold. It tells you exactly what to change in order to double or even triple your conversion rate.',
+        'What made them buy? What almost stopped them? This data is gold.',
       ],
       exampleQuestions: [
         {
-          question: 'How did you first hear about us?',
-          options: ['Saw an ad on Facebook/Instagram', 'Found you on Google', 'Through a friend', 'From an influencer'],
+          question: 'How did you hear about us?',
+          options: ['Facebook/Instagram', 'Google', 'Friend', 'Influencer'],
         },
         {
-          question: 'What made you decide to buy right now?',
-          options: ['A sale or discount', 'I finally wanted to try it', 'I saw reviews', 'Someone mentioned you'],
-        },
-        {
-          question: 'Was there anything that made you hesitate?',
-          options: ['No, I decided right away', 'Wasn\'t sure about product', 'Site trustworthiness', 'Return policy concerns'],
+          question: 'What made you buy now?',
+          options: ['Sale/discount', 'Reviews', 'Urgency', 'Finally ready'],
         },
       ],
     },
@@ -158,19 +152,18 @@ const dreamTeamTools: Tool[] = [
   {
     id: 9,
     name: 'Triple Whale',
-    role: '100% Attribution Accuracy',
-    shortDescription: 'Meta is lying to you - and it\'s costing you money. Triple Whale uses advanced tracking technology to deliver 100% accurate attribution and bypass iOS14 limitations.',
+    role: 'Attribution',
+    shortDescription: 'Meta lies. Triple Whale doesn\'t. 100% accurate tracking. Free plan.',
     installUrl: 'https://triplewhale.com/',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-09T234106.192.png?v=1760042538',
     hasExpandableInfo: false,
     isFree: true,
-    specialBadge: 'FREE Plan',
   },
   {
     id: 10,
     name: 'Geo Convert',
-    role: 'Location-Based Conversion Bomber',
-    shortDescription: 'Location-based announcement bar for your site with custom discount percentage based on visitor\'s purchasing power + adapted to local holidays. Increases conversion rate by 60-70%.',
+    role: 'Geo Targeting',
+    shortDescription: '60-70% conversion lift. Location-based discounts. Easy cheat code.',
     installUrl: 'https://geo-convert.com/',
     logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert.jpg',
     hasExpandableInfo: false,
@@ -178,25 +171,17 @@ const dreamTeamTools: Tool[] = [
   },
 ];
 
-// Canvas layout rows - tools arranged in flowchart format
-const canvasRows = [
-  [0, 1, 2], // Row 1: DataDrew, TxtCart, Mate
-  [3, 4],    // Row 2: HyperSKU, Klaviyo
-  [5, 6, 7], // Row 3: KeepCart, Cart Upsell, Grapevine
-  [8, 9],    // Row 4: Triple Whale, Geo Convert
-];
-
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.05, delayChildren: 0.1 },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
   visible: {
     opacity: 1,
     y: 0,
@@ -223,13 +208,13 @@ export default function DreamTeamPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
   const [modalTool, setModalTool] = useState<Tool | null>(null);
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(0.5); // Default zoomed out to fit all in one line
   const canvasRef = useRef<HTMLDivElement>(null);
 
   // Zoom controls
-  const zoomIn = useCallback(() => setZoom((z) => Math.min(z + 0.15, 1.5)), []);
-  const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.15, 0.5)), []);
-  const resetZoom = useCallback(() => setZoom(1), []);
+  const zoomIn = useCallback(() => setZoom((z) => Math.min(z + 0.1, 1.2)), []);
+  const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.1, 0.3)), []);
+  const resetZoom = useCallback(() => setZoom(0.5), []);
 
   // Keyboard shortcuts for zoom
   useEffect(() => {
@@ -251,6 +236,7 @@ export default function DreamTeamPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [zoomIn, zoomOut, resetZoom]);
 
+  // Auth check
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
@@ -269,7 +255,7 @@ export default function DreamTeamPage() {
     <DashboardLayout>
       <div className="page-wrapper relative">
         {/* Page Header */}
-        <header className="page-header mb-6">
+        <header className="page-header mb-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 mb-2">
@@ -279,7 +265,7 @@ export default function DreamTeamPage() {
                 <h1>The Dream Team</h1>
               </div>
               <p className="text-[var(--text-muted)] max-w-2xl">
-                10 essential tools that form your ultimate backend infrastructure. Click any card for details.
+                10 tools. 10X results. Scroll or pinch to zoom.
               </p>
             </div>
           </div>
@@ -314,119 +300,64 @@ export default function DreamTeamPage() {
           </button>
         </div>
 
-        {/* Canvas Container */}
-        <div className="overflow-auto pb-8" style={{ maxHeight: 'calc(100vh - 200px)' }}>
+        {/* Canvas Container - Horizontal Scroll */}
+        <div className="overflow-auto pb-8" style={{ maxHeight: 'calc(100vh - 180px)' }}>
           <motion.div
             ref={canvasRef}
             style={{
               transform: `scale(${zoom})`,
-              transformOrigin: 'top center',
+              transformOrigin: 'top left',
               transition: 'transform 0.2s ease-out',
             }}
           >
-            {/* FlowChart Canvas */}
-            <div className="relative">
-              {/* Tool Rows */}
+            {/* Single Horizontal Line of Tools */}
+            <div className="relative py-8">
               <motion.div
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="flex flex-col items-center gap-8"
+                className="flex items-start gap-6"
+                style={{ minWidth: 'max-content' }}
               >
-                {canvasRows.map((row, rowIndex) => (
-                  <div key={rowIndex} className="relative">
-                    {/* Row of Cards */}
-                    <div className="flex items-center justify-center gap-6 flex-wrap">
-                      {row.map((toolIndex) => {
-                        const tool = dreamTeamTools[toolIndex];
-                        return (
-                          <motion.div
-                            key={tool.id}
-                            variants={cardVariants}
-                            className="group"
-                          >
-                            <ToolCard tool={tool} onOpenModal={() => setModalTool(tool)} />
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Connection Lines (SVG) - Between rows */}
-                    {rowIndex < canvasRows.length - 1 && (
-                      <div className="flex justify-center mt-6">
-                        <svg width="200" height="40" viewBox="0 0 200 40">
-                          <defs>
-                            <linearGradient id={`lineGrad${rowIndex}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                              <stop offset="0%" stopColor="#E5E5EA" />
-                              <stop offset="100%" stopColor="#D1D1D6" />
-                            </linearGradient>
-                          </defs>
-                          <motion.path
-                            d="M100 0 L100 40"
-                            stroke={`url(#lineGrad${rowIndex})`}
-                            strokeWidth="2"
-                            strokeDasharray="6,4"
-                            fill="none"
-                            initial={{ pathLength: 0 }}
-                            animate={{ pathLength: 1 }}
-                            transition={{ delay: 0.5 + rowIndex * 0.2, duration: 0.5 }}
-                          />
-                          <motion.circle
-                            cx="100"
-                            cy="20"
-                            r="4"
-                            fill="#D1D1D6"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.7 + rowIndex * 0.2 }}
-                          />
-                        </svg>
+                {dreamTeamTools.map((tool, index) => (
+                  <div key={tool.id} className="flex items-center">
+                    <motion.div variants={cardVariants}>
+                      <ToolCard tool={tool} onOpenModal={() => setModalTool(tool)} />
+                    </motion.div>
+                    {/* Connector Arrow */}
+                    {index < dreamTeamTools.length - 1 && (
+                      <div className="flex items-center mx-2">
+                        <div className="w-8 h-0.5 bg-gradient-to-r from-[#E5E5EA] to-[#D1D1D6]" />
+                        <div className="w-0 h-0 border-t-4 border-b-4 border-l-6 border-t-transparent border-b-transparent border-l-[#D1D1D6]" />
                       </div>
                     )}
                   </div>
                 ))}
 
-                {/* Final Connection to Shopify */}
-                <div className="flex flex-col items-center mt-4">
-                  <svg width="200" height="60" viewBox="0 0 200 60">
-                    <defs>
-                      <linearGradient id="finalLineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#D1D1D6" />
-                        <stop offset="100%" stopColor="#95BF47" />
-                      </linearGradient>
-                    </defs>
-                    <motion.path
-                      d="M100 0 L100 60"
-                      stroke="url(#finalLineGrad)"
-                      strokeWidth="3"
-                      fill="none"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ delay: 1.5, duration: 0.6 }}
-                    />
-                    <motion.polygon
-                      points="100,60 94,48 106,48"
-                      fill="#95BF47"
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 2 }}
-                    />
-                  </svg>
-
-                  {/* Shopify Store Node */}
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 2.2, type: 'spring' as const, stiffness: 200 }}
-                    className="flex flex-col items-center"
-                  >
-                    <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-[#95BF47] to-[#7AA835] flex items-center justify-center shadow-2xl">
-                      <Store size={48} className="text-white" strokeWidth={1.5} />
-                    </div>
-                    <h3 className="mt-4 text-xl font-semibold text-[var(--text-primary)]">Your Store</h3>
-                    <p className="text-sm text-[var(--text-muted)]">Powered by the Dream Team</p>
-                  </motion.div>
+                {/* Final Arrow to Store */}
+                <div className="flex items-center mx-4">
+                  <div className="w-12 h-1 bg-gradient-to-r from-[#D1D1D6] to-[#95BF47]" />
+                  <div className="w-0 h-0 border-t-6 border-b-6 border-l-8 border-t-transparent border-b-transparent border-l-[#95BF47]" />
                 </div>
+
+                {/* Shopify Store Node */}
+                <motion.div
+                  variants={cardVariants}
+                  className="flex flex-col items-center"
+                >
+                  <div className="w-28 h-28 rounded-3xl overflow-hidden shadow-2xl border-4 border-[#95BF47]/20">
+                    <Image
+                      src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Shopify%20(2).jpg"
+                      alt="Your Shopify Store"
+                      width={112}
+                      height={112}
+                      className="w-full h-full object-cover"
+                      unoptimized
+                    />
+                  </div>
+                  <h3 className="mt-3 text-lg font-semibold text-[var(--text-primary)]">Your Store</h3>
+                  <p className="text-xs text-[var(--text-muted)]">Powered by The Dream Team</p>
+                </motion.div>
               </motion.div>
             </div>
           </motion.div>
@@ -443,14 +374,14 @@ export default function DreamTeamPage() {
   );
 }
 
-// Tool Card Component - Elite Style
+// Compact Tool Card Component
 function ToolCard({ tool, onOpenModal }: { tool: Tool; onOpenModal: () => void }) {
   return (
-    <div className="w-80 bg-white rounded-[20px] border border-[var(--border-light)] p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group">
+    <div className="w-56 bg-white rounded-2xl border border-[var(--border-light)] p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
       {/* Header Row */}
-      <div className="flex items-start justify-between mb-4">
+      <div className="flex items-start justify-between mb-3">
         {/* Logo */}
-        <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-[var(--bg-secondary)] shadow-sm flex-shrink-0">
+        <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-[var(--bg-secondary)] shadow-sm flex-shrink-0">
           {tool.logo ? (
             <Image
               src={tool.logo}
@@ -461,7 +392,7 @@ function ToolCard({ tool, onOpenModal }: { tool: Tool; onOpenModal: () => void }
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
-              <span className="text-xl font-bold text-[var(--text-muted)]">
+              <span className="text-lg font-bold text-[var(--text-muted)]">
                 {tool.name.charAt(0)}
               </span>
             </div>
@@ -469,14 +400,14 @@ function ToolCard({ tool, onOpenModal }: { tool: Tool; onOpenModal: () => void }
         </div>
 
         {/* Badges */}
-        <div className="flex flex-col items-end gap-2">
+        <div className="flex flex-col items-end gap-1">
           {tool.isFree && (
-            <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full bg-green-50 text-green-700 border border-green-200">
+            <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-green-50 text-green-700 border border-green-200">
               FREE
             </span>
           )}
           {tool.specialBadge && !tool.isFree && (
-            <span className="px-3 py-1 text-xs font-bold rounded-full bg-[var(--accent-gold-light)] text-[var(--accent-gold)] border border-[var(--border-gold)]">
+            <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-[var(--accent-gold-light)] text-[var(--accent-gold)] border border-[var(--border-gold)]">
               {tool.specialBadge}
             </span>
           )}
@@ -484,44 +415,44 @@ function ToolCard({ tool, onOpenModal }: { tool: Tool; onOpenModal: () => void }
       </div>
 
       {/* Title */}
-      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-1">
+      <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-0.5">
         {tool.name}
       </h3>
 
       {/* Role */}
-      <span className="text-xs font-medium uppercase tracking-wide text-[var(--text-muted)] block mb-3">
+      <span className="text-[10px] font-medium uppercase tracking-wide text-[var(--text-muted)] block mb-2">
         {tool.role}
       </span>
 
       {/* Description */}
-      <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-5 line-clamp-3">
+      <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-3 line-clamp-2">
         {tool.shortDescription}
       </p>
 
       {/* Action Buttons */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         {tool.hasExpandableInfo && (
           <button
             onClick={(e) => {
               e.stopPropagation();
               onOpenModal();
             }}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--bg-secondary)] text-[var(--text-secondary)] text-sm font-medium hover:bg-[var(--bg-active)] transition-colors"
+            className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-[var(--bg-secondary)] text-[var(--text-secondary)] text-xs font-medium hover:bg-[var(--bg-active)] transition-colors"
           >
-            <Info size={16} />
-            More Info
+            <Info size={12} />
+            Info
           </button>
         )}
         <a
           href={tool.installUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--primary)] text-white text-sm font-medium hover:bg-[var(--primary-hover)] transition-colors ${
+          className={`flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg bg-[var(--primary)] text-white text-xs font-medium hover:bg-[var(--primary-hover)] transition-colors ${
             tool.hasExpandableInfo ? 'flex-1' : 'w-full'
           }`}
         >
           Install
-          <ExternalLink size={14} />
+          <ExternalLink size={10} />
         </a>
       </div>
     </div>
@@ -544,12 +475,12 @@ function InfoModal({ tool, onClose }: { tool: Tool; onClose: () => void }) {
         animate="visible"
         exit="exit"
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-hidden shadow-2xl"
+        className="bg-white rounded-3xl max-w-lg w-full max-h-[80vh] overflow-hidden shadow-2xl"
       >
         {/* Modal Header */}
-        <div className="p-6 border-b border-[var(--border-light)] flex items-start justify-between">
-          <div className="flex items-center gap-4">
-            <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-[var(--bg-secondary)] shadow-sm">
+        <div className="p-5 border-b border-[var(--border-light)] flex items-start justify-between">
+          <div className="flex items-center gap-3">
+            <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-[var(--bg-secondary)] shadow-sm">
               {tool.logo ? (
                 <Image
                   src={tool.logo}
@@ -560,51 +491,51 @@ function InfoModal({ tool, onClose }: { tool: Tool; onClose: () => void }) {
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-2xl font-bold text-[var(--text-muted)]">
+                  <span className="text-xl font-bold text-[var(--text-muted)]">
                     {tool.name.charAt(0)}
                   </span>
                 </div>
               )}
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-[var(--text-primary)]">{tool.name}</h2>
-              <span className="text-sm text-[var(--text-muted)]">{tool.role}</span>
+              <h2 className="text-lg font-semibold text-[var(--text-primary)]">{tool.name}</h2>
+              <span className="text-xs text-[var(--text-muted)]">{tool.role}</span>
             </div>
           </div>
           <button
             onClick={onClose}
             className="p-2 rounded-xl hover:bg-[var(--bg-secondary)] transition-colors"
           >
-            <X size={20} className="text-[var(--text-muted)]" />
+            <X size={18} className="text-[var(--text-muted)]" />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto max-h-[60vh]">
+        <div className="p-5 overflow-y-auto max-h-[50vh]">
           {/* Paragraphs */}
           {tool.infoContent?.paragraphs?.map((p, idx) => (
-            <p key={idx} className="text-sm text-[var(--text-secondary)] mb-4 leading-relaxed">
+            <p key={idx} className="text-sm text-[var(--text-secondary)] mb-3 leading-relaxed">
               {p}
             </p>
           ))}
 
           {/* Example Questions (Grapevine) */}
           {tool.infoContent?.exampleQuestions && (
-            <div className="mt-6">
-              <h4 className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-4 font-semibold">
-                Example Survey Questions
+            <div className="mt-4">
+              <h4 className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider mb-3 font-semibold">
+                Example Questions
               </h4>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {tool.infoContent.exampleQuestions.map((q, idx) => (
-                  <div key={idx} className="p-4 bg-[var(--bg-secondary)] rounded-xl">
-                    <p className="text-sm font-medium text-[var(--text-primary)] mb-3">
+                  <div key={idx} className="p-3 bg-[var(--bg-secondary)] rounded-xl">
+                    <p className="text-xs font-medium text-[var(--text-primary)] mb-2">
                       {q.question}
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5">
                       {q.options.map((opt, optIdx) => (
                         <span
                           key={optIdx}
-                          className="text-xs px-3 py-1.5 bg-white rounded-full text-[var(--text-secondary)] border border-[var(--border-light)]"
+                          className="text-[10px] px-2 py-1 bg-white rounded-full text-[var(--text-secondary)] border border-[var(--border-light)]"
                         >
                           {opt}
                         </span>
@@ -618,13 +549,13 @@ function InfoModal({ tool, onClose }: { tool: Tool; onClose: () => void }) {
 
           {/* Warehouse Images */}
           {tool.warehouseImages && (
-            <div className="mt-6">
-              <h4 className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-4 font-semibold">
+            <div className="mt-4">
+              <h4 className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider mb-3 font-semibold">
                 Fulfillment Centers
               </h4>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 {tool.warehouseImages.map((img, idx) => (
-                  <div key={idx} className="relative aspect-video rounded-xl overflow-hidden">
+                  <div key={idx} className="relative aspect-video rounded-lg overflow-hidden">
                     <Image
                       src={img}
                       alt={`${tool.name} warehouse ${idx + 1}`}
@@ -640,15 +571,15 @@ function InfoModal({ tool, onClose }: { tool: Tool; onClose: () => void }) {
         </div>
 
         {/* Modal Footer */}
-        <div className="p-6 border-t border-[var(--border-light)] bg-[var(--bg-secondary)]">
+        <div className="p-5 border-t border-[var(--border-light)] bg-[var(--bg-secondary)]">
           <a
             href={tool.installUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-primary w-full justify-center text-base py-3"
+            className="btn btn-primary w-full justify-center text-sm py-2.5"
           >
             Install {tool.name}
-            <ExternalLink size={18} />
+            <ExternalLink size={14} />
           </a>
         </div>
       </motion.div>

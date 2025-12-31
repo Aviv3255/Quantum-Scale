@@ -61,7 +61,7 @@ const navigationItems: NavItem[] = [
     icon: Server,
     isCategory: true,
     subItems: [
-      { title: "Dream Team", href: "/backend/dream-team" },
+      { title: "The Dream Team", href: "/backend/dream-team" },
       { title: "Secret Apps", href: "/apps/secret" },
       { title: "Discounted Shopify Apps", href: "/apps/shopify" },
       { title: "Private Agent", href: "/products/private-agent" }
