@@ -216,23 +216,28 @@ const modalVariants = {
   exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } },
 };
 
+// Zoom constraints - MIN_ZOOM shows 100% content perfectly centered
+const MIN_ZOOM = 0.32;
+const MAX_ZOOM = 1.5;
+const DEFAULT_ZOOM = 0.32;
+
 export default function DreamTeamPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
   const [modalTool, setModalTool] = useState<Tool | null>(null);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
-  const [zoom, setZoom] = useState(0.7); // Default zoom to fit flowchart
+  const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const [isPanning, setIsPanning] = useState(false);
-  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [panOffset, setPanOffset] = useState({ x: -120, y: 0 }); // Offset left to center content in viewport
   const [startPan, setStartPan] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLDivElement>(null);
 
-  // Zoom controls
-  const zoomIn = useCallback(() => setZoom((z) => Math.min(z + 0.1, 1.5)), []);
-  const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.1, 0.3)), []);
+  // Zoom controls with strict limits
+  const zoomIn = useCallback(() => setZoom((z) => Math.min(z + 0.08, MAX_ZOOM)), []);
+  const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.08, MIN_ZOOM)), []);
   const resetZoom = useCallback(() => {
-    setZoom(0.7);
-    setPanOffset({ x: 0, y: 0 });
+    setZoom(DEFAULT_ZOOM);
+    setPanOffset({ x: -120, y: 0 }); // Reset to centered offset
   }, []);
 
   // Toggle card expansion
@@ -370,7 +375,7 @@ export default function DreamTeamPage() {
         {/* Canvas Container - Scroll = Zoom, Drag = Pan */}
         <div
           className={`overflow-hidden ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
-          style={{ height: 'calc(100vh - 200px)' }}
+          style={{ height: 'calc(100vh - 140px)' }}
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -394,7 +399,7 @@ export default function DreamTeamPage() {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="flex justify-center gap-6 mb-8"
+                className="flex justify-center gap-5 mb-4"
               >
                 {row1.map((tool) => (
                   <motion.div key={tool.id} variants={cardVariants}>
@@ -408,25 +413,66 @@ export default function DreamTeamPage() {
                 ))}
               </motion.div>
 
-              {/* SVG Connector Lines from Row 1 */}
-              <svg className="w-full h-16 overflow-visible" viewBox="0 0 1400 60" preserveAspectRatio="xMidYMid meet">
-                {/* Lines from each card in row 1 converging down */}
+              {/* Ultra Premium Connector Lines - Row 1 to Center */}
+              <svg className="w-full h-12 overflow-visible" viewBox="0 0 1200 50" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  {/* Premium gradient for lines */}
+                  <linearGradient id="premiumGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#E8E8ED" stopOpacity="0.8" />
+                    <stop offset="50%" stopColor="#D1D1D6" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="#C7C7CC" stopOpacity="0.4" />
+                  </linearGradient>
+                  {/* Subtle glow filter */}
+                  <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="2" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+                {/* Elegant curved lines with smooth bezier */}
                 {[0, 1, 2, 3, 4].map((i) => {
-                  const startX = 140 + i * 240;
+                  const startX = 120 + i * 240;
+                  const controlY = 30 + Math.abs(i - 2) * 3;
                   return (
-                    <motion.path
-                      key={`line1-${i}`}
-                      d={`M ${startX} 0 Q ${startX} 30, 700 60`}
-                      fill="none"
-                      stroke="#E5E5EA"
-                      strokeWidth="2"
-                      strokeDasharray="6 4"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 1 }}
-                      transition={{ duration: 1, delay: 0.5 + i * 0.1 }}
-                    />
+                    <g key={`connector1-${i}`}>
+                      {/* Shadow line */}
+                      <motion.path
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 50`}
+                        fill="none"
+                        stroke="rgba(0,0,0,0.03)"
+                        strokeWidth="6"
+                        strokeLinecap="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 1.2, delay: 0.3 + i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+                      />
+                      {/* Main elegant line */}
+                      <motion.path
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 50`}
+                        fill="none"
+                        stroke="url(#premiumGradient1)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        filter="url(#softGlow)"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: 1 }}
+                        transition={{ duration: 1.2, delay: 0.3 + i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
+                      />
+                    </g>
                   );
                 })}
+                {/* Center convergence node */}
+                <motion.circle
+                  cx="600"
+                  cy="50"
+                  r="3"
+                  fill="#C7C7CC"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.6 }}
+                  transition={{ delay: 1.2, duration: 0.4 }}
+                />
               </svg>
 
               {/* Row 2: Next 5 tools */}
@@ -434,7 +480,7 @@ export default function DreamTeamPage() {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="flex justify-center gap-6 mb-8"
+                className="flex justify-center gap-5 mb-4"
               >
                 {row2.map((tool) => (
                   <motion.div key={tool.id} variants={cardVariants}>
@@ -448,58 +494,128 @@ export default function DreamTeamPage() {
                 ))}
               </motion.div>
 
-              {/* SVG Connector Lines from Row 2 to Shopify */}
-              <svg className="w-full h-24 overflow-visible" viewBox="0 0 1400 90" preserveAspectRatio="xMidYMid meet">
-                {/* Lines from each card in row 2 converging to center */}
-                {[0, 1, 2, 3, 4].map((i) => {
-                  const startX = 140 + i * 240;
-                  return (
-                    <motion.path
-                      key={`line2-${i}`}
-                      d={`M ${startX} 0 Q ${startX} 45, 700 90`}
-                      fill="none"
-                      stroke="url(#greenGradient)"
-                      strokeWidth="2.5"
-                      strokeDasharray="8 4"
-                      initial={{ pathLength: 0, opacity: 0 }}
-                      animate={{ pathLength: 1, opacity: 1 }}
-                      transition={{ duration: 1.2, delay: 0.8 + i * 0.1 }}
-                    />
-                  );
-                })}
+              {/* Ultra Premium Connector Lines - Row 2 to Shopify */}
+              <svg className="w-full h-16 overflow-visible" viewBox="0 0 1200 65" preserveAspectRatio="xMidYMid meet">
                 <defs>
-                  <linearGradient id="greenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#E5E5EA" />
-                    <stop offset="100%" stopColor="#95BF47" />
+                  {/* Premium Shopify gradient */}
+                  <linearGradient id="shopifyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#C7C7CC" stopOpacity="0.5" />
+                    <stop offset="40%" stopColor="#A8D08D" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="#95BF47" stopOpacity="0.9" />
+                  </linearGradient>
+                  {/* Shopify glow */}
+                  <filter id="shopifyGlow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                  {/* Animated pulse along path */}
+                  <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#95BF47" stopOpacity="0">
+                      <animate attributeName="offset" values="-0.3;1" dur="2.5s" repeatCount="indefinite" />
+                    </stop>
+                    <stop offset="10%" stopColor="#95BF47" stopOpacity="0.8">
+                      <animate attributeName="offset" values="-0.2;1.1" dur="2.5s" repeatCount="indefinite" />
+                    </stop>
+                    <stop offset="20%" stopColor="#95BF47" stopOpacity="0">
+                      <animate attributeName="offset" values="-0.1;1.2" dur="2.5s" repeatCount="indefinite" />
+                    </stop>
                   </linearGradient>
                 </defs>
+                {/* Elegant curved lines flowing to Shopify */}
+                {[0, 1, 2, 3, 4].map((i) => {
+                  const startX = 120 + i * 240;
+                  const controlY = 35 + Math.abs(i - 2) * 5;
+                  return (
+                    <g key={`connector2-${i}`}>
+                      {/* Deep shadow for depth */}
+                      <motion.path
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 65`}
+                        fill="none"
+                        stroke="rgba(149,191,71,0.08)"
+                        strokeWidth="8"
+                        strokeLinecap="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 1.4, delay: 0.6 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                      />
+                      {/* Mid glow layer */}
+                      <motion.path
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 65`}
+                        fill="none"
+                        stroke="rgba(149,191,71,0.15)"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 1.4, delay: 0.6 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                      />
+                      {/* Main premium line */}
+                      <motion.path
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 65`}
+                        fill="none"
+                        stroke="url(#shopifyGradient)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        filter="url(#shopifyGlow)"
+                        initial={{ pathLength: 0, opacity: 0 }}
+                        animate={{ pathLength: 1, opacity: 1 }}
+                        transition={{ duration: 1.4, delay: 0.6 + i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
+                      />
+                    </g>
+                  );
+                })}
+                {/* Convergence ring before Shopify */}
+                <motion.circle
+                  cx="600"
+                  cy="62"
+                  r="6"
+                  fill="none"
+                  stroke="#95BF47"
+                  strokeWidth="1.5"
+                  strokeOpacity="0.3"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ delay: 1.8, duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <motion.circle
+                  cx="600"
+                  cy="62"
+                  r="3"
+                  fill="#95BF47"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 0.8 }}
+                  transition={{ delay: 1.6, duration: 0.4 }}
+                />
               </svg>
 
-              {/* Large Shopify Store Node at Bottom */}
+              {/* Shopify Store Node at Bottom */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 30 }}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 1.5, duration: 0.6, type: 'spring' }}
                 className="flex flex-col items-center"
               >
                 {/* Glowing ring effect */}
                 <div className="relative">
-                  <div className="absolute inset-0 bg-[#95BF47]/20 rounded-full blur-2xl scale-150" />
-                  <div className="relative w-40 h-40 rounded-full overflow-hidden shadow-2xl border-4 border-[#95BF47]/30 bg-white">
+                  <div className="absolute inset-0 bg-[#95BF47]/20 rounded-full blur-xl scale-125" />
+                  <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-xl border-3 border-[#95BF47]/30 bg-white">
                     <Image
                       src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Shopify%20(2).jpg"
                       alt="Your Shopify Store"
-                      width={160}
-                      height={160}
+                      width={112}
+                      height={112}
                       className="w-full h-full object-cover"
                       unoptimized
                     />
                   </div>
                 </div>
-                <h3 className="mt-4 text-xl font-bold text-[var(--text-primary)]">Your Store</h3>
-                <p className="text-sm text-[var(--text-muted)] mt-1">Powered by The Dream Team</p>
-                <div className="flex items-center gap-2 mt-3">
-                  <span className="px-3 py-1.5 text-xs font-semibold bg-[#95BF47]/10 text-[#5E8E3E] rounded-full border border-[#95BF47]/20">
+                <h3 className="mt-2 text-base font-bold text-[var(--text-primary)]">Your Store</h3>
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">Powered by The Dream Team</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="px-2 py-1 text-[10px] font-semibold bg-[#95BF47]/10 text-[#5E8E3E] rounded-full border border-[#95BF47]/20">
                     10 Tools Connected
                   </span>
                 </div>
