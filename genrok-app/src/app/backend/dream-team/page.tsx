@@ -216,29 +216,61 @@ const modalVariants = {
   exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } },
 };
 
-// Zoom constraints - MIN_ZOOM shows 100% content perfectly fitted to screen
-const MIN_ZOOM = 0.6;
+// Content dimensions - sized to fit all content at max zoom out
+const CONTENT_WIDTH = 1020;  // 5 cards (176px each) + 4 gaps (12px) + padding
+const CONTENT_HEIGHT = 860;  // 2 rows + connectors + Shopify logo with text
 const MAX_ZOOM = 1.5;
-const DEFAULT_ZOOM = 0.6;
 
 export default function DreamTeamPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
   const [modalTool, setModalTool] = useState<Tool | null>(null);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
-  const [zoom, setZoom] = useState(DEFAULT_ZOOM);
+  const [minZoom, setMinZoom] = useState(0.5); // Dynamic, calculated on mount
+  const [zoom, setZoom] = useState(0.5); // Will be set to minZoom on mount
   const [isPanning, setIsPanning] = useState(false);
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [startPan, setStartPan] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Zoom controls with strict limits
-  const zoomIn = useCallback(() => setZoom((z) => Math.min(z + 0.08, MAX_ZOOM)), []);
-  const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.08, MIN_ZOOM)), []);
-  const resetZoom = useCallback(() => {
-    setZoom(DEFAULT_ZOOM);
-    setPanOffset({ x: 0, y: 0 });
+  // Calculate optimal zoom to fill viewport exactly (no whitespace)
+  useEffect(() => {
+    const calculateOptimalZoom = () => {
+      if (!containerRef.current) return;
+
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const viewportWidth = containerRect.width;
+      const viewportHeight = containerRect.height;
+
+      // Calculate zoom to fit content exactly edge-to-edge
+      const zoomForWidth = viewportWidth / CONTENT_WIDTH;
+      const zoomForHeight = viewportHeight / CONTENT_HEIGHT;
+
+      // Use minimum to ensure content fits without overflow
+      const optimalZoom = Math.min(zoomForWidth, zoomForHeight);
+
+      // This is our MIN_ZOOM - content fills screen exactly at this level
+      setMinZoom(optimalZoom);
+      setZoom(optimalZoom);
+      setPanOffset({ x: 0, y: 0 });
+    };
+
+    // Calculate on mount
+    calculateOptimalZoom();
+
+    // Recalculate on window resize
+    window.addEventListener('resize', calculateOptimalZoom);
+    return () => window.removeEventListener('resize', calculateOptimalZoom);
   }, []);
+
+  // Zoom controls with dynamic minZoom
+  const zoomIn = useCallback(() => setZoom((z) => Math.min(z + 0.08, MAX_ZOOM)), []);
+  const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.08, minZoom)), [minZoom]);
+  const resetZoom = useCallback(() => {
+    setZoom(minZoom);
+    setPanOffset({ x: 0, y: 0 });
+  }, [minZoom]);
 
   // Toggle card expansion
   const toggleCardExpansion = (id: number) => {
@@ -372,8 +404,9 @@ export default function DreamTeamPage() {
           </button>
         </div>
 
-        {/* Canvas Container - Scroll = Zoom, Drag = Pan, No scrolling at min zoom */}
+        {/* Canvas Container - Scroll = Zoom, Drag = Pan, Content fills viewport at min zoom */}
         <div
+          ref={containerRef}
           className={`overflow-hidden ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
           style={{ height: 'calc(100vh - 140px)' }}
           onWheel={handleWheel}
@@ -386,10 +419,12 @@ export default function DreamTeamPage() {
             ref={canvasRef}
             style={{
               transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
-              transformOrigin: 'top center',
+              transformOrigin: 'center center',
               transition: isPanning ? 'none' : 'transform 0.2s ease-out',
+              width: '100%',
+              height: '100%',
             }}
-            className="flex justify-center pt-2"
+            className="flex justify-center items-center"
           >
             {/* Vertical Flowchart Layout */}
             <div className="relative flex flex-col items-center">
