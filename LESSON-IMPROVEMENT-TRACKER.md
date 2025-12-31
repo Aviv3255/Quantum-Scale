@@ -145,16 +145,16 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 65 | biz-counter-position | 9 | Elite (Improved Dec 31) |
 | 66 | biz-authenticity-engine | 9 | Elite (Improved Dec 31) |
 | 67 | biz-courage-variable | 9 | Elite (Improved Dec 31) |
+| 68 | biz-creative-targeting | 9 | Elite (Improved Dec 31) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (234 lessons remaining)
+## CATEGORY 2: NEED IMPROVEMENT (233 lessons remaining)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
-| 30 | biz-creative-targeting | 5 |
 | 31 | biz-creator-army | 5 |
 | 32 | biz-empathy-engine | 5 |
 | 33 | biz-four-pillars | 5 |
@@ -416,8 +416,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 67 |
-| Need Improvement | 234 |
+| Improved / Don't Need Improvement | 68 |
+| Need Improvement | 233 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **308** |
 
