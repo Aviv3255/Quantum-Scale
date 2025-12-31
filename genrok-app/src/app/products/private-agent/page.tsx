@@ -36,7 +36,7 @@ const agents = [
   {
     id: 'hypersku',
     name: 'HyperSKU',
-    logo: null,
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T115639.885.png?v=1760086613',
     link: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq',
     badge: 'Backup Agent',
   },
@@ -104,6 +104,7 @@ export default function PrivateAgentPage() {
   const { user, isLoading } = useAuthStore();
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  // Auth check
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
@@ -509,10 +510,10 @@ export default function PrivateAgentPage() {
           className="rounded-2xl p-8 md:p-12 text-center"
           style={{ background: 'var(--primary)' }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3" style={{ color: 'white' }}>
             Ready to Scale Your Shipping?
           </h2>
-          <p className="text-white/70 mb-8 max-w-xl mx-auto">
+          <p className="mb-8 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.7)' }}>
             Connect both agents for free. No credit card, no commitment, no monthly fees.
           </p>
 
@@ -531,7 +532,7 @@ export default function PrivateAgentPage() {
             ))}
           </div>
 
-          <p className="text-white/60 text-sm flex items-center justify-center gap-2">
+          <p className="text-sm flex items-center justify-center gap-2" style={{ color: 'rgba(255,255,255,0.6)' }}>
             <MessageCircle size={16} />
             Register through our link for direct WhatsApp support
           </p>

@@ -109,7 +109,7 @@ const dreamTeamTools: Tool[] = [
     shortDescription: 'The email platform that prints money while you sleep. Advanced flows, smart segments, AI subject lines. Industry gold standard.',
     fullDescription: 'Every 8-figure store uses Klaviyo. Automated flows for abandoned carts, post-purchase, win-back campaigns. AI writes subject lines. Segments update automatically.',
     installUrl: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner',
-    logo: 'https://images.ctfassets.net/qe56sx9uvxwh/1hkCt2BFWU3FcXJevlvuCH/e31f3f3c38cb6c79a5f0e4e5b6da5b04/klaviyo_logo.png',
+    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/klaviyoblog.jpg',
     hasExpandableInfo: false,
   },
   {
@@ -221,13 +221,19 @@ export default function DreamTeamPage() {
   const { user, isLoading } = useAuthStore();
   const [modalTool, setModalTool] = useState<Tool | null>(null);
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
-  const [zoom, setZoom] = useState(0.65); // Default zoom to fit flowchart
+  const [zoom, setZoom] = useState(0.7); // Default zoom to fit flowchart
+  const [isPanning, setIsPanning] = useState(false);
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
+  const [startPan, setStartPan] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLDivElement>(null);
 
   // Zoom controls
   const zoomIn = useCallback(() => setZoom((z) => Math.min(z + 0.1, 1.5)), []);
   const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.1, 0.3)), []);
-  const resetZoom = useCallback(() => setZoom(0.65), []);
+  const resetZoom = useCallback(() => {
+    setZoom(0.7);
+    setPanOffset({ x: 0, y: 0 });
+  }, []);
 
   // Toggle card expansion
   const toggleCardExpansion = (id: number) => {
@@ -271,6 +277,27 @@ export default function DreamTeamPage() {
       zoomOut();
     }
   }, [zoomIn, zoomOut]);
+
+  // Mouse drag to pan
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (e.button === 0) { // Left click only
+      setIsPanning(true);
+      setStartPan({ x: e.clientX - panOffset.x, y: e.clientY - panOffset.y });
+    }
+  }, [panOffset]);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (isPanning) {
+      setPanOffset({
+        x: e.clientX - startPan.x,
+        y: e.clientY - startPan.y,
+      });
+    }
+  }, [isPanning, startPan]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsPanning(false);
+  }, []);
 
   // Auth check
   useEffect(() => {
@@ -340,23 +367,27 @@ export default function DreamTeamPage() {
           </button>
         </div>
 
-        {/* Canvas Container - Scroll = Zoom */}
+        {/* Canvas Container - Scroll = Zoom, Drag = Pan */}
         <div
-          className="overflow-auto pb-8 cursor-zoom-in"
-          style={{ maxHeight: 'calc(100vh - 180px)' }}
+          className={`overflow-hidden ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
+          style={{ height: 'calc(100vh - 200px)' }}
           onWheel={handleWheel}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
         >
           <motion.div
             ref={canvasRef}
             style={{
-              transform: `scale(${zoom})`,
-              transformOrigin: 'top center',
-              transition: 'transform 0.2s ease-out',
-              minWidth: '1400px',
+              transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
+              transformOrigin: 'center center',
+              transition: isPanning ? 'none' : 'transform 0.2s ease-out',
             }}
+            className="flex justify-center items-start pt-4"
           >
             {/* Vertical Flowchart Layout */}
-            <div className="relative py-8 flex flex-col items-center">
+            <div className="relative flex flex-col items-center">
 
               {/* Row 1: First 5 tools */}
               <motion.div
