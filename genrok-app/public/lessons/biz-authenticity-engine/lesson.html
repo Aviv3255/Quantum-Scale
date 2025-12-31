@@ -150,17 +150,33 @@
       { type: 'welcome', learningGoals: ['Why scripted ads are dying', 'The 14% hit rate secret', 'The 3-step creator hiring system'] },
       { type: 'hook', headline: 'Your scripted ads have a less than 5% chance of working.', subtext: 'The market is saturated with polished, inauthentic content. People scroll past professional-looking ads because they feel like... ads. But raw, genuine content from real people? That converts at nearly 3X the rate. This is the authenticity engine.' },
       { type: 'hit-rate-comparison', title: 'The Content Revolution', subtitle: 'Why authenticity wins every time' },
-      { type: 'content', title: 'The Old Model is Broken', body: 'Brands hire creative strategists for $10,000/month and hope they produce winning ads. But hope is not a strategy. The market has changed. Today\\'s consumers have developed ad blindness. They scroll past anything that looks professionally produced. What stops them? Content that looks like it came from a friend. A real person using a real product in a real moment. That\\'s the authenticity engine.' },
-      { type: 'comparison-cards', title: 'Old Model vs The Cheat Code', left: { label: 'OLD MODEL', iconComponent: 'Camera', items: ['$10K/month creative strategist', 'Hope they produce winners', 'Polished, scripted content', '<5% hit rate on creatives'], color: '#EF4444' }, right: { label: 'CHEAT CODE', iconComponent: 'Users', items: ['Product seeding (FREE)', 'Test content as ads', 'Hire proven winners only', '14% hit rate on creatives'], color: '#22C55E' } },
+      { type: 'content', title: 'The Old Model is Broken', body: 'Brands hire creative strategists for $10,000/month and hope they produce winning ads. But hope is not a strategy. The market has changed. Modern consumers have developed ad blindness. They scroll past anything that looks professionally produced. What stops them? Content that looks like it came from a friend. A real person using a real product in a real moment. This is the authenticity engine.' },
+      { type: 'comparison-cards', title: 'Old Model vs The Cheat Code', left: { label: 'OLD MODEL', iconComponent: 'Camera', items: ['$10K/month creative strategist', 'Hope they produce winners', 'Polished, scripted content', 'Under 5% hit rate on creatives'], color: '#EF4444' }, right: { label: 'CHEAT CODE', iconComponent: 'Users', items: ['Product seeding (FREE)', 'Test content as ads', 'Hire proven winners only', '14% hit rate on creatives'], color: '#22C55E' } },
       { type: 'funnel-visual', title: 'The Creator Hiring Funnel', subtitle: 'Only pay for proven performance' },
       { type: 'step-breakdown', title: 'Step 1: Product Seeding', stepNumber: 1, cost: 'FREE', description: 'Send your products to aligned creators who genuinely fit your brand. Let them create content freely without scripts. The cost? Just your product. In return, you get authentic content that feels like a recommendation from a friend.', icon: 'Package', color: '#3B82F6' },
       { type: 'step-breakdown', title: 'Step 2: Test & Validate', stepNumber: 2, cost: 'AD SPEND', description: 'Run their content as ads. The market tells you who your best "creative strategists" are. No guessing. No hoping. Pure data. The creators whose content converts become your A-players.', icon: 'BarChart', color: '#8B5CF6' },
-      { type: 'step-breakdown', title: 'Step 3: Hire Proven Winners', stepNumber: 3, cost: '$500/MONTH', description: 'Only hire creators whose FREE content is already making you thousands in profit per day. You\\'re not paying for potential. You\\'re paying for proven results. They\\'re essentially creative strategists... for free.', icon: 'Trophy', color: '#22C55E' },
+      { type: 'step-breakdown', title: 'Step 3: Hire Proven Winners', stepNumber: 3, cost: '$500/MONTH', description: 'Only hire creators whose FREE content is already making you thousands in profit per day. You are not paying for potential. You are paying for proven results. They are essentially creative strategists... for free.', icon: 'Trophy', color: '#22C55E' },
       { type: 'economics-visual', title: 'The Unbeatable Economics', subtitle: 'Why this model crushes traditional hiring' },
       { type: 'quote-slide', quote: 'The winning ads are going to be the ones that are brutally honest, raw, and have clear messaging. People value authentic interactions where people are just being themselves.', author: 'Hudson Leogrande', company: 'Comfrt ($500M projected)' },
-      { type: 'quiz', question: 'What is the first step in the creator hiring funnel?', options: ['Hire expensive creative strategists', 'Send products to aligned creators for free', 'Run paid ads immediately', 'Create scripted content'], correctIndex: 1, feedback: { correct: 'Exactly right. Product seeding is the foundation. You send your products to creators who align with your brand and let them create content freely. The cost is just your product. This generates authentic content that feels like a friend\\'s recommendation, not an ad.', incorrect: 'Not quite. The first step is product seeding - sending your products to aligned creators for free. Let them create naturally. This generates authentic content at zero creative cost. Then you test it as ads to find your proven winners.' }},
+      { type: 'quiz', question: 'What is the first step in the creator hiring funnel?', options: ['Hire expensive creative strategists', 'Send products to aligned creators for free', 'Run paid ads immediately', 'Create scripted content'], correctIndex: 1, feedback: { correct: 'Exactly right. Product seeding is the foundation. You send your products to creators who align with your brand and let them create content freely. The cost is just your product. This generates authentic content that feels like a recommendation from a friend, not an ad.', incorrect: 'Not quite. The first step is product seeding - sending your products to aligned creators for free. Let them create naturally. This generates authentic content at zero creative cost. Then you test it as ads to find your proven winners.' }},
       { type: 'completion', sources: ['The E-commerce Cheat Code'] }
     ];
+
+    // AnimatedCounter for elite stat displays
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
+    };
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -171,6 +187,15 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Camera: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      BarChart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Trophy: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Filter: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -359,30 +384,6 @@
       </div>
     );
 
-    const ComparisonCardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className={`rounded-xl p-5 ${data.left && data.left.color === 'red' ? 'bg-red-50 border-2 border-red-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.left && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.left.color === 'red' ? 'text-red-500' : 'text-neutral-500'}`}>{data.left.label}</span>
-              {data.left.value && <h3 className={`text-2xl font-bold ${data.left.color === 'red' ? 'text-red-600' : 'text-neutral-900'}`}>{data.left.value}</h3>}
-              {data.left.subtext && <p className="text-xs text-neutral-500">{data.left.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.left.items && data.left.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.left.color === 'red' ? 'text-red-400' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className={`rounded-xl p-5 ${data.right && data.right.color === 'green' ? 'bg-green-50 border-2 border-green-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.right && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.right.color === 'green' ? 'text-green-500' : 'text-neutral-500'}`}>{data.right.label}</span>
-              {data.right.value && <h3 className={`text-2xl font-bold ${data.right.color === 'green' ? 'text-green-600' : 'text-neutral-900'}`}>{data.right.value}</h3>}
-              {data.right.subtext && <p className="text-xs text-neutral-500">{data.right.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.right.items && data.right.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.right.color === 'green' ? 'text-green-500' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-        </div>
-      </div>
-    );
-
     const DoomLoopSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
@@ -527,15 +528,6 @@
             </motion.div>
           ))}
         </div>
-      </div>
-    );
-
-    const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-6xl mb-6" style={{ color: 'var(--accent)' }}>"</motion.div>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl font-medium text-neutral-800 mb-6 leading-relaxed">{data.quote}</motion.blockquote>
-        {data.author && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500">— {data.author}{data.context && <span className="block text-sm mt-1">{data.context}</span>}</motion.p>}
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 bg-neutral-100 rounded-xl p-4 max-w-xl"><p className="text-sm text-neutral-600">{data.insight}</p></motion.div>}
       </div>
     );
 
@@ -725,6 +717,239 @@
       </div>
     );
 
+    // ============ ELITE HIT RATE COMPARISON SLIDE ============
+    const HitRateComparisonSlide = ({ data }) => {
+      const comparisonData = [
+        { label: 'Scripted Ads', rate: 5, color: '#EF4444', description: 'Polished content that feels like ads' },
+        { label: 'Authentic Content', rate: 14, color: '#22C55E', description: 'Raw content from real creators' }
+      ];
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4 tracking-wide" style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', color: 'white' }}>DATA COMPARISON</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500">{data.subtitle}</p>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {comparisonData.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `1px solid ${item.color}30` }}>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }} />
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${item.color}20` }}>
+                    {i === 0 ? <Icons.Camera /> : <Icons.Users />}
+                  </div>
+                  <span className="text-white font-semibold">{item.label}</span>
+                </div>
+                <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: item.color }}>
+                  <AnimatedCounter target={item.rate} suffix="%" duration={2000} />
+                </div>
+                <p className="text-neutral-400 text-sm">Hit Rate</p>
+                <p className="text-neutral-500 text-xs mt-3">{item.description}</p>
+                <div className="mt-4 h-2 bg-neutral-800 rounded-full overflow-hidden">
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${item.rate * 5}%` }} transition={{ delay: 0.5 + i * 0.2, duration: 1 }}
+                    className="h-full rounded-full" style={{ background: item.color }} />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-6">
+            <span className="text-neutral-500 text-sm">Authentic content converts at nearly <span className="font-bold text-green-500">3X</span> the rate</span>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ ELITE FUNNEL VISUAL SLIDE ============
+    const FunnelVisualSlide = ({ data }) => {
+      const funnelSteps = [
+        { label: 'Product Seeding', icon: 'Package', count: '100+', color: '#3B82F6', description: 'Send products to creators' },
+        { label: 'Test as Ads', icon: 'BarChart', count: '20-30', color: '#8B5CF6', description: 'Run content as paid ads' },
+        { label: 'Hire Winners', icon: 'Trophy', count: '3-5', color: '#22C55E', description: 'Only pay proven performers' }
+      ];
+      const getIcon = (iconName) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
+      };
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4 tracking-wide" style={{ background: 'linear-gradient(135deg, #F59E0B, #EF4444)', color: 'white' }}>THE FUNNEL</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500">{data.subtitle}</p>
+          </motion.div>
+          <div className="relative">
+            {funnelSteps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.2 }}
+                className="flex items-center gap-4 mb-4 relative">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, ${step.color}, ${step.color}99)`, boxShadow: `0 0 30px ${step.color}30` }}>
+                  {getIcon(step.icon)}
+                </div>
+                <div className="flex-1 rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `1px solid ${step.color}30` }}>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-white font-semibold">{step.label}</span>
+                    <span className="text-2xl font-bold" style={{ color: step.color }}>{step.count}</span>
+                  </div>
+                  <p className="text-neutral-400 text-sm">{step.description}</p>
+                </div>
+                {i < funnelSteps.length - 1 && (
+                  <div className="absolute left-8 top-16 w-0.5 h-4" style={{ background: `linear-gradient(to bottom, ${step.color}, ${funnelSteps[i+1].color})` }} />
+                )}
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
+            className="mt-6 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #22C55E20, #22C55E10)', border: '1px solid #22C55E30' }}>
+            <Icons.TrendingUp className="inline mr-2" style={{ color: '#22C55E' }} />
+            <span className="text-green-500 font-semibold">Only pay for proven results</span>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ ELITE STEP BREAKDOWN SLIDE ============
+    const StepBreakdownSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
+      };
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="relative">
+            <div className="absolute -top-4 -left-4 w-20 h-20 rounded-full opacity-20" style={{ background: data.color, filter: 'blur(20px)' }} />
+            <div className="relative rounded-2xl p-8 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `1px solid ${data.color}30` }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${data.color}, transparent)` }} />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white" style={{ background: `linear-gradient(135deg, ${data.color}, ${data.color}99)`, boxShadow: `0 0 30px ${data.color}30` }}>
+                  {getIcon(data.icon)}
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-neutral-500 tracking-wider">STEP {data.stepNumber}</span>
+                  <h2 className="text-2xl md:text-3xl font-bold text-white">{data.title}</h2>
+                </div>
+              </div>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+                className="mb-6 p-4 rounded-xl" style={{ background: `${data.color}15`, border: `1px solid ${data.color}30` }}>
+                <span className="text-xs font-bold text-neutral-400 tracking-wider">COST</span>
+                <div className="text-2xl font-bold mt-1" style={{ color: data.color }}>{data.cost}</div>
+              </motion.div>
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+                className="text-neutral-300 leading-relaxed text-base">{data.description}</motion.p>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ ELITE ECONOMICS VISUAL SLIDE ============
+    const EconomicsVisualSlide = ({ data }) => {
+      const economicsData = {
+        oldModel: { title: 'Old Model', cost: '$10,000/mo', hitRate: '5%', icon: 'Camera', color: '#EF4444', items: ['Hope-based strategy', 'Scripted content', 'Under 5% hit rate'] },
+        newModel: { title: 'Authenticity Engine', cost: '$500/mo', hitRate: '14%', icon: 'Users', color: '#22C55E', items: ['Data-driven hiring', 'Raw content', '14% hit rate'] }
+      };
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4 tracking-wide" style={{ background: 'linear-gradient(135deg, #22C55E, #10B981)', color: 'white' }}>THE ECONOMICS</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500">{data.subtitle}</p>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {Object.values(economicsData).map((model, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `1px solid ${model.color}30` }}>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${model.color}, transparent)` }} />
+                <div className="text-center mb-4">
+                  <span className="text-sm font-bold text-neutral-400">{model.title}</span>
+                  <div className="text-3xl font-bold mt-2" style={{ color: model.color }}>{model.cost}</div>
+                </div>
+                <div className="space-y-2 mb-4">
+                  {model.items.map((item, j) => (
+                    <div key={j} className="flex items-center gap-2 text-neutral-300 text-sm">
+                      <div className="w-1.5 h-1.5 rounded-full" style={{ background: model.color }} />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div className="p-3 rounded-xl text-center" style={{ background: `${model.color}15` }}>
+                  <span className="text-xs text-neutral-400">Hit Rate</span>
+                  <div className="text-2xl font-bold" style={{ color: model.color }}>{model.hitRate}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-6">
+            <span className="px-4 py-2 rounded-full text-sm font-semibold" style={{ background: '#22C55E20', color: '#22C55E' }}>
+              95% cost reduction + 180% better results
+            </span>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ ELITE QUOTE SLIDE ============
+    const QuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative">
+          <div className="absolute -top-6 -left-2 text-8xl opacity-10" style={{ color: 'var(--accent)', fontFamily: 'Georgia, serif' }}>"</div>
+          <div className="rounded-2xl p-8 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="text-xl md:text-2xl text-white leading-relaxed mb-6 relative z-10" style={{ fontFamily: 'var(--font-fraunces), Georgia, serif' }}>
+              "{data.quote}"
+            </motion.blockquote>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                {data.author?.charAt(0) || 'Q'}
+              </div>
+              <div>
+                <div className="text-white font-semibold">{data.author}</div>
+                <div className="text-neutral-400 text-sm">{data.company}</div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ ELITE COMPARISON CARDS SLIDE ============
+    const ComparisonCardsSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
+      };
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {[data.left, data.right].map((card, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `1px solid ${card.color}30` }}>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${card.color}, transparent)` }} />
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white" style={{ background: `${card.color}20` }}>
+                    {getIcon(card.iconComponent)}
+                  </div>
+                  <span className="text-sm font-bold tracking-wider" style={{ color: card.color }}>{card.label}</span>
+                </div>
+                <ul className="space-y-3">
+                  {card.items.map((item, j) => (
+                    <motion.li key={j} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + j * 0.1 }}
+                      className="flex items-start gap-3 text-neutral-300 text-sm">
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: `${card.color}20` }}>
+                        {i === 0 ? <Icons.X /> : <Icons.Check />}
+                      </div>
+                      {item}
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -844,6 +1069,10 @@
 
       const renderSlide = (slide) => {
         switch (slide.type) {
+          case 'hit-rate-comparison': return <HitRateComparisonSlide data={slide} />;
+          case 'funnel-visual': return <FunnelVisualSlide data={slide} />;
+          case 'step-breakdown': return <StepBreakdownSlide data={slide} />;
+          case 'economics-visual': return <EconomicsVisualSlide data={slide} />;
           case 'stat-countdown': return <StatCountdownSlide data={slide} />;
           case 'before-after': return <BeforeAfterSlide data={slide} />;
           case 'highlight-box': return <HighlightBoxSlide data={slide} />;
