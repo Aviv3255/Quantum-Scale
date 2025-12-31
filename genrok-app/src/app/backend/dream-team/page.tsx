@@ -216,10 +216,10 @@ const modalVariants = {
   exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } },
 };
 
-// Zoom constraints - MIN_ZOOM shows 100% content perfectly centered
-const MIN_ZOOM = 0.32;
+// Zoom constraints - MIN_ZOOM shows 100% content perfectly fitted to screen
+const MIN_ZOOM = 0.6;
 const MAX_ZOOM = 1.5;
-const DEFAULT_ZOOM = 0.32;
+const DEFAULT_ZOOM = 0.6;
 
 export default function DreamTeamPage() {
   const router = useRouter();
@@ -228,7 +228,7 @@ export default function DreamTeamPage() {
   const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
   const [zoom, setZoom] = useState(DEFAULT_ZOOM);
   const [isPanning, setIsPanning] = useState(false);
-  const [panOffset, setPanOffset] = useState({ x: -120, y: 0 }); // Offset left to center content in viewport
+  const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [startPan, setStartPan] = useState({ x: 0, y: 0 });
   const canvasRef = useRef<HTMLDivElement>(null);
 
@@ -237,7 +237,7 @@ export default function DreamTeamPage() {
   const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.08, MIN_ZOOM)), []);
   const resetZoom = useCallback(() => {
     setZoom(DEFAULT_ZOOM);
-    setPanOffset({ x: -120, y: 0 }); // Reset to centered offset
+    setPanOffset({ x: 0, y: 0 });
   }, []);
 
   // Toggle card expansion
@@ -372,7 +372,7 @@ export default function DreamTeamPage() {
           </button>
         </div>
 
-        {/* Canvas Container - Scroll = Zoom, Drag = Pan */}
+        {/* Canvas Container - Scroll = Zoom, Drag = Pan, No scrolling at min zoom */}
         <div
           className={`overflow-hidden ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
           style={{ height: 'calc(100vh - 140px)' }}
@@ -386,10 +386,10 @@ export default function DreamTeamPage() {
             ref={canvasRef}
             style={{
               transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
-              transformOrigin: 'center center',
+              transformOrigin: 'top center',
               transition: isPanning ? 'none' : 'transform 0.2s ease-out',
             }}
-            className="flex justify-center items-start pt-4"
+            className="flex justify-center pt-2"
           >
             {/* Vertical Flowchart Layout */}
             <div className="relative flex flex-col items-center">
@@ -399,7 +399,7 @@ export default function DreamTeamPage() {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="flex justify-center gap-5 mb-4"
+                className="flex justify-center gap-3 mb-2"
               >
                 {row1.map((tool) => (
                   <motion.div key={tool.id} variants={cardVariants}>
@@ -414,7 +414,7 @@ export default function DreamTeamPage() {
               </motion.div>
 
               {/* Ultra Premium Connector Lines - Row 1 to Center */}
-              <svg className="w-full h-12 overflow-visible" viewBox="0 0 1200 50" preserveAspectRatio="xMidYMid meet">
+              <svg className="w-full h-10 overflow-visible" viewBox="0 0 940 40" preserveAspectRatio="xMidYMid meet">
                 <defs>
                   {/* Premium gradient for lines */}
                   <linearGradient id="premiumGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -433,16 +433,16 @@ export default function DreamTeamPage() {
                 </defs>
                 {/* Elegant curved lines with smooth bezier */}
                 {[0, 1, 2, 3, 4].map((i) => {
-                  const startX = 120 + i * 240;
-                  const controlY = 30 + Math.abs(i - 2) * 3;
+                  const startX = 94 + i * 188;
+                  const controlY = 24 + Math.abs(i - 2) * 2;
                   return (
                     <g key={`connector1-${i}`}>
                       {/* Shadow line */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 50`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 470 ${controlY}, 470 40`}
                         fill="none"
                         stroke="rgba(0,0,0,0.03)"
-                        strokeWidth="6"
+                        strokeWidth="5"
                         strokeLinecap="round"
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
@@ -450,10 +450,10 @@ export default function DreamTeamPage() {
                       />
                       {/* Main elegant line */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 50`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 470 ${controlY}, 470 40`}
                         fill="none"
                         stroke="url(#premiumGradient1)"
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                         strokeLinecap="round"
                         filter="url(#softGlow)"
                         initial={{ pathLength: 0, opacity: 0 }}
@@ -465,9 +465,9 @@ export default function DreamTeamPage() {
                 })}
                 {/* Center convergence node */}
                 <motion.circle
-                  cx="600"
-                  cy="50"
-                  r="3"
+                  cx="470"
+                  cy="40"
+                  r="2.5"
                   fill="#C7C7CC"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 0.6 }}
@@ -480,7 +480,7 @@ export default function DreamTeamPage() {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="flex justify-center gap-5 mb-4"
+                className="flex justify-center gap-3 mb-2"
               >
                 {row2.map((tool) => (
                   <motion.div key={tool.id} variants={cardVariants}>
@@ -495,7 +495,7 @@ export default function DreamTeamPage() {
               </motion.div>
 
               {/* Ultra Premium Connector Lines - Row 2 to Shopify */}
-              <svg className="w-full h-16 overflow-visible" viewBox="0 0 1200 65" preserveAspectRatio="xMidYMid meet">
+              <svg className="w-full h-12 overflow-visible" viewBox="0 0 940 50" preserveAspectRatio="xMidYMid meet">
                 <defs>
                   {/* Premium Shopify gradient */}
                   <linearGradient id="shopifyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -505,37 +505,25 @@ export default function DreamTeamPage() {
                   </linearGradient>
                   {/* Shopify glow */}
                   <filter id="shopifyGlow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feGaussianBlur stdDeviation="2" result="blur" />
                     <feMerge>
                       <feMergeNode in="blur" />
                       <feMergeNode in="SourceGraphic" />
                     </feMerge>
                   </filter>
-                  {/* Animated pulse along path */}
-                  <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#95BF47" stopOpacity="0">
-                      <animate attributeName="offset" values="-0.3;1" dur="2.5s" repeatCount="indefinite" />
-                    </stop>
-                    <stop offset="10%" stopColor="#95BF47" stopOpacity="0.8">
-                      <animate attributeName="offset" values="-0.2;1.1" dur="2.5s" repeatCount="indefinite" />
-                    </stop>
-                    <stop offset="20%" stopColor="#95BF47" stopOpacity="0">
-                      <animate attributeName="offset" values="-0.1;1.2" dur="2.5s" repeatCount="indefinite" />
-                    </stop>
-                  </linearGradient>
                 </defs>
                 {/* Elegant curved lines flowing to Shopify */}
                 {[0, 1, 2, 3, 4].map((i) => {
-                  const startX = 120 + i * 240;
-                  const controlY = 35 + Math.abs(i - 2) * 5;
+                  const startX = 94 + i * 188;
+                  const controlY = 28 + Math.abs(i - 2) * 4;
                   return (
                     <g key={`connector2-${i}`}>
                       {/* Deep shadow for depth */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 65`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 470 ${controlY}, 470 50`}
                         fill="none"
                         stroke="rgba(149,191,71,0.08)"
-                        strokeWidth="8"
+                        strokeWidth="6"
                         strokeLinecap="round"
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
@@ -543,10 +531,10 @@ export default function DreamTeamPage() {
                       />
                       {/* Mid glow layer */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 65`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 470 ${controlY}, 470 50`}
                         fill="none"
                         stroke="rgba(149,191,71,0.15)"
-                        strokeWidth="3"
+                        strokeWidth="2.5"
                         strokeLinecap="round"
                         initial={{ pathLength: 0 }}
                         animate={{ pathLength: 1 }}
@@ -554,10 +542,10 @@ export default function DreamTeamPage() {
                       />
                       {/* Main premium line */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 600 ${controlY}, 600 65`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 470 ${controlY}, 470 50`}
                         fill="none"
                         stroke="url(#shopifyGradient)"
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                         strokeLinecap="round"
                         filter="url(#shopifyGlow)"
                         initial={{ pathLength: 0, opacity: 0 }}
@@ -569,21 +557,21 @@ export default function DreamTeamPage() {
                 })}
                 {/* Convergence ring before Shopify */}
                 <motion.circle
-                  cx="600"
-                  cy="62"
-                  r="6"
+                  cx="470"
+                  cy="48"
+                  r="5"
                   fill="none"
                   stroke="#95BF47"
-                  strokeWidth="1.5"
+                  strokeWidth="1"
                   strokeOpacity="0.3"
                   initial={{ scale: 0 }}
                   animate={{ scale: [1, 1.3, 1] }}
                   transition={{ delay: 1.8, duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <motion.circle
-                  cx="600"
-                  cy="62"
-                  r="3"
+                  cx="470"
+                  cy="48"
+                  r="2.5"
                   fill="#95BF47"
                   initial={{ scale: 0, opacity: 0 }}
                   animate={{ scale: 1, opacity: 0.8 }}
@@ -593,29 +581,29 @@ export default function DreamTeamPage() {
 
               {/* Shopify Store Node at Bottom */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ delay: 1.5, duration: 0.6, type: 'spring' }}
                 className="flex flex-col items-center"
               >
                 {/* Glowing ring effect */}
                 <div className="relative">
-                  <div className="absolute inset-0 bg-[#95BF47]/20 rounded-full blur-xl scale-125" />
-                  <div className="relative w-28 h-28 rounded-full overflow-hidden shadow-xl border-3 border-[#95BF47]/30 bg-white">
+                  <div className="absolute inset-0 bg-[#95BF47]/20 rounded-full blur-lg scale-125" />
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden shadow-lg border-2 border-[#95BF47]/30 bg-white">
                     <Image
                       src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Shopify%20(2).jpg"
                       alt="Your Shopify Store"
-                      width={112}
-                      height={112}
+                      width={64}
+                      height={64}
                       className="w-full h-full object-cover"
                       unoptimized
                     />
                   </div>
                 </div>
-                <h3 className="mt-2 text-base font-bold text-[var(--text-primary)]">Your Store</h3>
-                <p className="text-xs text-[var(--text-muted)] mt-0.5">Powered by The Dream Team</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <span className="px-2 py-1 text-[10px] font-semibold bg-[#95BF47]/10 text-[#5E8E3E] rounded-full border border-[#95BF47]/20">
+                <h3 className="mt-1.5 text-sm font-bold text-[var(--text-primary)]">Your Store</h3>
+                <p className="text-[10px] text-[var(--text-muted)]">Powered by The Dream Team</p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="px-2 py-0.5 text-[9px] font-semibold bg-[#95BF47]/10 text-[#5E8E3E] rounded-full border border-[#95BF47]/20">
                     10 Tools Connected
                   </span>
                 </div>
@@ -651,7 +639,7 @@ function ToolCard({
   const hasMoreContent = tool.fullDescription || tool.hasExpandableInfo;
 
   return (
-    <div className="w-56 bg-white rounded-2xl border border-[var(--border-light)] p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
+    <div className="w-44 bg-white rounded-2xl border border-[var(--border-light)] p-3 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
       {/* Header Row */}
       <div className="flex items-start justify-between mb-3">
         {/* Logo */}
