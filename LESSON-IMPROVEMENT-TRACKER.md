@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (118 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (119 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -196,10 +196,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 116 | biz-zero-cac-engine | 9 | Elite (Improved Jan 1) |
 | 117 | bottom-up-brand | 9 | Elite (Improved Jan 1) |
 | 118 | brand-promise-code | 9 | Elite (Improved Jan 1) |
+| 119 | brand-universe | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (180 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (179 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -207,7 +208,6 @@ These lessons need design improvements to reach elite level.
 |---|--------|---------------|
 | 57 | brain-friendly-ux | ERROR |
 | 58 | brand-search-campaign | 5 |
-| 60 | brand-universe | 5 |
 | 61 | cbo-vs-abo | 5 |
 | 62 | celebrity-gifting-flywheel | 5 |
 | 82 | certainty-transfer | 6 |
