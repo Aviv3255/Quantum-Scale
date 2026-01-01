@@ -405,9 +405,17 @@ export default function DreamTeamPage() {
   return (
     <DashboardLayout>
       {/* Page container - MUST NOT exceed viewport to prevent body scroll */}
-      <div className="relative -mx-6 -my-10 px-6 flex flex-col" style={{ height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
-        {/* Page Header - FIXED pure white background, NEVER affected by zoom/scroll */}
-        <header className="relative z-50 bg-white border-b border-[var(--border-light)] py-3 px-6">
+      {/* -mx-12 = 48px to escape main-content horizontal padding (48px) */}
+      {/* -my-10 = 40px to escape main-content vertical padding (40px) */}
+      <div className="relative -mx-12 -my-10 flex flex-col" style={{ height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
+        {/* Page Header - FULL WIDTH pure white background from edge to edge */}
+        <header
+          className="relative z-50 border-b border-[var(--border-light)] py-3 px-12 shrink-0"
+          style={{
+            width: '100%',
+            backgroundColor: '#FFFFFF',  // Pure white - explicit
+          }}
+        >
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-[var(--primary)] flex items-center justify-center">
               <Zap size={14} className="text-white" strokeWidth={2} />
