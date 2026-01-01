@@ -187,18 +187,18 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 107 | biz-one-pager-blueprint | 9 | Elite (Improved Jan 1) |
 | 108 | biz-price-anchoring | 9 | Elite (Improved Jan 1) |
 | 109 | biz-product-expansion | 9 | Elite (Improved Jan 1) |
+| 110 | biz-purchase-cycle-engine | 9 | Elite (Improved Jan 1) |
+| 111 | biz-rat-brain-hijack | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (190 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (188 lessons)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
-| 1 | biz-purchase-cycle-engine | 5 |
-| 5 | biz-rat-brain-hijack | 5 |
-| 6 | biz-remarkable-product | 5 |
+| 1 | biz-remarkable-product | 5 |
 | 7 | biz-savage-mentality | 5 |
 | 8 | biz-subscribe-save-ltv | 5 |
 | 9 | biz-velocity-advantage | 5 |
@@ -420,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 107 |
-| Need Improvement | 194 |
+| Improved / Don't Need Improvement | 111 |
+| Need Improvement | 190 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **308** |
 
