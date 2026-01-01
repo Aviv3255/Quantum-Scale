@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (114 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (115 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -192,16 +192,16 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 112 | biz-remarkable-product | 9 | Elite (Improved Jan 1) |
 | 113 | biz-savage-mentality | 9 | Elite (Improved Jan 1) |
 | 114 | biz-subscribe-save-ltv | 9 | Elite (Improved Jan 1) |
+| 115 | biz-velocity-advantage | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (184 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (183 lessons)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
-| 9 | biz-velocity-advantage | 5 |
 | 10 | biz-zero-cac-engine | 5 |
 | 11 | bottom-up-brand | 5 |
 | 57 | brain-friendly-ux | ERROR |
