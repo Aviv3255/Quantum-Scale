@@ -243,14 +243,14 @@ export default function DreamTeamPage() {
       const viewportWidth = containerRect.width;
       const viewportHeight = containerRect.height;
 
-      // Calculate zoom to fit content exactly edge-to-edge
+      // Calculate zoom to fit content with safety margin
       const zoomForWidth = viewportWidth / CONTENT_WIDTH;
       const zoomForHeight = viewportHeight / CONTENT_HEIGHT;
 
-      // Use minimum to ensure content fits without overflow
-      const optimalZoom = Math.min(zoomForWidth, zoomForHeight);
+      // Use minimum to ensure content fits, with 5% safety margin for edges
+      const optimalZoom = Math.min(zoomForWidth, zoomForHeight) * 0.95;
 
-      // This is our MIN_ZOOM - content fills screen exactly at this level
+      // This is our MIN_ZOOM - content fills screen with breathing room
       setMinZoom(optimalZoom);
       setZoom(optimalZoom);
       setPanOffset({ x: 0, y: 0 });
@@ -417,7 +417,7 @@ export default function DreamTeamPage() {
             ref={canvasRef}
             style={{
               transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
-              transformOrigin: 'top center',
+              transformOrigin: 'center center',
               transition: isPanning ? 'none' : 'transform 0.2s ease-out',
               width: '100%',
               height: '100%',
