@@ -765,7 +765,11 @@ export default function DataCenterPage() {
               <h1>Data Center</h1>
               <p>Real insights from real eCommerce operators. Updated live as the community votes.</p>
             </div>
-            <button className="btn btn-secondary flex-shrink-0">
+            <button
+              className="btn btn-secondary flex-shrink-0 opacity-50 cursor-not-allowed"
+              disabled
+              title="Coming soon"
+            >
               <Plus size={16} strokeWidth={1.5} />
               Post a Poll
             </button>
@@ -804,7 +808,6 @@ export default function DataCenterPage() {
                     poll={poll}
                     userVote={userVotes[poll.id]}
                     livePercentages={livePercentages}
-                    totalVotes={voteData?.totalVotes || BASE_TOTAL_VOTES}
                     isVoting={isVoting === poll.id}
                     onVote={(optionIndex) => handleVote(poll.id, optionIndex)}
                   />
@@ -829,20 +832,12 @@ interface PollCardProps {
   poll: Poll;
   userVote?: number;
   livePercentages: number[];
-  totalVotes: number;
   isVoting?: boolean;
   onVote: (optionIndex: number) => void;
 }
 
-function PollCard({ poll, userVote, livePercentages, totalVotes, isVoting, onVote }: PollCardProps) {
+function PollCard({ poll, userVote, livePercentages, isVoting, onVote }: PollCardProps) {
   const maxPercentage = Math.max(...livePercentages);
-
-  // Format total votes (e.g., 100,234 -> "100.2K")
-  const formatVotes = (votes: number) => {
-    if (votes >= 1000000) return `${(votes / 1000000).toFixed(1)}M`;
-    if (votes >= 1000) return `${(votes / 1000).toFixed(1)}K`;
-    return votes.toString();
-  };
 
   return (
     <div className="card card-hover h-full flex flex-col" style={{ padding: 0 }}>
@@ -851,9 +846,6 @@ function PollCard({ poll, userVote, livePercentages, totalVotes, isVoting, onVot
         <h3 className="text-sm font-semibold leading-tight text-[var(--text-primary)]">
           {poll.question}
         </h3>
-        <p className="text-[10px] text-[var(--text-muted)] mt-1">
-          {formatVotes(totalVotes)} votes
-        </p>
       </div>
 
       {/* Options */}
