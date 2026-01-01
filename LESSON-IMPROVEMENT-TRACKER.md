@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (127 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (128 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -205,17 +205,17 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 125 | choose-products | 9 | Elite (Fixed Jan 1) |
 | 126 | coupon-leaking | 9 | Elite (Fixed Jan 1) |
 | 127 | damaging-admission | 9 | Elite (Fixed Jan 1) |
+| 128 | digital-pause-power | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (171 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (170 lessons)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
 | 57 | brain-friendly-ux | ERROR |
-| 87 | digital-pause-power | 5 |
 | 88 | digital-velvet-rope | 5 |
 | 89 | dior-pricing-secret | 5 |
 | 90 | email-vs-sms | 5 |
@@ -420,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 127 |
-| Need Improvement | 171 |
+| Improved / Don't Need Improvement | 128 |
+| Need Improvement | 170 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **305** |
 
