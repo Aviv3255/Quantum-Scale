@@ -380,16 +380,18 @@ export default function DreamTeamPage() {
   return (
     <DashboardLayout>
       <div className="page-wrapper relative">
-        {/* Page Header - Minimal (fixed, not affected by zoom) */}
-        <header className="border-b border-[var(--border-light)] py-1 -mx-6 px-6">
-          <div className="flex items-center gap-1.5">
-            <div className="w-5 h-5 rounded bg-[var(--primary)] flex items-center justify-center">
-              <Zap size={10} className="text-white" strokeWidth={2} />
+        {/* Page Header - Minimal padding (fixed, not affected by zoom) */}
+        <header className="border-b border-[var(--border-light)] pb-1 -mx-6 px-6">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[var(--primary)] flex items-center justify-center">
+              <Zap size={14} className="text-white" strokeWidth={2} />
             </div>
-            <h1 className="text-sm font-semibold">The Dream Team</h1>
-            <span className="text-[9px] text-[var(--text-muted)]">
-              · Scroll to zoom, drag to pan
-            </span>
+            <div>
+              <h1 className="text-lg font-semibold leading-tight">The Dream Team</h1>
+              <p className="text-[10px] text-[var(--text-muted)]">
+                10 tools that power 8-figure stores. Scroll to zoom, drag to pan.
+              </p>
+            </div>
           </div>
         </header>
 
@@ -426,7 +428,7 @@ export default function DreamTeamPage() {
         <div
           ref={containerRef}
           className={`overflow-hidden -mx-6 ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
-          style={{ height: 'calc(100vh - 95px)' }}
+          style={{ height: 'calc(100vh - 105px)' }}
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -437,13 +439,14 @@ export default function DreamTeamPage() {
             ref={canvasRef}
             style={{
               transform: `translate(${panOffset.x}px, ${panOffset.y}px) scale(${zoom})`,
-              transformOrigin: 'center center',
+              transformOrigin: 'top center',
               transition: isPanning ? 'none' : 'transform 0.2s ease-out',
               width: '100%',
               height: '100%',
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'flex-start',
+              paddingTop: '8px',
             }}
           >
             {/* Vertical Flowchart Layout */}
