@@ -687,22 +687,22 @@ export default function DreamTeamPage() {
                 transition={{ delay: 1.5, duration: 0.6, type: 'spring' }}
                 className="flex flex-col items-center"
               >
-                {/* Glowing ring effect */}
+                {/* Glowing ring effect - 15% larger */}
                 <div className="relative">
-                  <div className="absolute inset-0 bg-[#95BF47]/20 rounded-full blur-md scale-110" />
-                  <div className="relative w-14 h-14 rounded-full overflow-hidden shadow-md border-2 border-[#95BF47]/30 bg-white">
+                  <div className="absolute inset-0 bg-[#95BF47]/20 rounded-full blur-md scale-125" />
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden shadow-md border-2 border-[#95BF47]/30 bg-white">
                     <Image
                       src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Shopify%20(2).jpg"
                       alt="Your Shopify Store"
-                      width={56}
-                      height={56}
+                      width={64}
+                      height={64}
                       className="w-full h-full object-cover"
                       unoptimized
                     />
                   </div>
                 </div>
-                <h3 className="mt-1.5 text-sm font-bold text-[var(--text-primary)]">Your Store</h3>
-                <span className="px-2.5 py-0.5 text-[9px] font-semibold bg-[#95BF47]/10 text-[#5E8E3E] rounded-full border border-[#95BF47]/20">
+                <h3 className="mt-2 text-base font-bold text-[var(--text-primary)]">Your Store</h3>
+                <span className="px-3 py-1 text-[10px] font-semibold bg-[#95BF47]/10 text-[#5E8E3E] rounded-full border border-[#95BF47]/20">
                   10 Tools Connected
                 </span>
               </motion.div>
