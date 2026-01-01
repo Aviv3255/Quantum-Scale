@@ -217,8 +217,8 @@ const modalVariants = {
 };
 
 // Content dimensions - sized to fit all content at max zoom out
-const CONTENT_WIDTH = 920;   // Card grid (5×176 + 4×8 = 912) + small margin
-const CONTENT_HEIGHT = 800;  // 2 rows + connectors + Shopify - compact
+const CONTENT_WIDTH = 1160;  // Card grid (5×224 + 4×8 = 1152) + small margin
+const CONTENT_HEIGHT = 750;  // 2 rows + connectors + Shopify - compact
 const MAX_ZOOM = 1.5;
 
 export default function DreamTeamPage() {
@@ -359,7 +359,7 @@ export default function DreamTeamPage() {
     <DashboardLayout>
       <div className="page-wrapper relative">
         {/* Page Header */}
-        <header className="page-header mb-4">
+        <header className="page-header" style={{ marginBottom: '12px', paddingBottom: '12px' }}>
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 mb-2">
@@ -424,7 +424,7 @@ export default function DreamTeamPage() {
               width: '100%',
               height: '100%',
             }}
-            className="flex justify-center items-start pt-2"
+            className="flex justify-center items-start"
           >
             {/* Vertical Flowchart Layout */}
             <div className="relative flex flex-col items-center">
@@ -449,7 +449,7 @@ export default function DreamTeamPage() {
               </motion.div>
 
               {/* Ultra Premium Connector Lines - Row 1 to Center */}
-              <svg className="w-full h-10 overflow-visible" viewBox="0 0 920 40" preserveAspectRatio="xMidYMid meet">
+              <svg className="w-full h-10 overflow-visible" viewBox="0 0 1152 40" preserveAspectRatio="xMidYMid meet">
                 <defs>
                   {/* Premium gradient for lines */}
                   <linearGradient id="premiumGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -468,13 +468,13 @@ export default function DreamTeamPage() {
                 </defs>
                 {/* Elegant curved lines with smooth bezier */}
                 {[0, 1, 2, 3, 4].map((i) => {
-                  const startX = 88 + i * 184;
+                  const startX = 112 + i * 232;
                   const controlY = 24 + Math.abs(i - 2) * 2;
                   return (
                     <g key={`connector1-${i}`}>
                       {/* Shadow line */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 460 ${controlY}, 460 40`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 576 ${controlY}, 576 40`}
                         fill="none"
                         stroke="rgba(0,0,0,0.03)"
                         strokeWidth="5"
@@ -485,7 +485,7 @@ export default function DreamTeamPage() {
                       />
                       {/* Main elegant line */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 460 ${controlY}, 460 40`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 576 ${controlY}, 576 40`}
                         fill="none"
                         stroke="url(#premiumGradient1)"
                         strokeWidth="1.5"
@@ -500,7 +500,7 @@ export default function DreamTeamPage() {
                 })}
                 {/* Center convergence node */}
                 <motion.circle
-                  cx="460"
+                  cx="576"
                   cy="40"
                   r="2.5"
                   fill="#C7C7CC"
@@ -530,7 +530,7 @@ export default function DreamTeamPage() {
               </motion.div>
 
               {/* Ultra Premium Connector Lines - Row 2 to Shopify */}
-              <svg className="w-full h-12 overflow-visible" viewBox="0 0 920 50" preserveAspectRatio="xMidYMid meet">
+              <svg className="w-full h-12 overflow-visible" viewBox="0 0 1152 50" preserveAspectRatio="xMidYMid meet">
                 <defs>
                   {/* Premium Shopify gradient */}
                   <linearGradient id="shopifyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -549,13 +549,13 @@ export default function DreamTeamPage() {
                 </defs>
                 {/* Elegant curved lines flowing to Shopify */}
                 {[0, 1, 2, 3, 4].map((i) => {
-                  const startX = 88 + i * 184;
+                  const startX = 112 + i * 232;
                   const controlY = 28 + Math.abs(i - 2) * 4;
                   return (
                     <g key={`connector2-${i}`}>
                       {/* Deep shadow for depth */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 460 ${controlY}, 460 50`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 576 ${controlY}, 576 50`}
                         fill="none"
                         stroke="rgba(149,191,71,0.08)"
                         strokeWidth="6"
@@ -566,7 +566,7 @@ export default function DreamTeamPage() {
                       />
                       {/* Mid glow layer */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 460 ${controlY}, 460 50`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 576 ${controlY}, 576 50`}
                         fill="none"
                         stroke="rgba(149,191,71,0.15)"
                         strokeWidth="2.5"
@@ -577,7 +577,7 @@ export default function DreamTeamPage() {
                       />
                       {/* Main premium line */}
                       <motion.path
-                        d={`M ${startX} 0 C ${startX} ${controlY}, 460 ${controlY}, 460 50`}
+                        d={`M ${startX} 0 C ${startX} ${controlY}, 576 ${controlY}, 576 50`}
                         fill="none"
                         stroke="url(#shopifyGradient)"
                         strokeWidth="1.5"
@@ -592,7 +592,7 @@ export default function DreamTeamPage() {
                 })}
                 {/* Convergence ring before Shopify */}
                 <motion.circle
-                  cx="460"
+                  cx="576"
                   cy="48"
                   r="5"
                   fill="none"
@@ -604,7 +604,7 @@ export default function DreamTeamPage() {
                   transition={{ delay: 1.8, duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <motion.circle
-                  cx="460"
+                  cx="576"
                   cy="48"
                   r="2.5"
                   fill="#95BF47"
@@ -674,7 +674,7 @@ function ToolCard({
   const hasMoreContent = tool.fullDescription || tool.hasExpandableInfo;
 
   return (
-    <div className="w-44 bg-white rounded-2xl border border-[var(--border-light)] p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
+    <div className="w-56 bg-white rounded-2xl border border-[var(--border-light)] p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
       {/* Header Row */}
       <div className="flex items-start justify-between mb-3">
         {/* Logo */}
