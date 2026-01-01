@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (134 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (137 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -212,10 +212,13 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 132 | fomo-engineering | 9 | Elite (Improved Jan 1) |
 | 133 | formula-to-sell | 9 | Elite (Fixed Jan 1) |
 | 134 | framing-effect-mastery | 9 | Elite (Fixed Jan 1) |
+| 135 | meta-value-rules | 9 | Elite (Fixed Jan 1) |
+| 136 | meta-learning-loop | 9 | Elite (Fixed Jan 1) |
+| 137 | meta-creative-matrix | 9 | Elite (Fixed Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (164 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (161 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -302,20 +305,17 @@ These lessons need design improvements to reach elite level.
 | 171 | meta-consolidation-principle | 5 |
 | 172 | meta-controls-vs-suggestions | 5 |
 | 173 | meta-creative-ecosystem | 5 |
-| 174 | meta-creative-matrix | 5 |
 | 175 | meta-distinct-angles | 5 |
 | 176 | meta-four-pillars-trust | 5 |
 | 177 | meta-ga4-integration | 5 |
 | 178 | meta-gem-brain | 5 |
 | 179 | meta-hybrid-adset | 5 |
-| 180 | meta-learning-loop | 5 |
 | 181 | meta-machine-scale | 7 |
 | 182 | meta-marathon-metrics | 5 |
 | 183 | meta-omnipresent-content | 5 |
 | 184 | meta-radical-diversity | 5 |
 | 185 | meta-sequence-learning | 5 |
 | 186 | meta-three-second-hook | 5 |
-| 187 | meta-value-rules | 5 |
 | 188 | meta-whatsapp-ai | 5 |
 | 189 | micro-yes-engine | ERROR |
 | 190 | micro-yes-mastery | 5 |
