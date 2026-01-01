@@ -216,13 +216,13 @@ const modalVariants = {
   exit: { opacity: 0, scale: 0.9, transition: { duration: 0.2 } },
 };
 
-// Content dimensions - actual rendered size of the flowchart
-// Cards: 5 × 240px = 1200px + 4 gaps × 8px = 32px = 1232px total width
-// Height: 2 card rows (~230px each) + 2 connector sections (~50px) + Shopify node (~90px) = ~600px
-const CONTENT_WIDTH = 1260;  // 1232 + small margin
-const CONTENT_HEIGHT = 620;  // Generous height to ensure all content fits
+// Content dimensions - measured at scale=1 to ensure proper fit
+// These values must be LARGER than actual content to guarantee no clipping
+// Cards: 5 × 240px + gaps + shadows + hover effects + badge overflow
+const CONTENT_WIDTH = 1580;  // Extra margin for badges and hover shadows
+const CONTENT_HEIGHT = 760;  // Tall enough to show all content + Shopify node
 const MAX_ZOOM = 1.5;
-const MIN_ZOOM_FLOOR = 0.3; // Never go below this - allows very small screens
+const MIN_ZOOM_FLOOR = 0.25; // Allow very small screens to zoom out more
 
 export default function DreamTeamPage() {
   const router = useRouter();
@@ -247,21 +247,16 @@ export default function DreamTeamPage() {
       const viewportWidth = containerRect.width;
       const viewportHeight = containerRect.height;
 
-      // Use constant content dimensions - these are measured at scale 1
-      // and represent the actual flowchart size
-      const contentWidth = CONTENT_WIDTH;
-      const contentHeight = CONTENT_HEIGHT;
-
       // Calculate zoom to fit content completely
-      // Use 90% of available space for clean margins
-      const zoomForWidth = (viewportWidth * 0.90) / contentWidth;
-      const zoomForHeight = (viewportHeight * 0.90) / contentHeight;
+      // Use 98% of available space for maximum utilization (minimal margins)
+      const zoomForWidth = (viewportWidth * 0.98) / CONTENT_WIDTH;
+      const zoomForHeight = (viewportHeight * 0.98) / CONTENT_HEIGHT;
 
       // Use the SMALLER of the two to ensure BOTH dimensions fit
       // This guarantees content is never cut off on any screen
       const optimalZoom = Math.max(
         MIN_ZOOM_FLOOR,
-        Math.min(zoomForWidth, zoomForHeight)
+        Math.min(zoomForWidth, zoomForHeight, MAX_ZOOM)
       );
 
       // This is our MIN_ZOOM - content fits completely at this level
@@ -270,17 +265,17 @@ export default function DreamTeamPage() {
       setPanOffset({ x: 0, y: 0 });
     };
 
-    // Calculate after layout settles (content renders)
-    const timer1 = setTimeout(calculateOptimalZoom, 100);
-    const timer2 = setTimeout(calculateOptimalZoom, 300);
+    // Calculate after layout settles (multiple timers for stability)
     calculateOptimalZoom();
+    const timers = [100, 300, 500].map(ms =>
+      setTimeout(calculateOptimalZoom, ms)
+    );
 
     // Recalculate on window resize
     window.addEventListener('resize', calculateOptimalZoom);
     return () => {
       window.removeEventListener('resize', calculateOptimalZoom);
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      timers.forEach(clearTimeout);
     };
   }, []);
 
@@ -356,6 +351,13 @@ export default function DreamTeamPage() {
     setIsPanning(false);
   }, []);
 
+  // Global mouseup listener for better pan UX (catches mouseup outside container)
+  useEffect(() => {
+    const handleGlobalMouseUp = () => setIsPanning(false);
+    window.addEventListener('mouseup', handleGlobalMouseUp);
+    return () => window.removeEventListener('mouseup', handleGlobalMouseUp);
+  }, []);
+
   // Auth check - temporarily disabled for visual QA
   // useEffect(() => {
   //   if (!isLoading && !user) {
@@ -378,16 +380,16 @@ export default function DreamTeamPage() {
   return (
     <DashboardLayout>
       <div className="page-wrapper relative">
-        {/* Page Header - Compact */}
-        <header className="border-b border-[var(--border-light)] pb-3 mb-3 -mx-6 px-6">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[var(--primary)] flex items-center justify-center">
-              <Zap size={16} className="text-white" strokeWidth={2} />
+        {/* Page Header - Ultra Compact */}
+        <header className="border-b border-[var(--border-light)] pb-2 mb-2 -mx-6 px-6">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[var(--primary)] flex items-center justify-center">
+              <Zap size={14} className="text-white" strokeWidth={2} />
             </div>
             <div>
-              <h1 className="text-xl font-semibold">The Dream Team</h1>
-              <p className="text-xs text-[var(--text-muted)]">
-                10 tools that power 8-figure stores. Scroll to zoom.
+              <h1 className="text-lg font-semibold leading-tight">The Dream Team</h1>
+              <p className="text-[10px] text-[var(--text-muted)]">
+                10 tools that power 8-figure stores. Scroll to zoom, drag to pan.
               </p>
             </div>
           </div>
@@ -422,11 +424,11 @@ export default function DreamTeamPage() {
           </button>
         </div>
 
-        {/* Canvas Container - Scroll = Zoom, Drag = Pan, Content fills viewport at min zoom */}
+        {/* Canvas Container - Full-bleed, Scroll = Zoom, Drag = Pan */}
         <div
           ref={containerRef}
-          className={`overflow-hidden ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
-          style={{ height: 'calc(100vh - 90px)' }}
+          className={`overflow-hidden -mx-6 ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
+          style={{ height: 'calc(100vh - 120px)' }}
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
