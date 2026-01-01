@@ -182,10 +182,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 102 | biz-ltv-levers | 9 | Elite (Improved Jan 1) |
 | 103 | biz-infinite-money-loop | 9 | Elite (Verified Jan 1) |
 | 104 | biz-marketing-company | 9 | Elite (Improved Jan 1) |
+| 105 | biz-mission-driven-brand | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (197 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (196 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -420,8 +421,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 104 |
-| Need Improvement | 197 |
+| Improved / Don't Need Improvement | 105 |
+| Need Improvement | 196 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **308** |
 
