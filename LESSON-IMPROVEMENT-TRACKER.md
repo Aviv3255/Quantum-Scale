@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (131 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (132 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -209,10 +209,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 129 | digital-velvet-rope | 9 | Elite (Improved Jan 1) |
 | 130 | dior-pricing-secret | 9 | Elite (Improved Jan 1) |
 | 131 | email-vs-sms | 9 | Elite (Improved Jan 1) |
+| 132 | fomo-engineering | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (167 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (166 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -225,7 +226,6 @@ These lessons need design improvements to reach elite level.
 | 94 | ethical-persuasion-compass | 5 |
 | 95 | five-value-heuristics | ERROR |
 | 96 | fly-in-the-urinal | 5 |
-| 97 | fomo-engineering | 5 |
 | 98 | fonts-psychology | 5 |
 | 99 | forbidden-coffee-hook | 5 |
 | 100 | formula-to-sell | 5 |
