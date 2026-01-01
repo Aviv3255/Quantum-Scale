@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (119 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (122 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -197,20 +197,20 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 117 | bottom-up-brand | 9 | Elite (Improved Jan 1) |
 | 118 | brand-promise-code | 9 | Elite (Improved Jan 1) |
 | 119 | brand-universe | 9 | Elite (Improved Jan 1) |
+| 120 | brand-search-campaign | 9 | Elite (QA'd Jan 1) |
+| 121 | cbo-vs-abo | 9 | Elite (Verified Jan 1) |
+| 122 | celebrity-gifting-flywheel | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (179 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (176 lessons)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
 | 57 | brain-friendly-ux | ERROR |
-| 58 | brand-search-campaign | 5 |
-| 61 | cbo-vs-abo | 5 |
-| 62 | celebrity-gifting-flywheel | 5 |
-| 82 | certainty-transfer | 6 |
+| 58 | certainty-transfer | 6 |
 | 83 | checkout-line-effect | 6 |
 | 84 | choose-products | 6 |
 | 85 | coupon-leaking | 5 |
@@ -420,10 +420,10 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 111 |
-| Need Improvement | 190 |
+| Improved / Don't Need Improvement | 122 |
+| Need Improvement | 176 |
 | Errors (No lesson.html) | 7 |
-| **TOTAL** | **308** |
+| **TOTAL** | **305** |
 
 ---
 
