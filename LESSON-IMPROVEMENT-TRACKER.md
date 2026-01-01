@@ -184,10 +184,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 104 | biz-marketing-company | 9 | Elite (Improved Jan 1) |
 | 105 | biz-mission-driven-brand | 9 | Elite (Improved Jan 1) |
 | 106 | biz-objection-dance | 9 | Elite (Improved Jan 1) |
+| 107 | biz-one-pager-blueprint | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (194 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (193 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -420,8 +421,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 106 |
-| Need Improvement | 195 |
+| Improved / Don't Need Improvement | 107 |
+| Need Improvement | 194 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **308** |
 
