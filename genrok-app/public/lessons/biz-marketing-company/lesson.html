@@ -14,9 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23;
-    }
+    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -45,94 +43,15 @@
       nextLesson: { id: 'biz-product-expansion', title: 'The Ridge Playbook', teaser: 'How Ridge went from wallets to $200M+ with product expansion.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
@@ -142,35 +61,398 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Building: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></svg>,
+      Building: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/></svg>,
       Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
       TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
       Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Crown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Clock2: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Megaphone: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+    };
+
+    // AnimatedCounter
+    const AnimatedCounter = ({ value, duration = 1.5, suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const increment = end / (duration * 60);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 1000 / 60);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{count}{suffix}</span>;
     };
 
     const slides = [
       { type: 'welcome', learningGoals: ['The brutal difference between brand and marketing', 'Why your revenue depends on ads (not brand equity)', 'The 50% litmus test that reveals truth'] },
-      { type: 'hook', headline: 'Stop calling yourself a brand.', subtext: "Nike took 50 years. Apple took 40 years. You\'ve been in business 3 years. You\'re not a brand yet." },
+      { type: 'hook', headline: 'Stop calling yourself a brand.', subtext: 'Nike took 50 years. Apple took 40 years. You\'ve been in business 3 years. You\'re not a brand yet.' },
       { type: 'quote', text: '"Brand is a lagging indicator earned over decades. Until then, you are a marketing company."', author: 'Sean Frank', role: 'CEO of Ridge ($200M+ Revenue)', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tGs7erOT_400x400-removebg-preview.png' },
-      { type: 'example', scenario: 'The 50% Litmus Test', before: { label: 'True Brand', points: ['Cut ads by 50%', 'Revenue stays stable', 'Built over 30+ years', 'Nike, Apple, Patagonia'] }, after: { label: 'Marketing Company', points: ['Cut ads by 50%', 'Revenue drops 50%', 'Most DTC businesses', 'This is YOU (probably)'] }, insight: "If cutting ads kills revenue, you\'re a marketing company. Not a brand." },
-      { type: 'content', title: 'Why This Matters', body: "Most founders waste energy pretending to be brands. They focus on brand storytelling when their funnel leaks 80%. They worry about brand consistency when their CAC is unprofitable. The irony? Great marketing IS what builds brand over time." },
-      { type: 'cards', title: 'Brand vs Marketing', items: [
-        { title: 'Brand', description: "OUTPUT built over decades through sustained excellence. You can\'t force it.", iconType: 'building' },
-        { title: 'Marketing', description: "INPUT you control daily: ads, funnels, offers, content. This is your job.", iconType: 'target' },
-        { title: 'Timeline', description: "10-20 years of consistent marketing creates brand. You\'re at year 3.", iconType: 'trending' },
-        { title: 'Superpower', description: "Marketing lets you test, iterate, and scale NOW. Brands can\'t pivot.", iconType: 'zap' }
-      ]},
-      { type: 'visual', title: 'Your Real Job', scenario: { marketing: { label: 'What You Control', items: ['Profitable CAC', 'High LTV', 'Retention Systems', 'Scalable Funnels'] }, brand: { label: 'What Happens Later', items: ['Recognition', 'Loyalty', 'Word of Mouth', 'Pricing Power'] } }, insight: 'Do this for 10 years = Brand. Before that = Marketing Company.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'right'},
-      { type: 'content', title: 'The Beautiful Truth', body: "Being a marketing company is actually BETTER in the short term. You have control. You can test, iterate, scale. Brands are slow. You can drive revenue TOMORROW. Better ads. Better funnels. Better offers. This is power." },
-      { type: 'quiz', question: "What\'s the difference between a brand and a marketing company?", options: ['A brand has better logo design', 'A brand has revenue stability when ads stop', 'A brand has more social media followers', 'A brand has higher quality products'], correctIndex: 1, feedback: { correct: "Exactly! A true brand has decoupled revenue from ad spend. That takes decades. Own being a marketing company.", incorrect: "Not quite. A brand isn\'t about logos, followers, or products. It\'s about revenue stability without ads." }},
-      { type: 'action-checklist', title: 'Own Your Reality', items: [
-        { task: 'Run the 50% test: What happens if you cut ads?', done: false },
-        { task: "Stop calling yourself a brand (you haven\'t earned it)", done: false },
-        { task: 'Master marketing: CAC, LTV, retention systems', done: false },
-        { task: 'Do this for 10+ years, THEN call yourself a brand', done: false }
-      ], bottomNote: 'Marketing mastery creates brand as a byproduct. Focus on the input, not the output.' },
+      { type: 'litmus-test', title: 'The 50% Litmus Test' },
+      { type: 'identity-comparison', title: 'Brand vs Marketing Company' },
+      { type: 'timeline', title: 'The Brand Timeline' },
+      { type: 'what-you-control', title: 'Your Real Job' },
+      { type: 'content', title: 'The Beautiful Truth', body: 'Being a marketing company is actually BETTER in the short term. You have control. You can test, iterate, scale. Brands are slow. You can drive revenue TOMORROW. Better ads. Better funnels. Better offers. This is power.' },
+      { type: 'quiz', question: 'What\'s the difference between a brand and a marketing company?', options: ['A brand has better logo design', 'A brand has revenue stability when ads stop', 'A brand has more social media followers', 'A brand has higher quality products'], correctIndex: 1, feedback: { correct: 'Exactly! A true brand has decoupled revenue from ad spend. That takes decades. Own being a marketing company.', incorrect: 'Not quite. A brand isn\'t about logos, followers, or products. It\'s about revenue stability without ads.' }},
+      { type: 'mindset-shift', title: 'Own Your Reality', insight: 'Marketing mastery creates brand as a byproduct. Focus on the input (marketing), not the output (brand). Do this for 10+ years, then call yourself a brand.' },
       { type: 'completion', sources: [{ name: 'Sean Frank - Ridge Founder', url: '#' }] }
     ];
+
+    // ============ CUSTOM ELITE SLIDES ============
+
+    // Litmus Test Slide - Interactive 50% test visualization
+    const LitmusTestSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 600),
+          setTimeout(() => setPhase(2), 1400),
+        ];
+        return () => timers.forEach(clearTimeout);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.AlertTriangle /> Reality Check
+            </span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">{data.title}</h2>
+            <p className="text-neutral-500 text-sm mt-2">Cut your ads by 50%. What happens to revenue?</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* True Brand */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: phase >= 1 ? 1 : 0.3, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(34, 197, 94, 0.3)' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22C55E, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.2)' }}>
+                  <Icons.Crown />
+                </div>
+                <div className="text-white font-bold">True Brand</div>
+              </div>
+              <div className="mb-4">
+                <div className="text-xs text-neutral-400 mb-2">When ads drop 50%...</div>
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl font-bold text-green-400">Revenue Stable</div>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2 text-neutral-300"><Icons.Check /> Built over 30+ years</div>
+                <div className="flex items-center gap-2 text-neutral-300"><Icons.Check /> Nike, Apple, Patagonia</div>
+                <div className="flex items-center gap-2 text-neutral-300"><Icons.Check /> Organic demand persists</div>
+              </div>
+            </motion.div>
+
+            {/* Marketing Company */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: phase >= 2 ? 1 : 0.3, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: phase >= 2 ? '2px solid var(--accent)' : '1px solid rgba(212, 160, 23, 0.3)', boxShadow: phase >= 2 ? '0 0 40px rgba(var(--accent-rgb), 0.3)' : 'none' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                  <Icons.Megaphone />
+                </div>
+                <div className="text-white font-bold">Marketing Company</div>
+                {phase >= 2 && <span className="px-2 py-0.5 rounded text-xs font-bold" style={{ background: 'var(--accent)', color: 'black' }}>THIS IS YOU</span>}
+              </div>
+              <div className="mb-4">
+                <div className="text-xs text-neutral-400 mb-2">When ads drop 50%...</div>
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl font-bold" style={{ color: 'var(--accent)' }}>Revenue Drops 50%</div>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex items-center gap-2 text-neutral-300"><Icons.TrendingDown /> Most DTC businesses</div>
+                <div className="flex items-center gap-2 text-neutral-300"><Icons.TrendingDown /> Dependent on ad spend</div>
+                <div className="flex items-center gap-2 text-neutral-300"><Icons.TrendingDown /> This is where you are</div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: phase >= 2 ? 1 : 0, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-xl p-4 mt-6 text-center"
+            style={{ background: 'rgba(var(--accent-rgb), 0.1)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}
+          >
+            <p className="text-sm font-medium" style={{ color: 'var(--accent)' }}>
+              If cutting ads kills revenue, you're a marketing company. Not a brand.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Identity Comparison Slide
+    const IdentityComparisonSlide = ({ data }) => {
+      const comparisons = [
+        { brand: 'OUTPUT earned over decades', marketing: 'INPUT you control daily', icon: 'Zap' },
+        { brand: 'Can\'t force or buy', marketing: 'Ads, funnels, offers, content', icon: 'Target' },
+        { brand: '30+ years of consistency', marketing: 'Test, iterate, scale NOW', icon: 'Clock2' },
+        { brand: 'Slow to pivot', marketing: 'Agile and responsive', icon: 'TrendingUp' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4" style={{ background: 'rgba(107, 114, 128, 0.1)', border: '1px solid rgba(107, 114, 128, 0.3)' }}>
+                <Icons.Building />
+                <span className="font-bold text-neutral-600">Brand</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+                <Icons.Megaphone />
+                <span className="font-bold" style={{ color: 'var(--accent)' }}>Marketing</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            {comparisons.map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                className="grid md:grid-cols-2 gap-4"
+              >
+                <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                  <p className="text-neutral-400 text-sm">{item.brand}</p>
+                </div>
+                <div className="rounded-xl p-4 relative" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+                  <div className="absolute top-0 left-0 w-full h-0.5" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <p className="text-white text-sm font-medium">{item.marketing}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Timeline Slide
+    const TimelineSlide = ({ data }) => {
+      const milestones = [
+        { year: 'Year 1-3', label: 'Survival Mode', desc: 'Finding product-market fit', status: 'current' },
+        { year: 'Year 3-7', label: 'Growth Mode', desc: 'Scaling with paid ads', status: 'future' },
+        { year: 'Year 7-15', label: 'Maturity', desc: 'Building organic channels', status: 'future' },
+        { year: 'Year 15+', label: 'Brand Equity', desc: 'Revenue without ads', status: 'distant' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              <Icons.Clock2 /> Timeline
+            </span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">{data.title}</h2>
+            <p className="text-neutral-500 text-sm mt-2">Brand is the reward after decades of great marketing</p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Progress bar */}
+            <div className="absolute left-0 right-0 top-1/2 h-2 rounded-full" style={{ background: 'linear-gradient(90deg, var(--accent), #333)' }} />
+
+            <div className="grid grid-cols-4 gap-2 relative">
+              {milestones.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.15 }}
+                  className="text-center"
+                >
+                  <div
+                    className="w-8 h-8 rounded-full mx-auto mb-3 flex items-center justify-center border-4"
+                    style={{
+                      background: item.status === 'current' ? 'var(--accent)' : item.status === 'future' ? '#333' : '#1a1a1a',
+                      borderColor: item.status === 'current' ? 'var(--accent)' : '#333',
+                      boxShadow: item.status === 'current' ? '0 0 20px rgba(var(--accent-rgb), 0.5)' : 'none'
+                    }}
+                  >
+                    {item.status === 'current' && <Icons.Zap />}
+                  </div>
+                  <div className="rounded-xl p-3" style={{ background: item.status === 'current' ? 'linear-gradient(135deg, #0a0a0a, #1a1a1a)' : 'transparent', border: item.status === 'current' ? '2px solid var(--accent)' : 'none' }}>
+                    <div className="text-xs font-bold mb-1" style={{ color: item.status === 'current' ? 'var(--accent)' : '#666' }}>{item.year}</div>
+                    <div className="text-sm font-semibold text-white mb-1">{item.label}</div>
+                    <div className="text-xs text-neutral-400">{item.desc}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="rounded-xl p-4 mt-8 text-center"
+            style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(255,255,255,0.1)' }}
+          >
+            <p className="text-neutral-300 text-sm">You're at <span className="font-bold" style={{ color: 'var(--accent)' }}>Year 1-3</span>. Nike is at Year 60. Stop comparing.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // What You Control Slide
+    const WhatYouControlSlide = ({ data }) => {
+      const marketing = [
+        { label: 'Profitable CAC', icon: 'Target' },
+        { label: 'High LTV', icon: 'TrendingUp' },
+        { label: 'Retention Systems', icon: 'Zap' },
+        { label: 'Scalable Funnels', icon: 'Megaphone' }
+      ];
+      const brand = [
+        { label: 'Recognition' },
+        { label: 'Loyalty' },
+        { label: 'Word of Mouth' },
+        { label: 'Pricing Power' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* What You Control */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '2px solid var(--accent)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.2)' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-center mb-4">
+                <span className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: 'var(--accent)', color: 'black' }}>WHAT YOU CONTROL</span>
+              </div>
+              <div className="space-y-3">
+                {marketing.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.1 }}
+                    className="flex items-center gap-3 p-3 rounded-xl"
+                    style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}
+                  >
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                      <Icons.Check />
+                    </div>
+                    <span className="text-white font-medium">{item.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* What Happens Later */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="rounded-2xl p-6"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(255,255,255,0.1)' }}
+            >
+              <div className="text-center mb-4">
+                <span className="px-3 py-1 rounded-full text-xs font-bold text-neutral-400 border border-neutral-600">WHAT HAPPENS LATER</span>
+              </div>
+              <div className="space-y-3">
+                {brand.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + i * 0.1 }}
+                    className="flex items-center gap-3 p-3 rounded-xl"
+                    style={{ background: 'rgba(255,255,255,0.03)' }}
+                  >
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-neutral-700">
+                      <span className="text-neutral-400 text-xs">+10y</span>
+                    </div>
+                    <span className="text-neutral-400">{item.label}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="rounded-xl p-4 mt-6 text-center"
+            style={{ background: 'rgba(var(--accent-rgb), 0.1)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}
+          >
+            <p className="text-sm font-medium" style={{ color: 'var(--accent)' }}>
+              Do the left column for 10 years = The right column happens automatically.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Mindset Shift Slide
+    const MindsetShiftSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-16 max-w-3xl mx-auto text-center py-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-16 h-16 rounded-xl flex items-center justify-center mb-6"
+          style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.4)' }}
+        >
+          <Icons.Zap />
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="slide-title text-2xl md:text-4xl text-black mb-6 leading-tight"
+        >
+          {data.title}
+        </motion.h2>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-xl p-6 max-w-xl"
+          style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(255,255,255,0.1)' }}
+        >
+          <p className="text-neutral-300 text-lg leading-relaxed">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD SLIDES ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -209,25 +491,9 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
     const QuoteSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative">
@@ -248,158 +514,20 @@
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.scenario}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center text-green-600">
-                <Icons.Check />
-              </div>
-              <span className="font-bold text-green-700">{data.before.label}</span>
-            </div>
-            <ul className="space-y-2">
-              {data.before.points.map((point, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-neutral-700">
-                  <span className="text-green-500">✓</span> {point}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-amber-50 border-2 border-amber-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600">
-                <Icons.Target />
-              </div>
-              <span className="font-bold text-amber-700">{data.after.label}</span>
-            </div>
-            <ul className="space-y-2">
-              {data.after.points.map((point, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-neutral-700">
-                  <span className="text-amber-500">→</span> {point}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm">{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => {
-      const getIcon = (type) => {
-        switch(type) {
-          case 'building': return <Icons.Building />;
-          case 'target': return <Icons.Target />;
-          case 'trending': return <Icons.TrendingUp />;
-          case 'zap': return <Icons.Zap />;
-          default: return <Icons.Zap />;
-        }
-      };
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="grid grid-cols-2 gap-3">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-                  {getIcon(item.iconType)}
-                </div>
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      );
-    };
-
-    const VisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-xl p-6">
-            <div className="text-lg font-semibold text-amber-700 mb-4">{data.scenario.marketing.label}</div>
-            <div className="space-y-3">
-              {data.scenario.marketing.items.map((item, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'var(--accent)' }}>
-                    <Icons.Check />
-                  </div>
-                  <span className="text-sm font-medium text-neutral-800">{item}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-neutral-100 to-neutral-200 border-2 border-neutral-300 rounded-xl p-6">
-            <div className="text-lg font-semibold text-neutral-600 mb-4">{data.scenario.brand.label}</div>
-            <div className="space-y-3">
-              {data.scenario.brand.items.map((item, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-neutral-400 flex items-center justify-center">
-                    <span className="text-white text-xs">→</span>
-                  </div>
-                  <span className="text-sm text-neutral-600">{item}</span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-sm" style={{ color: 'var(--accent)' }}>{data.insight}</p>
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="rounded-xl p-6"
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(255,255,255,0.1)' }}
+        >
+          <p className="text-neutral-300 text-base md:text-lg leading-relaxed">{data.body}</p>
         </motion.div>
       </div>
     );
-
-    const ActionChecklistSlide = ({ data }) => {
-      const [checkedItems, setCheckedItems] = useState({});
-      const toggleItem = (index) => setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="space-y-3 mb-6">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} onClick={() => toggleItem(i)} className={`bg-white border-2 rounded-xl p-4 cursor-pointer transition-all ${checkedItems[i] ? 'border-green-400 bg-green-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
-                <div className="flex items-center gap-3">
-                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${checkedItems[i] ? 'bg-green-500 text-white' : 'bg-neutral-100'}`}>
-                    {checkedItems[i] && <Icons.Check />}
-                  </div>
-                  <span className={`text-sm ${checkedItems[i] ? 'text-green-700 line-through' : 'text-neutral-700'}`}>{item.task}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
-            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
-          </motion.div>
-        </div>
-      );
-    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -457,6 +585,8 @@
       </div>
     );
 
+    // ============ MAIN APP ============
+
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -469,16 +599,6 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -510,11 +630,12 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'quote': return <QuoteSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
+          case 'litmus-test': return <LitmusTestSlide data={slide} />;
+          case 'identity-comparison': return <IdentityComparisonSlide data={slide} />;
+          case 'timeline': return <TimelineSlide data={slide} />;
+          case 'what-you-control': return <WhatYouControlSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -530,7 +651,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
