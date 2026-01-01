@@ -219,10 +219,10 @@ const modalVariants = {
 // Content dimensions - measured at scale=1 to ensure proper fit
 // These values must be LARGER than actual content to guarantee no clipping
 // Cards: 5 × 240px + gaps + shadows + hover effects + badge overflow
-const CONTENT_WIDTH = 1580;  // Extra margin for badges and hover shadows
-const CONTENT_HEIGHT = 760;  // Tall enough to show all content + Shopify node
+const CONTENT_WIDTH = 1500;  // Must fit all 5 cards + badges + shadows
+const CONTENT_HEIGHT = 720;  // Must fit 2 rows + connectors + Shopify node
 const MAX_ZOOM = 1.5;
-const MIN_ZOOM_FLOOR = 0.25; // Allow very small screens to zoom out more
+const MIN_ZOOM_FLOOR = 0.65; // Ensure content is never too small
 
 export default function DreamTeamPage() {
   const router = useRouter();
@@ -339,13 +339,28 @@ export default function DreamTeamPage() {
   }, [panOffset]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (isPanning) {
-      setPanOffset({
-        x: e.clientX - startPan.x,
-        y: e.clientY - startPan.y,
-      });
+    if (isPanning && containerRef.current) {
+      const containerRect = containerRef.current.getBoundingClientRect();
+      const scaledWidth = CONTENT_WIDTH * zoom;
+      const scaledHeight = CONTENT_HEIGHT * zoom;
+
+      // Calculate max pan limits - content edges shouldn't go past container edges
+      // Allow some margin (50px) so content doesn't stick exactly to edge
+      const margin = 50;
+      const maxPanX = Math.max(0, (scaledWidth - containerRect.width) / 2 + margin);
+      const maxPanY = Math.max(0, (scaledHeight - containerRect.height) / 2 + margin);
+
+      // Calculate new offset
+      let newX = e.clientX - startPan.x;
+      let newY = e.clientY - startPan.y;
+
+      // Clamp to limits
+      newX = Math.max(-maxPanX, Math.min(maxPanX, newX));
+      newY = Math.max(-maxPanY, Math.min(maxPanY, newY));
+
+      setPanOffset({ x: newX, y: newY });
     }
-  }, [isPanning, startPan]);
+  }, [isPanning, startPan, zoom]);
 
   const handleMouseUp = useCallback(() => {
     setIsPanning(false);
