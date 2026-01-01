@@ -395,8 +395,8 @@ export default function DreamTeamPage() {
   return (
     <DashboardLayout>
       <div className="page-wrapper relative">
-        {/* Page Header - Minimal padding (fixed, not affected by zoom) */}
-        <header className="border-b border-[var(--border-light)] pb-1 -mx-6 px-6">
+        {/* Page Header - ABSOLUTE position at top, NEVER affected by zoom/scroll */}
+        <header className="relative z-50 bg-white border-b border-[var(--border-light)] pb-1 -mx-6 px-6">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-[var(--primary)] flex items-center justify-center">
               <Zap size={14} className="text-white" strokeWidth={2} />
@@ -442,8 +442,11 @@ export default function DreamTeamPage() {
         {/* Canvas Container - Full-bleed, Scroll = Zoom, Drag = Pan */}
         <div
           ref={containerRef}
-          className={`overflow-hidden -mx-6 ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
-          style={{ height: 'calc(100vh - 105px)' }}
+          className={`relative z-10 overflow-hidden -mx-6 ${isPanning ? 'cursor-grabbing' : 'cursor-grab'}`}
+          style={{
+            height: 'calc(100vh - 105px)',
+            isolation: 'isolate',  // Creates new stacking context
+          }}
           onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -652,7 +655,7 @@ export default function DreamTeamPage() {
                 />
               </svg>
 
-              {/* Shopify Store Node at Bottom - Compact */}
+              {/* Shopify Store Node at Bottom - 15% larger */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8, y: 10 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -662,19 +665,19 @@ export default function DreamTeamPage() {
                 {/* Glowing ring effect */}
                 <div className="relative">
                   <div className="absolute inset-0 bg-[#95BF47]/20 rounded-full blur-md scale-110" />
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-md border-2 border-[#95BF47]/30 bg-white">
+                  <div className="relative w-14 h-14 rounded-full overflow-hidden shadow-md border-2 border-[#95BF47]/30 bg-white">
                     <Image
                       src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Shopify%20(2).jpg"
                       alt="Your Shopify Store"
-                      width={48}
-                      height={48}
+                      width={56}
+                      height={56}
                       className="w-full h-full object-cover"
                       unoptimized
                     />
                   </div>
                 </div>
-                <h3 className="mt-1 text-xs font-bold text-[var(--text-primary)]">Your Store</h3>
-                <span className="px-2 py-0.5 text-[8px] font-semibold bg-[#95BF47]/10 text-[#5E8E3E] rounded-full border border-[#95BF47]/20">
+                <h3 className="mt-1.5 text-sm font-bold text-[var(--text-primary)]">Your Store</h3>
+                <span className="px-2.5 py-0.5 text-[9px] font-semibold bg-[#95BF47]/10 text-[#5E8E3E] rounded-full border border-[#95BF47]/20">
                   10 Tools Connected
                 </span>
               </motion.div>
