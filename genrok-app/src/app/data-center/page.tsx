@@ -843,7 +843,7 @@ function PollCard({ poll, userVote, livePercentages, isVoting, onVote }: PollCar
     <div className="card card-hover h-full flex flex-col" style={{ padding: 0 }}>
       {/* Question */}
       <div className="p-5 pb-3">
-        <h3 className="text-sm font-semibold leading-tight text-[var(--text-primary)]">
+        <h3 className="text-base font-bold leading-snug text-[var(--text-primary)]">
           {poll.question}
         </h3>
       </div>
