@@ -262,7 +262,8 @@ export default function DreamTeamPage() {
       // This is our MIN_ZOOM - content fits completely at this level
       setMinZoom(optimalZoom);
       setZoom(optimalZoom);
-      setPanOffset({ x: 0, y: 0 });
+      // Start with content shifted down slightly for better default view
+      setPanOffset({ x: 0, y: 40 });
     };
 
     // Calculate after layout settles (multiple timers for stability)
@@ -284,7 +285,7 @@ export default function DreamTeamPage() {
   const zoomOut = useCallback(() => setZoom((z) => Math.max(z - 0.08, minZoom)), [minZoom]);
   const resetZoom = useCallback(() => {
     setZoom(minZoom);
-    setPanOffset({ x: 0, y: 0 });
+    setPanOffset({ x: 0, y: 40 });  // Same as initial offset
   }, [minZoom]);
 
   // Toggle card expansion
@@ -407,7 +408,15 @@ export default function DreamTeamPage() {
       {/* Page container - MUST NOT exceed viewport to prevent body scroll */}
       {/* -mx-12 = 48px to escape main-content horizontal padding (48px) */}
       {/* -my-10 = 40px to escape main-content vertical padding (40px) */}
-      <div className="relative -mx-12 -my-10 flex flex-col" style={{ height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
+      {/* PURE WHITE background covers entire area including where main-area bg would show */}
+      <div
+        className="relative -mx-12 -my-10 flex flex-col"
+        style={{
+          height: 'calc(100vh - 64px)',
+          overflow: 'hidden',
+          backgroundColor: '#FFFFFF',  // Pure white - covers entire page area
+        }}
+      >
         {/* Page Header - FULL WIDTH pure white background from edge to edge */}
         <header
           className="relative z-50 border-b border-[var(--border-light)] py-3 px-12 shrink-0"
