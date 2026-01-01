@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Plus, Search, CheckCircle, ArrowRight, ExternalLink } from 'lucide-react';
+import { Plus, Search, CheckCircle, ArrowRight, ExternalLink, Loader2 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { submitPollVote, getUserPollVotes, getAllPollVotes } from '@/lib/supabase';
 
 // Base votes per poll option (100,000 total per poll distributed by percentage)
 // This ensures each individual vote has minimal impact on percentages
@@ -613,8 +614,26 @@ const calculatePercentages = (voteData: PollVoteData): number[] => {
   return voteData.votes.map(v => (v / voteData.totalVotes) * 100);
 };
 
-const STORAGE_KEY = 'quantum_poll_votes';
-const USER_VOTES_KEY = 'quantum_user_votes';
+// Aggregate real votes from Supabase into vote counts per poll
+const aggregateVotes = (
+  votes: { poll_id: number; option_index: number }[],
+  baseVoteData: Record<number, PollVoteData>
+): Record<number, PollVoteData> => {
+  const result = { ...baseVoteData };
+
+  // Count real votes per poll per option
+  votes.forEach(vote => {
+    if (result[vote.poll_id]) {
+      const pollData = { ...result[vote.poll_id] };
+      pollData.votes = [...pollData.votes];
+      pollData.votes[vote.option_index]++;
+      pollData.totalVotes++;
+      result[vote.poll_id] = pollData;
+    }
+  });
+
+  return result;
+};
 
 export default function DataCenterPage() {
   const router = useRouter();
@@ -622,25 +641,48 @@ export default function DataCenterPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [userVotes, setUserVotes] = useState<Record<number, number>>({});
   const [pollVoteData, setPollVoteData] = useState<Record<number, PollVoteData>>(() => initializeVoteData());
+  const [isVoting, setIsVoting] = useState<number | null>(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  // Load saved votes from localStorage on mount
+  // Load votes from Supabase on mount
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const savedVoteData = localStorage.getItem(STORAGE_KEY);
-        const savedUserVotes = localStorage.getItem(USER_VOTES_KEY);
+    const loadVotes = async () => {
+      if (!user) return;
 
-        if (savedVoteData) {
-          setPollVoteData(JSON.parse(savedVoteData));
+      try {
+        // Fetch user's votes and all community votes in parallel
+        const [userVotesResult, allVotesResult] = await Promise.all([
+          getUserPollVotes(user.id),
+          getAllPollVotes()
+        ]);
+
+        // Set user's votes
+        if (userVotesResult.data) {
+          const votesMap: Record<number, number> = {};
+          userVotesResult.data.forEach(v => {
+            votesMap[v.poll_id] = v.option_index;
+          });
+          setUserVotes(votesMap);
         }
-        if (savedUserVotes) {
-          setUserVotes(JSON.parse(savedUserVotes));
+
+        // Aggregate all community votes on top of base votes
+        if (allVotesResult.data) {
+          const baseData = initializeVoteData();
+          const aggregatedData = aggregateVotes(allVotesResult.data, baseData);
+          setPollVoteData(aggregatedData);
         }
+
+        setDataLoaded(true);
       } catch (e) {
-        console.error('Error loading saved poll data:', e);
+        console.error('Error loading poll votes:', e);
+        setDataLoaded(true);
       }
+    };
+
+    if (user && !dataLoaded) {
+      loadVotes();
     }
-  }, []);
+  }, [user, dataLoaded]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -648,47 +690,58 @@ export default function DataCenterPage() {
     }
   }, [user, authLoading, router]);
 
-  // Handle voting with backend tracking
-  const handleVote = useCallback((pollId: number, optionIndex: number) => {
-    // Check if user already voted on this poll
+  // Handle voting with Supabase backend
+  const handleVote = useCallback(async (pollId: number, optionIndex: number) => {
+    if (!user || isVoting !== null) return;
+
     const previousVote = userVotes[pollId];
+    if (previousVote === optionIndex) return; // Already voted for this option
 
-    setPollVoteData(prev => {
-      const pollData = { ...prev[pollId] };
+    setIsVoting(pollId);
 
-      // If changing vote, decrement old option first
-      if (previousVote !== undefined && previousVote !== optionIndex) {
-        pollData.votes = [...pollData.votes];
-        pollData.votes[previousVote] = Math.max(0, pollData.votes[previousVote] - 1);
-        pollData.totalVotes--;
+    try {
+      // Submit vote to Supabase
+      const { error } = await submitPollVote(
+        pollId,
+        optionIndex,
+        user.id,
+        user.email || undefined,
+        user.user_metadata?.full_name || undefined
+      );
+
+      if (error) {
+        console.error('Error submitting vote:', error);
+        setIsVoting(null);
+        return;
       }
 
-      // Increment new option (only if not already voted for this option)
-      if (previousVote !== optionIndex) {
+      // Update local state optimistically
+      setPollVoteData(prev => {
+        const pollData = { ...prev[pollId] };
         pollData.votes = [...pollData.votes];
+
+        // If changing vote, decrement old option
+        if (previousVote !== undefined) {
+          pollData.votes[previousVote] = Math.max(0, pollData.votes[previousVote] - 1);
+          pollData.totalVotes--;
+        }
+
+        // Increment new option
         pollData.votes[optionIndex]++;
         pollData.totalVotes++;
-      }
 
-      const newData = { ...prev, [pollId]: pollData };
+        return { ...prev, [pollId]: pollData };
+      });
 
-      // Save to localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-      }
+      // Update user votes
+      setUserVotes(prev => ({ ...prev, [pollId]: optionIndex }));
 
-      return newData;
-    });
-
-    // Update user votes
-    setUserVotes(prev => {
-      const newUserVotes = { ...prev, [pollId]: optionIndex };
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(USER_VOTES_KEY, JSON.stringify(newUserVotes));
-      }
-      return newUserVotes;
-    });
-  }, [userVotes]);
+    } catch (e) {
+      console.error('Error voting:', e);
+    } finally {
+      setIsVoting(null);
+    }
+  }, [user, userVotes, isVoting]);
 
   if (authLoading || !user) {
     return (
@@ -752,6 +805,7 @@ export default function DataCenterPage() {
                     userVote={userVotes[poll.id]}
                     livePercentages={livePercentages}
                     totalVotes={voteData?.totalVotes || BASE_TOTAL_VOTES}
+                    isVoting={isVoting === poll.id}
                     onVote={(optionIndex) => handleVote(poll.id, optionIndex)}
                   />
                 </motion.div>
@@ -776,10 +830,11 @@ interface PollCardProps {
   userVote?: number;
   livePercentages: number[];
   totalVotes: number;
+  isVoting?: boolean;
   onVote: (optionIndex: number) => void;
 }
 
-function PollCard({ poll, userVote, livePercentages, totalVotes, onVote }: PollCardProps) {
+function PollCard({ poll, userVote, livePercentages, totalVotes, isVoting, onVote }: PollCardProps) {
   const maxPercentage = Math.max(...livePercentages);
 
   // Format total votes (e.g., 100,234 -> "100.2K")
@@ -812,11 +867,12 @@ function PollCard({ poll, userVote, livePercentages, totalVotes, onVote }: PollC
             <button
               key={index}
               onClick={() => onVote(index)}
-              className="w-full text-left relative overflow-hidden rounded-lg transition-all hover:border-[var(--primary)]"
+              disabled={isVoting}
+              className="w-full text-left relative overflow-hidden rounded-lg transition-all hover:border-[var(--primary)] disabled:opacity-60 disabled:cursor-not-allowed"
               style={{
                 border: isUserChoice ? '2px solid var(--primary)' : '1px solid var(--border-light)',
                 background: 'var(--bg-card)',
-                cursor: 'pointer'
+                cursor: isVoting ? 'not-allowed' : 'pointer'
               }}
             >
               <div

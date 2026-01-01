@@ -133,3 +133,55 @@ export const updateUserProfile = async (
     .single();
   return { data: data as UserProfile | null, error };
 };
+
+// Poll vote types
+export type PollVote = {
+  id: string;
+  poll_id: number;
+  option_index: number;
+  user_id: string;
+  user_email: string | null;
+  user_name: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// Poll vote helpers
+export const submitPollVote = async (
+  pollId: number,
+  optionIndex: number,
+  userId: string,
+  userEmail?: string,
+  userName?: string
+): Promise<{ data: PollVote | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_votes' as const)
+    .upsert({
+      poll_id: pollId,
+      option_index: optionIndex,
+      user_id: userId,
+      user_email: userEmail || null,
+      user_name: userName || null,
+      updated_at: new Date().toISOString(),
+    } as never, {
+      onConflict: 'poll_id,user_id'
+    })
+    .select()
+    .single();
+  return { data: data as PollVote | null, error };
+};
+
+export const getUserPollVotes = async (userId: string): Promise<{ data: { poll_id: number; option_index: number }[] | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_votes' as const)
+    .select('poll_id, option_index')
+    .eq('user_id', userId);
+  return { data: data as { poll_id: number; option_index: number }[] | null, error };
+};
+
+export const getAllPollVotes = async (): Promise<{ data: { poll_id: number; option_index: number }[] | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_votes' as const)
+    .select('poll_id, option_index');
+  return { data: data as { poll_id: number; option_index: number }[] | null, error };
+};
