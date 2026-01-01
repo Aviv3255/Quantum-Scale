@@ -408,13 +408,12 @@ export default function DreamTeamPage() {
       {/* Page container - MUST NOT exceed viewport to prevent body scroll */}
       {/* -mx-12 = 48px to escape main-content horizontal padding (48px) */}
       {/* -my-10 = 40px to escape main-content vertical padding (40px) */}
-      {/* PURE WHITE background covers entire area including where main-area bg would show */}
       <div
         className="relative -mx-12 -my-10 flex flex-col"
         style={{
           height: 'calc(100vh - 64px)',
           overflow: 'hidden',
-          backgroundColor: '#FFFFFF',  // Pure white - covers entire page area
+          // NO background here - canvas keeps original gray (#FAFAFA)
         }}
       >
         {/* Page Header - FULL WIDTH pure white background from edge to edge */}
