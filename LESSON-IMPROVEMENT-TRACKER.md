@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (132 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (134 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -210,10 +210,12 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 130 | dior-pricing-secret | 9 | Elite (Improved Jan 1) |
 | 131 | email-vs-sms | 9 | Elite (Improved Jan 1) |
 | 132 | fomo-engineering | 9 | Elite (Improved Jan 1) |
+| 133 | formula-to-sell | 9 | Elite (Fixed Jan 1) |
+| 134 | framing-effect-mastery | 9 | Elite (Fixed Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (166 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (164 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -228,10 +230,8 @@ These lessons need design improvements to reach elite level.
 | 96 | fly-in-the-urinal | 5 |
 | 98 | fonts-psychology | 5 |
 | 99 | forbidden-coffee-hook | 5 |
-| 100 | formula-to-sell | 5 |
 | 101 | founder-operating-system | 5 |
 | 102 | four-primal-needs | 5 |
-| 103 | framing-effect-mastery | 5 |
 | 104 | fred-method | 5 |
 | 105 | gatekeeper-method | 5 |
 | 106 | gaze-direction | 5 |
