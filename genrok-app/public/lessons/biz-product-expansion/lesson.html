@@ -45,94 +45,14 @@
       nextLesson: { id: 'biz-zero-cac-engine', title: 'The $0 CAC Engine', teaser: 'Build organic systems that drive revenue before you spend on ads.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
@@ -142,44 +62,75 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Phone: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>,
-      Ring: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>,
-      Briefcase: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
-      Package: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
-      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Wallet: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><circle cx="16" cy="14" r="2"/></svg>,
+      Phone: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>,
+      Ring: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/></svg>,
+      Briefcase: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+      Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Lock: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      Unlock: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+    };
+
+    // AnimatedCounter component
+    const AnimatedCounter = ({ value, suffix = '', prefix = '' }) => {
+      const [count, setCount] = useState(0);
+      const numericValue = parseFloat(value.toString().replace(/[^0-9.]/g, ''));
+
+      useEffect(() => {
+        const duration = 1500;
+        const steps = 40;
+        const increment = numericValue / steps;
+        let current = 0;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= numericValue) {
+            setCount(numericValue);
+            clearInterval(timer);
+          } else {
+            setCount(Math.floor(current));
+          }
+        }, duration / steps);
+        return () => clearInterval(timer);
+      }, [numericValue]);
+
+      return <span>{prefix}{count}{suffix}</span>;
     };
 
     const slides = [
-      { type: 'welcome', learningGoals: ['How Ridge went from wallets to $200M+', "Why 'more of the same' kills LTV", 'The trust transfer strategy for expansion'] },
-      { type: 'hook', headline: 'Ridge sells wallets.', subtext: "But over 50% of their revenue comes from... not wallets. Here\'s how they did it." },
-      { type: 'quote', text: '"When we emailed happy customers to buy another wallet, they said: Of course not. I already have your wallet."', author: 'Sean Frank', role: 'CEO of Ridge ($200M+ Revenue)', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tGs7erOT_400x400-removebg-preview.png' },
-      { type: 'content', title: 'The Trap', body: "Ridge had 97% NPS. Customers LOVED the product. But most people only need one wallet. High satisfaction, low repeat revenue. This is the trap most DTC brands fall into. You can\'t sell someone a second wallet." },
-      { type: 'example', scenario: 'The Wrong vs Right Move', before: { label: 'The Wrong Move', points: ['Launch Wallet 2.0', 'Limited edition colors', 'Premium wallet upgrade', 'Same product, same problem'] }, after: { label: 'The Ridge Move', points: ['Launch phone cases', 'Launch rings & keychains', 'Launch luggage & bags', 'Same customer, NEW reasons to buy'] }, insight: "Don\'t sell them another wallet. Sell them something NEW." },
-      { type: 'cards', title: "Ridge\'s Expansion Strategy", items: [
-        { title: 'Phone Cases', description: 'Same minimalist design language. Different category entirely.', iconType: 'phone' },
-        { title: 'Rings', description: 'Trust transferred instantly. Same quality promise.', iconType: 'ring' },
-        { title: 'Luggage', description: 'Premium price point. Loyal customers said yes.', iconType: 'briefcase' },
-        { title: 'Backpacks', description: 'Everyday carry lifestyle. Full ecosystem.', iconType: 'package' }
-      ]},
-      { type: 'stats', title: 'The Results', stats: [
-        { value: '50%+', label: 'Non-Wallet Revenue', description: 'Revenue from expansion products' },
-        { value: '3-5x', label: 'LTV Increase', description: 'More purchases per customer' },
-        { value: '$200M+', label: 'Annual Revenue', description: 'Reached through expansion' },
-        { value: '97%', label: 'NPS Maintained', description: 'Quality never dropped' }
-      ], insight: 'Same customers. Multiple purchases. Exploding LTV.' },
-      { type: 'content', title: 'The Trust Transfer', body: "When customers trust you in one category, they trust you in others. Ridge proved they could make exceptional wallets. When they launched phone cases with the same design language... customers bought. Trust transferred. LTV compounded. Revenue exploded." },
-      { type: 'quiz', question: 'Why did Ridge expand into rings, phone cases, and luggage instead of making more wallets?', options: ['To compete with other wallet brands', 'Because wallet margins were too low', 'Happy customers only need one wallet—new categories create repeat purchases', 'To increase their average order value'], correctIndex: 2, feedback: { correct: "Exactly! 97% NPS but low repeat revenue. You can\'t sell someone a second wallet. But you CAN sell them phone cases, rings, and luggage.", incorrect: "Not quite. Ridge expanded because happy customers don\'t need another wallet. New categories = new reasons to buy again." }},
-      { type: 'content', title: 'The Warning', body: "This only works if your core product is EXCEPTIONAL. If customers don\'t love your first product, expansion kills you. Ridge earned 97% NPS before they expanded. Earn trust first. Expand second." },
-      { type: 'action-checklist', title: 'Apply The Ridge Playbook', items: [
-        { task: 'Calculate your repeat purchase rate for core products', done: false },
-        { task: 'Identify 2-3 adjacent categories your customers already buy', done: false },
-        { task: 'Test ONE expansion product that fits your brand DNA', done: false },
-        { task: 'Watch LTV compound as trust transfers', done: false }
-      ], bottomNote: "Trust doesn\'t transfer unless it\'s earned. Perfect your core first." },
-      { type: 'completion', sources: [{ name: 'Sean Frank - Ridge CEO', url: '#' }] }
+      { type: 'welcome', learningGoals: ['How Ridge went from wallets to $200M+', 'Why "more of the same" kills LTV', 'The trust transfer strategy for expansion'] },
+      { type: 'hook', headline: 'Ridge sells wallets.', subtext: 'But over 50% of their revenue comes from... not wallets. Here is how they did it.' },
+      { type: 'nps-trap', title: 'The High NPS Trap', nps: 97, problem: 'Happy customers... who will NEVER buy again', subtitle: 'Most people only need one wallet' },
+      { type: 'wrong-vs-right', title: 'Two Paths Forward', wrong: { label: 'The Wrong Move', items: ['Launch Wallet 2.0', 'Limited edition colors', 'Premium upgrade tiers', 'Same product, same problem'] }, right: { label: 'The Ridge Move', items: ['Launch phone cases', 'Launch rings & keychains', 'Launch luggage & bags', 'Same customer, NEW reasons'] } },
+      { type: 'expansion-wheel', title: 'The Expansion Ecosystem', center: 'WALLET', products: [
+        { name: 'Phone Cases', icon: 'Phone', color: '#10b981' },
+        { name: 'Rings', icon: 'Ring', color: '#8B5CF6' },
+        { name: 'Luggage', icon: 'Briefcase', color: '#f59e0b' },
+        { name: 'Backpacks', icon: 'Package', color: '#ef4444' }
+      ] },
+      { type: 'trust-transfer', title: 'The Trust Transfer Effect', subtitle: 'Brand loyalty flows across categories', steps: [
+        { from: 'Wallet', to: 'Phone Case', trust: '87%' },
+        { from: 'Phone Case', to: 'Ring', trust: '74%' },
+        { from: 'Ring', to: 'Luggage', trust: '68%' }
+      ] },
+      { type: 'results-stats', title: 'The Results', stats: [
+        { value: 50, suffix: '%+', label: 'Non-Wallet Revenue', color: '#10b981' },
+        { value: 5, suffix: 'x', label: 'LTV Multiplier', color: '#8B5CF6' },
+        { value: 200, suffix: 'M+', prefix: '$', label: 'Annual Revenue', color: '#f59e0b' },
+        { value: 97, suffix: '%', label: 'NPS Maintained', color: '#ef4444' }
+      ] },
+      { type: 'content', title: 'The Critical Warning', body: 'This only works if your core product is EXCEPTIONAL. If customers do not love your first product, expansion kills you. Ridge earned 97% NPS before they expanded. Earn trust first. Expand second.' },
+      { type: 'quiz', question: 'Why did Ridge expand into rings, phone cases, and luggage instead of making more wallets?', options: ['To compete with other wallet brands', 'Because wallet margins were too low', 'Happy customers only need one wallet - new categories create repeat purchases', 'To increase their average order value'], correctIndex: 2, feedback: { correct: 'Exactly! 97% NPS but low repeat revenue. You cannot sell someone a second wallet. But you CAN sell them phone cases, rings, and luggage.', incorrect: 'Not quite. Ridge expanded because happy customers do not need another wallet. New categories = new reasons to buy again.' }},
+      { type: 'mindset-shift', title: 'The Expansion Paradox', insight: 'Your best customers do not want more of the same. They want more of YOU. Give them new categories to love, and watch LTV compound infinitely.' },
+      { type: 'completion', sources: ['Sean Frank - Ridge CEO ($200M+ Revenue)'] }
     ];
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -210,186 +161,292 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
       </div>
     );
 
-    
-    const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative">
-          <div className="text-6xl md:text-8xl absolute -top-4 -left-2 opacity-20" style={{ color: 'var(--accent)' }}>"</div>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xl md:text-2xl lg:text-3xl text-neutral-800 leading-relaxed mb-6 pl-8">{data.text}</motion.p>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex items-center gap-4 pl-8">
-            <div>
-              <p className="font-bold text-neutral-900">{data.author}</p>
-              <p className="text-sm text-neutral-500">{data.role}</p>
-            </div>
-          </motion.div>
+    // Custom: NPS Trap Slide - Shows 97% NPS but stuck revenue
+    const NPSTrapSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
         </motion.div>
-        {data.image && (
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="absolute right-4 md:right-8 bottom-0" style={{ height: '60%', zIndex: 15 }}>
-            <img src={data.image} alt={data.author} className="h-full w-auto object-contain object-bottom" />
+
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+          {/* NPS Circle */}
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            className="relative">
+            <div style={{
+              width: '180px', height: '180px', borderRadius: '50%',
+              background: 'linear-gradient(135deg, #10b981, #059669)',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 0 40px rgba(16, 185, 129, 0.3)'
+            }}>
+              <span className="text-5xl font-bold text-white"><AnimatedCounter value={data.nps} suffix="%" /></span>
+              <span className="text-sm text-white/80 font-medium">NPS Score</span>
+            </div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+              className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+              EXCEPTIONAL
+            </motion.div>
           </motion.div>
-        )}
+
+          {/* Arrow */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+            className="text-neutral-300 hidden md:block">
+            <svg width="60" height="24" viewBox="0 0 60 24" fill="none">
+              <path d="M0 12H55M55 12L45 4M55 12L45 20" stroke="currentColor" strokeWidth="2"/>
+            </svg>
+          </motion.div>
+
+          {/* Lock (stuck) */}
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }}
+            className="text-center" style={{
+              padding: '32px', borderRadius: '20px',
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              boxShadow: '0 0 30px rgba(239, 68, 68, 0.2)'
+            }}>
+            <div className="text-red-500 mb-3"><Icons.Lock /></div>
+            <p className="text-white font-bold text-lg mb-2">{data.problem}</p>
+            <p className="text-neutral-400 text-sm">{data.subtitle}</p>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+          className="mt-8 text-center">
+          <p className="text-neutral-500 text-sm italic">High satisfaction. Low repeat revenue. This is the trap.</p>
+        </motion.div>
+      </div>
+    );
+
+    // Custom: Wrong vs Right Slide
+    const WrongVsRightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Wrong Path */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-red-500"><Icons.X /></div>
+              <span className="font-bold text-white text-lg">{data.wrong.label}</span>
+            </div>
+            <ul className="space-y-3">
+              {data.wrong.items.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  className="flex items-center gap-2 text-neutral-300 text-sm">
+                  <span className="text-red-500">-</span> {item}
+                </motion.li>
+              ))}
+            </ul>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
+              className="mt-4 pt-4 border-t border-neutral-700">
+              <p className="text-red-400 text-xs font-medium">Same product = Same ceiling</p>
+            </motion.div>
+          </motion.div>
+
+          {/* Right Path */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-green-500"><Icons.Check /></div>
+              <span className="font-bold text-white text-lg">{data.right.label}</span>
+            </div>
+            <ul className="space-y-3">
+              {data.right.items.map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
+                  className="flex items-center gap-2 text-neutral-300 text-sm">
+                  <span className="text-green-500">+</span> {item}
+                </motion.li>
+              ))}
+            </ul>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+              className="mt-4 pt-4 border-t border-neutral-700">
+              <p className="text-green-400 text-xs font-medium">New categories = Infinite LTV</p>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Custom: Expansion Wheel Slide
+    const ExpansionWheelSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.products.length), 2000);
+        return () => clearInterval(timer);
+      }, [data.products.length]);
+
+      const getIcon = (iconName) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="relative flex items-center justify-center" style={{ height: '320px' }}>
+            {/* Center Wallet */}
+            <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+              className="absolute z-10" style={{
+                width: '100px', height: '100px', borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.4)'
+              }}>
+              <Icons.Wallet />
+              <span className="text-[10px] font-bold text-white mt-1">{data.center}</span>
+            </motion.div>
+
+            {/* Orbiting Products */}
+            {data.products.map((product, i) => {
+              const angle = (i * 90) - 45;
+              const radius = 130;
+              const x = Math.cos(angle * Math.PI / 180) * radius;
+              const y = Math.sin(angle * Math.PI / 180) * radius;
+              const isActive = i === activeIndex;
+
+              return (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: isActive ? 1.1 : 1, x, y }}
+                  transition={{ delay: 0.3 + i * 0.1, duration: 0.3 }}
+                  className="absolute" style={{
+                    width: '90px', height: '90px', borderRadius: '16px',
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                    border: isActive ? `2px solid ${product.color}` : '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: isActive ? `0 0 20px ${product.color}30` : 'none',
+                    transition: 'all 0.3s ease'
+                  }}>
+                  <div style={{ color: product.color }}>{getIcon(product.icon)}</div>
+                  <span className="text-[10px] text-white font-medium mt-1 text-center px-1">{product.name}</span>
+                </motion.div>
+              );
+            })}
+
+            {/* Connecting Lines */}
+            <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 0 }}>
+              {data.products.map((_, i) => {
+                const angle = (i * 90) - 45;
+                const endX = 160 + Math.cos(angle * Math.PI / 180) * 80;
+                const endY = 160 + Math.sin(angle * Math.PI / 180) * 80;
+                return (
+                  <motion.line key={i} initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
+                    x1="160" y1="160" x2={endX} y2={endY} stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 4" />
+                );
+              })}
+            </svg>
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
+            className="text-center text-neutral-500 text-sm mt-4">
+            Same design language. Same quality promise. New categories.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // Custom: Trust Transfer Slide
+    const TrustTransferSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500">{data.subtitle}</p>
+        </motion.div>
+
+        <div className="space-y-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.2 }}
+              className="flex items-center gap-4" style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px', padding: '20px',
+                position: 'relative', overflow: 'hidden'
+              }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+
+              <div className="flex-1 flex items-center gap-4">
+                <div className="bg-neutral-700 px-4 py-2 rounded-lg">
+                  <span className="text-white font-semibold text-sm">{step.from}</span>
+                </div>
+                <div className="flex-1 relative h-2">
+                  <div className="absolute inset-0 bg-neutral-700 rounded-full" />
+                  <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ delay: 0.5 + i * 0.2, duration: 0.8 }}
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-green-500 to-emerald-400 rounded-full" />
+                </div>
+                <div className="bg-neutral-700 px-4 py-2 rounded-lg">
+                  <span className="text-white font-semibold text-sm">{step.to}</span>
+                </div>
+              </div>
+
+              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8 + i * 0.2 }}
+                className="bg-green-500/20 px-3 py-1 rounded-full">
+                <span className="text-green-400 font-bold text-sm">{step.trust} transfer</span>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
+          className="text-center text-amber-600 text-sm font-medium mt-6">
+          Trust compounds. Each product strengthens the next.
+        </motion.p>
+      </div>
+    );
+
+    // Custom: Results Stats Slide with AnimatedCounter
+    const ResultsStatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px', padding: '24px', textAlign: 'center',
+                position: 'relative', overflow: 'hidden'
+              }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+              <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: stat.color }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} prefix={stat.prefix || ''} />
+              </div>
+              <p className="text-neutral-400 text-sm">{stat.label}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+          className="mt-8 text-center bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <p className="text-amber-800 font-medium text-sm">Same customers. Multiple purchases. Exploding LTV.</p>
+        </motion.div>
       </div>
     );
 
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.scenario}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-600">
-                <Icons.X />
-              </div>
-              <span className="font-bold text-red-700">{data.before.label}</span>
-            </div>
-            <ul className="space-y-2">
-              {data.before.points.map((point, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-neutral-700">
-                  <span className="text-red-500">✗</span> {point}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center text-green-600">
-                <Icons.Check />
-              </div>
-              <span className="font-bold text-green-700">{data.after.label}</span>
-            </div>
-            <ul className="space-y-2">
-              {data.after.points.map((point, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-neutral-700">
-                  <span className="text-green-500">✓</span> {point}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm">{data.insight}</p>
+    const MindsetShiftSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8 text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="mb-6 text-amber-500">
+          <Icons.Lightbulb />
         </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed max-w-xl">{data.insight}</motion.p>
       </div>
     );
-
-    const CardsSlide = ({ data }) => {
-      const getIcon = (type) => {
-        switch(type) {
-          case 'phone': return <Icons.Phone />;
-          case 'ring': return <Icons.Ring />;
-          case 'briefcase': return <Icons.Briefcase />;
-          case 'package': return <Icons.Package />;
-          default: return <Icons.Package />;
-        }
-      };
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="grid grid-cols-2 gap-3">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-                  {getIcon(item.iconType)}
-                </div>
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      );
-    };
-
-    const StatsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-          {data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-4 text-center">
-              <div className="text-2xl md:text-3xl font-bold mb-1" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-              <div className="text-white font-semibold text-xs md:text-sm mb-1">{stat.label}</div>
-              <div className="text-neutral-500 text-[10px] md:text-xs">{stat.description}</div>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
-          <p className="text-amber-800 text-sm font-medium">{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const ActionChecklistSlide = ({ data }) => {
-      const [checkedItems, setCheckedItems] = useState({});
-      const toggleItem = (index) => setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="space-y-3 mb-6">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} onClick={() => toggleItem(i)} className={`bg-white border-2 rounded-xl p-4 cursor-pointer transition-all ${checkedItems[i] ? 'border-green-400 bg-green-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
-                <div className="flex items-center gap-3">
-                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${checkedItems[i] ? 'bg-green-500 text-white' : 'bg-neutral-100'}`}>
-                    {checkedItems[i] && <Icons.Check />}
-                  </div>
-                  <span className={`text-sm ${checkedItems[i] ? 'text-green-700 line-through' : 'text-neutral-700'}`}>{item.task}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
-            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
-          </motion.div>
-        </div>
-      );
-    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -400,21 +457,22 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto py-10 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback}
+                  className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
                     <span className="text-neutral-700 text-sm md:text-base">{option}</span>
@@ -424,9 +482,9 @@
             </div>
             <AnimatePresence>
               {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
-                </motion.div>
+                <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`text-sm p-4 rounded-xl ${isCorrect ? 'bg-green-50 text-green-800 border border-green-200' : 'bg-amber-50 text-amber-800 border border-amber-200'}`}>
+                  {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+                </motion.p>
               )}
             </AnimatePresence>
           </div>
@@ -435,17 +493,22 @@
     };
 
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Product expansion creates infinite LTV. Earn trust first with one exceptional product. Then expand into adjacent categories your customers already want.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md">Product expansion creates infinite LTV. Earn trust first with one exceptional product. Then expand into adjacent categories.</motion.p>
+        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} href={`/lessons/${LESSON_CONFIG.nextLesson.id}/lesson.html`} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4 block hover:bg-neutral-800 transition-colors">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.a>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }} className="text-neutral-400 text-xs">
+          Sources: {data.sources.join(', ')}
         </motion.div>
       </div>
     );
+
+    // ============ MAIN APP ============
 
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
@@ -459,16 +522,6 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -499,12 +552,13 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'quote': return <QuoteSlide data={slide} />;
+          case 'nps-trap': return <NPSTrapSlide data={slide} />;
+          case 'wrong-vs-right': return <WrongVsRightSlide data={slide} />;
+          case 'expansion-wheel': return <ExpansionWheelSlide data={slide} />;
+          case 'trust-transfer': return <TrustTransferSlide data={slide} />;
+          case 'results-stats': return <ResultsStatsSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'stats': return <StatsSlide data={slide} />;
-          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -520,7 +574,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
@@ -534,7 +587,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
