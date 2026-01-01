@@ -352,13 +352,13 @@
     );
 
     const VisualSlide = ({ data }) => {
-      // Parse stat value to extract number and suffix
+      // Parse stat value to extract prefix, number, and suffix
       const parseStatValue = (value) => {
-        const match = value.match(/^([\d.]+)(.*)$/);
+        const match = value.match(/^([^\d]*)([\d.]+)(.*)$/);
         if (match) {
-          return { number: parseFloat(match[1]), suffix: match[2] };
+          return { prefix: match[1], number: parseFloat(match[2]), suffix: match[3] };
         }
-        return { number: 0, suffix: value };
+        return { prefix: '', number: 0, suffix: value };
       };
 
       if (data.visualType === 'stats') {
@@ -371,7 +371,7 @@
                 return (
                   <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
                     <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>
-                      <AnimatedCounter target={parsed.number} suffix={parsed.suffix} duration={1500} />
+                      {parsed.prefix}<AnimatedCounter target={parsed.number} suffix={parsed.suffix} duration={1500} />
                     </div>
                     <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
                     <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
