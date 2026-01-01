@@ -1,13 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Plus, Search, CheckCircle, ArrowRight } from 'lucide-react';
+import { Plus, Search, CheckCircle, ArrowRight, ExternalLink } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
-// All polls from original Base44 data
+// Base votes per poll option (100,000 total per poll distributed by percentage)
+// This ensures each individual vote has minimal impact on percentages
+const BASE_TOTAL_VOTES = 100000;
+
+// Helper to calculate initial votes from percentage
+const votesFromPercentage = (percentage: number, totalVotes: number = BASE_TOTAL_VOTES) => {
+  return Math.round((percentage / 100) * totalVotes);
+};
+
+// All polls data with base vote counts
 const pollsData = [
   {
     id: 1,
@@ -402,6 +411,151 @@ const pollsData = [
       { text: 'Sometimes', percentage: 25.20 },
     ],
   },
+  // ============ NEW POLLS (40-51) ============
+  {
+    id: 40,
+    question: 'Do you use post-purchase upsells (one-click upsells after checkout)?',
+    options: [
+      { text: 'Yes, generates significant revenue', percentage: 24.60 },
+      { text: 'Tried it, minimal impact', percentage: 19.40 },
+      { text: 'Not yet implemented', percentage: 56.00 },
+    ],
+    buttons: [
+      { text: 'Add Post-Purchase Upsells →', url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva' }
+    ]
+  },
+  {
+    id: 41,
+    question: 'What is the maximum discount you set on TxtCart?',
+    options: [
+      { text: '5-10%', percentage: 13.40 },
+      { text: '10-15%', percentage: 54.27 },
+      { text: '15-20%', percentage: 12.60 },
+      { text: '20%+', percentage: 6.20 },
+      { text: "I don't use it", percentage: 13.53 },
+    ],
+    buttons: [
+      { text: 'Set Up TxtCart →', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' }
+    ]
+  },
+  {
+    id: 42,
+    question: 'Do you use real or fake countdown timers?',
+    options: [
+      { text: 'Real (sale actually ends)', percentage: 21.60 },
+      { text: 'Fake timers (reset daily)', percentage: 11.80 },
+      { text: "Don't use timers", percentage: 11.20 },
+      { text: 'Auto Geo-location based Holiday discount', percentage: 32.00 },
+      { text: 'Planning to try', percentage: 23.40 },
+    ],
+    buttons: [
+      { text: 'Add Regular Timer →', url: 'https://platform.shoffi.app/r/rl_6EEzhlj9' },
+      { text: 'Add Geo-location Timer →', url: 'https://geo-convert.com/' }
+    ]
+  },
+  {
+    id: 43,
+    question: 'Meta ad copy: Short or long?',
+    options: [
+      { text: 'Shortest as possible', percentage: 17.50 },
+      { text: 'Longest as possible', percentage: 19.00 },
+      { text: 'Mid (80-150 words)', percentage: 63.50 },
+    ],
+  },
+  {
+    id: 44,
+    question: 'If you could start over, what would you do FIRST?',
+    options: [
+      { text: 'Pick better niche (not trending one)', percentage: 48.20 },
+      { text: 'Build email list from day 1', percentage: 32.60 },
+      { text: 'Test products before scaling ads', percentage: 14.80 },
+      { text: 'Hire expert instead of DIY everything', percentage: 4.40 },
+    ],
+    buttons: [
+      { text: 'Build an Email List →', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
+    ]
+  },
+  {
+    id: 45,
+    question: 'Your first sale - how long did it take?',
+    options: [
+      { text: 'Within first week', percentage: 18.20 },
+      { text: '2-4 weeks', percentage: 32.80 },
+      { text: '1-3 months', percentage: 38.40 },
+      { text: '3+ months', percentage: 10.60 },
+    ],
+  },
+  {
+    id: 46,
+    question: 'The one app you wish you installed from DAY ONE?',
+    options: [
+      { text: 'Email marketing (Klaviyo)', percentage: 14.20 },
+      { text: 'SMS Cart recovery (TxtCart)', percentage: 12.00 },
+      { text: 'Help desk', percentage: 3.00 },
+      { text: 'DataDrew (Customer LTV)', percentage: 26.00 },
+      { text: 'Geo Convert', percentage: 24.00 },
+      { text: 'Reviews app', percentage: 3.00 },
+      { text: 'All of them', percentage: 11.80 },
+      { text: 'Other', percentage: 6.00 },
+    ],
+    buttons: [
+      { text: 'Connect Klaviyo →', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL' },
+      { text: 'Add Cart Recovery →', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
+      { text: 'Connect Geo Convert →', url: 'https://geo-convert.com/' },
+      { text: 'Connect DataDrew →', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
+    ]
+  },
+  {
+    id: 47,
+    question: 'Reddit/4chan marketing - would you try it?',
+    options: [
+      { text: 'Yes, untapped audience', percentage: 24.60 },
+      { text: 'Maybe for specific niches', percentage: 42.80 },
+      { text: 'Too risky', percentage: 28.20 },
+      { text: 'Already tried', percentage: 4.40 },
+    ],
+  },
+  {
+    id: 48,
+    question: 'How do you handle returns/refunds?',
+    options: [
+      { text: 'Give best service to prevent them', percentage: 42.80 },
+      { text: 'It happens, just deal with it', percentage: 28.60 },
+      { text: 'Struggling to manage them', percentage: 18.40 },
+      { text: 'Part of business, small % anyway', percentage: 10.20 },
+    ],
+  },
+  {
+    id: 49,
+    question: 'Are you using Google Shopping ads?',
+    options: [
+      { text: 'Yes, main traffic source', percentage: 18.40 },
+      { text: 'Yes, testing it out', percentage: 32.60 },
+      { text: 'Not yet, planning to', percentage: 24.80 },
+      { text: 'No, focusing on other channels', percentage: 24.20 },
+    ],
+  },
+  {
+    id: 50,
+    question: 'Where do you get ad creative inspiration?',
+    options: [
+      { text: 'Competitor ads (Facebook Ad Library)', percentage: 28.20 },
+      { text: 'Creative templates', percentage: 23.00 },
+      { text: 'TikTok/Instagram trending content', percentage: 26.20 },
+      { text: 'Hire UGC creators', percentage: 14.20 },
+      { text: 'Make it myself / wing it', percentage: 8.40 },
+    ],
+  },
+  {
+    id: 51,
+    question: "What's your Refund policy?",
+    options: [
+      { text: '30-day money back guarantee', percentage: 35.60 },
+      { text: '14-day return window', percentage: 45.40 },
+      { text: 'No returns (final sale)', percentage: 8.80 },
+      { text: 'Case by case basis', percentage: 10.20 },
+    ],
+  },
 ];
 
 interface PollOption {
@@ -421,6 +575,12 @@ interface Poll {
   buttons?: PollButton[];
 }
 
+// Vote data structure for backend tracking
+interface PollVoteData {
+  votes: number[];  // Vote count per option
+  totalVotes: number;
+}
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -434,11 +594,53 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+// Initialize vote data from poll percentages with 100k base
+const initializeVoteData = (): Record<number, PollVoteData> => {
+  const data: Record<number, PollVoteData> = {};
+  pollsData.forEach(poll => {
+    const votes = poll.options.map(opt => votesFromPercentage(opt.percentage));
+    data[poll.id] = {
+      votes,
+      totalVotes: votes.reduce((sum, v) => sum + v, 0),
+    };
+  });
+  return data;
+};
+
+// Calculate live percentages from vote counts
+const calculatePercentages = (voteData: PollVoteData): number[] => {
+  if (voteData.totalVotes === 0) return voteData.votes.map(() => 0);
+  return voteData.votes.map(v => (v / voteData.totalVotes) * 100);
+};
+
+const STORAGE_KEY = 'quantum_poll_votes';
+const USER_VOTES_KEY = 'quantum_user_votes';
+
 export default function DataCenterPage() {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuthStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [userVotes, setUserVotes] = useState<Record<number, number>>({});
+  const [pollVoteData, setPollVoteData] = useState<Record<number, PollVoteData>>(() => initializeVoteData());
+
+  // Load saved votes from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const savedVoteData = localStorage.getItem(STORAGE_KEY);
+        const savedUserVotes = localStorage.getItem(USER_VOTES_KEY);
+
+        if (savedVoteData) {
+          setPollVoteData(JSON.parse(savedVoteData));
+        }
+        if (savedUserVotes) {
+          setUserVotes(JSON.parse(savedUserVotes));
+        }
+      } catch (e) {
+        console.error('Error loading saved poll data:', e);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -446,9 +648,47 @@ export default function DataCenterPage() {
     }
   }, [user, authLoading, router]);
 
-  const handleVote = (pollId: number, optionIndex: number) => {
-    setUserVotes(prev => ({ ...prev, [pollId]: optionIndex }));
-  };
+  // Handle voting with backend tracking
+  const handleVote = useCallback((pollId: number, optionIndex: number) => {
+    // Check if user already voted on this poll
+    const previousVote = userVotes[pollId];
+
+    setPollVoteData(prev => {
+      const pollData = { ...prev[pollId] };
+
+      // If changing vote, decrement old option first
+      if (previousVote !== undefined && previousVote !== optionIndex) {
+        pollData.votes = [...pollData.votes];
+        pollData.votes[previousVote] = Math.max(0, pollData.votes[previousVote] - 1);
+        pollData.totalVotes--;
+      }
+
+      // Increment new option (only if not already voted for this option)
+      if (previousVote !== optionIndex) {
+        pollData.votes = [...pollData.votes];
+        pollData.votes[optionIndex]++;
+        pollData.totalVotes++;
+      }
+
+      const newData = { ...prev, [pollId]: pollData };
+
+      // Save to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
+      }
+
+      return newData;
+    });
+
+    // Update user votes
+    setUserVotes(prev => {
+      const newUserVotes = { ...prev, [pollId]: optionIndex };
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(USER_VOTES_KEY, JSON.stringify(newUserVotes));
+      }
+      return newUserVotes;
+    });
+  }, [userVotes]);
 
   if (authLoading || !user) {
     return (
@@ -501,15 +741,22 @@ export default function DataCenterPage() {
             animate="visible"
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-5"
           >
-            {filteredPolls.map((poll) => (
-              <motion.div key={poll.id} variants={itemVariants} className="h-full">
-                <PollCard
-                  poll={poll}
-                  userVote={userVotes[poll.id]}
-                  onVote={(optionIndex) => handleVote(poll.id, optionIndex)}
-                />
-              </motion.div>
-            ))}
+            {filteredPolls.map((poll) => {
+              const voteData = pollVoteData[poll.id];
+              const livePercentages = voteData ? calculatePercentages(voteData) : poll.options.map(o => o.percentage);
+
+              return (
+                <motion.div key={poll.id} variants={itemVariants} className="h-full">
+                  <PollCard
+                    poll={poll}
+                    userVote={userVotes[poll.id]}
+                    livePercentages={livePercentages}
+                    totalVotes={voteData?.totalVotes || BASE_TOTAL_VOTES}
+                    onVote={(optionIndex) => handleVote(poll.id, optionIndex)}
+                  />
+                </motion.div>
+              );
+            })}
           </motion.div>
 
         {filteredPolls.length === 0 && (
@@ -527,11 +774,20 @@ export default function DataCenterPage() {
 interface PollCardProps {
   poll: Poll;
   userVote?: number;
+  livePercentages: number[];
+  totalVotes: number;
   onVote: (optionIndex: number) => void;
 }
 
-function PollCard({ poll, userVote, onVote }: PollCardProps) {
-  const maxPercentage = Math.max(...poll.options.map(o => o.percentage));
+function PollCard({ poll, userVote, livePercentages, totalVotes, onVote }: PollCardProps) {
+  const maxPercentage = Math.max(...livePercentages);
+
+  // Format total votes (e.g., 100,234 -> "100.2K")
+  const formatVotes = (votes: number) => {
+    if (votes >= 1000000) return `${(votes / 1000000).toFixed(1)}M`;
+    if (votes >= 1000) return `${(votes / 1000).toFixed(1)}K`;
+    return votes.toString();
+  };
 
   return (
     <div className="card card-hover h-full flex flex-col" style={{ padding: 0 }}>
@@ -540,13 +796,17 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
         <h3 className="text-sm font-semibold leading-tight text-[var(--text-primary)]">
           {poll.question}
         </h3>
+        <p className="text-[10px] text-[var(--text-muted)] mt-1">
+          {formatVotes(totalVotes)} votes
+        </p>
       </div>
 
       {/* Options */}
       <div className="px-5 pb-4 space-y-2 flex-1">
         {poll.options.map((option, index) => {
           const isUserChoice = userVote === index;
-          const isTopChoice = option.percentage === maxPercentage;
+          const percentage = livePercentages[index] || 0;
+          const isTopChoice = percentage === maxPercentage && percentage > 0;
 
           return (
             <button
@@ -560,12 +820,14 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
               }}
             >
               <div
-                className="absolute inset-0 transition-all"
+                className="absolute inset-0 transition-all duration-300"
                 style={{
                   background: isUserChoice
-                    ? 'linear-gradient(90deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.01) 100%)'
-                    : 'linear-gradient(90deg, rgba(0, 125, 255, 0.02) 0%, transparent 100%)',
-                  width: `${option.percentage}%`
+                    ? 'linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.02) 100%)'
+                    : isTopChoice
+                    ? 'linear-gradient(90deg, rgba(0, 125, 255, 0.08) 0%, rgba(0, 125, 255, 0.02) 100%)'
+                    : 'linear-gradient(90deg, rgba(0, 125, 255, 0.03) 0%, transparent 100%)',
+                  width: `${percentage}%`
                 }}
               />
 
@@ -587,7 +849,7 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
                   </span>
                 </div>
                 <span className={`font-bold text-xs flex-shrink-0 ml-2 ${isTopChoice ? 'text-[var(--info)]' : 'text-[var(--text-muted)]'}`}>
-                  {option.percentage.toFixed(2)}%
+                  {percentage.toFixed(1)}%
                 </span>
               </div>
             </button>
@@ -595,7 +857,7 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
         })}
       </div>
 
-      {/* Buttons */}
+      {/* CTA Buttons */}
       {poll.buttons && poll.buttons.length > 0 && (
         <div className="p-5 pt-0 mt-auto">
           <div className="flex flex-col gap-2 pt-3 border-t border-[var(--border-light)]">
@@ -608,7 +870,7 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
                 className="btn btn-primary w-full justify-center text-xs py-2"
               >
                 {button.text}
-                <ArrowRight className="w-3 h-3" />
+                <ExternalLink className="w-3 h-3" />
               </a>
             ))}
           </div>
