@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (137 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (141 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -215,10 +215,14 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 135 | meta-value-rules | 9 | Elite (Fixed Jan 1) |
 | 136 | meta-learning-loop | 9 | Elite (Fixed Jan 1) |
 | 137 | meta-creative-matrix | 9 | Elite (Fixed Jan 1) |
+| 138 | owned-audience-effect | 9 | Elite (Fixed Jan 1) |
+| 139 | post-purchase-momentum | 9 | Elite (Fixed Jan 1) |
+| 140 | meta-sequence-learning | 9 | Elite (Fixed Jan 1) |
+| 141 | meta-machine-scale | 9 | Elite (Fixed Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (161 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (157 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -310,11 +314,9 @@ These lessons need design improvements to reach elite level.
 | 177 | meta-ga4-integration | 5 |
 | 178 | meta-gem-brain | 5 |
 | 179 | meta-hybrid-adset | 5 |
-| 181 | meta-machine-scale | 7 |
 | 182 | meta-marathon-metrics | 5 |
 | 183 | meta-omnipresent-content | 5 |
 | 184 | meta-radical-diversity | 5 |
-| 185 | meta-sequence-learning | 5 |
 | 186 | meta-three-second-hook | 5 |
 | 188 | meta-whatsapp-ai | 5 |
 | 189 | micro-yes-engine | ERROR |
@@ -327,7 +329,6 @@ These lessons need design improvements to reach elite level.
 | 196 | objection-inversion | 5 |
 | 197 | ocpb-formula | 5 |
 | 198 | offer-is-everything | 5 |
-| 199 | owned-audience-effect | 5 |
 | 200 | pain-dream-bridge | ERROR |
 | 201 | pain-escalation-ladder | 5 |
 | 202 | paradox-of-choice | 5 |
@@ -338,7 +339,6 @@ These lessons need design improvements to reach elite level.
 | 207 | placebo-product | 5 |
 | 208 | poppy-disruptor-blueprint | 5 |
 | 209 | post-purchase-goldmine | 5 |
-| 210 | post-purchase-momentum | 5 |
 | 211 | post-purchase-surveys | 5 |
 | 212 | precise-price-trick | 5 |
 | 213 | premium-flywheel | 5 |
