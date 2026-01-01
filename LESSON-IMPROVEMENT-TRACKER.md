@@ -183,28 +183,27 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 103 | biz-infinite-money-loop | 9 | Elite (Verified Jan 1) |
 | 104 | biz-marketing-company | 9 | Elite (Improved Jan 1) |
 | 105 | biz-mission-driven-brand | 9 | Elite (Improved Jan 1) |
+| 106 | biz-objection-dance | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (196 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (194 lessons)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
-| 1 | biz-mission-driven-brand | 5 |
-| 8 | biz-objection-dance | 5 |
-| 9 | biz-one-pager-blueprint | 5 |
-| 10 | biz-price-anchoring | 5 |
-| 11 | biz-product-expansion | 5 |
-| 12 | biz-purchase-cycle-engine | 5 |
-| 13 | biz-rat-brain-hijack | 5 |
-| 14 | biz-remarkable-product | 5 |
-| 15 | biz-savage-mentality | 5 |
-| 16 | biz-subscribe-save-ltv | 5 |
-| 17 | biz-velocity-advantage | 5 |
-| 18 | biz-zero-cac-engine | 5 |
-| 19 | bottom-up-brand | 5 |
+| 1 | biz-one-pager-blueprint | 5 |
+| 2 | biz-price-anchoring | 5 |
+| 3 | biz-product-expansion | 5 |
+| 4 | biz-purchase-cycle-engine | 5 |
+| 5 | biz-rat-brain-hijack | 5 |
+| 6 | biz-remarkable-product | 5 |
+| 7 | biz-savage-mentality | 5 |
+| 8 | biz-subscribe-save-ltv | 5 |
+| 9 | biz-velocity-advantage | 5 |
+| 10 | biz-zero-cac-engine | 5 |
+| 11 | bottom-up-brand | 5 |
 | 57 | brain-friendly-ux | ERROR |
 | 58 | brand-promise-code | 5 |
 | 59 | brand-search-campaign | 5 |
@@ -421,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 105 |
-| Need Improvement | 196 |
+| Improved / Don't Need Improvement | 106 |
+| Need Improvement | 195 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **308** |
 
