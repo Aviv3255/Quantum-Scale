@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson | Quantum Scale</title>
+  <title>The Look-Back Window | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #f97316; --accent-dark: #e55f02; --accent-light: #ff872a; --accent-rgb: 249, 115, 22; }
+    :root { --accent: #f97316; --accent-dark: #ea580c; --accent-light: #fb923c; --accent-rgb: 249, 115, 22; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -39,139 +36,372 @@
 
     const LESSON_CONFIG = {
       id: 'biz-look-back-window',
-      title: 'Lesson',
-      description: '',
+      title: 'The Look-Back Window',
+      description: 'The hidden setting that changes everything you see',
       accentColor: '#f97316',
-      duration: '5 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
+      duration: '6 min',
+      nextLesson: { id: 'biz-ltv-levers', title: 'The LTV Levers', teaser: 'The 5 ways to increase customer lifetime value.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-        TitleSlide,
-        HookSlide,
-        WindowComparisonSlide,
-        DecisionImpactSlide,
-        WindowGuideSlide,
-        AttributionLayersSlide,
-        CohortSlide,
-        ToolIntegrationSlide,
-        HolyShitSlide,
-        QuizSlide,
-        TakeawaysSlide,
-        EndSlide
-      ];
+      { type: 'welcome', learningGoals: ['What the look-back window actually measures', 'Why 7-day vs 28-day changes EVERYTHING', 'How to set the right window for your business'] },
+      { type: 'hook', headline: 'Your ads are working better than you think. Or worse. It depends on one setting.', subtext: 'The look-back window is the hidden lever that determines what conversions get credited to your ads. Change it, and your entire dashboard transforms. Same ads. Same spend. Completely different story.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_scratching_head_confused_looking_at_something__dfc32a9e-3df0-4ea1-b0ec-aa7a0c5b9c13_2.mp4', characterPosition: 'right' },
+      { type: 'window-comparison', title: 'Same Ads. Different Windows. Different Reality.', subtitle: 'Watch how your ROAS changes based on the window you choose' },
+      { type: 'timeline-visual', title: 'What the Window Actually Measures', subtitle: 'A customer clicks your ad on Day 1. When does the conversion count?' },
+      { type: 'window-guide', title: 'The Window Selection Matrix', subtitle: 'Match your product to the right attribution window' },
+      { type: 'ios14-impact', title: 'After iOS 14: The New Rules', subtitle: 'Why your old settings stopped working' },
+      { type: 'implementation', title: 'Set Your Windows Right', intro: 'Here is how to configure your attribution windows in Meta Ads:', steps: [
+        { step: 1, title: 'Go to Ads Manager Settings', description: 'Click your account settings in the top right corner of Ads Manager.' },
+        { step: 2, title: 'Find Attribution Settings', description: 'Look for "Attribution Setting" under the Measurement section.' },
+        { step: 3, title: 'Choose Your Window', description: '7-day click for impulse buys. 7-day click + 1-day view for higher consideration.' },
+        { step: 4, title: 'Apply Consistently', description: 'Use the same window across all campaigns for accurate comparison.' }
+      ] },
+      { type: 'quiz', question: 'A customer clicks your ad on Monday, browses your site, and buys on Saturday (6 days later). With a 7-day click window, does this count as a conversion?', options: ['No - it is outside the window', 'Yes - it is within 7 days of the click', 'Only if they clicked again', 'Depends on the product price'], correctIndex: 1, feedback: { correct: 'Exactly! The 7-day click window counts any conversion within 7 days of clicking the ad. Day 6 is within the window, so this sale gets attributed to your ad.', incorrect: 'Not quite. The 7-day click window means any conversion within 7 days of clicking counts. Saturday is Day 6 after Monday is Day 1, so it is within the window and the sale gets attributed to your ad.' } },
+      { type: 'mindset-shift', title: 'The Window Does Not Change Reality. It Changes What You See.', subtitle: 'Choose the window that matches your customer journey, not the one that makes your numbers look best.' },
+      { type: 'completion', sources: [] }
+    ];
 
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Eye: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      MousePointer: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>,
+      Calendar: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>,
+      TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      AlertTriangle: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      ShoppingCart: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>,
+      Zap: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Shield: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>,
+      Smartphone: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>,
+      Brain: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.04"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.04"/></svg>
     };
 
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // ============ ELITE CUSTOM SLIDE COMPONENTS ============
+
+    // Window Comparison Slide - Shows same ads with different ROAS based on window
+    const WindowComparisonSlide = ({ data }) => {
+      const [activeWindow, setActiveWindow] = useState(0);
+      const windows = [
+        { label: '1-Day Click', roas: 1.8, conversions: 42, color: '#EF4444' },
+        { label: '7-Day Click', roas: 3.2, conversions: 89, color: '#F59E0B' },
+        { label: '7-Day Click + 1-Day View', roas: 4.1, conversions: 127, color: '#22C55E' },
+        { label: '28-Day Click', roas: 5.4, conversions: 203, color: '#3B82F6' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveWindow(prev => (prev + 1) % windows.length), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#F97316' }}>
+              <Icons.Eye size={14} color="#F97316" />
+              <span>The Illusion</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          {/* Window Selector */}
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
+            {windows.map((w, i) => (
+              <button key={i} onClick={() => setActiveWindow(i)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeWindow === i ? 'text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`} style={activeWindow === i ? { background: w.color } : {}}>
+                {w.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Results Display */}
+          <motion.div key={activeWindow} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 relative overflow-hidden" style={{ background: '#0a0a0a', border: `2px solid ${windows[activeWindow].color}40`, boxShadow: `0 0 60px ${windows[activeWindow].color}20` }}>
+            <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${windows[activeWindow].color}, transparent)` }}></div>
+
+            <div className="grid md:grid-cols-3 gap-6 text-center">
+              <div>
+                <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Ad Spend</p>
+                <div className="text-3xl font-bold text-white">$10,000</div>
+                <p className="text-neutral-500 text-xs mt-1">Same for all windows</p>
+              </div>
+              <div>
+                <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Conversions</p>
+                <div className="text-3xl font-bold" style={{ color: windows[activeWindow].color }}>
+                  <AnimatedCounter target={windows[activeWindow].conversions} duration={800} />
+                </div>
+                <p className="text-neutral-500 text-xs mt-1">Attributed sales</p>
+              </div>
+              <div>
+                <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">ROAS</p>
+                <div className="text-4xl font-bold" style={{ color: windows[activeWindow].color }}>
+                  <AnimatedCounter target={windows[activeWindow].roas} suffix="x" duration={800} decimals={1} />
+                </div>
+                <p className="text-neutral-500 text-xs mt-1">Return on ad spend</p>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-neutral-800 text-center">
+              <p className="text-neutral-400 text-sm">With <span className="font-bold" style={{ color: windows[activeWindow].color }}>{windows[activeWindow].label}</span> window</p>
+            </div>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center text-neutral-500 text-sm mt-6">
+            Same $10,000 spend. ROAS ranges from 1.8x to 5.4x. The only difference? The window.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // Timeline Visual Slide
+    const TimelineVisualSlide = ({ data }) => {
+      const [day, setDay] = useState(0);
+      const timeline = [
+        { day: 1, event: 'Click', icon: 'MousePointer', desc: 'Customer clicks your ad' },
+        { day: 3, event: 'Browse', icon: 'Eye', desc: 'Returns to browse products' },
+        { day: 7, event: '7-Day Limit', icon: 'Calendar', desc: '7-day window ends here' },
+        { day: 14, event: 'Purchase', icon: 'ShoppingCart', desc: 'Finally makes purchase' },
+        { day: 28, event: '28-Day Limit', icon: 'Calendar', desc: '28-day window ends here' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setDay(prev => prev < 28 ? prev + 1 : 0), 150);
+        return () => clearInterval(timer);
+      }, []);
+
+      const sevenDayCredit = day >= 14 ? false : true;
+      const twentyEightDayCredit = day >= 14 ? true : null;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          {/* Timeline Bar */}
+          <div className="relative mb-8">
+            <div className="h-2 bg-neutral-200 rounded-full overflow-hidden">
+              <motion.div className="h-full rounded-full" style={{ width: `${(day / 28) * 100}%`, background: day <= 7 ? '#22C55E' : day <= 14 ? '#F59E0B' : '#3B82F6' }} />
+            </div>
+
+            {/* Day Markers */}
+            <div className="flex justify-between mt-2 text-xs text-neutral-400">
+              <span>Day 1</span>
+              <span className={day >= 7 ? 'font-bold text-amber-500' : ''}>Day 7</span>
+              <span>Day 14</span>
+              <span className={day >= 28 ? 'font-bold text-blue-500' : ''}>Day 28</span>
+            </div>
+          </div>
+
+          {/* Current Day Display */}
+          <div className="text-center mb-6">
+            <div className="text-6xl font-bold text-neutral-900">Day {day}</div>
+          </div>
+
+          {/* Attribution Status */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div animate={{ opacity: 1 }} className="rounded-xl p-5 text-center" style={{ background: day < 14 ? '#0a0a0a' : day <= 7 ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', border: `1px solid ${day < 14 ? '#333' : day <= 7 ? '#22C55E40' : '#EF444440'}` }}>
+              <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">7-Day Click Window</p>
+              {day < 14 ? (
+                <p className="text-neutral-500">Waiting for purchase...</p>
+              ) : day <= 7 ? (
+                <div className="flex items-center justify-center gap-2 text-green-400"><Icons.Check /> Conversion Counted</div>
+              ) : (
+                <div className="flex items-center justify-center gap-2 text-red-400"><Icons.X /> Purchase Outside Window</div>
+              )}
+            </motion.div>
+
+            <motion.div animate={{ opacity: 1 }} className="rounded-xl p-5 text-center" style={{ background: day < 14 ? '#0a0a0a' : 'rgba(34, 197, 94, 0.1)', border: `1px solid ${day < 14 ? '#333' : '#22C55E40'}` }}>
+              <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">28-Day Click Window</p>
+              {day < 14 ? (
+                <p className="text-neutral-500">Waiting for purchase...</p>
+              ) : (
+                <div className="flex items-center justify-center gap-2 text-green-400"><Icons.Check /> Conversion Counted</div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Window Guide Slide - Matrix of product types and recommended windows
+    const WindowGuideSlide = ({ data }) => {
+      const guides = [
+        { product: 'Impulse Buys', examples: 'Under $50, fashion, accessories', window: '7-Day Click', color: '#22C55E', reason: 'Quick decisions need short windows' },
+        { product: 'Considered Purchases', examples: '$50-200, electronics, furniture', window: '7-Day Click + 1-Day View', color: '#F59E0B', reason: 'Research phase matters' },
+        { product: 'High-Ticket Items', examples: '$500+, luxury, B2B', window: '28-Day Click', color: '#3B82F6', reason: 'Long sales cycles need longer windows' },
+        { product: 'Subscriptions', examples: 'SaaS, memberships', window: '7-Day Click', color: '#8B5CF6', reason: 'Commit fast or not at all' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {guides.map((g, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: '#0a0a0a', border: `1px solid ${g.color}40`, boxShadow: `0 0 30px ${g.color}10` }}>
+                <div className="absolute top-0 left-0 w-full h-1 opacity-80" style={{ background: `linear-gradient(90deg, transparent, ${g.color}, transparent)` }}></div>
+
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h4 className="font-bold text-white text-lg">{g.product}</h4>
+                    <p className="text-neutral-500 text-xs">{g.examples}</p>
+                  </div>
+                  <div className="px-3 py-1 rounded-lg text-xs font-bold text-white" style={{ background: g.color }}>
+                    {g.window}
+                  </div>
+                </div>
+
+                <p className="text-neutral-400 text-sm">{g.reason}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // iOS 14 Impact Slide
+    const IOS14ImpactSlide = ({ data }) => {
+      const [showAfter, setShowAfter] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowAfter(true), 1500); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#EF4444' }}>
+              <Icons.Smartphone size={14} color="#EF4444" />
+              <span>iOS 14 Changed Everything</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Before iOS 14 */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #33333380' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-neutral-800">
+                  <Icons.Calendar size={20} color="#6B7280" />
+                </div>
+                <div>
+                  <p className="text-neutral-400 text-xs uppercase tracking-wider">Before iOS 14</p>
+                  <p className="text-white font-bold">The Good Old Days</p>
+                </div>
+              </div>
+
+              <ul className="space-y-3">
+                {['28-day click window default', '28-day view-through tracking', 'Full cross-device tracking', '~95% attribution accuracy'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                    <Icons.Check /><span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* After iOS 14 */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: showAfter ? 1 : 0.3, x: 0 }} className="rounded-2xl p-6 relative overflow-hidden" style={{ background: '#0a0a0a', border: '1px solid #EF444440', boxShadow: showAfter ? '0 0 40px rgba(239, 68, 68, 0.1)' : 'none' }}>
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }}></div>
+
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                  <Icons.Shield size={20} color="#EF4444" />
+                </div>
+                <div>
+                  <p className="text-red-400 text-xs uppercase tracking-wider font-bold">After iOS 14</p>
+                  <p className="text-white font-bold">The New Reality</p>
+                </div>
+              </div>
+
+              <ul className="space-y-3">
+                {['7-day click is now default', '1-day view maximum', 'Limited cross-device data', '~60% attribution accuracy'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-neutral-300 text-sm">
+                    <Icons.AlertTriangle size={16} color="#EF4444" /><span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          {showAfter && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mt-6 rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.05))', border: '1px solid rgba(249, 115, 22, 0.2)' }}>
+              <p className="text-neutral-700 text-sm font-medium">Your 28-day ROAS from 2020? It does not exist anymore. Adjust your expectations.</p>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // Mindset Shift Slide
+    const MindsetShiftSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)', boxShadow: '0 0 60px rgba(249, 115, 22, 0.4)' }}>
+          <Icons.Brain size={40} color="white" />
+        </motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-xl text-neutral-500 max-w-2xl">{data.subtitle}</motion.p>
+      </div>
+    );
+
+    // Standard Slides
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -218,86 +448,24 @@
             </video>
           </motion.div>
         )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
+        <div className="space-y-3">
+          {data.steps && data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
+              <div className="flex-1">
+                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -313,7 +481,7 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
@@ -350,29 +518,47 @@
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Window Wisdom Unlocked</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the hidden lever that changes everything you see.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Key Takeaways</p>
+          <ul className="space-y-2 text-left">
+            {['The look-back window determines what conversions count', 'Longer windows = higher reported ROAS', 'Match window to your customer journey', 'iOS 14 changed the default to 7-day click'].map((item, i) => (
+              <li key={i} className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check /><span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
+    // Slide Renderer
+    const renderSlide = (slide, index, props) => {
+      const { showGif, hideGif, userName, nextSlide } = props;
+      const commonProps = { onShowGif: showGif, onHideGif: hideGif };
+
+      switch (slide.type) {
+        case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} {...commonProps} />;
+        case 'hook': return <HookSlide data={slide} />;
+        case 'window-comparison': return <WindowComparisonSlide data={slide} />;
+        case 'timeline-visual': return <TimelineVisualSlide data={slide} />;
+        case 'window-guide': return <WindowGuideSlide data={slide} />;
+        case 'ios14-impact': return <IOS14ImpactSlide data={slide} />;
+        case 'implementation': return <ImplementationSlide data={slide} />;
+        case 'quiz': return <QuizSlide data={slide} {...commonProps} />;
+        case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
+        case 'completion': return <CompletionSlide data={slide} />;
+        default: return <div className="h-full flex items-center justify-center"><p className="text-neutral-500">Unknown slide type: {slide.type}</p></div>;
+      }
+    };
+
+    // Main App
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -386,14 +572,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -418,57 +598,48 @@
       const slideVariants = {
         enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
         center: { x: 0, opacity: 1 },
-        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
+        exit: (dir) => ({ x: dir < 0 ? '100%' : '-100%', opacity: 0 })
       };
-
-      const renderSlide = (slide) => {
-        switch (slide.type) {
-          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
-          default: return null;
-        }
-      };
-
-      const showPrev = currentSlide > 0;
-      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
 
       return (
-        <div className="w-full h-screen bg-white flex flex-col relative">
-          <div className="flex-1 relative overflow-hidden z-20">
-            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
-              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
-                {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
-              </motion.div>
-            </AnimatePresence>
-            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
-            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
-          </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
-            <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
-            </div>
-          </div>
+        <div className="fixed inset-0 bg-white overflow-hidden">
+          <AnimatePresence initial={false} custom={direction} mode="wait" onExitComplete={() => setIsAnimating(false)}>
+            <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ type: 'tween', duration: 0.3, ease: 'easeInOut' }} className="absolute inset-0">
+              <div className="relative h-full">
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide]?.type} />
+                {renderSlide(slides[currentSlide], currentSlide, { showGif, hideGif, userName, nextSlide })}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Character GIF */}
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} transition={{ duration: 0.4 }}
+                className={`fixed bottom-0 ${gifConfig.side === 'left' ? 'left-4' : 'right-4'} pointer-events-none z-10`}
+                style={{ height: gifConfig.height, maxHeight: '500px' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
             )}
           </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="fixed bottom-0 left-0 right-0 p-4 flex items-center justify-between z-50 bg-gradient-to-t from-white via-white/80 to-transparent pt-8">
+            <button onClick={prevSlide} disabled={currentSlide === 0 || isAnimating} className={`p-3 rounded-xl transition-all ${currentSlide === 0 ? 'opacity-30 cursor-not-allowed' : 'bg-neutral-100 hover:bg-neutral-200'}`}><Icons.ArrowLeft /></button>
+            <div className="flex items-center gap-1.5">
+              {slides.map((_, i) => (
+                <button key={i} onClick={() => goToSlide(i)} className={`transition-all rounded-full ${i === currentSlide ? 'w-6 h-2' : 'w-2 h-2 hover:bg-neutral-400'}`} style={{ background: i === currentSlide ? 'var(--accent)' : '#d1d5db' }} />
+              ))}
+            </div>
+            <button onClick={nextSlide} disabled={currentSlide === slides.length - 1 || isAnimating} className={`p-3 rounded-xl transition-all ${currentSlide === slides.length - 1 ? 'opacity-30 cursor-not-allowed' : 'text-white'}`} style={{ background: currentSlide === slides.length - 1 ? '#e5e7eb' : 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}><Icons.ArrowRight /></button>
+          </div>
         </div>
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    ReactDOM.createRoot(document.getElementById('root')).render(<LessonApp />);
   </script>
 </body>
 </html>

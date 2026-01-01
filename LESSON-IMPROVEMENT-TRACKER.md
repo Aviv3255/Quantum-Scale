@@ -178,18 +178,18 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 98 | biz-survival-cycle | 9 | Elite |
 | 99 | biz-hidden-cac-costs | 9 | Elite (Improved Dec 31) |
 | 100 | biz-lifetime-gross-profit | 9 | Elite (Improved Jan 1) |
+| 101 | biz-look-back-window | 9 | Elite (Improved Jan 1) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (201 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (200 lessons)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
 | 1 | biz-infinite-money-loop | 5 |
-| 2 | biz-look-back-window | 5 |
-| 5 | biz-ltv-levers | 5 |
+| 2 | biz-ltv-levers | 5 |
 | 6 | biz-marketing-company | 5 |
 | 7 | biz-mission-driven-brand | 5 |
 | 8 | biz-objection-dance | 5 |
