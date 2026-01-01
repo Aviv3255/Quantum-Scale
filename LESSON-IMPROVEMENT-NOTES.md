@@ -92,6 +92,12 @@ Each lesson has unique content - create custom components that match THAT conten
 - The goal is stunning visuals, not moving parts
 - A beautiful static layout beats a mediocre animated one
 
+## Icons vs Emojis
+- **NEVER use emojis in custom slide components**
+- Use minimalist SVG icons only when needed
+- Keep visuals clean and professional
+- Icons should be simple line-based SVGs from the Icons object
+
 ---
 
 ## Common Mistakes to Avoid

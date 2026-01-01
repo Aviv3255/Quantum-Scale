@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (65 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (98 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -131,81 +131,85 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 51 | biz-animal-mindset | 9 | Elite (Improved Dec 30) |
 | 52 | biz-asset-not-job | 9 | Elite (Improved Dec 30) |
 | 53 | biz-asymmetric-monopoly | 9 | Elite (Improved Dec 30) |
-| 54 | biz-attention-auction | 9 | Elite (Improved Dec 31) |
-| 55 | biz-australia-arbitrage | 9 | Elite (Improved Dec 31) |
-| 56 | biz-authenticity-anchor | 9 | Elite (Improved Dec 31) |
-| 57 | biz-automation-ratio | 9 | Elite (Improved Dec 31) |
-| 58 | biz-awareness-sweet-spot | 9 | Elite (Improved Dec 31) |
-| 59 | biz-barbell-strategy | 9 | Elite (Improved Dec 31) |
-| 60 | biz-brand-ltv-engine | 9 | Elite (Improved Dec 31) |
-| 61 | biz-brand-temple | 9 | Elite (Improved Dec 31) |
-| 62 | biz-cash-conversion | 9 | Elite (Improved Dec 31) |
-| 63 | biz-channel-cac-decoder | 9 | Elite (Improved Dec 31) |
-| 64 | biz-closer-framework | 9 | Elite (Improved Dec 31) |
-| 65 | biz-counter-position | 9 | Elite (Improved Dec 31) |
-| 66 | biz-authenticity-engine | 9 | Elite (Improved Dec 31) |
-| 67 | biz-courage-variable | 9 | Elite (Improved Dec 31) |
-| 68 | biz-creative-targeting | 9 | Elite (Improved Dec 31) |
+| 54 | biz-authenticity-engine | 9 | Elite (Improved Dec 30) |
+| 55 | biz-courage-variable | 9 | Elite (Improved Dec 30) |
+| 56 | biz-golden-ratio-growth | 9 | Elite (Improved Dec 30) |
+| 57 | biz-hamster-wheel | 9 | Elite (Improved Dec 30) |
+| 58 | biz-infinite-flywheel | 9 | Elite (Improved Dec 30) |
+| 59 | biz-leaders-burden | 9 | Elite (Improved Dec 30) |
+| 60 | biz-leverage-equation | 9 | Elite (Improved Dec 30) |
+| 61 | biz-logic-trap | 9 | Elite (Improved Dec 30) |
+| 62 | biz-ltv-cac-dashboard | 9 | Elite (Improved Dec 30) |
+| 63 | biz-model-vs-method | 9 | Elite (Improved Dec 30) |
+| 64 | biz-operator-mindset | 9 | Elite (Improved Dec 30) |
+| 65 | biz-presale-financing | 9 | Elite (Improved Dec 30) |
+| 66 | biz-replication-protocol | 9 | Elite (Improved Dec 30) |
+| 67 | biz-rfm-secret | 9 | Elite (Improved Dec 30) |
+| 68 | biz-rule-of-100 | 9 | Elite (Improved Dec 30) |
+| 69 | biz-starbucks-ltv-secret | 9 | Elite (Improved Dec 30) |
+| 70 | biz-valley-protocol | 9 | Elite (Improved Dec 30) |
+| 71 | blind-spot-effect | 9 | Elite (Improved Dec 31) |
+| 72 | borrowed-trust | 9 | Elite (Improved Dec 31) |
+| 73 | box-worth-300 | 9 | Elite (Improved Dec 31) |
+| 74 | brand-moat | 9 | Elite (Improved Dec 31) |
+| 75 | anchor-moments | 9 | Elite (Improved Dec 31) |
+| 76 | anti-sell-mastery | 9 | Elite (Improved Dec 31) |
+| 77 | biz-attention-auction | 9 | Elite (Improved Dec 31) |
+| 78 | biz-automation-ratio | 9 | Elite (Improved Dec 30) |
+| 79 | biz-awareness-sweet-spot | 9 | Elite (Improved Dec 30) |
+| 80 | biz-barbell-strategy | 9 | Elite (Improved Dec 30) |
+| 81 | biz-brand-ltv-engine | 9 | Elite (Improved Dec 30) |
+| 82 | biz-brand-temple | 9 | Elite (Improved Dec 30) |
+| 83 | biz-cash-conversion | 9 | Elite (Improved Dec 30) |
+| 84 | biz-channel-cac-decoder | 9 | Elite (Improved Dec 30) |
+| 85 | biz-closer-framework | 9 | Elite (Improved Dec 30) |
+| 86 | biz-counter-position | 9 | Elite (Improved Dec 30) |
+| 87 | biz-creative-targeting | 9 | Elite (Improved Dec 30) |
+| 88 | biz-creator-army | 9 | Elite (Improved Dec 30) |
+| 89 | biz-empathy-engine | 9 | Elite (Improved Dec 30) |
+| 90 | biz-four-pillars | 9 | Elite (Improved Dec 30) |
+| 91 | biz-infinite-flywheel | 9 | Elite (Improved Dec 30) |
+| 92 | biz-hamster-wheel | 9 | Elite (Improved Dec 30) |
+| 93 | biz-australia-arbitrage | 9 | Elite (Improved Dec 30) |
+| 94 | biz-authenticity-anchor | 9 | Elite (Improved Dec 30) |
+| 95 | biz-high-margin-fortress | 9 | Elite (Reference) |
+| 96 | biz-systems-architect | 9 | Elite (Reference) |
+| 97 | biz-infinite-money-glitch | 9 | Elite |
+| 98 | biz-survival-cycle | 9 | Elite |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (233 lessons remaining)
+## CATEGORY 2: NEED IMPROVEMENT (203 lessons)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
-| 31 | biz-creator-army | 5 |
-| 32 | biz-empathy-engine | 5 |
-| 33 | biz-four-pillars | 5 |
-| 34 | biz-golden-ratio-growth | 5 |
-| 35 | biz-hamster-wheel | 5 |
-| 36 | biz-hidden-cac-costs | 5 |
-| 37 | biz-high-margin-fortress | 7 |
-| 38 | biz-infinite-flywheel | 5 |
-| 39 | biz-infinite-money-glitch | 7 |
-| 40 | biz-infinite-money-loop | 5 |
-| 41 | biz-leaders-burden | 5 |
-| 42 | biz-leverage-equation | 5 |
-| 43 | biz-lifetime-gross-profit | 5 |
-| 44 | biz-logic-trap | 5 |
-| 45 | biz-look-back-window | 5 |
-| 46 | biz-ltv-cac-dashboard | 5 |
-| 47 | biz-ltv-levers | 5 |
-| 48 | biz-marketing-company | 5 |
-| 49 | biz-mission-driven-brand | 5 |
-| 50 | biz-model-vs-method | 5 |
-| 51 | biz-objection-dance | 5 |
-| 52 | biz-one-pager-blueprint | 5 |
-| 53 | biz-operator-mindset | 5 |
-| 54 | biz-presale-financing | 5 |
-| 55 | biz-price-anchoring | 5 |
-| 56 | biz-product-expansion | 5 |
-| 57 | biz-purchase-cycle-engine | 5 |
-| 58 | biz-rat-brain-hijack | 5 |
-| 59 | biz-remarkable-product | 5 |
-| 60 | biz-replication-protocol | 5 |
-| 61 | biz-rfm-secret | 5 |
-| 62 | biz-rule-of-100 | 5 |
-| 63 | biz-savage-mentality | 5 |
-| 64 | biz-starbucks-ltv-secret | 5 |
-| 65 | biz-subscribe-save-ltv | 5 |
-| 66 | biz-survival-cycle | 7 |
-| 67 | biz-systems-architect | 6 |
-| 68 | biz-valley-protocol | 5 |
-| 69 | biz-velocity-advantage | 5 |
-| 70 | biz-zero-cac-engine | 5 |
-| 71 | blind-spot-effect | 5 |
-| 72 | borrowed-trust | 5 |
-| 73 | bottom-up-brand | 5 |
-| 74 | box-worth-300 | 5 |
-| 75 | brain-friendly-ux | ERROR |
-| 76 | brand-moat | 5 |
-| 77 | brand-promise-code | 5 |
-| 78 | brand-search-campaign | 5 |
-| 79 | brand-universe | 5 |
-| 80 | cbo-vs-abo | 5 |
-| 81 | celebrity-gifting-flywheel | 5 |
+| 1 | biz-hidden-cac-costs | 5 |
+| 2 | biz-infinite-money-loop | 5 |
+| 3 | biz-lifetime-gross-profit | 5 |
+| 4 | biz-look-back-window | 5 |
+| 5 | biz-ltv-levers | 5 |
+| 6 | biz-marketing-company | 5 |
+| 7 | biz-mission-driven-brand | 5 |
+| 8 | biz-objection-dance | 5 |
+| 9 | biz-one-pager-blueprint | 5 |
+| 10 | biz-price-anchoring | 5 |
+| 11 | biz-product-expansion | 5 |
+| 12 | biz-purchase-cycle-engine | 5 |
+| 13 | biz-rat-brain-hijack | 5 |
+| 14 | biz-remarkable-product | 5 |
+| 15 | biz-savage-mentality | 5 |
+| 16 | biz-subscribe-save-ltv | 5 |
+| 17 | biz-velocity-advantage | 5 |
+| 18 | biz-zero-cac-engine | 5 |
+| 19 | bottom-up-brand | 5 |
+| 57 | brain-friendly-ux | ERROR |
+| 58 | brand-promise-code | 5 |
+| 59 | brand-search-campaign | 5 |
+| 60 | brand-universe | 5 |
+| 61 | cbo-vs-abo | 5 |
+| 62 | celebrity-gifting-flywheel | 5 |
 | 82 | certainty-transfer | 6 |
 | 83 | checkout-line-effect | 6 |
 | 84 | choose-products | 6 |
@@ -416,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 68 |
-| Need Improvement | 233 |
+| Improved / Don't Need Improvement | 98 |
+| Need Improvement | 203 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **308** |
 
