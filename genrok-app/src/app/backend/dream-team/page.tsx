@@ -320,14 +320,24 @@ export default function DreamTeamPage() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [zoomIn, zoomOut, resetZoom]);
 
-  // Scroll = Zoom when mouse is inside canvas
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    if (e.deltaY < 0) {
-      zoomIn();
-    } else {
-      zoomOut();
-    }
+  // Scroll = Zoom when mouse is inside canvas ONLY - MUST use non-passive listener
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();  // This ONLY works with { passive: false }
+      e.stopPropagation(); // CRITICAL: Prevent affecting sidebar/navbar
+      if (e.deltaY < 0) {
+        zoomIn();
+      } else {
+        zoomOut();
+      }
+    };
+
+    // MUST use { passive: false } to allow preventDefault()
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
   }, [zoomIn, zoomOut]);
 
   // Mouse drag to pan
@@ -395,8 +405,8 @@ export default function DreamTeamPage() {
   return (
     <DashboardLayout>
       <div className="page-wrapper relative">
-        {/* Page Header - ABSOLUTE position at top, NEVER affected by zoom/scroll */}
-        <header className="relative z-50 bg-white border-b border-[var(--border-light)] pb-1 -mx-6 px-6">
+        {/* Page Header - FIXED pure white background, NEVER affected by zoom/scroll */}
+        <header className="relative z-50 bg-white border-b border-[var(--border-light)] pb-2 pt-2 -mx-6 px-6">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-[var(--primary)] flex items-center justify-center">
               <Zap size={14} className="text-white" strokeWidth={2} />
@@ -447,7 +457,6 @@ export default function DreamTeamPage() {
             height: 'calc(100vh - 105px)',
             isolation: 'isolate',  // Creates new stacking context
           }}
-          onWheel={handleWheel}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
