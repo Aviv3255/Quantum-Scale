@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { X, Play, ChevronRight } from 'lucide-react';
+import { X, Play, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -29,12 +29,14 @@ interface TutorialStep {
 
 const platformData: Record<Platform, {
   name: string;
+  url: string;
   logo?: string;
   examples: VideoExample[];
   tutorialSteps: TutorialStep[];
 }> = {
   arcads: {
     name: 'Arcads',
+    url: 'https://arcads.ai/?via=quantum',
     examples: [
       {
         id: 'dress',
@@ -131,6 +133,7 @@ const platformData: Record<Platform, {
   },
   creatify: {
     name: 'Creatify',
+    url: 'https://creatify.ai/?via=quantum-scale',
     examples: [
       {
         id: 'dress',
@@ -212,7 +215,7 @@ export default function AIVideoAdsPage() {
         </header>
 
         {/* Platform Tabs - Left aligned, connected to content */}
-        <div className="flex mb-0">
+        <div className="flex items-center justify-between mb-0">
           <div className="inline-flex bg-[var(--bg-secondary)] rounded-t-xl overflow-hidden">
             {(['arcads', 'creatify'] as Platform[]).map((platform) => (
               <button
@@ -228,6 +231,15 @@ export default function AIVideoAdsPage() {
               </button>
             ))}
           </div>
+          <a
+            href={currentPlatform.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary flex items-center gap-2 text-sm"
+          >
+            Try {currentPlatform.name}
+            <ExternalLink size={14} />
+          </a>
         </div>
 
         {/* Video Examples Section - Connected to tabs */}
