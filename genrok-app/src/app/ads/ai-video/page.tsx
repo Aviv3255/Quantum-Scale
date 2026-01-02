@@ -17,6 +17,7 @@ interface VideoExample {
   videoUrl: string;
   productImage?: string;
   prompt: string;
+  poster?: string;
 }
 
 interface TutorialStep {
@@ -55,6 +56,7 @@ const platformData: Record<Platform, {
         videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Arcadscosmetics.mp4',
         productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Loyalty%20app%20Screenshots%20(25).jpg',
         prompt: 'Create a video of a woman using the product to cleanse her face with soap.',
+        poster: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Loyalty%20app%20Screenshots%20(25).jpg',
       },
       {
         id: 'shoes',
@@ -96,6 +98,7 @@ const platformData: Record<Platform, {
         videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Necklacevideo.mp4',
         productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/WhatsApp%20Image%202025-12-28%20at%2011.54.15%20(1).jpeg',
         prompt: 'Create a 15-second ultra-realistic cinematic jewelry video featuring a diamond necklace. Soft daylight reflections on white or marble background, slow elegant camera movements, smooth 360° rotation, macro close-ups revealing sparkle and light refractions. Luxurious minimalism with cinematic depth of field and delicate bokeh sparkles.',
+        poster: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/WhatsApp%20Image%202025-12-28%20at%2011.54.15%20(1).jpeg',
       },
     ],
     tutorialSteps: [
@@ -215,10 +218,10 @@ export default function AIVideoAdsPage() {
               <button
                 key={platform}
                 onClick={() => setActivePlatform(platform)}
-                className={`px-6 py-3 text-sm font-semibold transition-all ${
+                className={`px-6 py-3 text-sm transition-all ${
                   activePlatform === platform
-                    ? 'bg-white text-[var(--text-primary)]'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-white/50'
+                    ? 'bg-white text-[var(--text-primary)] font-bold'
+                    : 'text-[var(--text-muted)] font-medium hover:text-[var(--text-secondary)] hover:bg-white/50'
                 }`}
               >
                 {platformData[platform].name}
@@ -246,6 +249,7 @@ export default function AIVideoAdsPage() {
                       <video
                         src={example.videoUrl}
                         controls
+                        poster={example.poster}
                         className="w-full h-full object-contain"
                       >
                         Your browser does not support the video tag.
@@ -282,7 +286,7 @@ export default function AIVideoAdsPage() {
 
                     {/* Prompt */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-sm text-[var(--text-primary)] mb-1 truncate">
+                      <h3 className="font-bold text-sm text-[var(--text-primary)] mb-1 truncate">
                         {example.title}
                       </h3>
                       <button
