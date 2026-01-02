@@ -28,15 +28,23 @@ export default function PollRequestsPage() {
   const [editButtons, setEditButtons] = useState<{ text: string; url: string }[]>([]);
   const [processing, setProcessing] = useState<string | null>(null);
 
-  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
+  const isAdmin = !!(user?.email && ADMIN_EMAILS.includes(user.email));
 
   useEffect(() => {
-    if (!authLoading && !user) {
+    // Only redirect after auth is fully loaded
+    if (authLoading) return;
+
+    if (!user) {
       router.push('/login');
-    } else if (!authLoading && user && !isAdmin) {
+      return;
+    }
+
+    // Check admin status only after user is loaded
+    const userIsAdmin = user.email && ADMIN_EMAILS.includes(user.email);
+    if (!userIsAdmin) {
       router.push('/data-center');
     }
-  }, [user, authLoading, router, isAdmin]);
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     const loadRequests = async () => {
