@@ -79,6 +79,7 @@ const dreamTeamTools: Tool[] = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/24.jpg',
     ],
+    isFree: true,
   },
   {
     id: 4,
@@ -101,6 +102,7 @@ const dreamTeamTools: Tool[] = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/24.jpg',
     ],
+    isFree: true,
   },
   {
     id: 5,
@@ -121,6 +123,7 @@ const dreamTeamTools: Tool[] = [
     installUrl: 'https://platform.shoffi.app/r/rl_U2L0seLE',
     logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122003.978.png?v=1760088020',
     hasExpandableInfo: false,
+    isFree: true,
   },
   {
     id: 7,
@@ -140,7 +143,7 @@ const dreamTeamTools: Tool[] = [
     shortDescription: 'Post-purchase surveys reveal exactly why customers bought. This data triples conversion rates when you use it in your ads.',
     fullDescription: 'What made them buy? What almost stopped them? Where did they hear about you? This data is pure gold for ad targeting and conversion optimization.',
     installUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva',
-    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T121408.753.png?v=1760087656',
+    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Loyalty%20app%20Screenshots.png',
     hasExpandableInfo: true,
     infoContent: {
       paragraphs: [
@@ -179,7 +182,7 @@ const dreamTeamTools: Tool[] = [
     installUrl: 'https://geo-convert.com/',
     logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert.jpg',
     hasExpandableInfo: false,
-    specialBadge: '60-70% Lift',
+    specialBadge: '60-70% CVR increase',
   },
 ];
 
