@@ -185,3 +185,101 @@ export const getAllPollVotes = async (): Promise<{ data: { poll_id: number; opti
     .select('poll_id, option_index');
   return { data: data as { poll_id: number; option_index: number }[] | null, error };
 };
+
+// Poll request types
+export type PollRequest = {
+  id: string;
+  question: string;
+  options: { text: string }[];
+  buttons: { text: string; url: string }[] | null;
+  status: 'pending' | 'approved' | 'rejected';
+  submitted_by: string;
+  submitted_by_email: string | null;
+  submitted_by_name: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  admin_notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// Poll request helpers
+export const submitPollRequest = async (
+  question: string,
+  options: { text: string }[],
+  userId: string,
+  userEmail?: string,
+  userName?: string
+): Promise<{ data: PollRequest | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_requests' as const)
+    .insert({
+      question,
+      options: JSON.stringify(options),
+      submitted_by: userId,
+      submitted_by_email: userEmail || null,
+      submitted_by_name: userName || null,
+    } as never)
+    .select()
+    .single();
+  return { data: data as PollRequest | null, error };
+};
+
+export const getPendingPollRequests = async (): Promise<{ data: PollRequest[] | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_requests' as const)
+    .select('*')
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false });
+  return { data: data as PollRequest[] | null, error };
+};
+
+export const getAllPollRequests = async (): Promise<{ data: PollRequest[] | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_requests' as const)
+    .select('*')
+    .order('created_at', { ascending: false });
+  return { data: data as PollRequest[] | null, error };
+};
+
+export const updatePollRequest = async (
+  requestId: string,
+  updates: {
+    question?: string;
+    options?: { text: string }[];
+    buttons?: { text: string; url: string }[];
+    status?: 'pending' | 'approved' | 'rejected';
+    admin_notes?: string;
+    reviewed_by?: string;
+    reviewed_at?: string;
+  }
+): Promise<{ data: PollRequest | null; error: { code?: string; message: string } | null }> => {
+  const updateData: Record<string, unknown> = {
+    ...updates,
+    updated_at: new Date().toISOString(),
+  };
+  if (updates.options) {
+    updateData.options = JSON.stringify(updates.options);
+  }
+  if (updates.buttons) {
+    updateData.buttons = JSON.stringify(updates.buttons);
+  }
+
+  const { data, error } = await supabase
+    .from('poll_requests' as const)
+    .update(updateData as never)
+    .eq('id', requestId)
+    .select()
+    .single();
+  return { data: data as PollRequest | null, error };
+};
+
+export const deletePollRequest = async (
+  requestId: string
+): Promise<{ error: { code?: string; message: string } | null }> => {
+  const { error } = await supabase
+    .from('poll_requests' as const)
+    .delete()
+    .eq('id', requestId);
+  return { error };
+};

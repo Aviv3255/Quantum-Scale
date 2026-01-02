@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Plus, Search, CheckCircle, ArrowRight, ExternalLink, Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Search, CheckCircle, ExternalLink, Loader2, X, Trash2 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { submitPollVote, getUserPollVotes, getAllPollVotes } from '@/lib/supabase';
+import { submitPollVote, getUserPollVotes, getAllPollVotes, submitPollRequest } from '@/lib/supabase';
 
 // Base votes per poll option (100,000 total per poll distributed by percentage)
 // This ensures each individual vote has minimal impact on percentages
@@ -644,6 +644,13 @@ export default function DataCenterPage() {
   const [isVoting, setIsVoting] = useState<number | null>(null);
   const [dataLoaded, setDataLoaded] = useState(false);
 
+  // Post a Poll modal state
+  const [showPollModal, setShowPollModal] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState('');
+  const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
+  const [isSubmittingPoll, setIsSubmittingPoll] = useState(false);
+  const [pollSubmitSuccess, setPollSubmitSuccess] = useState(false);
+
   // Load votes from Supabase on mount
   useEffect(() => {
     const loadVotes = async () => {
@@ -743,6 +750,58 @@ export default function DataCenterPage() {
     }
   }, [user, userVotes, isVoting]);
 
+  // Handle poll submission
+  const handleSubmitPoll = async () => {
+    if (!user || !pollQuestion.trim() || pollOptions.filter(o => o.trim()).length < 2) return;
+
+    setIsSubmittingPoll(true);
+    try {
+      const validOptions = pollOptions.filter(o => o.trim()).map(text => ({ text: text.trim() }));
+      const { error } = await submitPollRequest(
+        pollQuestion.trim(),
+        validOptions,
+        user.id,
+        user.email || undefined,
+        user.user_metadata?.full_name || undefined
+      );
+
+      if (error) {
+        console.error('Error submitting poll:', error);
+        return;
+      }
+
+      setPollSubmitSuccess(true);
+      setTimeout(() => {
+        setShowPollModal(false);
+        setPollQuestion('');
+        setPollOptions(['', '']);
+        setPollSubmitSuccess(false);
+      }, 2000);
+    } catch (e) {
+      console.error('Error submitting poll:', e);
+    } finally {
+      setIsSubmittingPoll(false);
+    }
+  };
+
+  const addPollOption = () => {
+    if (pollOptions.length < 6) {
+      setPollOptions([...pollOptions, '']);
+    }
+  };
+
+  const removePollOption = (index: number) => {
+    if (pollOptions.length > 2) {
+      setPollOptions(pollOptions.filter((_, i) => i !== index));
+    }
+  };
+
+  const updatePollOption = (index: number, value: string) => {
+    const newOptions = [...pollOptions];
+    newOptions[index] = value;
+    setPollOptions(newOptions);
+  };
+
   if (authLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
@@ -766,9 +825,8 @@ export default function DataCenterPage() {
               <p>Real insights from real eCommerce operators. Updated live as the community votes.</p>
             </div>
             <button
-              className="btn btn-secondary flex-shrink-0 opacity-50 cursor-not-allowed"
-              disabled
-              title="Coming soon"
+              className="btn btn-secondary flex-shrink-0"
+              onClick={() => setShowPollModal(true)}
             >
               <Plus size={16} strokeWidth={1.5} />
               Post a Poll
@@ -824,6 +882,128 @@ export default function DataCenterPage() {
           </div>
         )}
       </div>
+
+      {/* Post a Poll Modal */}
+      <AnimatePresence>
+        {showPollModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+            onClick={() => !isSubmittingPoll && setShowPollModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {pollSubmitSuccess ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">Poll Submitted!</h3>
+                  <p className="text-sm text-[var(--text-muted)]">
+                    Your poll has been sent for review. We&apos;ll notify you once it&apos;s approved.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-[var(--text-primary)]">Post a Poll</h3>
+                    <button
+                      onClick={() => setShowPollModal(false)}
+                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                        Your Question
+                      </label>
+                      <input
+                        type="text"
+                        value={pollQuestion}
+                        onChange={(e) => setPollQuestion(e.target.value)}
+                        placeholder="e.g., What's your main traffic source?"
+                        className="w-full px-4 py-3 rounded-xl text-sm bg-[var(--bg-secondary)] border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                        Answer Options (2-6)
+                      </label>
+                      <div className="space-y-2">
+                        {pollOptions.map((option, index) => (
+                          <div key={index} className="flex gap-2">
+                            <input
+                              type="text"
+                              value={option}
+                              onChange={(e) => updatePollOption(index, e.target.value)}
+                              placeholder={`Option ${index + 1}`}
+                              className="flex-1 px-4 py-2.5 rounded-xl text-sm bg-[var(--bg-secondary)] border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                            />
+                            {pollOptions.length > 2 && (
+                              <button
+                                onClick={() => removePollOption(index)}
+                                className="p-2.5 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      {pollOptions.length < 6 && (
+                        <button
+                          onClick={addPollOption}
+                          className="mt-2 text-sm text-[var(--info)] hover:underline flex items-center gap-1"
+                        >
+                          <Plus size={14} /> Add another option
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex gap-3">
+                    <button
+                      onClick={() => setShowPollModal(false)}
+                      className="btn btn-secondary flex-1"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSubmitPoll}
+                      disabled={isSubmittingPoll || !pollQuestion.trim() || pollOptions.filter(o => o.trim()).length < 2}
+                      className="btn btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmittingPoll ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        'Submit for Review'
+                      )}
+                    </button>
+                  </div>
+
+                  <p className="mt-4 text-xs text-center text-[var(--text-muted)]">
+                    Your poll will be reviewed before appearing in the Data Center.
+                  </p>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </DashboardLayout>
   );
 }
@@ -843,7 +1023,7 @@ function PollCard({ poll, userVote, livePercentages, isVoting, onVote }: PollCar
     <div className="card card-hover h-full flex flex-col" style={{ padding: 0 }}>
       {/* Question */}
       <div className="p-5 pb-3">
-        <h3 className="text-base font-bold leading-snug text-[var(--text-primary)]">
+        <h3 className="text-sm font-bold leading-snug text-[var(--text-primary)]">
           {poll.question}
         </h3>
       </div>
