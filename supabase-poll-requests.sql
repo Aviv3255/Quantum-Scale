@@ -32,17 +32,17 @@ CREATE POLICY "Users can view own poll requests" ON poll_requests
 -- Admins can view all poll requests (check by email)
 CREATE POLICY "Admins can view all poll requests" ON poll_requests
   FOR SELECT USING (
-    auth.jwt() ->> 'email' IN ('avivgoldstein32@gmail.com', 'admin@quantumscale.com')
+    auth.jwt() ->> 'email' IN ('aviv32552@gmail.com', 'avivgoldstein32@gmail.com', 'admin@quantumscale.com')
   );
 
 -- Admins can update poll requests
 CREATE POLICY "Admins can update poll requests" ON poll_requests
   FOR UPDATE USING (
-    auth.jwt() ->> 'email' IN ('avivgoldstein32@gmail.com', 'admin@quantumscale.com')
+    auth.jwt() ->> 'email' IN ('aviv32552@gmail.com', 'avivgoldstein32@gmail.com', 'admin@quantumscale.com')
   );
 
 -- Admins can delete poll requests
 CREATE POLICY "Admins can delete poll requests" ON poll_requests
   FOR DELETE USING (
-    auth.jwt() ->> 'email' IN ('avivgoldstein32@gmail.com', 'admin@quantumscale.com')
+    auth.jwt() ->> 'email' IN ('aviv32552@gmail.com', 'avivgoldstein32@gmail.com', 'admin@quantumscale.com')
   );

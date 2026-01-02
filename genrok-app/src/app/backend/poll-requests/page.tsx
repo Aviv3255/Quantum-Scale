@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Check, X, Edit2, Trash2, Plus, Loader2, ArrowLeft } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
-import { useAdmin } from '@/hooks/useAdmin';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import {
   getPendingPollRequests,
@@ -15,10 +14,11 @@ import {
   PollRequest
 } from '@/lib/supabase';
 
+const ADMIN_EMAILS = ['aviv32552@gmail.com', 'avivgoldstein32@gmail.com', 'admin@quantumscale.com'];
+
 export default function PollRequestsPage() {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuthStore();
-  const { isAdmin, isLoading: adminLoading } = useAdmin();
   const [requests, setRequests] = useState<PollRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'pending' | 'all'>('pending');
@@ -28,9 +28,11 @@ export default function PollRequestsPage() {
   const [editButtons, setEditButtons] = useState<{ text: string; url: string }[]>([]);
   const [processing, setProcessing] = useState<string | null>(null);
 
+  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
+
   useEffect(() => {
-    // Wait for both auth and admin check to complete
-    if (authLoading || adminLoading) return;
+    // Wait for auth to complete
+    if (authLoading) return;
 
     if (!user) {
       router.push('/login');
@@ -40,7 +42,7 @@ export default function PollRequestsPage() {
     if (!isAdmin) {
       router.push('/data-center');
     }
-  }, [user, authLoading, adminLoading, isAdmin, router]);
+  }, [user, authLoading, isAdmin, router]);
 
   useEffect(() => {
     const loadRequests = async () => {
@@ -164,7 +166,7 @@ export default function PollRequestsPage() {
     setEditButtons(newButtons);
   };
 
-  if (authLoading || adminLoading || !user || !isAdmin) {
+  if (authLoading || !user || !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
