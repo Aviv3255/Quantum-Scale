@@ -15,7 +15,7 @@ interface VideoExample {
   id: string;
   title: string;
   videoUrl: string;
-  productImage: string;
+  productImage?: string;
   prompt: string;
 }
 
@@ -48,6 +48,54 @@ const platformData: Record<Platform, {
         videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Cat%20Feeder%20Tool.mp4',
         productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/WhatsApp%20Image%202026-01-02%20at%2011.55.45%20AM.jpeg',
         prompt: 'Create a video demonstrating this WiFi-controlled pet feeder. Show the app interface, a cat happily eating, and emphasize the convenience of feeding your pet remotely from your phone.',
+      },
+      {
+        id: 'cosmetics',
+        title: 'Cosmetic Product',
+        videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Arcadscosmetics.mp4',
+        productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Loyalty%20app%20Screenshots%20(25).jpg',
+        prompt: 'Create a video of a woman using the product to cleanse her face with soap.',
+      },
+      {
+        id: 'shoes',
+        title: 'Luxury Shoes',
+        videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Arcadsfashion.mp4',
+        productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Loyalty%20app%20Screenshots%20(26).jpg',
+        prompt: 'Create a luxurious brand video for these shoes, in the style of a high-end luxury television commercial.',
+      },
+      {
+        id: 'crocs',
+        title: 'Crocs Shoes',
+        videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/CROCS.mp4',
+        productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Loyalty%20app%20Screenshots%20(27).jpg',
+        prompt: 'Create a marketing video in a UGC style for this product.',
+      },
+      {
+        id: 'armchair',
+        title: 'Armchair (Home Decor)',
+        videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/home%20decor%20.mp4',
+        productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/WhatsApp%20Image%202025-12-28%20at%2011.08.23%20(1)%20(1).jpeg',
+        prompt: 'Create a UGC-style video for this product, where the woman sits on the armchair, emphasizes its comfort, and conveys a feeling of warmth, comfort, and home.',
+      },
+      {
+        id: 'perfume',
+        title: "Women's Perfume",
+        videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Videoaracds.mp4',
+        productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Loyalty%20app%20Screenshots%20(28).jpg',
+        prompt: 'Create a video for this luxury perfume, clearly conveying lifestyle, luxury, and a strong sense of exclusivity.',
+      },
+      {
+        id: 'care-service',
+        title: 'CARE Service for Seniors',
+        videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/WhatsApp%20Video%202025-12-24%20at%2017.50.54.mp4',
+        prompt: 'Create an emotional video presenting a premium care service for seniors, emphasizing trust, warmth, professionalism, and peace of mind.',
+      },
+      {
+        id: 'necklace',
+        title: 'Diamond Necklace',
+        videoUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/Necklacevideo.mp4',
+        productImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Untitled%20folder/WhatsApp%20Image%202025-12-28%20at%2011.54.15%20(1).jpeg',
+        prompt: 'Create a 15-second ultra-realistic cinematic jewelry video featuring a diamond necklace. Soft daylight reflections on white or marble background, slow elegant camera movements, smooth 360° rotation, macro close-ups revealing sparkle and light refractions. Luxurious minimalism with cinematic depth of field and delicate bokeh sparkles.',
       },
     ],
     tutorialSteps: [
@@ -153,24 +201,24 @@ export default function AIVideoAdsPage() {
     <DashboardLayout>
       <div className="page-wrapper">
         {/* Header */}
-        <header className="page-header mb-12">
+        <header className="page-header mb-8">
           <h1 className="text-3xl font-bold text-[var(--text-primary)]">AI Video Ads</h1>
           <p className="text-[var(--text-muted)] mt-2">
             Compare AI-generated UGC videos from leading platforms. Same product, same prompt, different results.
           </p>
         </header>
 
-        {/* Platform Tabs */}
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex bg-[var(--bg-secondary)] rounded-xl p-1.5">
+        {/* Platform Tabs - Left aligned, connected to content */}
+        <div className="flex mb-0">
+          <div className="inline-flex bg-[var(--bg-secondary)] rounded-t-xl overflow-hidden">
             {(['arcads', 'creatify'] as Platform[]).map((platform) => (
               <button
                 key={platform}
                 onClick={() => setActivePlatform(platform)}
-                className={`px-8 py-3 rounded-lg text-sm font-semibold transition-all ${
+                className={`px-6 py-3 text-sm font-semibold transition-all ${
                   activePlatform === platform
-                    ? 'bg-white text-[var(--text-primary)] shadow-sm'
-                    : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+                    ? 'bg-white text-[var(--text-primary)]'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-white/50'
                 }`}
               >
                 {platformData[platform].name}
@@ -179,131 +227,131 @@ export default function AIVideoAdsPage() {
           </div>
         </div>
 
-        {/* Video Examples */}
+        {/* Video Examples Section - Connected to tabs */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activePlatform}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="bg-white rounded-b-2xl rounded-tr-2xl border border-[var(--border-light)] p-6 mb-12"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
               {currentPlatform.examples.map((example) => (
                 <div key={example.id} className="flex flex-col">
-                  {/* Video Player */}
-                  <div className="relative aspect-[9/16] max-h-[500px] bg-black rounded-t-2xl overflow-hidden">
+                  {/* Video Player - Smaller, no black background */}
+                  <div className="relative aspect-[9/16] rounded-t-xl overflow-hidden bg-[var(--bg-secondary)]">
                     {example.videoUrl ? (
                       <video
                         src={example.videoUrl}
                         controls
                         className="w-full h-full object-contain"
-                        poster=""
                       >
                         Your browser does not support the video tag.
                       </video>
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-white/60">
-                        <Play size={48} className="mb-4 opacity-50" />
-                        <p className="text-sm">Video coming soon</p>
+                      <div className="w-full h-full flex flex-col items-center justify-center text-[var(--text-muted)]">
+                        <Play size={32} className="mb-2 opacity-50" />
+                        <p className="text-xs">Coming soon</p>
                       </div>
                     )}
                   </div>
 
                   {/* Product Info Card */}
-                  <div className="bg-white border-2 border-black rounded-b-2xl p-5 flex gap-5">
+                  <div className="bg-white border border-black rounded-b-xl p-3 flex gap-3">
                     {/* Product Image */}
-                    <button
-                      onClick={() => setExpandedImage(example.productImage)}
-                      className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border border-[var(--border-light)] hover:border-[var(--primary)] transition-colors cursor-pointer"
-                    >
-                      <Image
-                        src={example.productImage}
-                        alt={example.title}
-                        width={80}
-                        height={80}
-                        className="w-full h-full object-contain bg-white"
-                      />
-                    </button>
+                    {example.productImage ? (
+                      <button
+                        onClick={() => setExpandedImage(example.productImage!)}
+                        className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden border border-[var(--border-light)] hover:border-[var(--primary)] transition-colors cursor-pointer"
+                      >
+                        <Image
+                          src={example.productImage}
+                          alt={example.title}
+                          width={48}
+                          height={48}
+                          className="w-full h-full object-contain bg-white"
+                        />
+                      </button>
+                    ) : (
+                      <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-[var(--bg-secondary)] flex items-center justify-center">
+                        <span className="text-xs text-[var(--text-muted)]">N/A</span>
+                      </div>
+                    )}
 
                     {/* Prompt */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-[var(--text-primary)] mb-1.5">
+                      <h3 className="font-medium text-sm text-[var(--text-primary)] mb-1 truncate">
                         {example.title}
                       </h3>
                       <button
                         onClick={() => setExpandedPrompt({ title: example.title, prompt: example.prompt })}
-                        className="text-left text-sm text-[var(--text-muted)] line-clamp-2 hover:text-[var(--text-secondary)] transition-colors cursor-pointer"
+                        className="text-left text-xs text-[var(--text-muted)] line-clamp-2 hover:text-[var(--text-secondary)] transition-colors cursor-pointer leading-tight"
                       >
                         {example.prompt}
-                      </button>
-                      <button
-                        onClick={() => setExpandedPrompt({ title: example.title, prompt: example.prompt })}
-                        className="mt-2 text-xs font-medium text-[var(--primary)] flex items-center gap-1 hover:underline"
-                      >
-                        View full prompt <ChevronRight size={14} />
                       </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-
-            {/* Tutorial Section */}
-            <div className="mb-12">
-              <h2 className="text-2xl font-bold text-[var(--text-primary)] text-center mb-3">
-                How to Create Videos with {currentPlatform.name}
-              </h2>
-              <p className="text-[var(--text-muted)] text-center mb-10 max-w-2xl mx-auto">
-                Follow these steps to create your own AI-generated video ads
-              </p>
-
-              <div className="space-y-8">
-                {currentPlatform.tutorialSteps.map((step) => (
-                  <div
-                    key={step.step}
-                    className="flex gap-6 items-start"
-                  >
-                    {/* Step Number */}
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[var(--primary)] text-white flex items-center justify-center font-bold text-lg">
-                      {step.step}
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex-1 pt-2">
-                      <h3 className="font-semibold text-lg text-[var(--text-primary)] mb-2">
-                        {step.title}
-                      </h3>
-                      <p className="text-[var(--text-muted)] mb-4">
-                        {step.description}
-                      </p>
-
-                      {/* GIF Placeholder */}
-                      {step.gifUrl ? (
-                        <div className="rounded-xl overflow-hidden inline-block">
-                          <Image
-                            src={step.gifUrl}
-                            alt={step.title}
-                            width={600}
-                            height={400}
-                            className="max-w-full h-auto"
-                            unoptimized
-                          />
-                        </div>
-                      ) : (
-                        <div className="bg-[var(--bg-secondary)] rounded-xl p-8 max-w-xl border-2 border-dashed border-[var(--border-light)]">
-                          <p className="text-sm text-[var(--text-muted)] text-center">
-                            Tutorial GIF coming soon
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </motion.div>
         </AnimatePresence>
+
+        {/* Tutorial Section - Left aligned */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
+            How to Create Videos with {currentPlatform.name}
+          </h2>
+          <p className="text-[var(--text-muted)] mb-8">
+            Follow these steps to create your own AI-generated video ads
+          </p>
+
+          <div className="space-y-6">
+            {currentPlatform.tutorialSteps.map((step) => (
+              <div
+                key={step.step}
+                className="flex gap-5 items-start"
+              >
+                {/* Step Number */}
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--primary)] text-white flex items-center justify-center font-bold">
+                  {step.step}
+                </div>
+
+                {/* Content */}
+                <div className="flex-1 pt-1">
+                  <h3 className="font-semibold text-[var(--text-primary)] mb-1">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-[var(--text-muted)] mb-3">
+                    {step.description}
+                  </p>
+
+                  {/* GIF Placeholder */}
+                  {step.gifUrl ? (
+                    <div className="rounded-xl overflow-hidden inline-block">
+                      <Image
+                        src={step.gifUrl}
+                        alt={step.title}
+                        width={500}
+                        height={300}
+                        className="max-w-full h-auto"
+                        unoptimized
+                      />
+                    </div>
+                  ) : (
+                    <div className="bg-[var(--bg-secondary)] rounded-xl p-6 max-w-md border border-dashed border-[var(--border-light)]">
+                      <p className="text-xs text-[var(--text-muted)] text-center">
+                        Tutorial GIF coming soon
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Image Modal */}
         <AnimatePresence>
@@ -359,7 +407,7 @@ export default function AIVideoAdsPage() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
-                    {expandedPrompt.title} - Prompt
+                    {expandedPrompt.title}
                   </h3>
                   <button
                     onClick={() => setExpandedPrompt(null)}
@@ -368,7 +416,7 @@ export default function AIVideoAdsPage() {
                     <X size={20} />
                   </button>
                 </div>
-                <p className="text-[var(--text-secondary)] leading-relaxed">
+                <p className="text-[var(--text-secondary)] leading-relaxed text-sm">
                   {expandedPrompt.prompt}
                 </p>
                 <button
