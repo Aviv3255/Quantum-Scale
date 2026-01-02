@@ -223,9 +223,10 @@ export default function AIVideoAdsPage() {
                 onClick={() => setActivePlatform(platform)}
                 className={`px-6 py-3 text-sm transition-all ${
                   activePlatform === platform
-                    ? 'bg-white text-[var(--text-primary)] font-bold'
-                    : 'text-[var(--text-muted)] font-medium hover:text-[var(--text-secondary)] hover:bg-white/50'
+                    ? 'bg-white text-[var(--text-primary)]'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)] hover:bg-white/50'
                 }`}
+                style={{ fontWeight: activePlatform === platform ? 700 : 500 }}
               >
                 {platformData[platform].name}
               </button>
@@ -298,7 +299,7 @@ export default function AIVideoAdsPage() {
 
                     {/* Prompt */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-sm text-[var(--text-primary)] mb-1 truncate">
+                      <h3 className="text-sm text-[var(--text-primary)] mb-1 truncate" style={{ fontWeight: 700 }}>
                         {example.title}
                       </h3>
                       <button
