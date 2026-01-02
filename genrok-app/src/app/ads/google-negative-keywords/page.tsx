@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Copy, Check, ShieldX } from 'lucide-react';
+import { Copy, Check, Ban, TrendingDown, DollarSign, Target } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
@@ -23,7 +24,7 @@ export default function GoogleNegativeKeywordsPage() {
     try {
       await navigator.clipboard.writeText(NEGATIVE_KEYWORDS);
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      setTimeout(() => setCopied(false), 2500);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
@@ -38,83 +39,168 @@ export default function GoogleNegativeKeywordsPage() {
   }
 
   const keywordCount = NEGATIVE_KEYWORDS.split(',').length;
+  const keywordsArray = NEGATIVE_KEYWORDS.split(',').map(k => k.trim());
 
   return (
     <DashboardLayout>
-      <div className="page-wrapper">
-        <header className="page-header">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg">
-              <ShieldX className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <h1>Google Negative Keywords</h1>
-              <p>Block junk traffic and save your ad budget</p>
-            </div>
-          </div>
+      <div className="page-wrapper max-w-5xl">
+        {/* Minimal Header */}
+        <header className="mb-16">
+          <p className="text-xs font-medium tracking-widest text-[var(--text-muted)] uppercase mb-3">
+            Google Ads Optimization
+          </p>
+          <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-4">
+            Negative Keywords
+          </h1>
+          <p className="text-lg text-[var(--text-muted)] max-w-2xl">
+            Stop wasting money on clicks that never convert. This curated list blocks
+            bargain hunters, researchers, and tire-kickers from your campaigns.
+          </p>
         </header>
 
-        <div className="max-w-4xl">
-          {/* Hero message */}
-          <div className="card mb-6 p-8 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-            <h2 className="text-2xl font-bold mb-3">
-              Cut 90% of Junk Traffic Instantly
+        {/* Stats Row */}
+        <div className="grid grid-cols-3 gap-6 mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--bg-secondary)] mb-4">
+              <Ban size={20} className="text-[var(--text-primary)]" />
+            </div>
+            <p className="text-3xl font-bold text-[var(--text-primary)]">{keywordCount}</p>
+            <p className="text-sm text-[var(--text-muted)]">Keywords</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--bg-secondary)] mb-4">
+              <TrendingDown size={20} className="text-[var(--text-primary)]" />
+            </div>
+            <p className="text-3xl font-bold text-[var(--text-primary)]">90%</p>
+            <p className="text-sm text-[var(--text-muted)]">Less Junk Traffic</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--bg-secondary)] mb-4">
+              <DollarSign size={20} className="text-[var(--text-primary)]" />
+            </div>
+            <p className="text-3xl font-bold text-[var(--text-primary)]">2-3x</p>
+            <p className="text-sm text-[var(--text-muted)]">Better ROAS</p>
+          </motion.div>
+        </div>
+
+        {/* Copy Button - Prominent */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mb-12"
+        >
+          <button
+            onClick={handleCopy}
+            className={`w-full py-5 rounded-2xl text-base font-semibold transition-all flex items-center justify-center gap-3 ${
+              copied
+                ? 'bg-green-500 text-white'
+                : 'bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)]'
+            }`}
+          >
+            {copied ? (
+              <>
+                <Check size={20} />
+                Copied to Clipboard
+              </>
+            ) : (
+              <>
+                <Copy size={20} />
+                Copy All {keywordCount} Keywords
+              </>
+            )}
+          </button>
+        </motion.div>
+
+        {/* Keywords Display - Clean Tags */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mb-16"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-sm font-medium text-[var(--text-muted)] uppercase tracking-wide">
+              Preview
             </h2>
-            <p className="text-gray-300 text-lg leading-relaxed mb-4">
-              These {keywordCount} negative keywords filter out bargain hunters, researchers, job seekers,
-              and tire-kickers who will never buy. Stop paying for clicks that don&apos;t convert.
-            </p>
-            <div className="flex flex-wrap gap-3 text-sm">
-              <span className="px-3 py-1 bg-white/10 rounded-full">Google Ads</span>
-              <span className="px-3 py-1 bg-white/10 rounded-full">Google Shopping</span>
-              <span className="px-3 py-1 bg-white/10 rounded-full">Performance Max</span>
+            <span className="text-xs text-[var(--text-muted)]">
+              Scroll to see all
+            </span>
+          </div>
+          <div className="max-h-64 overflow-y-auto rounded-2xl border border-[var(--border-light)] p-6 bg-white">
+            <div className="flex flex-wrap gap-2">
+              {keywordsArray.map((keyword, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1.5 bg-[var(--bg-secondary)] rounded-lg text-xs text-[var(--text-secondary)] font-medium"
+                >
+                  {keyword}
+                </span>
+              ))}
             </div>
           </div>
+        </motion.div>
 
-          {/* Keywords box */}
-          <div className="card p-0 overflow-hidden">
-            <div className="flex items-center justify-between p-4 border-b border-[var(--border-light)] bg-[var(--bg-secondary)]">
-              <div>
-                <h3 className="font-semibold text-[var(--text-primary)]">
-                  Complete Negative Keywords List
-                </h3>
-                <p className="text-sm text-[var(--text-muted)]">
-                  {keywordCount} keywords ready to paste
-                </p>
+        {/* How to Use - Minimal Steps */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+        >
+          <h2 className="text-sm font-medium text-[var(--text-muted)] uppercase tracking-wide mb-8">
+            How to Use
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {[
+              { step: '01', title: 'Copy', desc: 'Click the button above' },
+              { step: '02', title: 'Open Google Ads', desc: 'Tools → Negative Keywords' },
+              { step: '03', title: 'Create List', desc: 'New list → Paste keywords' },
+              { step: '04', title: 'Apply', desc: 'Add to all campaigns' },
+            ].map((item, index) => (
+              <div key={index} className="text-center">
+                <p className="text-4xl font-light text-[var(--border-light)] mb-3">{item.step}</p>
+                <p className="font-semibold text-[var(--text-primary)] mb-1">{item.title}</p>
+                <p className="text-sm text-[var(--text-muted)]">{item.desc}</p>
               </div>
-              <button
-                onClick={handleCopy}
-                className={`btn ${copied ? 'btn-primary' : 'btn-secondary'} flex items-center gap-2`}
-              >
-                {copied ? (
-                  <>
-                    <Check size={16} />
-                    Copied!
-                  </>
-                ) : (
-                  <>
-                    <Copy size={16} />
-                    Copy All
-                  </>
-                )}
-              </button>
-            </div>
-            <div className="p-4 max-h-96 overflow-y-auto">
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed font-mono whitespace-pre-wrap break-words">
-                {NEGATIVE_KEYWORDS}
-              </p>
-            </div>
+            ))}
           </div>
+        </motion.div>
 
-          {/* Instructions */}
-          <div className="mt-6 p-6 bg-[var(--bg-secondary)] rounded-xl">
-            <h3 className="font-semibold text-[var(--text-primary)] mb-3">How to Add These Keywords</h3>
-            <ol className="space-y-2 text-sm text-[var(--text-secondary)]">
-              <li><span className="font-medium text-[var(--text-primary)]">1.</span> Copy the keywords above</li>
-              <li><span className="font-medium text-[var(--text-primary)]">2.</span> Go to Google Ads → Tools → Negative Keyword Lists</li>
-              <li><span className="font-medium text-[var(--text-primary)]">3.</span> Create a new list and paste the keywords</li>
-              <li><span className="font-medium text-[var(--text-primary)]">4.</span> Apply the list to all your campaigns</li>
-            </ol>
+        {/* Compatible Platforms */}
+        <div className="mt-16 pt-12 border-t border-[var(--border-light)]">
+          <p className="text-xs text-[var(--text-muted)] text-center uppercase tracking-wide mb-6">
+            Works with
+          </p>
+          <div className="flex items-center justify-center gap-8 text-sm text-[var(--text-muted)]">
+            <span className="flex items-center gap-2">
+              <Target size={16} />
+              Google Ads
+            </span>
+            <span className="flex items-center gap-2">
+              <Target size={16} />
+              Google Shopping
+            </span>
+            <span className="flex items-center gap-2">
+              <Target size={16} />
+              Performance Max
+            </span>
           </div>
         </div>
       </div>
