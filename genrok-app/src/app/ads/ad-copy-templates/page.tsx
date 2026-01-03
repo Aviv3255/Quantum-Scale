@@ -939,6 +939,40 @@ function TemplateCard({ template, categoryColor }: { template: Template; categor
     return result;
   }, [template, values]);
 
+  const renderPreview = useCallback(() => {
+    const parts: React.ReactNode[] = [];
+    let lastIndex = 0;
+    const regex = /\[([^\]]+)\]/g;
+    let match;
+
+    while ((match = regex.exec(template.template)) !== null) {
+      // Add text before placeholder
+      if (match.index > lastIndex) {
+        parts.push(template.template.slice(lastIndex, match.index));
+      }
+
+      const placeholder = match[1];
+      const value = values[placeholder];
+
+      if (value && value.trim()) {
+        // Filled - normal text
+        parts.push(value);
+      } else {
+        // Unfilled - red text
+        parts.push(<span key={match.index} className="text-red-500">{placeholder}</span>);
+      }
+
+      lastIndex = regex.lastIndex;
+    }
+
+    // Add remaining text
+    if (lastIndex < template.template.length) {
+      parts.push(template.template.slice(lastIndex));
+    }
+
+    return parts;
+  }, [template, values]);
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(getFilledTemplate());
@@ -1026,7 +1060,7 @@ function TemplateCard({ template, categoryColor }: { template: Template; categor
                 </p>
                 <div className="p-4 bg-[var(--bg-secondary)] rounded-xl">
                   <pre className="whitespace-pre-wrap text-sm text-[var(--text-secondary)] font-sans leading-relaxed">
-                    {getFilledTemplate()}
+                    {renderPreview()}
                   </pre>
                 </div>
               </div>
