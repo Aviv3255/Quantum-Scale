@@ -1070,9 +1070,10 @@ function TemplateCard({ template, categoryColor }: { template: Template; categor
                 onClick={handleCopy}
                 className={`w-full py-3 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2 ${
                   copied
-                    ? 'bg-green-500 text-white'
-                    : 'bg-[var(--primary)] text-white hover:bg-[var(--primary-hover)]'
+                    ? 'bg-green-500'
+                    : 'bg-[var(--primary)] hover:bg-[var(--primary-hover)]'
                 }`}
+                style={{ color: '#FFFFFF' }}
               >
                 {copied ? (
                   <>
