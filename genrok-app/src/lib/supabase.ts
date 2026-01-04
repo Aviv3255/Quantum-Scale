@@ -283,3 +283,70 @@ export const deletePollRequest = async (
     .eq('id', requestId);
   return { error };
 };
+
+
+// Referral system types
+export type Referral = {
+  id: string;
+  referrer_id: string;
+  referred_user_id: string;
+  referred_email: string;
+  referred_ip: string;
+  referral_code: string;
+  is_valid: boolean;
+  created_at: string;
+};
+
+// Referral system helpers
+export const createReferral = async (
+  referrerId: string,
+  referredUserId: string,
+  referredEmail: string,
+  referredIp: string,
+  referralCode: string
+): Promise<{ data: Referral | null; error: { code?: string; message: string } | null }> => {
+  // Check if this IP or email has already been used for this referrer
+  const { data: existing } = await supabase
+    .from('referrals' as const)
+    .select('id')
+    .eq('referrer_id', referrerId)
+    .or(`referred_ip.eq.${referredIp},referred_email.eq.${referredEmail}`);
+
+  if (existing && (existing as unknown[]).length > 0) {
+    return { data: null, error: { message: 'This IP or email has already been used for a referral' } };
+  }
+
+  const { data, error } = await supabase
+    .from('referrals' as const)
+    .insert({
+      referrer_id: referrerId,
+      referred_user_id: referredUserId,
+      referred_email: referredEmail,
+      referred_ip: referredIp,
+      referral_code: referralCode,
+      is_valid: true,
+    } as never)
+    .select()
+    .single();
+  return { data: data as Referral | null, error };
+};
+
+export const getReferralCount = async (userId: string): Promise<{ count: number; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('referrals' as const)
+    .select('id')
+    .eq('referrer_id', userId)
+    .eq('is_valid', true);
+
+  return { count: data ? (data as unknown[]).length : 0, error };
+};
+
+export const getReferrerByCode = async (referralCode: string): Promise<{ referrerId: string | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('user_profiles' as const)
+    .select('user_id')
+    .eq('referral_code', referralCode)
+    .single();
+
+  return { referrerId: data ? (data as { user_id: string }).user_id : null, error };
+};

@@ -83,6 +83,7 @@ const navigationItems: NavItem[] = [
     isCategory: true,
     subItems: [
       { title: "$6,000 TikTok Ads Credit", href: "/tiktok-credits" },
+      { title: "1,000 Meta Ad Templates", href: "/ads/meta-templates" },
       { title: "Meta Ads Structure", href: "/ads/meta-structure" },
       { title: "AI Image Ads", href: "/ads/ai-image" },
       { title: "AI Video Ads", href: "/ads/ai-video" },
