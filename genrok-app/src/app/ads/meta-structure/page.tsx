@@ -78,15 +78,20 @@ export default function MetaStructurePage() {
               border: '1px solid rgba(255, 255, 255, 0.8)'
             }}
           >
-            {/* Animated background pill */}
+            {/* Animated background pill - smooth fluid transition */}
             <motion.div
               className="absolute top-2 bottom-2 rounded-full"
               initial={false}
               animate={{
                 left: activePhase === 'testing' ? '8px' : 'calc(50% + 2px)',
-                width: 'calc(50% - 10px)'
+                width: 'calc(50% - 10px)',
+                scaleX: 1
               }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+              transition={{
+                left: { type: 'spring', stiffness: 180, damping: 22, mass: 1.2 },
+                width: { type: 'spring', stiffness: 180, damping: 22, mass: 1.2 },
+                scaleX: { type: 'spring', stiffness: 300, damping: 25 }
+              }}
               style={{
                 background: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0,0,0,0.2)'
