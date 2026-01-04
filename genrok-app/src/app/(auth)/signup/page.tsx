@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, Check } from 'lucide-react';
-import { signUp, signIn, createUserProfile } from '@/lib/supabase';
+import { signUp, signIn, createUserProfile, supabase } from '@/lib/supabase';
 
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -26,12 +26,28 @@ const signupSchema = z.object({
 
 type SignupFormData = z.infer<typeof signupSchema>;
 
-
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const referralCode = searchParams.get('ref');
+  const [userIp, setUserIp] = useState<string>('unknown');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Capture user IP on mount (silent, doesn't affect UX)
+  useEffect(() => {
+    const getIp = async () => {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        setUserIp(data.ip);
+      } catch {
+        setUserIp('unknown');
+      }
+    };
+    getIp();
+  }, []);
 
   const {
     register,
@@ -73,6 +89,35 @@ export default function SignupPage() {
     // Create user profile for onboarding
     if (signInData?.user) {
       await createUserProfile(signInData.user.id);
+
+      // Process referral if user signed up via referral link
+      if (referralCode) {
+        try {
+          // Look up the referrer by their referral code
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { data: referrer } = await (supabase as any)
+            .from('user_profiles')
+            .select('user_id')
+            .eq('referral_code', referralCode)
+            .single();
+
+          if (referrer && referrer.user_id !== signInData.user.id) {
+            // Create referral record (silently, don't block signup)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await (supabase as any).from('referrals').insert({
+              referrer_id: referrer.user_id,
+              referred_user_id: signInData.user.id,
+              referred_email: data.email,
+              referred_ip: userIp,
+              referral_code: referralCode,
+              is_valid: true,
+            });
+          }
+        } catch {
+          // Silently fail - don't block signup for referral issues
+          console.log('Referral processing skipped');
+        }
+      }
     }
 
     // Redirect to onboarding
@@ -269,5 +314,21 @@ export default function SignupPage() {
         </p>
       </form>
     </motion.div>
+  );
+}
+
+function SignupLoading() {
+  return (
+    <div className="flex items-center justify-center py-20">
+      <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
+    </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<SignupLoading />}>
+      <SignupForm />
+    </Suspense>
   );
 }

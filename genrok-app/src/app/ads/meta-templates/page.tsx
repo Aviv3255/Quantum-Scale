@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Copy, Check, Users, Lock, Gift, Sparkles, ArrowRight } from 'lucide-react';
+import { Copy, Check, Users, Lock, Gift, Sparkles, ExternalLink } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { supabase } from '@/lib/supabase';
+import { supabase, updateUserProfile } from '@/lib/supabase';
 
 // Creative images for the masonry grid
 const CREATIVE_IMAGES = [
@@ -64,6 +64,16 @@ const TUTORIAL_STEPS = [
   },
 ];
 
+// Template packs with Canva URLs
+const TEMPLATE_PACKS = [
+  { name: 'Pack 1', url: 'https://www.canva.com/design/DAGtJExZaEg/sbePbWIKEBIV8FGXUpMfJA/view' },
+  { name: 'Pack 2', url: 'https://www.canva.com/design/DAGtJMM8qMw/Vb1VNJnIq1mmJ14tVPaJTQ/view' },
+  { name: 'Pack 3', url: 'https://www.canva.com/design/DAGtJA5GCQs/x-fH_1-FGSn-Vv6mP-VTpA/view' },
+  { name: 'Pack 4', url: 'https://www.canva.com/design/DAGtJGi4-Os/FvJwz3tO8tIYGBpzB-t_Fg/view' },
+  { name: 'Pack 5', url: 'https://www.canva.com/design/DAGtJBkppmw/8_rC3X3qYqXdQ3WOvFBXkg/view' },
+  { name: 'BFCM Pack', url: 'https://www.canva.com/design/DAGtJBny6nc/oNR6_8O2amLmA_GbTHn5tg/view' },
+];
+
 // Generate unique referral code from user ID
 function generateReferralCode(userId: string): string {
   // Take first 8 chars of user ID and add a random suffix
@@ -75,13 +85,17 @@ export default function MetaTemplatesPage() {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuthStore();
   const [referralCount, setReferralCount] = useState(0);
-  const [referralCode, setReferralCode] = useState('');
   const [copied, setCopied] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const REQUIRED_REFERRALS = 3;
   const referralsNeeded = Math.max(0, REQUIRED_REFERRALS - referralCount);
+
+  // Compute referral code from user ID
+  const referralCode = useMemo(() => {
+    return user?.id ? generateReferralCode(user.id) : '';
+  }, [user]);
 
   // Generate referral link
   const referralLink = typeof window !== 'undefined'
@@ -94,14 +108,45 @@ export default function MetaTemplatesPage() {
     }
   }, [user, authLoading, router]);
 
-  // Load referral data
+  // Load referral data and save referral code to profile
   useEffect(() => {
-    if (user?.id) {
-      const code = generateReferralCode(user.id);
-      setReferralCode(code);
-      loadReferralCount(user.id);
-    }
-  }, [user?.id]);
+    if (!user?.id || !referralCode) return;
+
+    const loadReferralCount = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('referrals' as never)
+          .select('id')
+          .eq('referrer_id', user.id)
+          .eq('is_valid', true);
+
+        if (!error && data) {
+          const count = (data as unknown[]).length;
+          setReferralCount(count);
+          setIsUnlocked(count >= REQUIRED_REFERRALS);
+        }
+      } catch {
+        // Table might not exist yet, use localStorage fallback
+        const stored = localStorage.getItem(`referrals_${user.id}`);
+        if (stored) {
+          const count = parseInt(stored, 10);
+          setReferralCount(count);
+          setIsUnlocked(count >= REQUIRED_REFERRALS);
+        }
+      }
+    };
+
+    const saveReferralCode = async () => {
+      try {
+        await updateUserProfile(user.id, { referral_code: referralCode } as never);
+      } catch {
+        // Silently fail - code will be saved on next visit
+      }
+    };
+
+    loadReferralCount();
+    saveReferralCode();
+  }, [user, referralCode]);
 
   // Auto-scroll effect
   useEffect(() => {
@@ -137,30 +182,6 @@ export default function MetaTemplatesPage() {
     };
   }, []);
 
-  const loadReferralCount = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('referrals' as never)
-        .select('id')
-        .eq('referrer_id', userId)
-        .eq('is_valid', true);
-
-      if (!error && data) {
-        const count = (data as unknown[]).length;
-        setReferralCount(count);
-        setIsUnlocked(count >= REQUIRED_REFERRALS);
-      }
-    } catch {
-      // Table might not exist yet, use localStorage fallback
-      const stored = localStorage.getItem(`referrals_${userId}`);
-      if (stored) {
-        const count = parseInt(stored, 10);
-        setReferralCount(count);
-        setIsUnlocked(count >= REQUIRED_REFERRALS);
-      }
-    }
-  };
-
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(referralLink);
@@ -190,12 +211,6 @@ export default function MetaTemplatesPage() {
   // Duplicate images for seamless scrolling
   const duplicatedImages = [...CREATIVE_IMAGES, ...CREATIVE_IMAGES];
 
-  // Random heights for masonry effect
-  const getRandomHeight = (index: number) => {
-    const heights = [200, 240, 280, 220, 260, 300, 180, 250];
-    return heights[index % heights.length];
-  };
-
   return (
     <DashboardLayout>
       <div className="min-h-screen" style={{ background: '#FFFFFF', margin: '-40px -48px', padding: '48px' }}>
@@ -217,7 +232,7 @@ export default function MetaTemplatesPage() {
                   1,000 Meta Ad Templates
                 </h1>
                 <p className="text-lg text-[var(--text-secondary)] leading-relaxed">
-                  Drag-and-drop Canva templates from the world's biggest brands.
+                  Drag-and-drop Canva templates from the world&apos;s biggest brands.
                   Completely free. No catch.
                 </p>
               </motion.div>
@@ -339,18 +354,18 @@ export default function MetaTemplatesPage() {
                 className="h-full overflow-hidden"
                 style={{ scrollBehavior: 'auto' }}
               >
-                <div className="grid grid-cols-3 gap-3 p-2">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px', padding: '4px' }}>
                   {duplicatedImages.map((img, idx) => (
                     <div
                       key={idx}
                       className="rounded-lg overflow-hidden"
-                      style={{ height: getRandomHeight(idx) }}
+                      style={{ aspectRatio: '1/1' }}
                     >
                       <Image
                         src={img}
                         alt={`Template ${idx + 1}`}
                         width={200}
-                        height={getRandomHeight(idx)}
+                        height={200}
                         className="w-full h-full object-cover"
                         unoptimized
                       />
@@ -428,9 +443,18 @@ export default function MetaTemplatesPage() {
             className="relative rounded-3xl overflow-hidden"
           >
             {/* Blurred Grid Background */}
-            <div className="absolute inset-0 grid grid-cols-4 md:grid-cols-6 gap-2 p-4 blur-md opacity-60">
-              {CREATIVE_IMAGES.slice(0, 24).map((img, idx) => (
-                <div key={idx} className="rounded-lg overflow-hidden" style={{ height: 150 }}>
+            <div
+              className="absolute inset-0 opacity-60"
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(6, 1fr)',
+                gap: '4px',
+                padding: '4px',
+                filter: 'blur(4px)'
+              }}
+            >
+              {CREATIVE_IMAGES.slice(0, 30).map((img, idx) => (
+                <div key={idx} className="rounded-lg overflow-hidden" style={{ aspectRatio: '1/1' }}>
                   <Image
                     src={img}
                     alt=""
@@ -463,15 +487,20 @@ export default function MetaTemplatesPage() {
                     : 'Get lifetime access to all 1,000 Canva templates. Professional ad designs from the world\'s biggest brands.'}
                 </p>
                 {isUnlocked ? (
-                  <a
-                    href="https://www.canva.com/design/DAGJcxhLYGQ/YOUR_TEMPLATE_LINK"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-black text-white font-semibold hover:bg-gray-800 transition-colors"
-                  >
-                    Access Templates
-                    <ArrowRight size={18} />
-                  </a>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-lg mx-auto">
+                    {TEMPLATE_PACKS.map((pack) => (
+                      <a
+                        key={pack.name}
+                        href={pack.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-black text-white font-semibold hover:bg-gray-800 transition-colors text-sm"
+                      >
+                        {pack.name}
+                        <ExternalLink size={14} />
+                      </a>
+                    ))}
+                  </div>
                 ) : (
                   <button
                     onClick={copyToClipboard}
