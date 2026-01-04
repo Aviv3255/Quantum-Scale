@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (272 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (273 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -350,10 +350,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 270 | self-selection-principle | 9 | Elite (Full Upgrade Jan 4) |
 | 271 | shape-psychology | 9 | Elite (Full Upgrade Jan 4) |
 | 272 | smallest-viable-market | 9 | Elite (Full Upgrade Jan 4) |
+| 273 | sms-open-rate-secret | 9 | Elite (Full Upgrade Jan 4) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (25 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (24 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -366,7 +367,6 @@ These lessons need design improvements to reach elite level.
 | 200 | pain-dream-bridge | ERROR |
 | 216 | price-creates-value | ERROR |
 | 234 | sell-the-identity | ERROR |
-| 237 | sms-open-rate-secret | 5 |
 | 238 | speed-equals-trust | 5 |
 | 239 | starbucks-ltv | 5 |
 | 240 | stop-aliexpress | 5 |
