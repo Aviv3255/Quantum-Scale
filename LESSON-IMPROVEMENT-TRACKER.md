@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (266 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (270 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -346,10 +346,12 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 266 | scarcity-calendar | 9 | Elite (Full Upgrade Jan 4) |
 | 267 | science-of-selling | 9 | Elite (Full Upgrade Jan 4) |
 | 268 | telescope-flip | 9 | Elite (Full Upgrade Jan 4) |
+| 269 | self-persuasion-architecture | 9 | Elite (Verified Jan 4) |
+| 270 | self-selection-principle | 9 | Elite (Full Upgrade Jan 4) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (29 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (27 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -361,8 +363,6 @@ These lessons need design improvements to reach elite level.
 | 189 | micro-yes-engine | ERROR |
 | 200 | pain-dream-bridge | ERROR |
 | 216 | price-creates-value | ERROR |
-| 231 | self-persuasion-architecture | 5 |
-| 233 | self-selection-principle | 5 |
 | 234 | sell-the-identity | ERROR |
 | 235 | shape-psychology | 5 |
 | 236 | smallest-viable-market | 5 |
@@ -420,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 268 |
-| Need Improvement | 29 |
+| Improved / Don't Need Improvement | 270 |
+| Need Improvement | 27 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
