@@ -12,9 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #7c3aed; --accent-dark: #5b21b6; --accent-light: #a78bfa; --accent-rgb: 124, 58, 237; }
@@ -46,148 +46,63 @@
       nextLesson: { id: 'authority-over-hope', title: 'Authority Over Hope', teaser: 'Why customers trust proven results over beautiful promises - and how to weaponize it.' }
     };
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', decimals = 0, duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.round(count)}{suffix}</span>;
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why obsessing over YOUR product kills conversions', 'The fatal "telescope backwards" error 97% of marketers make', 'How to mine your customers\' inner world for pure conversion gold'] },
-      { type: 'hook', headline: 'You\'re staring at your product description. Tweaking features. Refining copy. Meanwhile, your customer is scrolling past, completely uninterested.', subtext: 'Why? Because you\'re looking through the wrong end of the telescope. You\'re obsessed with what you\'re selling - while they only care about what they\'re feeling, fearing, and fantasizing about. This is the fundamental error. And it\'s costing you everything.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._face-palming_embarrassedfrustrated_100_pure_2ecf9cf3-57a5-44c8-8958-1ee07c06f4b2_3.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'The Marketer\'s Delusion', body: 'Here\'s the brutal truth that most store owners never realize: Your customer doesn\'t think about your product. Not even for a second. They think about themselves - their problems, their pain, their secret desires, the voice in their head that won\'t shut up. But you? You obsess over YOUR features, YOUR benefits, YOUR brand story. You\'re holding the telescope backwards, staring at yourself while the customer is on the other side, invisible to you.' },
-      { type: 'visual', title: 'Where Marketers Actually Focus', visualType: 'stats', data: [
-        { value: '89%', label: 'focus on product features', subtext: 'What WE think matters' },
-        { value: '6%', label: 'focus on customer psychology', subtext: 'What THEY actually need' },
-        { value: '5%', label: 'focus on raw emotional language', subtext: 'What converts like crazy' }
-      ]},
-      { type: 'content', title: 'The Robert Greene Truth Bomb', body: '"The key to power is the ability to judge who is best able to further your interests in all situations. Keep friends for friendship, but work with the skilled and competent." - Robert Greene. Translation for ecommerce? Stop thinking about yourself first. The fundamental error is narcissism disguised as marketing. Your product page should be a mirror reflecting THEIR world, not a billboard showcasing yours.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert-Greene-profile-01-removebg-preview.png', personName: 'Robert Greene' },
-      { type: 'example', scenario: 'Posture Corrector Store', before: { label: 'Telescope Backwards', text: '"Premium Medical-Grade Posture Corrector - Adjustable Straps, Breathable Material, Clinically Tested Design - Order Now!"' }, after: { label: 'Telescope Flipped', text: '"Stop Wincing Every Time You Stand Up. End the Back Pain That Makes You Feel 20 Years Older. (Finally.)"' }, insight: 'See the shift? Before = talking about US. After = living in THEIR pain.' },
-      { type: 'cards', title: 'The Inner World You\'re Ignoring', items: [
-        { title: 'Their Secret Pain', description: 'The embarrassment they won\'t admit. The frustration that keeps them up at 3 AM. The physical sensation that reminds them daily.' },
-        { title: 'Their Internal Monologue', description: 'The exact words they say to themselves: "Why does this always happen to ME?" "I\'m so tired of..." "If only I could..."' },
-        { title: 'Their Dream State', description: 'Who they fantasize about becoming. How they imagine their life AFTER the problem is gone. The version of themselves they\'re ashamed they\'re not yet.' }
-      ]},
-      { type: 'content', title: 'Tactic #1: Mine for Raw Language', body: 'Your customers have already written your best copy. You just haven\'t read it yet. Go to Amazon reviews of competitor products. Read 1-star and 5-star reviews. Look for the EXACT phrases they use to describe their pain and their relief. "I was skeptical but..." "Finally, something that..." "I wish I found this sooner because..." This is linguistic gold. Copy their words verbatim into your headlines.' },
-      { type: 'example', scenario: 'Baby Sleep Training Product', before: { label: 'Generic Features', text: '"Science-Backed Sleep System - Helps Babies Sleep Through the Night - Pediatrician Recommended"' }, after: { label: 'Mined Language', text: '"I Haven\'t Slept More Than 3 Hours Straight in 8 Months" - What 2,847 Exhausted Parents Said Before This System Saved Them' }, insight: 'The "8 months" and "3 hours" came from real Amazon review language. It HITS different.' },
-      { type: 'visual', title: 'The Conversion Language Gap', visualType: 'comparison', data: {
-        left: { label: 'Your Language', value: '2.1%', result: '"Premium Quality Materials"', color: '#94a3b8' },
-        right: { label: 'Their Language', value: '9.3%', result: '"Finally stopped embarrassing myself at the gym"', color: '#7c3aed' },
-        center: { label: 'Conversion Lift', value: '+343%', result: 'Same product, their words', color: '#10b981' }
-      }},
-      { type: 'content', title: 'Tactic #2: Build Psychological Avatars', body: 'Forget demographics. You don\'t need "women 25-34 in urban areas." You need: "Sarah, 32, who pretends she\'s fine at work but cries in the car on the way home because her anxiety is getting worse and she can\'t admit it to anyone." THAT level of specificity. Write out their entire internal experience. What do they think about in the shower? What do they Google at midnight? What would they NEVER say out loud?' },
-      { type: 'cards', title: 'Psychological Avatar Questions', items: [
-        { title: 'What Do They Fear Most?', description: 'Not surface fear. DEEP fear. "I\'m terrified I\'ll never fix this." "I\'m scared I\'m becoming my mother." "What if I\'m broken?"' },
-        { title: 'What Do They Lie About?', description: '"I\'m fine." "It doesn\'t bother me that much." What are they minimizing? What shame are they hiding?' },
-        { title: 'What Would Fix Everything?', description: 'In their fantasy, what single change would transform their life? That\'s your REAL value proposition.' }
-      ]},
-      { type: 'content', title: 'Tactic #3: Survey for Angles', body: 'Here\'s a ninja move: After someone buys, ask them "What almost stopped you from purchasing?" Their answer is your next objection-killer. Ask "What was the ONE thing that convinced you?" That becomes your headline. Ask "How would you describe this to a friend who has the same problem?" They just wrote your best ad copy. For free.' },
-      { type: 'implementation', title: 'Ask Buyers: What Was Going Through Your Head?', intro: "Stop guessing what your customers want. Here\'s how to get the truth:", steps: [
-        { step: 1, title: 'Set up post-purchase surveys', description: 'Apps like Grapevine show a short survey right after checkout - when customers are most honest about why they bought.' },
-        { step: 2, title: 'Ask the right questions', description: '"How did you hear about us?" "What almost stopped you from buying?" "What made you choose us?" - These reveal your real audience.' },
-        { step: 3, title: 'Collect 50-100 responses', description: 'After about 100 responses, clear patterns emerge. You\'ll often find 80%+ saying the same unexpected thing.' },
-        { step: 4, title: 'Update your messaging', description: 'Use exact customer language in your ads and pages. Stop guessing - start knowing.' }
-      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
-      { type: 'quiz', question: 'A fitness supplement brand wants to flip the telescope. Which approach shows they\'re focusing on the customer\'s INNER WORLD?', options: ['"Clinically Proven Formula - 30g Protein, 5g BCAAs, Zero Sugar - Trusted by 10,000+ Athletes"', '"Our Premium Blend Uses Only the Highest Quality Ingredients Sourced From Organic Farms"', '"That Sinking Feeling When You Look in the Mirror and Don\'t Recognize Yourself Anymore"', '"Award-Winning Taste - Voted #1 Protein Powder 2024 - Money-Back Guarantee"'], correctIndex: 2, feedback: { correct: 'EXACTLY. Option C isn\'t talking about the product AT ALL. It\'s living inside their psychological pain - the shame, the identity crisis, the self-recognition gap. That\'s the telescope flipped. That\'s what converts.', incorrect: 'Not quite. The winning answer isn\'t about the product, the ingredients, or the proof. It\'s about THEIR inner experience - "that sinking feeling when you look in the mirror and don\'t recognize yourself anymore." That\'s their world, their words, their pain. That\'s the telescope flipped.' }},
-      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -197,8 +112,47 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      EyeOff: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Brain: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      MessageSquare: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Search: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+      User: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      HelpCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.9V17h8v-2.1A7 7 0 0 0 12 2z"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
     };
 
+    // ============ SLIDES DATA ============
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why obsessing over YOUR product kills conversions', 'The fatal "telescope backwards" error 97% of marketers make', 'How to mine your customers\' inner world for pure conversion gold'] },
+      { type: 'hook', headline: 'You\'re staring at your product description. Tweaking features. Refining copy. Meanwhile, your customer is scrolling past, completely uninterested.', subtext: 'Why? Because you\'re looking through the wrong end of the telescope. You\'re obsessed with what you\'re selling - while they only care about what they\'re feeling, fearing, and fantasizing about. This is the fundamental error. And it\'s costing you everything.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._face-palming_embarrassedfrustrated_100_pure_2ecf9cf3-57a5-44c8-8958-1ee07c06f4b2_3.mp4', characterPosition: 'left' },
+      { type: 'telescope-visual', direction: 'backwards' },
+      { type: 'focus-stats' },
+      { type: 'robert-greene-quote' },
+      { type: 'example', scenario: 'Posture Corrector Store', before: { label: 'Telescope Backwards', text: '"Premium Medical-Grade Posture Corrector - Adjustable Straps, Breathable Material, Clinically Tested Design - Order Now!"' }, after: { label: 'Telescope Flipped', text: '"Stop Wincing Every Time You Stand Up. End the Back Pain That Makes You Feel 20 Years Older. (Finally.)"' }, insight: 'See the shift? Before = talking about US. After = living in THEIR pain.' },
+      { type: 'inner-world' },
+      { type: 'mining-tactic' },
+      { type: 'example', scenario: 'Baby Sleep Training Product', before: { label: 'Generic Features', text: '"Science-Backed Sleep System - Helps Babies Sleep Through the Night - Pediatrician Recommended"' }, after: { label: 'Mined Language', text: '"I Haven\'t Slept More Than 3 Hours Straight in 8 Months" - What 2,847 Exhausted Parents Said Before This System Saved Them' }, insight: 'The "8 months" and "3 hours" came from real Amazon review language. It HITS different.' },
+      { type: 'language-gap' },
+      { type: 'psychological-avatar' },
+      { type: 'avatar-questions' },
+      { type: 'survey-angles' },
+      { type: 'implementation', title: 'Ask Buyers: What Was Going Through Your Head?', intro: "Stop guessing what your customers want. Here's how to get the truth:", steps: [
+        { step: 1, title: 'Set up post-purchase surveys', description: 'Apps like Grapevine show a short survey right after checkout - when customers are most honest about why they bought.' },
+        { step: 2, title: 'Ask the right questions', description: '"How did you hear about us?" "What almost stopped you from buying?" "What made you choose us?" - These reveal your real audience.' },
+        { step: 3, title: 'Collect 50-100 responses', description: 'After about 100 responses, clear patterns emerge. You\'ll often find 80%+ saying the same unexpected thing.' },
+        { step: 4, title: 'Update your messaging', description: 'Use exact customer language in your ads and pages. Stop guessing - start knowing.' }
+      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'A fitness supplement brand wants to flip the telescope. Which approach shows they\'re focusing on the customer\'s INNER WORLD?', options: ['"Clinically Proven Formula - 30g Protein, 5g BCAAs, Zero Sugar - Trusted by 10,000+ Athletes"', '"Our Premium Blend Uses Only the Highest Quality Ingredients Sourced From Organic Farms"', '"That Sinking Feeling When You Look in the Mirror and Don\'t Recognize Yourself Anymore"', '"Award-Winning Taste - Voted #1 Protein Powder 2024 - Money-Back Guarantee"'], correctIndex: 2, feedback: { correct: 'EXACTLY. Option C isn\'t talking about the product AT ALL. It\'s living inside their psychological pain - the shame, the identity crisis, the self-recognition gap. That\'s the telescope flipped. That\'s what converts.', incorrect: 'Not quite. The winning answer isn\'t about the product, the ingredients, or the proof. It\'s about THEIR inner experience - "that sinking feeling when you look in the mirror and don\'t recognize yourself anymore." That\'s their world, their words, their pain. That\'s the telescope flipped.' }},
+      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -254,32 +208,446 @@
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
+    // UNIQUE: Telescope Visual Slide - Animated telescope showing backwards vs forward view
+    const TelescopeVisualSlide = ({ data }) => {
+      const [flipped, setFlipped] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setFlipped(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Marketer's Delusion</motion.h2>
+
+          <div className="relative flex items-center justify-center gap-4 md:gap-8">
+            {/* Marketer Side */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="relative p-4 md:p-6 rounded-2xl text-center" style={{ background: flipped ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'linear-gradient(135deg, #dc2626, #b91c1c)', boxShadow: flipped ? '0 0 30px rgba(124, 58, 237, 0.2)' : '0 0 30px rgba(220, 38, 38, 0.3)', transition: 'all 0.5s ease' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: flipped ? 'linear-gradient(90deg, transparent, #7c3aed, transparent)' : 'linear-gradient(90deg, transparent, #dc2626, transparent)', borderRadius: '2px 2px 0 0' }} />
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-3">
+                <Icons.User />
+              </div>
+              <div className="text-white font-bold text-sm md:text-base mb-1">MARKETER</div>
+              <div className="text-white/60 text-xs">{flipped ? 'Finally seeing clearly' : 'Staring at a mirror'}</div>
+            </motion.div>
+
+            {/* Telescope in middle */}
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
+              className="flex flex-col items-center">
+              <motion.div animate={{ rotateY: flipped ? 180 : 0 }} transition={{ duration: 0.8, ease: 'easeInOut' }}
+                className="relative w-32 md:w-48 h-12 md:h-16 rounded-full flex items-center justify-center"
+                style={{ background: 'linear-gradient(90deg, #374151, #1f2937, #374151)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                <div className="absolute left-0 w-6 md:w-8 h-8 md:h-10 rounded-l-full" style={{ background: 'linear-gradient(90deg, #6b7280, #4b5563)' }} />
+                <div className="absolute right-0 w-10 md:w-14 h-10 md:h-14 rounded-full" style={{ background: 'linear-gradient(135deg, #9ca3af, #6b7280)', border: '3px solid #4b5563' }}>
+                  <Icons.Eye />
+                </div>
+              </motion.div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+                className="mt-3 px-3 py-1 rounded-full text-xs font-bold" style={{ background: flipped ? 'rgba(124, 58, 237, 0.2)' : 'rgba(220, 38, 38, 0.2)', color: flipped ? '#a78bfa' : '#fca5a5' }}>
+                {flipped ? 'FLIPPED RIGHT' : 'BACKWARDS'}
+              </motion.div>
+            </motion.div>
+
+            {/* Customer Side */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="relative p-4 md:p-6 rounded-2xl text-center" style={{ background: flipped ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.05)', boxShadow: flipped ? '0 0 30px rgba(34, 197, 94, 0.2)' : 'none', border: flipped ? 'none' : '2px dashed #d1d5db', transition: 'all 0.5s ease' }}>
+              {flipped && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)', borderRadius: '2px 2px 0 0' }} />}
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: flipped ? 'rgba(34, 197, 94, 0.2)' : 'rgba(0,0,0,0.1)' }}>
+                <Icons.Target />
+              </div>
+              <div className="font-bold text-sm md:text-base mb-1" style={{ color: flipped ? 'white' : '#9ca3af' }}>CUSTOMER</div>
+              <div className="text-xs" style={{ color: flipped ? 'rgba(255,255,255,0.6)' : '#d1d5db' }}>{flipped ? 'Finally being SEEN' : 'Completely invisible'}</div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="mt-8 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-neutral-300 text-sm">Your product page should be a <span className="text-white font-bold">mirror reflecting THEIR world</span>, not a billboard showcasing yours.</p>
+          </motion.div>
         </div>
-        {data.personImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
-            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+      );
+    };
+
+    // UNIQUE: Focus Stats Slide - Where marketers actually focus
+    const FocusStatsSlide = () => {
+      const stats = [
+        { value: 89, label: 'focus on product features', subtext: 'What WE think matters', color: '#ef4444' },
+        { value: 6, label: 'focus on customer psychology', subtext: 'What THEY actually need', color: '#f59e0b' },
+        { value: 5, label: 'focus on raw emotional language', subtext: 'What converts like crazy', color: '#22c55e' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Where Marketers Actually Focus</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                className="relative p-6 rounded-2xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: `0 0 40px ${stat.color}20` }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)`, borderRadius: '2px 2px 0 0' }} />
+                <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: stat.color }}>
+                  <AnimatedCounter value={stat.value} suffix="%" />
+                </div>
+                <div className="text-white font-semibold text-sm mb-2">{stat.label}</div>
+                <div className="text-neutral-400 text-xs">{stat.subtext}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Robert Greene Quote Slide - With person image
+    const RobertGreeneQuoteSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto relative">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+          className="relative p-6 md:p-8 rounded-2xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(124, 58, 237, 0.15)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #7c3aed, transparent)', borderRadius: '2px 2px 0 0' }} />
+
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-4xl text-neutral-600">"</span>
+            <span className="text-xs uppercase tracking-wider text-neutral-500">The Truth Bomb</span>
+          </div>
+
+          <blockquote className="text-lg md:text-xl text-white leading-relaxed mb-6 italic">
+            The key to power is the ability to judge who is best able to further your interests in all situations. Keep friends for friendship, but work with the skilled and competent.
+          </blockquote>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="p-4 rounded-xl mb-4" style={{ background: 'rgba(124, 58, 237, 0.1)', border: '1px solid rgba(124, 58, 237, 0.2)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <Icons.Zap />
+              <span className="text-sm font-bold text-white">Translation for eCommerce:</span>
+            </div>
+            <p className="text-neutral-300 text-sm">Stop thinking about yourself first. The fundamental error is narcissism disguised as marketing. Your product page should be a mirror reflecting THEIR world.</p>
           </motion.div>
-        )}
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
+
+          <div className="flex items-center gap-3">
+            <div className="text-sm font-semibold text-neutral-400">— Robert Greene</div>
+          </div>
+        </motion.div>
+
+        {/* Person Image */}
+        <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+          className="absolute bottom-0 right-[5%] z-0 pointer-events-none hidden md:block" style={{ height: '55%', maxHeight: '400px' }}>
+          <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert-Greene-profile-01-removebg-preview.png" alt="Robert Greene" className="h-full w-auto object-contain object-bottom" />
+        </motion.div>
+      </div>
+    );
+
+    // UNIQUE: Inner World Slide - 3 spheres showing Pain, Monologue, Dream
+    const InnerWorldSlide = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const worlds = [
+        { icon: Icons.Heart, title: 'Their Secret Pain', description: 'The embarrassment they won\'t admit. The frustration that keeps them up at 3 AM. The physical sensation that reminds them daily.', color: '#ef4444' },
+        { icon: Icons.MessageSquare, title: 'Their Internal Monologue', description: 'The exact words they say to themselves: "Why does this always happen to ME?" "I\'m so tired of..." "If only I could..."', color: '#f59e0b' },
+        { icon: Icons.Star, title: 'Their Dream State', description: 'Who they fantasize about becoming. How they imagine their life AFTER the problem is gone. The version of themselves they\'re ashamed they\'re not yet.', color: '#22c55e' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(i => (i + 1) % 3), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Inner World You're Ignoring</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {worlds.map((world, i) => {
+              const IconComponent = world.icon;
+              const isActive = i === activeIndex;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  onClick={() => setActiveIndex(i)}
+                  className="relative p-5 rounded-2xl cursor-pointer transition-all duration-300"
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)',
+                    boxShadow: isActive ? `0 0 40px ${world.color}30` : 'none',
+                    border: isActive ? 'none' : '2px solid #e5e7eb',
+                    transform: isActive ? 'scale(1.02)' : 'scale(1)'
+                  }}>
+                  {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${world.color}, transparent)`, borderRadius: '2px 2px 0 0' }} />}
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 mx-auto" style={{ background: isActive ? `${world.color}20` : 'rgba(0,0,0,0.05)' }}>
+                    <IconComponent />
+                  </div>
+                  <div className="text-center">
+                    <h3 className="font-bold text-sm mb-2" style={{ color: isActive ? 'white' : '#1f2937' }}>{world.title}</h3>
+                    <p className="text-xs leading-relaxed" style={{ color: isActive ? 'rgba(255,255,255,0.7)' : '#6b7280' }}>{world.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="flex justify-center gap-2">
+            {[0, 1, 2].map(i => (
+              <button key={i} onClick={() => setActiveIndex(i)}
+                className="w-2 h-2 rounded-full transition-all"
+                style={{ background: i === activeIndex ? worlds[i].color : '#d1d5db' }} />
+            ))}
           </motion.div>
-        )}
+        </div>
+      );
+    };
+
+    // UNIQUE: Mining Tactic Slide - Visual mining metaphor
+    const MiningTacticSlide = () => {
+      const sources = [
+        { label: 'Amazon 1-Star', phrase: '"I was skeptical but..."' },
+        { label: 'Amazon 5-Star', phrase: '"Finally, something that..."' },
+        { label: 'Reddit Comments', phrase: '"I wish I found this sooner..."' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(234, 179, 8, 0.1)', color: '#eab308' }}>Tactic #1</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Mine for Raw Language</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="relative p-6 rounded-2xl mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(234, 179, 8, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #eab308, transparent)', borderRadius: '2px 2px 0 0' }} />
+
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(234, 179, 8, 0.2)' }}>
+                <Icons.Search />
+              </div>
+              <div>
+                <div className="text-white font-bold">Linguistic Gold</div>
+                <div className="text-neutral-400 text-xs">Your customers have already written your best copy</div>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              {sources.map((source, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <div className="px-2 py-1 rounded text-xs font-bold" style={{ background: 'rgba(234, 179, 8, 0.2)', color: '#fcd34d' }}>{source.label}</div>
+                  <div className="text-white text-sm italic">{source.phrase}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="p-4 rounded-xl text-center" style={{ background: 'rgba(234, 179, 8, 0.1)', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
+            <div className="flex items-center justify-center gap-2">
+              <Icons.Lightbulb />
+              <span className="text-sm font-medium" style={{ color: '#ca8a04' }}>Copy their words VERBATIM into your headlines</span>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Language Gap Slide - Side by side comparison with AnimatedCounter
+    const LanguageGapSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Conversion Language Gap</motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {/* Your Language */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="relative p-5 rounded-2xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)', borderRadius: '2px 2px 0 0' }} />
+            <div className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Your Language</div>
+            <div className="text-4xl md:text-5xl font-bold text-neutral-400 mb-3">
+              <AnimatedCounter value={2.1} suffix="%" decimals={1} />
+            </div>
+            <div className="text-white text-sm italic mb-2">"Premium Quality Materials"</div>
+            <div className="text-neutral-500 text-xs">Conversion Rate</div>
+          </motion.div>
+
+          {/* Center - Lift */}
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
+            className="relative p-5 rounded-2xl text-center transform md:scale-105" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(124, 58, 237, 0.3)' }}>
+            <div className="text-white/80 text-xs uppercase tracking-wider mb-2">Conversion Lift</div>
+            <div className="text-4xl md:text-5xl font-bold text-white mb-3">
+              +<AnimatedCounter value={343} suffix="%" />
+            </div>
+            <div className="text-white/90 text-sm font-medium mb-2">Same product, their words</div>
+            <div className="text-white/60 text-xs">The telescope flip in action</div>
+          </motion.div>
+
+          {/* Their Language */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+            className="relative p-5 rounded-2xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.2)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)', borderRadius: '2px 2px 0 0' }} />
+            <div className="text-emerald-400 text-xs uppercase tracking-wider mb-2">Their Language</div>
+            <div className="text-4xl md:text-5xl font-bold text-emerald-400 mb-3">
+              <AnimatedCounter value={9.3} suffix="%" decimals={1} />
+            </div>
+            <div className="text-white text-sm italic mb-2">"Finally stopped embarrassing myself at the gym"</div>
+            <div className="text-neutral-500 text-xs">Conversion Rate</div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // UNIQUE: Psychological Avatar Slide
+    const PsychologicalAvatarSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(124, 58, 237, 0.1)', color: '#7c3aed' }}>Tactic #2</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Build Psychological Avatars</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Wrong Way */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="p-5 rounded-2xl border-2 border-red-200 bg-red-50">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-bold text-red-700 text-sm">Forget This</span>
+            </div>
+            <div className="text-neutral-700 text-sm italic">"Women 25-34 in urban areas"</div>
+          </motion.div>
+
+          {/* Right Way */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="relative p-5 rounded-2xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.2)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)', borderRadius: '2px 2px 0 0' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-bold text-emerald-400 text-sm">Build This Instead</span>
+            </div>
+            <div className="text-white text-sm italic leading-relaxed">"Sarah, 32, who pretends she's fine at work but cries in the car on the way home because her anxiety is getting worse and she can't admit it to anyone."</div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="mt-6 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <p className="text-neutral-300 text-sm">Write out their <span className="text-white font-bold">entire internal experience</span>. What do they think about in the shower? What do they Google at midnight?</p>
+        </motion.div>
+      </div>
+    );
+
+    // UNIQUE: Avatar Questions Slide
+    const AvatarQuestionsSlide = () => {
+      const [activeQ, setActiveQ] = useState(0);
+      const questions = [
+        { q: 'What Do They Fear Most?', a: 'Not surface fear. DEEP fear. "I\'m terrified I\'ll never fix this." "I\'m scared I\'m becoming my mother." "What if I\'m broken?"', color: '#ef4444' },
+        { q: 'What Do They Lie About?', a: '"I\'m fine." "It doesn\'t bother me that much." What are they minimizing? What shame are they hiding?', color: '#f59e0b' },
+        { q: 'What Would Fix Everything?', a: 'In their fantasy, what single change would transform their life? That\'s your REAL value proposition.', color: '#22c55e' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveQ(i => (i + 1) % 3), 4000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Psychological Avatar Questions</motion.h2>
+
+          <div className="space-y-4">
+            {questions.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setActiveQ(i)}
+                className="relative p-5 rounded-2xl cursor-pointer transition-all duration-300"
+                style={{
+                  background: i === activeQ ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                  border: i === activeQ ? 'none' : '2px solid #e5e7eb',
+                  boxShadow: i === activeQ ? `0 0 30px ${item.color}20` : 'none'
+                }}>
+                {i === activeQ && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${item.color}, transparent)`, borderRadius: '2px 2px 0 0' }} />}
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: i === activeQ ? `${item.color}20` : 'rgba(0,0,0,0.05)' }}>
+                    <Icons.HelpCircle />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-base mb-2" style={{ color: i === activeQ ? 'white' : '#1f2937' }}>{item.q}</h3>
+                    <p className="text-sm leading-relaxed" style={{ color: i === activeQ ? 'rgba(255,255,255,0.7)' : '#6b7280' }}>{item.a}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Survey Angles Slide
+    const SurveyAnglesSlide = () => {
+      const angles = [
+        { question: '"What almost stopped you from purchasing?"', result: 'Your next objection-killer' },
+        { question: '"What was the ONE thing that convinced you?"', result: 'Your next headline' },
+        { question: '"How would you describe this to a friend?"', result: 'Your best ad copy' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e' }}>Tactic #3</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Survey for Angles</h2>
+            <p className="text-neutral-500 text-sm mt-2">After someone buys, ask them these questions:</p>
+          </motion.div>
+
+          <div className="space-y-4">
+            {angles.map((angle, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                className="relative p-5 rounded-2xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.1)' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)', borderRadius: '2px 2px 0 0' }} />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}>{i + 1}</div>
+                    <span className="text-white text-sm font-medium italic">{angle.question}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Icons.ArrowRight />
+                    <span className="text-emerald-400 text-sm font-bold">{angle.result}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+            className="mt-6 p-4 rounded-xl text-center" style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+            <p className="text-sm" style={{ color: '#166534' }}>They just wrote your best ad copy. <span className="font-bold">For free.</span></p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Elite Insight Slide
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+          className="relative p-8 rounded-2xl w-full" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(124, 58, 237, 0.2)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #7c3aed, transparent)', borderRadius: '2px 2px 0 0' }} />
+
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(124, 58, 237, 0.2)' }}>
+              <Icons.Lightbulb />
+            </div>
+            <span className="text-xs uppercase tracking-wider text-neutral-400">Elite Insight</span>
+          </div>
+
+          <h3 className="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">
+            Stop obsessing over YOUR product. Flip the telescope. Live in THEIR inner world.
+          </h3>
+
+          <div className="grid grid-cols-3 gap-4 mt-6">
+            <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
+              <Icons.Search />
+              <div className="text-white text-xs font-medium mt-2">Mine their language</div>
+            </div>
+            <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+              <Icons.User />
+              <div className="text-white text-xs font-medium mt-2">Build avatars</div>
+            </div>
+            <div className="text-center p-3 rounded-xl" style={{ background: 'rgba(34, 197, 94, 0.1)' }}>
+              <Icons.HelpCircle />
+              <div className="text-white text-xs font-medium mt-2">Ask questions</div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     );
 
@@ -299,67 +667,10 @@
             <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="relative p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)', borderRadius: '2px 2px 0 0' }} />
+          <p className="text-neutral-300 text-sm flex items-center justify-center gap-2"><Icons.Zap />{data.insight}</p>
         </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
     );
 
@@ -372,11 +683,12 @@
         {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
         <div className="space-y-3">
           {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="relative flex gap-4 rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)', borderRadius: '2px 2px 0 0' }} />
               <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
               <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+                <h4 className="font-semibold text-white text-sm mb-1">{step.title}</h4>
+                <p className="text-neutral-400 text-xs leading-relaxed">{step.description}</p>
               </div>
             </motion.div>
           ))}
@@ -437,7 +749,8 @@
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You just learned the single biggest shift in marketing psychology: Stop obsessing over YOUR product. Flip the telescope. Live in THEIR inner world. Mine their language, build psychological avatars, and ask the questions that reveal conversion gold.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="relative bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)', borderRadius: '2px 2px 0 0' }} />
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
@@ -458,6 +771,7 @@
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -471,14 +785,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -510,10 +818,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
+          case 'telescope-visual': return <TelescopeVisualSlide data={slide} />;
+          case 'focus-stats': return <FocusStatsSlide />;
+          case 'robert-greene-quote': return <RobertGreeneQuoteSlide />;
+          case 'inner-world': return <InnerWorldSlide />;
+          case 'mining-tactic': return <MiningTacticSlide />;
+          case 'language-gap': return <LanguageGapSlide />;
+          case 'psychological-avatar': return <PsychologicalAvatarSlide />;
+          case 'avatar-questions': return <AvatarQuestionsSlide />;
+          case 'survey-angles': return <SurveyAnglesSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
           case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
@@ -554,7 +869,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

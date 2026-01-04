@@ -345,10 +345,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 265 | scammer-playbook-good | 9 | Elite (Verified Jan 4) |
 | 266 | scarcity-calendar | 9 | Elite (Full Upgrade Jan 4) |
 | 267 | science-of-selling | 9 | Elite (Full Upgrade Jan 4) |
+| 268 | telescope-flip | 9 | Elite (Full Upgrade Jan 4) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (30 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (29 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -373,8 +374,7 @@ These lessons need design improvements to reach elite level.
 | 242 | story-taste-experiment | 5 |
 | 243 | structural-tension | 5 |
 | 244 | swatch-variants | 5 |
-| 245 | telescope-flip | 5 |
-| 246 | thirty-five-thousand-decisions | 5 |
+| 245 | thirty-five-thousand-decisions | 5 |
 | 247 | thirty-two-violinist | 5 |
 | 248 | three-brains-wallet | 5 |
 | 249 | three-canons-of-craft | 5 |
@@ -420,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 267 |
-| Need Improvement | 30 |
+| Improved / Don't Need Improvement | 268 |
+| Need Improvement | 29 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
