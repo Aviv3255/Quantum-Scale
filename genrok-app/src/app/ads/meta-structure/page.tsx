@@ -137,12 +137,12 @@ export default function MetaStructurePage() {
 }
 
 // Card dimensions for consistency
-// Ad Set cards: 4:5 ratio (portrait/tall)
-const ADSET_CARD_WIDTH = 140;
-const ADSET_CARD_HEIGHT = 175;
-// Creative/Ad cards: 5:4 ratio (landscape/wide)
-const CREATIVE_CARD_WIDTH = 100;
-const CREATIVE_CARD_HEIGHT = 80;
+// Ad Set cards: 5:4 ratio (landscape/wide) - BIGGER
+const ADSET_CARD_WIDTH = 160;
+const ADSET_CARD_HEIGHT = 128;
+// Creative/Ad cards: 5:4 ratio (landscape/wide) - BIGGER
+const CREATIVE_CARD_WIDTH = 110;
+const CREATIVE_CARD_HEIGHT = 88;
 
 // Testing Structure Component
 function TestingStructure() {
@@ -213,57 +213,44 @@ function TestingStructure() {
             className="flex flex-col items-center"
             style={{ width: ADSET_CARD_WIDTH }}
           >
-            {/* Ad Set Card - Premium White with Black Accent (4:5 ratio) */}
+            {/* Ad Set Card - Clean Premium (5:4 ratio) */}
             <div
-              className="w-full rounded-2xl text-center relative overflow-hidden"
+              className="w-full rounded-xl text-center"
               style={{
                 height: ADSET_CARD_HEIGHT,
                 background: '#FFFFFF',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04)',
-                border: '1px solid rgba(0,0,0,0.06)'
+                boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06)',
+                border: '1px solid rgba(0,0,0,0.08)'
               }}
             >
-              {/* Black accent bar at top */}
-              <div
-                className="absolute top-0 left-0 right-0 h-1.5"
-                style={{ background: '#000000' }}
-              />
-              <div className="p-3 pt-5">
+              <div className="p-3 h-full flex flex-col justify-center">
                 <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2"
-                  style={{ background: '#000000' }}
+                  className="w-9 h-9 rounded-lg flex items-center justify-center mx-auto mb-2"
+                  style={{ background: 'rgba(0,0,0,0.04)' }}
                 >
-                  <Target size={14} className="text-white" />
+                  <Target size={16} className="text-[var(--text-primary)]" />
                 </div>
-                <h4 className="font-bold text-[11px] text-[var(--text-primary)] mb-0.5">Ad Set {num}</h4>
-                <p className="text-[9px] text-[var(--text-muted)] leading-tight mb-1.5">Interest Based</p>
-                <span className="inline-block px-2 py-0.5 rounded-full text-[8px] font-semibold bg-gray-100 text-[var(--text-secondary)]">
-                  Broad Audience
-                </span>
+                <h4 className="font-semibold text-xs text-[var(--text-primary)] mb-0.5">Ad Set {num}</h4>
+                <p className="text-[10px] text-[var(--text-muted)] leading-tight">Interest Based</p>
               </div>
             </div>
 
             {/* Connector to Creative */}
             <div className="w-px h-4 bg-gradient-to-b from-black/12 to-transparent" />
 
-            {/* Creative Card - Same style as ad set (5:4 wide ratio) */}
+            {/* Creative Card - Clean Premium (5:4 wide ratio) */}
             <div
-              className="rounded-2xl flex flex-col items-center justify-center relative overflow-hidden"
+              className="rounded-xl flex flex-col items-center justify-center"
               style={{
                 width: CREATIVE_CARD_WIDTH,
                 height: CREATIVE_CARD_HEIGHT,
                 background: '#FFFFFF',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04)',
-                border: '1px solid rgba(0,0,0,0.06)'
+                boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06)',
+                border: '1px solid rgba(0,0,0,0.08)'
               }}
             >
-              {/* Black accent bar at top */}
-              <div
-                className="absolute top-0 left-0 right-0 h-1"
-                style={{ background: '#000000' }}
-              />
-              <ImageIcon size={18} className="text-[var(--text-primary)] mb-1" />
-              <span className="text-[10px] font-bold text-[var(--text-primary)]">Ad {num}</span>
+              <ImageIcon size={20} className="text-[var(--text-muted)] mb-1" />
+              <span className="text-[10px] font-semibold text-[var(--text-primary)]">Ad {num}</span>
             </div>
           </motion.div>
         ))}
@@ -407,79 +394,67 @@ function ScalingStructure() {
               className="flex flex-col items-center"
               style={{ width: ADSET_CARD_WIDTH }}
             >
-              {/* Ad Set Card - Premium White with Black Accent (4:5 ratio) */}
+              {/* Ad Set Card - Clean Premium (5:4 ratio) */}
               <div
-                className="w-full rounded-2xl text-center relative overflow-hidden flex flex-col"
+                className="w-full rounded-xl text-center flex flex-col"
                 style={{
                   height: ADSET_CARD_HEIGHT,
                   background: '#FFFFFF',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04)',
-                  border: '1px solid rgba(0,0,0,0.06)'
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06)',
+                  border: '1px solid rgba(0,0,0,0.08)'
                 }}
               >
-                {/* Black accent bar at top */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-1.5"
-                  style={{ background: '#000000' }}
-                />
-                <div className="p-3 pt-4 flex-1 flex flex-col">
+                <div className="p-3 flex-1 flex flex-col justify-center">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2"
-                    style={{ background: '#000000' }}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-1.5"
+                    style={{ background: 'rgba(0,0,0,0.04)' }}
                   >
-                    <Icon size={14} className="text-white" />
+                    <Icon size={14} className="text-[var(--text-primary)]" />
                   </div>
-                  <h4 className="font-bold text-[11px] text-[var(--text-primary)] mb-0.5 leading-tight">{adSet.name}</h4>
-                  <p className="text-[9px] text-[var(--text-muted)] leading-tight mb-2">{adSet.subtitle}</p>
-
-                  {/* Button inside card - or empty space for alignment */}
-                  <div className="mt-auto">
-                    {adSet.hasDataDrew ? (
-                      <a
-                        href={DATADREW_LINK}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-[9px] font-semibold transition-all hover:opacity-80"
-                        style={{
-                          background: '#000000',
-                          color: '#FFFFFF'
-                        }}
-                      >
-                        <span>Create Audience</span>
-                        <ExternalLink size={8} />
-                      </a>
-                    ) : (
-                      <div className="h-6" />
-                    )}
-                  </div>
+                  <h4 className="font-semibold text-[10px] text-[var(--text-primary)] mb-0.5 leading-tight">{adSet.name}</h4>
+                  <p className="text-[9px] text-[var(--text-muted)] leading-tight">{adSet.subtitle}</p>
                 </div>
               </div>
 
-              {/* Connector to Creative */}
-              <div className="w-px h-4 bg-gradient-to-b from-black/12 to-transparent" />
+              {/* Create Audience Button - Below Card */}
+              {adSet.hasDataDrew ? (
+                <a
+                  href={DATADREW_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-[9px] font-medium transition-all hover:bg-gray-800"
+                  style={{
+                    background: '#000000',
+                    color: '#FFFFFF'
+                  }}
+                >
+                  <span>Create Audience</span>
+                  <ExternalLink size={8} />
+                </a>
+              ) : (
+                <div className="mt-2 h-7" />
+              )}
 
-              {/* Creative Card - Same style as ad set (5:4 wide ratio) */}
+              {/* Connector to Creative */}
+              <div className="w-px h-3 bg-gradient-to-b from-black/10 to-transparent" />
+
+              {/* Creative Card - Clean Premium (5:4 wide ratio) */}
               <div
-                className="rounded-2xl flex flex-col items-center justify-center relative overflow-hidden"
+                className="rounded-xl flex flex-col items-center justify-center"
                 style={{
                   width: CREATIVE_CARD_WIDTH,
                   height: CREATIVE_CARD_HEIGHT,
                   background: '#FFFFFF',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04)',
-                  border: '1px solid rgba(0,0,0,0.06)'
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06)',
+                  border: '1px solid rgba(0,0,0,0.08)'
                 }}
               >
-                {/* Black accent bar at top */}
-                <div
-                  className="absolute top-0 left-0 right-0 h-1"
-                  style={{ background: '#000000' }}
-                />
                 <div className="flex -space-x-0.5 mb-1">
-                  <ImageIcon size={14} className="text-[var(--text-primary)]" />
-                  <ImageIcon size={14} className="text-[var(--text-primary)]" />
-                  <ImageIcon size={14} className="text-[var(--text-primary)]" />
+                  <ImageIcon size={16} className="text-[var(--text-muted)]" />
+                  <ImageIcon size={16} className="text-[var(--text-muted)]" />
+                  <ImageIcon size={16} className="text-[var(--text-muted)]" />
                 </div>
-                <span className="text-[9px] font-bold text-[var(--text-primary)] text-center leading-tight">All Winners</span>
+                <span className="text-[10px] font-semibold text-[var(--text-primary)] text-center leading-tight">All Winners</span>
               </div>
             </motion.div>
           );
