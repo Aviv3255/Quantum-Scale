@@ -255,7 +255,7 @@ function TestingStructure() {
               }}
             >
               <ImageIcon size={20} className="text-[var(--text-muted)] mb-1" />
-              <span className="text-[10px] font-semibold text-[var(--text-primary)]">Ad {num}</span>
+              <span className="text-xs font-semibold text-[var(--text-primary)]">Ad {num}</span>
             </div>
           </motion.div>
         ))}
@@ -426,7 +426,7 @@ function ScalingStructure() {
                       href={DATADREW_LINK}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[10px] font-semibold transition-all hover:bg-gray-800"
+                      className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs font-semibold transition-all hover:bg-gray-800"
                       style={{
                         background: '#000000',
                         color: '#FFFFFF'
@@ -458,7 +458,7 @@ function ScalingStructure() {
                   <ImageIcon size={16} className="text-[var(--text-muted)]" />
                   <ImageIcon size={16} className="text-[var(--text-muted)]" />
                 </div>
-                <span className="text-[10px] font-semibold text-[var(--text-primary)] text-center leading-tight">All Winners</span>
+                <span className="text-xs font-semibold text-[var(--text-primary)] text-center leading-tight">All Winners</span>
               </div>
             </motion.div>
           );
@@ -491,9 +491,9 @@ function ScalingStructure() {
               Why LTV-based audiences win
             </h4>
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-              Your top 10% spenders generate 50-70% of revenue. Creating lookalike audiences
-              from these customers tells Meta to find more people just like them.
-              <span className="font-semibold text-[var(--text-primary)]"> Result: $8-12 CAC instead of $25-40.</span>
+              Your top 10% customers have an $800+ lifetime value, while the other 90% are one-time buyers with ~$70 LTV. 
+              Lookalike audiences from high-value customers tell Meta to find more big spenders, not bargain hunters.
+              <span className="font-semibold text-[var(--text-primary)]"> Result: Bigger paychecks per customer.</span>
             </p>
           </div>
         </div>
