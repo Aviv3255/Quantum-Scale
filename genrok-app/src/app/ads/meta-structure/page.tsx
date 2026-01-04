@@ -137,9 +137,9 @@ export default function MetaStructurePage() {
 }
 
 // Card dimensions for consistency
-const ADSET_CARD_WIDTH = 150;
-const ADSET_CARD_HEIGHT = 180;
-const CREATIVE_CARD_SIZE = 72;
+const ADSET_CARD_WIDTH = 160;
+const ADSET_CARD_HEIGHT = 140;
+const CREATIVE_CARD_SIZE = 64;
 
 // Testing Structure Component
 function TestingStructure() {
@@ -377,7 +377,7 @@ function ScalingStructure() {
       </div>
 
       {/* Ad Sets Level */}
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-center gap-5">
         {adSets.map((adSet, idx) => {
           const Icon = adSet.icon;
           return (
@@ -389,63 +389,70 @@ function ScalingStructure() {
               className="flex flex-col items-center"
               style={{ width: ADSET_CARD_WIDTH }}
             >
-              {/* Ad Set Card - Black Premium */}
+              {/* Ad Set Card - Premium White with Black Accent */}
               <div
-                className="w-full rounded-2xl p-4 text-center relative overflow-hidden"
+                className="w-full rounded-2xl text-center relative overflow-hidden"
                 style={{
                   height: ADSET_CARD_HEIGHT,
-                  background: 'linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%)',
-                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.08)'
+                  background: '#FFFFFF',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.04)',
+                  border: '1px solid rgba(0,0,0,0.06)'
                 }}
               >
+                {/* Black accent bar at top */}
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2"
-                  style={{ background: 'rgba(255,255,255,0.1)' }}
-                >
-                  <Icon size={18} className="text-white" />
-                </div>
-                <h4 className="font-bold text-[11px] text-white mb-0.5 leading-tight">{adSet.name}</h4>
-                <p className="text-[9px] text-white/50 leading-tight mb-3">{adSet.subtitle}</p>
-
-                {adSet.hasDataDrew && (
-                  <a
-                    href={DATADREW_LINK}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-2.5 rounded-xl text-[10px] font-bold transition-all hover:scale-[1.02] hover:shadow-lg"
-                    style={{
-                      background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F0F0 100%)',
-                      color: '#000000',
-                      boxShadow: '0 4px 16px rgba(255,255,255,0.2), inset 0 1px 0 rgba(255,255,255,1)'
-                    }}
+                  className="absolute top-0 left-0 right-0 h-1.5"
+                  style={{ background: '#000000' }}
+                />
+                <div className="p-4 pt-5">
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center mx-auto mb-2.5"
+                    style={{ background: '#000000' }}
                   >
-                    <span>Create Audience</span>
-                    <ExternalLink size={10} />
-                  </a>
-                )}
+                    <Icon size={16} className="text-white" />
+                  </div>
+                  <h4 className="font-bold text-xs text-[var(--text-primary)] mb-0.5 leading-tight">{adSet.name}</h4>
+                  <p className="text-[10px] text-[var(--text-muted)] leading-tight">{adSet.subtitle}</p>
+                </div>
               </div>
 
-              {/* Connector to Creative */}
-              <div className="w-px h-5 bg-gradient-to-b from-black/15 to-black/05" />
+              {/* Create Audience Button - Below Card */}
+              {adSet.hasDataDrew && (
+                <a
+                  href={DATADREW_LINK}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-semibold transition-all hover:shadow-md"
+                  style={{
+                    background: '#000000',
+                    color: '#FFFFFF'
+                  }}
+                >
+                  <span>Create Audience</span>
+                  <ExternalLink size={9} />
+                </a>
+              )}
 
-              {/* Creative Card - All Winners - Bigger */}
+              {/* Connector to Creative */}
+              <div className="w-px h-4 mt-3 bg-gradient-to-b from-black/12 to-transparent" />
+
+              {/* Creative Card - All Winners */}
               <div
                 className="rounded-xl flex flex-col items-center justify-center"
                 style={{
                   width: CREATIVE_CARD_SIZE,
                   height: CREATIVE_CARD_SIZE,
-                  background: 'linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%)',
-                  boxShadow: '0 6px 20px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0,0,0,0.04)',
-                  border: '1px solid rgba(0,0,0,0.06)'
+                  background: '#FFFFFF',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.03)',
+                  border: '1px solid rgba(0,0,0,0.05)'
                 }}
               >
-                <div className="flex -space-x-1.5 mb-1.5">
-                  <ImageIcon size={14} className="text-[var(--text-muted)]" />
-                  <ImageIcon size={14} className="text-[var(--text-muted)]" />
-                  <ImageIcon size={14} className="text-[var(--text-muted)]" />
+                <div className="flex -space-x-1 mb-1">
+                  <ImageIcon size={12} className="text-[var(--text-muted)]" />
+                  <ImageIcon size={12} className="text-[var(--text-muted)]" />
+                  <ImageIcon size={12} className="text-[var(--text-muted)]" />
                 </div>
-                <span className="text-[9px] font-semibold text-[var(--text-muted)] text-center leading-tight">All<br/>Winners</span>
+                <span className="text-[8px] font-semibold text-[var(--text-muted)] text-center leading-tight">All<br/>Winners</span>
               </div>
             </motion.div>
           );
