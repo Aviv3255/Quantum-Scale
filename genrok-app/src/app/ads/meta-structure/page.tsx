@@ -142,12 +142,12 @@ export default function MetaStructurePage() {
 }
 
 // Card dimensions for consistency
-// Ad Set cards: 5:4 ratio (landscape/wide) - BIGGER
-const ADSET_CARD_WIDTH = 160;
-const ADSET_CARD_HEIGHT = 128;
-// Creative/Ad cards: 5:4 ratio (landscape/wide) - BIGGER
-const CREATIVE_CARD_WIDTH = 110;
-const CREATIVE_CARD_HEIGHT = 88;
+// Ad Set cards: all same size (10% bigger), accommodates button
+const ADSET_CARD_WIDTH = 176;
+const ADSET_CARD_HEIGHT = 182;
+// Creative/Ad cards: same width as ad set, 4:3 wide format
+const CREATIVE_CARD_WIDTH = 176;
+const CREATIVE_CARD_HEIGHT = 132;
 
 // Testing Structure Component
 function TestingStructure() {
@@ -186,7 +186,7 @@ function TestingStructure() {
 
       {/* Connector from Campaign to Ad Sets */}
       <div className="flex justify-center">
-        <svg width="800" height="50" className="overflow-visible">
+        <svg width="1000" height="50" className="overflow-visible">
           <defs>
             <linearGradient id="testLine" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="rgba(0,0,0,0.12)" />
@@ -194,12 +194,12 @@ function TestingStructure() {
             </linearGradient>
           </defs>
           {/* Main trunk */}
-          <line x1="400" y1="0" x2="400" y2="20" stroke="url(#testLine)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="500" y1="0" x2="500" y2="20" stroke="url(#testLine)" strokeWidth="2" strokeLinecap="round" />
           {/* Horizontal line */}
-          <line x1="80" y1="20" x2="720" y2="20" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="96" y1="20" x2="904" y2="20" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
           {/* Vertical drops to each ad set */}
           {adSets.map((_, idx) => {
-            const x = 80 + idx * 128;
+            const x = 96 + idx * 162;
             return (
               <line key={idx} x1={x} y1="20" x2={x} y2="50" stroke="rgba(0,0,0,0.06)" strokeWidth="1.5" strokeLinecap="round" />
             );
@@ -365,7 +365,7 @@ function ScalingStructure() {
 
       {/* Connector from Campaign to Ad Sets */}
       <div className="flex justify-center">
-        <svg width="900" height="50" className="overflow-visible">
+        <svg width="1100" height="50" className="overflow-visible">
           <defs>
             <linearGradient id="scaleLine" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="rgba(0,0,0,0.12)" />
@@ -373,12 +373,12 @@ function ScalingStructure() {
             </linearGradient>
           </defs>
           {/* Main trunk */}
-          <line x1="450" y1="0" x2="450" y2="20" stroke="url(#scaleLine)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="550" y1="0" x2="550" y2="20" stroke="url(#scaleLine)" strokeWidth="2" strokeLinecap="round" />
           {/* Horizontal line */}
-          <line x1="75" y1="20" x2="825" y2="20" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="96" y1="20" x2="1004" y2="20" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
           {/* Vertical drops to each ad set */}
           {adSets.map((_, idx) => {
-            const x = 75 + idx * 150;
+            const x = 96 + idx * 182;
             return (
               <line key={idx} x1={x} y1="20" x2={x} y2="50" stroke="rgba(0,0,0,0.06)" strokeWidth="1.5" strokeLinecap="round" />
             );
@@ -403,7 +403,7 @@ function ScalingStructure() {
               <div
                 className="w-full rounded-xl text-center flex flex-col"
                 style={{
-                  height: adSet.hasDataDrew ? 165 : ADSET_CARD_HEIGHT,
+                  height: ADSET_CARD_HEIGHT,
                   background: '#FFFFFF',
                   boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06)',
                   border: '1px solid rgba(0,0,0,0.08)'
