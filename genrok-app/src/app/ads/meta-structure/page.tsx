@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Layers, Target, Image as ImageIcon, Sparkles, TrendingUp, Users, Zap } from 'lucide-react';
+import { ExternalLink, Layers, Target, Image as ImageIcon, Sparkles, TrendingUp, Users, Zap, Crown, Star, Heart, Globe, Crosshair } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
@@ -38,50 +38,41 @@ export default function MetaStructurePage() {
           margin: '-40px -48px',
           padding: '48px 48px 64px',
           minHeight: 'calc(100vh - 64px)',
-          background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)'
+          background: '#FFFFFF'
         }}
       >
-        {/* Subtle grid background */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-30"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0)`,
-            backgroundSize: '32px 32px'
-          }}
-        />
-
         {/* Minimal Header */}
-        <div className="relative max-w-6xl mx-auto mb-12 text-center">
+        <div className="relative max-w-6xl mx-auto mb-10 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5"
             style={{
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.05) 100%)',
-              border: '1px solid rgba(0,0,0,0.06)'
+              background: 'linear-gradient(135deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.06) 100%)',
+              border: '1px solid rgba(0,0,0,0.08)'
             }}
           >
             <Zap size={14} className="text-[var(--text-muted)]" />
             <span className="text-xs font-semibold tracking-widest text-[var(--text-muted)] uppercase">
-              Meta Ads 2025
+              Meta Ads 2026
             </span>
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.5 }}
-            className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4 tracking-tight"
+            className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-3 tracking-tight"
           >
-            The 1-1-X Structure
+            The Testing & Scaling Structure
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-lg text-[var(--text-muted)] max-w-md mx-auto"
+            className="text-base text-[var(--text-muted)] max-w-lg mx-auto"
           >
-            One campaign. Minimal ad sets. Maximum creative volume.
+            Test with volume, scale with precision. The proven framework for Meta Ads success.
           </motion.p>
         </div>
 
@@ -90,16 +81,16 @@ export default function MetaStructurePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
-          className="relative flex justify-center mb-16"
+          className="relative flex justify-center mb-12"
         >
           <div
             className="relative inline-flex p-1.5 rounded-full"
             style={{
-              background: 'rgba(255, 255, 255, 0.8)',
+              background: 'rgba(245, 245, 245, 0.9)',
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              boxShadow: '0 4px 24px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255,255,255,0.8)',
-              border: '1px solid rgba(0, 0, 0, 0.08)'
+              boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.9)',
+              border: '1px solid rgba(0, 0, 0, 0.1)'
             }}
           >
             {/* Animated background pill */}
@@ -113,7 +104,7 @@ export default function MetaStructurePage() {
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               style={{
                 background: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
               }}
             />
             <button
@@ -140,7 +131,7 @@ export default function MetaStructurePage() {
         </motion.div>
 
         {/* Canvas Area */}
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <AnimatePresence mode="wait">
             {activePhase === 'testing' ? (
               <TestingStructure key="testing" />
@@ -150,7 +141,7 @@ export default function MetaStructurePage() {
           </AnimatePresence>
         </div>
 
-        {/* Footer tip */}
+        {/* Footer */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -158,7 +149,7 @@ export default function MetaStructurePage() {
           className="max-w-5xl mx-auto mt-16 text-center"
         >
           <p className="text-sm text-[var(--text-muted)]">
-            Based on Meta's Andromeda algorithm recommendations for 2025
+            Based on Meta's Andromeda algorithm recommendations for 2026
           </p>
         </motion.div>
       </div>
@@ -166,9 +157,14 @@ export default function MetaStructurePage() {
   );
 }
 
+// Card dimensions for consistency
+const ADSET_CARD_WIDTH = 140;
+const ADSET_CARD_HEIGHT = 160;
+const CREATIVE_CARD_SIZE = 56;
+
 // Testing Structure Component
 function TestingStructure() {
-  const creatives = [1, 2, 3, 4, 5];
+  const adSets = [1, 2, 3, 4, 5, 6];
 
   return (
     <motion.div
@@ -179,162 +175,128 @@ function TestingStructure() {
       className="relative"
     >
       {/* Campaign Level */}
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-4">
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.4 }}
-          className="relative px-10 py-6 rounded-3xl text-center"
+          className="relative px-8 py-5 rounded-2xl text-center"
           style={{
             background: 'linear-gradient(145deg, #0a0a0a 0%, #1f1f1f 50%, #0a0a0a 100%)',
-            boxShadow: '0 25px 80px rgba(0, 0, 0, 0.2), 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.1)'
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.1)'
           }}
         >
-          {/* Glow effect */}
-          <div className="absolute -inset-1 rounded-3xl opacity-20 blur-xl" style={{ background: 'linear-gradient(135deg, #333 0%, #000 100%)' }} />
-          <div className="relative flex items-center justify-center gap-3 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-              <Layers className="text-white" size={18} />
+          <div className="absolute -inset-1 rounded-2xl opacity-20 blur-xl" style={{ background: 'linear-gradient(135deg, #333 0%, #000 100%)' }} />
+          <div className="relative flex items-center justify-center gap-2.5 mb-1">
+            <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center">
+              <Layers className="text-white" size={16} />
             </div>
-            <span className="text-white font-bold text-xl tracking-tight">Campaign</span>
+            <span className="text-white font-bold text-lg tracking-tight">ABO Campaign</span>
           </div>
-          <p className="text-white/50 text-sm font-medium">ASC+ or Conversions</p>
+          <p className="text-white/50 text-xs font-medium">Testing Phase</p>
         </motion.div>
       </div>
 
-      {/* Curved connector to Ad Set */}
+      {/* Connector from Campaign to Ad Sets */}
       <div className="flex justify-center">
-        <svg width="4" height="60" className="overflow-visible">
+        <svg width="800" height="50" className="overflow-visible">
           <defs>
-            <linearGradient id="lineGradient1" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="rgba(0,0,0,0.15)" />
-              <stop offset="100%" stopColor="rgba(0,0,0,0.05)" />
-            </linearGradient>
-          </defs>
-          <line x1="2" y1="0" x2="2" y2="60" stroke="url(#lineGradient1)" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-      </div>
-
-      {/* Ad Set Level */}
-      <div className="flex justify-center mb-6">
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
-          className="relative px-10 py-6 rounded-3xl text-center"
-          style={{
-            background: 'linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%)',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04)',
-            border: '1px solid rgba(0,0,0,0.06)'
-          }}
-        >
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <div className="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center">
-              <Target className="text-[var(--text-primary)]" size={18} />
-            </div>
-            <span className="font-bold text-[var(--text-primary)] text-lg">1 Ad Set</span>
-          </div>
-          <p className="text-[var(--text-muted)] text-sm mb-3">Broad Targeting (Open)</p>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold"
-            style={{
-              background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
-              color: '#3B82F6'
-            }}
-          >
-            <Sparkles size={14} />
-            Let Meta's AI find buyers
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Curved connectors to Creatives */}
-      <div className="flex justify-center">
-        <svg width="500" height="60" className="overflow-visible">
-          <defs>
-            <linearGradient id="lineGradient2" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="rgba(0,0,0,0.1)" />
-              <stop offset="100%" stopColor="rgba(0,0,0,0.03)" />
+            <linearGradient id="testLine" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="rgba(0,0,0,0.12)" />
+              <stop offset="100%" stopColor="rgba(0,0,0,0.04)" />
             </linearGradient>
           </defs>
           {/* Main trunk */}
-          <line x1="250" y1="0" x2="250" y2="25" stroke="url(#lineGradient2)" strokeWidth="2" strokeLinecap="round" />
-          {/* Curved branches */}
-          {creatives.map((_, idx) => {
-            const xPos = 50 + idx * 80;
+          <line x1="400" y1="0" x2="400" y2="20" stroke="url(#testLine)" strokeWidth="2" strokeLinecap="round" />
+          {/* Horizontal line */}
+          <line x1="80" y1="20" x2="720" y2="20" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
+          {/* Vertical drops to each ad set */}
+          {adSets.map((_, idx) => {
+            const x = 80 + idx * 128;
             return (
-              <path
-                key={idx}
-                d={`M 250 25 Q 250 40, ${xPos} 55`}
-                fill="none"
-                stroke="rgba(0,0,0,0.08)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
+              <line key={idx} x1={x} y1="20" x2={x} y2="50" stroke="rgba(0,0,0,0.06)" strokeWidth="1.5" strokeLinecap="round" />
             );
           })}
-          {/* Dashed line for X ads */}
-          <path
-            d="M 250 25 Q 250 40, 450 55"
-            fill="none"
-            stroke="rgba(0,0,0,0.06)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeDasharray="4 4"
-          />
         </svg>
       </div>
 
-      {/* Creatives Level */}
-      <div className="flex justify-center gap-3 mt-2">
-        {creatives.map((num, idx) => (
+      {/* Ad Sets Level */}
+      <div className="flex justify-center gap-4">
+        {adSets.map((num, idx) => (
           <motion.div
             key={num}
-            initial={{ opacity: 0, y: 15, scale: 0.9 }}
+            initial={{ opacity: 0, y: 15, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ delay: 0.35 + idx * 0.05, duration: 0.3 }}
-            className="w-[72px] h-[88px] rounded-2xl flex flex-col items-center justify-center group cursor-pointer"
-            style={{
-              background: 'linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%)',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.02)',
-              border: '1px solid rgba(0,0,0,0.04)'
-            }}
+            transition={{ delay: 0.2 + idx * 0.05, duration: 0.3 }}
+            className="flex flex-col items-center"
+            style={{ width: ADSET_CARD_WIDTH }}
           >
-            <div className="w-9 h-9 rounded-xl bg-black/[0.03] flex items-center justify-center mb-2 group-hover:bg-black/[0.06] transition-colors">
-              <ImageIcon size={18} className="text-[var(--text-muted)]" />
+            {/* Ad Set Card */}
+            <div
+              className="w-full rounded-2xl p-4 text-center"
+              style={{
+                height: ADSET_CARD_HEIGHT,
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04)',
+                border: '1px solid rgba(0,0,0,0.06)'
+              }}
+            >
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center mx-auto mb-3">
+                <Target size={18} className="text-blue-600" />
+              </div>
+              <h4 className="font-bold text-sm text-[var(--text-primary)] mb-1">Ad Set {num}</h4>
+              <p className="text-[10px] text-[var(--text-muted)] leading-tight">Interest Based</p>
+              <span className="inline-block mt-2 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-blue-50 text-blue-600">
+                Broad Audience
+              </span>
             </div>
-            <span className="text-xs font-medium text-[var(--text-muted)]">Ad {num}</span>
+
+            {/* Connector to Creative */}
+            <div className="w-px h-4 bg-gradient-to-b from-black/10 to-black/03" />
+
+            {/* Creative Card */}
+            <div
+              className="rounded-xl flex flex-col items-center justify-center"
+              style={{
+                width: CREATIVE_CARD_SIZE,
+                height: CREATIVE_CARD_SIZE,
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)',
+                border: '1px solid rgba(0,0,0,0.05)'
+              }}
+            >
+              <ImageIcon size={16} className="text-[var(--text-muted)] mb-1" />
+              <span className="text-[8px] font-semibold text-[var(--text-muted)]">Ad {num}</span>
+            </div>
           </motion.div>
         ))}
-        <motion.div
-          initial={{ opacity: 0, y: 15, scale: 0.9 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.6, duration: 0.3 }}
-          className="w-[72px] h-[88px] rounded-2xl flex flex-col items-center justify-center"
-          style={{
-            border: '2px dashed rgba(0,0,0,0.08)',
-            background: 'transparent'
-          }}
-        >
-          <span className="text-xl font-light text-[var(--text-muted)] mb-1">+X</span>
-          <span className="text-[10px] font-medium text-[var(--text-muted)] uppercase tracking-wide">more</span>
-        </motion.div>
       </div>
 
-      {/* Tip Box */}
+      {/* Pro Tip Box */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7, duration: 0.4 }}
-        className="mt-14 p-6 rounded-2xl text-center max-w-lg mx-auto"
+        transition={{ delay: 0.6, duration: 0.4 }}
+        className="mt-10 p-5 rounded-2xl max-w-3xl mx-auto"
         style={{
-          background: 'rgba(0,0,0,0.02)',
-          border: '1px solid rgba(0,0,0,0.04)'
+          background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(139, 92, 246, 0.04) 100%)',
+          border: '1px solid rgba(59, 130, 246, 0.1)'
         }}
       >
-        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-          <span className="font-bold text-[var(--text-primary)]">Pro tip:</span> Start with 10-20 creatives.
-          Test different hooks, angles, and formats. Kill losers fast, scale winners.
-        </p>
+        <div className="flex items-start gap-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center flex-shrink-0">
+            <Sparkles size={18} className="text-white" />
+          </div>
+          <div>
+            <h4 className="font-bold text-[var(--text-primary)] mb-2">Testing Strategy</h4>
+            <ul className="text-sm text-[var(--text-secondary)] space-y-1.5 leading-relaxed">
+              <li><span className="font-semibold text-[var(--text-primary)]">Budget:</span> Start with $20-$50/day per ad set</li>
+              <li><span className="font-semibold text-[var(--text-primary)]">Diversify:</span> UGC, Infographics, Visuals, Social Proof</li>
+              <li><span className="font-semibold text-[var(--text-primary)]">Winner:</span> CAC lower than average with 10+ purchases</li>
+              <li><span className="font-semibold text-[var(--text-primary)]">Kill rule:</span> Turn off if spent 1.5× CAC without purchase</li>
+            </ul>
+          </div>
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -344,31 +306,46 @@ function TestingStructure() {
 function ScalingStructure() {
   const adSets = [
     {
+      name: 'RFM 10% LLA',
+      subtitle: 'Champion, Loyal, Promising',
+      icon: Crown,
+      color: '#F59E0B',
+      hasDataDrew: true
+    },
+    {
       name: 'Top 10% Spenders',
-      subtitle: 'LLA',
-      description: 'Lookalike of highest-value customers',
+      subtitle: 'Lookalike',
       icon: TrendingUp,
-      hasDataDrew: true,
       color: '#10B981',
-      gradient: 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
+      hasDataDrew: true
     },
     {
       name: 'Top 25% Spenders',
-      subtitle: 'LLA',
-      description: 'Broader high-value lookalike',
+      subtitle: 'Lookalike',
       icon: TrendingUp,
-      hasDataDrew: true,
       color: '#3B82F6',
-      gradient: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)'
+      hasDataDrew: true
     },
     {
-      name: 'RFM Segments',
-      subtitle: '',
-      description: 'Recency, Frequency, Monetary',
-      icon: Users,
-      hasDataDrew: true,
+      name: 'Top 5% Purchases',
+      subtitle: 'Lookalike',
+      icon: Star,
       color: '#8B5CF6',
-      gradient: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)'
+      hasDataDrew: true
+    },
+    {
+      name: 'Open Targeting',
+      subtitle: 'Broad',
+      icon: Globe,
+      color: '#6B7280',
+      hasDataDrew: false
+    },
+    {
+      name: 'Interests Based',
+      subtitle: 'Targeted',
+      icon: Crosshair,
+      color: '#EC4899',
+      hasDataDrew: false
     }
   ];
 
@@ -381,123 +358,126 @@ function ScalingStructure() {
       className="relative"
     >
       {/* Campaign Level */}
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-4">
         <motion.div
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.1, duration: 0.4 }}
-          className="relative px-10 py-6 rounded-3xl text-center"
+          className="relative px-8 py-5 rounded-2xl text-center"
           style={{
             background: 'linear-gradient(145deg, #0a0a0a 0%, #1f1f1f 50%, #0a0a0a 100%)',
-            boxShadow: '0 25px 80px rgba(0, 0, 0, 0.2), 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.1)'
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.1)'
           }}
         >
-          <div className="absolute -inset-1 rounded-3xl opacity-20 blur-xl" style={{ background: 'linear-gradient(135deg, #333 0%, #000 100%)' }} />
-          <div className="relative flex items-center justify-center gap-3 mb-1">
-            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
-              <Layers className="text-white" size={18} />
+          <div className="absolute -inset-1 rounded-2xl opacity-20 blur-xl" style={{ background: 'linear-gradient(135deg, #333 0%, #000 100%)' }} />
+          <div className="relative flex items-center justify-center gap-2.5 mb-1">
+            <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center">
+              <Layers className="text-white" size={16} />
             </div>
-            <span className="text-white font-bold text-xl tracking-tight">Campaign</span>
+            <span className="text-white font-bold text-lg tracking-tight">CBO Campaign</span>
           </div>
-          <p className="text-white/50 text-sm font-medium">Scaling Winners</p>
+          <p className="text-white/50 text-xs font-medium">Scaling Winners</p>
         </motion.div>
       </div>
 
-      {/* Curved connectors to Ad Sets */}
+      {/* Connector from Campaign to Ad Sets */}
       <div className="flex justify-center">
-        <svg width="700" height="70" className="overflow-visible">
+        <svg width="900" height="50" className="overflow-visible">
           <defs>
-            <linearGradient id="lineGradient3" x1="0%" y1="0%" x2="0%" y2="100%">
+            <linearGradient id="scaleLine" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="rgba(0,0,0,0.12)" />
               <stop offset="100%" stopColor="rgba(0,0,0,0.04)" />
             </linearGradient>
           </defs>
           {/* Main trunk */}
-          <line x1="350" y1="0" x2="350" y2="30" stroke="url(#lineGradient3)" strokeWidth="2" strokeLinecap="round" />
-          {/* Curved branches to 3 ad sets */}
-          <path d="M 350 30 Q 350 50, 117 65" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M 350 30 Q 350 50, 350 65" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
-          <path d="M 350 30 Q 350 50, 583 65" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="450" y1="0" x2="450" y2="20" stroke="url(#scaleLine)" strokeWidth="2" strokeLinecap="round" />
+          {/* Horizontal line */}
+          <line x1="75" y1="20" x2="825" y2="20" stroke="rgba(0,0,0,0.08)" strokeWidth="1.5" strokeLinecap="round" />
+          {/* Vertical drops to each ad set */}
+          {adSets.map((_, idx) => {
+            const x = 75 + idx * 150;
+            return (
+              <line key={idx} x1={x} y1="20" x2={x} y2="50" stroke="rgba(0,0,0,0.06)" strokeWidth="1.5" strokeLinecap="round" />
+            );
+          })}
         </svg>
       </div>
 
       {/* Ad Sets Level */}
-      <div className="flex justify-center gap-5">
+      <div className="flex justify-center gap-3">
         {adSets.map((adSet, idx) => {
           const Icon = adSet.icon;
           return (
             <motion.div
               key={adSet.name}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              initial={{ opacity: 0, y: 15, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 0.25 + idx * 0.1, duration: 0.4 }}
-              className="relative w-[220px]"
+              transition={{ delay: 0.2 + idx * 0.05, duration: 0.3 }}
+              className="flex flex-col items-center"
+              style={{ width: ADSET_CARD_WIDTH }}
             >
+              {/* Ad Set Card */}
               <div
-                className="relative p-6 rounded-3xl text-center overflow-hidden"
+                className="w-full rounded-2xl p-3 text-center relative overflow-hidden"
                 style={{
+                  height: ADSET_CARD_HEIGHT,
                   background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)',
-                  boxShadow: '0 20px 60px rgba(0, 0, 0, 0.06), 0 8px 24px rgba(0, 0, 0, 0.04)',
-                  border: '1px solid rgba(0,0,0,0.05)'
+                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04)',
+                  border: '1px solid rgba(0,0,0,0.06)'
                 }}
               >
-                {/* Subtle colored top border */}
+                {/* Top color bar */}
                 <div
-                  className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
-                  style={{ background: adSet.gradient }}
+                  className="absolute top-0 left-0 right-0 h-1"
+                  style={{ background: adSet.color }}
                 />
-
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4"
-                  style={{ background: `${adSet.color}10` }}
+                  className="w-9 h-9 rounded-xl flex items-center justify-center mx-auto mb-2 mt-1"
+                  style={{ background: `${adSet.color}15` }}
                 >
-                  <Icon size={22} style={{ color: adSet.color }} />
+                  <Icon size={16} style={{ color: adSet.color }} />
                 </div>
-                <h3 className="font-bold text-[var(--text-primary)] text-base mb-0.5">
-                  {adSet.name}
-                </h3>
-                {adSet.subtitle && (
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded-full mb-2 inline-block" style={{ background: `${adSet.color}15`, color: adSet.color }}>
-                    {adSet.subtitle}
-                  </span>
-                )}
-                <p className="text-xs text-[var(--text-muted)] mb-4 mt-1">
-                  {adSet.description}
-                </p>
+                <h4 className="font-bold text-[11px] text-[var(--text-primary)] mb-0.5 leading-tight">{adSet.name}</h4>
+                <p className="text-[9px] text-[var(--text-muted)] leading-tight mb-2">{adSet.subtitle}</p>
 
                 {adSet.hasDataDrew && (
                   <a
                     href={DATADREW_LINK}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold transition-all hover:scale-[1.02] hover:shadow-lg"
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[8px] font-semibold transition-all hover:scale-105"
                     style={{
-                      background: adSet.gradient,
+                      background: adSet.color,
                       color: 'white',
-                      boxShadow: `0 4px 14px ${adSet.color}40`
+                      boxShadow: `0 2px 8px ${adSet.color}40`
                     }}
                   >
-                    <span>Get with DataDrew</span>
-                    <ExternalLink size={12} />
+                    <span>DataDrew</span>
+                    <ExternalLink size={8} />
                   </a>
                 )}
               </div>
 
-              {/* Creative indicators below */}
-              <div className="flex justify-center gap-1.5 mt-4">
-                {[1, 2, 3].map((n) => (
-                  <div
-                    key={n}
-                    className="w-8 h-10 rounded-lg flex items-center justify-center"
-                    style={{
-                      background: 'linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%)',
-                      border: '1px solid rgba(0,0,0,0.04)',
-                      boxShadow: '0 2px 6px rgba(0,0,0,0.02)'
-                    }}
-                  >
-                    <ImageIcon size={12} className="text-[var(--text-muted)]" />
-                  </div>
-                ))}
+              {/* Connector to Creative */}
+              <div className="w-px h-4 bg-gradient-to-b from-black/10 to-black/03" />
+
+              {/* Creative Card - All Winners */}
+              <div
+                className="rounded-xl flex flex-col items-center justify-center"
+                style={{
+                  width: CREATIVE_CARD_SIZE,
+                  height: CREATIVE_CARD_SIZE,
+                  background: 'linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)',
+                  border: '1px solid rgba(0,0,0,0.05)'
+                }}
+              >
+                <div className="flex -space-x-1 mb-1">
+                  <ImageIcon size={10} className="text-[var(--text-muted)]" />
+                  <ImageIcon size={10} className="text-[var(--text-muted)]" />
+                  <ImageIcon size={10} className="text-[var(--text-muted)]" />
+                </div>
+                <span className="text-[7px] font-semibold text-[var(--text-muted)] text-center leading-tight">All<br/>Winners</span>
               </div>
             </motion.div>
           );
@@ -509,15 +489,15 @@ function ScalingStructure() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6, duration: 0.4 }}
-        className="mt-14 p-6 rounded-2xl max-w-2xl mx-auto"
+        className="mt-10 p-5 rounded-2xl max-w-3xl mx-auto"
         style={{
           background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, rgba(59, 130, 246, 0.04) 100%)',
-          border: '1px solid rgba(16, 185, 129, 0.08)'
+          border: '1px solid rgba(16, 185, 129, 0.1)'
         }}
       >
         <div className="flex items-start gap-4">
           <div
-            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+            className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
             style={{
               background: 'linear-gradient(135deg, #10B981 0%, #3B82F6 100%)',
               boxShadow: '0 4px 14px rgba(16, 185, 129, 0.3)'
@@ -526,7 +506,7 @@ function ScalingStructure() {
             <Sparkles size={18} className="text-white" />
           </div>
           <div>
-            <h4 className="font-bold text-[var(--text-primary)] mb-1.5">
+            <h4 className="font-bold text-[var(--text-primary)] mb-2">
               Why LTV-based audiences win
             </h4>
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
