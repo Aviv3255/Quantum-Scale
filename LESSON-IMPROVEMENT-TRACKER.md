@@ -344,10 +344,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 264 | sales-message-anatomy | 9 | Elite (Improved Jan 3) |
 | 265 | scammer-playbook-good | 9 | Elite (Verified Jan 4) |
 | 266 | scarcity-calendar | 9 | Elite (Full Upgrade Jan 4) |
+| 267 | science-of-selling | 9 | Elite (Full Upgrade Jan 4) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (31 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (30 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -359,8 +360,7 @@ These lessons need design improvements to reach elite level.
 | 189 | micro-yes-engine | ERROR |
 | 200 | pain-dream-bridge | ERROR |
 | 216 | price-creates-value | ERROR |
-| 231 | science-of-selling | 5 |
-| 232 | self-persuasion-architecture | 5 |
+| 231 | self-persuasion-architecture | 5 |
 | 233 | self-selection-principle | 5 |
 | 234 | sell-the-identity | ERROR |
 | 235 | shape-psychology | 5 |
@@ -420,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 265 |
-| Need Improvement | 32 |
+| Improved / Don't Need Improvement | 267 |
+| Need Improvement | 30 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
