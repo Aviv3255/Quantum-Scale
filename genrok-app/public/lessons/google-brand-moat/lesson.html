@@ -12,8 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #f97316; --accent-dark: #ea580c; --accent-light: #fdba74; --accent-rgb: 249, 115, 22; }
@@ -46,25 +44,15 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -80,31 +68,10 @@
       };
 
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
             <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
@@ -119,32 +86,52 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, duration = 2, prefix = '', suffix = '', decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const incrementTime = (duration * 1000) / (end * 10);
+        const step = end / (duration * 60);
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= end) {
+            setCount(end);
+            clearInterval(timer);
+          } else {
+            setCount(start);
+          }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['Why brand is the most powerful marketing barrier', 'How brand creates pricing power that transcends advertising', 'The Nike Effect: selling identical products for 10x the price', 'Why strong brands make Google Ads work on easy mode'] },
-      { type: 'hook', headline: 'Nike sells a t-shirt for $60. An identical unbranded t-shirt sells for $6. Same material. Same quality. 10x price difference. The only variable? Brand.', subtext: 'Top advertisers don\'t just compete on budget. They build barriers to entry that competitors can\'t simply copy with more money. The most powerful barrier is brand.' },
-      { type: 'content', title: 'The Ultimate Barrier to Entry', body: 'Most businesses think the game is about budget:\n\n"If I just had more money for ads..."\n"My competitor is outspending me..."\n"I can\'t compete with their advertising budget..."\n\nBut the top advertisers know something different. They build barriers that money alone can\'t overcome. The most powerful barrier? Brand.\n\nBrand is what allows Nike to sell a t-shirt for 10x what an identical, unbranded shirt sells for. It\'s what makes customers choose you over cheaper competitors. It\'s what turns price shoppers into loyal fans.\n\nAnd here\'s the critical insight: A strong brand makes Google Ads work on easy mode.' },
-      { type: 'mockup', title: 'Your Brand is Your Moat', description: 'A strong brand creates an impenetrable barrier around your business. Competitors can throw money at ads, but they can\'t breach the trust and loyalty you\'ve built.', mockupType: 'brand-moat' },
-      { type: 'content', title: 'The Nike Effect', body: 'Brand creates two massive advantages in advertising:\n\n1. Pricing Power\nWhen customers know and trust your brand, price becomes less important. They\'re not shopping for the cheapest option - they\'re shopping for YOUR option. This means higher margins and more profit per customer.\n\n2. Advertising Efficiency\nStrong brands have higher click-through rates and conversion rates. Why? Because people recognize and trust you. They\'re more likely to click your ad and more likely to buy.\n\nThe result: You can afford to pay more per click because you convert better and make more per customer. You\'re playing the same game as your competitors, but on easy mode.\n\nBrand isn\'t built overnight. But every customer interaction, every ad, every touchpoint is either building or eroding your brand. Choose wisely.' },
-      { type: 'content', title: 'Brand Makes Everything Work Better', body: 'Here\'s what changes when you have a strong brand:\n\nGoogle Ads:\n- Higher CTR (people recognize you)\n- Higher conversion rates (people trust you)\n- Lower CPA (efficiency compounds)\n- Better Quality Scores (Google rewards engagement)\n\nCustomer Behavior:\n- Less price sensitivity\n- Higher average order value\n- More repeat purchases\n- Word-of-mouth referrals\n\nCompetitive Position:\n- Harder to steal customers with price alone\n- Can charge premium prices\n- Customer loyalty creates recurring revenue\n- Brand equity compounds over time\n\nThe businesses that dominate their categories don\'t just outspend competitors. They out-brand them.' },
-      { type: 'quiz', question: 'What\'s the key advantage of building a strong brand for Google Ads?', options: ['Lower cost per click than competitors', 'Better ad formats and placements', 'Higher conversion rates and pricing power - customers choose you over cheaper options', 'Access to exclusive Google features'], correctIndex: 2, feedback: { correct: 'Exactly! Brand creates a moat that competitors can\'t breach with budget alone. When customers know and trust your brand, they convert at higher rates and accept higher prices. This means you can afford to pay more per click while still maintaining better ROAS. You\'re playing the same Google Ads game as everyone else, but with a massive advantage. Brand makes everything work better - higher CTR, higher conversion rates, lower CPA, and premium pricing. It\'s the ultimate competitive advantage.', incorrect: 'Not quite. The real power of brand is conversion rates and pricing power. When customers trust your brand, they\'re more likely to click your ads AND more likely to buy - even at higher prices. This creates a compounding advantage: higher CTR improves Quality Score, higher conversion rates lower CPA, and premium pricing increases profit per customer. You\'re not competing on budget anymore - you\'re competing on trust. And trust can\'t be bought, only earned over time through consistent quality and customer experience.' }},
+      { type: 'hook', headline: 'Nike sells a t-shirt for $60. An identical unbranded t-shirt sells for $6. Same material. Same quality. 10x price difference. The only variable? Brand.', subtext: 'Top advertisers don\'t just compete on budget. They build barriers to entry that competitors can\'t simply copy with more money.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/nike-logo.svg', brandName: 'Nike' },
+      { type: 'pricing-power', title: 'The 10x Price Difference', subtitle: 'Same product. Same quality. Brand is the ONLY variable.' },
+      { type: 'brand-advantages', title: 'Two Massive Advantages', subtitle: 'Brand creates an unfair advantage in advertising' },
+      { type: 'easy-mode', title: 'Google Ads on Easy Mode', subtitle: 'What happens when customers already know and trust you' },
+      { type: 'google-impact', title: 'The Brand Effect on Google Ads', subtitle: 'Every metric improves when brand is strong' },
+      { type: 'moat-visual', title: 'Your Brand is Your Moat', subtitle: 'Competitors can throw money at ads, but they can\'t breach your trust barrier' },
+      { type: 'competitive-flywheel', title: 'The Compounding Effect', subtitle: 'Brand equity compounds over time - creating an ever-widening gap' },
+      { type: 'elite-insight', quote: 'Trust can\'t be bought. Only earned.', author: 'Brand Building Principle', insight: 'While competitors throw money at the wall, your brand moat deflects every attack. This is the unfair advantage that compounds over time - and no budget can breach it.' },
+      { type: 'quiz', question: 'What\'s the key advantage of building a strong brand for Google Ads?', options: ['Lower cost per click than competitors', 'Better ad formats and placements', 'Higher conversion rates and pricing power - customers choose you over cheaper options', 'Access to exclusive Google features'], correctIndex: 2, feedback: { correct: 'Exactly! Brand creates a moat that competitors can\'t breach with budget alone. When customers know and trust your brand, they convert at higher rates and accept higher prices.', incorrect: 'Not quite. The real power of brand is conversion rates and pricing power. When customers trust your brand, they\'re more likely to click your ads AND more likely to buy - even at higher prices.' }},
       { type: 'completion', sources: [{ name: 'Google Ads Brand Campaigns Guide', url: 'https://ads.google.com' }] }
     ];
 
@@ -154,6 +141,21 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Heart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Lock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      BarChart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Repeat: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>,
+      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      MousePointer: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="M13 13l6 6"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Award: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -193,192 +195,912 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '35%', maxHeight: '220px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.9 }} />
           </motion.div>
         )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
-      
-        {data.characterVideo && (
+    // ============ PRICING POWER SLIDE ============
+    const PricingPowerSlide = ({ data }) => {
+      const [showDifference, setShowDifference] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowDifference(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm md:text-base">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Unbranded T-Shirt */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: 'linear-gradient(135deg, #374151, #4b5563)',
+                borderRadius: '20px',
+                padding: '32px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #9ca3af, transparent)' }} />
+              <div className="text-center">
+                <div style={{
+                  width: '100px',
+                  height: '100px',
+                  margin: '0 auto 20px',
+                  background: 'linear-gradient(135deg, #6b7280, #9ca3af)',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '40px'
+                }}>
+                  <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
+                    <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"/>
+                  </svg>
+                </div>
+                <p className="text-neutral-300 text-sm mb-3 uppercase tracking-wider">Unbranded T-Shirt</p>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-5xl font-bold text-white">$</span>
+                  <span className="text-6xl font-black text-white"><AnimatedCounter value={6} duration={1.5} /></span>
+                </div>
+                <p className="text-neutral-400 text-xs mt-3">100% Cotton • Quality Stitching</p>
+              </div>
+            </motion.div>
+
+            {/* Nike T-Shirt */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '20px',
+                padding: '32px',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: '0 0 60px rgba(249, 115, 22, 0.2)'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-center">
+                <div style={{
+                  width: '100px',
+                  height: '100px',
+                  margin: '0 auto 20px',
+                  background: 'linear-gradient(135deg, #000, #333)',
+                  borderRadius: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/nike-logo.svg" alt="Nike" style={{ width: '60px', filter: 'invert(1)' }} />
+                </div>
+                <p className="text-neutral-300 text-sm mb-3 uppercase tracking-wider">Nike T-Shirt</p>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-5xl font-bold" style={{ color: 'var(--accent)' }}>$</span>
+                  <span className="text-6xl font-black" style={{ color: 'var(--accent)' }}><AnimatedCounter value={60} duration={1.5} /></span>
+                </div>
+                <p className="text-neutral-400 text-xs mt-3">100% Cotton • Quality Stitching</p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* The Difference */}
+          <AnimatePresence>
+            {showDifference && (
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  textAlign: 'center',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="flex items-center justify-center gap-6 flex-wrap">
+                  <div className="text-center">
+                    <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Price Multiplier</p>
+                    <p className="text-4xl font-black" style={{ color: 'var(--accent)' }}>10x</p>
+                  </div>
+                  <div style={{ width: '2px', height: '50px', background: 'linear-gradient(180deg, transparent, var(--accent), transparent)' }} />
+                  <div className="text-center">
+                    <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">The Only Variable</p>
+                    <p className="text-3xl font-bold text-white flex items-center gap-2">
+                      <span style={{ color: 'var(--accent)' }}><Icons.Crown /></span>
+                      BRAND
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ BRAND ADVANTAGES SLIDE ============
+    const BrandAdvantagesSlide = ({ data }) => {
+      const [activeAdvantage, setActiveAdvantage] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveAdvantage(prev => (prev + 1) % 2);
+        }, 4000);
+        return () => clearInterval(interval);
+      }, []);
+
+      const advantages = [
+        {
+          icon: Icons.DollarSign,
+          title: 'Pricing Power',
+          description: 'When customers know and trust your brand, price becomes less important.',
+          details: ['Not shopping for cheapest option', 'Shopping for YOUR option', 'Higher margins per customer', 'Premium positioning'],
+          stat: '+40%',
+          statLabel: 'Higher Margins'
+        },
+        {
+          icon: Icons.Target,
+          title: 'Advertising Efficiency',
+          description: 'Strong brands have higher click-through rates and conversion rates.',
+          details: ['People recognize you', 'More likely to click', 'More likely to buy', 'Trust removes friction'],
+          stat: '2.3x',
+          statLabel: 'Better Conversion'
+        }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm md:text-base">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {advantages.map((adv, i) => {
+              const IconComp = adv.icon;
+              const isActive = activeAdvantage === i;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.15 }}
+                  onClick={() => setActiveAdvantage(i)}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    borderRadius: '20px',
+                    padding: '28px',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    boxShadow: isActive ? '0 0 50px rgba(249, 115, 22, 0.25)' : '0 4px 20px rgba(0,0,0,0.1)',
+                    transform: isActive ? 'scale(1.02)' : 'scale(1)',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '3px',
+                    background: isActive ? 'linear-gradient(90deg, transparent, var(--accent), transparent)' : 'linear-gradient(90deg, transparent, #4b5563, transparent)'
+                  }} />
+
+                  <div className="flex items-start gap-4 mb-4">
+                    <div style={{
+                      background: isActive ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : 'linear-gradient(135deg, #374151, #4b5563)',
+                      borderRadius: '12px',
+                      padding: '12px',
+                      flexShrink: 0,
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <span style={{ color: 'white' }}><IconComp /></span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-neutral-400 text-[10px] font-bold uppercase tracking-wider">Advantage {i + 1}</span>
+                        {isActive && (
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="px-2 py-0.5 rounded-full text-[9px] font-bold"
+                            style={{ background: 'var(--accent)', color: 'white' }}
+                          >
+                            ACTIVE
+                          </motion.span>
+                        )}
+                      </div>
+                      <h3 className="text-white font-bold text-lg">{adv.title}</h3>
+                    </div>
+                  </div>
+
+                  <p className="text-neutral-300 text-sm mb-4">{adv.description}</p>
+
+                  <div className="grid grid-cols-2 gap-2 mb-4">
+                    {adv.details.map((detail, j) => (
+                      <motion.div
+                        key={j}
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: isActive ? 1 : 0.5, x: 0 }}
+                        transition={{ delay: j * 0.1 }}
+                        className="flex items-center gap-2"
+                      >
+                        <span style={{ color: isActive ? 'var(--accent)' : '#6b7280' }}><Icons.Check /></span>
+                        <span className="text-neutral-400 text-xs">{detail}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <motion.div
+                    animate={{ opacity: isActive ? 1 : 0.6 }}
+                    style={{
+                      background: isActive ? 'rgba(249, 115, 22, 0.1)' : 'rgba(75, 85, 99, 0.2)',
+                      borderRadius: '10px',
+                      padding: '12px',
+                      textAlign: 'center',
+                      border: isActive ? '1px solid rgba(249, 115, 22, 0.3)' : '1px solid transparent'
+                    }}
+                  >
+                    <p className="text-3xl font-black" style={{ color: isActive ? 'var(--accent)' : '#9ca3af' }}>{adv.stat}</p>
+                    <p className="text-neutral-400 text-xs">{adv.statLabel}</p>
+                  </motion.div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ EASY MODE SLIDE ============
+    const EasyModeSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm md:text-base">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Hard Mode - No Brand */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: 'linear-gradient(135deg, #374151, #4b5563)',
+                borderRadius: '20px',
+                padding: '28px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="text-center mb-4">
+                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#f87171' }}>Hard Mode</span>
+              </div>
+              <h3 className="text-white font-bold text-lg text-center mb-4">No Brand Recognition</h3>
+
+              <div className="space-y-3">
+                {[
+                  { label: 'Click-Through Rate', icon: Icons.MousePointer, value: 'Low CTR' },
+                  { label: 'Trust Level', icon: Icons.Shield, value: 'Must Earn' },
+                  { label: 'Price Sensitivity', icon: Icons.DollarSign, value: 'Very High' },
+                  { label: 'Conversion Rate', icon: Icons.Target, value: 'Low' }
+                ].map((item, i) => {
+                  const IconComp = item.icon;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.4 + i * 0.1 }}
+                      className="flex items-center justify-between"
+                      style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '10px', padding: '12px' }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span style={{ color: '#9ca3af' }}><IconComp /></span>
+                        <span className="text-neutral-300 text-sm">{item.label}</span>
+                      </div>
+                      <span className="text-neutral-400 text-xs font-medium">{item.value}</span>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* Easy Mode - Strong Brand */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '20px',
+                padding: '28px',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: '0 0 60px rgba(249, 115, 22, 0.2)'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-center mb-4">
+                <span className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider" style={{ background: 'rgba(249, 115, 22, 0.2)', color: 'var(--accent)' }}>Easy Mode</span>
+              </div>
+              <h3 className="text-white font-bold text-lg text-center mb-4">Strong Brand Recognition</h3>
+
+              <div className="space-y-3">
+                {[
+                  { label: 'Click-Through Rate', icon: Icons.MousePointer, value: 'High CTR', highlight: true },
+                  { label: 'Trust Level', icon: Icons.Shield, value: 'Pre-Built', highlight: true },
+                  { label: 'Price Sensitivity', icon: Icons.DollarSign, value: 'Low', highlight: true },
+                  { label: 'Conversion Rate', icon: Icons.Target, value: 'High', highlight: true }
+                ].map((item, i) => {
+                  const IconComp = item.icon;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.6 + i * 0.1 }}
+                      className="flex items-center justify-between"
+                      style={{ background: 'rgba(249, 115, 22, 0.1)', borderRadius: '10px', padding: '12px', border: '1px solid rgba(249, 115, 22, 0.2)' }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span style={{ color: 'var(--accent)' }}><IconComp /></span>
+                        <span className="text-neutral-300 text-sm">{item.label}</span>
+                      </div>
+                      <span style={{ color: 'var(--accent)' }} className="text-xs font-bold">{item.value}</span>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Result */}
+          <AnimatePresence>
+            {showResult && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px 24px',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="flex items-center gap-4 flex-wrap justify-center">
+                  <div style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', borderRadius: '10px', padding: '10px' }}>
+                    <span style={{ color: 'white' }}><Icons.Zap /></span>
+                  </div>
+                  <div className="text-center md:text-left">
+                    <p className="text-white font-bold text-base">You can afford to pay MORE per click</p>
+                    <p className="text-neutral-400 text-sm">Because you convert better and make more per customer</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ GOOGLE IMPACT SLIDE ============
+    const GoogleImpactSlide = ({ data }) => {
+      const [activeMetric, setActiveMetric] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveMetric(prev => (prev + 1) % 4);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      const metrics = [
+        { icon: Icons.MousePointer, label: 'Click-Through Rate', value: '+45%', description: 'People recognize and click on brands they know', color: '#22c55e' },
+        { icon: Icons.Target, label: 'Conversion Rate', value: '+67%', description: 'Trust removes purchase friction', color: '#3b82f6' },
+        { icon: Icons.DollarSign, label: 'Cost Per Acquisition', value: '-38%', description: 'Efficiency compounds over time', color: '#a855f7' },
+        { icon: Icons.Star, label: 'Quality Score', value: '+2.1', description: 'Google rewards engagement signals', color: '#eab308' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm md:text-base">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {metrics.map((metric, i) => {
+              const IconComp = metric.icon;
+              const isActive = activeMetric === i;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  onClick={() => setActiveMetric(i)}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    boxShadow: isActive ? `0 0 40px ${metric.color}33` : '0 4px 20px rgba(0,0,0,0.1)',
+                    transform: isActive ? 'scale(1.05)' : 'scale(1)',
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '3px',
+                    background: isActive ? `linear-gradient(90deg, transparent, ${metric.color}, transparent)` : 'linear-gradient(90deg, transparent, #4b5563, transparent)'
+                  }} />
+
+                  <div className="text-center">
+                    <div style={{
+                      background: isActive ? `${metric.color}20` : 'rgba(75, 85, 99, 0.3)',
+                      borderRadius: '12px',
+                      padding: '12px',
+                      display: 'inline-flex',
+                      marginBottom: '12px',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <span style={{ color: isActive ? metric.color : '#9ca3af' }}><IconComp /></span>
+                    </div>
+                    <p className="text-neutral-400 text-xs mb-2">{metric.label}</p>
+                    <p className="text-3xl font-black mb-2" style={{ color: isActive ? metric.color : '#9ca3af' }}>{metric.value}</p>
+                    <p className="text-neutral-500 text-[10px] leading-tight">{metric.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Summary */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
+            transition={{ delay: 0.6 }}
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderRadius: '16px',
+              padding: '20px 24px',
+              marginTop: '24px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-center text-white font-medium">
+              <span style={{ color: 'var(--accent)' }}>Same ads. Same budget. Same targeting.</span> Brand is the multiplier.
+            </p>
           </motion.div>
-        )}
+        </div>
+      );
+    };
+
+    // ============ MOAT VISUAL SLIDE ============
+    const MoatVisualSlide = ({ data }) => {
+      const [attackPhase, setAttackPhase] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setAttackPhase(prev => (prev + 1) % 3);
+        }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm md:text-base">{data.subtitle}</p>
+          </motion.div>
+
+          {/* Castle Visualization */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderRadius: '20px',
+              padding: '32px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="relative" style={{ height: '280px' }}>
+              {/* Castle */}
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  textAlign: 'center'
+                }}
+              >
+                <div style={{
+                  width: '120px',
+                  height: '120px',
+                  background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 12px',
+                  boxShadow: '0 0 60px rgba(249, 115, 22, 0.4)'
+                }}>
+                  <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5">
+                    <rect x="3" y="10" width="18" height="11" rx="1"/>
+                    <path d="M5 10V7a2 2 0 012-2h2V3h6v2h2a2 2 0 012 2v3"/>
+                    <path d="M10 21v-4a2 2 0 114 0v4"/>
+                    <rect x="7" y="13" width="2" height="2"/>
+                    <rect x="15" y="13" width="2" height="2"/>
+                  </svg>
+                </div>
+                <p className="text-white font-bold text-sm">Your Business</p>
+              </motion.div>
+
+              {/* Moat Ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: '220px',
+                  height: '220px',
+                  border: '4px dashed rgba(59, 130, 246, 0.5)',
+                  borderRadius: '50%'
+                }}
+              />
+              <div style={{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, 60px)',
+                textAlign: 'center'
+              }}>
+                <p className="text-blue-400 text-xs font-bold uppercase tracking-wider">Brand Moat</p>
+              </div>
+
+              {/* Competitor Attacks */}
+              {[
+                { x: '-100px', y: '-80px', label: 'Competitor A' },
+                { x: '100px', y: '-80px', label: 'Competitor B' },
+                { x: '-110px', y: '40px', label: 'Competitor C' },
+                { x: '110px', y: '40px', label: 'Competitor D' }
+              ].map((comp, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: attackPhase === (i % 3) ? 1 : 0.4,
+                    scale: attackPhase === (i % 3) ? 1.1 : 1
+                  }}
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: `translate(calc(-50% + ${comp.x}), calc(-50% + ${comp.y}))`,
+                    textAlign: 'center'
+                  }}
+                >
+                  <div style={{
+                    width: '50px',
+                    height: '50px',
+                    background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 8px'
+                  }}>
+                    <span className="text-white text-xl">$</span>
+                  </div>
+                  <p className="text-neutral-400 text-[10px]">{comp.label}</p>
+                  {attackPhase === (i % 3) && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-2 -right-2"
+                    >
+                      <span className="text-red-400 font-bold text-xs">BLOCKED</span>
+                    </motion.div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Bottom Insight */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-4 text-center"
+          >
+            <p className="text-neutral-600 text-sm">
+              <span className="font-bold" style={{ color: 'var(--accent)' }}>Competitors can outspend you.</span> They can't out-trust you.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ COMPETITIVE FLYWHEEL SLIDE ============
+    const CompetitiveFlywheelSlide = ({ data }) => {
+      const [hoveredItem, setHoveredItem] = useState(null);
+
+      const customerBehavior = [
+        { icon: Icons.DollarSign, label: 'Less Price Sensitive', description: 'Buy on trust, not price' },
+        { icon: Icons.BarChart, label: 'Higher AOV', description: 'Spend more per order' },
+        { icon: Icons.Repeat, label: 'More Repeat Purchases', description: 'Come back again and again' },
+        { icon: Icons.Users, label: 'Word-of-Mouth', description: 'Tell friends about you' }
+      ];
+
+      const competitivePosition = [
+        { icon: Icons.Lock, label: 'Customer Stickiness', description: 'Hard to steal with price' },
+        { icon: Icons.Crown, label: 'Premium Pricing', description: 'Charge more, earn more' },
+        { icon: Icons.Heart, label: 'Customer Loyalty', description: 'Recurring revenue stream' },
+        { icon: Icons.TrendingUp, label: 'Compounding Equity', description: 'Gets stronger over time' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm md:text-base">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Customer Behavior */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '20px',
+                padding: '24px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                <span style={{ color: '#22c55e' }}><Icons.Users /></span>
+                Customer Behavior
+              </h3>
+              <div className="space-y-3">
+                {customerBehavior.map((item, i) => {
+                  const IconComp = item.icon;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 + i * 0.1 }}
+                      onMouseEnter={() => setHoveredItem(`c-${i}`)}
+                      onMouseLeave={() => setHoveredItem(null)}
+                      style={{
+                        background: hoveredItem === `c-${i}` ? 'rgba(34, 197, 94, 0.1)' : 'rgba(255,255,255,0.03)',
+                        borderRadius: '12px',
+                        padding: '14px',
+                        cursor: 'pointer',
+                        border: hoveredItem === `c-${i}` ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid transparent',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div style={{
+                          background: 'rgba(34, 197, 94, 0.2)',
+                          borderRadius: '8px',
+                          padding: '8px'
+                        }}>
+                          <span style={{ color: '#22c55e' }}><IconComp /></span>
+                        </div>
+                        <div>
+                          <p className="text-white font-medium text-sm">{item.label}</p>
+                          <p className="text-neutral-400 text-xs">{item.description}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            {/* Competitive Position */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '20px',
+                padding: '24px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                <span style={{ color: 'var(--accent)' }}><Icons.Award /></span>
+                Competitive Position
+              </h3>
+              <div className="space-y-3">
+                {competitivePosition.map((item, i) => {
+                  const IconComp = item.icon;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.5 + i * 0.1 }}
+                      onMouseEnter={() => setHoveredItem(`p-${i}`)}
+                      onMouseLeave={() => setHoveredItem(null)}
+                      style={{
+                        background: hoveredItem === `p-${i}` ? 'rgba(249, 115, 22, 0.1)' : 'rgba(255,255,255,0.03)',
+                        borderRadius: '12px',
+                        padding: '14px',
+                        cursor: 'pointer',
+                        border: hoveredItem === `p-${i}` ? '1px solid rgba(249, 115, 22, 0.3)' : '1px solid transparent',
+                        transition: 'all 0.2s ease'
+                      }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div style={{
+                          background: 'rgba(249, 115, 22, 0.2)',
+                          borderRadius: '8px',
+                          padding: '8px'
+                        }}>
+                          <span style={{ color: 'var(--accent)' }}><IconComp /></span>
+                        </div>
+                        <div>
+                          <p className="text-white font-medium text-sm">{item.label}</p>
+                          <p className="text-neutral-400 text-xs">{item.description}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            borderRadius: '24px',
+            padding: '40px',
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '0 0 80px rgba(249, 115, 22, 0.15)'
+          }}
+        >
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <div className="text-center mb-6">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              style={{
+                width: '80px',
+                height: '80px',
+                background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
+                borderRadius: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 24px',
+                boxShadow: '0 0 40px rgba(249, 115, 22, 0.4)'
+              }}
+            >
+              <Icons.Shield />
+              <span style={{ color: 'white', fontSize: '32px' }}></span>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight"
+              style={{ fontFamily: 'Fraunces, serif' }}
+            >
+              "{data.quote}"
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="text-neutral-400 text-sm uppercase tracking-wider mb-6"
+            >
+              — {data.author}
+            </motion.p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            style={{
+              background: 'rgba(249, 115, 22, 0.1)',
+              borderRadius: '16px',
+              padding: '20px',
+              border: '1px solid rgba(249, 115, 22, 0.2)'
+            }}
+          >
+            <p className="text-neutral-300 text-center text-sm leading-relaxed">{data.insight}</p>
+          </motion.div>
+
+          {/* Stats Row */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="grid grid-cols-3 gap-4 mt-6"
+          >
+            {[
+              { value: '10x', label: 'Price Premium' },
+              { value: '67%', label: 'Higher Conv.' },
+              { value: '∞', label: 'Compound Effect' }
+            ].map((stat, i) => (
+              <div key={i} className="text-center">
+                <p className="text-2xl font-black" style={{ color: 'var(--accent)' }}>{stat.value}</p>
+                <p className="text-neutral-500 text-xs">{stat.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
       </div>
     );
-
-    const MockupSlide = ({ data }) => {
-      if (data.mockupType === 'brand-moat') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
-            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
-            <div className="relative w-full max-w-3xl mx-auto">
-              <svg viewBox="0 0 600 400" className="w-full">
-                <defs>
-                  <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
-                    <stop offset="100%" stopColor="#ea580c" stopOpacity="0.3" />
-                  </linearGradient>
-                  <linearGradient id="waterGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.3" />
-                  </linearGradient>
-                </defs>
-
-                {/* Castle (Your Business) */}
-                <motion.g initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}>
-                  {/* Main castle structure */}
-                  <rect x="225" y="120" width="150" height="120" fill="#d1d5db" stroke="#6b7280" strokeWidth="3" rx="4"/>
-
-                  {/* Castle towers */}
-                  <rect x="210" y="80" width="40" height="160" fill="#d1d5db" stroke="#6b7280" strokeWidth="3" rx="4"/>
-                  <rect x="350" y="80" width="40" height="160" fill="#d1d5db" stroke="#6b7280" strokeWidth="3" rx="4"/>
-
-                  {/* Tower tops */}
-                  <polygon points="230,80 215,60 245,60" fill="#f97316" stroke="#ea580c" strokeWidth="2"/>
-                  <polygon points="370,80 355,60 385,60" fill="#f97316" stroke="#ea580c" strokeWidth="2"/>
-
-                  {/* Castle flag */}
-                  <line x1="300" y1="120" x2="300" y2="70" stroke="#6b7280" strokeWidth="2"/>
-                  <polygon points="300,75 315,80 300,85" fill="#f97316"/>
-
-                  {/* Door */}
-                  <rect x="280" y="200" width="40" height="40" fill="#374151" rx="4"/>
-
-                  {/* Windows */}
-                  <rect x="245" y="150" width="20" height="20" fill="#374151" rx="2"/>
-                  <rect x="335" y="150" width="20" height="20" fill="#374151" rx="2"/>
-
-                  {/* Label */}
-                  <text x="300" y="265" fontSize="14" fontWeight="700" textAnchor="middle" fill="#1f2937">Your Business</text>
-                </motion.g>
-
-                {/* Moat (Water) */}
-                <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
-                  {/* Water around castle */}
-                  <ellipse cx="300" cy="250" rx="180" ry="40" fill="url(#waterGradient)" opacity="0.6"/>
-
-                  {/* Water waves */}
-                  <motion.path
-                    d="M 130,250 Q 150,245 170,250 T 210,250"
-                    fill="none"
-                    stroke="#3b82f6"
-                    strokeWidth="2"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ delay: 0.6, duration: 1 }}
-                  />
-                  <motion.path
-                    d="M 390,250 Q 410,245 430,250 T 470,250"
-                    fill="none"
-                    stroke="#3b82f6"
-                    strokeWidth="2"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ delay: 0.7, duration: 1 }}
-                  />
-
-                  {/* Moat label */}
-                  <text x="300" y="295" fontSize="16" fontWeight="700" textAnchor="middle" fill="#f97316">Strong Brand</text>
-                </motion.g>
-
-                {/* Competitor Attacks (Catapults) */}
-                <motion.g initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.8 }}>
-                  {/* Left catapult */}
-                  <rect x="50" y="200" width="60" height="8" fill="#78716c" rx="2"/>
-                  <polygon points="60,200 70,180 80,200" fill="#78716c"/>
-                  <circle cx="75" cy="175" r="6" fill="#ef4444"/>
-                  <motion.path
-                    d="M 75,175 Q 150,120 180,150"
-                    stroke="#ef4444"
-                    strokeWidth="2"
-                    strokeDasharray="4,4"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: [0, 1, 0] }}
-                    transition={{ delay: 1, duration: 2, repeat: Infinity, repeatDelay: 1 }}
-                  />
-                  <text x="80" y="230" fontSize="10" fill="#78716c">Competitor</text>
-                  <text x="80" y="242" fontSize="10" fill="#78716c">Ads</text>
-                </motion.g>
-
-                <motion.g initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.9 }}>
-                  {/* Right catapult */}
-                  <rect x="490" y="200" width="60" height="8" fill="#78716c" rx="2"/>
-                  <polygon points="510,200 520,180 530,200" fill="#78716c"/>
-                  <circle cx="520" cy="175" r="6" fill="#ef4444"/>
-                  <motion.path
-                    d="M 520,175 Q 450,120 420,150"
-                    stroke="#ef4444"
-                    strokeWidth="2"
-                    strokeDasharray="4,4"
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: [0, 1, 0] }}
-                    transition={{ delay: 1.2, duration: 2, repeat: Infinity, repeatDelay: 1 }}
-                  />
-                  <text x="490" y="230" fontSize="10" fill="#78716c">Competitor</text>
-                  <text x="490" y="242" fontSize="10" fill="#78716c">Ads</text>
-                </motion.g>
-
-                {/* Shield icons (showing protection) */}
-                <motion.g
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.5, duration: 0.5 }}
-                >
-                  <path d="M 180,150 L 185,140 L 190,150 L 185,160 Z" fill="#f97316" opacity="0.8"/>
-                  <text x="185" y="155" fontSize="12" textAnchor="middle">🛡️</text>
-                </motion.g>
-                <motion.g
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.6, duration: 0.5 }}
-                >
-                  <path d="M 420,150 L 425,140 L 430,150 L 425,160 Z" fill="#f97316" opacity="0.8"/>
-                  <text x="425" y="155" fontSize="12" textAnchor="middle">🛡️</text>
-                </motion.g>
-
-                {/* Bottom text */}
-                <motion.text
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.8 }}
-                  x="300" y="350" fontSize="12" textAnchor="middle" fill="#6b7280">
-                  Competitors can't breach the moat you've built with trust and loyalty
-                </motion.text>
-              </svg>
-            </div>
-          </div>
-        );
-      }
-    };
 
     const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -458,7 +1180,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -497,11 +1218,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'mockup': return <MockupSlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'pricing-power': return <PricingPowerSlide data={slide} />;
+          case 'brand-advantages': return <BrandAdvantagesSlide data={slide} />;
+          case 'easy-mode': return <EasyModeSlide data={slide} />;
+          case 'google-impact': return <GoogleImpactSlide data={slide} />;
+          case 'moat-visual': return <MoatVisualSlide data={slide} />;
+          case 'competitive-flywheel': return <CompetitiveFlywheelSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={() => {}} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
-          default: return <ContentSlide data={slide} />;
+          default: return null;
         }
       };
 
