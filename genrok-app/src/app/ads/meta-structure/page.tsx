@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, Layers, Target, Image as ImageIcon, Sparkles, TrendingUp, Users, Zap, Crown, Star, Heart, Globe, Crosshair } from 'lucide-react';
+import { ExternalLink, Layers, Target, Image as ImageIcon, Sparkles, TrendingUp, Crown, Star, Globe, Crosshair } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 
@@ -43,21 +43,6 @@ export default function MetaStructurePage() {
       >
         {/* Minimal Header */}
         <div className="relative max-w-6xl mx-auto mb-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5"
-            style={{
-              background: 'linear-gradient(135deg, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.06) 100%)',
-              border: '1px solid rgba(0,0,0,0.08)'
-            }}
-          >
-            <Zap size={14} className="text-[var(--text-muted)]" />
-            <span className="text-xs font-semibold tracking-widest text-[var(--text-muted)] uppercase">
-              Meta Ads 2026
-            </span>
-          </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -84,46 +69,40 @@ export default function MetaStructurePage() {
           className="relative flex justify-center mb-12"
         >
           <div
-            className="relative inline-flex p-1.5 rounded-full"
+            className="relative inline-flex p-2 rounded-full"
             style={{
-              background: 'rgba(245, 245, 245, 0.9)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255,255,255,0.9)',
-              border: '1px solid rgba(0, 0, 0, 0.1)'
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,245,245,0.95) 100%)',
+              backdropFilter: 'blur(40px)',
+              WebkitBackdropFilter: 'blur(40px)',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(0,0,0,0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.8)'
             }}
           >
             {/* Animated background pill */}
             <motion.div
-              className="absolute top-1.5 bottom-1.5 rounded-full"
+              className="absolute top-2 bottom-2 rounded-full"
               initial={false}
               animate={{
-                left: activePhase === 'testing' ? '6px' : 'calc(50% + 2px)',
-                width: 'calc(50% - 8px)'
+                left: activePhase === 'testing' ? '8px' : 'calc(50% + 2px)',
+                width: 'calc(50% - 10px)'
               }}
               transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               style={{
                 background: 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)',
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)'
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0,0,0,0.2)'
               }}
             />
             <button
               onClick={() => setActivePhase('testing')}
-              className={`relative z-10 px-10 py-3.5 rounded-full text-sm font-semibold transition-colors duration-300 ${
-                activePhase === 'testing'
-                  ? 'text-white'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
+              className="relative z-10 px-12 py-4 rounded-full text-sm font-semibold transition-colors duration-300"
+              style={{ color: activePhase === 'testing' ? '#FFFFFF' : 'var(--text-secondary)' }}
             >
               Testing
             </button>
             <button
               onClick={() => setActivePhase('scaling')}
-              className={`relative z-10 px-10 py-3.5 rounded-full text-sm font-semibold transition-colors duration-300 ${
-                activePhase === 'scaling'
-                  ? 'text-white'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
+              className="relative z-10 px-12 py-4 rounded-full text-sm font-semibold transition-colors duration-300"
+              style={{ color: activePhase === 'scaling' ? '#FFFFFF' : 'var(--text-secondary)' }}
             >
               Scaling
             </button>
@@ -158,9 +137,9 @@ export default function MetaStructurePage() {
 }
 
 // Card dimensions for consistency
-const ADSET_CARD_WIDTH = 140;
-const ADSET_CARD_HEIGHT = 160;
-const CREATIVE_CARD_SIZE = 56;
+const ADSET_CARD_WIDTH = 150;
+const ADSET_CARD_HEIGHT = 180;
+const CREATIVE_CARD_SIZE = 72;
 
 // Testing Structure Component
 function TestingStructure() {
@@ -252,21 +231,21 @@ function TestingStructure() {
             </div>
 
             {/* Connector to Creative */}
-            <div className="w-px h-4 bg-gradient-to-b from-black/10 to-black/03" />
+            <div className="w-px h-5 bg-gradient-to-b from-black/15 to-black/05" />
 
-            {/* Creative Card */}
+            {/* Creative Card - Bigger */}
             <div
               className="rounded-xl flex flex-col items-center justify-center"
               style={{
                 width: CREATIVE_CARD_SIZE,
                 height: CREATIVE_CARD_SIZE,
-                background: 'linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%)',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)',
-                border: '1px solid rgba(0,0,0,0.05)'
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%)',
+                boxShadow: '0 6px 20px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0,0,0,0.04)',
+                border: '1px solid rgba(0,0,0,0.06)'
               }}
             >
-              <ImageIcon size={16} className="text-[var(--text-muted)] mb-1" />
-              <span className="text-[8px] font-semibold text-[var(--text-muted)]">Ad {num}</span>
+              <ImageIcon size={20} className="text-[var(--text-muted)] mb-1.5" />
+              <span className="text-[10px] font-semibold text-[var(--text-muted)]">Ad {num}</span>
             </div>
           </motion.div>
         ))}
@@ -309,42 +288,36 @@ function ScalingStructure() {
       name: 'RFM 10% LLA',
       subtitle: 'Champion, Loyal, Promising',
       icon: Crown,
-      color: '#F59E0B',
       hasDataDrew: true
     },
     {
       name: 'Top 10% Spenders',
       subtitle: 'Lookalike',
       icon: TrendingUp,
-      color: '#10B981',
       hasDataDrew: true
     },
     {
       name: 'Top 25% Spenders',
       subtitle: 'Lookalike',
       icon: TrendingUp,
-      color: '#3B82F6',
       hasDataDrew: true
     },
     {
       name: 'Top 5% Purchases',
       subtitle: 'Lookalike',
       icon: Star,
-      color: '#8B5CF6',
       hasDataDrew: true
     },
     {
       name: 'Open Targeting',
       subtitle: 'Broad',
       icon: Globe,
-      color: '#6B7280',
       hasDataDrew: false
     },
     {
       name: 'Interests Based',
       subtitle: 'Targeted',
       icon: Crosshair,
-      color: '#EC4899',
       hasDataDrew: false
     }
   ];
@@ -404,7 +377,7 @@ function ScalingStructure() {
       </div>
 
       {/* Ad Sets Level */}
-      <div className="flex justify-center gap-3">
+      <div className="flex justify-center gap-4">
         {adSets.map((adSet, idx) => {
           const Icon = adSet.icon;
           return (
@@ -416,68 +389,63 @@ function ScalingStructure() {
               className="flex flex-col items-center"
               style={{ width: ADSET_CARD_WIDTH }}
             >
-              {/* Ad Set Card */}
+              {/* Ad Set Card - Black Premium */}
               <div
-                className="w-full rounded-2xl p-3 text-center relative overflow-hidden"
+                className="w-full rounded-2xl p-4 text-center relative overflow-hidden"
                 style={{
                   height: ADSET_CARD_HEIGHT,
-                  background: 'linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04)',
-                  border: '1px solid rgba(0,0,0,0.06)'
+                  background: 'linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%)',
+                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255,255,255,0.08)',
+                  border: '1px solid rgba(255,255,255,0.08)'
                 }}
               >
-                {/* Top color bar */}
                 <div
-                  className="absolute top-0 left-0 right-0 h-1"
-                  style={{ background: adSet.color }}
-                />
-                <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center mx-auto mb-2 mt-1"
-                  style={{ background: `${adSet.color}15` }}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-2"
+                  style={{ background: 'rgba(255,255,255,0.1)' }}
                 >
-                  <Icon size={16} style={{ color: adSet.color }} />
+                  <Icon size={18} className="text-white" />
                 </div>
-                <h4 className="font-bold text-[11px] text-[var(--text-primary)] mb-0.5 leading-tight">{adSet.name}</h4>
-                <p className="text-[9px] text-[var(--text-muted)] leading-tight mb-2">{adSet.subtitle}</p>
+                <h4 className="font-bold text-[11px] text-white mb-0.5 leading-tight">{adSet.name}</h4>
+                <p className="text-[9px] text-white/50 leading-tight mb-3">{adSet.subtitle}</p>
 
                 {adSet.hasDataDrew && (
                   <a
                     href={DATADREW_LINK}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[8px] font-semibold transition-all hover:scale-105"
+                    className="inline-flex items-center justify-center gap-1.5 w-full px-3 py-2.5 rounded-xl text-[10px] font-bold transition-all hover:scale-[1.02] hover:shadow-lg"
                     style={{
-                      background: adSet.color,
-                      color: 'white',
-                      boxShadow: `0 2px 8px ${adSet.color}40`
+                      background: 'linear-gradient(135deg, #FFFFFF 0%, #F0F0F0 100%)',
+                      color: '#000000',
+                      boxShadow: '0 4px 16px rgba(255,255,255,0.2), inset 0 1px 0 rgba(255,255,255,1)'
                     }}
                   >
-                    <span>DataDrew</span>
-                    <ExternalLink size={8} />
+                    <span>Create Audience</span>
+                    <ExternalLink size={10} />
                   </a>
                 )}
               </div>
 
               {/* Connector to Creative */}
-              <div className="w-px h-4 bg-gradient-to-b from-black/10 to-black/03" />
+              <div className="w-px h-5 bg-gradient-to-b from-black/15 to-black/05" />
 
-              {/* Creative Card - All Winners */}
+              {/* Creative Card - All Winners - Bigger */}
               <div
                 className="rounded-xl flex flex-col items-center justify-center"
                 style={{
                   width: CREATIVE_CARD_SIZE,
                   height: CREATIVE_CARD_SIZE,
-                  background: 'linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%)',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)',
-                  border: '1px solid rgba(0,0,0,0.05)'
+                  background: 'linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%)',
+                  boxShadow: '0 6px 20px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0,0,0,0.04)',
+                  border: '1px solid rgba(0,0,0,0.06)'
                 }}
               >
-                <div className="flex -space-x-1 mb-1">
-                  <ImageIcon size={10} className="text-[var(--text-muted)]" />
-                  <ImageIcon size={10} className="text-[var(--text-muted)]" />
-                  <ImageIcon size={10} className="text-[var(--text-muted)]" />
+                <div className="flex -space-x-1.5 mb-1.5">
+                  <ImageIcon size={14} className="text-[var(--text-muted)]" />
+                  <ImageIcon size={14} className="text-[var(--text-muted)]" />
+                  <ImageIcon size={14} className="text-[var(--text-muted)]" />
                 </div>
-                <span className="text-[7px] font-semibold text-[var(--text-muted)] text-center leading-tight">All<br/>Winners</span>
+                <span className="text-[9px] font-semibold text-[var(--text-muted)] text-center leading-tight">All<br/>Winners</span>
               </div>
             </motion.div>
           );
