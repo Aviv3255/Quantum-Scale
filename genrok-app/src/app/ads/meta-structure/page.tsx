@@ -394,11 +394,11 @@ function ScalingStructure() {
               className="flex flex-col items-center"
               style={{ width: ADSET_CARD_WIDTH }}
             >
-              {/* Ad Set Card - Clean Premium (5:4 ratio) */}
+              {/* Ad Set Card - Clean Premium with Button Inside */}
               <div
                 className="w-full rounded-xl text-center flex flex-col"
                 style={{
-                  height: ADSET_CARD_HEIGHT,
+                  height: adSet.hasDataDrew ? 165 : ADSET_CARD_HEIGHT,
                   background: '#FFFFFF',
                   boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06)',
                   border: '1px solid rgba(0,0,0,0.08)'
@@ -414,26 +414,25 @@ function ScalingStructure() {
                   <h4 className="font-semibold text-[10px] text-[var(--text-primary)] mb-0.5 leading-tight">{adSet.name}</h4>
                   <p className="text-[9px] text-[var(--text-muted)] leading-tight">{adSet.subtitle}</p>
                 </div>
+                {/* Create Audience Button - Inside Card */}
+                {adSet.hasDataDrew && (
+                  <div className="px-2 pb-2.5">
+                    <a
+                      href={DATADREW_LINK}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-[10px] font-semibold transition-all hover:bg-gray-800"
+                      style={{
+                        background: '#000000',
+                        color: '#FFFFFF'
+                      }}
+                    >
+                      <span>Create Audience</span>
+                      <ExternalLink size={10} />
+                    </a>
+                  </div>
+                )}
               </div>
-
-              {/* Create Audience Button - Below Card */}
-              {adSet.hasDataDrew ? (
-                <a
-                  href={DATADREW_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg text-[9px] font-medium transition-all hover:bg-gray-800"
-                  style={{
-                    background: '#000000',
-                    color: '#FFFFFF'
-                  }}
-                >
-                  <span>Create Audience</span>
-                  <ExternalLink size={8} />
-                </a>
-              ) : (
-                <div className="mt-2 h-7" />
-              )}
 
               {/* Connector to Creative */}
               <div className="w-px h-3 bg-gradient-to-b from-black/10 to-transparent" />
