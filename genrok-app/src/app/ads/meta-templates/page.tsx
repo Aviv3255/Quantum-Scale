@@ -88,7 +88,7 @@ Most stores do this backwards. They lead with features and specs hoping logic wi
 
 Your product images, headlines, and first few sentences need to create an emotional response. Save the technical details for after youve hooked them emotionally.
 
-This framework is explained really well at [LINK] - they break down buyer psychology in a way that finally made it click for me.` },
+[LINK]` },
 
   { topic: 'The WIIFM principle - the only question your customer is asking', content: `Every single person who lands on your site is asking one question: "Whats In It For Me?"
 
@@ -107,7 +107,7 @@ Every feature needs to pass the WIIFM test. If you write "waterproof coating" - 
 
 Your customer is selfish (we all are). Write for their selfishness. Answer their WIIFM question in every headline, bullet point, and product description.
 
-This principle is explained really well at [LINK] - once you understand it, you cant write any other way.` },
+[LINK]` },
 
   { topic: 'The 3-Second Rule: Why your homepage might be killing your sales', content: `Learned something that completely reframed how I think about my website.
 
@@ -152,7 +152,7 @@ Your product isnt a purchase. Its an escape from a painful reality theyre curren
 
 Most stores are competing on features and price. You can compete on making the pain of inaction unbearable.
 
-This "cost of standing still" framework is explained really well at [LINK]. Once you see it, you cant unsee how most marketing is leaving money on the table by not using it.` },
+[LINK]` },
 
   { topic: 'The Gatekeeper Method - 4 moves to get past the brains attention filter', content: `Our brains filter out almost everything. We see thousands of ads daily and ignore nearly all of them. So how do you get through?
 
@@ -172,7 +172,7 @@ The gatekeeper in your customers brain is looking for reasons to ignore you. You
 
 This doesnt mean being weird for the sake of weird. It means being strategically different in ways that serve your message.
 
-The full Gatekeeper Method breakdown is at [LINK]. Changed how I think about every piece of content I create.` },
+[LINK]` },
 
   { topic: 'The Rule of One - why your marketing is probably trying to do too much', content: `Best piece of marketing advice I keep coming back to: The Rule of One.
 
@@ -197,7 +197,7 @@ Go look at your homepage, your emails, your ads. How many different messages are
 
 Simplify ruthlessly. One reader, one idea, one offer, one action.
 
-This Rule of One framework is explained at [LINK]. Sounds simple but implementing it changes everything.` },
+[LINK]` },
 
   { topic: 'The 6 Primal Buy Buttons - the only triggers that get the reptile brain to say YES', content: `Learned about the 6 things that trigger immediate action in the oldest part of our brain - the part that makes snap decisions before logic kicks in.
 
@@ -221,7 +221,7 @@ When youre writing copy, ask yourself: Does this trigger any of the 6 primal sti
 
 Make it about them. Show contrast. Be concrete. Nail the opening. Use visuals. Trigger emotion.
 
-These 6 primal buy buttons are explained in depth at [LINK]. Understanding how the brain actually makes decisions changes everything.` },
+[LINK] Understanding how the brain actually makes decisions changes everything.` },
 
   { topic: 'The 3 High-Impact CRO Tests - simple changes that actually move the needle', content: `Most CRO advice is about tiny tweaks that barely matter. Button color tests. Font changes. Endless small stuff.
 
@@ -242,7 +242,7 @@ Reviews, testimonials, trust badges - but positioned RIGHT NEXT to the buy butto
 
 These arent magic tricks. Theyre just removing friction from the buying process at the moment it matters most.
 
-Full breakdown of these tests at [LINK]. Focus on the big stuff first.` },
+[LINK]` },
 
   { topic: 'The Damaging Admission - why revealing weakness makes your strengths believable', content: `Counter-intuitive copywriting principle that took me a while to trust: Admitting a weakness makes your strengths more believable.
 
@@ -266,7 +266,7 @@ How to use it:
 
 The damaging admission builds trust precisely because it feels honest. And honest beats polished every time.
 
-This technique is explained really well at [LINK]. Once you start using it, your copy becomes much more believable.` },
+[LINK] Once you start using it, your copy becomes much more believable.` },
 
   { topic: 'Voice of Customer Mining - how to find the exact words that sell', content: `The best copywriters dont invent clever phrases. They steal the exact words their customers already use.
 
@@ -290,7 +290,7 @@ When you use their exact language in your copy, something magical happens - they
 
 You dont have to guess what resonates. They literally tell you. You just have to listen and echo it back.
 
-The full VOC mining framework is at [LINK]. Game changer for anyone struggling to connect with their audience.` },
+[LINK]` },
 
   { topic: 'The Unique Mechanism - the proprietary reason YOUR solution works', content: `Every successful product has a "unique mechanism" - the specific reason why THIS product works when others dont.
 
@@ -315,7 +315,7 @@ You dont have to invent something new. You have to NAME something that feels new
 
 The unique mechanism gives skeptical customers a reason to believe THIS TIME will be different.
 
-How to find yours is explained at [LINK]. Once you nail your unique mechanism, your entire marketing becomes easier.` },
+[LINK]` },
 
   { topic: 'The Three Canons of Craft - 3 tests every sentence must pass', content: `Found a simple framework for editing copy that immediately made everything I write tighter and more effective.
 
@@ -338,7 +338,7 @@ The three canons arent about dumbing down your message. Theyre about respecting 
 
 Truth. Clarity. Necessity. Run every piece of copy through these filters.
 
-These canons are part of a larger copywriting framework at [LINK]. Simple rules, massive improvement in quality.` },
+[LINK]` },
 
   { topic: 'The Infinite Money Engine - the one equation that changes everything', content: `Learned about a concept that completely reframed how I think about my ecommerce business.
 
@@ -361,7 +361,7 @@ If you know with confidence that each customer is worth $150 over their lifetime
 
 Build the engine first. Then growth becomes a math problem, not a guessing game.
 
-This concept is explained in depth at [LINK]. Changes how you think about every business decision.` },
+[LINK] Changes how you think about every business decision.` },
 
   { topic: 'The Trust Architecture - how to build credibility systematically', content: `Trust isnt luck. Its architecture. You can systematically build it into every touchpoint.
 
@@ -401,7 +401,7 @@ Most stores focus only on level 1-2. The ones that dominate build all five level
 
 Trust compounds. Each layer makes the next more effective. You cant skip levels.
 
-The full Trust Architecture framework is at [LINK]. Worth building systematically.` },
+[LINK]` },
 
   { topic: 'The Double Bind of Fear - leverage both action AND inaction fears', content: `Powerful persuasion framework: People have two types of fears around any decision - fear of action and fear of inaction.
 
@@ -428,7 +428,7 @@ The customer is stuck between two fears. Your job is to make the fear of inactio
 
 Now both fears are working in your favor. The fear of action is minimized (risk-free). The fear of inaction is amplified (another month stuck).
 
-This Double Bind framework is explained at [LINK]. Once you see it, you realize most marketing only does half the job.` },
+[LINK]` },
 
   { topic: 'The Four Primal Needs behind every purchase', content: `Every buying decision traces back to one of four primal needs. Once you understand this, you understand why people really buy.
 
@@ -454,7 +454,7 @@ Your product likely serves multiple needs, but one is dominant. Figure out which
 
 Selling a meal kit? Could be survive (healthy eating), belong (family dinners), achieve (impressing dinner guests), or experience (culinary adventure). Each angle attracts different customers.
 
-The Four Primal Needs framework is explained at [LINK]. Understanding the real motivation behind purchases changes everything.` },
+[LINK] Understanding the real motivation behind purchases changes everything.` },
 
   { topic: 'The F.R.E.D. Method - understanding your audience before you write a word', content: `Before writing any copy, I now run through F.R.E.D. to understand who Im actually talking to.
 
@@ -480,7 +480,7 @@ Example for a weight loss product:
 
 Now you know what to address, what to promise, what objections to handle, and what emotional buttons to push.
 
-The F.R.E.D. framework is detailed at [LINK]. Do this research before you write and the copy practically writes itself.` },
+[LINK]` },
 
   { topic: 'The 40/40/20 Rule - the marketing success formula', content: `Simple framework that changed how I prioritize my marketing efforts.
 
@@ -506,7 +506,7 @@ This order matters. Ive seen stores obsess over ad copy for months while their f
 
 Start with the 40s. The 20 is finishing touches.
 
-The 40/40/20 framework is broken down at [LINK]. Prioritize correctly.` },
+[LINK]` },
 
   { topic: 'The OCPB Formula - the four elements of every high-converting offer', content: `Learned a framework for constructing offers that actually convert.
 
@@ -530,7 +530,7 @@ Stack all four and the offer becomes much harder to refuse.
 
 When reviewing any offer, ask: Is the base offer clear and valuable? Is the copy compelling? Is there enough proof? Are there bonuses that add urgency?
 
-The OCPB Formula is explained at [LINK]. Use it as a checklist for every offer you create.` },
+[LINK] Use it as a checklist for every offer you create.` },
 
   { topic: 'The Objection Inversion technique - turn objections into reasons to buy', content: `Counter-intuitive technique: Instead of hiding objections, flip them into selling points.
 
@@ -558,7 +558,7 @@ This feels more honest than ignoring objections. And honest converts better than
 
 List your top 5 customer objections. Practice inverting each one. Then weave these inversions into your copy.
 
-Objection Inversion framework at [LINK]. Turns weaknesses into strengths.` },
+[LINK]` },
 
   { topic: 'The "price anchoring" principle that makes any price feel like a deal', content: `Pricing psychology is fascinating once you understand how it actually works.
 
@@ -579,7 +579,7 @@ Important caveat: Fake anchors (made up inflated prices) are illegal in many pla
 
 The psychology is simple: People cant evaluate things in isolation. They evaluate relative to reference points. Control the reference point and you control the perception.
 
-Pricing psychology deep dive at [LINK]. Understanding this completely changed how I present offers.` },
+[LINK]` },
 
   { topic: 'The Visual Priming effect - how background images influence buying decisions', content: `Learned about something called visual priming and it completely changed how I think about product photography.
 
@@ -599,7 +599,7 @@ Most stores treat product photography as "just showing the product." But every v
 
 The question to ask: What feeling do you want your customer to have when they see your product? Then design every visual element to evoke that feeling.
 
-Visual priming psychology explained at [LINK]. This invisible influence is incredibly powerful when you understand it.` },
+[LINK]` },
 
   { topic: 'The "Rat Brain Hijack" - how to command attention by triggering the subconscious', content: `Learned something fascinating about how the brain processes information that changed my entire approach to marketing.
 
@@ -624,7 +624,7 @@ Practical applications:
 
 Most marketing fails because it never gets past the rat brain gatekeeper. You can have the best offer in the world, but if the subconscious filters it out, the conscious mind never sees it.
 
-This framework for commanding attention is explained at [LINK]. Once you understand how the brain filters information, you can design marketing that actually gets through.` },
+[LINK] Once you understand how the brain filters information, you can design marketing that actually gets through.` },
 
   { topic: 'The "Structural Tension" principle - creating irresistible forward momentum in copy', content: `Learned a concept called structural tension that completely changed how I write landing pages and emails.
 
@@ -648,7 +648,7 @@ This is why cliffhangers work. Why people binge Netflix. Why some sales pages fe
 
 Structural tension creates forward momentum. Without it, people can leave at any point with no consequence.
 
-This framework is explained really well at [LINK]. Understanding tension changed everything about how I structure persuasive content.` },
+[LINK]` },
 
   { topic: 'The "Self-Persuasion Architecture" - let prospects convince themselves to buy', content: `Most marketing tries to convince people. Theres a better approach: Let them convince themselves.
 
@@ -674,7 +674,7 @@ Address objections by helping them work through it, not by dismissing it. "I tho
 
 The goal is to be a guide, not a salesperson. Help them reach the conclusion themselves.
 
-Self-persuasion architecture is explained at [LINK]. Once you understand this, you stop trying to convince and start facilitating realization.` },
+[LINK]` },
 
   { topic: 'The "Digital Velvet Rope Effect" - why password-protected pages create explosive desire', content: `Learned about something called the Digital Velvet Rope Effect and it blew my mind.
 
@@ -705,7 +705,7 @@ Products that genuinely go away and dont come back.
 
 The key is that the exclusivity must be REAL. Fake velvet ropes (everyone gets in anyway) destroy the effect. But genuine exclusivity creates powerful desire.
 
-This psychological principle is explained at [LINK]. The velvet rope is everywhere once you see it - and understanding it changes how you think about offers.` },
+[LINK]` },
 
   { topic: 'The "Familiar Surprise Secret" - the MAYA principle for products that sell', content: `Learned about something called the MAYA principle that explains why some products take off and others flop.
 
@@ -734,7 +734,7 @@ New delivery method for an old desire works well.
 4. REFERENCE THE FAMILIAR THEN TWIST
 "You know how most skincare does X? This does the opposite."
 
-The MAYA principle is explained in depth at [LINK]. Understanding this balance between novelty and familiarity is incredibly valuable for positioning products.` },
+[LINK] Understanding this balance between novelty and familiarity is incredibly valuable for positioning products.` },
 
   { topic: 'The "Red Button Effect" - why forbidden things create irresistible desire', content: `There's a psychological phenomenon that explains why "forbidden" products sell so well.
 
@@ -767,7 +767,7 @@ Real limits, not fake ones. When genuinely limited, desire increases.
 
 The key is authenticity. Real restrictions work. Fake ones backfire when discovered.
 
-The Red Button Effect and psychological reactance are explained at [LINK]. Understanding this principle changes how you think about offers and positioning.` },
+[LINK]` },
 
   { topic: 'The "Forbidden Coffee Hook" - storytelling that makes products irresistible', content: `Learned a storytelling framework that transforms boring products into must-have items.
 
@@ -801,7 +801,7 @@ What changed that makes this accessible?
 
 You can apply this to almost any product. The exercise forces you to find the story, and every product has one if you dig deep enough.
 
-The storytelling framework is explained at [LINK]. This transforms how you write about products.` },
+[LINK] This transforms how you write about products.` },
 
   { topic: 'The "Blind Spot Effect" - what your prospects cant see about themselves', content: `Learned about a psychological principle that changed how I write copy forever.
 
@@ -836,7 +836,7 @@ Now that they understand the real problem, your solution makes sense.
 
 This is why the best marketing feels like a revelation. Youre showing people something true about themselves that they couldnt see.
 
-The Blind Spot Effect is explained at [LINK]. Master this and your copy becomes incredibly persuasive.` },
+[LINK] Master this and your copy becomes incredibly persuasive.` },
 
   { topic: 'The "Unity Principle" - one word change that turns customers into partners', content: `Learned about something called the Unity Principle that completely changed how I think about customer relationships.
 
@@ -869,7 +869,7 @@ What do you and your customers have in common? What struggle do you share? What 
 
 Lead with that shared identity and everything changes.
 
-The Unity Principle is explained in depth at [LINK]. This subtle shift transforms customer relationships.` },
+[LINK] This subtle shift transforms customer relationships.` },
 
   { topic: 'The "Emotion Spectrum" - mapping the full range of persuasive emotions', content: `Most marketers think of emotions as "positive" or "negative." But theres a much more useful way to think about it.
 
@@ -903,7 +903,7 @@ Most marketing gets this wrong:
 
 Understand the emotion spectrum and you can deliberately engineer emotional journeys.
 
-This framework is explained at [LINK]. It changed how I approach every piece of marketing.` },
+[LINK]` },
 
   { topic: 'The "Persuasion Stack" - layered techniques that build upon each other', content: `Learned about something called the Persuasion Stack that completely changed how I structure marketing.
 
@@ -936,7 +936,7 @@ When marketing fails, the problem is usually a weak lower layer:
 
 Build the stack in order. Each layer supports the next.
 
-The Persuasion Stack is explained in depth at [LINK]. This framework becomes a diagnostic tool for fixing underperforming marketing.` },
+[LINK] This framework becomes a diagnostic tool for fixing underperforming marketing.` },
 
   { topic: 'The "Three Levels of Change" - transform behavior, beliefs, and identity', content: `Learned a framework about customer transformation that goes beyond surface-level marketing.
 
@@ -972,7 +972,7 @@ Your product enables something. But WHO does your customer become after using it
 
 Lead with identity transformation and behavior change follows naturally.
 
-The Three Levels of Change framework is explained at [LINK]. This shifts everything about how you position products.` },
+[LINK] This shifts everything about how you position products.` },
 
   { topic: 'The "CPPPB Proof Loop" - five elements for bulletproof persuasion', content: `Learned a framework for building unshakeable proof into your marketing that most people completely miss.
 
@@ -1006,7 +1006,7 @@ Check your marketing against CPPPB:
 
 Fill the gaps. Watch persuasion improve.
 
-The CPPPB Proof Loop is explained at [LINK]. This becomes a checklist for evaluating any marketing piece.` },
+[LINK] This becomes a checklist for evaluating any marketing piece.` },
 
   { topic: 'The "Emotional Precision" principle - targeting the exact emotions that drive action', content: `Learned about emotional precision and realized most marketing is far too vague with emotional targeting.
 
@@ -1046,7 +1046,7 @@ Examples of precision:
 
 Vague emotional appeals create vague results. Precise emotional targeting creates predictable outcomes.
 
-Emotional precision is explained at [LINK]. This framework makes emotional marketing much more scientific.` },
+[LINK]` },
 
   { topic: 'The "Architecture of Belief" - three levels of mastery in persuasion', content: `Learned a framework that explains why some marketing is forgettable and other marketing is transformative.
 
@@ -1076,7 +1076,7 @@ When you master Level 3, Levels 1 and 2 become much easier. You understand the d
 
 Example: Someone selling weight loss doesnt just need a good headline (L1) and logical benefits (L2). They need to understand the identity beliefs around weight, the shame, the fear of failure, the desire for hope vs fear of disappointment (L3).
 
-The Architecture of Belief is explained at [LINK]. This elevates marketing from tactics to genuine understanding.` },
+[LINK] This elevates marketing from tactics to genuine understanding.` },
 
   { topic: 'The "Sales Message Anatomy" - dissecting what makes copy actually convert', content: `Learned to look at sales copy like a surgeon looks at anatomy. Every element has a purpose.
 
@@ -1113,7 +1113,7 @@ Diagnostic questions:
 
 When copy underperforms, the problem is usually an anatomical gap. Find it, fix it.
 
-Sales Message Anatomy is explained at [LINK]. This becomes a template for evaluating any marketing piece.` },
+[LINK]` },
 
   { topic: 'The "Master Key Framework" - first-principles guide to copy that converts', content: `Learned a first-principles framework for copywriting that strips away all the complexity.
 
@@ -1144,7 +1144,7 @@ Example:
 
 When you nail all three, copy almost writes itself. When you try to serve multiple people, answer multiple questions, or offer multiple solutions - everything gets muddy.
 
-Simplify ruthlessly. The Master Key framework is explained at [LINK]. This is the foundation everything else builds on.` },
+Simplify ruthlessly. [LINK] This is the foundation everything else builds on.` },
 
   { topic: 'The "Copywriters Codex" - a synthesized playbook from the masters', content: `Spent months studying the classic copywriters - Ogilvy, Hopkins, Halbert, Schwartz. Found patterns that kept repeating.
 
@@ -1178,7 +1178,7 @@ These principles havent changed in 100+ years. Tactics change. Platforms change.
 
 Every piece of copy I write now gets checked against the Codex. Where am I missing a principle?
 
-The full Copywriters Codex is explained at [LINK]. Standing on the shoulders of giants beats reinventing the wheel.` },
+[LINK] Standing on the shoulders of giants beats reinventing the wheel.` },
 
   { topic: 'The "Science of Selling" - the systematic approach to conversion', content: `Learned about treating selling as a science rather than an art. Changed everything.
 
@@ -1207,7 +1207,7 @@ Most marketers treat marketing like gambling. They try random things and hope so
 
 The difference: Gamblers have hot streaks and cold streaks. Scientists compound gains over time.
 
-The Science of Selling framework is explained at [LINK]. This makes marketing feel less like guessing and more like engineering.` },
+[LINK] This makes marketing feel less like guessing and more like engineering.` },
 
   { topic: 'The "Persuasion Blueprint" - the master architectural plan for influential copy', content: `Learned about structuring persuasion like an architect structures a building. Every element has a purpose and position.
 
@@ -1243,7 +1243,7 @@ Before writing anything, I now sketch the blueprint:
 - What purpose does it serve?
 - How does each piece connect to the next?
 
-The Persuasion Blueprint is explained at [LINK]. Structure first, then words.` },
+[LINK] Structure first, then words.` },
 
   { topic: 'Why "The Highest CPA Wins" in Google Ads - counterintuitive truth', content: `Learned something about Google Ads that completely flipped my thinking.
 
@@ -1271,7 +1271,7 @@ When your unit economics are better, advertising becomes easier. You can win auc
 
 Most people try to optimize their way to lower CPA. Smart operators build businesses that can afford higher CPA.
 
-This "highest CPA wins" concept is explained at [LINK]. It reframes the entire game of paid advertising.` },
+[LINK] It reframes the entire game of paid advertising.` },
 
   { topic: '"Your Product Feed IS Your Ad" - the hidden weapon for Google Shopping', content: `Learned something about Google Shopping that most people completely miss.
 
@@ -1311,7 +1311,7 @@ Most advertisers focus on bid strategy and audience targeting. But if your feed 
 
 Think of feed optimization as ad creative optimization. Same importance.
 
-This "feed IS your ad" principle is explained at [LINK]. Completely changed how I approach Shopping campaigns.` },
+[LINK] Completely changed how I approach Shopping campaigns.` },
 
   { topic: 'The "PMax Asset Group Blueprint" - stop forcing Google AI to guess', content: `Learned about structuring Performance Max campaigns in a way that actually helps the algorithm instead of confusing it.
 
@@ -1346,7 +1346,7 @@ Segment by margin, popularity, category.
 
 The insight: PMax isnt a black box if you structure it well. You can guide the AI without fighting it.
 
-The PMax Asset Group Blueprint is explained at [LINK]. This made my campaigns actually make sense.` },
+[LINK] This made my campaigns actually make sense.` },
 
   { topic: 'The "Negative Keyword Colander" - filter out waste, keep only profitable clicks', content: `Learned a framework for negative keywords that completely changed how I think about Google Ads.
 
@@ -1383,7 +1383,7 @@ How to build your colander:
 
 The goal: Every click that makes it through your colander should be a potential customer.
 
-The Negative Keyword Colander framework is explained at [LINK]. This should be the first thing you set up in any search campaign.` },
+[LINK] This should be the first thing you set up in any search campaign.` },
 
   { topic: '"Better Data In, Better AI Out" - the quality edge in Google Ads 2026', content: `Realized something about Google Ads AI that most people miss: The algorithm is only as good as the data you feed it.
 
@@ -1417,7 +1417,7 @@ The insight: Your competitors can use the same bidding strategies. They cant use
 
 Data quality is a moat. Better data = better performance = more efficient spend = winning.
 
-This "data quality edge" concept is explained at [LINK]. Its the competitive advantage most advertisers ignore.` },
+[LINK] Its the competitive advantage most advertisers ignore.` },
 
   { topic: 'The "Velocity Advantage" - why speed is the biggest unfair advantage', content: `Learned about something called the Velocity Advantage that changed how I prioritize.
 
@@ -1447,7 +1447,7 @@ Perfectionism is velocity's enemy. Analysis paralysis is velocity's enemy. Waiti
 
 Move fast. Break things. Fix them. Move faster.
 
-The Velocity Advantage is explained at [LINK]. Speed might be the most underrated competitive advantage.` },
+[LINK] Speed might be the most underrated competitive advantage.` },
 
   { topic: 'The "3x Threshold" - the equation that separates struggling stores from profitable ones', content: `Learned about something called the 3x Threshold that finally made sense of why some stores print money while others struggle.
 
@@ -1492,7 +1492,7 @@ DECREASE CAC:
 
 The 3x Threshold is the first thing to check when something isnt working. Usually its a ratio problem, not a tactics problem.
 
-This framework is explained in depth at [LINK]. It changed how I evaluate every business decision.` },
+[LINK]` },
 
   { topic: 'The "Leverage Equation" - stop working harder, start working smarter', content: `Learned about something called the Leverage Equation that completely changed how I think about effort vs results.
 
@@ -1532,7 +1532,7 @@ The trap is thinking you need to work harder. Usually you need more leverage.
 
 Every hour spent increasing leverage is worth ten hours of direct work.
 
-The Leverage Equation is explained at [LINK]. This framework forces you to think about multipliers, not just effort.` },
+[LINK] This framework forces you to think about multipliers, not just effort.` },
 
   { topic: 'The "Counter-Position Strategy" - create a battlefield where giants cant win', content: `Learned about something called the Counter-Position Strategy that explains how small brands beat massive competitors.
 
@@ -1569,7 +1569,7 @@ Make your business dependent on the opposite of their strength.
 
 If you compete directly against giants, you lose. If you counter-position, they literally cannot respond without destroying what made them successful.
 
-The Counter-Position Strategy is explained at [LINK]. This is how underdogs win.` },
+[LINK] This is how underdogs win.` },
 
   { topic: 'The "Market Awareness Sweet Spot" - where to find the best opportunities', content: `Learned about something called the Market Awareness Sweet Spot that helps identify the best business opportunities.
 
@@ -1609,7 +1609,7 @@ How to find problem-aware markets:
 - Find gaps where problems are discussed but products arent recommended
 - Create content that names the problem clearly
 
-The Market Awareness Sweet Spot is explained at [LINK]. Understanding where your market sits on this spectrum changes your entire approach.` },
+[LINK] Understanding where your market sits on this spectrum changes your entire approach.` },
 
   { topic: 'The "Barbell Strategy" - 5% big swings, 95% small wins', content: `Learned about something called the Barbell Strategy that changed how I allocate time and money in business.
 
@@ -1647,7 +1647,7 @@ Practical application:
 - Most of your time goes to proven activities
 - Small portion tries breakthrough experiments
 
-The Barbell Strategy is explained at [LINK]. This changed how I think about risk allocation.` },
+[LINK] This changed how I think about risk allocation.` },
 
   { topic: 'The "One-Pager Blueprint" - kill shiny object syndrome with 4 questions', content: `Learned about something called the One-Pager Blueprint that finally cured my shiny object syndrome.
 
@@ -1678,7 +1678,7 @@ If the answer is no, skip it. If the answer is yes, pursue it.
 
 The one-pager becomes your filter. Everything passes through it. Shiny objects get caught. Aligned opportunities get through.
 
-The One-Pager Blueprint is explained at [LINK]. This single exercise saved me from countless distractions.` },
+[LINK] This single exercise saved me from countless distractions.` },
 
   { topic: 'The "Infinite Money Loop" - the 6-step flywheel that turns ads into profit', content: `Learned about something called the Infinite Money Loop that finally made paid advertising make sense.
 
@@ -1717,7 +1717,7 @@ Each broken step stops the flywheel.
 
 The businesses that win have all 6 steps working. Money goes in one end and more money comes out the other. Then that money goes back in.
 
-The Infinite Money Loop is explained at [LINK]. Diagnose which step is broken in your business.` },
+[LINK] Diagnose which step is broken in your business.` },
 
   { topic: '"Youre Not a Brand, Youre a Marketing Company" - the identity shift', content: `Learned about an identity shift that separates successful ecommerce operators from struggling ones.
 
@@ -1753,7 +1753,7 @@ The best ecommerce operators think of products as vehicles for marketing experim
 
 When you adopt this mindset, you stop being emotionally attached to products that dont work. You just find what the market wants and deliver it.
 
-This identity shift is explained at [LINK]. It changes everything about how you approach the business.` },
+[LINK]` },
 
   { topic: '"Creative is the New Targeting" - the system for winning in 2026', content: `Learned about a framework that explains why some brands dominate paid advertising while others struggle.
 
@@ -1783,7 +1783,7 @@ The creative does the targeting. The algorithm optimizes delivery. Your job is t
 
 Brands struggling with ads usually have a creative volume problem, not a targeting problem.
 
-This framework is explained at [LINK]. Its the new paradigm for paid acquisition.` },
+[LINK]` },
 
   { topic: 'The "$0 CAC Engine" - get customers for free before you ever spend on ads', content: `Learned about something called the $0 CAC Engine that completely changed how I think about customer acquisition.
 
@@ -1818,7 +1818,7 @@ Most people start with paid ads because they want fast results. Smart operators 
 
 The $0 CAC Engine takes longer to build but creates a much more stable foundation.
 
-This framework is explained at [LINK]. Build the engine before you pour in fuel.` },
+[LINK]` },
 
   // Personal experience posts with highlighted promos
   { topic: 'What I wish I knew before spending $50k on ads', content: `Just hit my first $100k month. But man, the journey to get here was BRUTAL.
@@ -1881,9 +1881,7 @@ The sequence isnt complicated:
 
 The key insight: Most of your customers WANT to buy from you again. You just have to make it easy and remind them you exist.
 
-[LINK] has the full breakdown
-
-Its free and its honestly better than courses Ive paid hundreds for.` },
+[LINK]` },
 
   { topic: 'How I find winning products without using any spy tools', content: `Everyone asks what spy tools I use. The answer? None.
 
@@ -1899,9 +1897,7 @@ My process:
 
 The best products solve problems people are actively discussing. Not products that other dropshippers are already running.
 
-Got this from [LINK]
-
-Free resource with frameworks I use every week. No signup or anything.` },
+[LINK]` },
 
   { topic: 'My product page checklist (use this before launching anything)', content: `After launching 50+ products, Ive developed a checklist I run through before anything goes live.
 
@@ -2076,9 +2072,7 @@ The customer was so impressed they deleted the 1-star and posted a 5-star instea
 
 Every complaint is a chance to create a superfan.
 
-[LINK] has the full breakdown
-
-Free resource with actual scripts you can use. Turned my support from weakness to strength.` },
+[LINK]` },
 
   { topic: 'How I finally stopped working IN my business and started working ON it', content: `For two years, I was a glorified employee in my own business. Working 12 hour days. Couldnt take a vacation without everything falling apart.
 
@@ -2095,9 +2089,7 @@ Within 6 months, I had removed myself from:
 
 Now I focus only on strategy and high-level decisions.
 
-Got this from [LINK]
-
-Free resource that walks you through the process. Essential reading for anyone stuck working IN their business.` },
+[LINK]` },
 
   { topic: 'The upsell that adds $12 to every order (took 5 minutes to set up)', content: `Was leaving so much money on the table with single-product orders.
 
@@ -2299,9 +2291,7 @@ Hidden costs people forget:
 
 Now I calculate true margin BEFORE scaling anything. If margin isnt at least 20% after ALL costs, I dont scale.
 
-[LINK] has the full breakdown
-
-Free resource with actual spreadsheets you can use. Would have saved me from that painful surprise.` },
+[LINK]` },
 
   { topic: 'Why most dropshipping advice is outdated (and what to do instead)', content: `90% of dropshipping content online is recycled advice from 2019-2021.
 
@@ -2323,9 +2313,7 @@ What works now:
 - Creative volume (not just one winning ad)
 - Systems thinking (not just hustle)
 
-Got this from [LINK]
-
-Free resource thats actually relevant to 2024-2025 ecommerce. Not regurgitated old tactics.` },
+[LINK]` },
 
   { topic: 'The landing page element that increased trust by 200%', content: `Was struggling with trust. Visitors werent buying because they didnt believe my store was legit.
 
@@ -2520,9 +2508,7 @@ Organic still has value:
 
 But as a primary customer acquisition channel? Not for me.
 
-[LINK] has the full breakdown
-
-Free resource that helped me figure out which channels actually work for ecommerce. Saved me from chasing vanity metrics.` },
+[LINK]` },
 
   { topic: 'The supplier red flags I now watch for', content: `Got burned by bad suppliers early on. Now I have a checklist of red flags:
 
@@ -2540,9 +2526,7 @@ Yellow flags:
 
 Found my best suppliers by starting small, testing quality, then scaling the relationship.
 
-Got this from [LINK]
-
-Free resource with vetting templates and communication scripts. Would have saved me from some expensive lessons.` },
+[LINK]` },
 ];
 
 // Viral posts for X/Twitter - Value bombs from learning center
@@ -2553,7 +2537,7 @@ this means your product page order matters MORE than the content
 
 lead with transformation, not features
 
-learned this framework at [LINK]` },
+[LINK]` },
 
   { topic: 'the only question customers ask', content: `every person on your site is asking: "whats in it for ME?"
 
@@ -2561,7 +2545,7 @@ WIIFM. write it on a sticky note.
 
 nobody cares about your brand story. they care about their problem being solved.
 
-answer WIIFM in every headline [LINK]` },
+[LINK]` },
 
   { topic: 'the 3 second rule that saves conversions', content: `you have 3 seconds when someone lands on your page
 
@@ -2570,14 +2554,14 @@ in those 3 seconds they need to understand:
 - why it matters to them
 - what to do next
 
-most stores fail this test [LINK]` },
+[LINK]` },
 
   { topic: 'stop selling benefits, sell this instead', content: `better than selling benefits: sell what they LOSE by not buying
 
 "save money on energy" = meh
 "every month you wait is another month throwing money away" = action
 
-loss aversion is real [LINK]` },
+[LINK]` },
 
   { topic: 'the gatekeeper method', content: `4 moves to bypass the brains attention filter:
 
@@ -2586,7 +2570,7 @@ loss aversion is real [LINK]` },
 3. pattern interrupt (unexpected)
 4. emotion (feeling first)
 
-most ads fail at #1 [LINK]` },
+[LINK]` },
 
   { topic: 'rule of one', content: `marketing framework that simplifies everything:
 
@@ -2597,7 +2581,7 @@ ONE action
 
 most marketing fails because its trying to do too much at once
 
-simplify ruthlessly [LINK]` },
+[LINK]` },
 
   { topic: 'the 6 primal buy buttons', content: `6 triggers that get the reptile brain to say YES:
 
@@ -2608,13 +2592,13 @@ simplify ruthlessly [LINK]` },
 - visual (show dont tell)
 - emotional
 
-hit these or get ignored [LINK]` },
+[LINK]` },
 
   { topic: 'damaging admission secret', content: `counter-intuitive: admitting weakness makes strengths more believable
 
 "our product takes 2 weeks to ship... because its handcrafted in Italy"
 
-the admission builds trust. works every time [LINK]` },
+the admission builds trust. [LINK]` },
 
   { topic: 'voice of customer mining', content: `best copywriters dont write clever phrases. they STEAL exact words customers use.
 
@@ -2624,14 +2608,14 @@ where to mine:
 - reddit threads
 - amazon reviews
 
-use their language [LINK]` },
+[LINK]` },
 
   { topic: 'unique mechanism explained', content: `every successful product has a "unique mechanism"
 
 not "weight loss pills"
 → "the only formula that blocks the fat-storage hormone"
 
-the mechanism answers: why does THIS work when others dont? [LINK]` },
+the mechanism answers: [LINK]` },
 
   { topic: 'three canons of craft', content: `every sentence in your copy must pass 3 tests:
 
@@ -2639,7 +2623,7 @@ the mechanism answers: why does THIS work when others dont? [LINK]` },
 2. is it CLEAR? (12yo understands)
 3. is it NECESSARY? (earns its place)
 
-most copy fails #3 [LINK]` },
+[LINK]` },
 
   { topic: 'the infinite money engine', content: `the equation that changes everything:
 
@@ -2647,7 +2631,7 @@ LTV > CAC
 
 when lifetime value exceeds acquisition cost by enough margin, you have unlimited money for growth
 
-most people dont actually know their LTV [LINK]` },
+[LINK]` },
 
   { topic: 'double bind of fear', content: `people have 2 fears around any decision:
 - fear of action (what if it doesnt work?)
@@ -2661,7 +2645,7 @@ best marketing addresses BOTH. most only addresses one [LINK]` },
 40% = WHAT you offer (the deal)
 20% = HOW you say it (creative)
 
-most obsess over the 20%. nail the 40s first [LINK]` },
+most obsess over the 20%. [LINK]` },
 
   { topic: 'the 3x threshold', content: `the equation that separates struggling stores from profitable ones:
 
@@ -2670,7 +2654,7 @@ LTV needs to be 3x CAC
 below 3x: every campaign feels risky
 above 3x: growth becomes math
 
-check your ratio [LINK]` },
+[LINK]` },
 
   { topic: 'velocity advantage', content: `speed is the biggest unfair advantage:
 
@@ -2678,7 +2662,7 @@ faster iteration = more learning cycles
 more learning cycles = better decisions
 better decisions = better outcomes
 
-good today beats perfect next month [LINK]` },
+[LINK]` },
 
   { topic: 'leverage equation', content: `stop working harder. start working smarter:
 
@@ -2692,7 +2676,7 @@ build systems, automate, delegate [LINK]` },
 
 dont compete where theyre strong. create a battlefield where their strengths become weaknesses.
 
-this is how Dollar Shave Club beat Gillette [LINK]` },
+[LINK]` },
 
   { topic: 'highest CPA wins', content: `counterintuitive Google Ads truth:
 
@@ -2706,7 +2690,7 @@ creative IS your targeting. the algorithm shows your ad to people who respond to
 
 volume + diversity + measurement
 
-feed the machine or lose [LINK]` },
+[LINK]` },
 ];
 
 // Subreddits for posting viral content
@@ -3349,7 +3333,7 @@ export default function MetaTemplatesPage() {
                         <div className="p-6 pt-5 bg-[#FAFAFA]">
                           <div className="bg-white rounded-xl p-5 border border-black/5">
                             <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed" style={{ color: '#1a1a1a' }}>
-                              {post.content}
+                              {post.content.replace(/\[LINK\]/g, referralLink)}
                             </pre>
                           </div>
                           <div className="mt-4 flex items-center justify-between">
