@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #a855f7; --accent-dark: #9333ea; --accent-light: #c084fc; --accent-rgb: 168, 85, 247; }
@@ -46,158 +43,124 @@
       nextLesson: { id: 'positioning-power', title: 'Positioning Power', teaser: 'Own a category so dominant that prospects never consider alternatives.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
+    // ============ ADMIN REPORTER ============
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <img src="/images/icons/bug-icon.svg" alt="Report" style={{ width: '16px', height: '16px', filter: 'invert(1)' }} />
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
+    // ============ END ADMIN REPORTER ============
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['What a unique mechanism is and why it creates category of one', 'How to identify where other solutions fail', 'The 3-step framework for building your mechanism', 'Why mechanism naming makes you impossible to compare'] },
-      { type: 'hook', headline: 'Apple had "the ecosystem." Peloton has "the connected fitness experience." Tesla owns "the electric revolution."', subtext: 'These aren\'t just marketing terms. They\'re frameworks that make comparison impossible. When you have a unique mechanism, you stop competing. Instead of being compared to alternatives, you become incomparable. Prospects can\'t price-shop because there\'s nothing else like what you offer.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' },
-      { type: 'content', title: 'What Is a Unique Mechanism?', body: 'A unique mechanism is your proprietary explanation for how your product or service delivers results. It\'s not just what you do - it\'s your special method, system, or approach that makes your solution fundamentally different from everything else. When done right, it creates a new mental category. Your prospect stops thinking "Which weight loss program should I choose?" and starts thinking "I need the Metabolic Reset Method." You\'ve exited the comparison game entirely.' },
-      { type: 'visual', title: 'The Mechanism Effect', visualType: 'comparison', data: {
-        left: { label: 'Without', value: 'Generic', result: 'Competing on price', color: '#ef4444' },
-        right: { label: 'With Mechanism', value: 'Category', result: 'No comparison possible', color: '#22c55e' },
-        center: { label: 'Result', value: '340%', result: 'Higher perceived value', color: '#a855f7' }
-      }},
-      { type: 'cards', title: 'Why Unique Mechanisms Work', items: [
-        { title: 'Cognitive Distinction', description: 'The brain categorizes by recognizing patterns. A unique mechanism creates a new mental category, making you memorable by being different.' },
-        { title: 'Competitive Immunity', description: 'When you own a mechanism, competitors become imitators while you remain the original. This creates lasting differentiation.' },
-        { title: 'Premium Positioning', description: 'A named mechanism implies research, development, expertise. It elevates perceived value and justifies premium pricing.' },
-        { title: 'Word-of-Mouth Catalyst', description: 'People share interesting concepts. "I tried the Metabolic Reset" spreads faster than "I tried a diet program."' }
-      ]},
-      { type: 'example', scenario: 'Weight Loss Program Transformation', before: { label: 'Generic (Forgettable)', text: '"Our program helps you lose weight fast with proven methods and personalized coaching."' }, after: { label: 'Unique Mechanism (Memorable)', text: '"The Hormone Reset Protocol - the only system that targets the root metabolic dysfunction causing weight retention. Not willpower. Not calories. Hormones."' }, insight: 'One is a commodity. The other is a category of one. Prospects remember and talk about the mechanism.' },
-      { type: 'content', title: 'The 3-Step Mechanism Framework', body: 'Building your unique mechanism isn\'t mysterious. It\'s systematic. Step 1: Find the Failure Point - What causes other solutions to fail? Identify the specific breakdown. Step 2: Articulate Your Approach - What do you do differently that addresses that failure? Be specific about your process. Step 3: Name It Powerfully - Give it a proprietary name that sounds unique and memorable. Use words like System, Method, Protocol, Framework to convey structure and credibility.' },
-      { type: 'cards', title: 'Real Mechanism Transformations', items: [
-        { title: 'Business Course', description: 'Generic: "Learn to make money online" → Mechanism: "The Compound Client System" - implies systematic, compound growth approach' },
-        { title: 'Productivity App', description: 'Generic: "Get more done in less time" → Mechanism: "The Focus Flow Framework" - creates proprietary methodology' },
-        { title: 'Marketing Service', description: 'Generic: "We\'ll grow your business" → Mechanism: "The Audience Amplifier Engine" - sounds proprietary and technical' }
-      ]},
-      { type: 'content', title: 'The Naming Formula', body: 'Your mechanism name matters more than you think. A weak name like "Our Proven Process" says nothing. A strong name creates instant curiosity and credibility. Use these proven formulas: The [Adjective] [Noun] [Type] - "The Rapid Revenue System" - The [Number] [Noun] [Type] - "The 5-Phase Framework" - The [Result] [Action] [Type] - "The Conversion Accelerator Method". Test your name by asking: Does it sound proprietary? Would someone remember and repeat it? Does it imply a specific approach?' },
-      { type: 'visual', title: 'Mechanism Impact by the Numbers', visualType: 'stats', data: [
-        { value: '340%', label: 'higher value', subtext: 'Perceived value increase with strong mechanism' },
-        { value: '67%', label: 'less resistance', subtext: 'Price objections drop when mechanism is clear' },
-        { value: '2.8x', label: 'more referrals', subtext: 'Named mechanisms get shared organically' }
-      ]},
-      { type: 'example', scenario: 'Supplement Store - Mechanism Positioning', before: { label: 'Commodity Positioning', text: '"Premium supplements with the highest quality ingredients. Tested for purity. Free shipping over $50."' }, after: { label: 'Mechanism Positioning', text: '"The BioCascade Formula - the only supplement system engineered to trigger sequential cellular optimization. Each capsule activates the next phase. Not random nutrients. Precise biological sequence."' }, insight: 'Same ingredients. Different mechanism story. One is compared on price. The other stands alone.' },
-      { type: 'cards', title: 'Common Mechanism Mistakes', items: [
-        { title: 'Being Too Vague', description: '"Our proven process" applies to anyone. Get specific. The more concrete, the more believable and memorable your mechanism becomes.' },
-        { title: 'Over-Complicating', description: 'If you can\'t explain it in one sentence, it\'s too complex. Simplicity wins. Prospects understand immediately or never.' },
-        { title: 'No Real Substance', description: 'Clever name without differentiation is fluff. Your mechanism must be backed by a genuine approach that delivers results.' },
-        { title: 'Copying Others', description: 'Using someone else\'s format defeats the purpose. Research what exists, then create something that stands completely apart.' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runL4Kiyy-A1lI_He_is_waving_a_red_flag_100_c6c04ad4-c9e2-4a37-81cc-c7da0ca2b396_2.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'From Comparison to Category', body: 'The ultimate goal of a unique mechanism is to escape comparison entirely. When someone asks "What makes you different from X competitor?" and you can\'t articulate a mechanism, you\'re stuck competing on features and price. But when you have a named mechanism, the question becomes irrelevant. You\'re not different. You\'re distinct. You\'re a category of one. Your mechanism becomes the standard others are compared against. That\'s when you win.' },
-      { type: 'quiz', question: 'What\'s the primary purpose of a unique mechanism?', options: ['To make your marketing sound more professional', 'To create a new mental category and escape comparison', 'To confuse competitors with complex terminology', 'To justify charging higher prices for the same thing'], correctIndex: 1, feedback: { correct: 'Exactly! A unique mechanism creates a new mental category in your prospect\'s mind. Instead of comparing you to alternatives, they see you as the ONLY option in your category. You escape price shopping and feature comparison entirely. That\'s the power of category-of-one positioning.', incorrect: 'Not quite. The purpose isn\'t just marketing polish or price justification. A unique mechanism creates a new mental category that makes comparison impossible. When done right, prospects stop asking "Which option?" and start thinking "I need THIS specific mechanism." You exit the comparison game completely.' }},
-      { type: 'completion' }
-    ];
+    // AnimatedCounter component
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.floor(count)}{suffix}</span>;
+    };
 
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 14.5 2"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Crown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M3 20h18"/></svg>,
+      MessageCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Layers: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Box: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Copy: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>,
     };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['What a unique mechanism is and why it creates category of one', 'How to identify where other solutions fail', 'The 3-step framework for building your mechanism', 'Why mechanism naming makes you impossible to compare'] },
+      { type: 'hook', headline: 'Apple had "the ecosystem." Peloton has "the connected fitness experience." Tesla owns "the electric revolution."', subtext: 'These are not just marketing terms. They are frameworks that make comparison impossible. When you have a unique mechanism, you stop competing. You become incomparable.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' },
+      { type: 'mechanism-effect', leftLabel: 'WITHOUT Mechanism', leftResult: 'Competing on price', rightLabel: 'WITH Mechanism', rightResult: 'Category of One', centerStat: { value: 340, suffix: '%', label: 'Higher Perceived Value' } },
+      { type: 'why-mechanisms', items: [
+        { icon: 'Brain', title: 'Cognitive Distinction', description: 'Creates a new mental category in their brain. You become memorable by being different.' },
+        { icon: 'Shield', title: 'Competitive Immunity', description: 'Competitors become imitators while you remain the original. Lasting differentiation.' },
+        { icon: 'DollarSign', title: 'Premium Positioning', description: 'Named mechanism implies research and expertise. Justifies premium pricing.' },
+        { icon: 'MessageCircle', title: 'Word-of-Mouth Catalyst', description: '"I tried the Metabolic Reset" spreads faster than "I tried a diet program."' }
+      ] },
+      { type: 'transformation-example', scenario: 'Weight Loss Program', before: { label: 'Generic (Forgettable)', text: '"Our program helps you lose weight fast with proven methods and personalized coaching."' }, after: { label: 'Unique Mechanism', text: '"The Hormone Reset Protocol - the only system that targets root metabolic dysfunction. Not willpower. Not calories. Hormones."' }, insight: 'One is a commodity. The other is a category of one.' },
+      { type: 'three-step-framework', steps: [
+        { number: 1, title: 'Find the Failure Point', description: 'What causes other solutions to fail? Identify the specific breakdown.' },
+        { number: 2, title: 'Articulate Your Approach', description: 'What do you do differently that addresses that failure? Be specific.' },
+        { number: 3, title: 'Name It Powerfully', description: 'Give it a proprietary name. Use System, Method, Protocol, Framework.' }
+      ] },
+      { type: 'naming-formula', formulas: [
+        { pattern: 'The [Adjective] [Noun] [Type]', example: 'The Rapid Revenue System' },
+        { pattern: 'The [Number] [Noun] [Type]', example: 'The 5-Phase Framework' },
+        { pattern: 'The [Result] [Action] [Type]', example: 'The Conversion Accelerator Method' }
+      ], testQuestions: ['Does it sound proprietary?', 'Would someone remember and repeat it?', 'Does it imply a specific approach?'] },
+      { type: 'mechanism-stats', stats: [
+        { value: 340, suffix: '%', label: 'Higher Value', description: 'Perceived value with strong mechanism' },
+        { value: 67, suffix: '%', label: 'Less Resistance', description: 'Price objections drop' },
+        { value: 2.8, suffix: 'x', label: 'More Referrals', description: 'Named mechanisms get shared' }
+      ] },
+      { type: 'mistakes-grid', mistakes: [
+        { icon: 'AlertTriangle', title: 'Being Too Vague', description: '"Our proven process" applies to anyone. Get specific. More concrete = more believable.' },
+        { icon: 'Layers', title: 'Over-Complicating', description: 'If you cannot explain it in one sentence, it is too complex. Simplicity wins.' },
+        { icon: 'Box', title: 'No Real Substance', description: 'Clever name without differentiation is fluff. Must be backed by genuine approach.' },
+        { icon: 'Copy', title: 'Copying Others', description: 'Using someone else\'s format defeats the purpose. Create something that stands apart.' }
+      ] },
+      { type: 'category-of-one', comparison: { left: { label: 'Another Option', items: ['Compared to alternatives', 'Price-shopped', 'Feature-matched', 'Easily substituted'] }, right: { label: 'Category of One', items: ['No comparison possible', 'Premium pricing accepted', 'Mechanism is the standard', 'Impossible to substitute'] } } },
+      { type: 'quiz', question: 'What is the primary purpose of a unique mechanism?', options: ['To make your marketing sound more professional', 'To create a new mental category and escape comparison', 'To confuse competitors with complex terminology', 'To justify charging higher prices for the same thing'], correctIndex: 1, feedback: { correct: 'Exactly! A unique mechanism creates a new mental category. Instead of comparing you to alternatives, they see you as the ONLY option in your category. You escape price shopping entirely.', incorrect: 'The purpose is not marketing polish or price justification. A unique mechanism creates a new mental category that makes comparison impossible. Prospects stop asking "Which option?" and start thinking "I need THIS mechanism."' }},
+      { type: 'elite-insight', quote: 'You are not different. You are distinct. You are a category of one.', author: 'Unique Mechanism Truth', insight: 'When someone asks "What makes you different from X?" and you cannot articulate a mechanism, you are stuck competing on features and price. But with a named mechanism, the question becomes irrelevant.', actions: [
+        { icon: 'Target', text: 'Find failure point' },
+        { icon: 'Zap', text: 'Name it powerfully' },
+        { icon: 'Crown', text: 'Own your category' }
+      ] },
+      { type: 'completion', sources: [] }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -207,7 +170,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
@@ -236,15 +199,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -254,107 +208,390 @@
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // MechanismEffectSlide - Without vs With comparison
+    const MechanismEffectSlide = ({ data }) => {
+      const [showCenter, setShowCenter] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowCenter(true), 1500); return () => clearTimeout(timer); }, []);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Mechanism Effect</motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '20px', alignItems: 'center' }}>
+            {/* Without */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '28px', textAlign: 'center', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div style={{ color: '#ef4444', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', marginBottom: '12px' }}>{data.leftLabel}</div>
+              <div style={{ fontSize: '32px', fontWeight: '900', color: '#ef4444', fontFamily: 'Fraunces, serif', marginBottom: '8px' }}>Generic</div>
+              <div style={{ color: '#888', fontSize: '14px' }}>{data.leftResult}</div>
+            </motion.div>
+
+            {/* Center Arrow/Stats */}
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: showCenter ? 1 : 0, scale: showCenter ? 1 : 0 }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '70px', height: '70px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.4)' }}>
+                <span style={{ fontSize: '20px', fontWeight: '900', color: 'white', fontFamily: 'Fraunces, serif' }}>
+                  <AnimatedCounter value={data.centerStat.value} suffix={data.centerStat.suffix} />
+                </span>
+              </div>
+              <span style={{ color: 'var(--accent)', fontSize: '11px', fontWeight: '600' }}>{data.centerStat.label}</span>
+            </motion.div>
+
+            {/* With */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '28px', textAlign: 'center', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div style={{ color: '#22c55e', fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', marginBottom: '12px' }}>{data.rightLabel}</div>
+              <div style={{ fontSize: '32px', fontWeight: '900', color: '#22c55e', fontFamily: 'Fraunces, serif', marginBottom: '8px' }}>Category of One</div>
+              <div style={{ color: '#888', fontSize: '14px' }}>{data.rightResult}</div>
+            </motion.div>
+          </div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // WhyMechanismsSlide - 4 benefits with auto-cycling
+    const WhyMechanismsSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.items.length), 2500);
+        return () => clearInterval(timer);
+      }, [data.items.length]);
+
+      const ItemIcon = ({ type }) => {
+        const icons = { Brain: Icons.Brain, Shield: Icons.Shield, DollarSign: Icons.DollarSign, MessageCircle: Icons.MessageCircle };
+        const Icon = icons[type] || Icons.Zap;
+        return <Icon />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Why Unique Mechanisms Work</motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+            {data.items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  border: activeIndex === i ? '2px solid var(--accent)' : '2px solid transparent',
+                  boxShadow: activeIndex === i ? '0 0 25px rgba(var(--accent-rgb), 0.3)' : 'none',
+                  transition: 'all 0.3s ease'
+                }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(var(--accent-rgb), 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                    <ItemIcon type={item.icon} />
+                  </div>
+                  <h3 style={{ color: 'white', fontWeight: '700', fontSize: '16px' }}>{item.title}</h3>
+                </div>
+                <p style={{ color: '#aaa', fontSize: '13px', lineHeight: 1.6 }}>{item.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // TransformationExampleSlide - Before/After with WINNER
+    const TransformationExampleSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowWinner(true), 2000); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span style={{ display: 'inline-block', padding: '6px 16px', borderRadius: '20px', background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)', fontSize: '12px', fontWeight: '600' }}>Real Example</span>
+            <h2 className="slide-title" style={{ fontSize: '24px', color: '#000', marginTop: '12px' }}>{data.scenario}</h2>
+          </motion.div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}><Icons.X /></div>
+                <span style={{ color: '#ef4444', fontWeight: '700', fontSize: '14px' }}>{data.before.label}</span>
+              </div>
+              <p style={{ color: '#ccc', fontSize: '14px', lineHeight: 1.7, fontStyle: 'italic' }}>"{data.before.text}"</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              {showWinner && (
+                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+                  style={{ position: 'absolute', top: '12px', right: '12px', padding: '4px 10px', borderRadius: '12px', background: '#22c55e', color: 'white', fontSize: '10px', fontWeight: '700' }}>
+                  WINNER
+                </motion.div>
+              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}><Icons.Check /></div>
+                <span style={{ color: '#22c55e', fontWeight: '700', fontSize: '14px' }}>{data.after.label}</span>
+              </div>
+              <p style={{ color: '#ccc', fontSize: '14px', lineHeight: 1.7, fontStyle: 'italic' }}>"{data.after.text}"</p>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            style={{ marginTop: '20px', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+            <Icons.Zap style={{ display: 'inline', color: 'var(--accent)', marginRight: '8px' }} />
+            <span style={{ color: '#ccc', fontSize: '14px' }}>{data.insight}</span>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ThreeStepFrameworkSlide - 3 numbered steps
+    const ThreeStepFrameworkSlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveStep(prev => (prev + 1) % data.steps.length), 3000);
+        return () => clearInterval(timer);
+      }, [data.steps.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The 3-Step Mechanism Framework</motion.h2>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {data.steps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '20px',
+                  position: 'relative',
+                  border: activeStep === i ? '2px solid var(--accent)' : '2px solid transparent',
+                  boxShadow: activeStep === i ? '0 0 25px rgba(var(--accent-rgb), 0.3)' : 'none',
+                  transition: 'all 0.3s ease'
+                }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+                <div style={{ width: '50px', height: '50px', borderRadius: '12px', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span style={{ color: 'white', fontWeight: '900', fontSize: '22px', fontFamily: 'Fraunces, serif' }}>{step.number}</span>
+                </div>
+                <div>
+                  <h3 style={{ color: 'white', fontWeight: '700', fontSize: '18px', marginBottom: '6px' }}>{step.title}</h3>
+                  <p style={{ color: '#aaa', fontSize: '14px', lineHeight: 1.5 }}>{step.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // NamingFormulaSlide - Formula patterns
+    const NamingFormulaSlide = ({ data }) => {
+      const [activeFormula, setActiveFormula] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveFormula(prev => (prev + 1) % data.formulas.length), 3000);
+        return () => clearInterval(timer);
+      }, [data.formulas.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Naming Formula</motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
+            {data.formulas.map((formula, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  border: activeFormula === i ? '2px solid var(--accent)' : '2px solid transparent',
+                  boxShadow: activeFormula === i ? '0 0 25px rgba(var(--accent-rgb), 0.3)' : 'none',
+                  transition: 'all 0.3s ease'
+                }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div style={{ color: '#888', fontSize: '12px', marginBottom: '12px', fontFamily: 'monospace' }}>{formula.pattern}</div>
+                <div style={{ color: 'var(--accent)', fontWeight: '700', fontSize: '16px' }}>"{formula.example}"</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px' }}>
+            <div style={{ color: '#888', fontSize: '12px', textTransform: 'uppercase', marginBottom: '12px', textAlign: 'center' }}>Test Your Name</div>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+              {data.testQuestions.map((q, i) => (
+                <span key={i} style={{ padding: '8px 16px', borderRadius: '20px', background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)', fontSize: '13px' }}>{q}</span>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // MechanismStatsSlide - AnimatedCounter stats
+    const MechanismStatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Mechanism Impact by the Numbers</motion.h2>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div style={{ fontSize: '42px', fontWeight: '900', color: 'var(--accent)', fontFamily: 'Fraunces, serif', marginBottom: '8px' }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} decimals={stat.suffix === 'x' ? 1 : 0} />
+              </div>
+              <div style={{ color: 'white', fontWeight: '700', fontSize: '15px', marginBottom: '6px' }}>{stat.label}</div>
+              <div style={{ color: '#888', fontSize: '12px' }}>{stat.description}</div>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
+    // MistakesGridSlide - 4 common mistakes with auto-cycling
+    const MistakesGridSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.mistakes.length), 2500);
+        return () => clearInterval(timer);
+      }, [data.mistakes.length]);
+
+      const MistakeIcon = ({ type }) => {
+        const icons = { AlertTriangle: Icons.AlertTriangle, Layers: Icons.Layers, Box: Icons.Box, Copy: Icons.Copy };
+        const Icon = icons[type] || Icons.AlertTriangle;
+        return <Icon />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Common Mechanism Mistakes</motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+            {data.mistakes.map((mistake, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  border: activeIndex === i ? '2px solid #ef4444' : '2px solid transparent',
+                  boxShadow: activeIndex === i ? '0 0 25px rgba(239, 68, 68, 0.2)' : 'none',
+                  transition: 'all 0.3s ease'
+                }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#ef444420', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                    <MistakeIcon type={mistake.icon} />
+                  </div>
+                  <h3 style={{ color: '#ef4444', fontWeight: '700', fontSize: '15px' }}>{mistake.title}</h3>
+                </div>
+                <p style={{ color: '#aaa', fontSize: '13px', lineHeight: 1.6 }}>{mistake.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // CategoryOfOneSlide - Comparison visualization
+    const CategoryOfOneSlide = ({ data }) => {
+      const [showItems, setShowItems] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowItems(true), 1000); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">From Comparison to Category</motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
+            {/* Another Option */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div style={{ color: '#ef4444', fontWeight: '700', fontSize: '16px', marginBottom: '16px', textAlign: 'center' }}>{data.comparison.left.label}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {data.comparison.left.items.map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: showItems ? 1 : 0, x: showItems ? 0 : -10 }} transition={{ delay: 0.3 + i * 0.1 }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#888', fontSize: '14px' }}>
+                    <Icons.X style={{ color: '#ef4444', width: '16px', height: '16px' }} />
+                    {item}
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Category of One */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div style={{ color: '#22c55e', fontWeight: '700', fontSize: '16px', marginBottom: '16px', textAlign: 'center' }}>{data.comparison.right.label}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {data.comparison.right.items.map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: showItems ? 1 : 0, x: showItems ? 0 : 10 }} transition={{ delay: 0.5 + i * 0.1 }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#ccc', fontSize: '14px' }}>
+                    <Icons.Check style={{ color: '#22c55e', width: '16px', height: '16px' }} />
+                    {item}
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // EliteInsightSlide
+    const EliteInsightSlide = ({ data }) => {
+      const ActionIcon = ({ type }) => {
+        const icons = { Target: Icons.Target, Zap: Icons.Zap, Crown: Icons.Crown };
+        const Icon = icons[type] || Icons.Lightbulb;
+        return <Icon />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(var(--accent-rgb), 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                <Icons.Lightbulb />
+              </div>
+              <span style={{ color: '#888', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>Elite Insight</span>
+            </div>
+
+            <blockquote style={{ fontSize: '20px', color: 'white', fontWeight: '600', lineHeight: 1.6, marginBottom: '16px', fontStyle: 'italic' }}>
+              "{data.quote}"
+            </blockquote>
+            <div style={{ color: '#888', fontSize: '13px', marginBottom: '24px' }}>- {data.author}</div>
+
+            <div style={{ background: '#ffffff10', borderRadius: '12px', padding: '16px', marginBottom: '24px' }}>
+              <p style={{ color: '#ccc', fontSize: '14px', lineHeight: 1.7 }}>{data.insight}</p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+              {data.actions.map((action, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  style={{ background: 'rgba(var(--accent-rgb), 0.1)', borderRadius: '10px', padding: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ color: 'var(--accent)' }}><ActionIcon type={action.icon} /></div>
+                  <span style={{ color: '#ccc', fontSize: '12px', textAlign: 'center' }}>{action.text}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // QuizSlide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -370,7 +607,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -398,11 +635,12 @@
       );
     };
 
+    // CompletionSlide
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Unique Mechanism. Find where others fail, articulate your different approach, name it powerfully. Create cognitive distinction, build competitive immunity, enable premium pricing. You\'re no longer another option. You\'re a category of one.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Unique Mechanism. Find where others fail, articulate your approach, name it powerfully. You are no longer another option. You are a category of one.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -410,6 +648,8 @@
         </motion.div>
       </div>
     );
+
+    // ============ MAIN APP ============
 
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
@@ -424,14 +664,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -463,10 +697,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'mechanism-effect': return <MechanismEffectSlide data={slide} />;
+          case 'why-mechanisms': return <WhyMechanismsSlide data={slide} />;
+          case 'transformation-example': return <TransformationExampleSlide data={slide} />;
+          case 'three-step-framework': return <ThreeStepFrameworkSlide data={slide} />;
+          case 'naming-formula': return <NamingFormulaSlide data={slide} />;
+          case 'mechanism-stats': return <MechanismStatsSlide data={slide} />;
+          case 'mistakes-grid': return <MistakesGridSlide data={slide} />;
+          case 'category-of-one': return <CategoryOfOneSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -506,7 +745,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
