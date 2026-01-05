@@ -389,7 +389,7 @@ These lessons need design improvements to reach elite level.
 | 257 | two-meta-rules | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 258 | two-worlds-mastery | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 259 | unique-mechanism | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
-| 260 | unity-principle | 5 |
+| 260 | unity-principle | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 261 | us-vs-them | 5 |
 | 262 | value-ladder | 5 |
 | 263 | value-perception-lever | 5 |
@@ -421,8 +421,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 285 |
-| Need Improvement | 12 |
+| Improved / Don't Need Improvement | 286 |
+| Need Improvement | 11 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
