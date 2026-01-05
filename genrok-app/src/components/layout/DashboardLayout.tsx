@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { signOut } from '@/lib/supabase';
+import { UserDropdown } from './UserDropdown';
 
 interface SubNavItem {
   title: string;
@@ -433,6 +434,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 3
               </span>
             </button>
+
+            {/* User Dropdown */}
+            <UserDropdown />
           </div>
         </header>
 

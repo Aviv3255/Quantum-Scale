@@ -351,3 +351,53 @@ export const getReferrerByCode = async (referralCode: string): Promise<{ referre
 
   return { referrerId: data ? (data as { user_id: string }).user_id : null, error };
 };
+
+// Feature Request functions
+export interface FeatureRequestInput {
+  user_id: string | null;
+  user_email: string;
+  title: string;
+  description: string | null;
+  category: string;
+}
+
+export const submitFeatureRequest = async (request: FeatureRequestInput) => {
+  const { data, error } = await supabase
+    .from('feature_requests' as const)
+    .insert({
+      user_id: request.user_id,
+      user_email: request.user_email,
+      title: request.title,
+      description: request.description,
+      category: request.category,
+      status: 'pending',
+      created_at: new Date().toISOString(),
+    } as never)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const getFeatureRequests = async () => {
+  const { data, error } = await supabase
+    .from('feature_requests' as const)
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+};
+
+export const updateFeatureRequestStatus = async (id: string, status: string) => {
+  const { data, error } = await supabase
+    .from('feature_requests' as const)
+    .update({ status } as never)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};

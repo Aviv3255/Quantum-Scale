@@ -236,7 +236,7 @@ export default function AIVideoAdsPage() {
     setTimeout(() => setCopiedStep(null), 2000);
   };
 
-  if (authLoading || !user) {
+if (authLoading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
@@ -398,7 +398,7 @@ export default function AIVideoAdsPage() {
                 {step.copyText && (
                   <div className="ml-16 mb-6">
                     <div className="bg-[#1a1a1a] rounded-xl p-5 max-w-2xl relative group">
-                      <pre className="text-sm text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
+                      <pre className="text-sm text-gray-100 whitespace-pre-wrap font-mono leading-relaxed pr-20">
                         {step.copyText}
                       </pre>
                       <button

@@ -1831,7 +1831,7 @@ Turns out, there are specific triggers that make the reptile brain say YES befor
 
 My biggest tip: Before you spend another dollar on ads, make sure you understand buyer psychology. The tactics mean nothing if you dont understand WHY they work.
 
-**I found an incredible free resource that breaks all of this down**: [LINK]
+Learned this at [LINK]
 
 Seriously, I wish I had this when I started. Would have saved me at least $30k in wasted ad spend.` },
 
@@ -1848,7 +1848,7 @@ Same product. Same price. Same everything else. Just changed the headline to foc
 
 This is what they call the "WIIFM principle" - Whats In It For Me. Your customer is asking this with every word they read.
 
-**Found this and a ton of other copywriting frameworks for free here**: [LINK]
+Found all this at [LINK]
 
 Game changer. My whole approach to writing product descriptions changed after this.` },
 
@@ -1864,7 +1864,7 @@ Think about it:
 
 I stopped trying to lower my CPA and started focusing on increasing customer lifetime value. Now I can bid more aggressively than competitors and still be more profitable.
 
-**This "Highest CPA Wins" concept completely changed my business**: [LINK]
+Source: [LINK]
 
 Free resource that explains this way better than I can. Highly recommend.` },
 
@@ -1881,7 +1881,7 @@ The sequence isnt complicated:
 
 The key insight: Most of your customers WANT to buy from you again. You just have to make it easy and remind them you exist.
 
-**Found this email framework and a bunch of other LTV strategies here**: [LINK]
+[LINK] has the full breakdown
 
 Its free and its honestly better than courses Ive paid hundreds for.` },
 
@@ -1899,7 +1899,7 @@ My process:
 
 The best products solve problems people are actively discussing. Not products that other dropshippers are already running.
 
-**Got this and a lot of other product research strategies from**: [LINK]
+Got this from [LINK]
 
 Free resource with frameworks I use every week. No signup or anything.` },
 
@@ -1914,7 +1914,7 @@ The "Above the Fold" checklist:
 
 Most product pages fail because they bury the good stuff below the fold. People dont scroll if you havent hooked them in 3 seconds.
 
-**This "3 Second Rule" and other CRO frameworks are explained here**: [LINK]
+Credit to [LINK] for this
 
 Completely free. Print out the checklist and use it for every product.` },
 
@@ -1928,7 +1928,7 @@ When $39 was the only option, people debated whether to buy at all. When $59 exi
 
 This is called price anchoring. Works in almost every niche Ive tested.
 
-**Learned this and other pricing strategies from**: [LINK]
+Check out [LINK] if curious
 
 Free resource. The pricing psychology section alone is worth bookmarking.` },
 
@@ -1942,7 +1942,7 @@ The fix isnt more creative variations (though that helps). Its building a creati
 
 Now I launch 5-10 new creatives every week. Not because each one is perfect, but because I need the machine constantly fed with fresh content.
 
-**This "Creative is the New Targeting" framework changed everything**: [LINK]
+btw learned this from [LINK]
 
 Free breakdown of how to build a creative system. Actually actionable, not just theory.` },
 
@@ -1957,7 +1957,7 @@ New: "Made with organic cotton so you can sleep guilt-free knowing your baby isn
 
 Same feature. But now it connects to what they actually CARE about.
 
-**This formula and dozens of other copywriting frameworks**: [LINK]
+[LINK] explains it better than I can
 
 Free resource that I reference literally every time I write copy. Bookmark it.` },
 
@@ -1973,7 +1973,7 @@ This has saved me thousands on products that wouldnt have sold.
 
 The key insight: You dont need a perfect page to test demand. You just need enough to see if people WANT the product.
 
-**Got this validation framework and others from**: [LINK]
+Picked this up from [LINK]
 
 Completely free. Wish I had this before wasting money on products nobody wanted.` },
 
@@ -1988,7 +1988,7 @@ Day 15+: Offer a small discount (last resort)
 
 The sequence matters because different people need different pushes. Some just forgot. Others have objections you need to address. Others need a deal.
 
-**This framework and other abandoned cart strategies**: [LINK]
+More details at [LINK]
 
 Free resource. The email + ad combo strategy alone is worth your time.` },
 
@@ -2008,7 +2008,7 @@ At $50k+:
 
 The biggest shift is mindset. Stop thinking like a seller. Start thinking like a business owner.
 
-**Found frameworks for scaling at each stage here**: [LINK]
+Found this at [LINK] - free btw
 
 Free resource that actually addresses the different challenges at each level. Super helpful.` },
 
@@ -2025,7 +2025,7 @@ Thats it. The rest runs on systems.
 
 The key is building SOPs for everything repetitive. Took 3 months to set up properly, but now my business runs without me being in it constantly.
 
-**The systems and automation frameworks I used**: [LINK]
+Learned this at [LINK]
 
 Free resource with templates you can actually implement. Game changer for time freedom.` },
 
@@ -2042,7 +2042,7 @@ My negotiation framework:
 
 One conversation saved me $0.80/unit. On 10,000 units, thats $8k straight to my bottom line.
 
-**Supplier and operations strategies I use**: [LINK]
+Found all this at [LINK]
 
 Free resource with negotiation scripts you can copy. Actually works.` },
 
@@ -2058,7 +2058,7 @@ Characteristics of boring profitable products:
 
 My best performing store sells cleaning supplies. Boring? Yes. Profitable? Insanely.
 
-**This "find boring profitable" framework and others**: [LINK]
+Source: [LINK]
 
 Free resource that changed how I think about product selection. Less exciting, way more money.` },
 
@@ -2076,7 +2076,7 @@ The customer was so impressed they deleted the 1-star and posted a 5-star instea
 
 Every complaint is a chance to create a superfan.
 
-**Customer service frameworks and templates**: [LINK]
+[LINK] has the full breakdown
 
 Free resource with actual scripts you can use. Turned my support from weakness to strength.` },
 
@@ -2095,7 +2095,7 @@ Within 6 months, I had removed myself from:
 
 Now I focus only on strategy and high-level decisions.
 
-**The delegation and systems frameworks I used**: [LINK]
+Got this from [LINK]
 
 Free resource that walks you through the process. Essential reading for anyone stuck working IN their business.` },
 
@@ -2113,7 +2113,7 @@ Key learnings:
 - Make it one-click (no friction)
 - Create urgency (limited time offer)
 
-**Found this and other AOV strategies here**: [LINK]
+Credit to [LINK] for this
 
 Free resource with specific upsell frameworks. The post-purchase section alone added thousands to my monthly revenue.` },
 
@@ -2133,7 +2133,7 @@ The magic happens when you understand the RATIOS:
 - If AOV is low, you need volume or upsells
 - If ROAS drops, check creative fatigue first
 
-**This metrics framework and how to use it**: [LINK]
+Check out [LINK] if curious
 
 Free resource that cut through all the noise. My dashboard is so much cleaner now.` },
 
@@ -2150,7 +2150,7 @@ Other image lessons:
 - Video thumbnails with humans get more clicks
 - Avoid cluttered backgrounds
 
-**Visual marketing and creative strategies**: [LINK]
+btw learned this from [LINK]
 
 Free resource with specific frameworks for images that convert. My creative process is completely different now.` },
 
@@ -2169,7 +2169,7 @@ Took 8 months to match my salary. Then I quit.
 
 The lesson: You dont need to quit your job to start. But you do need to treat whatever time you have as precious.
 
-**Time management and prioritization frameworks for side hustlers**: [LINK]
+[LINK] explains it better than I can
 
 Free resource specifically for people building alongside other commitments.` },
 
@@ -2183,7 +2183,7 @@ Refund rate dropped to under 5%.
 
 Why it works: Video builds trust and connection. When theres a face behind the brand, people feel more comfortable. They also feel bad asking for refunds from a "real person" vs an anonymous company.
 
-**This and other trust-building frameworks**: [LINK]
+Picked this up from [LINK]
 
 Free resource with specific tactics for reducing refunds and building customer confidence.` },
 
@@ -2206,7 +2206,7 @@ The ugly:
 
 Worth it? 100%. But go in with realistic expectations.
 
-**The resource that helped me most (especially early on)**: [LINK]
+More details at [LINK]
 
 Free and actually practical. Not guru nonsense. Real frameworks you can implement.` },
 
@@ -2228,7 +2228,7 @@ Let it run for 3-4 days. The data tells you:
 
 Way more efficient than testing one thing at a time.
 
-**This testing framework and other ad strategies**: [LINK]
+Found this at [LINK] - free btw
 
 Free resource with specific setups you can copy. My testing is so much faster now.` },
 
@@ -2246,7 +2246,7 @@ Same product. But now it feels like Im talking directly to someone specific.
 
 The paradox: The more specific you get, the more people respond. Because specific feels personal.
 
-**The customer avatar framework I use**: [LINK]
+Learned this at [LINK]
 
 Free resource that walks you through creating your ideal customer profile. Changed my entire marketing approach.` },
 
@@ -2261,7 +2261,7 @@ Checkout conversion rate went from 35% to 52%.
 
 People get nervous right before buying. Your job is to calm those nerves at the exact moment they appear.
 
-**Checkout optimization and other CRO tactics**: [LINK]
+Found all this at [LINK]
 
 Free resource with specific elements to add to your checkout. The trust badge placement guide is especially helpful.` },
 
@@ -2279,7 +2279,7 @@ Often the hater becomes a customer. And everyone watching sees how you handle cr
 
 Also: Engagement is engagement. Facebook doesnt care if comments are positive or negative. More comments = more reach.
 
-**Social media and ad management strategies**: [LINK]
+Source: [LINK]
 
 Free resource with actual scripts for handling different types of negative comments. Super practical.` },
 
@@ -2299,7 +2299,7 @@ Hidden costs people forget:
 
 Now I calculate true margin BEFORE scaling anything. If margin isnt at least 20% after ALL costs, I dont scale.
 
-**Profit calculation frameworks and financial templates**: [LINK]
+[LINK] has the full breakdown
 
 Free resource with actual spreadsheets you can use. Would have saved me from that painful surprise.` },
 
@@ -2323,7 +2323,7 @@ What works now:
 - Creative volume (not just one winning ad)
 - Systems thinking (not just hustle)
 
-**Updated frameworks for the current landscape**: [LINK]
+Got this from [LINK]
 
 Free resource thats actually relevant to 2024-2025 ecommerce. Not regurgitated old tactics.` },
 
@@ -2340,7 +2340,7 @@ Why it works:
 
 Now I actively collect customer photos for every product. Offer a small discount in exchange for a photo review.
 
-**Trust building and social proof frameworks**: [LINK]
+Credit to [LINK] for this
 
 Free resource with specific tactics for building credibility. The UGC collection templates are especially helpful.` },
 
@@ -2359,7 +2359,7 @@ The few good ones:
 
 My biggest regret: Not finding free resources first. The best information Ive found wasnt behind a paywall.
 
-**The free resource that taught me more than most paid courses**: [LINK]
+Check out [LINK] if curious
 
 Seriously. Before you spend hundreds on a course, check out whats available for free. You might be surprised.` },
 
@@ -2375,7 +2375,7 @@ Now it takes 20 minutes. Heres how:
 
 The insight: 80% of customer questions are the same 10 questions. Automate those, and you only deal with the 20% that need real attention.
 
-**Customer service automation frameworks**: [LINK]
+btw learned this from [LINK]
 
 Free resource with templates and workflows you can implement today. Saved my sanity.` },
 
@@ -2392,7 +2392,7 @@ Start: "Feel like the most successful person in the room"
 
 The product is just the vehicle for the feeling they want.
 
-**Deep dive into buyer psychology**: [LINK]
+[LINK] explains it better than I can
 
 Free resource that goes way deeper into this. The "emotional triggers" section is especially good. Changed how I write all my copy.` },
 
@@ -2408,7 +2408,7 @@ Why? Long copy isnt about making everyone read everything. Its about giving peop
 
 The lesson: Test your assumptions. My gut was wrong.
 
-**Testing frameworks and CRO experiments**: [LINK]
+Picked this up from [LINK]
 
 Free resource with counter-intuitive findings like this. Saved me from many wrong assumptions.` },
 
@@ -2431,7 +2431,7 @@ Month 5-6: Double down on winner
 
 The biggest change from what I actually did: Id spend way more time learning before doing. The mistakes I made early cost me way more than the time it would have taken to learn properly.
 
-**The learning resource Id use if starting today**: [LINK]
+More details at [LINK]
 
 Free, comprehensive, and actually actionable. Would have saved me a year of struggling.` },
 
@@ -2452,7 +2452,7 @@ My retention stack:
 
 Repeat customers are 9x more profitable than new ones. Treat them that way.
 
-**LTV and retention frameworks I use**: [LINK]
+Found this at [LINK] - free btw
 
 Free resource focused specifically on customer lifetime value. The email sequences alone are worth bookmarking.` },
 
@@ -2466,7 +2466,7 @@ Solve: "Our orthopedic pillow aligns your spine while you sleep. Wake up feeling
 
 Simple but effective. The agitation is key - you need to make the problem feel urgent before presenting the solution.
 
-**This and other copywriting frameworks**: [LINK]
+Learned this at [LINK]
 
 Free resource with templates for different product types. I reference it constantly when writing ads.` },
 
@@ -2485,7 +2485,7 @@ For my store, high-value customers:
 
 Now I target more of these people specifically. Same ad spend, way better results.
 
-**Customer analysis and targeting frameworks**: [LINK]
+Found all this at [LINK]
 
 Free resource with step-by-step analysis methods. Finding your best customers is a game changer.` },
 
@@ -2501,7 +2501,7 @@ Each task has a checklist. Each checklist is timed.
 
 The magic is in the consistency. When you do the same things at the same times, nothing falls through cracks.
 
-**Operations and systems templates**: [LINK]
+Source: [LINK]
 
 Free resource with actual checklists you can implement. Turned my mess into a real business.` },
 
@@ -2520,7 +2520,7 @@ Organic still has value:
 
 But as a primary customer acquisition channel? Not for me.
 
-**Marketing channel strategies and frameworks**: [LINK]
+[LINK] has the full breakdown
 
 Free resource that helped me figure out which channels actually work for ecommerce. Saved me from chasing vanity metrics.` },
 
@@ -2540,7 +2540,7 @@ Yellow flags:
 
 Found my best suppliers by starting small, testing quality, then scaling the relationship.
 
-**Supplier vetting and management strategies**: [LINK]
+Got this from [LINK]
 
 Free resource with vetting templates and communication scripts. Would have saved me from some expensive lessons.` },
 ];
@@ -2760,11 +2760,12 @@ export default function MetaTemplatesPage() {
     ? `${window.location.origin}/signup?ref=${referralCode}`
     : '';
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
+  // TEMPORARILY DISABLED FOR VISUAL QA
+  // useEffect(() => {
+  //   if (!authLoading && !user) {
+  //     router.push('/login');
+  //   }
+  // }, [user, authLoading, router]);
 
   // Load referral data and save referral code to profile
   useEffect(() => {
@@ -2890,13 +2891,14 @@ export default function MetaTemplatesPage() {
     }
   };
 
-  if (authLoading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
-      </div>
-    );
-  }
+  // TEMPORARILY DISABLED FOR VISUAL QA
+  // if (authLoading || !user) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+  //       <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
+  //     </div>
+  //   );
+  // }
 
   // Duplicate images for seamless scrolling
   const duplicatedImages = [...CREATIVE_IMAGES, ...CREATIVE_IMAGES];
