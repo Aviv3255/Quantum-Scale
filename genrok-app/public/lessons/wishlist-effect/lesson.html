@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Does a Wishlist on Your Website Increase REV/Visit? | Quantum Scale</title>
+  <title>The Wishlist Effect | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #ec4899; --accent-dark: #db2777; --accent-light: #f9a8d4; --accent-rgb: 236, 72, 153; }
@@ -29,280 +26,426 @@
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
-    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
 
     const LESSON_CONFIG = {
       id: 'wishlist-effect',
-      title: 'Does a Wishlist on Your Website Increase REV/Visit?',
-      description: 'How the Endowment Effect turns window shoppers into buyers - without triggering the frugal defense mechanism.',
+      title: 'The Wishlist Effect',
+      description: 'How psychological ownership turns window shoppers into buyers',
       accentColor: '#ec4899',
       duration: '5 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'More conversion psychology coming soon.' }
+      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'More conversion psychology coming soon' }
     };
-
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    // Animated Components
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+    // ============================================
+    // ANIMATED COUNTER COMPONENT
+    // ============================================
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', decimals = 0, duration = 2000 }) => {
       const [count, setCount] = useState(0);
       useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{count}{suffix}</span>;
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(eased * value);
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
     };
 
-    const TypewriterText = ({ text, delay = 0 }) => {
-      const [displayText, setDisplayText] = useState('');
-      useEffect(() => {
-        let index = 0;
-        const timer = setTimeout(() => {
-          const interval = setInterval(() => {
-            if (index < text.length) {
-              setDisplayText(text.slice(0, index + 1));
-              index++;
-            } else {
-              clearInterval(interval);
-            }
-          }, 30);
-          return () => clearInterval(interval);
-        }, delay);
-        return () => clearTimeout(timer);
-      }, [text, delay]);
-      return <span>{displayText}</span>;
-    };
-
-    const CircularProgress = ({ percentage, label, color = 'var(--accent)' }) => {
-      const [progress, setProgress] = useState(0);
-      const radius = 60;
-      const circumference = 2 * Math.PI * radius;
-      const offset = circumference - (progress / 100) * circumference;
-      useEffect(() => {
-        const timer = setTimeout(() => setProgress(percentage), 100);
-        return () => clearTimeout(timer);
-      }, [percentage]);
-      return (
-        <div className="flex flex-col items-center">
-          <div className="relative w-40 h-40 mb-3">
-            <svg className="transform -rotate-90 w-40 h-40">
-              <circle cx="80" cy="80" r={radius} stroke="#e5e7eb" strokeWidth="8" fill="none" />
-              <motion.circle cx="80" cy="80" r={radius} stroke={color} strokeWidth="8" fill="none" strokeLinecap="round" initial={{ strokeDashoffset: circumference }} animate={{ strokeDashoffset: offset }} transition={{ duration: 1.5, ease: "easeOut" }} style={{ strokeDasharray: circumference }} />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-3xl font-bold" style={{ color }}>{progress}%</span>
-            </div>
-          </div>
-          <p className="text-sm font-medium text-neutral-600">{label}</p>
-        </div>
-      );
-    };
-
-    const DramaticReveal = ({ children, delay = 0 }) => (
-      <motion.div initial={{ opacity: 0, scale: 0.8, rotateX: -30 }} animate={{ opacity: 1, scale: 1, rotateX: 0 }} transition={{ delay, duration: 0.6, type: 'spring' }}>
-        {children}
-      </motion.div>
-    );
-
-    const ProgressBar = ({ percentage, label, color = 'var(--accent)', delay = 0 }) => {
-      const [width, setWidth] = useState(0);
-      useEffect(() => {
-        const timer = setTimeout(() => setWidth(percentage), delay);
-        return () => clearTimeout(timer);
-      }, [percentage, delay]);
-      return (
-        <div className="mb-4">
-          <div className="flex justify-between mb-1">
-            <span className="text-sm font-medium text-neutral-700">{label}</span>
-            <span className="text-sm font-medium" style={{ color }}>{percentage}%</span>
-          </div>
-          <div className="h-3 bg-neutral-200 rounded-full overflow-hidden">
-            <motion.div initial={{ width: 0 }} animate={{ width: `${width}%` }} transition={{ duration: 1.5, ease: "easeOut", delay: delay/1000 }} className="h-full rounded-full" style={{ background: color }} />
-          </div>
-        </div>
-      );
-    };
-
-    const PulseHighlight = ({ children }) => (
-      <motion.span animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 2, repeat: Infinity }} className="inline-block" style={{ color: 'var(--accent)' }}>
-        {children}
-      </motion.span>
-    );
-
+    // ============================================
+    // SLIDE DATA
+    // ============================================
     const slides = [
       { type: 'welcome', learningGoals: ['Why "Add to Wishlist" increases both CVR and AOV', 'The Endowment Effect - psychological ownership without commitment', 'How wishlists bypass the frugal defense mechanism'] },
-      { type: 'hook', headline: 'A visitor clicks "Add to Wishlist." No payment. No commitment. Just a heart icon. They feel nothing. Then they come back three days later and buy everything on the list.', subtext: 'What happens next is pure psychology. Not discounts. Not pressure. Just a simple mechanism that creates ownership without commitment - and turns window shoppers into repeat buyers.' },
-      { type: 'psychology-insight', title: 'The Zeigarnik Effect', subtitle: 'Why Unfinished Tasks Haunt Your Mind', body: 'In 1927, psychologist Bluma Zeigarnik noticed waiters remembered unpaid orders better than completed ones. Once paid, the mental tension dissolved. Unfinished tasks create cognitive itch - your brain literally can\'t let go until completion. This is why cliffhangers work. Why open loops drive you crazy. And why a wishlist with items waiting feels different than an empty cart.' },
-      { type: 'dramatic-number', value: '68%', label: 'Cart Abandonment Rate', subtext: 'Visitors add items to cart but never complete purchase', context: 'The problem: "Add to Cart" triggers decision anxiety before they\'re ready to commit.' },
-      { type: 'content', title: 'The Psychology Problem', body: 'When someone clicks "Add to Cart," their brain activates the frugal defense mechanism. Questions flood in: Can I afford this? Do I really need it? Should I wait for a sale? The mental negotiation starts immediately. Most visitors lose. They abandon the cart and never return. The interest was real, but the pressure was too early.' },
-      { type: 'vsBattle', title: 'Add to Cart vs Add to Wishlist', data: {
-        left: { value: 'Cart', label: 'Purchase Pressure', description: 'Triggers frugal defense mechanism immediately' },
-        right: { value: 'Wishlist', label: 'Zero Pressure', description: 'Creates ownership without commitment' }
-      }},
-      { type: 'circular-stats', title: 'The Pain of Lost Interest', data: [
-        { percentage: 68, label: 'Cart Abandonment', color: '#ec4899' },
-        { percentage: 24, label: 'Never Return', color: '#ef4444' },
-        { percentage: 8, label: 'Actually Convert', color: '#10b981' }
-      ]},
-      { type: 'content', title: 'The Wishlist Solution', body: '"Add to Wishlist" bypasses the entire negotiation. No commitment required. No purchase pressure. Just interest. Visitors save items they like without triggering the mental alarm that asks "Can I afford this?" The Zeigarnik Effect kicks in - those saved items become an open loop. An unfinished task. Their brain keeps thinking about them.' },
-      { type: 'solution-reveal', title: 'Enter: The Wishlist Feature', body: 'A simple heart icon. One click saves the item. No checkout. No payment details. Just a personal collection of "items I might want later." But here\'s what happens psychologically: the moment they save an item, they begin to feel partial ownership. Not full ownership - that would require commitment. But just enough ownership that losing those items now feels like a loss. This is the Endowment Effect working silently.', visual: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/53.jpg?v=1763056442' },
-      { type: 'quoteSpotlight', data: {
-        quote: 'A wishlist is a digital fitting room. It lets visitors collect items without the pressure to buy right now.',
-        context: 'The core insight behind why wishlists convert'
-      }},
-      { type: 'content', title: 'Why Wishlists Work Better Than Carts', body: '"Add to Cart" signals intent to buy. It activates the frugal defense mechanism - your brain starts calculating whether you can afford it, whether you really need it, whether you should wait. "Add to Wishlist" signals interest without commitment. It\'s collecting items for a fitting room, not checking out. No purchase pressure. No mental negotiation. Just curiosity and desire.' },
-      { type: 'example', scenario: 'Fashion Store - Wishlist vs. Cart', before: { label: 'Add to Cart Only', text: 'Visitor sees item they like. Clicks "Add to Cart." Brain asks: "Can I afford this? Do I need it now?" They hesitate. Close tab.' }, after: { label: 'With Wishlist Option', text: 'Visitor sees item they like. Clicks "Add to Wishlist." Brain thinks: "I\'ll come back to this." No pressure. They continue browsing. Add three more items. Come back later. Buy all four.' }, insight: 'Wishlist reduces decision friction and creates psychological ownership without commitment.' },
-      { type: 'content', title: 'The Return Visit Advantage', body: 'Most store owners obsess over the first visit. But the real money is in the return visit. When someone adds items to a wishlist, they\'re creating a personal bookmark - a reason to come back. And when they do come back, they\'re not starting from scratch. Their wishlist is waiting. Pre-loaded with items they already mentally claimed. The decision is easier the second time.' },
-      { type: 'cards', title: 'Why AOV Increases Too', items: [
-        { title: 'No Single-Item Pressure', description: 'Visitors don\'t feel forced to decide on one item right now. They can add multiple items to wishlist without commitment, then buy several at once later.' },
-        { title: 'Collection Mentality', description: 'Once they have 3-4 items in a wishlist, buying just one feels incomplete. They want to complete the collection they mentally curated.' }
-      ]},
-      { type: 'content', title: 'Loss Aversion Kicks In', body: 'After a few days, the visitor checks their wishlist. Those items are no longer "products on a website" - they\'re "my items that I saved." If one goes out of stock or increases in price, it feels like losing something they already had. Loss aversion is stronger than desire for gain. This is why wishlist users convert at higher rates and with higher AOV.' },
-      { type: 'iconGrid', title: 'Why Wishlists Drive Revenue', data: {
-        items: [
-          { icon: '💭', title: 'No Pressure', description: 'Interest without commitment' },
-          { icon: '🔖', title: 'Easy Return', description: 'One-click access later' },
-          { icon: '🎯', title: 'Ownership Feel', description: 'Endowment Effect active' },
-          { icon: '📧', title: 'Re-engage', description: 'Email reminders work' }
-        ]
-      }},
-      { type: 'progressBars', title: 'Estimated Impact from Wishlist Implementation', data: [
-        { label: 'CVR Improvement', percentage: 12, color: '#ec4899' },
-        { label: 'AOV Increase', percentage: 25, color: '#8b5cf6' },
-        { label: 'Return Visit Rate', percentage: 35, color: '#10b981' }
-      ]},
-      { type: 'implementation', title: 'Add Wishlist Feature to Your Store', intro: "Turn window shoppers into buyers with the Endowment Effect. Here\'s how:", steps: [
-        { step: 1, title: 'Add wishlist functionality', description: 'Apps like Vitals add a heart icon to every product. One click saves items without the pressure of "Add to Cart."' },
-        { step: 2, title: 'Enable email reminders', description: 'When someone adds items to their wishlist, they get gentle reminders. "Your saved items are waiting..."' },
-        { step: 3, title: 'Track wishlist behavior', description: 'See which products get saved most. This reveals purchase intent without the commitment barrier.' },
-        { step: 4, title: 'Create urgency on saved items', description: 'Send alerts when wishlist items go on sale or low stock. Loss aversion kicks in - they\'ll buy to not lose "their" items.' }
-      ], toolUrl: 'https://vitals.app/shopify/12548540', cta: 'Get Started Free' },
-      { type: 'quiz', question: 'Why does "Add to Wishlist" increase conversions better than "Add to Cart"?', options: ['Wishlists are more visually appealing', 'It creates psychological ownership without triggering the frugal defense mechanism', 'It automatically applies a discount', 'It sends more email reminders'], correctIndex: 1, feedback: { correct: 'Exactly! "Add to Wishlist" bypasses the mental resistance that "Add to Cart" creates. No purchase pressure. Just curiosity and desire. Visitors feel partial ownership without commitment - then return later with the Endowment Effect fully active.', incorrect: 'Not quite. The core insight is psychological: "Add to Wishlist" creates the Endowment Effect (partial ownership feeling) without activating the frugal defense mechanism that "Add to Cart" triggers. No purchase pressure = higher conversions + higher AOV.' }},
-      { type: 'completion', sources: [{ name: 'Vitals Wishlist - Add Wishlist Feature', url: 'https://vitals.app/shopify/12548540' }] }
+      { type: 'endowment-effect', title: 'The Endowment Effect', subtitle: 'Why We Value What We "Own"', body: 'The moment someone saves an item to their wishlist, their brain starts treating it as partially theirs. This psychological ownership makes losing it feel like a real loss - even though they never bought it.', keyInsight: 'People value things they feel they own 2-3x more than identical items they don\'t own' },
+      { type: 'cart-abandonment-stats', title: 'The Cart Problem', stats: [{ value: 68, label: 'Cart Abandonment', suffix: '%' }, { value: 24, label: 'Never Return', suffix: '%' }, { value: 8, label: 'Actually Convert', suffix: '%' }], insight: '"Add to Cart" triggers the frugal defense mechanism before they\'re ready to commit' },
+      { type: 'wishlist-vs-cart', title: 'Cart vs Wishlist Psychology', cart: { label: 'Add to Cart', trigger: 'Purchase Pressure', response: '"Can I afford this? Do I need it now?"', result: 'Frugal defense activated', color: '#ef4444' }, wishlist: { label: 'Add to Wishlist', trigger: 'Zero Pressure', response: '"I\'ll come back to this later"', result: 'Interest preserved, no anxiety', color: '#ec4899' } },
+      { type: 'zeigarnik-effect', title: 'The Zeigarnik Effect', subtitle: 'Unfinished Tasks Haunt the Mind', story: 'In 1927, psychologist Bluma Zeigarnik noticed waiters remembered unpaid orders better than completed ones. Once paid, the mental tension dissolved.', application: 'A wishlist with items waiting creates the same cognitive itch - your brain literally can\'t let go until completion.' },
+      { type: 'psychological-mechanism', title: 'The Three Forces at Work', mechanisms: [{ name: 'Endowment Effect', desc: 'They feel partial ownership', icon: 'heart' }, { name: 'Zeigarnik Effect', desc: 'Unfinished list creates tension', icon: 'brain' }, { name: 'Loss Aversion', desc: 'Losing "their" items hurts', icon: 'shield' }] },
+      { type: 'loss-aversion', title: 'Loss Aversion Kicks In', scenario: 'After a few days, the visitor checks their wishlist. Those items are no longer "products on a website" - they\'re "my items that I saved."', alert: { text: 'Low Stock Alert', item: 'Item in your wishlist', message: 'Only 3 left' }, insight: 'If one goes out of stock, it feels like losing something they already had. This is why wishlist users convert at higher rates.' },
+      { type: 'wishlist-journey', title: 'The Wishlist Journey', steps: [{ step: 'Browse', desc: 'Visitor discovers items they like' }, { step: 'Save', desc: 'Clicks heart icon, no commitment' }, { step: 'Own', desc: 'Brain treats items as "mine"' }, { step: 'Return', desc: 'Comes back with intention' }, { step: 'Buy', desc: 'Converts with higher AOV' }] },
+      { type: 'impact-metrics', title: 'The Wishlist Impact', stats: [{ value: 12, label: 'CVR Improvement', suffix: '%', color: '#ec4899' }, { value: 25, label: 'AOV Increase', suffix: '%', color: '#8b5cf6' }, { value: 35, label: 'Return Visit Rate', suffix: '%', color: '#10b981' }] },
+      { type: 'action-checklist', title: 'Implement the Wishlist Effect', steps: [{ text: 'Add wishlist functionality (heart icon on products)' }, { text: 'Enable email reminders for saved items' }, { text: 'Create urgency alerts (low stock, price drops)' }, { text: 'Track wishlist behavior for insights' }] },
+      { type: 'quiz', question: 'Why does "Add to Wishlist" convert better than "Add to Cart"?', options: ['Wishlists are more visually appealing', 'It creates psychological ownership without triggering purchase anxiety', 'It automatically applies discounts', 'It sends more notifications'], correctIndex: 1, feedback: { correct: 'Exactly! "Add to Wishlist" creates the Endowment Effect (partial ownership) without activating the frugal defense mechanism. No purchase pressure = higher conversions + higher AOV.', incorrect: 'The core insight is psychological: "Add to Wishlist" creates ownership feeling without the anxiety "Add to Cart" triggers. No purchase pressure means they save more items and convert at higher rates later.' } },
+      { type: 'elite-insight', quote: 'A wishlist is a digital fitting room. It lets visitors collect items without the pressure to buy right now - then brings them back with psychological ownership already formed.', attribution: 'The Wishlist Effect', actions: ['Add heart icons to all products', 'Send "still interested?" emails', 'Alert on price drops & low stock'] },
+      { type: 'completion' }
     ];
 
+    // ============================================
+    // ICONS
+    // ============================================
     const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      ArrowLeft: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
+      ArrowRight: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
+      Clock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Heart: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Brain: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Shield: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      ShoppingCart: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Target: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
     };
 
+    // ============================================
+    // CUSTOM SLIDE COMPONENTS
+    // ============================================
+
+    // 1. EndowmentEffectSlide
+    const EndowmentEffectSlide = ({ data }) => {
+      const [showInsight, setShowInsight] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowInsight(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(236, 72, 153, 0.1)', color: 'var(--accent)' }}>Psychology Principle</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-lg text-neutral-500 italic">{data.subtitle}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '28px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />
+            <p className="text-neutral-300 text-base md:text-lg leading-relaxed mb-4">{data.body}</p>
+            <AnimatePresence>
+              {showInsight && (
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-neutral-800 rounded-lg p-4 border border-neutral-700">
+                  <p className="text-sm font-medium" style={{ color: 'var(--accent)' }}>{data.keyInsight}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // 2. CartAbandonmentStatsSlide
+    const CartAbandonmentStatsSlide = ({ data }) => {
+      const [showInsight, setShowInsight] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowInsight(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-8 text-center">{data.title}</motion.h2>
+          <div className="grid grid-cols-3 gap-4 mb-6">
+            {data.stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === 0 ? 'linear-gradient(90deg, transparent, #ef4444, transparent)' : i === 1 ? 'linear-gradient(90deg, transparent, #f59e0b, transparent)' : 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+                <div className="text-4xl md:text-5xl font-black mb-2" style={{ color: i === 0 ? '#ef4444' : i === 1 ? '#f59e0b' : '#10b981' }}>
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                </div>
+                <p className="text-neutral-400 text-sm">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showInsight && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="bg-neutral-100 rounded-xl p-5 text-center border border-neutral-200">
+                <p className="text-neutral-700">{data.insight}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // 3. WishlistVsCartSlide
+    const WishlistVsCartSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-8 text-center">{data.title}</motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 rounded-xl p-6 border-2 border-red-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-red-500 flex items-center justify-center text-white"><Icons.ShoppingCart /></div>
+                <span className="font-bold text-red-700">{data.cart.label}</span>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-white rounded-lg p-3"><p className="text-xs text-neutral-500 mb-1">Triggers</p><p className="text-sm font-medium text-neutral-700">{data.cart.trigger}</p></div>
+                <div className="bg-white rounded-lg p-3"><p className="text-xs text-neutral-500 mb-1">Brain Response</p><p className="text-sm font-medium text-neutral-700 italic">{data.cart.response}</p></div>
+                <div className="bg-red-100 rounded-lg p-3"><p className="text-xs text-red-500 mb-1">Result</p><p className="text-sm font-bold text-red-700">{data.cart.result}</p></div>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-6 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
+              <div style={{ position: 'absolute', top: '-2px', left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Heart /></div>
+                <span className="font-bold text-white">{data.wishlist.label}</span>
+              </div>
+              <div className="space-y-3">
+                <div className="bg-neutral-800 rounded-lg p-3"><p className="text-xs text-neutral-500 mb-1">Triggers</p><p className="text-sm font-medium text-neutral-300">{data.wishlist.trigger}</p></div>
+                <div className="bg-neutral-800 rounded-lg p-3"><p className="text-xs text-neutral-500 mb-1">Brain Response</p><p className="text-sm font-medium text-neutral-300 italic">{data.wishlist.response}</p></div>
+                <div className="rounded-lg p-3" style={{ background: 'rgba(236, 72, 153, 0.2)' }}><p className="text-xs mb-1" style={{ color: 'var(--accent)' }}>Result</p><p className="text-sm font-bold text-white">{data.wishlist.result}</p></div>
+              </div>
+              <AnimatePresence>
+                {showWinner && (
+                  <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} className="absolute -top-3 -right-3 px-3 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)', boxShadow: '0 4px 12px rgba(236, 72, 153, 0.4)' }}>WINNER</motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // 4. ZeigarnikEffectSlide
+    const ZeigarnikEffectSlide = ({ data }) => {
+      const [showApplication, setShowApplication] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowApplication(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(236, 72, 153, 0.1)', color: 'var(--accent)' }}>Psychology Insight</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-lg text-neutral-500 italic">{data.subtitle}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-xl p-6 border border-neutral-200 mb-4">
+            <p className="text-neutral-700 leading-relaxed">{data.story}</p>
+          </motion.div>
+          <AnimatePresence>
+            {showApplication && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(236, 72, 153, 0.2)', color: 'var(--accent)' }}><Icons.Brain /></div>
+                  <p className="text-neutral-300">{data.application}</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // 5. PsychologicalMechanismSlide
+    const PsychologicalMechanismSlide = ({ data }) => {
+      const [activeMechanism, setActiveMechanism] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveMechanism(prev => (prev + 1) % 3), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      const iconMap = { heart: Icons.Heart, brain: Icons.Brain, shield: Icons.Shield };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-8 text-center">{data.title}</motion.h2>
+          <div className="space-y-4">
+            {data.mechanisms.map((mech, i) => {
+              const IconComp = iconMap[mech.icon];
+              const isActive = i === activeMechanism;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0, scale: isActive ? 1.02 : 1 }} transition={{ delay: 0.15 + i * 0.1 }} style={{ background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', borderRadius: '16px', padding: '20px', border: isActive ? '2px solid var(--accent)' : '2px solid transparent', position: 'relative', overflow: 'hidden' }}>
+                  {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />}
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: isActive ? 'rgba(236, 72, 153, 0.2)' : '#e5e5e5', color: isActive ? 'var(--accent)' : '#9ca3af' }}>{IconComp && <IconComp />}</div>
+                    <div>
+                      <h4 className={`font-bold text-lg ${isActive ? 'text-white' : 'text-neutral-700'}`}>{mech.name}</h4>
+                      <p className={`text-sm ${isActive ? 'text-neutral-400' : 'text-neutral-500'}`}>{mech.desc}</p>
+                    </div>
+                    {isActive && <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="ml-auto w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></motion.div>}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 6. LossAversionSlide
+    const LossAversionSlide = ({ data }) => {
+      const [showAlert, setShowAlert] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowAlert(true), 1800);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-6 text-center">{data.title}</motion.h2>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-xl p-6 border border-neutral-200 mb-4">
+            <p className="text-neutral-700 leading-relaxed">{data.scenario}</p>
+          </motion.div>
+          <AnimatePresence>
+            {showAlert && (
+              <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: 'spring' }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', border: '2px solid #f59e0b', position: 'relative', overflow: 'hidden', marginBottom: '16px' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-500"><Icons.AlertTriangle /></div>
+                  <div>
+                    <p className="text-amber-500 text-xs font-semibold uppercase tracking-wider mb-1">{data.alert.text}</p>
+                    <p className="text-white font-bold">{data.alert.item}</p>
+                    <p className="text-neutral-400 text-sm">{data.alert.message}</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }} style={{ background: 'rgba(236, 72, 153, 0.1)', borderRadius: '12px', padding: '16px' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}>{data.insight}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // 7. WishlistJourneySlide
+    const WishlistJourneySlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveStep(prev => (prev + 1) % data.steps.length), 2000);
+        return () => clearInterval(timer);
+      }, [data.steps.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-8 text-center">{data.title}</motion.h2>
+          <div className="flex items-center justify-between gap-2">
+            {data.steps.map((step, i) => {
+              const isActive = i === activeStep;
+              const isPast = i < activeStep;
+              return (
+                <React.Fragment key={i}>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0, scale: isActive ? 1.05 : 1 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex-1 text-center">
+                    <div className="mx-auto mb-3 w-12 h-12 rounded-xl flex items-center justify-center font-bold transition-all" style={{ background: isActive ? 'var(--accent)' : isPast ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', color: isActive || isPast ? 'white' : '#9ca3af', boxShadow: isActive ? '0 0 20px rgba(236, 72, 153, 0.4)' : 'none' }}>{i + 1}</div>
+                    <p className={`font-bold text-sm mb-1 ${isActive ? 'text-neutral-900' : 'text-neutral-500'}`}>{step.step}</p>
+                    <p className="text-xs text-neutral-400">{step.desc}</p>
+                  </motion.div>
+                  {i < data.steps.length - 1 && (
+                    <div className="w-8 h-1 rounded" style={{ background: i < activeStep ? 'var(--accent)' : '#e5e5e5' }} />
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 8. ImpactMetricsSlide
+    const ImpactMetricsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center text-neutral-400 text-sm mb-4 uppercase tracking-widest">Estimated Impact</motion.p>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-3xl md:text-4xl text-black mb-10 text-center">{data.title}</motion.h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: `0 0 30px ${stat.color}20` }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3 + i * 0.15, type: 'spring' }} className="text-5xl md:text-6xl font-black mb-3" style={{ color: stat.color }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              </motion.div>
+              <p className="text-neutral-400 text-sm">{stat.label}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // 9. ActionChecklistSlide
+    const ActionChecklistSlide = ({ data }) => {
+      const [completedSteps, setCompletedSteps] = useState([]);
+      useEffect(() => {
+        const timers = data.steps.map((_, i) => setTimeout(() => setCompletedSteps(prev => [...prev, i]), 1000 + i * 700));
+        return () => timers.forEach(t => clearTimeout(t));
+      }, [data.steps.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(236, 72, 153, 0.1)', color: 'var(--accent)' }}>Action Items</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+          <div className="space-y-3">
+            {data.steps.map((step, i) => {
+              const isCompleted = completedSteps.includes(i);
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.1 }} style={{ background: isCompleted ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', borderRadius: '12px', padding: '16px', border: isCompleted ? '1px solid var(--accent)' : '1px solid #e5e5e5', position: 'relative', overflow: 'hidden' }}>
+                  {isCompleted && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />}
+                  <div className="flex items-center gap-4">
+                    <motion.div animate={{ scale: isCompleted ? 1 : 0.8, background: isCompleted ? 'var(--accent)' : '#d4d4d4' }} className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-white">
+                      {isCompleted ? <Icons.Check /> : <span className="text-sm font-bold">{i + 1}</span>}
+                    </motion.div>
+                    <p className={`font-medium ${isCompleted ? 'text-white' : 'text-neutral-500'}`}>{step.text}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 10. EliteInsightSlide
+    const EliteInsightSlide = ({ data }) => {
+      const [showActions, setShowActions] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowActions(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex items-center justify-center px-8">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '40px', maxWidth: '600px', position: 'relative', boxShadow: '0 0 40px rgba(236, 72, 153, 0.2)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)', borderRadius: '24px 24px 0 0' }} />
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.15, type: 'spring' }} className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}><Icons.Heart /></motion.div>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-white text-xl md:text-2xl leading-relaxed mb-4 text-center">"{data.quote}"</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} style={{ color: 'var(--accent)' }} className="text-sm font-medium text-center mb-6">{data.attribution}</motion.p>
+            <AnimatePresence>
+              {showActions && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-2 pt-4 border-t border-neutral-700">
+                  {data.actions.map((action, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }} className="flex items-center gap-3">
+                      <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
+                      <p className="text-neutral-300 text-sm">{action}</p>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Standard slides
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -311,165 +454,25 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-2 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-1.5">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-sm">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
-
-    const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ImageSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white mb-4">
-          <img src={data.image} alt={data.title} className="w-full h-auto" />
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center text-sm text-neutral-500 italic">{data.caption}</motion.p>
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 md:grid-cols-2`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            {data.cta || 'Get Started'} <Icons.ExternalLink />
-          </a>
-        </motion.div>}
-      </div>
-    );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -480,24 +483,24 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      useEffect(() => { if (showFeedback) onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => () => onHideGif(), [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+              <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
                 <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className="text-neutral-700 text-sm">{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -514,163 +517,25 @@
       );
     };
 
-    const VsBattleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid grid-cols-3 gap-4 items-center">
-          <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200 rounded-2xl p-6">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-red-500 mb-2">{data.data.left.value}</div>
-              <div className="text-lg font-bold text-red-700 mb-2">{data.data.left.label}</div>
-              <p className="text-sm text-red-600">{data.data.left.description}</p>
-            </div>
-          </motion.div>
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }} className="text-center">
-            <div className="w-16 h-16 mx-auto rounded-full bg-neutral-900 flex items-center justify-center">
-              <span className="text-white font-bold text-xl">VS</span>
-            </div>
-          </motion.div>
-          <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-6">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-green-500 mb-2">{data.data.right.value}</div>
-              <div className="text-lg font-bold text-green-700 mb-2">{data.data.right.label}</div>
-              <p className="text-sm text-green-600">{data.data.right.description}</p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const QuoteSpotlightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-12 text-center relative">
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'var(--accent)' }}>
-            <span className="text-white text-xl">"</span>
-          </div>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-white text-xl md:text-2xl font-medium leading-relaxed mb-4">{data.data.quote}</motion.p>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-400">{data.data.context}</motion.p>
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(236, 72, 153, 0.35)' }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md">You now understand the Endowment Effect and why wishlists convert better than carts. Give visitors a way to claim items without commitment.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
 
-    const IconGridSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {data.data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center hover:border-neutral-300 transition-colors">
-              <div className="w-12 h-12 mx-auto mb-3 rounded-xl flex items-center justify-center text-2xl" style={{ background: `rgba(236, 72, 153, 0.1)` }}>{item.icon}</div>
-              <h3 className="font-bold text-neutral-900 text-sm mb-1">{item.title}</h3>
-              <p className="text-neutral-500 text-xs">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ProgressBarsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="space-y-6">
-          {data.data.map((bar, i) => (
-            <ProgressBar key={i} percentage={bar.percentage} label={bar.label} color={bar.color} delay={i * 200} />
-          ))}
-        </div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="text-center text-sm text-neutral-500 mt-6 italic">Typical results from stores implementing wishlist features</motion.p>
-      </div>
-    );
-
-    const PsychologyInsightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Psychology Insight</span>
-          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
-          {data.subtitle && <p className="text-lg text-neutral-500 italic">{data.subtitle}</p>}
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-neutral-900 rounded-xl p-6 md:p-8">
-          <p className="text-neutral-300 text-base md:text-lg leading-relaxed">{data.body}</p>
-        </motion.div>
-      </div>
-    );
-
-    const DramaticNumberSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-        <DramaticReveal delay={0.2}>
-          <motion.div className="text-center mb-8">
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring', stiffness: 150 }} className="text-7xl md:text-8xl lg:text-9xl font-black mb-4" style={{ color: 'var(--accent)', textShadow: '0 4px 20px rgba(var(--accent-rgb), 0.3)' }}>
-              <TypewriterText text={data.value} delay={500} />
-            </motion.div>
-            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="slide-title text-2xl md:text-3xl text-black mb-3">{data.label}</motion.h2>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }} className="text-lg text-neutral-500 mb-6">{data.subtext}</motion.p>
-          </motion.div>
-        </DramaticReveal>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }} className="bg-neutral-50 border-2 border-neutral-200 rounded-xl p-5 max-w-lg">
-          <p className="text-neutral-600 text-sm leading-relaxed">{data.context}</p>
-        </motion.div>
-      </div>
-    );
-
-    const CircularStatsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {data.data.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15 }}>
-              <CircularProgress percentage={stat.percentage} label={stat.label} color={stat.color} />
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const SolutionRevealSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Solution</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-6 items-center">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-            <p className="text-neutral-600 text-base md:text-lg leading-relaxed">{data.body}</p>
-          </motion.div>
-          <DramaticReveal delay={0.4}>
-            <div className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-              <img src={data.visual} alt={data.title} className="w-full h-auto" />
-            </div>
-          </DramaticReveal>
-        </div>
-      </div>
-    );
-
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Endowment Effect and why wishlists convert better than carts. Give visitors a way to claim items without commitment - they\'ll come back and buy with 8% higher CVR and 22% higher AOV.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </div>
-    );
-
+    // ============================================
+    // MAIN APP
+    // ============================================
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
-      const [direction, setDirection] = useState(1);
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
       const [gifConfig, setGifConfig] = useState(null);
@@ -680,16 +545,6 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -719,23 +574,18 @@
       const renderSlide = (slide) => {
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'image': return <ImageSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'endowment-effect': return <EndowmentEffectSlide data={slide} />;
+          case 'cart-abandonment-stats': return <CartAbandonmentStatsSlide data={slide} />;
+          case 'wishlist-vs-cart': return <WishlistVsCartSlide data={slide} />;
+          case 'zeigarnik-effect': return <ZeigarnikEffectSlide data={slide} />;
+          case 'psychological-mechanism': return <PsychologicalMechanismSlide data={slide} />;
+          case 'loss-aversion': return <LossAversionSlide data={slide} />;
+          case 'wishlist-journey': return <WishlistJourneySlide data={slide} />;
+          case 'impact-metrics': return <ImpactMetricsSlide data={slide} />;
+          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
-          case 'vsBattle': return <VsBattleSlide data={slide} />;
-          case 'quoteSpotlight': return <QuoteSpotlightSlide data={slide} />;
-          case 'iconGrid': return <IconGridSlide data={slide} />;
-          case 'progressBars': return <ProgressBarsSlide data={slide} />;
-          case 'psychology-insight': return <PsychologyInsightSlide data={slide} />;
-          case 'dramatic-number': return <DramaticNumberSlide data={slide} />;
-          case 'circular-stats': return <CircularStatsSlide data={slide} />;
-          case 'solution-reveal': return <SolutionRevealSlide data={slide} />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };
@@ -749,7 +599,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
@@ -763,7 +612,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -773,7 +622,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
