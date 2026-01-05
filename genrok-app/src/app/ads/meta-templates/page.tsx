@@ -564,26 +564,34 @@ export default function MetaTemplatesPage() {
     let animationId: number;
     let scrollPosition = 0;
     const scrollSpeed = 0.5;
+    let isPaused = false;
 
     const animate = () => {
-      scrollPosition += scrollSpeed;
-      if (scrollPosition >= scrollContainer.scrollHeight / 2) {
-        scrollPosition = 0;
+      if (!isPaused && scrollContainer) {
+        scrollPosition += scrollSpeed;
+        // Reset when reaching halfway (where duplicated content starts)
+        if (scrollPosition >= scrollContainer.scrollHeight / 2) {
+          scrollPosition = 0;
+        }
+        scrollContainer.scrollTop = scrollPosition;
       }
-      scrollContainer.scrollTop = scrollPosition;
       animationId = requestAnimationFrame(animate);
     };
 
-    animationId = requestAnimationFrame(animate);
+    // Start after a short delay to let images load
+    const startTimeout = setTimeout(() => {
+      animationId = requestAnimationFrame(animate);
+    }, 500);
 
     // Pause on hover
-    const handleMouseEnter = () => cancelAnimationFrame(animationId);
-    const handleMouseLeave = () => { animationId = requestAnimationFrame(animate); };
+    const handleMouseEnter = () => { isPaused = true; };
+    const handleMouseLeave = () => { isPaused = false; };
 
     scrollContainer.addEventListener('mouseenter', handleMouseEnter);
     scrollContainer.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
+      clearTimeout(startTimeout);
       cancelAnimationFrame(animationId);
       scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
       scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
@@ -734,7 +742,7 @@ export default function MetaTemplatesPage() {
                     {/* Requirements Notice */}
                     <div className="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-200">
                       <p className="text-xs text-amber-800">
-                        <strong>Important:</strong> Each referral must be from a different IP address and email.
+                        <strong>Important:</strong> Each referral must be from a different email address.
                         The platform is free, so share it with friends who will actually use it!
                       </p>
                     </div>
@@ -776,8 +784,8 @@ export default function MetaTemplatesPage() {
               {/* Scrolling container */}
               <div
                 ref={scrollRef}
-                className="h-full overflow-hidden"
-                style={{ scrollBehavior: 'auto' }}
+                className="h-full"
+                style={{ overflowY: 'scroll', scrollBehavior: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px', padding: '4px' }}>
                   {duplicatedImages.map((img, idx) => (
@@ -940,9 +948,8 @@ export default function MetaTemplatesPage() {
           </motion.div>
         </section>
 
-        {/* Section 4: Viral Posts (Only shown when unlocked) */}
-        {isUnlocked && (
-          <section className="max-w-4xl mx-auto mt-20">
+        {/* Section 4: Viral Posts - Always visible */}
+        <section className="max-w-4xl mx-auto mt-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1058,7 +1065,6 @@ export default function MetaTemplatesPage() {
               </div>
             </motion.div>
           </section>
-        )}
       </div>
     </DashboardLayout>
   );
