@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (279 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (280 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -363,7 +363,7 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (15 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (14 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -376,7 +376,7 @@ These lessons need design improvements to reach elite level.
 | 200 | pain-dream-bridge | ERROR |
 | 216 | price-creates-value | ERROR |
 | 234 | sell-the-identity | ERROR |
-| 248 | three-brains-wallet | 5 |
+| 248 | three-brains-wallet | ELITE ✓ | Jan 4 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
 | 249 | three-canons-of-craft | 5 |
 | 250 | three-cro-tests | 5 |
 | 251 | three-growth-levers | 5 |
