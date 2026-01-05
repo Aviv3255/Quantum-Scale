@@ -357,10 +357,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 277 | story-changes-taste | 9 | Elite (Full Upgrade Jan 5) |
 | 278 | story-taste-experiment | 9 | Elite (Full Upgrade Jan 5) |
 | 279 | structural-tension | 9 | Elite (Full Upgrade Jan 5) |
+| 280 | swatch-variants | 9 | Elite (Full Upgrade Jan 5) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (18 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (17 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -373,7 +374,6 @@ These lessons need design improvements to reach elite level.
 | 200 | pain-dream-bridge | ERROR |
 | 216 | price-creates-value | ERROR |
 | 234 | sell-the-identity | ERROR |
-| 244 | swatch-variants | 5 |
 | 245 | thirty-five-thousand-decisions | 5 |
 | 247 | thirty-two-violinist | 5 |
 | 248 | three-brains-wallet | 5 |
@@ -420,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 279 |
-| Need Improvement | 18 |
+| Improved / Don't Need Improvement | 280 |
+| Need Improvement | 17 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
