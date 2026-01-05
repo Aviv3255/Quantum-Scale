@@ -12,9 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #8b5cf6; --accent-dark: #7c3aed; --accent-light: #a78bfa; --accent-rgb: 139, 92, 246; }
@@ -34,8 +34,8 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+    // AnimatedCounter with decimal and prefix support
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', decimals = 0, duration = 2000 }) => {
       const [count, setCount] = useState(0);
       useEffect(() => {
         let start = 0;
@@ -43,156 +43,35 @@
         const timer = setInterval(() => {
           start += increment;
           if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
         }, 16);
         return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{count}{suffix}</span>;
+      }, [target, duration, decimals]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
     };
 
-    // High-Fidelity Product Preview Component
-    const ProductPreviewSlide = ({ data }) => {
-      const [selectedColor, setSelectedColor] = useState(0);
-      const colors = [
-        { name: 'black', hex: '#1a1a1a' },
-        { name: 'white', hex: '#ffffff' },
-        { name: 'navy', hex: '#1e3a5f' },
-        { name: 'red', hex: '#dc2626' },
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-          <div className="max-w-md mx-auto w-full">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-2xl shadow-lg p-8 border border-neutral-200">
-              {/* Product Image */}
-              <motion.div
-                key={selectedColor}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-                className="aspect-square bg-neutral-100 rounded-xl mb-6 flex items-center justify-center relative overflow-hidden"
-              >
-                <div className="w-32 h-40 rounded-lg" style={{ backgroundColor: colors[selectedColor].hex, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }} />
-              </motion.div>
-
-              {/* Product Title */}
-              <h3 className="text-xl font-semibold mb-2">Premium Cotton T-Shirt</h3>
-              <p className="text-2xl font-bold mb-4">$49.00</p>
-
-              {/* Color Swatches */}
-              <div className="mb-6">
-                <p className="text-sm text-gray-500 mb-2">Color: <span className="capitalize">{colors[selectedColor].name}</span></p>
-                <div className="flex gap-3">
-                  {colors.map((color, i) => (
-                    <motion.button
-                      key={i}
-                      onClick={() => setSelectedColor(i)}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.3 + i * 0.1 }}
-                      className={`w-10 h-10 rounded-full border-2 transition-all ${
-                        selectedColor === i
-                          ? 'border-black scale-110'
-                          : 'border-gray-200'
-                      }`}
-                      style={{ backgroundColor: color.hex }}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Add to Cart */}
-              <button className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-neutral-800 transition-colors">
-                Add to Cart
-              </button>
-            </motion.div>
-
-            {/* Benefits List */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 bg-neutral-50 rounded-xl p-6">
-              <h4 className="font-bold text-neutral-900 mb-3 text-sm">Why Swatches Matter:</h4>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                  <span className="text-green-500 mt-0.5">&#10003;</span>
-                  <span>Reduces cognitive load</span>
-                </li>
-                <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                  <span className="text-green-500 mt-0.5">&#10003;</span>
-                  <span>Increases engagement time</span>
-                </li>
-                <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                  <span className="text-green-500 mt-0.5">&#10003;</span>
-                  <span>Higher conversion rates</span>
-                </li>
-                <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                  <span className="text-green-500 mt-0.5">&#10003;</span>
-                  <span>Better mobile experience</span>
-                </li>
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      );
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      Eye: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Palette: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></svg>,
+      Smartphone: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>,
+      Grid: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      MousePointer: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      ShoppingCart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" x2="12" y1="22" y2="12"/></svg>,
     };
-
-    // Comparison Grid Component
-    const ComparisonGridSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">✗</div>
-              <h3 className="font-bold text-red-700">{data.old.title}</h3>
-            </div>
-            <div className="bg-white rounded-lg p-4 mb-3 border border-red-100">
-              <p className="text-xs text-neutral-500 mb-2">Available in:</p>
-              <div className="space-y-1">
-                {data.old.items.map((item, i) => (
-                  <div key={i} className="text-sm text-neutral-700 bg-neutral-50 px-2 py-1 rounded">{item}</div>
-                ))}
-              </div>
-            </div>
-            <p className="text-sm text-red-700 italic">{data.old.insight}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-lg">✓</div>
-              <h3 className="font-bold text-green-700">{data.new.title}</h3>
-            </div>
-            <div className="bg-white rounded-lg p-4 mb-3 border border-green-100">
-              <p className="text-xs text-neutral-500 mb-2">Select color:</p>
-              <div className="flex gap-2">
-                {data.new.swatches.map((swatch, i) => (
-                  <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 + i * 0.1 }} className="w-10 h-10 rounded-lg border-2 border-neutral-300 cursor-pointer hover:scale-110 transition-transform" style={{ background: swatch }} />
-                ))}
-              </div>
-            </div>
-            <p className="text-sm text-green-700 italic">{data.new.insight}</p>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    // Pro Tip Component
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-purple-500 text-white text-xs font-bold rounded-full">💡 PRO TIP</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-purple-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-purple-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-purple-700">➜ {data.action}</p>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
-      </div>
-    );
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
@@ -207,154 +86,596 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    // ============ UNIQUE CUSTOM SLIDE COMPONENTS ============
+
+    // 1. CVR Boost Hero Slide - Animated 3.4% reveal
+    const CVRBoostHeroSlide = ({ data }) => {
+      const [showBoost, setShowBoost] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowBoost(true), 500); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="flex justify-center items-center gap-8 mb-8">
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '40px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 40px rgba(139, 92, 246, 0.3)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+              <div className="text-center">
+                <div className="text-neutral-400 text-sm uppercase tracking-wider mb-3">One Visual Change</div>
+                <div style={{ fontSize: '72px', fontWeight: 900, color: '#8b5cf6', lineHeight: 1 }}>
+                  {showBoost ? <AnimatedCounter target={3.4} suffix="%" decimals={1} duration={1500} /> : '0.0%'}
+                </div>
+                <div className="text-white text-lg font-semibold mt-2">CVR Boost</div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+            {[
+              { label: 'Processing', value: '60ms', sublabel: 'vs 250ms text' },
+              { label: 'Decision Time', value: '-47%', sublabel: 'faster choices' },
+              { label: 'Mobile Impact', value: '+5.2%', sublabel: 'CVR on mobile' }
+            ].map((stat, i) => (
+              <div key={i} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center', position: 'relative' }}>
+                <div style={{ position: 'absolute', top: 0, left: '20%', right: '20%', height: '2px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+                <div style={{ color: '#8b5cf6', fontSize: '20px', fontWeight: 700 }}>{stat.value}</div>
+                <div className="text-white text-xs font-medium">{stat.label}</div>
+                <div className="text-neutral-500 text-xs">{stat.sublabel}</div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      );
+    };
+
+    // 2. Brain Processing Speed Slide - Visual vs Text comparison
+    const BrainProcessingSlide = ({ data }) => {
+      const [activeMode, setActiveMode] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveMode(m => (m + 1) % 2), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const modes = [
+        { type: 'text', label: 'TEXT LABELS', time: '250ms', color: '#ef4444', items: ['Navy Blue', 'Forest Green', 'Charcoal Gray'] },
+        { type: 'visual', label: 'IMAGE SWATCHES', time: '60ms', color: '#22c55e', items: ['#001f3f', '#228b22', '#36454f'] }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {modes.map((mode, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: i === 0 ? -30 : 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.2 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '20px',
+                  padding: '24px',
+                  position: 'relative',
+                  boxShadow: activeMode === i ? `0 0 30px ${mode.color}40` : 'none',
+                  transition: 'box-shadow 0.5s ease'
+                }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, transparent, ${mode.color}, transparent)` }} />
+
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-neutral-400 text-xs uppercase tracking-wider">{mode.label}</span>
+                  {activeMode === i && <span style={{ background: mode.color, color: 'white', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 600 }}>ACTIVE</span>}
+                </div>
+
+                <div className="flex items-center justify-center mb-4">
+                  <div style={{ width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: mode.color }}>
+                    <Icons.Brain />
+                  </div>
+                </div>
+
+                <div className="flex justify-center gap-3 mb-4">
+                  {mode.type === 'text' ? (
+                    mode.items.map((item, j) => (
+                      <div key={j} style={{ background: '#2d2d2d', padding: '8px 12px', borderRadius: '8px', fontSize: '11px', color: '#d4d4d4' }}>{item}</div>
+                    ))
+                  ) : (
+                    mode.items.map((color, j) => (
+                      <div key={j} style={{ width: '40px', height: '40px', borderRadius: '8px', background: color, border: '2px solid #404040' }} />
+                    ))
+                  )}
+                </div>
+
+                <div className="text-center">
+                  <div style={{ fontSize: '32px', fontWeight: 700, color: mode.color }}>{mode.time}</div>
+                  <div className="text-neutral-400 text-sm">Processing Time</div>
+                </div>
+
+                {i === 1 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
+                    style={{ position: 'absolute', top: '-12px', right: '12px', background: '#22c55e', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: 700 }}>
+                    4X FASTER
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // 3. Interactive Swatch Demo Slide
+    const InteractiveSwatchDemoSlide = ({ data }) => {
+      const [selectedColor, setSelectedColor] = useState(0);
+      const colors = [
+        { name: 'Midnight Black', hex: '#1a1a1a' },
+        { name: 'Ocean Blue', hex: '#1e40af' },
+        { name: 'Forest Green', hex: '#166534' },
+        { name: 'Royal Purple', hex: '#7c3aed' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="max-w-md mx-auto w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+              {/* Product Preview */}
+              <motion.div key={selectedColor} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}
+                className="aspect-square rounded-xl mb-6 flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, #2d2d2d, #3d3d3d)' }}>
+                <div style={{ width: '120px', height: '150px', borderRadius: '12px', background: colors[selectedColor].hex, boxShadow: `0 8px 32px ${colors[selectedColor].hex}80` }} />
+              </motion.div>
+
+              <h3 className="text-white text-xl font-semibold mb-1">Premium Cotton T-Shirt</h3>
+              <p style={{ color: '#8b5cf6', fontSize: '24px', fontWeight: 700, marginBottom: '16px' }}>$49.00</p>
+
+              {/* Swatches */}
+              <div className="mb-4">
+                <p className="text-neutral-400 text-sm mb-3">Color: <span className="text-white font-medium">{colors[selectedColor].name}</span></p>
+                <div className="flex gap-3">
+                  {colors.map((color, i) => (
+                    <motion.button key={i} onClick={() => setSelectedColor(i)} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
+                      style={{
+                        width: '48px', height: '48px', borderRadius: '12px', background: color.hex,
+                        border: selectedColor === i ? '3px solid #8b5cf6' : '2px solid #404040',
+                        boxShadow: selectedColor === i ? `0 0 20px ${color.hex}80` : 'none',
+                        cursor: 'pointer', transition: 'all 0.2s'
+                      }} />
+                  ))}
+                </div>
+              </div>
+
+              <button style={{ width: '100%', background: '#8b5cf6', color: 'white', padding: '14px', borderRadius: '12px', fontWeight: 600, fontSize: '16px', border: 'none', cursor: 'pointer' }}>
+                Add to Cart
+              </button>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+              className="mt-4 text-center" style={{ background: 'rgba(139, 92, 246, 0.1)', padding: '12px', borderRadius: '12px' }}>
+              <p style={{ color: '#8b5cf6', fontSize: '13px', fontWeight: 500 }}>Click the swatches above - instant visual feedback, zero imagination required</p>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // 4. Cognitive Load Comparison Slide
+    const CognitiveLoadSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowResult(true), 2000); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Text Label Journey */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+              <div className="text-center mb-4">
+                <span style={{ background: '#ef4444', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: 600 }}>TEXT LABELS</span>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  { step: 1, text: 'Read "Forest Green"', icon: '📖' },
+                  { step: 2, text: 'Imagine the color', icon: '🧠' },
+                  { step: 3, text: 'Compare to memory', icon: '🤔' },
+                  { step: 4, text: 'Hesitate...', icon: '⏳' },
+                  { step: 5, text: 'Maybe later...', icon: '👋' }
+                ].map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.15 }}
+                    style={{ background: '#2d2d2d', padding: '12px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ width: '24px', height: '24px', background: '#ef4444', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: 700 }}>{item.step}</span>
+                    <span className="text-neutral-300 text-sm flex-1">{item.text}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {showResult && (
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                  style={{ marginTop: '16px', background: '#ef444420', padding: '12px', borderRadius: '10px', textAlign: 'center' }}>
+                  <span style={{ color: '#ef4444', fontWeight: 700 }}>LOST SALE</span>
+                </motion.div>
+              )}
+            </motion.div>
+
+            {/* Swatch Journey */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+
+              <div className="text-center mb-4">
+                <span style={{ background: '#22c55e', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: 600 }}>IMAGE SWATCHES</span>
+              </div>
+
+              <div className="space-y-3">
+                {[
+                  { step: 1, text: 'See the color', icon: '👁️' },
+                  { step: 2, text: 'Click instantly', icon: '👆' },
+                  { step: 3, text: 'Add to cart', icon: '🛒' }
+                ].map((item, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.15 }}
+                    style={{ background: '#2d2d2d', padding: '12px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ width: '24px', height: '24px', background: '#22c55e', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: 700 }}>{item.step}</span>
+                    <span className="text-neutral-300 text-sm flex-1">{item.text}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {showResult && (
+                <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                  style={{ marginTop: '16px', background: '#22c55e20', padding: '12px', borderRadius: '10px', textAlign: 'center' }}>
+                  <span style={{ color: '#22c55e', fontWeight: 700 }}>CONVERSION!</span>
+                </motion.div>
+              )}
+
+              {showResult && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+                  style={{ position: 'absolute', top: '-12px', right: '12px', background: '#22c55e', color: 'white', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: 700 }}>
+                  WINS
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // 5. Benefits Grid with Auto-Cycling
+    const BenefitsGridSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const benefits = [
+        { icon: Icons.Zap, title: 'Instant Recognition', desc: 'Brain processes images 60,000x faster than text' },
+        { icon: Icons.Brain, title: 'Zero Mental Load', desc: 'No imagination required - see it, click it, done' },
+        { icon: Icons.MousePointer, title: 'Faster Decisions', desc: 'Visual comparison beats reading and comparing' },
+        { icon: Icons.Smartphone, title: 'Mobile Optimized', desc: 'Tap targets are easier than tiny text labels' },
+        { icon: Icons.Star, title: 'Premium Feel', desc: 'Visual polish signals quality and attention to detail' },
+        { icon: Icons.TrendingUp, title: 'Higher CVR', desc: 'Consistent 3-5% conversion lift in A/B tests' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(i => (i + 1) % benefits.length), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {benefits.map((benefit, i) => {
+              const IconComponent = benefit.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    boxShadow: activeIndex === i ? '0 0 30px rgba(139, 92, 246, 0.4)' : 'none',
+                    transform: activeIndex === i ? 'scale(1.02)' : 'scale(1)',
+                    transition: 'all 0.4s ease'
+                  }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: activeIndex === i ? 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' : 'transparent', transition: 'background 0.4s' }} />
+
+                  <div style={{ width: '40px', height: '40px', background: activeIndex === i ? '#8b5cf6' : '#3d3d3d', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', transition: 'background 0.4s', color: 'white' }}>
+                    <IconComponent />
+                  </div>
+                  <h3 className="text-white font-semibold text-sm mb-1">{benefit.title}</h3>
+                  <p className="text-neutral-400 text-xs leading-relaxed">{benefit.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 6. Swatch Types Showcase
+    const SwatchTypesSlide = ({ data }) => {
+      const [activeType, setActiveType] = useState(0);
+      const types = [
+        { name: 'Colors', icon: Icons.Palette, examples: ['#1a1a1a', '#1e40af', '#166534', '#dc2626'], desc: 'Show actual shades, not names' },
+        { name: 'Patterns', icon: Icons.Grid, examples: ['Stripes', 'Floral', 'Geometric', 'Solid'], desc: 'Visual textures communicate instantly' },
+        { name: 'Materials', icon: Icons.Package, examples: ['Leather', 'Canvas', 'Suede', 'Mesh'], desc: 'Texture images build desire' },
+        { name: 'Styles', icon: Icons.Star, examples: ['Classic', 'Modern', 'Vintage', 'Sport'], desc: 'Mini previews of each variant' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveType(t => (t + 1) % types.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {types.map((type, i) => {
+              const IconComponent = type.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    position: 'relative',
+                    boxShadow: activeType === i ? '0 0 30px rgba(139, 92, 246, 0.4)' : 'none',
+                    transition: 'box-shadow 0.4s'
+                  }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: activeType === i ? 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' : 'transparent' }} />
+
+                  <div className="flex items-center gap-3 mb-4">
+                    <div style={{ width: '36px', height: '36px', background: activeType === i ? '#8b5cf6' : '#3d3d3d', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', transition: 'background 0.4s' }}>
+                      <IconComponent />
+                    </div>
+                    <span className="text-white font-semibold">{type.name}</span>
+                    {activeType === i && <span style={{ marginLeft: 'auto', background: '#8b5cf6', color: 'white', padding: '2px 8px', borderRadius: '10px', fontSize: '10px' }}>ACTIVE</span>}
+                  </div>
+
+                  <div className="flex gap-2 mb-3">
+                    {type.name === 'Colors' ? (
+                      type.examples.map((color, j) => (
+                        <div key={j} style={{ width: '36px', height: '36px', borderRadius: '8px', background: color, border: '2px solid #404040' }} />
+                      ))
+                    ) : (
+                      type.examples.map((item, j) => (
+                        <div key={j} style={{ background: '#2d2d2d', padding: '6px 10px', borderRadius: '6px', fontSize: '10px', color: '#a3a3a3' }}>{item}</div>
+                      ))
+                    )}
+                  </div>
+
+                  <p className="text-neutral-400 text-xs">{type.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 7. Mobile Impact Slide
+    const MobileImpactSlide = ({ data }) => {
+      const [showStats, setShowStats] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowStats(true), 800); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6 items-center">
+            {/* Mobile Phone Visual */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="flex justify-center">
+              <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '32px', padding: '12px', width: '200px' }}>
+                <div style={{ background: '#0a0a0a', borderRadius: '24px', padding: '16px', height: '350px', position: 'relative' }}>
+                  {/* Screen Content */}
+                  <div style={{ background: '#1a1a1a', borderRadius: '12px', padding: '12px', height: '100%' }}>
+                    <div style={{ width: '100%', height: '100px', background: '#2d2d2d', borderRadius: '8px', marginBottom: '12px' }} />
+                    <div className="text-white text-sm font-semibold mb-2">Select Color</div>
+                    <div className="flex gap-2 mb-4">
+                      {['#1a1a1a', '#1e40af', '#166534', '#dc2626'].map((c, i) => (
+                        <div key={i} style={{ width: '32px', height: '32px', borderRadius: '8px', background: c, border: i === 0 ? '2px solid #8b5cf6' : '1px solid #404040' }} />
+                      ))}
+                    </div>
+                    <div style={{ background: '#8b5cf6', padding: '10px', borderRadius: '8px', textAlign: 'center', color: 'white', fontSize: '12px', fontWeight: 600 }}>Add to Cart</div>
+                  </div>
+
+                  {/* Notch */}
+                  <div style={{ position: 'absolute', top: '8px', left: '50%', transform: 'translateX(-50%)', width: '60px', height: '20px', background: '#000', borderRadius: '10px' }} />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="space-y-4">
+              {[
+                { label: 'Mobile Traffic Share', value: 73, suffix: '%', color: '#8b5cf6' },
+                { label: 'Text Label Miss-Clicks', value: 34, suffix: '%', color: '#ef4444' },
+                { label: 'Swatch CVR Boost (Mobile)', value: 5.2, suffix: '%', color: '#22c55e', decimals: 1 }
+              ].map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: showStats ? 1 : 0, y: showStats ? 0 : 20 }} transition={{ delay: 0.5 + i * 0.2 }}
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                  <div className="flex justify-between items-center">
+                    <span className="text-neutral-300 text-sm">{stat.label}</span>
+                    <span style={{ color: stat.color, fontSize: '24px', fontWeight: 700 }}>
+                      {showStats && <AnimatedCounter target={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // 8. Implementation Steps Slide
+    const ImplementationStepsSlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+      const steps = [
+        { num: 1, title: 'Check Your Theme', desc: 'Most Shopify themes support swatches natively in theme settings', time: '2 min' },
+        { num: 2, title: 'Prepare Variant Images', desc: 'Create or capture images for each color/pattern variant', time: '5 min' },
+        { num: 3, title: 'Upload & Configure', desc: 'Upload variant images and enable swatch display in settings', time: '3 min' },
+        { num: 4, title: 'Test on Mobile', desc: 'Verify swatches work perfectly on mobile devices', time: '2 min' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveStep(s => (s + 1) % steps.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span style={{ background: 'rgba(139, 92, 246, 0.2)', color: '#8b5cf6', padding: '6px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>10-MINUTE SETUP</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black mt-3">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {steps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  boxShadow: activeStep === i ? '0 0 30px rgba(139, 92, 246, 0.4)' : 'none',
+                  transition: 'box-shadow 0.4s'
+                }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: activeStep === i ? 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' : 'transparent' }} />
+
+                <div className="flex items-start gap-4">
+                  <div style={{
+                    width: '40px', height: '40px',
+                    background: activeStep === i ? '#8b5cf6' : '#3d3d3d',
+                    borderRadius: '10px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: 'white', fontWeight: 700, fontSize: '18px',
+                    transition: 'background 0.4s'
+                  }}>{step.num}</div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="text-white font-semibold text-sm">{step.title}</h3>
+                      <span style={{ background: '#2d2d2d', color: '#8b5cf6', padding: '2px 8px', borderRadius: '10px', fontSize: '10px', fontWeight: 600 }}>{step.time}</span>
+                    </div>
+                    <p className="text-neutral-400 text-xs">{step.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {data.toolUrl && (
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-6 text-center">
+              <a href={data.toolUrl} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', color: 'white', padding: '12px 24px', borderRadius: '12px', fontWeight: 600, textDecoration: 'none' }}>
+                {data.cta || 'Get Started'} <Icons.ExternalLink />
+              </a>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // 9. Elite Insight Slide
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="w-full"
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '32px', position: 'relative', boxShadow: '0 0 40px rgba(139, 92, 246, 0.3)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+          <div className="flex items-center gap-3 mb-6">
+            <div style={{ width: '48px', height: '48px', background: '#8b5cf6', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+              <Icons.Lightbulb />
+            </div>
+            <span className="text-neutral-400 text-sm uppercase tracking-wider">Elite Insight</span>
+          </div>
+
+          <p className="text-white text-xl md:text-2xl font-semibold leading-relaxed mb-6" style={{ fontFamily: 'Fraunces, serif' }}>
+            {data.quote}
+          </p>
+
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { icon: Icons.Eye, label: 'See It' },
+              { icon: Icons.MousePointer, label: 'Click It' },
+              { icon: Icons.ShoppingCart, label: 'Buy It' }
+            ].map((item, i) => {
+              const IconComponent = item.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  style={{ background: '#2d2d2d', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+                  <div style={{ color: '#8b5cf6', marginBottom: '8px' }}><IconComponent /></div>
+                  <div className="text-white text-sm font-medium">{item.label}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+      </div>
+    );
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why image swatches convert better than text labels for variants', 'The psychology of cognitive load and instant visual understanding', 'How to implement visual swatches without slowing down your store'] },
       { type: 'hook', headline: 'A single visual change can significantly boost conversions.', subtext: 'Not a redesign. Not a new funnel. Just switching from text labels to image swatches for product variants. Sounds too simple to matter, right? When customers can SEE the color instantly instead of reading "Forest Green" and imagining it, their brains process the choice faster. Less cognitive load. Less hesitation. More purchases. Image swatches consistently beat text labels in testing. And the fix takes 10 minutes.' },
-      { type: 'content', title: 'The Hidden Friction in Text Labels', body: 'Picture this: A customer lands on your product page. They see "Available in: Navy Blue, Forest Green, Charcoal Gray, Burgundy." Now what? Their brain has to process each word. Translate the color name into a mental image. Compare the imagined colors. Make a decision. That is cognitive load. Every micro-decision adds friction. And friction kills conversions.' },
-      { type: 'comparison-grid', title: 'Text vs Visual Swatches', old: { title: 'Text Labels', items: ['Navy Blue', 'Forest Green', 'Charcoal Gray', 'Burgundy'], insight: 'Customer must read and imagine each color' }, new: { title: 'Image Swatches', swatches: ['#001f3f', '#228b22', '#36454f', '#800020'], insight: 'Customer sees and selects instantly' }},
-      { type: 'content', title: 'What Are Image Swatches?', body: 'Image swatches are small visual thumbnails showing each variant option. Instead of reading "Ocean Blue," customers see a tiny image of the actual blue color. Instead of imagining "Marble Pattern," they see the pattern. Click. Done. The brain processes images much faster than text. You are not just showing options. You are removing the mental translation step entirely.' },
-      { type: 'product-preview', title: 'How Swatches Work', productEmoji: '👕', productName: 'Premium Cotton T-Shirt', description: 'Soft, breathable, perfect fit. Available in multiple colors.', colors: ['#000000', '#ffffff', '#001f3f', '#228b22', '#800020'], insight: 'Instant visual selection reduces hesitation and speeds up purchase decisions.' },
-      { type: 'content', title: 'Why This Works: Cognitive Load Theory', body: 'Your customer\'s brain has limited processing capacity. Every tiny decision drains that capacity. "What does Forest Green look like?" "Is Navy Blue dark or light?" "Does Charcoal Gray match my style?" These micro-questions create hesitation. Hesitation creates doubt. Doubt kills sales. Image swatches eliminate the questions. They SEE it. They KNOW it. They BUY it.' },
-      { type: 'visual', title: 'The Visual Comparison', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/59.jpg?v=1763113533', caption: 'Text labels force imagination. Image swatches show instant reality.' },
-      { type: 'cards', title: 'Why Image Swatches Win', items: [
-        { title: 'Instant Recognition', description: 'Brain processes images much faster than text. See it. Click it. Done.' },
-        { title: 'Zero Imagination Required', description: 'No mental translation. No "what does that look like?" confusion.' },
-        { title: 'Reduces Choice Paralysis', description: 'Visual comparison is faster than reading and comparing text descriptions.' },
-        { title: 'Mobile-Friendly', description: 'Tap on image is easier than reading tiny text labels on mobile.' },
-        { title: 'Premium Perception', description: 'Looks more professional and polished than plain text dropdowns.' }
-      ]},
-      { type: 'pro-tip', title: 'Mobile Makes the Difference Bigger', body: 'On mobile, the advantage is even clearer. Text labels are small. Customers squint. They tap the wrong option. They get frustrated. Image swatches? Big enough to see clearly. Easy to tap accurately. Instant visual feedback when the main image changes.', action: 'Test this on mobile first - that is where you will see the biggest impact.' },
-      { type: 'content', title: 'It\'s Not Just Colors', body: 'Image swatches work for ANY visual variant. Colors? Obviously. Patterns? Absolutely. Materials? Yes. Styles? Definitely. Even sizes can benefit if you show fit differences visually. Anything the customer needs to SEE to decide should be shown as an image swatch, not a text label.' },
-      { type: 'cards', title: 'What to Use Swatches For', items: [
-        { title: 'Colors', description: 'Show the actual shade, not the name. "Midnight Blue" means nothing until you see it.' },
-        { title: 'Patterns', description: 'Stripes, florals, geometric - let them SEE the design instantly.' },
-        { title: 'Materials', description: 'Leather, suede, canvas - texture matters and images communicate it.' },
-        { title: 'Styles', description: 'Different cuts, collars, or designs shown as mini previews.' }
-      ]},
-      { type: 'example', scenario: 'The Customer Experience Difference', before: { label: 'Text Labels (Old)', text: 'Customer sees dropdown: "Navy Blue, Forest Green, Charcoal Gray." Hesitates. Tries to imagine each color. Wonders which matches their style. Clicks away to "think about it." Never returns.' }, after: { label: 'Image Swatches (New)', text: 'Customer sees color swatches. Instantly recognizes their favorite shade. Clicks. Sees main image update. Confirms choice. Adds to cart. Checkout. Sale complete.' }, insight: 'Visual clarity eliminates the gap between interest and action. Faster decisions mean more conversions.' },
-      { type: 'content', title: 'The Implementation Reality Check', body: 'Here is the good news: Most Shopify themes already support image swatches natively. You do not need custom code. You do not need a developer. You just need product images for each variant. Upload them. Enable swatches in theme settings. Done. 10 minutes of work for a conversion boost that compounds forever.' },
-      { type: 'content', title: 'The Premium Perception Bonus', body: 'Beyond conversion rates, image swatches make your store look more professional. Compare Amazon (text dropdowns) to luxury brands (visual swatches). Which feels premium? Which builds trust? Visual swatches signal quality and attention to detail. Customers subconsciously associate this polish with product quality. It is not just about UX. It is about brand perception.' },
-      { type: 'implementation', title: 'Easiest Way to Add Swatches', intro: "Here\'s how to implement this in your store:", steps: [
-        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
-        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
-        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
-        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
-      ], toolUrl: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', cta: 'Get Started Free' },
+      { type: 'cvr-boost', title: 'The Power of Visual Selection' },
+      { type: 'brain-processing', title: 'How Your Brain Processes Options' },
+      { type: 'cognitive-load', title: 'The Customer Journey Difference' },
+      { type: 'interactive-demo', title: 'Try It: Interactive Swatch Demo' },
+      { type: 'benefits-grid', title: 'Why Image Swatches Win' },
+      { type: 'swatch-types', title: 'Beyond Just Colors' },
+      { type: 'mobile-impact', title: 'Mobile Makes It Even Bigger' },
+      { type: 'implementation', title: 'How to Add Swatches', intro: 'Most themes support this natively - no coding required:', toolUrl: 'https://apps.shopify.com/section-factory?mref=lsbqcbva', cta: 'Get Swatch App' },
+      { type: 'elite-insight', quote: 'The best UX removes friction you did not know existed. Image swatches eliminate the invisible tax of imagination - every color name is a micro-decision that drains conversion.' },
       { type: 'quiz', question: 'Why do image swatches convert better than text labels?', options: ['They look prettier', 'They reduce cognitive load and enable instant visual understanding', 'They take up more space on the page', 'Customers prefer clicking images over text'], correctIndex: 1, feedback: { correct: 'Exactly right! Image swatches convert better because they reduce cognitive load. When customers SEE the color or pattern instead of reading the name and imagining it, their brains process the choice much faster. This eliminates hesitation, speeds up decisions, and removes the mental friction that causes cart abandonment. It is pure psychology applied to UX design.', incorrect: 'Not quite. The answer is reducing cognitive load and enabling instant visual understanding. When customers have to read "Forest Green" and imagine what it looks like, that is mental work. Mental work creates friction. Friction kills conversions. Image swatches remove that work entirely - they SEE it, they KNOW it, they BUY it. The brain processes images much faster than text.' }},
       { type: 'completion', sources: [{ name: 'Add Swatches to Your Store', url: 'https://apps.shopify.com/section-factory?mref=lsbqcbva' }] }
     ];
-
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-    };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -378,7 +699,7 @@
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let\'s Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
@@ -393,135 +714,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'image') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 mb-4">
-              <img src={data.image} alt={data.title} className="w-full h-auto" />
-            </motion.div>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-center text-neutral-600 text-sm italic">{data.caption}</motion.p>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            {data.cta || 'Get Started'} <Icons.ExternalLink />
-          </a>
-        </motion.div>}
       </div>
     );
 
@@ -607,14 +799,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -646,14 +832,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'product-preview': return <ProductPreviewSlide data={slide} />;
-          case 'comparison-grid': return <ComparisonGridSlide data={slide} />;
-          case 'pro-tip': return <ProTipSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'cvr-boost': return <CVRBoostHeroSlide data={slide} />;
+          case 'brain-processing': return <BrainProcessingSlide data={slide} />;
+          case 'cognitive-load': return <CognitiveLoadSlide data={slide} />;
+          case 'interactive-demo': return <InteractiveSwatchDemoSlide data={slide} />;
+          case 'benefits-grid': return <BenefitsGridSlide data={slide} />;
+          case 'swatch-types': return <SwatchTypesSlide data={slide} />;
+          case 'mobile-impact': return <MobileImpactSlide data={slide} />;
+          case 'implementation': return <ImplementationStepsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -693,7 +880,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
