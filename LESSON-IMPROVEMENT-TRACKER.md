@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (278 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (279 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -356,10 +356,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 276 | stop-aliexpress | 9 | Elite (Full Upgrade Jan 5) |
 | 277 | story-changes-taste | 9 | Elite (Full Upgrade Jan 5) |
 | 278 | story-taste-experiment | 9 | Elite (Full Upgrade Jan 5) |
+| 279 | structural-tension | 9 | Elite (Full Upgrade Jan 5) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (19 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (18 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -372,7 +373,6 @@ These lessons need design improvements to reach elite level.
 | 200 | pain-dream-bridge | ERROR |
 | 216 | price-creates-value | ERROR |
 | 234 | sell-the-identity | ERROR |
-| 243 | structural-tension | 5 |
 | 244 | swatch-variants | 5 |
 | 245 | thirty-five-thousand-decisions | 5 |
 | 247 | thirty-two-violinist | 5 |
@@ -420,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 278 |
-| Need Improvement | 19 |
+| Improved / Don't Need Improvement | 279 |
+| Need Improvement | 18 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
