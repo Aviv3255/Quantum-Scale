@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -57,106 +54,19 @@
       }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4'
     ];
-
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
 
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
@@ -165,30 +75,18 @@
         'Apple vs IBM - Think Different meant fighting conformity',
         'How to find YOUR enemy and create tribal language'
       ]},
-      { type: 'hook', headline: 'The strongest brands don\'t fight competitors.', subheadline: 'They fight IDEAS.', subtext: 'Apple didn\'t position against Dell or HP. They positioned against conformity. Harley-Davidson didn\'t position against Honda. They positioned against boring, soulless transportation. The enemy isn\'t another brand. It\'s an ideology your tribe rejects.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' },
-      { type: 'content', title: 'Us vs Them Psychology', body: 'Humans are tribal. We define ourselves by what we\'re NOT as much as what we are. Give people an enemy - not a competitor, but an IDEA to reject - and they rally around your brand as their tribe. This isn\'t about hating other brands. It\'s about standing FOR something by standing AGAINST something bigger.' },
-      { type: 'visual', title: 'The Enemy Framework', visualType: 'stats', data: [
-        { value: 'Competitor', label: 'Weak Position', subtext: '"We\'re better than Brand X"' },
-        { value: 'Ideology', label: 'Strong Position', subtext: '"We reject BORING"' },
-        { value: 'Tribe', label: 'Result', subtext: 'Loyal customers who defend you' }
-      ]},
-      { type: 'example', scenario: 'Apple: 1984 Super Bowl Ad', before: { label: 'Competitor Positioning', text: '"Our computers have better specs than IBM\'s." - Forgettable, transactional, doesn\'t build identity.' }, after: { label: 'Ideology Positioning', text: '"Think Different. Reject conformity. Rebel against the machine." - Apple became the tribe for creative rebels.' }, insight: 'Apple didn\'t sell computers. They sold identity. Buying a Mac meant you rejected conformity. That\'s tribal.' },
-      { type: 'cards', title: 'Brand Enemies That Built Tribes', items: [
-        { title: 'Harley-Davidson vs Boring', description: 'Enemy: Soulless, practical transportation. Tribe: Wild, free, rebellious riders who live for the open road.' },
-        { title: 'Patagonia vs Wasteful Consumption', description: 'Enemy: Fast fashion and environmental destruction. Tribe: Conscious consumers who value sustainability over trends.' },
-        { title: 'Liquid Death vs Boring Water', description: 'Enemy: Corporate wellness culture. Tribe: Rock-and-roll rebels who drink murder-themed water.' },
-        { title: 'Tesla vs Gas Guzzlers', description: 'Enemy: Outdated, polluting technology. Tribe: Forward-thinking innovators who embrace the future.' }
-      ]},
-      { type: 'content', title: 'Finding YOUR Enemy', body: 'Your enemy isn\'t another brand. It\'s the STATUS QUO your customers reject. What do they hate about your industry? What outdated mindset are they tired of? What belief do they want to abandon? THAT\'s your enemy. Position against it, and you become the tribe leader for everyone who feels the same way.' },
-      { type: 'split', title: 'Competitor vs Ideology Positioning', leftContent: { label: 'Against Competitors', items: ['Creates price wars', 'Builds zero loyalty', 'Customers switch for better deals', 'No emotional connection'] }, rightContent: { label: 'Against Ideology', items: ['Creates tribal identity', 'Builds fierce loyalty', 'Customers defend your brand', 'Deep emotional connection'] }},
-      { type: 'cards', title: 'How to Build Tribal Language', items: [
-        { title: 'Name the Enemy', description: 'Be specific. "Boring corporate water" (Liquid Death). "Conformity" (Apple). "Fast fashion waste" (Patagonia).' },
-        { title: 'Create In-Group Language', description: '"Builders, not learners." "Rebels, not sheep." Give your tribe a name that separates them from outsiders.' },
-        { title: 'Reinforce the Battle', description: 'Every email, ad, and message should remind your tribe why they\'re different. Why they chose YOU over the enemy.' },
-        { title: 'Never Compromise', description: 'The moment you try to appeal to everyone, you lose your tribe. Stay polarizing. Embrace the "not for you" customers.' }
-      ]},
-      { type: 'example', scenario: 'Shopify Store: Sustainable Activewear', before: { label: 'Weak Positioning', text: '"We make high-quality workout clothes." - Generic. No enemy. No tribe. Just another store.' }, after: { label: 'Tribal Positioning', text: '"For athletes who refuse to trash the planet for gains. We\'re at war with wasteful fast fashion." - Now there\'s an enemy, and a tribe forms around rejecting it.' }, insight: 'Same product. Different positioning. One creates transactions. The other creates a movement.' },
-      { type: 'quiz', question: 'Why did Apple position against "conformity" instead of just saying they were better than IBM?', options: ['Conformity was easier to explain', 'Fighting an ideology builds tribal identity - customers become rebels, not just buyers', 'IBM wasn\'t a big enough competitor', 'It was cheaper to market'], correctIndex: 1, feedback: { correct: 'Exactly. Positioning against an IDEA creates tribal identity. Customers who bought Macs weren\'t just purchasing computers - they were joining the rebel tribe that rejected conformity. That\'s loyalty you can\'t buy with better specs.', incorrect: 'Not quite. The power is in the tribe. When you position against an ideology (conformity, waste, boring), customers join a movement. They become defenders of your brand because it represents their identity. Competitors can\'t replicate that.' }},
+      { type: 'hook', headline: 'The strongest brands don\'t fight competitors.', subheadline: 'They fight IDEAS.', subtext: 'Apple didn\'t position against Dell or HP. They positioned against conformity. Harley-Davidson didn\'t position against Honda. They positioned against boring, soulless transportation.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-png-index-content-uploads-10.png', brandName: 'Apple' },
+      { type: 'ideology-battle' },
+      { type: 'tribal-brain' },
+      { type: 'apple-case-study' },
+      { type: 'brand-tribes' },
+      { type: 'enemy-finder' },
+      { type: 'tribal-language-builder' },
+      { type: 'positioning-comparison' },
+      { type: 'david-sling' },
+      { type: 'tribal-stats' },
+      { type: 'quiz', question: 'Why did Apple position against "conformity" instead of just saying they were better than IBM?', options: ['Conformity was easier to explain', 'Fighting an ideology builds tribal identity - customers become rebels, not just buyers', 'IBM wasn\'t a big enough competitor', 'It was cheaper to market'], correctIndex: 1, feedback: { correct: 'Exactly. Positioning against an IDEA creates tribal identity. Customers who bought Macs weren\'t just purchasing computers - they were joining the rebel tribe.', incorrect: 'Not quite. The power is in the tribe. When you position against an ideology, customers join a movement.' }},
+      { type: 'elite-insight' },
       { type: 'completion' }
     ];
 
@@ -198,9 +96,39 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
       Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Skull: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v2h8v-2"/><path d="M12.5 17l-.5-1-.5 1h1z"/><path d="M16 20a2 2 0 0 0 2-2V8A6 6 0 0 0 6 8v10a2 2 0 0 0 2 2h8z"/></svg>,
+      Heart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg>,
+      Flame: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      MessageCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      AlertTriangle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Flag: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>,
+      XCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
+      CheckCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+    };
+
+    // AnimatedCounter component
+    const AnimatedCounter = ({ value, duration = 2000, decimals = 0, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let startTime = null;
+        const animate = (currentTime) => {
+          if (!startTime) startTime = currentTime;
+          const progress = Math.min((currentTime - startTime) / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          setCount(easeOut * value);
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -241,133 +169,451 @@
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
             <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
             <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl leading-tight mt-2" style={{ color: 'var(--accent)' }}>{data.subheadline}</h2>
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.9 }} />
           </motion.div>
         )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // UNIQUE SLIDE 1: Ideology Battle Slide
+    const IdeologyBattleSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>The Core Difference</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Competitor vs Ideology Positioning</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
-          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-red-400"><Icons.XCircle /></div>
+                <span className="text-red-400 font-bold text-sm uppercase tracking-wider">Weak Position</span>
+              </div>
+              <div className="text-3xl font-bold text-white mb-2">"We're better than X"</div>
+              <p className="text-neutral-400 text-sm">Focuses on competitor. Customers compare specs. Price wars ensue. Zero emotional loyalty.</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showWinner ? '0 0 40px rgba(34, 197, 94, 0.3)' : 'none' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400"><Icons.CheckCircle /></div>
+                <span className="text-green-400 font-bold text-sm uppercase tracking-wider">Strong Position</span>
+              </div>
+              <div className="text-3xl font-bold text-white mb-2">"We reject BORING"</div>
+              <p className="text-neutral-400 text-sm">Fights an ideology. Creates tribal identity. Customers become defenders, not just buyers.</p>
+              <AnimatePresence>
+                {showWinner && (
+                  <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="absolute top-4 right-4 px-3 py-1.5 rounded-lg bg-green-500 text-white text-xs font-bold">WINS</motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      );
+    };
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+    // UNIQUE SLIDE 2: Tribal Brain Slide
+    const TribalBrainSlide = ({ data }) => {
+      const [activeSection, setActiveSection] = useState(0);
+      const sections = [
+        { label: 'Shared Enemy', icon: Icons.Skull, color: '#ef4444', desc: 'Triggers in-group bonding' },
+        { label: 'Identity Formed', icon: Icons.Users, color: '#f59e0b', desc: 'Customers define themselves by YOUR brand' },
+        { label: 'Fierce Loyalty', icon: Icons.Heart, color: '#22c55e', desc: 'They defend YOU against outsiders' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveSection(prev => (prev + 1) % 3), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>Psychology</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Tribal Brain</h2>
+            <p className="text-neutral-500 text-sm mt-2">Humans define themselves by what they're NOT</p>
+          </motion.div>
+
+          <div className="flex flex-col items-center">
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-32 h-32 rounded-full flex items-center justify-center mb-8 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(220, 38, 38, 0.3)' }}>
+              <Icons.Brain className="w-16 h-16" style={{ color: 'var(--accent)' }} />
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 10, repeat: Infinity, ease: 'linear' }} className="absolute inset-0 rounded-full border-2 border-dashed" style={{ borderColor: 'rgba(220, 38, 38, 0.3)' }} />
+            </motion.div>
+
+            <div className="flex gap-4 justify-center flex-wrap">
+              {sections.map((section, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="p-4 rounded-xl text-center w-40 transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeSection === i ? `0 0 30px ${section.color}40` : 'none', transform: activeSection === i ? 'scale(1.05)' : 'scale(1)' }}>
+                  <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${section.color}, transparent)` }} />
+                  <div className="w-10 h-10 rounded-lg mx-auto mb-2 flex items-center justify-center" style={{ background: `${section.color}20`, color: section.color }}>
+                    <section.icon />
+                  </div>
+                  <div className="text-white font-bold text-sm mb-1">{section.label}</div>
+                  <div className="text-neutral-400 text-xs">{section.desc}</div>
                 </motion.div>
               ))}
             </div>
           </div>
-        );
-      }
-      return null;
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
+    // UNIQUE SLIDE 3: Apple Case Study Slide
+    const AppleCaseStudySlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
 
-    const SplitSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-700 text-sm uppercase tracking-wider mb-4">{data.leftContent.label}</h3>
-            <ul className="space-y-3">
-              {data.leftContent.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-red-200 flex items-center justify-center text-red-600 text-xs flex-shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-neutral-700 text-sm">{item}</span>
-                </li>
-              ))}
-            </ul>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>Case Study</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Apple's 1984 Super Bowl Ad</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-6" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-            <h3 className="font-bold text-white/90 text-sm uppercase tracking-wider mb-4">{data.rightContent.label}</h3>
-            <ul className="space-y-3">
-              {data.rightContent.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-white text-sm font-medium">{item}</span>
-                </li>
-              ))}
-            </ul>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl bg-neutral-100 border-2 border-neutral-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-red-100 flex items-center justify-center text-red-500"><Icons.XCircle /></div>
+                <span className="text-red-600 font-bold text-sm">What They DIDN'T Say</span>
+              </div>
+              <p className="text-neutral-700 text-sm italic">"Our computers have better specs than IBM's."</p>
+              <p className="text-neutral-500 text-xs mt-2">Forgettable. Transactional. No identity.</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400"><Icons.CheckCircle /></div>
+                <span className="text-green-400 font-bold text-sm">What They DID Say</span>
+              </div>
+              <p className="text-white text-sm italic">"Think Different. Rebel against the machine."</p>
+              <p className="text-neutral-400 text-xs mt-2">Apple became the tribe for creative rebels.</p>
+            </motion.div>
+          </div>
+
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-5 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(220, 38, 38, 0.2)' }}>
+                <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <p className="text-neutral-300 text-sm"><span className="text-white font-bold">The Result:</span> Apple didn't sell computers. They sold identity. Buying a Mac meant you rejected conformity. That's tribal.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 4: Brand Tribes Slide
+    const BrandTribesSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const tribes = [
+        { brand: 'Harley-Davidson', enemy: 'Boring Transportation', tribe: 'Wild, free, rebellious riders', icon: Icons.Flame, color: '#ef4444' },
+        { brand: 'Patagonia', enemy: 'Wasteful Consumption', tribe: 'Conscious consumers who value sustainability', icon: Icons.Heart, color: '#22c55e' },
+        { brand: 'Liquid Death', enemy: 'Boring Water', tribe: 'Rock-and-roll rebels', icon: Icons.Skull, color: '#8b5cf6' },
+        { brand: 'Tesla', enemy: 'Gas Guzzlers', tribe: 'Forward-thinking innovators', icon: Icons.Zap, color: '#3b82f6' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % tribes.length), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>Brand Examples</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Brand Enemies That Built Tribes</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {tribes.map((tribe, i) => {
+              const Icon = tribe.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-5 rounded-xl transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeIndex === i ? `0 0 30px ${tribe.color}40` : 'none', transform: activeIndex === i ? 'scale(1.02)' : 'scale(1)' }}>
+                  <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${tribe.color}, transparent)` }} />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${tribe.color}20`, color: tribe.color }}>
+                      <Icon />
+                    </div>
+                    <span className="text-white font-bold text-sm">{tribe.brand}</span>
+                    {activeIndex === i && <span className="ml-auto px-2 py-0.5 rounded text-xs font-bold text-white" style={{ background: tribe.color }}>ACTIVE</span>}
+                  </div>
+                  <div className="text-xs text-neutral-400 mb-1">Enemy: <span className="text-red-400 font-medium">{tribe.enemy}</span></div>
+                  <div className="text-xs text-neutral-400">Tribe: <span className="text-green-400 font-medium">{tribe.tribe}</span></div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 5: Enemy Finder Slide
+    const EnemyFinderSlide = ({ data }) => {
+      const [activeQuestion, setActiveQuestion] = useState(0);
+      const questions = [
+        { q: 'What do they HATE about your industry?', example: 'Slow shipping, hidden fees, corporate speak' },
+        { q: 'What outdated MINDSET are they tired of?', example: '"The customer is always right" (but treated like a number)' },
+        { q: 'What BELIEF do they want to abandon?', example: '"Cheap = Good Value" when quality matters more' },
+        { q: 'What IDEOLOGY does your tribe reject?', example: 'Fast fashion waste, corporate wellness, boring adulting' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveQuestion(prev => (prev + 1) % questions.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>Find YOUR Enemy</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Your enemy isn't another brand.</h2>
+            <p className="text-neutral-500 text-sm mt-2">It's the STATUS QUO your customers reject.</p>
+          </motion.div>
+
+          <div className="space-y-3">
+            {questions.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl transition-all duration-300" style={{ background: activeQuestion === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)', boxShadow: activeQuestion === i ? '0 0 30px rgba(220, 38, 38, 0.2)' : 'none', transform: activeQuestion === i ? 'scale(1.02)' : 'scale(1)' }}>
+                {activeQuestion === i && <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: activeQuestion === i ? 'rgba(220, 38, 38, 0.2)' : 'rgba(0,0,0,0.05)', color: activeQuestion === i ? 'var(--accent)' : '#666' }}>
+                    <span className="text-sm font-bold">{i + 1}</span>
+                  </div>
+                  <div>
+                    <div className={`font-bold text-sm mb-1 ${activeQuestion === i ? 'text-white' : 'text-neutral-700'}`}>{item.q}</div>
+                    <div className={`text-xs italic ${activeQuestion === i ? 'text-neutral-400' : 'text-neutral-500'}`}>e.g., {item.example}</div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-6 p-4 rounded-xl text-center" style={{ background: 'rgba(220, 38, 38, 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><Icons.Target className="inline mr-2" />THAT's your enemy. Position against it, and you become the tribe leader.</p>
           </motion.div>
         </div>
-      </div>
-    );
+      );
+    };
+
+    // UNIQUE SLIDE 6: Tribal Language Builder Slide
+    const TribalLanguageBuilderSlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+      const steps = [
+        { num: 1, title: 'Name the Enemy', desc: 'Be specific. "Boring corporate water" (Liquid Death). "Conformity" (Apple).', icon: Icons.Target, color: '#ef4444' },
+        { num: 2, title: 'Create In-Group Language', desc: '"Builders, not learners." "Rebels, not sheep." Give your tribe a name.', icon: Icons.MessageCircle, color: '#f59e0b' },
+        { num: 3, title: 'Reinforce the Battle', desc: 'Every email, ad, and message reminds your tribe why they\'re different.', icon: Icons.Flag, color: '#22c55e' },
+        { num: 4, title: 'Never Compromise', desc: 'Stay polarizing. Embrace the "not for you" customers.', icon: Icons.Shield, color: '#8b5cf6' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveStep(prev => (prev + 1) % 4), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>Build Your Tribe</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">How to Build Tribal Language</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {steps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-5 rounded-xl transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeStep === i ? `0 0 30px ${step.color}40` : 'none', transform: activeStep === i ? 'scale(1.02)' : 'scale(1)' }}>
+                  <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${step.color}, transparent)` }} />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${step.color}20`, color: step.color }}>
+                      <Icon />
+                    </div>
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: step.color }}>{step.num}</div>
+                    <span className="text-white font-bold text-sm">{step.title}</span>
+                  </div>
+                  <p className="text-neutral-400 text-xs leading-relaxed">{step.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 7: Positioning Comparison Slide
+    const PositioningComparisonSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>Shopify Store Example</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Sustainable Activewear</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl bg-neutral-100 border-2 border-neutral-200">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-500"><Icons.XCircle /></div>
+                <span className="font-bold text-red-600 text-sm">Weak Positioning</span>
+              </div>
+              <p className="text-neutral-700 text-sm italic mb-3">"We make high-quality workout clothes."</p>
+              <p className="text-neutral-500 text-xs">Generic. No enemy. No tribe. Just another store.</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showWinner ? '0 0 40px rgba(34, 197, 94, 0.3)' : 'none' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><Icons.CheckCircle /></div>
+                <span className="font-bold text-green-400 text-sm">Tribal Positioning</span>
+              </div>
+              <p className="text-white text-sm italic mb-3">"For athletes who refuse to trash the planet for gains. We're at war with wasteful fast fashion."</p>
+              <p className="text-neutral-400 text-xs">Now there's an enemy, and a tribe forms around rejecting it.</p>
+              <AnimatePresence>
+                {showWinner && (
+                  <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="absolute top-4 right-4 px-3 py-1.5 rounded-lg bg-green-500 text-white text-xs font-bold">WINS</motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm"><Icons.Lightbulb className="inline mr-2 text-yellow-400" />Same product. Different positioning. One creates transactions. The other creates a movement.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 8: David Sling Slide
+    const DavidSlingSlide = ({ data }) => {
+      const [activeView, setActiveView] = useState(0);
+      const views = [
+        { label: 'Against Competitors', result: 'Price Wars', color: '#ef4444', items: ['Creates price wars', 'Builds zero loyalty', 'Customers switch for deals', 'No emotional connection'] },
+        { label: 'Against Ideology', result: 'Loyal Tribe', color: '#22c55e', items: ['Creates tribal identity', 'Builds fierce loyalty', 'Customers defend your brand', 'Deep emotional connection'] }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveView(prev => (prev + 1) % 2), 3500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>The David Advantage</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">David vs Goliath Positioning</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {views.map((view, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="p-6 rounded-xl transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeView === i ? `0 0 30px ${view.color}40` : 'none', transform: activeView === i ? 'scale(1.02)' : 'scale(1)' }}>
+                <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${view.color}, transparent)` }} />
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-bold text-sm" style={{ color: view.color }}>{view.label}</span>
+                  <span className="px-2 py-1 rounded text-xs font-bold text-white" style={{ background: view.color }}>{view.result}</span>
+                </div>
+                <ul className="space-y-2">
+                  {view.items.map((item, j) => (
+                    <li key={j} className="flex items-center gap-2 text-neutral-300 text-sm">
+                      <div className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold" style={{ background: `${view.color}20`, color: view.color }}>{j + 1}</div>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 9: Tribal Stats Slide
+    const TribalStatsSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const stats = [
+        { value: 89, suffix: '%', label: 'Brand Loyalty', desc: 'Of tribal customers remain loyal vs 23% commodity buyers', color: '#ef4444' },
+        { value: 3.2, suffix: 'x', label: 'Word-of-Mouth', desc: 'More referrals from tribal members than regular customers', color: '#f59e0b', decimals: 1 },
+        { value: 67, suffix: '%', label: 'Price Tolerance', desc: 'Tribal customers will pay premium over competitors', color: '#22c55e' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % stats.length), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.1)', color: 'var(--accent)' }}>The Numbers</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Tribal Positioning Impact</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeIndex === i ? `0 0 30px ${stat.color}40` : 'none', transform: activeIndex === i ? 'scale(1.05)' : 'scale(1)' }}>
+                <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color }}>
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
+                </div>
+                <div className="text-white font-bold text-sm mb-2">{stat.label}</div>
+                <div className="text-neutral-400 text-xs">{stat.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 10: Elite Insight Slide
+    const EliteInsightSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 rounded-xl text-center mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(220, 38, 38, 0.2)' }}>
+            <div className="h-1 w-full mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="w-16 h-16 rounded-xl mx-auto mb-6 flex items-center justify-center" style={{ background: 'rgba(220, 38, 38, 0.2)', color: 'var(--accent)' }}>
+              <Icons.Crown className="w-8 h-8" />
+            </div>
+            <p className="text-white text-xl md:text-2xl font-bold mb-4">"The enemy isn't another brand. It's an ideology your tribe rejects."</p>
+            <p className="text-neutral-400 text-sm">David wins against Goliath by fighting IDEAS, not competitors.</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="grid md:grid-cols-3 gap-4">
+            {[
+              { icon: Icons.Target, label: 'Name the Enemy', desc: 'One specific ideology to fight' },
+              { icon: Icons.MessageCircle, label: 'Tribal Language', desc: 'In-group words that separate' },
+              { icon: Icons.Shield, label: 'Never Compromise', desc: 'Stay polarizing, stay loyal' }
+            ].map((item, i) => (
+              <div key={i} className="p-4 rounded-xl text-center" style={{ background: 'rgba(220, 38, 38, 0.1)' }}>
+                <item.icon className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--accent)' }} />
+                <div className="text-sm font-bold" style={{ color: 'var(--accent)' }}>{item.label}</div>
+                <div className="text-xs text-neutral-500 mt-1">{item.desc}</div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -421,7 +667,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Target /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the Us vs Them play. Find your enemy ideology, build tribal language, and watch loyalty skyrocket.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the David vs Goliath play. Find your enemy ideology, build tribal language, and watch loyalty skyrocket.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 max-w-md w-full">
           <p className="text-red-800 text-sm font-medium flex items-center gap-2"><Icons.Target className="flex-shrink-0" /><span>Action: Identify ONE ideology your customers reject. Position against THAT, not competitors.</span></p>
         </motion.div>
@@ -445,16 +691,6 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -485,11 +721,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'split': return <SplitSlide data={slide} />;
+          case 'ideology-battle': return <IdeologyBattleSlide data={slide} />;
+          case 'tribal-brain': return <TribalBrainSlide data={slide} />;
+          case 'apple-case-study': return <AppleCaseStudySlide data={slide} />;
+          case 'brand-tribes': return <BrandTribesSlide data={slide} />;
+          case 'enemy-finder': return <EnemyFinderSlide data={slide} />;
+          case 'tribal-language-builder': return <TribalLanguageBuilderSlide data={slide} />;
+          case 'positioning-comparison': return <PositioningComparisonSlide data={slide} />;
+          case 'david-sling': return <DavidSlingSlide data={slide} />;
+          case 'tribal-stats': return <TribalStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
@@ -505,7 +746,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
@@ -529,7 +769,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
