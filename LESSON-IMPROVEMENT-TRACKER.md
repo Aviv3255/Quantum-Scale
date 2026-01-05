@@ -364,7 +364,7 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (11 lessons remaining - 7 errors + 4 score-5)
+## CATEGORY 2: NEED IMPROVEMENT (10 lessons remaining - 7 errors + 3 score-5)
 
 These lessons need design improvements to reach elite level.
 
@@ -396,7 +396,7 @@ These lessons need design improvements to reach elite level.
 | 264 | visual-priming | ELITE ✓ | Jan 5 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
 | 265 | visual-shorthand | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
 | 266 | von-restorff-effect | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
-| 267 | whale-customer-paradox | 5 |
+| 267 | whale-customer-paradox | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 268 | whatsapp-support | 5 |
 | 269 | wiifm-principle | 5 |
 | 270 | wishlist-effect | 5 |
