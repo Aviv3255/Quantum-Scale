@@ -891,7 +891,7 @@ export default function CoursesPage() {
                         {/* Spacer to push footer to bottom */}
                         <div className="flex-1" />
 
-                        {/* Price and CTA - Only show if not owned */}
+                        {/* CTA - Only show if not owned */}
                         <div className="flex items-center justify-between pt-5 border-t border-[#eeeeee]">
                           {isOwned ? (
                             <Link
@@ -907,40 +907,25 @@ export default function CoursesPage() {
                             </Link>
                           ) : (
                             <>
-                              <div className="flex items-baseline gap-2">
-                                <span className="text-2xl font-bold text-[#111111]">
-                                  ${course.price}
+                              <div className="flex items-center gap-2">
+                                <Gift size={18} className="text-green-600" />
+                                <span className="text-lg font-bold text-green-600">
+                                  FREE
                                 </span>
-                                {course.originalPrice && (
-                                  <span className="text-sm line-through text-[#999999]">
-                                    ${course.originalPrice}
-                                  </span>
-                                )}
                               </div>
 
-                              {/* Add to Cart Button */}
-                              <button
-                                onClick={(e) => handleAddToCart(e, course)}
-                                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all hover:scale-105"
+                              {/* Add to Courses Button */}
+                              <Link
+                                href={`/courses/${course.slug}`}
+                                className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all hover:scale-105"
                                 style={{
-                                  background: isInCart(course.slug)
-                                    ? '#22c55e'
-                                    : 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)',
+                                  background: 'linear-gradient(150deg, #000 0%, #3a3a3a 50%, #000 100%)',
                                   color: '#ffffff',
                                 }}
                               >
-                                {isInCart(course.slug) ? (
-                                  <>
-                                    <Check size={16} />
-                                    In Cart
-                                  </>
-                                ) : (
-                                  <>
-                                    <Plus size={16} />
-                                    Add to Cart
-                                  </>
-                                )}
-                              </button>
+                                <Plus size={16} />
+                                Add to Courses
+                              </Link>
                             </>
                           )}
                         </div>

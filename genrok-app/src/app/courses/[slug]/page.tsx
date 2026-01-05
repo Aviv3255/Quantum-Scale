@@ -49,6 +49,7 @@ import {
   MessageCircle,
   Trophy,
   FileText,
+  Plus,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { useCartStore, CartItem } from '@/store/cart';
@@ -69,29 +70,23 @@ interface GetAccessBarProps {
   onCheckout: () => void;
 }
 
-const GetAccessBar = ({ price, originalPrice, onCheckout }: GetAccessBarProps) => (
+const GetAccessBar = ({ onCheckout }: GetAccessBarProps) => (
   <div className="w-full bg-white border-b border-[#eee] py-4 px-6 lg:px-10 sticky top-0 z-40">
     <div className="max-w-6xl mx-auto flex items-center justify-between">
-      <div className="flex items-center gap-4">
-        <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold text-[#111]">${price}</span>
-          {originalPrice && (
-            <span className="text-sm line-through text-[#999]">${originalPrice}</span>
-          )}
-        </div>
-        {originalPrice && (
-          <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#111] text-white">
-            Save {Math.round((1 - price / originalPrice) * 100)}%
-          </span>
-        )}
+      <div className="flex items-center gap-3">
+        <Gift size={20} className="text-green-600" />
+        <span className="text-xl font-bold text-green-600">FREE</span>
+        <span className="text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-700">
+          100% Free Access
+        </span>
       </div>
       <button
         onClick={onCheckout}
         className="flex items-center justify-center gap-2 py-3 px-8 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02]"
         style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
       >
-        <ShoppingCart size={18} />
-        Get Access - ${price}
+        <Plus size={18} />
+        Add to My Courses
       </button>
     </div>
   </div>
@@ -105,16 +100,14 @@ interface StickyCartProps {
   onCheckout: () => void;
 }
 
-const StickyCart = ({ title, price, originalPrice, onCheckout }: StickyCartProps) => (
+const StickyCart = ({ title, onCheckout }: StickyCartProps) => (
   <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#eee] shadow-lg py-4 px-6" style={{ marginLeft: 'var(--sidebar-width, 260px)' }}>
     <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
       <div className="flex-1 min-w-0">
         <p className="font-semibold text-[#111] truncate">{title}</p>
-        <div className="flex items-baseline gap-2 mt-1">
-          <span className="text-xl font-bold text-[#111]">${price}</span>
-          {originalPrice && (
-            <span className="text-sm line-through text-[#999]">${originalPrice}</span>
-          )}
+        <div className="flex items-center gap-2 mt-1">
+          <Gift size={16} className="text-green-600" />
+          <span className="text-lg font-bold text-green-600">FREE</span>
         </div>
       </div>
       <button
@@ -122,8 +115,8 @@ const StickyCart = ({ title, price, originalPrice, onCheckout }: StickyCartProps
         className="flex items-center justify-center gap-2 py-3 px-8 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02] flex-shrink-0"
         style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
       >
-        <ShoppingCart size={18} />
-        Get Access - ${price}
+        <Plus size={18} />
+        Add to My Courses
       </button>
     </div>
   </div>

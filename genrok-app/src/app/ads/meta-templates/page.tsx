@@ -2082,32 +2082,36 @@ export default function MetaTemplatesPage() {
     saveReferralCode();
   }, [user, referralCode]);
 
-  // Auto-scroll effect
+  // Auto-scroll effect - infinite smooth scroll
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
 
     let animationId: number;
-    let scrollPosition = 0;
-    const scrollSpeed = 0.5;
     let isPaused = false;
+    const scrollSpeed = 1; // pixels per frame
 
     const animate = () => {
       if (!isPaused && scrollContainer) {
-        scrollPosition += scrollSpeed;
-        // Reset when reaching halfway (where duplicated content starts)
-        if (scrollPosition >= scrollContainer.scrollHeight / 2) {
-          scrollPosition = 0;
+        // Increment scroll position
+        scrollContainer.scrollTop += scrollSpeed;
+
+        // When we've scrolled past the first set of images (halfway point),
+        // instantly jump back to start for seamless infinite loop
+        const halfwayPoint = scrollContainer.scrollHeight / 2;
+        if (scrollContainer.scrollTop >= halfwayPoint) {
+          scrollContainer.scrollTop = 0;
         }
-        scrollContainer.scrollTop = scrollPosition;
       }
       animationId = requestAnimationFrame(animate);
     };
 
-    // Start after a short delay to let images load
+    // Start after images have had time to load
     const startTimeout = setTimeout(() => {
+      // Force scroll to start
+      scrollContainer.scrollTop = 0;
       animationId = requestAnimationFrame(animate);
-    }, 500);
+    }, 1000);
 
     // Pause on hover
     const handleMouseEnter = () => { isPaused = true; };
@@ -2118,7 +2122,7 @@ export default function MetaTemplatesPage() {
 
     return () => {
       clearTimeout(startTimeout);
-      cancelAnimationFrame(animationId);
+      if (animationId) cancelAnimationFrame(animationId);
       scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
       scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
     };
