@@ -12,9 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #84cc16; --accent-dark: #65a30d; --accent-light: #a3e635; --accent-rgb: 132, 204, 22; }
@@ -47,145 +47,69 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
+        e.stopPropagation(); e.preventDefault();
+        if (window.parent !== window) { window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*'); }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }} onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['The only 3 ways any business can grow revenue', 'Why improvements compound (10% + 10% + 10% ≠ 30%)', 'The conversion lever most businesses ignore'] },
-      { type: 'hook', headline: 'Most businesses obsess over customer acquisition while ignoring the two levers that create exponential growth.', subtext: 'There are exactly three ways to grow any business. More customers, higher transaction value, or more frequent purchases. That\'s it. But here\'s the secret: small improvements across all three don\'t add up—they multiply. This is the math that separates struggling businesses from empires.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys'},
-      { type: 'content', title: 'The Growth Formula', body: 'Every business, regardless of industry or size, grows through the same equation: Customers × Transaction Value × Frequency = Revenue. You can increase the number of customers, increase how much each customer spends, or increase how often they buy. These are the only three levers. Understanding them changes how you approach every marketing decision.' },
-      { type: 'visual', title: 'The Math Behind Growth', visualType: 'comparison', data: {
-        left: { label: 'Single Lever', value: '+10%', result: '10% total growth', color: '#6b7280' },
-        right: { label: 'All Three', value: '+33%', result: '10% each lever compounds', color: '#22c55e' },
-        center: { label: 'Power', value: 'Multiply', result: 'Not add', color: '#84cc16' }
-      }},
-      { type: 'content', title: 'Lever 1: More Customers', body: 'Getting more customers is what most businesses focus on. More traffic, more leads, more conversions. But it\'s also the most expensive lever to pull. Customer acquisition costs money in advertising, sales teams, and marketing efforts. Every new customer has a cost attached. This lever gets all the attention but often delivers the lowest ROI.' },
-      { type: 'content', title: 'Lever 2: Higher Transaction Value', body: 'Getting customers to spend more per transaction is often the easiest lever to improve. These are people who already trust you and have their wallet out. The incremental cost is near zero, making every additional dollar almost pure profit. Upsells, cross-sells, bundles, and premium tiers all increase transaction value with minimal effort.' },
-      { type: 'content', title: 'Lever 3: More Frequent Purchases', body: 'Getting existing customers to buy more often is criminally underutilized. You\'ve already done the hard work of acquiring them. They know you, trust you, and have bought from you. Email sequences, subscription models, and strategic follow-ups can dramatically increase purchase frequency without additional acquisition cost. This is pure leverage.' },
-      { type: 'content', title: 'The Conversion Lever Nobody Pulls', body: 'Want to know the fastest way to improve conversion rates? Ask your customers WHY they bought. Not what they did. WHY they did it. Most store owners guess at their customer motivations. They change colors, buttons, headlines—based purely on what they THINK will work. But what if you could know EXACTLY what triggered every purchase?' },
-      { type: 'content', title: 'The One Question That Changed Everything', body: 'A skincare brand was stuck at 2.4% conversion. They assumed people bought because of their ingredient quality. Wrong. Post-purchase surveys revealed 73% bought because they saw a friend\'s before/after photo on Instagram. The brand doubled down on user-generated content. Conversion jumped to 4.7% in 3 weeks. Same product. Same price. Different understanding of WHY people buy.' },
-      { type: 'implementation', title: 'Stop Guessing. Start Knowing.', intro: "Stop guessing what your customers want. Here\'s how to get the truth:", steps: [
-        { step: 1, title: 'Set up post-purchase surveys', description: 'Apps like Grapevine show a short survey right after checkout - when customers are most honest about why they bought.' },
-        { step: 2, title: 'Ask the right questions', description: '"How did you hear about us?" "What almost stopped you from buying?" "What made you choose us?" - These reveal your real audience.' },
-        { step: 3, title: 'Collect 50-100 responses', description: 'After about 100 responses, clear patterns emerge. You\'ll often find 80%+ saying the same unexpected thing.' },
-        { step: 4, title: 'Update your messaging', description: 'Use exact customer language in your ads and pages. Stop guessing - start knowing.' }
-      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
-      { type: 'example', scenario: 'The Survey Insight That 3x\'d Conversions', before: { label: 'Assumption (Wrong)', text: '"Our customers buy because we have the lowest prices and fastest shipping."' }, after: { label: 'Survey Reality (Truth)', text: '"87% bought because a specific influencer recommended us. Price wasn\'t even mentioned. We thought shipping mattered—it didn\'t."' }, insight: 'One question revealed the real trigger. They partnered with more influencers. Conversions tripled in 60 days.' },
-      { type: 'cards', title: 'The 3 Must-Ask Questions', items: [
-        { title: 'Question 1: Where Did You Hear About Us?', description: 'Reveals which marketing channels actually drive purchases vs. which just get clicks. You\'ll discover your best traffic source is probably not what you think.' },
-        { title: 'Question 2: What Almost Stopped You?', description: 'Uncovers hidden objections you never considered. These are the conversion killers hiding in plain sight. Fix these and watch your rate climb.' },
-        { title: 'Question 3: What Made You Buy Today?', description: 'Exposes the real psychological trigger that converted them. This is pure gold. Use these exact words in your marketing and conversions skyrocket.' }
+      { type: 'welcome', learningGoals: ['The only 3 ways any business can grow revenue', 'Why improvements compound (10% + 10% + 10% does not equal 30%)', 'The conversion lever most businesses ignore'] },
+      { type: 'hook', headline: 'Most businesses obsess over customer acquisition while ignoring the two levers that create exponential growth.', subtext: 'There are exactly three ways to grow any business. More customers, higher transaction value, or more frequent purchases. That\'s it. But here\'s the secret: small improvements across all three don\'t add up—they multiply.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys' },
+      { type: 'growth-formula', title: 'The Growth Formula' },
+      { type: 'lever-reveal', title: 'The Three Levers', levers: [
+        { icon: 'Users', name: 'More Customers', desc: 'New people who buy', color: '#22c55e' },
+        { icon: 'DollarSign', name: 'Higher Transaction Value', desc: 'Spend more per order', color: '#3b82f6' },
+        { icon: 'RefreshCw', name: 'More Frequent Purchases', desc: 'Buy more often', color: '#f59e0b' }
       ]},
-      { type: 'content', title: 'Why This Works (The Psychology)', body: 'People tell you the truth AFTER they buy. Before purchase, they rationalize and filter. After purchase, they\'re relaxed and honest. They\'ve already committed, so there\'s no reason to hide their real motivations. This is when you get the unfiltered truth about what actually drove their decision. That truth is what transforms your conversion rate.' },
-      { type: 'visual', title: 'The Compounding Effect', visualType: 'stats', data: [
-        { value: '10%', label: 'each lever improved', subtext: 'Small, achievable gains' },
-        { value: '33%', label: 'total revenue growth', subtext: 'Due to multiplication' },
-        { value: '3x', label: 'faster than single lever', subtext: 'Balanced beats focused' }
+      { type: 'math-comparison', title: 'Why Multiplication Beats Addition', additive: { calc: '10% + 10% + 10%', result: '30%' }, multiplicative: { calc: '1.1 x 1.1 x 1.1', result: '33%' }},
+      { type: 'lever-detail', leverNum: 1, title: 'Lever 1: More Customers', icon: 'Users', color: '#22c55e', problem: 'Most expensive lever to pull', stats: [{ label: 'Average CAC', value: '$50-200' }, { label: 'ROI Timeline', value: '3-6 months' }], insight: 'Every new customer has a cost attached. This lever gets all the attention but often delivers the lowest ROI.' },
+      { type: 'lever-detail', leverNum: 2, title: 'Lever 2: Higher Transaction Value', icon: 'DollarSign', color: '#3b82f6', problem: 'Easiest lever to improve', stats: [{ label: 'Incremental Cost', value: 'Near $0' }, { label: 'Profit Impact', value: '~100%' }], insight: 'These people already trust you. Their wallet is already out. Upsells, bundles, and premium tiers cost almost nothing.' },
+      { type: 'lever-detail', leverNum: 3, title: 'Lever 3: Purchase Frequency', icon: 'RefreshCw', color: '#f59e0b', problem: 'Criminally underutilized', stats: [{ label: 'Acquisition Cost', value: '$0' }, { label: 'Effort Level', value: 'Low' }], insight: 'They already know you, trust you, and have bought from you. Email sequences and subscriptions unlock pure leverage.' },
+      { type: 'survey-reveal', title: 'The Conversion Lever Nobody Pulls', before: { label: 'What Most Do', items: ['Guess customer motivations', 'Change colors and buttons', 'Test random headlines'] }, after: { label: 'What Winners Do', items: ['Ask WHY they bought', 'Use exact customer language', 'Build on real triggers'] }},
+      { type: 'case-study', title: 'The One Question That Changed Everything', brand: 'A Skincare Brand', before: { rate: '2.4%', assumption: 'People buy for ingredient quality' }, after: { rate: '4.7%', reality: '73% bought because of Instagram before/after photos' }, result: 'Same product. Same price. Different understanding of WHY people buy.', timeframe: '3 weeks' },
+      { type: 'three-questions', title: 'The 3 Must-Ask Questions', questions: [
+        { num: 1, question: 'Where Did You Hear About Us?', insight: 'Reveals which channels actually drive purchases vs. which just get clicks' },
+        { num: 2, question: 'What Almost Stopped You?', insight: 'Uncovers hidden objections—the conversion killers in plain sight' },
+        { num: 3, question: 'What Made You Buy Today?', insight: 'The real psychological trigger. Use these exact words in your marketing' }
       ]},
-      { type: 'cards', title: 'Common Mistakes to Avoid', items: [
-        { title: 'Obsessing Over Acquisition', description: 'Most businesses pour resources into getting new customers while ignoring existing ones. Acquisition is expensive. Your customers are waiting to buy more if you simply ask.' },
-        { title: 'Ignoring the Math', description: 'Many operate on gut feeling rather than understanding these levers numerically. Measure your customer acquisition cost, average order value, and purchase frequency. You can\'t improve what you don\'t measure.' },
-        { title: 'Optimizing in Isolation', description: 'Working on one lever while ignoring others misses the multiplicative power. A balanced approach where you improve all three creates exponential results that single-lever focus never achieves.' }
+      { type: 'mistakes-grid', title: 'Common Mistakes to Avoid', mistakes: [
+        { icon: 'Users', label: 'Obsessing Over Acquisition', desc: 'Pouring resources into new customers while ignoring existing ones' },
+        { icon: 'Calculator', label: 'Ignoring the Math', desc: 'Operating on gut feeling instead of measuring all three levers' },
+        { icon: 'Target', label: 'Optimizing in Isolation', desc: 'Working one lever while missing the multiplicative power of all three' }
       ]},
-      { type: 'quiz', question: 'If you improve each of the three growth levers by 10%, what is your total revenue growth?', options: ['10%', '20%', '30%', '33%'], correctIndex: 3, feedback: { correct: 'Exactly! Because the levers multiply (1.1 × 1.1 × 1.1 = 1.33), a 10% improvement in each creates 33% total growth. This is why balanced optimization across all three levers is so powerful. The math compounds in your favor.', incorrect: 'Not quite. The levers don\'t add—they multiply. If you improve each by 10%, the calculation is: 1.1 × 1.1 × 1.1 = 1.33 (or 33% growth). This compounding effect is why working on all three levers simultaneously creates exponential results.' }},
+      { type: 'compound-effect', title: 'The Compounding Effect', data: [
+        { label: 'Each lever improved', value: '10%', desc: 'Small, achievable gains' },
+        { label: 'Total revenue growth', value: '33%', desc: 'Due to multiplication' },
+        { label: 'Faster than single lever', value: '3x', desc: 'Balanced beats focused' }
+      ]},
+      { type: 'elite-insight', quote: 'People tell you the truth AFTER they buy. Before purchase, they rationalize and filter. After purchase, they\'re relaxed and honest.', actions: ['Set up post-purchase surveys', 'Collect 50-100 responses', 'Update messaging with exact customer language'] },
+      { type: 'quiz', question: 'If you improve each of the three growth levers by 10%, what is your total revenue growth?', options: ['10%', '20%', '30%', '33%'], correctIndex: 3, feedback: { correct: 'Exactly! Because the levers multiply (1.1 x 1.1 x 1.1 = 1.33), a 10% improvement in each creates 33% total growth.', incorrect: 'Not quite. The levers don\'t add—they multiply. 1.1 x 1.1 x 1.1 = 1.33 (or 33% growth).' }},
       { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
     ];
 
@@ -195,9 +119,39 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      RefreshCw: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Calculator: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      HelpCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Multiply: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Plus: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+      Equal: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/></svg>
+    };
+
+    // AnimatedCounter with decimals support
+    const AnimatedCounter = ({ value, decimals = 0, duration = 2000, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      const numValue = parseFloat(value);
+      useEffect(() => {
+        let startTime; let animationFrame;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          setCount(easeOut * numValue);
+          if (progress < 1) animationFrame = requestAnimationFrame(animate);
+        };
+        animationFrame = requestAnimationFrame(animate);
+        return () => cancelAnimationFrame(animationFrame);
+      }, [numValue, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -237,148 +191,313 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }} className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
             <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
           </motion.div>
         )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // 1. Growth Formula Slide - Animated equation
+    const GrowthFormulaSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">{data.title}</motion.h2>
+          <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-8">
+            {[
+              { icon: 'Users', label: 'Customers', color: '#22c55e' },
+              { symbol: 'x' },
+              { icon: 'DollarSign', label: 'Transaction Value', color: '#3b82f6' },
+              { symbol: 'x' },
+              { icon: 'RefreshCw', label: 'Frequency', color: '#f59e0b' }
+            ].map((item, i) => (
+              item.symbol ? (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 + i * 0.15 }} className="text-3xl font-bold text-neutral-400"><Icons.Multiply /></motion.div>
+              ) : (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px 28px', textAlign: 'center', position: 'relative', boxShadow: `0 0 30px rgba(${item.color === '#22c55e' ? '34, 197, 94' : item.color === '#3b82f6' ? '59, 130, 246' : '245, 158, 11'}, 0.2)` }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${item.color}, transparent)`, borderRadius: '20px 20px 0 0' }} />
+                  <div style={{ color: item.color, marginBottom: '8px' }}>{Icons[item.icon]()}</div>
+                  <p className="text-white font-semibold text-sm">{item.label}</p>
                 </motion.div>
-              ))}
-            </div>
+              )
+            ))}
           </div>
-        );
-      }
-      return null;
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center gap-4">
+                <div className="text-3xl text-neutral-400"><Icons.Equal /></div>
+                <div style={{ background: 'linear-gradient(135deg, #84cc16, #65a30d)', borderRadius: '16px', padding: '20px 40px', boxShadow: '0 0 40px rgba(132, 204, 22, 0.4)' }}>
+                  <span style={{ fontSize: '32px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: 'white' }}>REVENUE</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // 2. Lever Reveal Slide - 3 levers with auto-cycling highlight
+    const LeverRevealSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.levers.length), 2500);
+        return () => clearInterval(timer);
+      }, [data.levers.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4 max-w-4xl w-full">
+            {data.levers.map((lever, i) => {
+              const isActive = i === activeIndex;
+              return (
+                <motion.div key={lever.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0, scale: isActive ? 1.05 : 1 }} transition={{ delay: 0.2 + i * 0.1, scale: { duration: 0.3 } }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px 24px', textAlign: 'center', position: 'relative', boxShadow: isActive ? `0 0 40px rgba(${lever.color === '#22c55e' ? '34, 197, 94' : lever.color === '#3b82f6' ? '59, 130, 246' : '245, 158, 11'}, 0.4)` : '0 4px 20px rgba(0,0,0,0.2)' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${lever.color}, transparent)`, borderRadius: '20px 20px 0 0' }} />
+                  <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: `${lever.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', color: lever.color }}>{Icons[lever.icon]()}</div>
+                  <h3 className="text-white font-bold text-lg mb-2">{lever.name}</h3>
+                  <p className="text-neutral-400 text-sm">{lever.desc}</p>
+                  {isActive && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ position: 'absolute', top: '12px', right: '12px', background: lever.color, borderRadius: '8px', padding: '4px 10px', fontSize: '10px', fontWeight: '700', color: 'white', textTransform: 'uppercase' }}>Lever {i + 1}</motion.div>}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 3. Math Comparison Slide - Addition vs Multiplication
+    const MathComparisonSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl w-full">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', textAlign: 'center', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #6b7280, transparent)', borderRadius: '20px 20px 0 0' }} />
+              <p className="text-neutral-400 text-xs uppercase tracking-wider mb-4">Addition Thinking</p>
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <span className="text-white font-mono text-xl">10%</span>
+                <Icons.Plus />
+                <span className="text-white font-mono text-xl">10%</span>
+                <Icons.Plus />
+                <span className="text-white font-mono text-xl">10%</span>
+              </div>
+              <div style={{ fontSize: '48px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: '#6b7280' }}>{data.additive.result}</div>
+              <p className="text-neutral-500 text-sm mt-2">growth</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', textAlign: 'center', position: 'relative', boxShadow: showWinner ? '0 0 40px rgba(132, 204, 22, 0.3)' : 'none' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #84cc16, transparent)', borderRadius: '20px 20px 0 0' }} />
+              <p className="text-neutral-400 text-xs uppercase tracking-wider mb-4">Multiplication Reality</p>
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <span className="text-white font-mono text-xl">1.1</span>
+                <Icons.Multiply />
+                <span className="text-white font-mono text-xl">1.1</span>
+                <Icons.Multiply />
+                <span className="text-white font-mono text-xl">1.1</span>
+              </div>
+              <div style={{ fontSize: '48px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: '#84cc16' }}>{data.multiplicative.result}</div>
+              <p className="text-neutral-500 text-sm mt-2">growth</p>
+              {showWinner && <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} style={{ position: 'absolute', top: '-12px', right: '-12px', background: 'linear-gradient(135deg, #84cc16, #65a30d)', borderRadius: '12px', padding: '6px 14px', fontSize: '12px', fontWeight: '700', color: 'white', boxShadow: '0 4px 15px rgba(132, 204, 22, 0.4)' }}>WINS</motion.div>}
+            </motion.div>
+          </div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-neutral-500 text-center mt-6 text-sm max-w-md">The extra 3% doesn't sound like much—until you run the math on a $1M business. That's $30,000 more. Every. Single. Year.</motion.p>
+        </div>
+      );
+    };
+
+    // 4. Lever Detail Slide - Individual lever deep dive
+    const LeverDetailSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: `${data.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', color: data.color }}>{Icons[data.icon]()}</div>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', maxWidth: '500px', width: '100%', position: 'relative' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${data.color}, transparent)`, borderRadius: '20px 20px 0 0' }} />
+          <div style={{ background: `${data.color}20`, borderRadius: '12px', padding: '12px 16px', marginBottom: '20px', display: 'inline-block' }}>
+            <span style={{ color: data.color, fontWeight: '700', fontSize: '14px' }}>{data.problem}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            {data.stats.map((stat, i) => (
+              <div key={i} className="text-center">
+                <div style={{ fontSize: '28px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: data.color }}>{stat.value}</div>
+                <p className="text-neutral-400 text-xs mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-neutral-300 text-sm leading-relaxed">{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    // 5. Survey Reveal Slide - Before/After comparison
+    const SurveyRevealSlide = ({ data }) => {
+      const [showAfter, setShowAfter] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowAfter(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl w-full">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)', borderRadius: '20px 20px 0 0' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <Icons.X />
+                <span className="text-red-400 font-bold text-sm">{data.before.label}</span>
+              </div>
+              <ul className="space-y-3">
+                {data.before.items.map((item, i) => (
+                  <li key={i} className="flex items-center gap-3 text-neutral-400 text-sm"><span className="w-2 h-2 rounded-full bg-red-400" />{item}</li>
+                ))}
+              </ul>
+            </motion.div>
+            <AnimatePresence>
+              {showAfter && (
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', position: 'relative', boxShadow: '0 0 30px rgba(132, 204, 22, 0.2)' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #84cc16, transparent)', borderRadius: '20px 20px 0 0' }} />
+                  <div className="flex items-center gap-2 mb-4">
+                    <Icons.Check />
+                    <span style={{ color: '#84cc16' }} className="font-bold text-sm">{data.after.label}</span>
+                  </div>
+                  <ul className="space-y-3">
+                    {data.after.items.map((item, i) => (
+                      <li key={i} className="flex items-center gap-3 text-neutral-300 text-sm"><span className="w-2 h-2 rounded-full" style={{ background: '#84cc16' }} />{item}</li>
+                    ))}
+                  </ul>
+                  <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} style={{ position: 'absolute', top: '-12px', right: '-12px', background: 'linear-gradient(135deg, #84cc16, #65a30d)', borderRadius: '12px', padding: '6px 14px', fontSize: '12px', fontWeight: '700', color: 'white' }}>WINS</motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    // 6. Case Study Slide - Before/After conversion story
+    const CaseStudySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(132, 204, 22, 0.1)', color: '#84cc16' }}>Case Study</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+          <p className="text-neutral-500 text-sm mt-2">{data.brand}</p>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl w-full mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', textAlign: 'center', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)', borderRadius: '20px 20px 0 0' }} />
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Before</p>
+            <div style={{ fontSize: '48px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: '#ef4444' }}>{data.before.rate}</div>
+            <p className="text-neutral-500 text-sm mt-3">Assumed: "{data.before.assumption}"</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', textAlign: 'center', position: 'relative', boxShadow: '0 0 30px rgba(132, 204, 22, 0.2)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #84cc16, transparent)', borderRadius: '20px 20px 0 0' }} />
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">After ({data.timeframe})</p>
+            <div style={{ fontSize: '48px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: '#84cc16' }}>{data.after.rate}</div>
+            <p className="text-neutral-300 text-sm mt-3">Reality: "{data.after.reality}"</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} style={{ background: 'linear-gradient(135deg, #84cc16, #65a30d)', borderRadius: '16px', padding: '16px 24px', textAlign: 'center' }}>
+          <p className="text-white font-medium text-sm">{data.result}</p>
+        </motion.div>
+      </div>
+    );
+
+    // 7. Three Questions Slide - Auto-cycling questions
+    const ThreeQuestionsSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.questions.length), 3000);
+        return () => clearInterval(timer);
+      }, [data.questions.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="space-y-4 max-w-2xl w-full">
+            {data.questions.map((q, i) => {
+              const isActive = i === activeIndex;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0, scale: isActive ? 1.02 : 1 }} transition={{ delay: 0.2 + i * 0.1, scale: { duration: 0.3 } }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', boxShadow: isActive ? '0 0 30px rgba(132, 204, 22, 0.3)' : '0 4px 15px rgba(0,0,0,0.1)' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: isActive ? 'linear-gradient(90deg, transparent, #84cc16, transparent)' : 'transparent', borderRadius: '16px 16px 0 0' }} />
+                  <div className="flex items-start gap-4">
+                    <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: isActive ? '#84cc16' : '#374151', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '900', fontSize: '18px', flexShrink: 0 }}>{q.num}</div>
+                    <div className="flex-1">
+                      <h3 className="text-white font-bold text-base mb-2">"{q.question}"</h3>
+                      <p className="text-neutral-400 text-sm">{q.insight}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 8. Mistakes Grid Slide
+    const MistakesGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl w-full">
+          {data.mistakes.map((mistake, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', textAlign: 'center', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)', borderRadius: '20px 20px 0 0' }} />
+              <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', color: '#ef4444' }}>{Icons[mistake.icon]()}</div>
+              <h3 className="text-white font-bold text-sm mb-2">{mistake.label}</h3>
+              <p className="text-neutral-400 text-xs leading-relaxed">{mistake.desc}</p>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
-              </div>
+    // 9. Compound Effect Slide - 3 stats with AnimatedCounter
+    const CompoundEffectSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl w-full">
+          {data.data.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', textAlign: 'center', position: 'relative', boxShadow: '0 0 25px rgba(132, 204, 22, 0.15)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #84cc16, transparent)', borderRadius: '20px 20px 0 0' }} />
+              <div style={{ fontSize: '48px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: '#84cc16', lineHeight: 1 }}>{stat.value}</div>
+              <p className="text-white font-semibold text-sm mt-3">{stat.label}</p>
+              <p className="text-neutral-400 text-xs mt-1">{stat.desc}</p>
             </motion.div>
           ))}
         </div>
-        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            {data.cta || 'Get Started'} <Icons.ExternalLink />
-          </a>
-        </motion.div>}
+      </div>
+    );
+
+    // 10. Elite Insight Slide
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '40px', maxWidth: '600px', width: '100%', position: 'relative', boxShadow: '0 0 40px rgba(132, 204, 22, 0.2)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #84cc16, transparent)', borderRadius: '24px 24px 0 0' }} />
+          <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'rgba(132, 204, 22, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', color: '#84cc16' }}><Icons.Lightbulb /></div>
+          <p className="text-white text-lg md:text-xl font-medium text-center leading-relaxed mb-8">"{data.quote}"</p>
+          <div className="space-y-3">
+            {data.actions.map((action, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-3 bg-white/5 rounded-xl p-3">
+                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#84cc16', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: '700', fontSize: '12px' }}>{i + 1}</div>
+                <span className="text-neutral-300 text-sm">{action}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     );
 
@@ -390,7 +509,6 @@
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
-
       useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
@@ -429,7 +547,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the three growth levers: Customers, Transaction Value, and Frequency. Small improvements across all three multiply together. And you know the conversion lever nobody pulls—asking customers WHY they bought.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the three growth levers and why they multiply instead of add. And you know the secret lever—asking customers WHY they bought.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -440,10 +558,7 @@
             <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
+                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>{source.name} <Icons.ExternalLink /></a>
               ))}
             </div>
           </motion.div>
@@ -464,21 +579,13 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
-        setIsAnimating(true);
-        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
-        setCurrentSlide(newSlide);
+        setIsAnimating(true); setDirection(newSlide > currentSlideRef.current ? 1 : -1); setCurrentSlide(newSlide);
       }, [isAnimating]);
 
       const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
@@ -503,11 +610,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'growth-formula': return <GrowthFormulaSlide data={slide} />;
+          case 'lever-reveal': return <LeverRevealSlide data={slide} />;
+          case 'math-comparison': return <MathComparisonSlide data={slide} />;
+          case 'lever-detail': return <LeverDetailSlide data={slide} />;
+          case 'survey-reveal': return <SurveyRevealSlide data={slide} />;
+          case 'case-study': return <CaseStudySlide data={slide} />;
+          case 'three-questions': return <ThreeQuestionsSlide data={slide} />;
+          case 'mistakes-grid': return <MistakesGridSlide data={slide} />;
+          case 'compound-effect': return <CompoundEffectSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -537,9 +649,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
-                  <source src={gifConfig.url} type="video/mp4" />
-                </video>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}><source src={gifConfig.url} type="video/mp4" /></video>
               </motion.div>
             )}
           </AnimatePresence>
@@ -547,7 +657,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
