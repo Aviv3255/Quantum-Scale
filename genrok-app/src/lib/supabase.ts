@@ -305,16 +305,16 @@ export const createReferral = async (
   referredIp: string,
   referralCode: string
 ): Promise<{ data: Referral | null; error: { code?: string; message: string } | null }> => {
-  // Check if this email has already been used for this referrer
-  // Note: IP restriction removed to allow same IP with different accounts
+  // Check if this IP or email has already been used for this referrer
+  // Referrals from same IP OR same email are rejected to prevent gaming
   const { data: existing } = await supabase
     .from('referrals' as const)
     .select('id')
     .eq('referrer_id', referrerId)
-    .eq('referred_email', referredEmail);
+    .or(`referred_ip.eq.${referredIp},referred_email.eq.${referredEmail}`);
 
   if (existing && (existing as unknown[]).length > 0) {
-    return { data: null, error: { message: 'This email has already been used for a referral' } };
+    return { data: null, error: { message: 'This IP or email has already been used for a referral' } };
   }
 
   const { data, error } = await supabase

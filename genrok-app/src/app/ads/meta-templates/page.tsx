@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Copy, Check, Users, Lock, Gift, Sparkles, ExternalLink, MessageSquare, Twitter, ChevronDown, ChevronUp } from 'lucide-react';
+import { Copy, Check, Users, Lock, Gift, Sparkles, ExternalLink, MessageSquare, Twitter, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -479,6 +479,25 @@ You need:
 That is it.` },
 ];
 
+// Subreddits for posting viral content
+const SUBREDDITS = [
+  { name: 'r/dropship', url: 'https://reddit.com/r/dropship', members: '180k+', description: 'Main dropshipping community' },
+  { name: 'r/ecommerce', url: 'https://reddit.com/r/ecommerce', members: '150k+', description: 'General ecommerce discussion' },
+  { name: 'r/shopify', url: 'https://reddit.com/r/shopify', members: '120k+', description: 'Shopify store owners' },
+  { name: 'r/Entrepreneur', url: 'https://reddit.com/r/Entrepreneur', members: '2M+', description: 'General entrepreneurship' },
+  { name: 'r/smallbusiness', url: 'https://reddit.com/r/smallbusiness', members: '1.5M+', description: 'Small business owners' },
+  { name: 'r/juststart', url: 'https://reddit.com/r/juststart', members: '100k+', description: 'Starting online businesses' },
+  { name: 'r/SideProject', url: 'https://reddit.com/r/SideProject', members: '200k+', description: 'Side projects and startups' },
+  { name: 'r/EntrepreneurRideAlong', url: 'https://reddit.com/r/EntrepreneurRideAlong', members: '180k+', description: 'Building businesses together' },
+  { name: 'r/sweatystartup', url: 'https://reddit.com/r/sweatystartup', members: '150k+', description: 'Service-based businesses' },
+  { name: 'r/digital_marketing', url: 'https://reddit.com/r/digital_marketing', members: '100k+', description: 'Digital marketing strategies' },
+  { name: 'r/PPC', url: 'https://reddit.com/r/PPC', members: '80k+', description: 'Pay-per-click advertising' },
+  { name: 'r/FacebookAds', url: 'https://reddit.com/r/FacebookAds', members: '50k+', description: 'Meta/Facebook advertising' },
+  { name: 'r/AmazonFBA', url: 'https://reddit.com/r/AmazonFBA', members: '100k+', description: 'Amazon sellers' },
+  { name: 'r/FulfillmentByAmazon', url: 'https://reddit.com/r/FulfillmentByAmazon', members: '120k+', description: 'FBA sellers community' },
+  { name: 'r/WorkOnline', url: 'https://reddit.com/r/WorkOnline', members: '800k+', description: 'Online income opportunities' },
+];
+
 // Generate unique referral code from user ID
 function generateReferralCode(userId: string): string {
   // Take first 8 chars of user ID and add a random suffix
@@ -495,6 +514,7 @@ export default function MetaTemplatesPage() {
   const [postPlatform, setPostPlatform] = useState<'reddit' | 'x'>('reddit');
   const [expandedPost, setExpandedPost] = useState<number | null>(null);
   const [copiedPostId, setCopiedPostId] = useState<number | null>(null);
+  const [showSubreddits, setShowSubreddits] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const REQUIRED_REFERRALS = 3;
@@ -742,7 +762,7 @@ export default function MetaTemplatesPage() {
                     {/* Requirements Notice */}
                     <div className="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-200">
                       <p className="text-xs text-amber-800">
-                        <strong>Important:</strong> Each referral must be from a different email address.
+                        <strong>Important:</strong> Each referral must be from a different IP address and email.
                         The platform is free, so share it with friends who will actually use it!
                       </p>
                     </div>
@@ -1063,8 +1083,88 @@ export default function MetaTemplatesPage() {
                   Post during peak hours (9-11am or 7-9pm) for maximum reach.
                 </p>
               </div>
+
+              {/* Subreddit Link */}
+              {postPlatform === 'reddit' && (
+                <div className="mt-4 text-center">
+                  <button
+                    onClick={() => setShowSubreddits(true)}
+                    className="text-xs text-[var(--text-muted)] hover:text-black underline underline-offset-2 transition-colors"
+                  >
+                    Where to post? View recommended subreddits
+                  </button>
+                </div>
+              )}
             </motion.div>
           </section>
+
+        {/* Subreddit Modal */}
+        {showSubreddits && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => setShowSubreddits(false)}
+            />
+
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[80vh] overflow-hidden"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-black/10">
+                <h3 className="font-bold text-lg text-[var(--text-primary)]">Recommended Subreddits</h3>
+                <button
+                  onClick={() => setShowSubreddits(false)}
+                  className="p-1 rounded-lg hover:bg-black/5 transition-colors"
+                >
+                  <X size={20} className="text-[var(--text-muted)]" />
+                </button>
+              </div>
+
+              {/* Content */}
+              <div className="p-6 overflow-y-auto max-h-[60vh]">
+                <p className="text-sm text-[var(--text-muted)] mb-4">
+                  Post your referral content in these communities. Read each subreddit&apos;s rules before posting.
+                </p>
+                <div className="space-y-2">
+                  {SUBREDDITS.map((sub) => (
+                    <a
+                      key={sub.name}
+                      href={sub.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-3 rounded-xl hover:bg-black/[0.02] border border-transparent hover:border-black/10 transition-all group"
+                    >
+                      <div>
+                        <span className="font-medium text-sm text-[var(--text-primary)] group-hover:text-black">
+                          {sub.name}
+                        </span>
+                        <p className="text-xs text-[var(--text-muted)]">{sub.description}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-[var(--text-muted)] bg-black/5 px-2 py-0.5 rounded">
+                          {sub.members}
+                        </span>
+                        <ExternalLink size={14} className="text-[var(--text-muted)] group-hover:text-black" />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-6 py-4 border-t border-black/10 bg-black/[0.02]">
+                <p className="text-xs text-[var(--text-muted)] text-center">
+                  Always provide value first. Avoid spammy behavior to prevent bans.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );
