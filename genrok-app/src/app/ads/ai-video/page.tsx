@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { X, Play, ExternalLink } from 'lucide-react';
+import { X, Play, ExternalLink, Copy, Check } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -24,8 +24,17 @@ interface TutorialStep {
   step: number;
   title: string;
   description: string;
-  gifUrl?: string;
+  copyText?: string;
+  mediaUrl?: string;
+  mediaType?: 'video' | 'image';
 }
+
+const CHATGPT_PROMPT = `Hey, I sell this product (see image), it is a PRODUCT TYPE/NAME. I need you to create a brief explanation about the product. Answer these questions:
+1: How would you describe your product?
+2: Who is your target audience?
+3: What are the main features? (Here I need 3 main features)`;
+
+const CHATGPT_PROMPT_2 = `Now, I want to create a short video ad for the product using arcads.ai, I need you to write a short description of the product`;
 
 const platformData: Record<Platform, {
   name: string;
@@ -106,28 +115,55 @@ const platformData: Record<Platform, {
     tutorialSteps: [
       {
         step: 1,
-        title: 'Upload Your Product',
-        description: 'Start by uploading your product image or video. Arcads will analyze the visual to understand your product.',
+        title: 'Ask ChatGPT About Your Product',
+        description: 'Go to ChatGPT with an image of your product attached, and write this:',
+        copyText: CHATGPT_PROMPT,
       },
       {
         step: 2,
-        title: 'Select Your Avatar',
-        description: 'Choose from hundreds of AI avatars that match your brand voice and target audience.',
+        title: 'Fill in the Answers in Arcads',
+        description: 'Copy the answers ChatGPT gave you and fill them in the Arcads form:',
+        mediaUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Arcads.mp4',
+        mediaType: 'video',
       },
       {
         step: 3,
-        title: 'Write Your Script',
-        description: 'Enter your prompt or script. Be specific about the style, tone, and key selling points you want highlighted.',
+        title: 'Choose a Preset',
+        description: 'Select one or several presets for your video style:',
+        mediaUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Recording%202026-01-04%20172016.mp4',
+        mediaType: 'video',
       },
       {
         step: 4,
-        title: 'Customize Settings',
-        description: 'Adjust video length, background music, captions, and other settings to match your ad requirements.',
+        title: 'Upload Product Images',
+        description: 'Upload a reference image of your product:',
+        mediaUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Screenshot%202026-01-04%20172212.png',
+        mediaType: 'image',
       },
       {
         step: 5,
-        title: 'Generate & Download',
-        description: 'Click generate and wait for your AI video. Download in multiple formats optimized for different platforms.',
+        title: 'Choose Aspect Ratio',
+        description: 'Select the aspect ratio for your video (9:16 for TikTok/Reels, 1:1 for Feed):',
+        mediaUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Recording%202026-01-04%20172016.mp4',
+        mediaType: 'video',
+      },
+      {
+        step: 6,
+        title: 'Generate the Prompt',
+        description: 'Write this in the same ChatGPT chat, then paste the response into Arcads:',
+        copyText: CHATGPT_PROMPT_2,
+      },
+      {
+        step: 7,
+        title: 'Click Create',
+        description: 'Hit the Create button and wait for your AI video to generate.',
+      },
+      {
+        step: 8,
+        title: 'Here is the Result!',
+        description: 'Your AI-generated video ad is ready to use:',
+        mediaUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Cat%20Feeder%20Tool.mp4',
+        mediaType: 'video',
       },
     ],
   },
@@ -186,12 +222,19 @@ export default function AIVideoAdsPage() {
   const [activePlatform, setActivePlatform] = useState<Platform>('arcads');
   const [expandedImage, setExpandedImage] = useState<string | null>(null);
   const [expandedPrompt, setExpandedPrompt] = useState<{ title: string; prompt: string } | null>(null);
+  const [copiedStep, setCopiedStep] = useState<number | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
       router.push('/login');
     }
   }, [user, authLoading, router]);
+
+  const copyToClipboard = (text: string, stepNum: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedStep(stepNum);
+    setTimeout(() => setCopiedStep(null), 2000);
+  };
 
   if (authLoading || !user) {
     return (
@@ -316,56 +359,102 @@ export default function AIVideoAdsPage() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Tutorial Section - Left aligned */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
-            How to Create Videos with {currentPlatform.name}
-          </h2>
-          <p className="text-[var(--text-muted)] mb-8">
-            Follow these steps to create your own AI-generated video ads
-          </p>
+        {/* Tutorial Section - Luxurious design */}
+        <div className="mb-16">
+          <div className="mb-12">
+            <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-3">
+              How to Create Videos with {currentPlatform.name}
+            </h2>
+            <p className="text-lg text-[var(--text-muted)]">
+              Follow these simple steps to create your own AI-generated video ads
+            </p>
+          </div>
 
-          <div className="space-y-6">
+          <div className="space-y-16">
             {currentPlatform.tutorialSteps.map((step) => (
-              <div
+              <motion.div
                 key={step.step}
-                className="flex gap-5 items-start"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: step.step * 0.1 }}
+                className="relative"
               >
-                {/* Step Number */}
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[var(--primary)] text-white flex items-center justify-center font-bold">
-                  {step.step}
+                {/* Step Header */}
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-black text-white flex items-center justify-center text-lg font-bold">
+                    {step.step}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-[var(--text-primary)]">
+                      {step.title}
+                    </h3>
+                    <p className="text-[var(--text-muted)] mt-1">
+                      {step.description}
+                    </p>
+                  </div>
                 </div>
 
-                {/* Content */}
-                <div className="flex-1 pt-1">
-                  <h3 className="font-semibold text-[var(--text-primary)] mb-1">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-[var(--text-muted)] mb-3">
-                    {step.description}
-                  </p>
+                {/* Copyable Text Block */}
+                {step.copyText && (
+                  <div className="ml-16 mb-6">
+                    <div className="bg-[#1a1a1a] rounded-xl p-5 max-w-2xl relative group">
+                      <pre className="text-sm text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
+                        {step.copyText}
+                      </pre>
+                      <button
+                        onClick={() => copyToClipboard(step.copyText!, step.step)}
+                        className={`absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                          copiedStep === step.step
+                            ? 'bg-green-500 text-white'
+                            : 'bg-white/10 text-white hover:bg-white/20'
+                        }`}
+                      >
+                        {copiedStep === step.step ? (
+                          <>
+                            <Check size={12} />
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy size={12} />
+                            Copy
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                )}
 
-                  {/* GIF Placeholder */}
-                  {step.gifUrl ? (
-                    <div className="rounded-xl overflow-hidden inline-block">
-                      <Image
-                        src={step.gifUrl}
-                        alt={step.title}
-                        width={500}
-                        height={300}
-                        className="max-w-full h-auto"
-                        unoptimized
-                      />
-                    </div>
-                  ) : (
-                    <div className="bg-[var(--bg-secondary)] rounded-xl p-6 max-w-md border border-dashed border-[var(--border-light)]">
-                      <p className="text-xs text-[var(--text-muted)] text-center">
-                        Tutorial GIF coming soon
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
+                {/* Video - Autoplay like GIF, original size */}
+                {step.mediaUrl && step.mediaType === 'video' && (
+                  <div className="ml-16">
+                    <video
+                      src={step.mediaUrl}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="rounded-xl max-w-full"
+                      style={{ maxHeight: '500px' }}
+                    />
+                  </div>
+                )}
+
+                {/* Image - original size */}
+                {step.mediaUrl && step.mediaType === 'image' && (
+                  <div className="ml-16">
+                    <Image
+                      src={step.mediaUrl}
+                      alt={step.title}
+                      width={800}
+                      height={600}
+                      className="rounded-xl max-w-full h-auto"
+                      style={{ maxHeight: '500px', width: 'auto' }}
+                      unoptimized
+                    />
+                  </div>
+                )}
+              </motion.div>
             ))}
           </div>
         </div>

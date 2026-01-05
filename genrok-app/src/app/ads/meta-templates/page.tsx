@@ -2474,135 +2474,193 @@ export default function MetaTemplatesPage() {
           </motion.div>
         </section>
 
-        {/* Section 4: Viral Posts - Always visible */}
-        <section className="max-w-4xl mx-auto mt-20">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7 }}
-            >
+        {/* Section 4: Viral Posts - Premium Luxurious Design */}
+        <section className="mt-32 mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            {/* Section Header */}
+            <div className="text-center mb-16">
+              <span className="inline-block text-xs font-semibold tracking-widest text-[var(--text-muted)] uppercase mb-4">
+                Growth Toolkit
+              </span>
+              <h2 className="text-4xl font-bold text-[var(--text-primary)] mb-4">
+                Ready-to-Post Content
+              </h2>
+              <p className="text-lg text-[var(--text-muted)] max-w-xl mx-auto">
+                Share valuable knowledge on social media. Each post teaches a real marketing concept.
+              </p>
+            </div>
+
+            {/* Platform Toggle - Premium Design */}
+            <div className="flex justify-center mb-12">
+              <div className="inline-flex gap-3 p-2 bg-white rounded-2xl shadow-sm border border-black/5">
+                <button
+                  onClick={() => setPostPlatform('reddit')}
+                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-sm font-semibold transition-all ${
+                    postPlatform === 'reddit'
+                      ? 'bg-black text-white shadow-lg'
+                      : 'text-[var(--text-muted)] hover:text-black hover:bg-black/5'
+                  }`}
+                >
+                  <MessageSquare size={18} />
+                  Reddit / Facebook
+                </button>
+                <button
+                  onClick={() => setPostPlatform('x')}
+                  className={`flex items-center gap-3 px-6 py-3 rounded-xl text-sm font-semibold transition-all ${
+                    postPlatform === 'x'
+                      ? 'bg-black text-white shadow-lg'
+                      : 'text-[var(--text-muted)] hover:text-black hover:bg-black/5'
+                  }`}
+                >
+                  <Twitter size={18} />
+                  X / Twitter
+                </button>
+              </div>
+            </div>
+
+            {/* Subreddit Link - More visible */}
+            {postPlatform === 'reddit' && (
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
-                  Ready-to-Post Examples
-                </h2>
-                <p className="text-sm text-[var(--text-muted)]">
-                  Copy these viral posts to share on social media and get referrals
-                </p>
+                <button
+                  onClick={() => setShowSubreddits(true)}
+                  className="inline-flex items-center gap-2 text-sm text-black font-medium hover:underline transition-colors"
+                >
+                  <ExternalLink size={14} />
+                  Where to post? View recommended subreddits
+                </button>
               </div>
+            )}
 
-              {/* Platform Toggle */}
-              <div className="flex justify-center mb-6">
-                <div className="inline-flex rounded-lg p-1 bg-black/5">
-                  <button
-                    onClick={() => setPostPlatform('reddit')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                      postPlatform === 'reddit'
-                        ? 'bg-white text-black shadow-sm'
-                        : 'text-[var(--text-muted)] hover:text-black'
-                    }`}
-                  >
-                    <MessageSquare size={16} />
-                    Reddit / Facebook
-                  </button>
-                  <button
-                    onClick={() => setPostPlatform('x')}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                      postPlatform === 'x'
-                        ? 'bg-white text-black shadow-sm'
-                        : 'text-[var(--text-muted)] hover:text-black'
-                    }`}
-                  >
-                    <Twitter size={16} />
-                    X / Twitter
-                  </button>
-                </div>
-              </div>
-
-              {/* Posts List */}
-              <div className="space-y-3">
+            {/* Posts Grid - Luxurious Card Layout */}
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {(postPlatform === 'reddit' ? REDDIT_POSTS : X_POSTS).map((post, idx) => (
-                  <div
+                  <motion.div
                     key={idx}
-                    className="border border-black/10 rounded-xl overflow-hidden bg-white"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: idx * 0.03 }}
+                    className={`group bg-white rounded-2xl border border-black/5 overflow-hidden transition-all duration-300 ${
+                      expandedPost === idx ? 'ring-2 ring-black/10 shadow-xl' : 'hover:shadow-lg hover:border-black/10'
+                    }`}
                   >
-                    {/* Post Header */}
+                    {/* Card Header */}
                     <div
-                      className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-black/[0.02] transition-colors"
+                      className="p-6 cursor-pointer"
                       onClick={() => setExpandedPost(expandedPost === idx ? null : idx)}
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="text-xs font-mono text-[var(--text-muted)] bg-black/5 px-2 py-0.5 rounded">
-                          #{idx + 1}
-                        </span>
-                        <span className="font-medium text-sm text-[var(--text-primary)]">
-                          {post.topic}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            copyPost(post.content, idx);
-                          }}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                            copiedPostId === idx
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-black text-white hover:bg-gray-800'
-                          }`}
-                        >
-                          {copiedPostId === idx ? (
-                            <>
-                              <Check size={12} />
-                              Copied
-                            </>
-                          ) : (
-                            <>
-                              <Copy size={12} />
-                              Copy
-                            </>
-                          )}
-                        </button>
-                        {expandedPost === idx ? (
-                          <ChevronUp size={18} className="text-[var(--text-muted)]" />
-                        ) : (
-                          <ChevronDown size={18} className="text-[var(--text-muted)]" />
-                        )}
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-3 mb-3">
+                            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-black/5 flex items-center justify-center text-xs font-bold text-[var(--text-muted)]">
+                              {idx + 1}
+                            </span>
+                            <span className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">
+                              {postPlatform === 'reddit' ? 'Long-form Post' : 'Tweet'}
+                            </span>
+                          </div>
+                          <h3 className="text-lg font-bold text-[var(--text-primary)] leading-snug line-clamp-2 group-hover:text-black transition-colors">
+                            {post.topic}
+                          </h3>
+                        </div>
+                        <div className="flex-shrink-0 flex items-center gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              copyPost(post.content, idx);
+                            }}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                              copiedPostId === idx
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-black text-white hover:bg-gray-800'
+                            }`}
+                          >
+                            {copiedPostId === idx ? (
+                              <>
+                                <Check size={14} />
+                                Copied!
+                              </>
+                            ) : (
+                              <>
+                                <Copy size={14} />
+                                Copy
+                              </>
+                            )}
+                          </button>
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                            expandedPost === idx ? 'bg-black text-white' : 'bg-black/5 text-[var(--text-muted)]'
+                          }`}>
+                            {expandedPost === idx ? (
+                              <ChevronUp size={16} />
+                            ) : (
+                              <ChevronDown size={16} />
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Expanded Content */}
+                    {/* Expanded Content - Clean & Readable */}
                     {expandedPost === idx && (
-                      <div className="px-4 pb-4 border-t border-black/5">
-                        <pre className="mt-3 text-sm whitespace-pre-wrap font-sans leading-relaxed" style={{ color: '#000000' }}>
-                          {post.content}
-                        </pre>
-                      </div>
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="border-t border-black/5"
+                      >
+                        <div className="p-6 pt-5 bg-[#FAFAFA]">
+                          <div className="bg-white rounded-xl p-5 border border-black/5">
+                            <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed" style={{ color: '#1a1a1a' }}>
+                              {post.content}
+                            </pre>
+                          </div>
+                          <div className="mt-4 flex items-center justify-between">
+                            <span className="text-xs text-[var(--text-muted)]">
+                              {post.content.split(' ').length} words
+                            </span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                copyPost(post.content, idx);
+                              }}
+                              className="text-xs font-medium text-black hover:underline"
+                            >
+                              Copy to clipboard
+                            </button>
+                          </div>
+                        </div>
+                      </motion.div>
                     )}
-                  </div>
+                  </motion.div>
                 ))}
               </div>
+            </div>
 
-              {/* Tips */}
-              <div className="mt-6 p-4 rounded-xl bg-black/[0.02] border border-black/5">
-                <p className="text-xs text-[var(--text-muted)] text-center">
-                  <strong>Tip:</strong> Personalize these posts with your own story for better authenticity.
-                  Post during peak hours (9-11am or 7-9pm) for maximum reach.
-                </p>
-              </div>
-
-              {/* Subreddit Link */}
-              {postPlatform === 'reddit' && (
-                <div className="mt-4 text-center">
-                  <button
-                    onClick={() => setShowSubreddits(true)}
-                    className="text-xs text-[var(--text-muted)] hover:text-black underline underline-offset-2 transition-colors"
-                  >
-                    Where to post? View recommended subreddits
-                  </button>
+            {/* Tips Section - Premium Design */}
+            <div className="max-w-2xl mx-auto mt-16">
+              <div className="p-8 rounded-2xl bg-gradient-to-br from-black to-gray-800 text-white">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                    <Sparkles size={18} className="text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg mb-2">Pro Tips for Maximum Reach</h4>
+                    <ul className="space-y-2 text-sm text-white/80">
+                      <li>Personalize each post with your own experiences for authenticity</li>
+                      <li>Post during peak hours: 9-11am or 7-9pm in your timezone</li>
+                      <li>Engage with comments to boost visibility in the algorithm</li>
+                      <li>Replace [LINK] with your referral link before posting</li>
+                    </ul>
+                  </div>
                 </div>
-              )}
-            </motion.div>
-          </section>
+              </div>
+            </div>
+          </motion.div>
+        </section>
 
         {/* Subreddit Modal */}
         {showSubreddits && (
