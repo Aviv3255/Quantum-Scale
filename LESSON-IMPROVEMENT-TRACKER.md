@@ -364,7 +364,7 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (22 lessons remaining - 7 errors + 15 score-5)
+## CATEGORY 2: NEED IMPROVEMENT (21 lessons remaining - 7 errors + 14 score-5)
 
 These lessons need design improvements to reach elite level.
 
@@ -385,7 +385,7 @@ These lessons need design improvements to reach elite level.
 | 253 | three-second-rule | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 254 | trust-architecture | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 255 | trust-blueprint | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
-| 256 | two-dirty-tricks | 5 |
+| 256 | two-dirty-tricks | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 257 | two-meta-rules | 5 |
 | 258 | two-worlds-mastery | 5 |
 | 259 | unique-mechanism | 5 |
