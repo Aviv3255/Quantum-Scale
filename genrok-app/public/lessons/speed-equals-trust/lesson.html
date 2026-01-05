@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson | Quantum Scale</title>
+  <title>The $1.7B Speed Bump | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #f97316; --accent-dark: #e55f02; --accent-light: #ff872a; --accent-rgb: 249, 115, 22; }
@@ -39,33 +36,21 @@
 
     const LESSON_CONFIG = {
       id: 'speed-equals-trust',
-      title: 'Lesson',
-      description: '',
+      title: 'The $1.7B Speed Bump',
+      description: 'Why 100 milliseconds costs you money',
       accentColor: '#f97316',
-      duration: '5 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
+      duration: '6 min',
+      nextLesson: { id: 'imperceptible-nudge', title: 'The $200M Shade of Blue', teaser: 'Imperceptible nudges that print money.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -79,175 +64,35 @@
           }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
             <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
           </svg>
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-                {
-                    type: 'welcome',
-                    title: 'The $1.7B Speed Bump',
-                    subtitle: 'Why 100 Milliseconds Costs You Money',
-                    accentText: 'Your subconscious is judging site speed'
-                },
-                {
-                    type: 'hook',
-                    title: '0.1 seconds.',
-                    subtitle: 'You can\'t even notice it.',
-                    content: 'One-tenth of a second.\n\nA blink takes 300-400 milliseconds.\n\nYou can\'t consciously perceive a 100ms delay.\n\nBut your SUBCONSCIOUS can.\n\nAnd it\'s making judgments about your trustworthiness.\n\nAmazon proved this.\n\nThe cost? $1.7 billion per year if they get it wrong.'
-                },
-                {
-                    type: 'content',
-                    title: 'The Amazon Study',
-                    content: 'Amazon tested site speed obsessively.\n\nTheir finding:\n\nEvery 100ms of speed improvement = +1% in sales.\n\nThat\'s it.\n\nNot 1 second. Not even half a second.\n\nOne-tenth of a second.\n\nFor Amazon, that\'s $1.7 BILLION per year in revenue.\n\nFor your store? It could be the difference between 2% and 4% conversion rates.\n\nDouble your revenue. Same traffic. Faster loading.'
-                },
-                {
-                    type: 'visual',
-                    title: 'Why You Can\'t Notice It',
-                    content: 'Your conscious brain processes at ~40 bits per second.\n\nYour subconscious? 11 MILLION bits per second.\n\nThe subconscious detects delays you can\'t consciously feel.\n\n100ms feels like "nothing" to you.\n\nBut your ancient brain is screaming:\n\n"This is slow. Something is wrong. Not trustworthy. Leave."\n\nYou don\'t think this. You just feel... off.\n\nAnd you bounce.'
-                },
-                {
-                    type: 'content',
-                    title: 'Speed = Efficiency = Trust',
-                    content: 'Your brain uses speed as a proxy for competence.\n\nFast website = efficient business\nSlow website = disorganized, unprofessional\n\nThis happens at the subconscious level.\n\nA visitor doesn\'t think:\n"Hmm, this site is slow, therefore the company is incompetent."\n\nThey just feel uneasy.\n\nThey don\'t trust you.\n\nThey leave.\n\nAll from a delay they couldn\'t consciously detect.'
-                },
-                {
-                    type: 'cards',
-                    title: 'The Speed Killers',
-                    cards: [
-                        {
-                            title: 'Uncompressed Images',
-                            description: 'The #1 culprit. That 5MB hero image? Compress to 200KB. Nobody notices quality difference.'
-                        },
-                        {
-                            title: 'Too Many Scripts',
-                            description: '15 tracking pixels, 8 marketing tools, 3 chat widgets. Each adds 100-500ms.'
-                        },
-                        {
-                            title: 'Render-Blocking Resources',
-                            description: 'CSS and JS that prevents the page from showing until fully loaded'
-                        },
-                        {
-                            title: 'Slow Server Response',
-                            description: 'Cheap hosting = slow servers. You save $10/month, lose $1000/month in conversions.'
-                        }
-                    ]
-                },
-                {
-                    type: 'example',
-                    title: 'The Slow Store',
-                    negative: true,
-                    content: '10 high-res product images (3MB each)\n5 video backgrounds\n12 tracking scripts\n\nTotal load time: 4.2 seconds\n\nBounce rate: 68%\nConversion rate: 1.8%\n\nYou think: "My site looks amazing!"\n\nVisitors think: (nothing - they already left)\n\nThe images look gorgeous.\n\nBut nobody stayed long enough to see them.'
-                },
-                {
-                    type: 'example',
-                    title: 'The Fast Store',
-                    content: 'Same 10 images, compressed to 150KB each\nVideos lazy-loaded\nScripts deferred\n\nTotal load time: 1.1 seconds\n\nBounce rate: 42%\nConversion rate: 3.4%\n\nSame products. Same design.\n\n3 seconds faster.\n\nNearly DOUBLE the conversion rate.\n\nSpeed IS conversion optimization.'
-                },
-                {
-                    type: 'quiz',
-                    question: 'Your Shopify store loads in 3.5 seconds. Industry average is 3 seconds. Do you need to optimize speed?',
-                    options: [
-                        'No - I\'m only 0.5 seconds slower than average',
-                        'No - visitors can\'t notice a half-second difference',
-                        'Yes - every 100ms matters for subconscious trust',
-                        'Yes - but only if my conversion rate is already low'
-                    ],
-                    correctAnswer: 2,
-                    explanation: 'YES - every 100ms matters! That 0.5 second difference is FIVE opportunities to increase conversions by 1% each. You\'re potentially leaving 5% of revenue on the table. The subconscious detects these micro-delays even when you can\'t. Speed optimization is always worth it.'
-                },
-                {
-                    type: 'content',
-                    title: 'The Image Compression Test',
-                    content: 'Right now, open your homepage.\n\nRight-click any product image → "Save image as"\n\nCheck the file size.\n\nIs it over 300KB?\n\n→ Compress it to 100-200KB\n\nRun this test on every image.\n\nThis one action can cut 2-3 seconds off your load time.\n\n2-3 seconds = 20-30% conversion improvement.\n\nThis is a 30-minute task that could double your revenue.'
-                },
-                {
-                    type: 'content',
-                    title: 'Mobile Is 10x Worse',
-                    content: 'Desktop on WiFi: Fast\n\nMobile on 4G in a coffee shop: Brutal\n\nThat 3-second desktop load?\n\nBecomes 8-12 seconds on mobile.\n\n53% of mobile users abandon after 3 seconds.\n\nYou\'re losing HALF your mobile traffic to speed.\n\nAnd mobile is 70%+ of eCommerce traffic now.\n\nSpeed isn\'t a nice-to-have.\n\nIt\'s the difference between a business and a hobby.'
-                },
-                {
-                    type: 'content',
-                    title: 'The Speed Audit',
-                    content: 'Go to PageSpeed Insights (Google it)\n\nEnter your URL\n\nLook at the mobile score\n\nUnder 50? You\'re hemorrhaging money.\n50-70? You\'re leaving 10-20% on the table.\n70-90? Good, but there\'s still room.\n90+? You get it.\n\nThe report tells you EXACTLY what to fix.\n\nImages, scripts, server response.\n\nDon\'t guess. Measure. Fix. Profit.'
-                },
-                {
-                    type: 'completion',
-                    title: 'You Now Know',
-                    lessons: [
-                        'Why 100ms delays cost Amazon $1.7B/year',
-                        'How the subconscious detects speed you can\'t consciously feel',
-                        'The 4 biggest speed killers (images, scripts, blocking, servers)',
-                        'Why mobile speed is 10x more critical than desktop',
-                        'The exact audit tool to identify your speed issues (PageSpeed Insights)'
-                    ],
-                    nextLesson: 'Next: The $200M Shade of Blue - Imperceptible nudges that print money'
-                }
-            ];
-
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -255,15 +100,70 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Timer: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Image: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
+      Code: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+      Server: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>,
+      FileCode: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m10 13-2 2 2 2"/><path d="m14 17 2-2-2-2"/></svg>,
+      Smartphone: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>,
+      Monitor: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
+      Gauge: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Eye: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      EyeOff: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Rocket: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>,
     };
 
+    // AnimatedCounter Component
+    const AnimatedCounter = ({ value, duration = 2000, suffix = '', prefix = '', decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const inc = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += inc;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
+    // Slides Data
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why 100ms delays cost Amazon $1.7B/year',
+        'How subconscious detects speed you cannot feel',
+        'The 4 biggest speed killers',
+        'Why mobile speed is 10x more critical',
+        'Exact audit tools to find your issues'
+      ]},
+      { type: 'hook', headline: '0.1 seconds.', subtext: 'You cannot even notice it. One-tenth of a second. A blink takes 300-400 milliseconds. You cannot consciously perceive a 100ms delay. But your SUBCONSCIOUS can. And it is making judgments about your trustworthiness.' },
+      { type: 'amazon-impact' },
+      { type: 'brain-speed' },
+      { type: 'trust-equation' },
+      { type: 'speed-killers' },
+      { type: 'store-comparison' },
+      { type: 'mobile-disaster' },
+      { type: 'quiz', question: 'Your store loads in 3.5 seconds. Industry average is 3 seconds. Do you need to optimize?', options: ['No - only 0.5 seconds slower than average', 'No - visitors cannot notice half a second', 'Yes - every 100ms matters for subconscious trust', 'Yes - but only if conversion is already low'], correctIndex: 2, feedback: { correct: 'That 0.5 second difference is FIVE opportunities to increase conversions by 1% each. You are potentially leaving 5% of revenue on the table!', incorrect: 'Actually, every 100ms matters! That half second is 5 opportunities for 1% conversion improvement each. The subconscious detects delays you cannot consciously feel.' }},
+      { type: 'pagespeed-audit' },
+      { type: 'elite-insight' },
+      { type: 'completion' }
+    ];
+
+    // WelcomeSlide
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
-
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
@@ -275,122 +175,508 @@
               <ul className="space-y-1.5 md:space-y-2">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{i + 1}</span>
                     <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
 
+    // HookSlide
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Hook</span>
             <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
+    // AmazonImpactSlide - Unique visualization of $1.7B impact
+    const AmazonImpactSlide = () => {
+      const [showReveal, setShowReveal] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowReveal(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
 
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Amazon Study</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Every 100ms Matters</h2>
           </motion.div>
-        )}
-      </div>
-    );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Timer Visual */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(249,115,22,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                  <Icons.Timer />
+                </div>
+                <span className="text-white font-semibold">Speed Delay</span>
+              </div>
+              <div className="text-center py-6">
+                <div className="text-6xl md:text-7xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                  <AnimatedCounter value={100} suffix="ms" />
+                </div>
+                <p className="text-neutral-400 text-sm">One-tenth of a second</p>
+              </div>
+              <div className="grid grid-cols-3 gap-2 mt-4">
+                {[100, 200, 300].map((ms, i) => (
+                  <motion.div key={ms} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 0.5 + i * 0.3 }}
+                    style={{ height: '8px', borderRadius: '4px', background: `rgba(249,115,22,${0.3 + i * 0.3})`, transformOrigin: 'left' }} />
+                ))}
+              </div>
+              <p className="text-neutral-500 text-xs text-center mt-2">Each 100ms = 1% sales loss</p>
+            </motion.div>
+
+            {/* Revenue Impact */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(34,197,94,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#22c55e' }}>
+                  <Icons.DollarSign />
+                </div>
+                <span className="text-white font-semibold">Annual Impact</span>
+              </div>
+              <div className="text-center py-6">
+                <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#22c55e' }}>
+                  $<AnimatedCounter value={1.7} decimals={1} />B
+                </div>
+                <p className="text-neutral-400 text-sm">Per year for Amazon</p>
+              </div>
+              {showReveal && (
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                  style={{ background: 'rgba(34,197,94,0.1)', borderRadius: '8px', padding: '12px', textAlign: 'center' }}>
+                  <p className="text-green-400 text-sm font-medium">100ms faster = +1% revenue</p>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="text-center mt-6">
+            <p className="text-neutral-500 text-sm">For your store: double conversions with the same traffic</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
+    // BrainSpeedSlide - Conscious vs Subconscious processing
+    const BrainSpeedSlide = () => {
+      const [activeView, setActiveView] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveView(v => (v + 1) % 2), 3000);
+        return () => clearInterval(timer);
+      }, []);
 
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Science</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Why You Cannot Notice It</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Conscious Brain */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: activeView === 0 ? '2px solid rgba(249,115,22,0.5)' : '2px solid transparent', transition: 'border 0.3s' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(148,163,184,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+                  <Icons.Eye />
+                </div>
+                <div>
+                  <span className="text-white font-semibold block">Conscious Brain</span>
+                  <span className="text-neutral-500 text-xs">What you perceive</span>
+                </div>
+              </div>
+              <div className="text-center py-4">
+                <div className="text-4xl md:text-5xl font-bold mb-1" style={{ color: '#94a3b8' }}>
+                  <AnimatedCounter value={40} /> bits/sec
+                </div>
+              </div>
+              <div style={{ height: '12px', background: 'rgba(148,163,184,0.1)', borderRadius: '6px', overflow: 'hidden' }}>
+                <motion.div initial={{ width: 0 }} animate={{ width: '0.4%' }} transition={{ delay: 0.5, duration: 1 }}
+                  style={{ height: '100%', background: '#94a3b8', borderRadius: '6px' }} />
+              </div>
+              <p className="text-neutral-500 text-xs text-center mt-2">Cannot detect 100ms delays</p>
+            </motion.div>
+
+            {/* Subconscious Brain */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: activeView === 1 ? '2px solid rgba(249,115,22,0.5)' : '2px solid transparent', transition: 'border 0.3s' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(249,115,22,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                  <Icons.Brain />
+                </div>
+                <div>
+                  <span className="text-white font-semibold block">Subconscious Brain</span>
+                  <span className="text-neutral-500 text-xs">What it detects</span>
+                </div>
+              </div>
+              <div className="text-center py-4">
+                <div className="text-4xl md:text-5xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
+                  <AnimatedCounter value={11} />M bits/sec
+                </div>
+              </div>
+              <div style={{ height: '12px', background: 'rgba(249,115,22,0.1)', borderRadius: '6px', overflow: 'hidden' }}>
+                <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ delay: 0.7, duration: 1 }}
+                  style={{ height: '100%', background: 'linear-gradient(90deg, var(--accent), var(--accent-light))', borderRadius: '6px' }} />
+              </div>
+              <p className="text-neutral-500 text-xs text-center mt-2">DETECTS every micro-delay</p>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+            <p className="text-neutral-400 text-sm">Your ancient brain screams: <span className="text-red-400 font-medium">"Slow. Not trustworthy. Leave."</span></p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // TrustEquationSlide - Speed = Efficiency = Trust
+    const TrustEquationSlide = () => {
+      const [step, setStep] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setStep(s => s < 2 ? s + 1 : s), 1200);
+        return () => clearInterval(timer);
+      }, []);
+
+      const steps = [
+        { icon: <Icons.Zap />, label: 'FAST', color: '#22c55e', desc: 'Quick response' },
+        { icon: <Icons.Rocket />, label: 'EFFICIENT', color: '#3b82f6', desc: 'Well-organized' },
+        { icon: <Icons.Shield />, label: 'TRUSTWORTHY', color: 'var(--accent)', desc: 'Safe to buy' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Psychology</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Trust Equation</h2>
+          </motion.div>
+
+          <div className="flex items-center justify-center gap-4 md:gap-6 flex-wrap mb-8">
+            {steps.map((s, i) => (
+              <React.Fragment key={i}>
+                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: step >= i ? 1 : 0.3, scale: step >= i ? 1 : 0.9 }}
+                  transition={{ delay: i * 0.3 }}
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px 24px', textAlign: 'center', position: 'relative', minWidth: '140px', border: step === i ? `2px solid ${s.color}` : '2px solid transparent', boxShadow: step === i ? `0 0 30px ${s.color}30` : 'none', transition: 'all 0.3s' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${s.color}, transparent)` }} />
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: `${s.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: s.color, margin: '0 auto 12px' }}>
+                    {s.icon}
+                  </div>
+                  <p className="text-white font-bold text-lg mb-1">{s.label}</p>
+                  <p className="text-neutral-500 text-xs">{s.desc}</p>
+                </motion.div>
+                {i < 2 && (
+                  <motion.span initial={{ opacity: 0 }} animate={{ opacity: step > i ? 1 : 0.3 }} className="text-2xl font-bold text-neutral-500">=</motion.span>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'center' }}>
+            <Icons.AlertTriangle style={{ color: '#fbbf24' }} />
+            <p className="text-neutral-400 text-sm">They do not think this. They just <span className="text-red-400 font-medium">feel uneasy</span> and leave.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // SpeedKillersSlide - 4 speed killers with visual impact
+    const SpeedKillersSlide = () => {
+      const [activeKiller, setActiveKiller] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveKiller(k => (k + 1) % 4), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const killers = [
+        { icon: <Icons.Image />, title: 'Uncompressed Images', impact: '2-3s', desc: '5MB hero images. Compress to 200KB.', color: '#ef4444' },
+        { icon: <Icons.Code />, title: 'Too Many Scripts', impact: '1-2s', desc: '15 tracking pixels, 8 tools, 3 chat widgets.', color: '#f97316' },
+        { icon: <Icons.FileCode />, title: 'Render-Blocking', impact: '0.5-1s', desc: 'CSS and JS that block page display.', color: '#eab308' },
+        { icon: <Icons.Server />, title: 'Slow Server', impact: '0.5-2s', desc: 'Cheap hosting = slow response.', color: '#a855f7' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Culprits</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The 4 Speed Killers</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {killers.map((killer, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', cursor: 'pointer', border: activeKiller === i ? `2px solid ${killer.color}` : '2px solid transparent', boxShadow: activeKiller === i ? `0 0 30px ${killer.color}20` : 'none', transition: 'all 0.3s' }}
+                onClick={() => setActiveKiller(i)}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${killer.color}, transparent)` }} />
+                <div className="flex items-start gap-4">
+                  <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: `${killer.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: killer.color, flexShrink: 0 }}>
+                    {killer.icon}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="text-white font-semibold text-sm">{killer.title}</h3>
+                      <span className="text-xs font-bold px-2 py-1 rounded" style={{ background: `${killer.color}20`, color: killer.color }}>+{killer.impact}</span>
+                    </div>
+                    <p className="text-neutral-400 text-xs leading-relaxed">{killer.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="text-center mt-6">
+            <p className="text-neutral-500 text-sm">Combined impact: <span className="text-red-400 font-bold">4-8 seconds</span> of lost loading time</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // StoreComparisonSlide - Slow vs Fast store comparison
+    const StoreComparisonSlide = () => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Real Comparison</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Same Store. Different Speed.</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Slow Store */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <Icons.TrendingDown style={{ color: '#ef4444' }} />
+                <span className="text-red-400 font-bold text-sm uppercase tracking-wider">Slow Store</span>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Load Time</span>
+                  <span className="text-red-400 font-bold">4.2s</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Bounce Rate</span>
+                  <span className="text-red-400 font-bold"><AnimatedCounter value={68} suffix="%" /></span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Conversion</span>
+                  <span className="text-red-400 font-bold">1.8%</span>
+                </div>
+              </div>
+              <div style={{ background: 'rgba(239,68,68,0.1)', borderRadius: '8px', padding: '12px', marginTop: '16px', textAlign: 'center' }}>
+                <p className="text-red-400 text-xs">Images look gorgeous. Nobody stayed to see them.</p>
+              </div>
+            </motion.div>
+
+            {/* Fast Store */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <Icons.TrendingUp style={{ color: '#22c55e' }} />
+                <span className="text-green-400 font-bold text-sm uppercase tracking-wider">Fast Store</span>
+                {showWinner && (
+                  <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="ml-auto text-xs font-bold px-2 py-1 rounded" style={{ background: '#22c55e', color: 'white' }}>WINS</motion.span>
+                )}
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Load Time</span>
+                  <span className="text-green-400 font-bold">1.1s</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Bounce Rate</span>
+                  <span className="text-green-400 font-bold"><AnimatedCounter value={42} suffix="%" /></span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-400 text-sm">Conversion</span>
+                  <span className="text-green-400 font-bold">3.4%</span>
+                </div>
+              </div>
+              <div style={{ background: 'rgba(34,197,94,0.1)', borderRadius: '8px', padding: '12px', marginTop: '16px', textAlign: 'center' }}>
+                <p className="text-green-400 text-xs font-medium">Nearly DOUBLE the conversion rate</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="text-center mt-6">
+            <p className="text-neutral-500 text-sm">Same products. Same design. <span className="text-white font-bold">3 seconds faster.</span></p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // MobileDisasterSlide - Desktop vs Mobile comparison
+    const MobileDisasterSlide = () => {
+      const [activeDevice, setActiveDevice] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveDevice(d => (d + 1) % 2), 3500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444' }}>The Mobile Crisis</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Mobile Is 10x Worse</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Desktop */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: activeDevice === 0 ? '2px solid #3b82f6' : '2px solid transparent', transition: 'border 0.3s' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
+              <div className="flex items-center gap-3 mb-6">
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(59,130,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6' }}>
+                  <Icons.Monitor />
+                </div>
+                <div>
+                  <span className="text-white font-semibold block">Desktop + WiFi</span>
+                  <span className="text-neutral-500 text-xs">Ideal conditions</span>
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-5xl font-bold mb-2" style={{ color: '#3b82f6' }}>3s</div>
+                <p className="text-neutral-400 text-sm">Load time</p>
+              </div>
+              <div style={{ height: '8px', background: 'rgba(59,130,246,0.1)', borderRadius: '4px', overflow: 'hidden', marginTop: '16px' }}>
+                <motion.div initial={{ width: 0 }} animate={{ width: '30%' }} transition={{ delay: 0.5, duration: 0.8 }}
+                  style={{ height: '100%', background: '#3b82f6', borderRadius: '4px' }} />
+              </div>
+            </motion.div>
+
+            {/* Mobile */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: activeDevice === 1 ? '2px solid #ef4444' : '2px solid transparent', transition: 'border 0.3s' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-3 mb-6">
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(239,68,68,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                  <Icons.Smartphone />
+                </div>
+                <div>
+                  <span className="text-white font-semibold block">Mobile + 4G</span>
+                  <span className="text-neutral-500 text-xs">Coffee shop reality</span>
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="text-5xl font-bold mb-2" style={{ color: '#ef4444' }}>8-12s</div>
+                <p className="text-neutral-400 text-sm">Load time</p>
+              </div>
+              <div style={{ height: '8px', background: 'rgba(239,68,68,0.1)', borderRadius: '4px', overflow: 'hidden', marginTop: '16px' }}>
+                <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ delay: 0.7, duration: 1.2 }}
+                  style={{ height: '100%', background: '#ef4444', borderRadius: '4px' }} />
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '20px' }}>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-2xl font-bold text-red-400"><AnimatedCounter value={53} suffix="%" /></div>
+                <p className="text-neutral-500 text-xs">Abandon after 3s</p>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-white"><AnimatedCounter value={70} suffix="%" /></div>
+                <p className="text-neutral-500 text-xs">Traffic is mobile</p>
+              </div>
+              <div>
+                <div className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>50%</div>
+                <p className="text-neutral-500 text-xs">Visitors lost to speed</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // PageSpeedAuditSlide - Visual gauge showing score zones
+    const PageSpeedAuditSlide = () => {
+      const [score, setScore] = useState(0);
+      const [showZone, setShowZone] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => { setScore(65); setShowZone(true); }, 500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      const zones = [
+        { min: 0, max: 50, label: 'DANGER', color: '#ef4444', desc: 'Hemorrhaging money' },
+        { min: 50, max: 70, label: 'WARNING', color: '#f97316', desc: '10-20% on the table' },
+        { min: 70, max: 90, label: 'GOOD', color: '#eab308', desc: 'Room for improvement' },
+        { min: 90, max: 100, label: 'EXCELLENT', color: '#22c55e', desc: 'You get it' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Action Step</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Speed Audit</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', marginBottom: '24px' }}>
+            <div style={{ position: 'relative', height: '24px', background: 'rgba(255,255,255,0.1)', borderRadius: '12px', overflow: 'hidden', marginBottom: '16px' }}>
+              {zones.map((zone, i) => (
+                <div key={i} style={{ position: 'absolute', left: `${zone.min}%`, width: `${zone.max - zone.min}%`, height: '100%', background: `${zone.color}40` }} />
+              ))}
+              <motion.div initial={{ left: 0 }} animate={{ left: `${score}%` }} transition={{ delay: 0.5, duration: 1.5 }}
+                style={{ position: 'absolute', top: '-4px', width: '4px', height: '32px', background: 'white', borderRadius: '2px', boxShadow: '0 0 10px rgba(255,255,255,0.5)' }} />
+            </div>
+            <div className="flex justify-between text-xs text-neutral-500">
+              <span>0</span><span>50</span><span>70</span><span>90</span><span>100</span>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-3">
+            {zones.map((zone, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${zone.color}, transparent)` }} />
+                <div className="text-center">
+                  <span className="text-xs font-bold px-2 py-1 rounded mb-2 inline-block" style={{ background: `${zone.color}20`, color: zone.color }}>{zone.min}-{zone.max}</span>
+                  <p className="text-white font-semibold text-sm mb-1">{zone.label}</p>
+                  <p className="text-neutral-500 text-xs">{zone.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="text-center mt-6">
+            <p className="text-neutral-400 text-sm">Go to <span className="text-white font-semibold">PageSpeed Insights</span> and enter your URL. The report tells you EXACTLY what to fix.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // QuizSlide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -399,14 +685,12 @@
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
-
       useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
-
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -434,32 +718,64 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
+    // EliteInsightSlide
+    const EliteInsightSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Elite Insight</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Speed Truth</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '32px', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="flex items-center gap-4 mb-4">
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(249,115,22,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                <Icons.Lightbulb />
+              </div>
+              <p className="text-neutral-400 text-sm">The real insight</p>
+            </div>
+            <p className="text-white text-lg md:text-xl leading-relaxed mb-4">"Speed is not a nice-to-have. It is the difference between a business and a hobby."</p>
+            <p className="text-neutral-500 text-sm">Your subconscious judges trustworthiness in milliseconds you cannot perceive.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-4 gap-3">
+            {[
+              { icon: <Icons.Timer />, label: '100ms', desc: '= 1% sales' },
+              { icon: <Icons.Brain />, label: '11M', desc: 'bits/sec' },
+              { icon: <Icons.Smartphone />, label: '70%', desc: 'mobile traffic' },
+              { icon: <Icons.Gauge />, label: '90+', desc: 'target score' }
+            ].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(249,115,22,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', margin: '0 auto 8px' }}>
+                  {item.icon}
+                </div>
+                <p className="text-white font-bold text-sm">{item.label}</p>
+                <p className="text-neutral-500 text-xs">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // CompletionSlide
+    const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(var(--accent-rgb), 0.35)' }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why every 100ms matters for trust and conversions.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
+    // Main App
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -473,14 +789,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -512,12 +822,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'amazon-impact': return <AmazonImpactSlide />;
+          case 'brain-speed': return <BrainSpeedSlide />;
+          case 'trust-equation': return <TrustEquationSlide />;
+          case 'speed-killers': return <SpeedKillersSlide />;
+          case 'store-comparison': return <StoreComparisonSlide />;
+          case 'mobile-disaster': return <MobileDisasterSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          case 'pagespeed-audit': return <PageSpeedAuditSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };
@@ -555,7 +869,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
