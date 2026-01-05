@@ -380,7 +380,7 @@ These lessons need design improvements to reach elite level.
 | 249 | three-canons-of-craft | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
 | 250 | three-cro-tests | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
 | 251 | three-growth-levers | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
-| 252 | three-levels-of-change | 5 |
+| 252 | three-levels-of-change | ELITE ✓ | Jan 5 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
 | 253 | three-second-rule | 5 |
 | 254 | trust-architecture | 5 |
 | 255 | trust-blueprint | 5 |
