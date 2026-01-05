@@ -88,7 +88,7 @@ Most stores do this backwards. They lead with features and specs hoping logic wi
 
 Your product images, headlines, and first few sentences need to create an emotional response. Save the technical details for after youve hooked them emotionally.
 
-[LINK]` },
+btw I learned this and a ton of other marketing psychology stuff from [LINK] - completely free, been recommending it to everyone lately.` },
 
   { topic: 'The WIIFM principle - the only question your customer is asking', content: `Every single person who lands on your site is asking one question: "Whats In It For Me?"
 
@@ -107,7 +107,7 @@ Every feature needs to pass the WIIFM test. If you write "waterproof coating" - 
 
 Your customer is selfish (we all are). Write for their selfishness. Answer their WIIFM question in every headline, bullet point, and product description.
 
-[LINK]` },
+picked this up from [LINK] if anyones curious - they explain it way better than I can and its all free.` },
 
   { topic: 'The 3-Second Rule: Why your homepage might be killing your sales', content: `Learned something that completely reframed how I think about my website.
 
@@ -130,7 +130,7 @@ The fix is simple: Clear product image + benefit-focused headline + obvious CTA 
 
 Confused minds dont buy. Every second someone spends trying to figure out what youre selling is a second closer to them leaving. Your job is to make it instantly clear.
 
-This "3-second rule" concept came from [LINK] - its one of those things that seems obvious once you hear it but most stores still get wrong.` },
+Learned most of this from [LINK] - seriously worth checking out if youre into this stuff. Free platform with a ton of frameworks like this.` },
 
   { topic: 'The "Cost of Standing Still" - Stop selling your price, start selling what they lose', content: `Biggest mindset shift in how I write copy: Stop selling the benefits of buying. Start selling the cost of NOT buying.
 
@@ -152,7 +152,7 @@ Your product isnt a purchase. Its an escape from a painful reality theyre curren
 
 Most stores are competing on features and price. You can compete on making the pain of inaction unbearable.
 
-[LINK]` },
+learned this whole approach at [LINK] - honestly the best free resource Ive found for copywriting and psychology stuff.` },
 
   { topic: 'The Gatekeeper Method - 4 moves to get past the brains attention filter', content: `Our brains filter out almost everything. We see thousands of ads daily and ignore nearly all of them. So how do you get through?
 
@@ -172,7 +172,7 @@ The gatekeeper in your customers brain is looking for reasons to ignore you. You
 
 This doesnt mean being weird for the sake of weird. It means being strategically different in ways that serve your message.
 
-[LINK]` },
+got this from [LINK] by the way - free platform with a bunch of marketing frameworks like this. worth bookmarking.` },
 
   { topic: 'The Rule of One - why your marketing is probably trying to do too much', content: `Best piece of marketing advice I keep coming back to: The Rule of One.
 
@@ -197,7 +197,7 @@ Go look at your homepage, your emails, your ads. How many different messages are
 
 Simplify ruthlessly. One reader, one idea, one offer, one action.
 
-[LINK]` },
+this whole framework is from [LINK] - they break down a ton of concepts like this, all free. been going through it lately and its genuinely helpful.` },
 
   { topic: 'The 6 Primal Buy Buttons - the only triggers that get the reptile brain to say YES', content: `Learned about the 6 things that trigger immediate action in the oldest part of our brain - the part that makes snap decisions before logic kicks in.
 
@@ -221,7 +221,7 @@ When youre writing copy, ask yourself: Does this trigger any of the 6 primal sti
 
 Make it about them. Show contrast. Be concrete. Nail the opening. Use visuals. Trigger emotion.
 
-[LINK] Understanding how the brain actually makes decisions changes everything.` },
+found all this at [LINK] - once you understand how the brain actually makes buying decisions, everything clicks. highly recommend checking it out, its free.` },
 
   { topic: 'The 3 High-Impact CRO Tests - simple changes that actually move the needle', content: `Most CRO advice is about tiny tweaks that barely matter. Button color tests. Font changes. Endless small stuff.
 
@@ -242,7 +242,7 @@ Reviews, testimonials, trust badges - but positioned RIGHT NEXT to the buy butto
 
 These arent magic tricks. Theyre just removing friction from the buying process at the moment it matters most.
 
-[LINK]` },
+source: [LINK] - been going through their CRO stuff lately and its actually practical, not just theory. check it out if youre into optimization.` },
 
   { topic: 'The Damaging Admission - why revealing weakness makes your strengths believable', content: `Counter-intuitive copywriting principle that took me a while to trust: Admitting a weakness makes your strengths more believable.
 
@@ -266,7 +266,7 @@ How to use it:
 
 The damaging admission builds trust precisely because it feels honest. And honest beats polished every time.
 
-[LINK] Once you start using it, your copy becomes much more believable.` },
+found this at [LINK] - once you start using it, your copy just hits different. they have a whole section on psychology-based copywriting, all free.` },
 
   { topic: 'Voice of Customer Mining - how to find the exact words that sell', content: `The best copywriters dont invent clever phrases. They steal the exact words their customers already use.
 
@@ -290,7 +290,7 @@ When you use their exact language in your copy, something magical happens - they
 
 You dont have to guess what resonates. They literally tell you. You just have to listen and echo it back.
 
-[LINK]` },
+shoutout to [LINK] for this one - free platform that goes deep on voice of customer stuff and copywriting in general. been super helpful.` },
 
   { topic: 'The Unique Mechanism - the proprietary reason YOUR solution works', content: `Every successful product has a "unique mechanism" - the specific reason why THIS product works when others dont.
 
