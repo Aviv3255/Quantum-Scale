@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #f59e0b; --accent-dark: #e18a00; --accent-light: #ffb21f; --accent-rgb: 245, 158, 11; }
+    :root { --accent: #f59e0b; --accent-dark: #d97706; --accent-light: #fbbf24; --accent-rgb: 245, 158, 11; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -40,230 +37,61 @@
     const LESSON_CONFIG = {
       id: 'value-perception-lever',
       title: 'The Value Perception Lever',
-      description: '',
       accentColor: '#f59e0b',
-      duration: '8 min',
+      duration: '5 min',
       nextLesson: { id: 'framing-effect-mastery', title: 'The Framing Effect', teaser: 'Same facts. Wildly different decisions. Master the frame.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
+    // Admin Reporter System
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6 }}>
+          <img src="/images/icons/bug-icon.svg" alt="Report" style={{ width: '16px', height: '16px', filter: 'invert(1)' }} />
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
+    ];
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
-    const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
-    ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      {
-        type: 'welcome',
-        title: '{GREETING}',
-        subtitle: "You\'re about to learn the psychology behind why people pay $5 for water at airports...",
-        gifUrl: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/welcome-hi.mp4'
-      },
-      {
-        type: 'hook',
-        title: 'The Price Tag Paradox',
-        content: 'A $47 product can feel like a steal. A $7 product can feel expensive.',
-        highlight: 'Price is not the problem. Perceived value is.',
-        subtext: 'And perception is 100% engineerable.' },
-      {
-        type: 'bigStatement',
-        statement: "It\'s not about what your product COSTS.",
-        emphasis: "It\'s about what it\'s WORTH to them.",
-        footer: 'Your job: frame value so price becomes a non-issue.'
-      },
-      {
-        type: 'controlPanel',
-        title: 'The Value Perception Control Panel',
-        levers: [
-          { name: 'Anchoring', description: 'Set the mental reference point', level: 85 },
-          { name: 'Compromise Effect', description: 'Engineer the "safe" choice', level: 70 },
-          { name: 'Framing', description: 'Same facts, different perception', level: 90 }
-        ]
-      },
-      {
-        type: 'anchoringDemo',
-        title: 'Trigger #1: Anchoring',
-        principle: 'The first number you see becomes your mental benchmark.',
-        demo: {
-          withoutAnchor: { price: '$297', reaction: 'Hmm, is that reasonable?' },
-          withAnchor: { anchor: '$2,997 value', price: '$297', reaction: 'That\'s 90% off!' }
-        }
-      },
-      {
-        type: 'example',
-        context: 'E-commerce Blueprint',
-        title: 'Anchoring in Action',
-        before: {
-          label: 'Without Anchor',
-          content: 'Premium Skincare Set - $89'
-        },
-        after: {
-          label: 'With Anchor',
-          content: 'Premium Skincare Set\n$179 value → Just $89\nSave $90 today'
-        },
-        result: '+47% conversion rate'
-      },
-      {
-        type: 'compromiseEffect',
-        title: 'Trigger #2: The Compromise Effect',
-        principle: 'Given 3 options, people avoid extremes and pick the middle.',
-        tiers: [
-          { name: 'Ultimate', price: '$199', features: 'Everything + Premium Support', tag: 'Premium' },
-          { name: 'Pro', price: '$99', features: 'All Core Features', tag: 'Most Popular' },
-          { name: 'Basic', price: '$49', features: 'Essential Features', tag: '' }
-        ],
-        insight: 'The tier you WANT them to buy should be in the middle. Always.'
-      },
-      {
-        type: 'content',
-        title: 'The 3-Tier Blueprint',
-        points: [
-          { title: 'Price your middle tier first', detail: 'This is your real target. Set it at your ideal price point.' },
-          { title: 'Add a premium above it', detail: 'Make it 2-3x higher. Few will buy it—but it makes middle look smart.' },
-          { title: 'Add a stripped basic below', detail: 'Remove enough value that middle becomes the obvious choice.' }
-        ]
-      },
-      {
-        type: 'visual',
-        title: 'The Psychology Stack',
-        diagram: 'pyramid',
-        layers: [
-          { label: 'Perceived Value', description: 'What they THINK it\'s worth' },
-          { label: 'Anchored Price', description: 'The reference they compare against' },
-          { label: 'Actual Price', description: 'What they pay (feels like a win)' }
-        ]
-      },
-      {
-        type: 'cards',
-        title: 'Value Perception Mistakes',
-        cards: [
-          { icon: '🚫', title: 'Leading with price', description: 'Never show price before establishing value' },
-          { icon: '🚫', title: 'Single option', description: 'No comparison = no perceived deal' },
-          { icon: '🚫', title: 'Hiding the anchor', description: 'If they don\'t see the "real" value, anchoring fails' }
-        ]
-      },
-      {
-        type: 'quiz',
-        question: 'You want to sell your $99 product. What should your highest tier be priced at?',
-        options: [
-          { text: '$119 - just slightly higher', correct: false },
-          { text: '$199-299 - significantly higher', correct: true },
-          { text: '$99 - keep all pricing the same', correct: false },
-          { text: 'Don\'t have multiple tiers', correct: false }
-        ],
-        explanation: 'The premium tier should be 2-3x higher. This makes $99 feel like the smart, balanced choice—not the cheap option.',
-        celebrationGif: 'https://xgwnwdyqqinkklbpmfkn.supabase.co/storage/v1/object/public/lessons-assets/gifs/celebration-1.mp4'
-      },
-      {
-        type: 'actionSlide',
-        title: 'Your Value Engineering Checklist',
-        actions: [
-          'Always show "Compare at" or "Value" price BEFORE actual price',
-          'Structure offers in 3 tiers with middle as your target',
-          'Lead with transformation and outcomes, price comes LAST',
-          'Stack bonuses to inflate perceived value before the reveal'
-        ]
-      },
-      {
-        type: 'completion',
-        title: 'Lever #1: Activated',
-        message: 'You now control how customers perceive value. Price objections? They\'re a framing problem, not a pricing problem.',
-        nextLessonTeaser: 'Next: The Framing Effect—same facts, wildly different decisions.'
-      }
+      { type: 'welcome', learningGoals: ['The anchoring principle - how first numbers control perception', 'The compromise effect - engineering the "obvious" choice', 'Building value before revealing price'] },
+      { type: 'hook', headline: 'A $47 product can feel like a steal. A $7 product can feel expensive.', subtext: 'Price is not the problem. Perceived value is. And perception is 100% engineerable.' },
+      { type: 'price-paradox' },
+      { type: 'control-panel' },
+      { type: 'anchoring-demo' },
+      { type: 'anchoring-example' },
+      { type: 'compromise-effect' },
+      { type: 'tier-strategy' },
+      { type: 'psychology-pyramid' },
+      { type: 'mistakes-grid' },
+      { type: 'quiz', question: 'You want to sell your $99 product. What should your highest tier be priced at?', options: [
+        { text: '$119 - just slightly higher', correct: false },
+        { text: '$199-299 - significantly higher', correct: true },
+        { text: '$99 - keep all pricing the same', correct: false },
+        { text: 'Don\'t have multiple tiers', correct: false }
+      ], explanation: 'The premium tier should be 2-3x higher. This makes $99 feel like the smart, balanced choice—not the cheap option.' },
+      { type: 'value-stats' },
+      { type: 'elite-insight' },
+      { type: 'completion' }
     ];
 
     const Icons = {
@@ -272,598 +100,212 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Tag: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Sliders: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      EyeOff: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+      Layers: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Crown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M3 20h18"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Brain: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.94z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.94z"/></svg>,
+      Smile: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
+      Frown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
+      Anchor: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>
     };
 
-    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+    // AnimatedCounter Component
+    const AnimatedCounter = ({ value, duration = 2000, prefix = '', suffix = '', decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const startTime = Date.now();
+        const timer = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(start + (end - start) * eased);
+          if (progress === 1) clearInterval(timer);
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
+    // ========== UNIQUE CUSTOM SLIDE COMPONENTS ==========
+
+    // 1. Price Paradox Slide - Shows $47 steal vs $7 expensive
+    const PriceParadoxSlide = ({ data }) => {
+      const [showInsight, setShowInsight] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowInsight(true), 2500); return () => clearTimeout(timer); }, []);
 
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
-                  </motion.li>
-                ))}
-              </ul>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-8 text-center">
+            The Price Perception Paradox
+          </motion.h2>
+
+          <div className="flex flex-col md:flex-row gap-6 max-w-4xl mx-auto w-full mb-8">
+            {/* $47 feels like a steal */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="flex-1 rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="text-center">
+                <div className="text-5xl md:text-6xl font-black text-white mb-3">$47</div>
+                <div className="text-neutral-400 text-sm mb-4">Complete Course Bundle</div>
+                <div className="flex items-center justify-center gap-2">
+                  <Icons.Smile />
+                  <span className="text-green-400 font-semibold">"What a steal!"</span>
+                </div>
+                <div className="mt-4 text-xs text-neutral-500">
+                  <span className="line-through text-neutral-600">$297 value</span>
+                  <span className="ml-2 text-green-400">84% OFF</span>
+                </div>
+              </div>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+
+            {/* $7 feels expensive */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}
+              className="flex-1 rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="text-center">
+                <div className="text-5xl md:text-6xl font-black text-white mb-3">$7</div>
+                <div className="text-neutral-400 text-sm mb-4">Digital Download</div>
+                <div className="flex items-center justify-center gap-2">
+                  <Icons.Frown />
+                  <span className="text-red-400 font-semibold">"Is it worth it?"</span>
+                </div>
+                <div className="mt-4 text-xs text-neutral-500">
+                  <span className="text-neutral-600">No anchor shown</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <AnimatePresence>
+            {showInsight && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                className="text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
+                  style={{ background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                  <Icons.Lightbulb />
+                  <span className="text-amber-500 font-semibold text-sm">Price is not the problem. Perceived value is.</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // 2. Value Control Panel Slide - 3 animated levers
+    const ControlPanelSlide = ({ data }) => {
+      const [activeLever, setActiveLever] = useState(0);
+      const levers = [
+        { name: 'Anchoring', desc: 'Set the mental reference point', level: 85, color: '#f59e0b' },
+        { name: 'Compromise Effect', desc: 'Engineer the "safe" choice', level: 70, color: '#8b5cf6' },
+        { name: 'Framing', desc: 'Same facts, different perception', level: 90, color: '#22c55e' }
+      ];
+      useEffect(() => { const timer = setInterval(() => setActiveLever(prev => (prev + 1) % levers.length), 2500); return () => clearInterval(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-2 text-center">
+            The Value Perception Control Panel
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-center mb-8">
+            3 levers that control how customers perceive your price
+          </motion.p>
+
+          <div className="space-y-4 max-w-2xl mx-auto w-full">
+            {levers.map((lever, i) => (
+              <motion.div key={lever.name} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.15 }}
+                className="rounded-xl p-4" style={{
+                  background: activeLever === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)',
+                  boxShadow: activeLever === i ? `0 0 30px ${lever.color}30` : 'none',
+                  border: activeLever === i ? `1px solid ${lever.color}40` : '1px solid transparent',
+                  transition: 'all 0.5s ease'
+                }}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${lever.color}20` }}>
+                      <Icons.Sliders />
+                    </div>
+                    <div>
+                      <div className={`font-bold ${activeLever === i ? 'text-white' : 'text-black'}`}>{lever.name}</div>
+                      <div className={`text-xs ${activeLever === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{lever.desc}</div>
+                    </div>
+                  </div>
+                  <div className={`text-2xl font-black ${activeLever === i ? 'text-white' : 'text-black'}`}>{lever.level}%</div>
+                </div>
+                <div className="h-2 rounded-full overflow-hidden" style={{ background: activeLever === i ? '#374151' : '#e5e7eb' }}>
+                  <motion.div className="h-full rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${lever.level}%` }}
+                    transition={{ duration: 1, delay: 0.5 + i * 0.15 }}
+                    style={{ background: lever.color }} />
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       );
     };
 
-    const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-    const StatCountdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.stats && data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color || 'var(--accent)' }}>{stat.value}{stat.suffix}</div>
-              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-              <div className="text-xs text-neutral-400">{stat.subtext}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BeforeAfterSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">Before</span></div>
-            <ul className="space-y-2">{data.before && data.before.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span>{item}</li>)}</ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">After</span></div>
-            <ul className="space-y-2">{data.after && data.after.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className="text-green-500 mt-0.5">•</span>{item}</li>)}</ul>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const HighlightBoxSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-5">
-          <p className="text-white text-sm md:text-base font-medium"><Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />{data.highlight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const StrategyStepsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: step.color || 'var(--accent)' }}>{step.number || i + 1}</span>
-              <div><h3 className="font-bold text-neutral-900 mb-1">{step.title}</h3><p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p></div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ComparisonCardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className={`rounded-xl p-5 ${data.left && data.left.color === 'red' ? 'bg-red-50 border-2 border-red-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.left && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.left.color === 'red' ? 'text-red-500' : 'text-neutral-500'}`}>{data.left.label}</span>
-              {data.left.value && <h3 className={`text-2xl font-bold ${data.left.color === 'red' ? 'text-red-600' : 'text-neutral-900'}`}>{data.left.value}</h3>}
-              {data.left.subtext && <p className="text-xs text-neutral-500">{data.left.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.left.items && data.left.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.left.color === 'red' ? 'text-red-400' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className={`rounded-xl p-5 ${data.right && data.right.color === 'green' ? 'bg-green-50 border-2 border-green-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.right && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.right.color === 'green' ? 'text-green-500' : 'text-neutral-500'}`}>{data.right.label}</span>
-              {data.right.value && <h3 className={`text-2xl font-bold ${data.right.color === 'green' ? 'text-green-600' : 'text-neutral-900'}`}>{data.right.value}</h3>}
-              {data.right.subtext && <p className="text-xs text-neutral-500">{data.right.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.right.items && data.right.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.right.color === 'green' ? 'text-green-500' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const DoomLoopSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="relative">
-          <div className="flex flex-wrap justify-center gap-3">
-            {data.steps && data.steps.map((step, i) => (
-              <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
-                <div className="bg-white border-2 rounded-xl p-4 w-40" style={{ borderColor: step.color }}>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold mb-2" style={{ background: step.color }}>{i + 1}</div>
-                  <h3 className="font-bold text-sm mb-1" style={{ color: step.color }}>{step.label}</h3>
-                  <p className="text-neutral-500 text-xs">{step.description}</p>
-                </div>
-                {i < data.steps.length - 1 && <div className="absolute top-1/2 -right-3 text-neutral-300 text-xl">→</div>}
-              </motion.div>
-            ))}
-          </div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="text-center mt-4">
-            <span className="text-xs text-neutral-400">↺ The cycle repeats...</span>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const EscapePlanSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: step.color || 'var(--accent)' }}>{step.number || i + 1}</span>
-              <div><h3 className="font-bold text-neutral-900 mb-1">{step.title}</h3><p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p></div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BigStatementSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl text-neutral-600 mb-2">{data.statement}</motion.p>
-        <motion.h2 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-4xl md:text-5xl lg:text-6xl mb-6" style={{ color: 'var(--accent)' }}>{data.emphasis}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg text-neutral-500 max-w-2xl">{data.footer}</motion.p>
-      </div>
-    );
-
-    const ActionSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.actions && data.actions.map((action, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-center gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-green-300 transition-colors">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
-              <span className="text-neutral-700 text-sm md:text-base">{action}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const TrapVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-32 h-32 rounded-full bg-red-100 flex items-center justify-center mb-6">
-          <span className="text-6xl">🪤</span>
-        </motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg text-neutral-500">{data.subtitle}</motion.p>
-      </div>
-    );
-
-    const MathBreakdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-4 mb-4">
-          {data.scenarios && data.scenarios.map((scenario, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-white border-2 rounded-xl p-5" style={{ borderColor: scenario.color }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">{scenario.icon === 'smile' ? '😊' : '😟'}</span>
-                <span className="font-bold" style={{ color: scenario.color }}>{scenario.label}</span>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4 text-sm">
-                <div><span className="text-neutral-500">Cost:</span> <span className="font-medium">{scenario.cost}</span></div>
-                <div><span className="text-neutral-500">Result:</span> <span className="font-medium">{scenario.result}</span></div>
-                <div><span className="font-bold" style={{ color: scenario.color }}>{scenario.profit}</span></div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>}
-      </div>
-    );
-
-    const RatioVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-4 gap-3">
-          {data.ratios && data.ratios.map((ratio, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 rounded-xl p-4 text-center" style={{ borderColor: ratio.color }}>
-              <div className="text-2xl font-bold mb-1" style={{ color: ratio.color }}>{ratio.value}</div>
-              <div className="text-xs font-semibold text-neutral-900 mb-1">{ratio.label}</div>
-              <div className="text-xs text-neutral-500">{ratio.description}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ToolIntegrationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Recommended Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-          {data.subtitle && <p className="text-neutral-500 text-sm mt-1">{data.subtitle}</p>}
-        </motion.div>
-        {data.tool && <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.tool.image} alt={data.tool.name} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <h3 className="font-bold text-lg mb-2">{data.tool.name}</h3>
-            <p className="text-neutral-600 text-sm leading-relaxed mb-4">{data.tool.description}</p>
-            {data.tool.features && <ul className="space-y-1.5 mb-4">
-              {data.tool.features.map((f, i) => <li key={i} className="flex items-center gap-2 text-sm text-neutral-700"><Icons.Check className="text-green-500 w-4 h-4" />{f}</li>)}
-            </ul>}
-            {data.tool.link && <a href={data.tool.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-              <span>Try {data.tool.name}</span><Icons.ExternalLink />
-            </a>}
-          </motion.div>
-        </div>}
-      </div>
-    );
-
-    const ActionChecklistSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="w-6 h-6 rounded-md border-2 border-neutral-300 flex-shrink-0 mt-0.5" />
-              <span className="text-neutral-700 text-sm md:text-base">{typeof item === 'string' ? item : item.text || item.title}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-6xl mb-6" style={{ color: 'var(--accent)' }}>"</motion.div>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl font-medium text-neutral-800 mb-6 leading-relaxed">{data.quote}</motion.blockquote>
-        {data.author && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500">— {data.author}{data.context && <span className="block text-sm mt-1">{data.context}</span>}</motion.p>}
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 bg-neutral-100 rounded-xl p-4 max-w-xl"><p className="text-sm text-neutral-600">{data.insight}</p></motion.div>}
-      </div>
-    );
-
-    const FlywheelVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, rotate: -10 }} animate={{ opacity: 1, rotate: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative">
-              <div className="w-32 h-32 rounded-full border-4 flex items-center justify-center text-center p-4" style={{ borderColor: step.color || 'var(--accent)', background: 'white' }}>
-                <div>
-                  <div className="text-2xl mb-1">{step.icon || '⚡'}</div>
-                  <div className="text-xs font-bold" style={{ color: step.color }}>{step.label}</div>
-                </div>
-              </div>
-              {i < (data.steps.length - 1) && <div className="absolute top-1/2 -right-4 text-2xl" style={{ color: 'var(--accent)' }}>→</div>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const MathVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 text-center">
-          {data.equation && <div className="text-3xl md:text-4xl font-bold text-white mb-4 font-mono">{data.equation}</div>}
-          {data.explanation && <p className="text-neutral-400 text-sm">{data.explanation}</p>}
-        </motion.div>
-        {data.examples && <div className="grid md:grid-cols-3 gap-3 mt-4">
-          {data.examples.map((ex, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
-              <div className="text-lg font-bold" style={{ color: ex.color || 'var(--accent)' }}>{ex.value}</div>
-              <div className="text-xs text-neutral-500">{ex.label}</div>
-            </motion.div>
-          ))}
-        </div>}
-      </div>
-    );
-
-    const RequirementsVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.requirements && data.requirements.map((req, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-center gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: req.met ? '#10b981' : '#ef4444' }}>
-                {req.met ? <Icons.Check /> : <Icons.X />}
-              </div>
-              <span className="text-neutral-700 text-sm md:text-base">{req.text || req}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const FounderSpotlightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        {data.image && <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-24 h-24 rounded-full overflow-hidden mb-4 border-4 border-white shadow-lg">
-          <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
-        </motion.div>}
-        <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xl font-bold text-black mb-1">{data.name}</motion.h3>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-sm text-neutral-500 mb-4">{data.title}</motion.p>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-neutral-700 italic leading-relaxed">"{data.quote}"</motion.blockquote>
-      </div>
-    );
-
-    const VelocityMetricSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 text-center mb-4">
-          <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{data.value}</div>
-          <div className="text-white text-lg font-medium">{data.label}</div>
-          {data.subtext && <div className="text-neutral-400 text-sm mt-2">{data.subtext}</div>}
-        </motion.div>
-        {data.breakdown && <div className="grid md:grid-cols-3 gap-3">
-          {data.breakdown.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
-              <div className="text-lg font-bold" style={{ color: item.color }}>{item.value}</div>
-              <div className="text-xs text-neutral-500">{item.label}</div>
-            </motion.div>
-          ))}
-        </div>}
-      </div>
-    );
-
-    const MindsetFrameworkSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.principles && data.principles.map((principle, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">{principle.icon || '💡'}</span>
-                <h3 className="font-bold text-neutral-900">{principle.title}</h3>
-              </div>
-              <p className="text-neutral-600 text-sm">{principle.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const GenericListSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        {data.subtitle && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-6">{data.subtitle}</motion.p>}
-        <div className="space-y-3">
-          {(data.items || data.steps || data.points || []).map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-              <div>
-                {typeof item === 'string' ? <span className="text-neutral-700">{item}</span> : <>
-                  <h3 className="font-bold text-neutral-900 mb-1">{item.title || item.label}</h3>
-                  <p className="text-neutral-600 text-sm">{item.description || item.text}</p>
-                </>}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const AnglesSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
-              <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--accent)' }}>{item.title}</h3>
-              <p className="text-neutral-600 text-sm mb-3">{item.description}</p>
-              {item.example && <div className="bg-neutral-50 rounded-lg p-3"><p className="text-xs text-neutral-500 italic">{item.example}</p></div>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const FormatsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 rounded-xl p-4" style={{ borderColor: item.color || 'var(--accent)' }}>
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: item.color || 'var(--accent)' }}>📝</div>
-                <h3 className="font-bold text-sm">{item.title}</h3>
-              </div>
-              <p className="text-neutral-600 text-xs">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const MatrixVisualizationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="bg-neutral-900 rounded-2xl p-6">
-          <div className="grid grid-cols-6 gap-2 text-xs">
-            <div className="col-span-1"></div>
-            {(data.formats || ['F1', 'F2', 'F3', 'F4', 'F5']).slice(0, 5).map((f, i) => (
-              <div key={i} className="text-center text-neutral-400 font-medium truncate">{typeof f === 'string' ? f.replace('Format ', '').substring(0, 8) : f}</div>
-            ))}
-            {(data.angles || ['Angle 1', 'Angle 2', 'Angle 3']).map((angle, ai) => (
-              <React.Fragment key={ai}>
-                <div className="text-neutral-400 font-medium truncate pr-2">{typeof angle === 'string' ? angle.replace('Angle ', 'A').substring(0, 10) : angle}</div>
-                {[0, 1, 2, 3, 4].map((fi) => (
-                  <motion.div key={fi} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + (ai * 5 + fi) * 0.03 }} className="aspect-square rounded-lg flex items-center justify-center text-white font-bold" style={{ background: 'var(--accent)' }}>{ai * 5 + fi + 1}</motion.div>
-                ))}
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="text-center mt-4 text-neutral-400 text-sm">3 Angles × 5 Formats = 15 Unique Ads</div>
-        </div>
-      </div>
-    );
-
-    const MatrixBuilderSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto text-center">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 mb-6">{data.description}</motion.p>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-xl p-8">
-          <div className="text-6xl mb-4">🎯</div>
-          <p className="text-neutral-600">Start building your creative matrix today</p>
-        </motion.div>
-      </div>
-    );
-
-    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
-      const [selected, setSelected] = useState(null);
-      const [showFeedback, setShowFeedback] = useState(false);
-      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
-      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
-      const isCorrect = selected === data.correctIndex;
-
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+    // 3. Anchoring Demo Slide - Side-by-side comparison
+    const AnchoringDemoSlide = ({ data }) => {
+      const [showWithAnchor, setShowWithAnchor] = useState(false);
+      const [showReaction, setShowReaction] = useState(false);
+      useEffect(() => {
+        const t1 = setTimeout(() => setShowWithAnchor(true), 1500);
+        const t2 = setTimeout(() => setShowReaction(true), 3000);
+        return () => { clearTimeout(t1); clearTimeout(t2); };
+      }, []);
 
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
-            </motion.div>
-            <div className="space-y-3 mb-6">
-              {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
-                  <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                    </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
-                  </div>
-                </motion.button>
-              ))}
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b' }}>
+              <Icons.Anchor /> TRIGGER #1
             </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Anchoring Effect</h2>
+            <p className="text-neutral-500 text-sm mt-2">The first number you see becomes your mental benchmark</p>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row gap-6 max-w-4xl mx-auto w-full">
+            {/* Without Anchor */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="flex-1 rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="text-xs text-neutral-500 uppercase tracking-wider mb-4">Without Anchor</div>
+              <div className="text-5xl font-black text-white mb-4">$297</div>
+              <div className="text-neutral-400 text-sm">Premium Course</div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: showReaction ? 1 : 0 }} className="mt-4 flex items-center justify-center gap-2">
+                <Icons.Frown />
+                <span className="text-red-400 text-sm">"Hmm, is that reasonable?"</span>
+              </motion.div>
+            </motion.div>
+
+            {/* With Anchor */}
             <AnimatePresence>
-              {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+              {showWithAnchor && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                  className="flex-1 rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.2)' }}>
+                  <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+                  <div className="text-xs text-neutral-500 uppercase tracking-wider mb-4">With Anchor</div>
+                  <div className="text-xl text-neutral-500 line-through mb-1">$2,997 value</div>
+                  <div className="text-5xl font-black text-white mb-2">$297</div>
+                  <div className="inline-block px-3 py-1 rounded-full text-xs font-bold text-white mb-2" style={{ background: '#22c55e' }}>90% OFF</div>
+                  <div className="text-neutral-400 text-sm">Premium Course</div>
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: showReaction ? 1 : 0 }} className="mt-4 flex items-center justify-center gap-2">
+                    <Icons.Smile />
+                    <span className="text-green-400 text-sm">"That's an incredible deal!"</span>
+                  </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -872,154 +314,50 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
-      const [direction, setDirection] = useState(1);
-      const userName = useMemo(() => getUserName(), []);
-      const currentSlideRef = React.useRef(0);
-      const [gifConfig, setGifConfig] = useState(null);
-      const [isAnimating, setIsAnimating] = useState(false);
-
-      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
-      const hideGif = useCallback(() => setGifConfig(null), []);
-
-      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
-
-      const goToSlide = useCallback((newSlide) => {
-        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
-        setIsAnimating(true);
-        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
-        setCurrentSlide(newSlide);
-      }, [isAnimating]);
-
-      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
-      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
-
-      useEffect(() => {
-        const handleKeyDown = (e) => {
-          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
-        };
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [nextSlide, prevSlide]);
-
-      const slideVariants = {
-        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-        center: { x: 0, opacity: 1 },
-        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
-      };
-
-      const renderSlide = (slide) => {
-        switch (slide.type) {
-          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
-          case 'before-after': return <BeforeAfterSlide data={slide} />;
-          case 'highlight-box': return <HighlightBoxSlide data={slide} />;
-          case 'strategy-steps': return <StrategyStepsSlide data={slide} />;
-          case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
-          case 'doom-loop': return <DoomLoopSlide data={slide} />;
-          case 'escape-plan': return <EscapePlanSlide data={slide} />;
-          case 'bigStatement': return <BigStatementSlide data={slide} />;
-          case 'actionSlide': return <ActionSlide data={slide} />;
-          case 'trap-visual': return <TrapVisualSlide data={slide} />;
-          case 'math-breakdown': return <MathBreakdownSlide data={slide} />;
-          case 'ratio-visual': return <RatioVisualSlide data={slide} />;
-          case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
-          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
-          case 'quote': return <QuoteSlide data={slide} />;
-          case 'quote-slide': return <QuoteSlide data={slide} />;
-          case 'quote-spotlight': return <QuoteSlide data={slide} />;
-          case 'flywheel-visual': return <FlywheelVisualSlide data={slide} />;
-          case 'math-visual': return <MathVisualSlide data={slide} />;
-          case 'requirements-visual': return <RequirementsVisualSlide data={slide} />;
-          case 'founder-spotlight': return <FounderSpotlightSlide data={slide} />;
-          case 'velocity-metric': return <VelocityMetricSlide data={slide} />;
-          case 'mindset-framework': return <MindsetFrameworkSlide data={slide} />;
-          case 'angles': return <AnglesSlide data={slide} />;
-          case 'formats': return <FormatsSlide data={slide} />;
-          case 'matrixVisualization': return <MatrixVisualizationSlide data={slide} />;
-          case 'matrixBuilder': return <MatrixBuilderSlide data={slide} />;
-          case 'stats': return <StatCountdownSlide data={slide} />;
-          case 'roadmap': return <StrategyStepsSlide data={slide} />;
-          case 'triangle': return <GenericListSlide data={slide} />;
-          case 'flywheel': return <FlywheelVisualSlide data={slide} />;
-          case 'ratio-spectrum': return <RatioVisualSlide data={slide} />;
-          case 'math-comparison': return <MathBreakdownSlide data={slide} />;
-          case 'opportunity-cost': return <GenericListSlide data={slide} />;
-          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
-          default: return null;
-        }
-      };
-
-      const showPrev = currentSlide > 0;
-      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+    // 4. Anchoring Example Slide - Real e-commerce example
+    const AnchoringExampleSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowResult(true), 2000); return () => clearTimeout(timer); }, []);
 
       return (
-        <div className="w-full h-screen bg-white flex flex-col relative">
-          <div className="flex-1 relative overflow-hidden z-20">
-            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
-              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
-                {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
-              </motion.div>
-            </AnimatePresence>
-            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
-            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-8 text-center">
+            Anchoring in Action
+          </motion.h2>
+
+          <div className="flex flex-col md:flex-row gap-6 max-w-4xl mx-auto w-full mb-6">
+            {/* Before */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="flex-1 rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="text-xs text-red-400 uppercase tracking-wider mb-4 font-semibold">Before</div>
+              <div className="text-white">
+                <div className="text-lg font-semibold mb-2">Premium Skincare Set</div>
+                <div className="text-3xl font-black">$89</div>
+              </div>
+            </motion.div>
+
+            {/* After */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}
+              className="flex-1 rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.2)' }}>
+              <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="text-xs text-green-400 uppercase tracking-wider mb-4 font-semibold">After</div>
+              <div className="text-white">
+                <div className="text-lg font-semibold mb-2">Premium Skincare Set</div>
+                <div className="text-neutral-400 line-through text-sm">$179 value</div>
+                <div className="text-3xl font-black text-green-400">Just $89</div>
+                <div className="text-sm text-neutral-400 mt-1">Save $90 today</div>
+              </div>
+            </motion.div>
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
-            <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
-            </div>
-          </div>
+
           <AnimatePresence>
-            {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
-                  <source src={gifConfig.url} type="video/mp4" />
-                </video>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: '#22c55e' }}>
+                  <Icons.TrendingUp />
+                  <span className="text-white font-bold">+47% conversion rate</span>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -1027,7 +365,423 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    // 5. Compromise Effect Slide - 3-tier pricing
+    const CompromiseEffectSlide = ({ data }) => {
+      const [highlightMiddle, setHighlightMiddle] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setHighlightMiddle(true), 2000); return () => clearTimeout(timer); }, []);
+
+      const tiers = [
+        { name: 'Basic', price: '$49', features: 'Essential Features', tag: '', popular: false },
+        { name: 'Pro', price: '$99', features: 'All Core Features', tag: 'MOST POPULAR', popular: true },
+        { name: 'Ultimate', price: '$199', features: 'Everything + Premium', tag: 'Premium', popular: false }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.15)', color: '#8b5cf6' }}>
+              <Icons.Layers /> TRIGGER #2
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Compromise Effect</h2>
+            <p className="text-neutral-500 text-sm mt-2">Given 3 options, people avoid extremes and pick the middle</p>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row gap-4 max-w-4xl mx-auto w-full items-end">
+            {tiers.map((tier, i) => (
+              <motion.div key={tier.name} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.15 }}
+                className={`flex-1 rounded-2xl p-5 ${tier.popular ? 'md:-mt-4' : ''}`} style={{
+                  background: tier.popular && highlightMiddle ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)',
+                  boxShadow: tier.popular && highlightMiddle ? '0 0 40px rgba(139, 92, 246, 0.3)' : 'none',
+                  border: tier.popular && highlightMiddle ? '2px solid #8b5cf6' : '1px solid #e5e7eb',
+                  transition: 'all 0.5s ease',
+                  transform: tier.popular && highlightMiddle ? 'scale(1.05)' : 'scale(1)'
+                }}>
+                {tier.tag && (
+                  <div className={`text-xs font-bold uppercase tracking-wider mb-3 text-center ${tier.popular ? 'text-purple-400' : 'text-neutral-400'}`}>
+                    {tier.tag}
+                  </div>
+                )}
+                <div className={`text-center ${tier.popular && highlightMiddle ? 'text-white' : 'text-black'}`}>
+                  <div className="text-lg font-semibold mb-2">{tier.name}</div>
+                  <div className="text-4xl font-black mb-2">{tier.price}</div>
+                  <div className={`text-sm ${tier.popular && highlightMiddle ? 'text-neutral-400' : 'text-neutral-500'}`}>{tier.features}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: highlightMiddle ? 1 : 0 }} className="text-center mt-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(139, 92, 246, 0.15)', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
+              <Icons.Target />
+              <span className="text-purple-500 font-semibold text-sm">The tier you WANT them to buy should be in the middle</span>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // 6. Tier Strategy Slide - How to build 3 tiers
+    const TierStrategySlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+      const steps = [
+        { num: 1, title: 'Price your middle tier first', desc: 'This is your real target. Set it at your ideal price point.', color: '#f59e0b' },
+        { num: 2, title: 'Add a premium above it', desc: 'Make it 2-3x higher. Few will buy it—but it makes middle look smart.', color: '#8b5cf6' },
+        { num: 3, title: 'Add a stripped basic below', desc: 'Remove enough value that middle becomes the obvious choice.', color: '#22c55e' }
+      ];
+      useEffect(() => { const timer = setInterval(() => setActiveStep(prev => (prev + 1) % steps.length), 3000); return () => clearInterval(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-8 text-center">
+            The 3-Tier Blueprint
+          </motion.h2>
+
+          <div className="space-y-4 max-w-2xl mx-auto w-full">
+            {steps.map((step, i) => (
+              <motion.div key={step.num} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.15 }}
+                className="rounded-xl p-4" style={{
+                  background: activeStep === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)',
+                  boxShadow: activeStep === i ? `0 0 25px ${step.color}30` : 'none',
+                  border: activeStep === i ? `1px solid ${step.color}40` : '1px solid transparent',
+                  transition: 'all 0.5s ease'
+                }}>
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0"
+                    style={{ background: activeStep === i ? step.color : '#9ca3af' }}>
+                    {step.num}
+                  </div>
+                  <div>
+                    <div className={`font-bold mb-1 ${activeStep === i ? 'text-white' : 'text-black'}`}>{step.title}</div>
+                    <div className={`text-sm ${activeStep === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{step.desc}</div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // 7. Psychology Pyramid Slide - Animated 3-layer pyramid
+    const PsychologyPyramidSlide = ({ data }) => {
+      const [activeLayer, setActiveLayer] = useState(0);
+      const layers = [
+        { label: 'Perceived Value', desc: 'What they THINK it\'s worth', color: '#f59e0b', width: '50%' },
+        { label: 'Anchored Price', desc: 'The reference they compare against', color: '#8b5cf6', width: '70%' },
+        { label: 'Actual Price', desc: 'What they pay (feels like a win)', color: '#22c55e', width: '90%' }
+      ];
+      useEffect(() => { const timer = setInterval(() => setActiveLayer(prev => (prev + 1) % layers.length), 2500); return () => clearInterval(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-8 text-center">
+            The Psychology Stack
+          </motion.h2>
+
+          <div className="flex flex-col items-center gap-3 max-w-xl mx-auto w-full">
+            {layers.map((layer, i) => (
+              <motion.div key={layer.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.2 }}
+                className="rounded-xl p-4 text-center" style={{
+                  width: layer.width,
+                  background: activeLayer === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.05)',
+                  boxShadow: activeLayer === i ? `0 0 30px ${layer.color}30` : 'none',
+                  border: activeLayer === i ? `2px solid ${layer.color}` : '1px solid transparent',
+                  transition: 'all 0.5s ease'
+                }}>
+                <div className={`font-bold ${activeLayer === i ? 'text-white' : 'text-black'}`}>{layer.label}</div>
+                <div className={`text-xs mt-1 ${activeLayer === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{layer.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="text-center mt-8">
+            <div className="text-neutral-500 text-sm">Build perception from top to bottom</div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // 8. Mistakes Grid Slide - 3 common mistakes
+    const MistakesGridSlide = ({ data }) => {
+      const [activeMistake, setActiveMistake] = useState(0);
+      const mistakes = [
+        { title: 'Leading with price', desc: 'Never show price before establishing value', icon: Icons.DollarSign },
+        { title: 'Single option', desc: 'No comparison = no perceived deal', icon: Icons.Target },
+        { title: 'Hiding the anchor', desc: 'If they don\'t see the "real" value, anchoring fails', icon: Icons.EyeOff }
+      ];
+      useEffect(() => { const timer = setInterval(() => setActiveMistake(prev => (prev + 1) % mistakes.length), 2500); return () => clearInterval(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-8 text-center">
+            Value Perception Mistakes
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
+            {mistakes.map((mistake, i) => {
+              const IconComponent = mistake.icon;
+              return (
+                <motion.div key={mistake.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.15 }}
+                  className="rounded-xl p-5" style={{
+                    background: activeMistake === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)',
+                    boxShadow: activeMistake === i ? '0 0 25px rgba(239, 68, 68, 0.2)' : 'none',
+                    border: activeMistake === i ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid transparent',
+                    transition: 'all 0.5s ease'
+                  }}>
+                  <div className="h-1 w-full rounded-full mb-4" style={{ background: activeMistake === i ? 'linear-gradient(90deg, transparent, #ef4444, transparent)' : 'transparent' }} />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.15)' }}>
+                      <div className="text-red-500"><IconComponent /></div>
+                    </div>
+                    <span className="text-xs font-bold text-red-500 uppercase">AVOID</span>
+                  </div>
+                  <div className={`font-bold mb-2 ${activeMistake === i ? 'text-white' : 'text-black'}`}>{mistake.title}</div>
+                  <div className={`text-sm ${activeMistake === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{mistake.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 9. Value Stats Slide - Animated statistics
+    const ValueStatsSlide = ({ data }) => {
+      const stats = [
+        { value: 47, suffix: '%', label: 'Higher conversions with anchoring', color: '#f59e0b' },
+        { value: 72, suffix: '%', label: 'Choose middle tier when offered 3', color: '#8b5cf6' },
+        { value: 3, suffix: 'x', label: 'Price you can charge with proper framing', color: '#22c55e' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-8 text-center">
+            The Value Perception Impact
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto w-full">
+            {stats.map((stat, i) => (
+              <motion.div key={stat.label} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.2 }}
+                className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 w-full rounded-full mb-4" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-5xl font-black text-white mb-3">
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} duration={2000} />
+                </div>
+                <div className="text-neutral-400 text-sm">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // 10. Elite Insight Slide
+    const EliteInsightSlide = ({ data }) => {
+      const actions = [
+        { icon: Icons.Tag, text: 'Always show "Compare at" price BEFORE actual price' },
+        { icon: Icons.Layers, text: 'Structure offers in 3 tiers with middle as target' },
+        { icon: Icons.Eye, text: 'Lead with transformation, price comes LAST' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+            className="max-w-2xl mx-auto w-full rounded-2xl p-8" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(245, 158, 11, 0.15)' }}>
+            <div className="h-1 w-full rounded-full mb-6" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(245, 158, 11, 0.2)' }}>
+                <div className="text-amber-500"><Icons.Brain /></div>
+              </div>
+              <div>
+                <div className="text-xs text-amber-500 uppercase tracking-wider font-semibold">Elite Insight</div>
+                <div className="text-white font-bold">The Value Perception Lever</div>
+              </div>
+            </div>
+
+            <blockquote className="text-xl md:text-2xl text-white font-semibold mb-6 leading-relaxed">
+              "Price objections are not pricing problems. They're framing problems."
+            </blockquote>
+
+            <div className="space-y-3">
+              {actions.map((action, i) => {
+                const IconComponent = action.icon;
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.15 }}
+                    className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(245, 158, 11, 0.2)' }}>
+                      <div className="text-amber-500"><IconComponent /></div>
+                    </div>
+                    <span className="text-neutral-300 text-sm">{action.text}</span>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ========== STANDARD SLIDE COMPONENTS ==========
+
+    const WelcomeSlide = ({ data, onStart, userName }) => {
+      const welcomeData = useMemo(() => typeof getTimeBasedWelcome === 'function' ? getTimeBasedWelcome() : { greeting: 'Hey {name}!' }, []);
+      const goals = data.learningGoals || ['The anchoring principle', 'The compromise effect', 'Building value before price'];
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-6 py-8">
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl md:text-5xl text-black mb-3">{LESSON_CONFIG.title}</motion.h1>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-base mb-3"
+            dangerouslySetInnerHTML={{ __html: typeof formatGreeting === 'function' ? formatGreeting(welcomeData.greeting, `<span class="font-bold">${userName}</span>`) : welcomeData.greeting.replace('{name}', userName) }} />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="flex items-center gap-2 text-neutral-400 text-xs mb-4">
+            <Icons.Clock /><span>{LESSON_CONFIG.duration}</span>
+          </motion.div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-5 mb-5 max-w-sm w-full">
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">In this lesson</p>
+            <ul className="space-y-2">
+              {goals.map((goal, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                  <span className="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                  <span className="text-neutral-300 text-sm">{goal}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+          <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} onClick={onStart} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: 'var(--accent)' }}>Let's Go</motion.button>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.15)', color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    const QuizSlide = ({ data, onAnswer }) => {
+      const [selected, setSelected] = useState(null);
+      const [showResult, setShowResult] = useState(false);
+      const handleSelect = (i) => { if (selected !== null) return; setSelected(i); setTimeout(() => setShowResult(true), 500); };
+      const isCorrect = selected !== null && data.options[selected].correct;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8 max-w-2xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black mb-6">{data.question}</motion.h2>
+          <div className="space-y-3 mb-6">
+            {data.options.map((opt, i) => (
+              <motion.button key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => handleSelect(i)} disabled={selected !== null}
+                className="w-full p-4 rounded-xl text-left font-medium transition-all" style={{
+                  background: selected === i ? (opt.correct ? '#22c55e' : '#ef4444') : 'rgba(0,0,0,0.03)',
+                  color: selected === i ? 'white' : 'black',
+                  border: selected === i ? 'none' : '1px solid #e5e7eb'
+                }}>
+                {opt.text}
+              </motion.button>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-4 rounded-xl" style={{ background: isCorrect ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  {isCorrect ? <Icons.Check /> : <Icons.X />}
+                  <span className="font-bold" style={{ color: isCorrect ? '#22c55e' : '#ef4444' }}>{isCorrect ? 'Correct!' : 'Not quite'}</span>
+                </div>
+                <p className="text-neutral-600 text-sm">{data.explanation}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const CompletionSlide = ({ data, userName }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-neutral-500 mb-6 max-w-md">
+          You now control how customers perceive value. Price objections? They're a framing problem, not a pricing problem.
+        </motion.p>
+        {LESSON_CONFIG.nextLesson && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-sm w-full">
+            <p className="text-neutral-500 text-xs uppercase mb-2">Next Lesson</p>
+            <p className="text-white font-bold mb-1">{LESSON_CONFIG.nextLesson.title}</p>
+            <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+          </motion.div>
+        )}
+      </div>
+    );
+
+    // ========== MAIN APP ==========
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
+      const userName = getUserName();
+
+      useEffect(() => {
+        if (window.parent !== window) {
+          window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, totalSlides: slides.length, lessonId: LESSON_CONFIG.id }, '*');
+        }
+      }, [currentSlide]);
+
+      const nextSlide = () => setCurrentSlide(prev => Math.min(prev + 1, slides.length - 1));
+      const prevSlide = () => setCurrentSlide(prev => Math.max(prev - 1, 0));
+
+      const renderSlide = (slide, index) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'price-paradox': return <PriceParadoxSlide data={slide} />;
+          case 'control-panel': return <ControlPanelSlide data={slide} />;
+          case 'anchoring-demo': return <AnchoringDemoSlide data={slide} />;
+          case 'anchoring-example': return <AnchoringExampleSlide data={slide} />;
+          case 'compromise-effect': return <CompromiseEffectSlide data={slide} />;
+          case 'tier-strategy': return <TierStrategySlide data={slide} />;
+          case 'psychology-pyramid': return <PsychologyPyramidSlide data={slide} />;
+          case 'mistakes-grid': return <MistakesGridSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} />;
+          case 'value-stats': return <ValueStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
+          case 'completion': return <CompletionSlide data={slide} userName={userName} />;
+          default: return <div className="h-full flex items-center justify-center text-neutral-500">Unknown slide type: {slide.type}</div>;
+        }
+      };
+
+      const slide = slides[currentSlide];
+
+      return (
+        <div className="h-screen w-full bg-white flex flex-col">
+          <div className="flex-1 relative overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div key={currentSlide} initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -50 }} transition={{ duration: 0.3 }} className="absolute inset-0">
+                {renderSlide(slide, currentSlide)}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slide.type} />
+              </motion.div>
+            </AnimatePresence>
+            {currentSlide > 0 && (
+              <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center z-50 hover:bg-neutral-50">
+                <Icons.ArrowLeft />
+              </button>
+            )}
+            {currentSlide < slides.length - 1 && currentSlide > 0 && (
+              <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white shadow-lg flex items-center justify-center z-50 hover:bg-neutral-50">
+                <Icons.ArrowRight />
+              </button>
+            )}
+          </div>
+          <div className="flex justify-center gap-1.5 py-4 bg-white">
+            {slides.map((_, i) => (
+              <button key={i} onClick={() => setCurrentSlide(i)} className="w-2 h-2 rounded-full transition-all" style={{ background: i === currentSlide ? 'var(--accent)' : '#e5e7eb', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
   </script>
 </body>
 </html>
