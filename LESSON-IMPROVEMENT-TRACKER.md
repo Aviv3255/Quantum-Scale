@@ -360,10 +360,11 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 280 | swatch-variants | 9 | Elite (Full Upgrade Jan 5) |
 | 281 | thirty-five-thousand-decisions | 9 | Elite (Full Upgrade Jan 5) |
 | 282 | thirty-two-violinist | 9 | Elite (Full Upgrade Jan 5) |
+| 283 | trust-architecture | 9 | Elite (Full Upgrade Jan 5) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (13 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (12 lessons)
 
 These lessons need design improvements to reach elite level.
 
@@ -382,7 +383,7 @@ These lessons need design improvements to reach elite level.
 | 251 | three-growth-levers | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 252 | three-levels-of-change | ELITE ✓ | Jan 5 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
 | 253 | three-second-rule | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
-| 254 | trust-architecture | 5 |
+| 254 | trust-architecture | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 255 | trust-blueprint | 5 |
 | 256 | two-dirty-tricks | 5 |
 | 257 | two-meta-rules | 5 |
@@ -420,8 +421,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 284 |
-| Need Improvement | 13 |
+| Improved / Don't Need Improvement | 285 |
+| Need Improvement | 12 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
