@@ -408,8 +408,8 @@ export const defaultChecklists: Record<string, ChecklistItem[]> = {
     {
       id: generateId('ltv-system', 24),
       title: 'Connect and set up loyalty program (5-10% earning per purchase)',
-      link: 'https://smile.io/',
-      linkText: 'Get Smile.io',
+      link: 'https://partners.avada.io/i/a/LG19U',
+      linkText: 'Connect',
     },
     {
       id: generateId('ltv-system', 25),
