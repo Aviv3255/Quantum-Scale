@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #22c55e; --accent-dark: #16a34a; --accent-light: #4ade80; --accent-rgb: 34, 197, 94; }
@@ -43,151 +40,52 @@
       description: 'Why the answer is NO - and what to do instead.',
       accentColor: '#22c55e',
       duration: '5 min',
-      nextLesson: { id: 'meta-attribution-test', title: 'Meta Attribution Test', teaser: 'Is Meta lying about your creative performance? The shocking truth revealed.' }
+      nextLesson: { id: 'meta-attribution-test', title: 'Meta Attribution Test', teaser: 'Is Meta lying about your creative performance?' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why WhatsApp support creates more problems than it solves', 'The hidden costs of being "too accessible"', 'What to use instead for premium brand positioning'] },
-      { type: 'hook', headline: 'Every store owner thinks adding WhatsApp will increase sales. They\'re wrong.', subtext: 'WhatsApp feels modern. It feels helpful. It feels like you\'re giving amazing customer service. But here\'s what actually happens: you get bombarded with "Is this available?" at 2 AM, duplicate inquiries across 3 channels, and customers who ghost after 47 messages. Meanwhile, your serious buyers can\'t find a proper way to reach you.' },
-      { type: 'content', title: 'The Accessibility Paradox', body: 'Being "too accessible" doesn\'t build trust. It destroys it. When customers can reach you instantly on WhatsApp, they treat you like a corner store - not a premium brand. They ask questions before reading your product page. They haggle on price. They expect instant responses at midnight. This isn\'t customer service. This is chaos.' },
-      { type: 'chat-mockup', title: 'WhatsApp Reality Check', messages: [
-        { from: 'customer', text: 'Hey is this available?', time: '2:34 AM' },
-        { from: 'customer', text: 'What about this one?', time: '2:35 AM' },
-        { from: 'customer', text: 'Can you send more pics?', time: '2:37 AM' },
-        { from: 'customer', text: 'What\'s your best price?', time: '2:38 AM' },
-        { from: 'customer', text: 'Still there? Hello?', time: '2:42 AM' }
-      ], insight: 'At 9 AM, they ordered from someone else. Zero chance of a sale, maximum chaos.' },
-      { type: 'data-comparison', title: 'The Impact on Your Workload', comparisons: [
-        { label: 'Response Time Expectation', value: '< 5 min', percentage: 85, color: '#ef4444' },
-        { label: 'Inquiries That Convert', value: '12%', percentage: 12, color: '#f59e0b' },
-        { label: 'Duplicate Questions', value: '68%', percentage: 68, color: '#ef4444' }
-      ]},
-      { type: 'cards', title: 'The 4 Problems WhatsApp Creates', items: [
-        { title: '1. Unnecessary Overload', description: 'You become a 24/7 chat support agent. Every question - even ones answered on your product page - lands in your WhatsApp.' },
-        { title: '2. Duplicate Inquiries', description: 'Customers message you on WhatsApp, then email, then contact form. You answer the same question three times.' },
-        { title: '3. Signal vs Noise', description: 'Serious buyers with real issues can\'t reach you because you\'re drowning in "What colors do you have?" messages.' },
-        { title: '4. Brand Positioning', description: 'Premium brands don\'t use WhatsApp support. When you do, you signal: "We\'re cheap and desperate for sales."' }
-      ]},
-      { type: 'example', scenario: 'Customer Support Channel Comparison', before: { label: 'WhatsApp Chaos', text: '"Hey is this available? What about this one? Can you send more pics? What\'s your best price? Still there? Hello?"' }, after: { label: 'Structured Contact Form', text: '"I received my order but the sizing seems off. Order #4729. Can you help?" [Includes order number, clear issue, ready to solve]' }, insight: 'WhatsApp attracts tire-kickers. Contact forms filter for serious customers.' },
-      { type: 'callout-box', label: 'Key Insight', title: 'Email Is Better. Here\'s Why.', body: 'Email forces customers to think before they ask. They have to articulate their actual problem. This filters out the majority of noise and leaves you with real inquiries from people who are ready to buy or need genuine help. Plus, email creates a paper trail, keeps everything organized, and doesn\'t make you feel obligated to respond at 11 PM.' },
-      { type: 'split-content', title: 'The Premium Brand Strategy', left: { heading: 'What Works', body: 'A structured contact form on your site + email in the footer. That\'s it. Your contact form should ask for: Order number (if applicable), Issue category, Detailed message.' }, right: { heading: 'Why It Works', body: 'This filters out lazy inquiries and ensures serious customers get fast, quality help. And it positions you as a premium brand - not a desperate seller begging for attention.' } },
-      { type: 'image', title: 'Professional Contact Form Example', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/56.jpg?v=1763062329', caption: 'Clean, structured, and professional. This is what separates you from the other 30 million Shopify stores.' },
-      { type: 'stat-counter', title: 'The Differentiation Factor', stats: [
-        { label: 'Online Stores Worldwide', target: 30, suffix: 'M+', duration: 2000, color: '#6b7280' },
-        { label: 'Using Same Templates', target: 89, suffix: '%', duration: 2200, color: '#ef4444' },
-        { label: 'With Professional Contact Forms', target: 3, suffix: '%', duration: 1800, color: '#22c55e' }
-      ], insight: 'A special contact form is one small way to differentiate. It shows you value organization over chaos, you respect time, and you\'re a serious business.' },
-      { type: 'implementation', title: 'Add This Contact Form to Your Store', intro: "Here\'s how to implement this in your store:", steps: [
-        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
-        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
-        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
-        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
-      ], toolUrl: 'https://platform.shoffi.app/r/rl_WvFtTikK', cta: 'Get Started Free' },
-      { type: 'quiz', question: 'According to this lesson, what\'s the main problem with WhatsApp support?', options: ['It costs too much to set up', 'It creates unnecessary overload and positions you as cheap', 'Customers don\'t like using it', 'It doesn\'t integrate with Shopify'], correctIndex: 1, feedback: { correct: 'Exactly. WhatsApp makes you "too accessible" which creates chaos, duplicate inquiries, and signals you\'re desperate. Premium brands use structured contact forms + email instead.', incorrect: 'Not quite. The core issue is that WhatsApp creates unnecessary overload, attracts tire-kickers, and positions you as a cheap brand. Structured contact forms filter for serious customers and signal professionalism.' }},
-      { type: 'completion', sources: [{ name: 'Shoffi Contact Form', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }] }
-    ];
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', decimals = 0, duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
+    };
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -195,124 +93,324 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      MessageCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      AlertTriangle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Mail: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      FileText: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+      Square: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
     };
 
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
-      const [count, setCount] = useState(0);
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why WhatsApp support creates more problems than it solves', 'The hidden costs of being too accessible', 'What to use instead for premium brand positioning'] },
+      { type: 'hook', headline: 'Every store owner thinks adding WhatsApp will increase sales. They are wrong.', subtext: 'WhatsApp feels modern. It feels helpful. But here is what actually happens: you get bombarded at 2 AM, duplicate inquiries across channels, and customers who ghost after 47 messages. Meanwhile, serious buyers cannot find a proper way to reach you.' },
+      { type: 'chat-chaos', title: 'WhatsApp Reality Check', messages: [{ text: 'Hey is this available?', time: '2:34 AM' }, { text: 'What about this one?', time: '2:35 AM' }, { text: 'Can you send more pics?', time: '2:37 AM' }, { text: 'Whats your best price?', time: '2:38 AM' }, { text: 'Still there? Hello?', time: '2:42 AM' }], outcome: 'At 9 AM, they ordered from someone else. Zero chance of a sale, maximum chaos.' },
+      { type: 'accessibility-paradox', title: 'The Accessibility Paradox', comparisons: [{ label: 'TOO ACCESSIBLE', icon: 'MessageCircle', traits: ['Instant expectations', 'Price haggling', 'Midnight questions', 'Corner store vibe'], result: 'DESTROYS TRUST' }, { label: 'PREMIUM BRAND', icon: 'Crown', traits: ['Structured contact', 'Clear boundaries', 'Professional response', 'Premium positioning'], result: 'BUILDS TRUST' }] },
+      { type: 'workload-impact', title: 'The Impact on Your Workload', stats: [{ value: 5, suffix: ' min', label: 'Response Expectation', subtext: 'What customers demand', color: '#ef4444' }, { value: 12, suffix: '%', label: 'Inquiries Convert', subtext: 'Actually buy something', color: '#f59e0b' }, { value: 68, suffix: '%', label: 'Duplicate Questions', subtext: 'Already answered elsewhere', color: '#ef4444' }] },
+      { type: 'problem-breakdown', title: 'The 4 Problems WhatsApp Creates', problems: [{ icon: 'AlertTriangle', title: 'Unnecessary Overload', description: 'You become a 24/7 chat support agent. Every question - even ones answered on your product page - lands in your WhatsApp.' }, { icon: 'Users', title: 'Duplicate Inquiries', description: 'Customers message you on WhatsApp, then email, then contact form. You answer the same question three times.' }, { icon: 'Target', title: 'Signal vs Noise', description: 'Serious buyers with real issues cannot reach you because you are drowning in basic questions.' }, { icon: 'Crown', title: 'Brand Positioning', description: 'Premium brands do not use WhatsApp support. When you do, you signal: We are cheap and desperate for sales.' }] },
+      { type: 'channel-comparison', title: 'Channel Comparison', before: { label: 'WHATSAPP CHAOS', example: 'Hey is this available? What about this one? Can you send more pics? Whats your best price? Still there?', result: 'ATTRACTS TIRE-KICKERS' }, after: { label: 'STRUCTURED FORM', example: 'I received my order but the sizing seems off. Order #4729. Can you help?', result: 'FILTERS FOR SERIOUS BUYERS' }, winnerText: 'BETTER' },
+      { type: 'email-advantage', title: 'Email Is Better. Here Is Why.', insight: 'Email forces customers to think before they ask. They have to articulate their actual problem. This filters out the majority of noise and leaves you with real inquiries from people who are ready to buy or need genuine help.', benefits: ['Creates paper trail', 'Everything organized', 'No midnight obligation', 'Professional positioning'] },
+      { type: 'premium-strategy', title: 'The Premium Brand Strategy', leftSide: { heading: 'What Works', points: ['Structured contact form on site', 'Email in the footer', 'Order number field', 'Issue category dropdown', 'Clear message field'] }, rightSide: { heading: 'Why It Works', points: ['Filters lazy inquiries', 'Ensures quality help', 'Positions you as premium', 'Not a desperate seller', 'Builds brand trust'] } },
+      { type: 'differentiation-stats', title: 'The Differentiation Factor', stats: [{ value: 30, suffix: 'M+', label: 'Online Stores', subtext: 'Worldwide' }, { value: 89, suffix: '%', label: 'Same Templates', subtext: 'Generic experience' }, { value: 3, suffix: '%', label: 'Professional Forms', subtext: 'Stand out from crowd' }], insight: 'A professional contact form is one way to differentiate. It shows you value organization over chaos.' },
+      { type: 'action-checklist', title: 'Implementation Steps', steps: [{ text: 'Remove WhatsApp button from store', rule: 'STEP 1' }, { text: 'Install structured contact form app', rule: 'STEP 2' }, { text: 'Add email to footer only', rule: 'STEP 3' }, { text: 'Set clear response time expectations', rule: 'STEP 4' }], toolUrl: 'https://platform.shoffi.app/r/rl_WvFtTikK', cta: 'Get Contact Form' },
+      { type: 'quiz', question: 'According to this lesson, what is the main problem with WhatsApp support?', options: ['It costs too much to set up', 'It creates unnecessary overload and positions you as cheap', 'Customers do not like using it', 'It does not integrate with Shopify'], correctIndex: 1, feedback: { correct: 'Exactly. WhatsApp makes you too accessible which creates chaos, duplicate inquiries, and signals you are desperate. Premium brands use structured contact forms + email instead.', incorrect: 'Not quite. The core issue is that WhatsApp creates unnecessary overload, attracts tire-kickers, and positions you as a cheap brand.' } },
+      { type: 'elite-insight', quote: 'Being too accessible does not build trust. It destroys it. Premium brands create structure, not chaos.', actions: [{ icon: 'X', label: 'Remove WhatsApp' }, { icon: 'FileText', label: 'Add Contact Form' }, { icon: 'Crown', label: 'Position Premium' }] },
+      { type: 'completion', sources: [{ name: 'Shoffi Contact Form', url: 'https://platform.shoffi.app/r/rl_WvFtTikK' }] }
+    ];
+
+    // ==================== CUSTOM ELITE SLIDES ====================
+
+    const ChatChaosSlide = ({ data }) => {
+      const [visibleMessages, setVisibleMessages] = useState([]);
       useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) {
-            setCount(target);
-            clearInterval(timer);
-          } else {
-            setCount(Math.floor(start));
-          }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{count}{suffix}</span>;
+        const timers = data.messages.map((_, i) => setTimeout(() => setVisibleMessages(prev => [...prev, i]), 600 + i * 800));
+        return () => timers.forEach(t => clearTimeout(t));
+      }, [data.messages.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div style={{ background: '#e5ddd5', borderRadius: '20px', padding: '20px', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {data.messages.map((msg, i) => (
+                <AnimatePresence key={i}>
+                  {visibleMessages.includes(i) && (
+                    <motion.div initial={{ opacity: 0, x: -20, scale: 0.9 }} animate={{ opacity: 1, x: 0, scale: 1 }} style={{ alignSelf: 'flex-start', maxWidth: '85%' }}>
+                      <div style={{ background: 'white', borderRadius: '12px', padding: '12px 16px', boxShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
+                        <p style={{ fontSize: '14px', color: '#1a1a1a', marginBottom: '4px' }}>{msg.text}</p>
+                        <p style={{ fontSize: '10px', color: '#737373', textAlign: 'right' }}>{msg.time}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              ))}
+            </div>
+          </div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: visibleMessages.length === data.messages.length ? 1 : 0 }} transition={{ delay: 0.5 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <p style={{ color: '#fca5a5', fontSize: '15px', fontWeight: '600' }}>{data.outcome}</p>
+          </motion.div>
+        </div>
+      );
     };
 
-    // Chat Mockup Slide Component
-    const ChatMockupSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto py-8 slide-scroll overflow-y-auto">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="bg-[#e5ddd5] rounded-2xl p-4 shadow-lg mb-4">
-          <div className="space-y-3">
-            {data.messages.map((msg, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.4 }} className={`flex ${msg.from === 'customer' ? 'justify-start' : 'justify-end'}`}>
-                <div className={`max-w-[80%] rounded-lg p-3 ${msg.from === 'customer' ? 'bg-white' : 'bg-[#dcf8c6]'}`}>
-                  <p className="text-sm text-neutral-800">{msg.text}</p>
-                  <p className="text-[10px] text-neutral-500 text-right mt-1">{msg.time}</p>
-                </div>
-              </motion.div>
-            ))}
+    const AccessibilityParadoxSlide = ({ data }) => {
+      const [activeComparison, setActiveComparison] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveComparison(prev => (prev + 1) % 2), 4000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            {data.comparisons.map((comp, i) => {
+              const Icon = Icons[comp.icon] || Icons.Zap;
+              const isActive = i === activeComparison;
+              const isBad = i === 0;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} style={{ background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white', borderRadius: '20px', padding: '28px', border: isActive ? `2px solid ${isBad ? '#ef4444' : 'var(--accent)'}` : '2px solid #e5e5e5', boxShadow: isActive ? `0 0 30px ${isBad ? 'rgba(239, 68, 68, 0.2)' : 'rgba(var(--accent-rgb), 0.2)'}` : 'none', transition: 'all 0.3s ease', position: 'relative', overflow: 'hidden' }}>
+                  {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, transparent, ${isBad ? '#ef4444' : 'var(--accent)'}, transparent)` }} />}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: isBad ? (isActive ? '#ef4444' : '#fef2f2') : (isActive ? 'var(--accent)' : '#f0fdf4'), display: 'flex', alignItems: 'center', justifyContent: 'center', color: isBad ? (isActive ? 'white' : '#ef4444') : (isActive ? 'white' : 'var(--accent)') }}><Icon /></div>
+                    <span style={{ fontWeight: '700', fontSize: '14px', color: isActive ? 'white' : '#171717' }}>{comp.label}</span>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
+                    {comp.traits.map((trait, j) => (
+                      <div key={j} style={{ fontSize: '13px', color: isActive ? '#a3a3a3' : '#737373', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: isBad ? '#ef4444' : 'var(--accent)' }} />
+                        {trait}
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ padding: '8px 16px', background: isBad ? (isActive ? 'rgba(239, 68, 68, 0.2)' : '#fef2f2') : (isActive ? 'rgba(var(--accent-rgb), 0.2)' : '#f0fdf4'), borderRadius: '20px', textAlign: 'center' }}>
+                    <span style={{ fontSize: '12px', fontWeight: '700', color: isBad ? '#ef4444' : 'var(--accent)' }}>{comp.result}</span>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
-        {data.insight && (
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }} className="text-center text-neutral-600 text-sm mt-4 font-medium leading-relaxed">{data.insight}</motion.p>
-        )}
-      </div>
-    );
+      );
+    };
 
-    // Data Comparison Bars Component
-    const DataComparisonSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8 slide-scroll overflow-y-auto">
+    const WorkloadImpactSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="space-y-6">
-          {data.comparisons.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }}>
-              <div className="flex justify-between mb-2">
-                <span className="font-medium text-neutral-700 text-sm md:text-base">{item.label}</span>
-                <span className="font-bold text-base md:text-lg" style={{ color: item.color }}>{item.value}</span>
-              </div>
-              <div className="h-4 bg-neutral-200 rounded-full overflow-hidden">
-                <motion.div initial={{ width: 0 }} animate={{ width: `${item.percentage}%` }} transition={{ duration: 1.2, delay: 0.3 + i * 0.15 }} className="h-full rounded-full" style={{ background: item.color }} />
-              </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+              <div style={{ fontSize: '48px', fontWeight: '900', color: stat.color, marginBottom: '8px' }}><AnimatedCounter target={stat.value} suffix={stat.suffix} /></div>
+              <div style={{ color: 'white', fontWeight: '700', fontSize: '15px', marginBottom: '4px' }}>{stat.label}</div>
+              <div style={{ color: '#a3a3a3', fontSize: '13px' }}>{stat.subtext}</div>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
-    // Callout Box Component
-    const CalloutBoxSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8 slide-scroll overflow-y-auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="relative w-full">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent opacity-10 blur-2xl" />
-          <div className="relative bg-neutral-900 rounded-2xl p-8 md:p-10 border border-neutral-800">
-            <div className="absolute -top-4 left-6 px-4 py-1 rounded-full text-white text-xs font-bold uppercase tracking-wider" style={{ background: 'var(--accent)' }}>{data.label}</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-white mb-4">{data.title}</h2>
-            <p className="text-neutral-300 leading-relaxed text-base md:text-lg">{data.body}</p>
+    const ProblemBreakdownSlide = ({ data }) => {
+      const [activeProblem, setActiveProblem] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveProblem(prev => (prev + 1) % data.problems.length), 3000);
+        return () => clearInterval(timer);
+      }, [data.problems.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+            {data.problems.map((problem, i) => {
+              const Icon = Icons[problem.icon] || Icons.Zap;
+              const isActive = i === activeProblem;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} style={{ background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white', borderRadius: '16px', padding: '24px', border: isActive ? '2px solid #ef4444' : '2px solid #e5e5e5', boxShadow: isActive ? '0 0 30px rgba(239, 68, 68, 0.2)' : 'none', transition: 'all 0.3s ease', position: 'relative', overflow: 'hidden' }}>
+                  {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />}
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: isActive ? '#ef4444' : '#fef2f2', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: isActive ? 'white' : '#ef4444' }}><Icon /></div>
+                  <h3 style={{ fontWeight: '700', fontSize: '16px', marginBottom: '8px', color: isActive ? 'white' : '#171717' }}>{problem.title}</h3>
+                  <p style={{ fontSize: '14px', lineHeight: '1.6', color: isActive ? '#a3a3a3' : '#737373' }}>{problem.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    const ChannelComparisonSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', position: 'relative' }}>
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: '#fef2f2', border: '2px solid #fca5a5', borderRadius: '20px', padding: '28px' }}>
+              <div style={{ display: 'inline-block', padding: '6px 14px', background: '#ef4444', color: 'white', borderRadius: '20px', fontSize: '12px', fontWeight: '700', marginBottom: '16px' }}>{data.before.label}</div>
+              <p style={{ color: '#525252', fontSize: '14px', lineHeight: '1.7', marginBottom: '20px', fontStyle: 'italic' }}>"{data.before.example}"</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Icons.X /><span style={{ color: '#dc2626', fontWeight: '700', fontSize: '14px' }}>{data.before.result}</span></div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} style={{ background: '#f0fdf4', border: '2px solid #86efac', borderRadius: '20px', padding: '28px' }}>
+              <div style={{ display: 'inline-block', padding: '6px 14px', background: '#22c55e', color: 'white', borderRadius: '20px', fontSize: '12px', fontWeight: '700', marginBottom: '16px' }}>{data.after.label}</div>
+              <p style={{ color: '#525252', fontSize: '14px', lineHeight: '1.7', marginBottom: '20px', fontStyle: 'italic' }}>"{data.after.example}"</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Icons.Check /><span style={{ color: '#16a34a', fontWeight: '700', fontSize: '14px' }}>{data.after.result}</span></div>
+            </motion.div>
+            <AnimatePresence>
+              {showWinner && (
+                <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', color: 'white', padding: '12px 24px', borderRadius: '30px', fontWeight: '900', fontSize: '18px', boxShadow: '0 8px 30px rgba(var(--accent-rgb), 0.4)', zIndex: 10 }}>{data.winnerText}</motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const EmailAdvantageSlide = ({ data }) => {
+      const [visibleBenefits, setVisibleBenefits] = useState([]);
+      useEffect(() => {
+        const timers = data.benefits.map((_, i) => setTimeout(() => setVisibleBenefits(prev => [...prev, i]), 1500 + i * 400));
+        return () => timers.forEach(t => clearTimeout(t));
+      }, [data.benefits.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '32px', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.4)' }}><Icons.Mail /></div>
+            <p style={{ color: '#e5e5e5', fontSize: '17px', lineHeight: '1.7' }}>{data.insight}</p>
+          </motion.div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+            {data.benefits.map((benefit, i) => (
+              <AnimatePresence key={i}>
+                {visibleBenefits.includes(i) && (
+                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'white', border: '2px solid #e5e5e5', borderRadius: '12px', padding: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', flexShrink: 0 }}><Icons.Check /></div>
+                    <span style={{ fontSize: '14px', color: '#525252', fontWeight: '500' }}>{benefit}</span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    const PremiumStrategySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <h3 style={{ color: 'var(--accent)', fontWeight: '700', fontSize: '18px', marginBottom: '20px' }}>{data.leftSide.heading}</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {data.leftSide.points.map((point, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--accent)', flexShrink: 0 }} />
+                  <span style={{ color: '#e5e5e5', fontSize: '14px' }}>{point}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} style={{ background: 'white', border: '2px solid var(--accent)', borderRadius: '20px', padding: '28px' }}>
+            <h3 style={{ color: 'var(--accent)', fontWeight: '700', fontSize: '18px', marginBottom: '20px' }}>{data.rightSide.heading}</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {data.rightSide.points.map((point, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(var(--accent-rgb), 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', flexShrink: 0 }}><Icons.Check /></div>
+                  <span style={{ color: '#525252', fontSize: '14px' }}>{point}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const DifferentiationStatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '24px' }}>
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: i === 2 ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white', borderRadius: '20px', padding: '28px', textAlign: 'center', border: i === 2 ? '2px solid var(--accent)' : '2px solid #e5e5e5', position: 'relative', overflow: 'hidden' }}>
+              {i === 2 && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+              <div style={{ fontSize: '48px', fontWeight: '900', color: i === 2 ? 'var(--accent)' : '#a3a3a3', marginBottom: '8px' }}><AnimatedCounter target={stat.value} suffix={stat.suffix} /></div>
+              <div style={{ color: i === 2 ? 'white' : '#525252', fontWeight: '700', fontSize: '15px', marginBottom: '4px' }}>{stat.label}</div>
+              <div style={{ color: i === 2 ? '#a3a3a3' : '#737373', fontSize: '13px' }}>{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <p style={{ color: '#e5e5e5', fontSize: '15px' }}>{data.insight}</p>
+        </motion.div>
+      </div>
+    );
+
+    const ActionChecklistSlide = ({ data }) => {
+      const [checkedItems, setCheckedItems] = useState([]);
+      useEffect(() => {
+        const timers = data.steps.map((_, i) => setTimeout(() => setCheckedItems(prev => [...prev, i]), 1000 + i * 800));
+        return () => timers.forEach(t => clearTimeout(t));
+      }, [data.steps.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '24px' }}>
+            {data.steps.map((step, i) => {
+              const isChecked = checkedItems.includes(i);
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} style={{ background: isChecked ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white', border: isChecked ? '2px solid var(--accent)' : '2px solid #e5e5e5', borderRadius: '16px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', position: 'relative', overflow: 'hidden', transition: 'all 0.3s ease' }}>
+                  {isChecked && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: isChecked ? 'var(--accent)' : '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isChecked ? 'white' : '#d4d4d4', flexShrink: 0, transition: 'all 0.3s ease' }}>{isChecked ? <Icons.Check /> : <Icons.Square />}</div>
+                  <div style={{ flex: 1 }}><p style={{ color: isChecked ? 'white' : '#525252', fontSize: '15px', fontWeight: '500' }}>{step.text}</p></div>
+                  <div style={{ padding: '6px 12px', background: isChecked ? 'rgba(var(--accent-rgb), 0.2)' : '#f5f5f5', borderRadius: '20px', fontSize: '11px', fontWeight: '700', color: isChecked ? 'var(--accent)' : '#737373', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{step.rule}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+          {data.toolUrl && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} style={{ textAlign: 'center' }}>
+              <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 28px', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', color: 'white', borderRadius: '12px', fontWeight: '600', fontSize: '15px', textDecoration: 'none', boxShadow: '0 8px 30px rgba(var(--accent-rgb), 0.3)' }}>{data.cta} <Icons.ExternalLink /></a>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.4)' }}><Icons.Shield /></div>
+          <p style={{ color: 'white', fontSize: '22px', fontWeight: '600', lineHeight: '1.6', marginBottom: '32px' }}>"{data.quote}"</p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px' }}>
+            {data.actions.map((action, i) => {
+              const Icon = Icons[action.icon] || Icons.Zap;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(var(--accent-rgb), 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}><Icon /></div>
+                  <span style={{ color: '#a3a3a3', fontSize: '12px', fontWeight: '600' }}>{action.label}</span>
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       </div>
     );
 
-    // Split Content Component
-    const SplitContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 border-2 border-green-200">
-            <h3 className="font-bold text-green-900 mb-3 text-lg">{data.left.heading}</h3>
-            <p className="text-neutral-700 leading-relaxed text-sm md:text-base">{data.left.body}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 border-2 border-blue-200">
-            <h3 className="font-bold text-blue-900 mb-3 text-lg">{data.right.heading}</h3>
-            <p className="text-neutral-700 leading-relaxed text-sm md:text-base">{data.right.body}</p>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    // Stat Counter Component
-    const StatCounterSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8 slide-scroll overflow-y-auto">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-6 mb-6">
-          {data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-6 text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color }}>
-                <AnimatedCounter target={stat.target} suffix={stat.suffix} duration={stat.duration} />
-              </div>
-              <div className="text-xs md:text-sm text-neutral-600 font-medium">{stat.label}</div>
-            </motion.div>
-          ))}
-        </div>
-        {data.insight && (
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }} className="text-center text-neutral-600 text-sm md:text-base leading-relaxed">{data.insight}</motion.p>
-        )}
-      </div>
-    );
-
+    // Standard Slides
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -321,21 +419,21 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl text-black mb-2">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-2 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-2">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-sm leading-snug">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
@@ -343,167 +441,13 @@
 
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto py-8 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ImageSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden border-2 border-neutral-200 bg-white mb-4">
-          <img src={data.image} alt={data.title} className="w-full h-auto" />
-        </motion.div>
-        {data.caption && (
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center text-sm text-neutral-600 leading-relaxed">{data.caption}</motion.p>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            {data.cta || 'Get Started'} <Icons.ExternalLink />
-          </a>
-        </motion.div>}
       </div>
     );
 
@@ -516,12 +460,12 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto py-8 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
@@ -530,10 +474,8 @@
               {data.options.map((option, i) => (
                 <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                    </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>{showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}</span>
+                    <span className="text-neutral-700 text-sm">{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -551,52 +493,35 @@
     };
 
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Skip WhatsApp. Use a structured contact form + email instead. Filter noise, position premium, and focus on serious customers only.</motion.p>
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(var(--accent-rgb), 0.35)' }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md">Skip WhatsApp. Use a structured contact form + email. Position yourself as a premium brand.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE', lessonId: LESSON_CONFIG.id }, '*')} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Complete Lesson</motion.button>
       </div>
     );
 
+    // Main App
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
+      const [currentSlide, setCurrentSlide] = useState(() => getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
-      const currentSlideRef = React.useRef(0);
+      const currentSlideRef = React.useRef(currentSlide);
       const [gifConfig, setGifConfig] = useState(null);
       const [isAnimating, setIsAnimating] = useState(false);
 
       const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
       const hideGif = useCallback(() => setGifConfig(null), []);
 
-      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+      useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -628,17 +553,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'chat-mockup': return <ChatMockupSlide data={slide} />;
-          case 'data-comparison': return <DataComparisonSlide data={slide} />;
-          case 'callout-box': return <CalloutBoxSlide data={slide} />;
-          case 'split-content': return <SplitContentSlide data={slide} />;
-          case 'stat-counter': return <StatCounterSlide data={slide} />;
-          case 'image': return <ImageSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'chat-chaos': return <ChatChaosSlide data={slide} />;
+          case 'accessibility-paradox': return <AccessibilityParadoxSlide data={slide} />;
+          case 'workload-impact': return <WorkloadImpactSlide data={slide} />;
+          case 'problem-breakdown': return <ProblemBreakdownSlide data={slide} />;
+          case 'channel-comparison': return <ChannelComparisonSlide data={slide} />;
+          case 'email-advantage': return <EmailAdvantageSlide data={slide} />;
+          case 'premium-strategy': return <PremiumStrategySlide data={slide} />;
+          case 'differentiation-stats': return <DifferentiationStatsSlide data={slide} />;
+          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -660,15 +584,15 @@
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
             {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+          <div className="px-6 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">
               {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -678,7 +602,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
