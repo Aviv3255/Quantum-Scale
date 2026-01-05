@@ -391,7 +391,7 @@ These lessons need design improvements to reach elite level.
 | 259 | unique-mechanism | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 260 | unity-principle | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 261 | us-vs-them | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
-| 262 | value-ladder | 5 |
+| 262 | value-ladder | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
 | 263 | value-perception-lever | 5 |
 | 264 | visual-priming | 5 |
 | 265 | visual-shorthand | 5 |
@@ -421,8 +421,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 287 |
-| Need Improvement | 10 |
+| Improved / Don't Need Improvement | 288 |
+| Need Improvement | 9 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
