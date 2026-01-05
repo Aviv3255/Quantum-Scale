@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #0891b2; --accent-dark: #0e7490; --accent-light: #22d3ee; --accent-rgb: 8, 145, 178; }
@@ -46,149 +43,33 @@
       nextLesson: { id: 'science-of-selling', title: 'The Science of Selling', teaser: 'The psychology behind why people buy - and how to trigger the buying response.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
+    // Admin Reporter System
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <img src="data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' strokeWidth='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m8 2 1.88 1.88'/%3E%3Cpath d='M14.12 3.88 16 2'/%3E%3Cpath d='M9 7.13v-1a3.003 3.003 0 1 1 6 0v1'/%3E%3Cpath d='M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6'/%3E%3Cpath d='M12 20v-9'/%3E%3C/svg%3E" alt="Report" />
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why you only have 3 seconds to win or lose attention', 'The 3 instant questions every visitor\'s brain asks', 'How to pass the 3-second test on every Shopify page'] },
-      { type: 'hook', headline: 'Right now, someone is looking at your store. Their thumb is ready to scroll.', subtext: '3... 2... 1... In that tiny window, their brain asks: Is this relevant? Is this interesting? Is this worth my time? If you don\'t answer all three with a resounding YES - they\'re gone. Forever. And you never even knew they were there.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys'},
-      { type: 'visual', title: 'The Brutal Reality', visualType: 'stats', data: [
-        { value: '3s', label: 'to capture attention', subtext: 'That\'s your entire window' },
-        { value: '80%', label: 'bounce before scrolling', subtext: 'Never see your offer' },
-        { value: '1', label: 'chance to get it right', subtext: 'No second impressions' }
-      ]},
-      { type: 'content', title: 'The Science of Snap Judgments', body: 'Research from Microsoft and Nielsen confirms: the average attention span for web content is 3-5 seconds. For ads and landing pages? Often less. In those 3 seconds, your brain makes a survival-based snap judgment. This isn\'t conscious - it\'s automatic. And once the brain says "not relevant," no amount of great copy later will save you.' },
-      { type: 'cards', title: 'The 3 Instant Questions', items: [
-        { title: '1. Is This Relevant to Me?', description: 'The first filter. Your headline must immediately signal who this is for and that it applies to THEIR specific situation. Not "We provide solutions" but "For Shopify owners who..."' },
-        { title: '2. Is This Interesting?', description: 'Does it create curiosity or challenge an assumption? Boring doesn\'t survive. "The $2.3M mistake" beats "Improve your marketing" every time.' },
-        { title: '3. Is This Worth My Time?', description: 'What will I gain by continuing? The value proposition must be crystal clear. "Add $10k/month in 90 days" not "Better business outcomes."' }
-      ]},
-      { type: 'example', scenario: 'Fitness Equipment Store', before: { label: 'Fails 3-Second Test', text: '"Quality Home Gym Equipment - Shop Our Collection"' }, after: { label: 'Passes 3-Second Test', text: '"Build a Stronger Body in 15 Min/Day - No Gym Membership Required (847 customers transformed last month)"' }, insight: 'Relevant (busy people) + Interesting (15 min!) + Worth it (847 proof) = Thumb STOPS.' },
-      { type: 'content', title: 'Strategy #1: Front-Load Your Value', body: 'Put your best hook first, not buried. The most important word should be in the first 3 words of your headline. Don\'t save the good stuff for later - there IS no later if they scroll away. Your landing page\'s first sentence should be your strongest, not your warmup.' },
-      { type: 'example', scenario: 'Skincare Store', before: { label: 'Value Buried', text: '"Welcome to Our Store. We believe in the power of nature to transform your skin. Our products are..."' }, after: { label: 'Value Front-Loaded', text: '"Clear Skin in 14 Days - Or Your Money Back. Join 12,847 customers who woke up without breakouts."' }, insight: 'The promise comes FIRST. Details come after you\'ve earned their attention.' },
-      { type: 'content', title: 'Strategy #2: Be Specific, Not Vague', body: '"Save 3 hours per day" beats "save time." "Make $147 per sale" beats "increase revenue." "$23 average order value" beats "higher profits." Specificity signals credibility and creates mental pictures. Vague claims are invisible - they blend in with every other page.' },
-      { type: 'visual', title: 'Vague vs. Specific Headlines', visualType: 'comparison', data: {
-        left: { label: 'Vague', value: '1.2%', result: '"Improve Your Health"', color: '#94a3b8' },
-        right: { label: 'Specific', value: '4.8%', result: '"Lose 7 Pounds in 21 Days"', color: '#0891b2' },
-        center: { label: 'CTR Lift', value: '+300%', result: 'Same product, different specificity', color: '#10b981' }
-      }},
-      { type: 'content', title: 'Strategy #3: Create a Curiosity Gap', body: 'Open a loop the brain needs to close. "The counter-intuitive approach that..." or "Why 93% of store owners get this wrong..." creates cognitive tension that demands resolution. The brain can\'t scroll away from an unanswered question that feels relevant to them.' },
-      { type: 'example', scenario: 'Pet Products Store', before: { label: 'No Curiosity', text: '"Premium Dog Food Made With Real Ingredients"' }, after: { label: 'Curiosity Gap', text: '"The Ingredient in 94% of \'Premium\' Dog Foods That\'s Actually Making Your Dog Sick (Hint: It\'s Not What You Think)"' }, insight: 'They HAVE to know what the ingredient is. That\'s the power of a curiosity gap.' },
-      { type: 'cards', title: 'Common 3-Second Killers', items: [
-        { title: 'Leading with Your Brand', description: 'Nobody cares about your company name in the first 3 seconds. They care about THEIR problem. Lead with them, not you.' },
-        { title: 'Being Clever Over Clear', description: 'Puns and wordplay force the brain to work. In 3 seconds, confusion = abandonment. Clear always beats clever.' },
-        { title: 'Generic Benefit Claims', description: '"Save time and money" is invisible because everyone says it. Specificity cuts through the noise.' },
-        { title: 'Burying the Hook', description: 'Your best insight belongs in the headline, not paragraph three. Front-load value. Always.' }
-      ]},
-      { type: 'content', title: 'Know What ACTUALLY Stops Their Scroll', body: 'Here\'s the million-dollar question: What REALLY makes YOUR customers stop scrolling? Not what you think. Not what competitors do. What works for YOUR audience? The answer isn\'t in your analytics - it\'s in their heads. And the only way to get it is to ask them directly, right after they buy.' },
-      { type: 'implementation', title: 'Ask Your Buyers: What Made You Stop?', intro: "Stop guessing what your customers want. Here\'s how to get the truth:", steps: [
-        { step: 1, title: 'Set up post-purchase surveys', description: 'Apps like Grapevine show a short survey right after checkout - when customers are most honest about why they bought.' },
-        { step: 2, title: 'Ask the right questions', description: '"How did you hear about us?" "What almost stopped you from buying?" "What made you choose us?" - These reveal your real audience.' },
-        { step: 3, title: 'Collect 50-100 responses', description: 'After about 100 responses, clear patterns emerge. You\'ll often find 80%+ saying the same unexpected thing.' },
-        { step: 4, title: 'Update your messaging', description: 'Use exact customer language in your ads and pages. Stop guessing - start knowing.' }
-      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
-      { type: 'quiz', question: 'Which Shopify product page headline would PASS the 3-second test?', options: ['"Welcome to Our Store - Quality Products Since 2019"', '"Premium Yoga Mats for Your Practice - Shop Now"', '"Do 60-Minute Yoga Sessions in 20 Minutes (Same Results, Triple the Time Saved)"', '"We Provide the Best Yoga Equipment at Great Prices"'], correctIndex: 2, feedback: { correct: 'Exactly! It passes all 3 questions: Relevant (yoga practitioners), Interesting (60 min in 20?!), Worth it (triple time saved). Specific numbers + curiosity gap + clear benefit = scroll-stopping power.', incorrect: 'Not quite. The winning headline passes all 3 tests: Is it relevant? (yes - yoga practitioners) Is it interesting? (yes - 60 min in 20?!) Is it worth their time? (yes - triple time saved). It uses specific numbers and creates a curiosity gap.' }},
-      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
-    ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -196,10 +77,89 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Brain: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/></svg>,
+      HelpCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Timer: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2"/><path d="M5 3L2 6"/><path d="M22 6l-3-3"/><path d="M12 5V3"/></svg>,
+      Frown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
+      Smile: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Scroll: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>,
+      User: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
     };
+
+    // AnimatedCounter component
+    const AnimatedCounter = ({ value, duration = 1.5, decimals = 0 }) => {
+      const [displayValue, setDisplayValue] = useState(0);
+      const numericValue = parseFloat(value) || 0;
+
+      useEffect(() => {
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setDisplayValue(numericValue * eased);
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [numericValue, duration]);
+
+      return <span>{displayValue.toFixed(decimals)}</span>;
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why you only have 3 seconds to win or lose attention', 'The 3 instant questions every visitor\'s brain asks', 'How to pass the 3-second test on every Shopify page'] },
+      { type: 'hook', headline: 'Right now, someone is looking at your store. Their thumb is ready to scroll.', subtext: '3... 2... 1... In that tiny window, their brain asks: Is this relevant? Is this interesting? Is this worth my time? If you don\'t answer all three with a resounding YES - they\'re gone. Forever.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys' },
+      { type: 'countdown', title: 'The Brutal Reality', stats: [
+        { value: '3', suffix: 's', label: 'to capture attention', subtext: 'That\'s your entire window' },
+        { value: '80', suffix: '%', label: 'bounce before scrolling', subtext: 'Never see your offer' },
+        { value: '1', suffix: '', label: 'chance to get it right', subtext: 'No second impressions' }
+      ]},
+      { type: 'brain-judgment', title: 'The Science of Snap Judgments', content: 'Research from Microsoft and Nielsen confirms: the average attention span for web content is 3-5 seconds. In those 3 seconds, your brain makes a survival-based snap judgment. This isn\'t conscious - it\'s automatic.' },
+      { type: 'three-questions', title: 'The 3 Instant Questions', questions: [
+        { question: 'Is This Relevant to Me?', answer: 'The first filter. Your headline must immediately signal who this is for.', example: '"For Shopify owners who..." not "We provide solutions"', icon: 'Target' },
+        { question: 'Is This Interesting?', answer: 'Does it create curiosity or challenge an assumption? Boring doesn\'t survive.', example: '"The $2.3M mistake" beats "Improve your marketing"', icon: 'Lightbulb' },
+        { question: 'Is This Worth My Time?', answer: 'What will I gain by continuing? The value proposition must be crystal clear.', example: '"Add $10k/month in 90 days" not "Better business outcomes"', icon: 'TrendingUp' }
+      ]},
+      { type: 'headline-battle', title: 'The Headline Battle', scenario: 'Fitness Equipment Store', before: { text: 'Quality Home Gym Equipment - Shop Our Collection', conversion: '1.2' }, after: { text: 'Build a Stronger Body in 15 Min/Day - No Gym Membership Required (847 customers transformed last month)', conversion: '4.7' }},
+      { type: 'strategy-reveal', strategyNum: 1, title: 'Front-Load Your Value', content: 'Put your best hook first, not buried. The most important word should be in the first 3 words of your headline.', before: 'Welcome to Our Store. We believe in the power of nature to transform your skin...', after: 'Clear Skin in 14 Days - Or Your Money Back. Join 12,847 customers who woke up without breakouts.' },
+      { type: 'vague-vs-specific', title: 'Vague vs. Specific Headlines', pairs: [
+        { vague: 'Save time', specific: 'Save 3 hours per day' },
+        { vague: 'Increase revenue', specific: 'Make $147 per sale' },
+        { vague: 'Higher profits', specific: '$23 average order value' }
+      ], result: { vagueConversion: '1.2', specificConversion: '4.8', lift: '+300%' }},
+      { type: 'strategy-reveal', strategyNum: 3, title: 'Create a Curiosity Gap', content: 'Open a loop the brain needs to close. The brain can\'t scroll away from an unanswered question that feels relevant.', before: 'Premium Dog Food Made With Real Ingredients', after: 'The Ingredient in 94% of "Premium" Dog Foods That\'s Actually Making Your Dog Sick (Hint: It\'s Not What You Think)' },
+      { type: 'killers-grid', title: 'Common 3-Second Killers', killers: [
+        { title: 'Leading with Your Brand', description: 'Nobody cares about your company name in the first 3 seconds. Lead with THEM.', icon: 'User' },
+        { title: 'Being Clever Over Clear', description: 'Puns and wordplay force the brain to work. Confusion = abandonment.', icon: 'HelpCircle' },
+        { title: 'Generic Benefit Claims', description: '"Save time and money" is invisible because everyone says it.', icon: 'Frown' },
+        { title: 'Burying the Hook', description: 'Your best insight belongs in the headline, not paragraph three.', icon: 'AlertTriangle' }
+      ]},
+      { type: 'scroll-test', title: 'The Scroll Test Simulation', headlines: [
+        { text: 'Welcome to ABC Store - Quality Products Since 2019', result: 'SCROLL', reason: 'Brand-focused, no value' },
+        { text: 'Premium Yoga Mats for Your Practice - Shop Now', result: 'SCROLL', reason: 'Generic, boring' },
+        { text: 'Do 60-Minute Yoga Sessions in 20 Minutes (Same Results, Triple the Time Saved)', result: 'STOP', reason: 'Specific, curious, valuable' }
+      ]},
+      { type: 'implementation', title: 'Ask Your Buyers: What Made You Stop?', intro: 'Stop guessing what your customers want. Here\'s how to get the truth:', steps: [
+        { step: 1, title: 'Set up post-purchase surveys', description: 'Apps like Grapevine show a short survey right after checkout.' },
+        { step: 2, title: 'Ask the right questions', description: '"What almost stopped you from buying?" "What made you choose us?"' },
+        { step: 3, title: 'Collect 50-100 responses', description: 'Clear patterns emerge. 80%+ often say the same unexpected thing.' },
+        { step: 4, title: 'Update your messaging', description: 'Use exact customer language in your ads and pages.' }
+      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
+      { type: 'quiz', question: 'Which headline would PASS the 3-second test?', options: ['"Welcome to Our Store - Quality Products Since 2019"', '"Premium Yoga Mats for Your Practice - Shop Now"', '"Do 60-Minute Yoga Sessions in 20 Minutes (Same Results, Triple the Time Saved)"', '"We Provide the Best Yoga Equipment at Great Prices"'], correctIndex: 2, feedback: { correct: 'Exactly! It passes all 3 questions: Relevant (yoga practitioners), Interesting (60 min in 20?!), Worth it (triple time saved).', incorrect: 'Not quite. The winning headline is specific, creates curiosity, and shows clear value - all in under 3 seconds.' }},
+      { type: 'elite-insight', quote: 'You have 3 seconds. Be relevant, be interesting, be worth their time. Front-load value. Be specific. Create curiosity gaps.', actions: ['Audit your homepage headline right now', 'Run the 3-question test on every ad', 'Survey buyers to discover what actually stops them'] },
+      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -238,125 +198,424 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" />
           </motion.div>
         )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // UNIQUE SLIDE: Countdown with animated stats
+    const CountdownSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.stats.length), 2500);
+        return () => clearInterval(timer);
+      }, [data.stats.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.15 }}
+                style={{
+                  background: i === activeIndex ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  textAlign: 'center',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: i === activeIndex ? '0 0 40px rgba(8, 145, 178, 0.4)' : 'none',
+                  border: i === activeIndex ? '1px solid rgba(8, 145, 178, 0.5)' : '1px solid rgba(255,255,255,0.1)',
+                  transition: 'all 0.5s ease'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === activeIndex ? 'linear-gradient(90deg, transparent, #0891b2, transparent)' : 'transparent' }} />
+                <div style={{ fontSize: '48px', fontWeight: '800', color: '#0891b2', marginBottom: '8px', fontFamily: 'Fraunces, serif' }}>
+                  <AnimatedCounter value={stat.value} duration={1.2} />{stat.suffix}
+                </div>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: 'white', marginBottom: '4px' }}>{stat.label}</div>
+                <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>{stat.subtext}</div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // UNIQUE SLIDE: Brain Judgment visualization
+    const BrainJudgmentSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setPhase(prev => (prev + 1) % 4), 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const phases = [
+        { label: 'DETECTING', color: '#94a3b8' },
+        { label: 'PROCESSING', color: '#f59e0b' },
+        { label: 'JUDGING', color: '#0891b2' },
+        { label: 'DECISION', color: '#10b981' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="mb-6">
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+              {phases.map((p, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{
+                    width: '12px', height: '12px', borderRadius: '50%',
+                    background: i <= phase ? p.color : '#374151',
+                    boxShadow: i === phase ? `0 0 20px ${p.color}` : 'none',
+                    transition: 'all 0.3s ease'
+                  }} />
+                  <span style={{ fontSize: '11px', fontWeight: '600', color: i === phase ? p.color : '#6b7280', transition: 'color 0.3s' }}>{p.label}</span>
+                  {i < phases.length - 1 && <div style={{ width: '30px', height: '2px', background: i < phase ? p.color : '#374151' }} />}
+                </div>
+              ))}
+            </div>
+
+            <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '32px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #0891b2, transparent)' }} />
+              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #0891b2, #0e7490)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 40px rgba(8, 145, 178, 0.4)' }}>
+                  <Icons.Brain />
+                </motion.div>
+              </div>
+              <div style={{ fontSize: '36px', fontWeight: '800', color: phases[phase].color, marginBottom: '8px', fontFamily: 'Fraunces, serif', transition: 'color 0.3s' }}>
+                {phase === 3 ? 'STAY or GO?' : `${3 - phase}s`}
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', lineHeight: '1.6' }}>{data.content}</p>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE: Three Questions with auto-cycling
+    const ThreeQuestionsSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.questions.length), 3500);
+        return () => clearInterval(timer);
+      }, [data.questions.length]);
+
+      const IconComponent = (iconName) => {
+        const iconMap = { Target: Icons.Target, Lightbulb: Icons.Lightbulb, TrendingUp: Icons.TrendingUp };
+        const Icon = iconMap[iconName] || Icons.HelpCircle;
+        return <Icon />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.questions.map((q, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  border: i === activeIndex ? '1px solid rgba(8, 145, 178, 0.5)' : '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: i === activeIndex ? '0 0 30px rgba(8, 145, 178, 0.3)' : 'none',
+                  transition: 'all 0.5s ease'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === activeIndex ? 'linear-gradient(90deg, transparent, #0891b2, transparent)' : 'transparent', transition: 'background 0.5s' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'linear-gradient(135deg, #0891b2, #0e7490)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                    {IconComponent(q.icon)}
+                  </div>
+                  <span style={{ fontSize: '11px', fontWeight: '700', color: '#0891b2', letterSpacing: '0.05em' }}>Q{i + 1}</span>
+                </div>
+                <h3 style={{ fontSize: '16px', fontWeight: '700', color: 'white', marginBottom: '8px', fontFamily: 'Fraunces, serif' }}>{q.question}</h3>
+                <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', marginBottom: '12px', lineHeight: '1.5' }}>{q.answer}</p>
+                <div style={{ background: 'rgba(8, 145, 178, 0.1)', borderRadius: '8px', padding: '10px', border: '1px solid rgba(8, 145, 178, 0.2)' }}>
+                  <p style={{ fontSize: '11px', color: '#22d3ee', fontStyle: 'italic' }}>{q.example}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE: Headline Battle with conversion comparison
+    const HeadlineBattleSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span style={{ display: 'inline-block', padding: '6px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '600', background: 'rgba(8, 145, 178, 0.1)', color: '#0891b2', marginBottom: '12px' }}>Real Example</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+            <p style={{ color: '#6b7280', fontSize: '14px', marginTop: '8px' }}>{data.scenario}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}><Icons.X /></div>
+                <span style={{ fontSize: '12px', fontWeight: '600', color: '#f87171' }}>BEFORE</span>
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6' }}>"{data.before.text}"</p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '32px', fontWeight: '800', color: '#ef4444', fontFamily: 'Fraunces, serif' }}><AnimatedCounter value={data.before.conversion} decimals={1} />%</span>
+                <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>conversion</span>
+              </div>
             </motion.div>
-          ))}
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(16, 185, 129, 0.3)', boxShadow: showWinner ? '0 0 30px rgba(16, 185, 129, 0.3)' : 'none', transition: 'box-shadow 0.5s' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}><Icons.Check /></div>
+                <span style={{ fontSize: '12px', fontWeight: '600', color: '#34d399' }}>AFTER</span>
+                {showWinner && (
+                  <motion.span initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} style={{ marginLeft: 'auto', padding: '4px 10px', borderRadius: '12px', background: '#10b981', color: 'white', fontSize: '10px', fontWeight: '700' }}>WINNER</motion.span>
+                )}
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6' }}>"{data.after.text}"</p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '32px', fontWeight: '800', color: '#10b981', fontFamily: 'Fraunces, serif' }}><AnimatedCounter value={data.after.conversion} decimals={1} />%</span>
+                <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>conversion</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {showWinner && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', marginTop: '20px', padding: '12px 20px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <span style={{ color: '#10b981', fontSize: '14px', fontWeight: '600' }}>+{Math.round((parseFloat(data.after.conversion) / parseFloat(data.before.conversion) - 1) * 100)}% LIFT</span>
+              <span style={{ color: '#6b7280', fontSize: '14px', marginLeft: '8px' }}>- Same product, better headline</span>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE: Strategy Reveal
+    const StrategyRevealSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span style={{ display: 'inline-block', padding: '6px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: '700', background: 'linear-gradient(135deg, #0891b2, #0e7490)', color: 'white', marginBottom: '12px' }}>Strategy #{data.strategyNum}</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ color: '#4b5563', fontSize: '15px', textAlign: 'center', marginBottom: '24px', lineHeight: '1.7' }}>{data.content}</motion.p>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+              <Icons.Frown />
+              <span style={{ fontSize: '11px', fontWeight: '600', color: '#f87171' }}>VALUE BURIED</span>
+            </div>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', fontStyle: 'italic', lineHeight: '1.6' }}>"{data.before}"</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(16, 185, 129, 0.3)', boxShadow: '0 0 25px rgba(16, 185, 129, 0.2)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+              <Icons.Smile />
+              <span style={{ fontSize: '11px', fontWeight: '600', color: '#34d399' }}>VALUE FRONT-LOADED</span>
+            </div>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px', fontStyle: 'italic', lineHeight: '1.6' }}>"{data.after}"</p>
+          </motion.div>
         </div>
       </div>
     );
 
+    // UNIQUE SLIDE: Vague vs Specific comparison
+    const VagueVsSpecificSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', marginBottom: '16px' }}>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div style={{ textAlign: 'center', padding: '12px', background: 'rgba(148, 163, 184, 0.1)', borderRadius: '12px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '700', color: '#94a3b8' }}>VAGUE</span>
+              </div>
+              <div style={{ textAlign: 'center', padding: '12px', background: 'rgba(8, 145, 178, 0.1)', borderRadius: '12px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '700', color: '#0891b2' }}>SPECIFIC</span>
+              </div>
+            </div>
+            {data.pairs.map((pair, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="grid grid-cols-2 gap-4 mb-3">
+                <div style={{ padding: '12px 16px', background: 'rgba(255,255,255,0.05)', borderRadius: '10px', borderLeft: '3px solid #94a3b8' }}>
+                  <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>"{pair.vague}"</p>
+                </div>
+                <div style={{ padding: '12px 16px', background: 'rgba(8, 145, 178, 0.1)', borderRadius: '10px', borderLeft: '3px solid #0891b2' }}>
+                  <p style={{ color: '#22d3ee', fontSize: '13px', fontWeight: '500' }}>"{pair.specific}"</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {showResult && (
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-3 gap-4">
+              <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+                <div style={{ fontSize: '28px', fontWeight: '800', color: '#94a3b8', fontFamily: 'Fraunces, serif' }}>{data.result.vagueConversion}%</div>
+                <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)' }}>Vague CTR</div>
+              </div>
+              <div style={{ background: 'linear-gradient(135deg, #0891b2, #0e7490)', borderRadius: '12px', padding: '16px', textAlign: 'center', boxShadow: '0 0 30px rgba(8, 145, 178, 0.4)' }}>
+                <div style={{ fontSize: '28px', fontWeight: '800', color: 'white', fontFamily: 'Fraunces, serif' }}>{data.result.lift}</div>
+                <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.8)' }}>CTR LIFT</div>
+              </div>
+              <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+                <div style={{ fontSize: '28px', fontWeight: '800', color: '#0891b2', fontFamily: 'Fraunces, serif' }}>{data.result.specificConversion}%</div>
+                <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)' }}>Specific CTR</div>
+              </div>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE: 3-Second Killers Grid
+    const KillersGridSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.killers.length), 3000);
+        return () => clearInterval(timer);
+      }, [data.killers.length]);
+
+      const IconComponent = (iconName) => {
+        const iconMap = { User: Icons.User, HelpCircle: Icons.HelpCircle, Frown: Icons.Frown, AlertTriangle: Icons.AlertTriangle };
+        const Icon = iconMap[iconName] || Icons.AlertTriangle;
+        return <Icon />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {data.killers.map((killer, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  border: i === activeIndex ? '1px solid rgba(239, 68, 68, 0.5)' : '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: i === activeIndex ? '0 0 25px rgba(239, 68, 68, 0.2)' : 'none',
+                  transition: 'all 0.5s ease'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === activeIndex ? 'linear-gradient(90deg, transparent, #ef4444, transparent)' : 'transparent', transition: 'background 0.5s' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                  <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                    {IconComponent(killer.icon)}
+                  </div>
+                  <span style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(239, 68, 68, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: '700', color: '#ef4444' }}>{i + 1}</span>
+                </div>
+                <h3 style={{ fontSize: '15px', fontWeight: '700', color: 'white', marginBottom: '8px', fontFamily: 'Fraunces, serif' }}>{killer.title}</h3>
+                <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', lineHeight: '1.5' }}>{killer.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE: Scroll Test Simulation
+    const ScrollTestSlide = ({ data }) => {
+      const [currentHeadline, setCurrentHeadline] = useState(0);
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setShowResult(false);
+          setTimeout(() => {
+            setCurrentHeadline(prev => (prev + 1) % data.headlines.length);
+            setTimeout(() => setShowResult(true), 500);
+          }, 300);
+        }, 4000);
+        setTimeout(() => setShowResult(true), 500);
+        return () => clearInterval(timer);
+      }, [data.headlines.length]);
+
+      const headline = data.headlines[currentHeadline];
+      const isStop = headline.result === 'STOP';
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <motion.div key={currentHeadline} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: showResult ? (isStop ? 'linear-gradient(90deg, transparent, #10b981, transparent)' : 'linear-gradient(90deg, transparent, #ef4444, transparent)') : 'transparent', transition: 'background 0.5s' }} />
+
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                {data.headlines.map((_, i) => (
+                  <div key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', background: i === currentHeadline ? '#0891b2' : '#374151', transition: 'background 0.3s' }} />
+                ))}
+              </div>
+            </div>
+
+            <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '18px', fontStyle: 'italic', marginBottom: '24px', lineHeight: '1.6', minHeight: '60px' }}>"{headline.text}"</p>
+
+            {showResult && (
+              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '16px 32px', borderRadius: '16px', background: isStop ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)', border: `2px solid ${isStop ? '#10b981' : '#ef4444'}`, marginBottom: '16px' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: isStop ? '#10b981' : '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                    {isStop ? <Icons.Check /> : <Icons.Scroll />}
+                  </div>
+                  <span style={{ fontSize: '24px', fontWeight: '800', color: isStop ? '#10b981' : '#ef4444', fontFamily: 'Fraunces, serif' }}>{headline.result}</span>
+                </div>
+                <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>{headline.reason}</p>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Implementation Slide
     const ImplementationSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
@@ -383,6 +642,7 @@
       </div>
     );
 
+    // Quiz Slide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -392,7 +652,7 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
@@ -426,11 +686,41 @@
       );
     };
 
+    // UNIQUE SLIDE: Elite Insight
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #0891b2, transparent)' }} />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #0891b2, #0e7490)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', boxShadow: '0 0 30px rgba(8, 145, 178, 0.4)' }}>
+              <Icons.Timer />
+            </div>
+          </div>
+          <p style={{ color: 'white', fontSize: '18px', fontWeight: '500', textAlign: 'center', lineHeight: '1.7', fontStyle: 'italic' }}>"{data.quote}"</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <p style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textAlign: 'center', marginBottom: '12px', letterSpacing: '0.05em' }}>YOUR ACTION ITEMS</p>
+          <div className="space-y-2">
+            {data.actions.map((action, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'rgba(8, 145, 178, 0.05)', borderRadius: '12px', border: '1px solid rgba(8, 145, 178, 0.1)' }}>
+                <span style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'linear-gradient(135deg, #0891b2, #0e7490)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: '700' }}>{i + 1}</span>
+                <span style={{ color: '#374151', fontSize: '14px' }}>{action}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Completion Slide
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the 3-second rule: Be relevant, be interesting, be worth their time. Front-load your value, be specific, and create curiosity gaps. Go audit your store's homepage right now.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the 3-second rule: Be relevant, be interesting, be worth their time. Go audit your store's homepage right now.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -442,8 +732,7 @@
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
                 <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
+                  {source.name} <Icons.ExternalLink />
                 </a>
               ))}
             </div>
@@ -451,6 +740,8 @@
         )}
       </div>
     );
+
+    // ============ MAIN APP ============
 
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
@@ -465,14 +756,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -504,12 +789,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'countdown': return <CountdownSlide data={slide} />;
+          case 'brain-judgment': return <BrainJudgmentSlide data={slide} />;
+          case 'three-questions': return <ThreeQuestionsSlide data={slide} />;
+          case 'headline-battle': return <HeadlineBattleSlide data={slide} />;
+          case 'strategy-reveal': return <StrategyRevealSlide data={slide} />;
+          case 'vague-vs-specific': return <VagueVsSpecificSlide data={slide} />;
+          case 'killers-grid': return <KillersGridSlide data={slide} />;
+          case 'scroll-test': return <ScrollTestSlide data={slide} />;
           case 'implementation': return <ImplementationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }
@@ -538,7 +828,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -548,7 +838,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
