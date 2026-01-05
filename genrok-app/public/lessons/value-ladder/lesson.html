@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -53,110 +50,21 @@
       nextLesson: {
         id: 'invisible-influence',
         title: 'The Invisible Influence',
-        teaser: 'Background images prime buying decisions unconsciously - A/B test your hero section.'
+        teaser: 'Background images prime buying decisions unconsciously.'
       }
     };
-
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
 
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
@@ -165,34 +73,18 @@
         'Building your value ladder from entry to elite',
         'How each tier unlocks desire for the next'
       ]},
-      { type: 'hook', headline: 'Top restaurants have two menus. The one you see. And the one for people who know.', subtext: 'Michelin-star restaurants keep their best dishes off the public menu. You have to ask. You have to be "in the know." This isn\'t gatekeeping - it\'s aspiration engineering. Your eCommerce store needs the same structure: Entry → Core → Premium → Elite. Each tier unlocks the next.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Pizza_Hut_international_logo_2014.svg.png', brandName: 'Pizza Hut' },
-      { type: 'content', title: 'The Secret Menu Strategy', body: 'Walk into a high-end sushi restaurant. You see the menu. $50-$150 per person. But the regulars? They ask for "omakase." Chef\'s choice. Not on the menu. Starts at $300. Sometimes $500. Why? Because the best customers don\'t want what everyone else gets. They want access. They want the hidden tier. That\'s not elitism. That\'s psychology.' },
-      { type: 'visual', title: 'The Ladder Effect', visualType: 'stats', data: [
-        { value: 'Entry', label: 'gets them in', subtext: 'Low barrier, high volume' },
-        { value: 'Core', label: 'builds trust', subtext: 'They see your quality' },
-        { value: 'Elite', label: 'creates aspiration', subtext: 'They want what\'s hidden' }
-      ]},
-      { type: 'content', title: 'Your Value Ladder Structure', body: 'Entry Tier: Low price, high volume. Gets people in the door. Proves your quality. Core Tier: Your main offering. Where most customers live. Premium Tier: Better version, higher price. Only shown after purchase. Elite/VIP Tier: Hidden. Invite-only. Reserved for top customers. Creates aspiration for everyone else.' },
-      { type: 'implementation', title: 'The Cart as First Ladder Rung', concept: 'The value ladder starts before checkout. When someone adds your Entry item to cart, they have already stepped onto the first rung. The cart drawer is where you show them the next step - not the Elite tier, but the logical next step up.', steps: ['Map your products to ladder tiers - which products naturally complement each other?', 'Show the next tier in cart: Entry buyers see Core items, Core buyers see Premium add-ons', 'Keep it logical: resistance band → full workout kit, not resistance band → elite coaching', 'Frame as upgrade: "Complete your setup" or "Get better results"'], insight: 'The cart drawer is the Entry→Core escalator. Post-purchase (with ReConvert) handles Core→Premium. Each step feels natural because they have already committed to climbing.', toolName: 'Cart Drawer Upsell', toolUrl: 'https://platform.shoffi.app/r/rl_cm697iNI' },
-      { type: 'cards', title: 'Example Value Ladder (Fitness Brand)', items: [
-        { title: 'Entry: $29 Resistance Band', description: 'Low barrier. Impulse buy. Proves quality. Gets email on list.' },
-        { title: 'Core: $149 Full Workout Kit', description: 'Main product. Shown on homepage. Where most revenue comes from.' },
-        { title: 'Premium: $349 Elite Kit + Coaching', description: 'Shown after first purchase via email. Upgrade path for engaged customers.' },
-        { title: 'VIP: $997 Private Community Access', description: 'Invite-only. Application required. Reserved for top 5% of customers.' }
-      ]},
-      { type: 'example', scenario: 'Supplement Store', before: { label: 'Single Tier', text: 'One product line. One price. Everyone sees everything. No aspiration. No hidden tiers.' }, after: { label: 'Value Ladder', text: 'Entry: $39 single bottle. Core: $89 3-month supply. Premium: $249 custom stack (email-only). Elite: $997 private coaching group (invite-only).' }, insight: 'Same products. Structured as a ladder. Entry drives volume. Elite drives aspiration. Everyone wants to climb.' },
-      { type: 'content', title: 'Hidden Tiers Create Curiosity', body: 'The VIP tier shouldn\'t be on your homepage. It should be whispered about. Mentioned in emails. Hinted at in packaging inserts. "Our top customers get access to..." Don\'t explain what it is. Make them ask. Make them curious. Curiosity drives action. The hidden menu is more valuable than the public one.' },
-      { type: 'cards', title: 'How to Reveal Higher Tiers', items: [
-        { title: 'Post-Purchase Email (Day 7)', description: 'Introduce premium tier. "You qualify for our upgraded version." Show the upgrade, not the price first.' },
-        { title: 'Packaging Insert', description: 'Include a card: "Elite members get 30% off refills + early access to new products. Ask us how to apply."' },
-        { title: 'Customer Support Interaction', description: 'When customers reach out, mention: "Based on your purchase history, you\'d be perfect for our VIP program."' },
-        { title: 'Milestone Trigger', description: 'After 3 purchases or $500 spent, auto-invite to elite tier. Make it feel earned, not bought.' }
-      ]},
-      { type: 'tool', title: 'Automate Your Value Ladder', toolName: 'ReConvert', toolUrl: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CIuoqfrDj_sCEAE=.webp', body: 'ReConvert automates post-purchase upsells - the perfect moment to reveal your next tier. Right after checkout, when trust is highest, present your premium or elite offerings. One-click add with payment already saved.', questions: ['Do you have higher-tier products to offer after purchase?', 'Are you manually revealing value ladder tiers?', 'Would you like to automate the upgrade path?'], insight: '$7.4 average profit per order. Customers who just bought are 60% more likely to accept an upgrade offer. That\'s your value ladder working automatically.' },
-      { type: 'tool-setup', title: 'Setup Your Value Ladder Automation', toolName: 'ReConvert', steps: ['Install ReConvert from the Shopify App Store', 'Map your value ladder tiers (Entry → Core → Premium → Elite)', 'Create conditional offers: Entry buyers see Core, Core buyers see Premium', 'Set tier-appropriate discounts (10-20% for first upgrade)', 'Enable one-click upgrades on the thank you page'], proTip: 'The best value ladder reveals feel earned, not sold. Frame upgrades as "You qualify for..." rather than "Buy this too."' },
-      { type: 'content', title: 'Each Tier Primes the Next', body: 'Entry customers see core tier and think "upgrade." Core customers see premium and think "worth it." Premium customers hear about elite and think "I need access." The ladder isn\'t just pricing. It\'s aspiration architecture. Each rung makes the next one more desirable.' },
-      { type: 'quiz', question: 'Why do high-end restaurants keep their best dishes off the public menu?', options: ['To save money on printing costs', 'Hidden exclusivity creates aspiration - customers want access to what others can\'t see', 'They forgot to add them to the menu', 'The chef wants to keep secrets'], correctIndex: 1, feedback: { correct: 'Exactly. The hidden menu isn\'t about secrecy - it\'s about aspiration. When customers know there\'s a tier above what they see, they want access. The ladder creates desire for the climb.', incorrect: 'Not quite. The power is in aspiration. By keeping premium offerings hidden, restaurants create curiosity and desire. Customers want what\'s reserved for "those who know." That\'s value ladder psychology.' }},
-      { type: 'completion', sources: [{ name: 'Cart Drawer Upsell (Pre-Purchase)', url: 'https://platform.shoffi.app/r/rl_cm697iNI' }, { name: 'ReConvert (Post-Purchase)', url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva' }] }
+      { type: 'hook', headline: 'Top restaurants have two menus.', subheadline: 'The one you see. And the one for people who know.', subtext: 'Michelin-star restaurants keep their best dishes off the public menu. You have to ask. You have to be "in the know." This isn\'t gatekeeping - it\'s aspiration engineering.' },
+      { type: 'secret-menu' },
+      { type: 'ladder-visualization' },
+      { type: 'tier-breakdown' },
+      { type: 'ladder-example' },
+      { type: 'cart-escalator' },
+      { type: 'hidden-reveal' },
+      { type: 'aspiration-pyramid' },
+      { type: 'ladder-stats' },
+      { type: 'quiz', question: 'Why do high-end restaurants keep their best dishes off the public menu?', options: ['To save money on printing costs', 'Hidden exclusivity creates aspiration - customers want access to what others can\'t see', 'They forgot to add them', 'The chef wants to keep secrets'], correctIndex: 1, feedback: { correct: 'Exactly. The hidden menu creates aspiration. When customers know there\'s a tier above what they see, they want access. The ladder creates desire for the climb.', incorrect: 'Not quite. The power is in aspiration. By keeping premium offerings hidden, restaurants create curiosity and desire. Customers want what\'s reserved for "those who know."' }},
+      { type: 'elite-insight' },
+      { type: 'completion' }
     ];
 
     const Icons = {
@@ -202,9 +94,39 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      ShoppingCart: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Lock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      Unlock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>,
+      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      ShoppingCart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      Mail: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+      Package: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      MessageSquare: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Award: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
+      Eye: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      EyeOff: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+    };
+
+    // AnimatedCounter component
+    const AnimatedCounter = ({ value, duration = 2000, decimals = 0, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let startTime = null;
+        const animate = (currentTime) => {
+          if (!startTime) startTime = currentTime;
+          const progress = Math.min((currentTime - startTime) / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          setCount(easeOut * value);
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -245,189 +167,406 @@
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
             <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
             <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl leading-tight mt-2" style={{ color: 'var(--accent)' }}>{data.subheadline}</h2>
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // UNIQUE SLIDE 1: Secret Menu Slide
+    const SecretMenuSlide = ({ data }) => {
+      const [showSecret, setShowSecret] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowSecret(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>The Secret Menu Strategy</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Two Menus. Two Experiences.</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl bg-neutral-100 border-2 border-neutral-200">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg bg-neutral-200 flex items-center justify-center text-neutral-500"><Icons.Eye /></div>
+                <span className="font-bold text-neutral-700 text-sm">Public Menu</span>
+              </div>
+              <div className="text-2xl font-bold text-neutral-600 mb-2">$50 - $150</div>
+              <p className="text-neutral-500 text-sm">What everyone sees. Standard offerings. No exclusivity.</p>
+              <div className="mt-4 text-xs text-neutral-400 uppercase tracking-wider">Visible to all</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showSecret ? '0 0 40px rgba(8, 145, 178, 0.3)' : 'none' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(8, 145, 178, 0.2)', color: 'var(--accent)' }}><Icons.EyeOff /></div>
+                <span className="font-bold text-sm" style={{ color: 'var(--accent)' }}>Secret Menu</span>
+                {showSecret && <span className="ml-auto px-2 py-0.5 rounded text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>ASK FOR IT</span>}
+              </div>
+              <div className="text-2xl font-bold text-white mb-2">"Omakase" - $300+</div>
+              <p className="text-neutral-400 text-sm">Chef's choice. Not on the menu. Reserved for "those who know."</p>
+              <div className="mt-4 text-xs uppercase tracking-wider" style={{ color: 'var(--accent)' }}>Invite only</div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm"><Icons.Lightbulb className="inline mr-2 text-yellow-400" />The best customers don't want what everyone else gets. They want ACCESS.</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
+    // UNIQUE SLIDE 2: Ladder Visualization Slide
+    const LadderVisualizationSlide = ({ data }) => {
+      const [activeRung, setActiveRung] = useState(0);
+      const rungs = [
+        { tier: 'Entry', desc: 'gets them in', subtext: 'Low barrier, high volume', price: '$29', color: '#22c55e' },
+        { tier: 'Core', desc: 'builds trust', subtext: 'They see your quality', price: '$149', color: '#f59e0b' },
+        { tier: 'Premium', desc: 'deepens commitment', subtext: 'Shown after purchase', price: '$349', color: '#8b5cf6' },
+        { tier: 'Elite', desc: 'creates aspiration', subtext: 'Hidden. Invite-only.', price: '$997', color: '#ef4444' }
+      ];
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
+      useEffect(() => {
+        const timer = setInterval(() => setActiveRung(prev => (prev + 1) % rungs.length), 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>The Structure</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Your Value Ladder</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Ask Yourself</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
+
+          <div className="flex flex-col gap-3">
+            {rungs.map((rung, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300" style={{ background: activeRung === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)', boxShadow: activeRung === i ? `0 0 30px ${rung.color}40` : 'none', marginLeft: `${i * 20}px` }}>
+                {activeRung === i && <div className="h-full w-1 absolute left-0 rounded-full" style={{ background: rung.color }} />}
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${rung.color}20`, color: rung.color }}>
+                  <span className="text-sm font-bold">{i + 1}</span>
+                </div>
+                <div className="flex-1">
+                  <div className={`flex items-center gap-2 ${activeRung === i ? 'text-white' : 'text-neutral-700'}`}>
+                    <span className="font-bold text-lg">{rung.tier}</span>
+                    <span className="text-sm opacity-70">{rung.desc}</span>
+                  </div>
+                  <div className={`text-xs ${activeRung === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{rung.subtext}</div>
+                </div>
+                <div className="text-right">
+                  <div className="font-bold text-lg" style={{ color: rung.color }}>{rung.price}</div>
+                  {i === 3 && activeRung === 3 && <div className="text-xs flex items-center gap-1" style={{ color: rung.color }}><Icons.Lock className="w-3 h-3" /> Hidden</div>}
+                </div>
+              </motion.div>
+            )).reverse()}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 3: Tier Breakdown Slide
+    const TierBreakdownSlide = ({ data }) => {
+      const [activeTier, setActiveTier] = useState(0);
+      const tiers = [
+        { name: 'Entry Tier', icon: Icons.ShoppingCart, desc: 'Low price, high volume. Gets people in the door. Proves your quality.', example: '$29 Resistance Band', color: '#22c55e' },
+        { name: 'Core Tier', icon: Icons.Package, desc: 'Your main offering. Where most customers live. Where most revenue comes from.', example: '$149 Full Workout Kit', color: '#f59e0b' },
+        { name: 'Premium Tier', icon: Icons.Star, desc: 'Better version, higher price. Only shown after purchase via email.', example: '$349 Elite Kit + Coaching', color: '#8b5cf6' },
+        { name: 'VIP/Elite Tier', icon: Icons.Crown, desc: 'Hidden. Invite-only. Reserved for top customers. Creates aspiration.', example: '$997 Private Community', color: '#ef4444' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveTier(prev => (prev + 1) % 4), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>Tier Details</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Your 4-Tier Structure</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {tiers.map((tier, i) => {
+              const Icon = tier.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-5 rounded-xl transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeTier === i ? `0 0 30px ${tier.color}40` : 'none', transform: activeTier === i ? 'scale(1.02)' : 'scale(1)' }}>
+                  <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${tier.color}, transparent)` }} />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${tier.color}20`, color: tier.color }}>
+                      <Icon />
+                    </div>
+                    <span className="text-white font-bold text-sm">{tier.name}</span>
+                    {activeTier === i && <span className="ml-auto px-2 py-0.5 rounded text-xs font-bold text-white" style={{ background: tier.color }}>ACTIVE</span>}
+                  </div>
+                  <p className="text-neutral-400 text-xs leading-relaxed mb-3">{tier.desc}</p>
+                  <div className="text-xs px-2 py-1 rounded inline-block" style={{ background: `${tier.color}20`, color: tier.color }}>{tier.example}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 4: Ladder Example Slide
+    const LadderExampleSlide = ({ data }) => {
+      const [showComparison, setShowComparison] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowComparison(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>Real Example</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Supplement Store</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl bg-neutral-100 border-2 border-neutral-200">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-500"><Icons.X /></div>
+                <span className="font-bold text-red-600 text-sm">Single Tier</span>
+              </div>
+              <p className="text-neutral-700 text-sm mb-4">One product line. One price. Everyone sees everything. No aspiration. No hidden tiers.</p>
+              <div className="text-xl font-bold text-neutral-500">$39/bottle</div>
+              <p className="text-neutral-400 text-xs mt-2">Same for everyone. Zero exclusivity.</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showComparison ? '0 0 40px rgba(34, 197, 94, 0.3)' : 'none' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><Icons.Check /></div>
+                <span className="font-bold text-green-400 text-sm">Value Ladder</span>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between"><span className="text-neutral-400">Entry:</span><span className="text-white font-bold">$39 single bottle</span></div>
+                <div className="flex justify-between"><span className="text-neutral-400">Core:</span><span className="text-white font-bold">$89 3-month supply</span></div>
+                <div className="flex justify-between"><span className="text-neutral-400">Premium:</span><span className="text-white font-bold">$249 custom stack</span></div>
+                <div className="flex justify-between"><span className="text-neutral-400">Elite:</span><span className="text-white font-bold">$997 coaching group</span></div>
+              </div>
+              <AnimatePresence>
+                {showComparison && (
+                  <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="absolute top-4 right-4 px-3 py-1.5 rounded-lg bg-green-500 text-white text-xs font-bold">WINS</motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm"><Icons.TrendingUp className="inline mr-2" style={{ color: 'var(--accent)' }} />Same products. Structured as a ladder. Entry drives volume. Elite drives aspiration.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 5: Cart Escalator Slide
+    const CartEscalatorSlide = ({ data }) => {
+      const [step, setStep] = useState(0);
+      const steps = [
+        { label: 'Add to Cart', desc: '$29 Resistance Band', icon: Icons.ShoppingCart },
+        { label: 'Cart Drawer Opens', desc: 'First rung climbed', icon: Icons.Package },
+        { label: 'Upgrade Shown', desc: '"Complete your setup" - $149 Kit', icon: Icons.TrendingUp },
+        { label: 'Customer Upgrades', desc: 'Entry → Core conversion', icon: Icons.Check }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setStep(prev => (prev + 1) % 4), 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>Implementation</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Cart as First Ladder Rung</h2>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
+            {steps.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <React.Fragment key={i}>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl text-center w-40 transition-all duration-300" style={{ background: step === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)', boxShadow: step === i ? '0 0 30px rgba(8, 145, 178, 0.3)' : 'none', transform: step === i ? 'scale(1.05)' : 'scale(1)' }}>
+                    {step === i && <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                    <div className="w-10 h-10 rounded-lg mx-auto mb-2 flex items-center justify-center" style={{ background: step === i ? 'rgba(8, 145, 178, 0.2)' : 'rgba(0,0,0,0.05)', color: step === i ? 'var(--accent)' : '#666' }}>
+                      <Icon />
+                    </div>
+                    <div className={`font-bold text-sm mb-1 ${step === i ? 'text-white' : 'text-neutral-700'}`}>{s.label}</div>
+                    <div className={`text-xs ${step === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{s.desc}</div>
+                  </motion.div>
+                  {i < steps.length - 1 && <div className="hidden md:block text-neutral-300">→</div>}
+                </React.Fragment>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-6 p-4 rounded-xl" style={{ background: 'rgba(8, 145, 178, 0.1)' }}>
+            <p className="text-sm text-center" style={{ color: 'var(--accent)' }}><Icons.Zap className="inline mr-2" />The cart drawer is the Entry→Core escalator. Each step feels natural because they already committed to climbing.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 6: Hidden Reveal Slide
+    const HiddenRevealSlide = ({ data }) => {
+      const [activeMethod, setActiveMethod] = useState(0);
+      const methods = [
+        { title: 'Post-Purchase Email (Day 7)', icon: Icons.Mail, desc: '"You qualify for our upgraded version." Show the upgrade, not the price first.', color: '#22c55e' },
+        { title: 'Packaging Insert', icon: Icons.Package, desc: '"Elite members get 30% off + early access. Ask us how to apply."', color: '#f59e0b' },
+        { title: 'Customer Support', icon: Icons.MessageSquare, desc: '"Based on your history, you\'d be perfect for our VIP program."', color: '#8b5cf6' },
+        { title: 'Milestone Trigger', icon: Icons.Award, desc: 'After 3 purchases or $500 spent, auto-invite. Make it feel earned.', color: '#ef4444' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveMethod(prev => (prev + 1) % 4), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>Reveal Methods</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">How to Reveal Higher Tiers</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {methods.map((method, i) => {
+              const Icon = method.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-5 rounded-xl transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeMethod === i ? `0 0 30px ${method.color}40` : 'none', transform: activeMethod === i ? 'scale(1.02)' : 'scale(1)' }}>
+                  <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${method.color}, transparent)` }} />
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${method.color}20`, color: method.color }}>
+                      <Icon />
+                    </div>
+                    <span className="text-white font-bold text-sm">{method.title}</span>
+                  </div>
+                  <p className="text-neutral-400 text-xs leading-relaxed">{method.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 7: Aspiration Pyramid Slide
+    const AspirationPyramidSlide = ({ data }) => {
+      const [activeLayer, setActiveLayer] = useState(0);
+      const layers = [
+        { label: 'Elite Customers', percent: '5%', desc: 'Hear whispers, want access', color: '#ef4444' },
+        { label: 'Premium Customers', percent: '15%', desc: 'See Premium, aspire to Elite', color: '#8b5cf6' },
+        { label: 'Core Customers', percent: '30%', desc: 'See Core, aspire to Premium', color: '#f59e0b' },
+        { label: 'Entry Customers', percent: '50%', desc: 'Start here, climb up', color: '#22c55e' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveLayer(prev => (prev + 1) % 4), 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>Psychology</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Each Tier Primes the Next</h2>
+          </motion.div>
+
+          <div className="flex flex-col items-center gap-2">
+            {layers.map((layer, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl transition-all duration-300 text-center" style={{ width: `${100 - i * 15}%`, background: activeLayer === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)', boxShadow: activeLayer === i ? `0 0 30px ${layer.color}40` : 'none' }}>
+                {activeLayer === i && <div className="h-0.5 w-full mb-2 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${layer.color}, transparent)` }} />}
+                <div className="flex items-center justify-center gap-3">
+                  <span className={`font-bold text-sm ${activeLayer === i ? 'text-white' : 'text-neutral-700'}`}>{layer.label}</span>
+                  <span className="px-2 py-0.5 rounded text-xs font-bold text-white" style={{ background: layer.color }}>{layer.percent}</span>
+                </div>
+                <div className={`text-xs mt-1 ${activeLayer === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{layer.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-6 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">The ladder isn't just pricing. It's <span className="font-bold text-white">aspiration architecture</span>. Each rung makes the next more desirable.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 8: Ladder Stats Slide
+    const LadderStatsSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const stats = [
+        { value: 7.4, prefix: '$', suffix: '', label: 'Per Order Profit', desc: 'Average from value ladder upsells', color: '#22c55e', decimals: 1 },
+        { value: 60, suffix: '%', label: 'Upgrade Rate', desc: 'Post-purchase customers accepting upgrades', color: '#f59e0b' },
+        { value: 4, suffix: 'x', label: 'LTV Increase', desc: 'From customers who climb the ladder', color: '#8b5cf6' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % stats.length), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>The Numbers</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Value Ladder Impact</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeIndex === i ? `0 0 30px ${stat.color}40` : 'none', transform: activeIndex === i ? 'scale(1.05)' : 'scale(1)' }}>
+                <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color }}>
+                  <AnimatedCounter value={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix} decimals={stat.decimals || 0} />
+                </div>
+                <div className="text-white font-bold text-sm mb-2">{stat.label}</div>
+                <div className="text-neutral-400 text-xs">{stat.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 9: Elite Insight Slide
+    const EliteInsightSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="p-8 rounded-xl text-center mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(8, 145, 178, 0.2)' }}>
+            <div className="h-1 w-full mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="w-16 h-16 rounded-xl mx-auto mb-6 flex items-center justify-center" style={{ background: 'rgba(8, 145, 178, 0.2)', color: 'var(--accent)' }}>
+              <Icons.Crown className="w-8 h-8" />
             </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Try {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
+            <p className="text-white text-xl md:text-2xl font-bold mb-4">"The VIP tier shouldn't be on your homepage. It should be whispered about."</p>
+            <p className="text-neutral-400 text-sm">Hidden tiers drive curiosity. Curiosity drives action. The hidden menu is more valuable than the public one.</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="grid md:grid-cols-3 gap-4">
+            {[
+              { icon: Icons.ShoppingCart, label: 'Entry → Core', desc: 'Cart drawer upsells' },
+              { icon: Icons.Mail, label: 'Core → Premium', desc: 'Post-purchase emails' },
+              { icon: Icons.Lock, label: 'Premium → Elite', desc: 'Invite-only access' }
+            ].map((item, i) => (
+              <div key={i} className="p-4 rounded-xl text-center" style={{ background: 'rgba(8, 145, 178, 0.1)' }}>
+                <item.icon className="w-6 h-6 mx-auto mb-2" style={{ color: 'var(--accent)' }} />
+                <div className="text-sm font-bold" style={{ color: 'var(--accent)' }}>{item.label}</div>
+                <div className="text-xs text-neutral-500 mt-1">{item.desc}</div>
+              </div>
+            ))}
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const ToolSetupSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Quick Setup</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <div className="space-y-3 mb-6">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm md:text-base leading-relaxed pt-1">{step}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4">
-          <p className="text-neutral-300 text-sm"><span className="text-white font-semibold">Pro Tip:</span> {data.proTip}</p>
-        </motion.div>
-      </div>
-    );
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-            <Icons.ShoppingCart /> Implementation
-          </span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
-        <div className="space-y-2.5 mb-4">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
-              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-        {data.toolUrl && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
-              <span>Tool: {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
-        )}
-      </div>
-    );
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -477,29 +616,19 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the value ladder. Entry gets them in. Core builds trust. Elite creates aspiration. Hidden tiers drive desire.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Crown /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the value ladder. Entry gets them in. Core builds trust. Elite creates aspiration. Hidden tiers drive desire.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-4 mb-6 max-w-md w-full" style={{ background: 'rgba(8, 145, 178, 0.1)' }}>
+          <p className="text-sm font-medium flex items-center gap-2" style={{ color: 'var(--accent)' }}><Icons.Target className="flex-shrink-0" /><span>Action: Map your products to 4 tiers. Create one hidden "whispered about" tier.</span></p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
       </div>
     );
 
@@ -515,16 +644,6 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -555,15 +674,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
-          case 'tool-setup': return <ToolSetupSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'secret-menu': return <SecretMenuSlide data={slide} />;
+          case 'ladder-visualization': return <LadderVisualizationSlide data={slide} />;
+          case 'tier-breakdown': return <TierBreakdownSlide data={slide} />;
+          case 'ladder-example': return <LadderExampleSlide data={slide} />;
+          case 'cart-escalator': return <CartEscalatorSlide data={slide} />;
+          case 'hidden-reveal': return <HiddenRevealSlide data={slide} />;
+          case 'aspiration-pyramid': return <AspirationPyramidSlide data={slide} />;
+          case 'ladder-stats': return <LadderStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };
@@ -577,7 +698,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
@@ -601,7 +721,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
