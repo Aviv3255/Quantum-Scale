@@ -364,7 +364,7 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (18 lessons remaining - 7 errors + 11 score-5)
+## CATEGORY 2: NEED IMPROVEMENT (13 lessons remaining - 7 errors + 6 score-5)
 
 These lessons need design improvements to reach elite level.
 
@@ -393,7 +393,7 @@ These lessons need design improvements to reach elite level.
 | 261 | us-vs-them | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 262 | value-ladder | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
 | 263 | value-perception-lever | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
-| 264 | visual-priming | 5 |
+| 264 | visual-priming | ELITE ✓ | Jan 5 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
 | 265 | visual-shorthand | 5 |
 | 266 | von-restorff-effect | 5 |
 | 267 | whale-customer-paradox | 5 |
@@ -421,8 +421,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 289 |
-| Need Improvement | 8 |
+| Improved / Don't Need Improvement | 290 |
+| Need Improvement | 6 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
