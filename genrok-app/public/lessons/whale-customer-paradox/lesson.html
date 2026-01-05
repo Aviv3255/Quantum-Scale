@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
@@ -34,8 +31,48 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
+
+    const LESSON_CONFIG = {
+      id: 'whale-customer-paradox',
+      title: 'The Whale Customer Paradox',
+      description: 'Why treating all customers equally is leaving money on the table.',
+      accentColor: '#3b82f6',
+      duration: '7 min',
+      nextLesson: { id: 'next-lesson', title: 'More Psychology Lessons Coming Soon', teaser: 'Continue mastering customer psychology.' }
+    };
+
+    let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
+
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      const handleReport = (e) => {
+        e.stopPropagation(); e.preventDefault();
+        if (window.parent !== window) {
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
+        }
+      };
+      return (
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/></svg>
+        </button>
+      );
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
+    ];
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', decimals = 0, duration = 2000 }) => {
       const [count, setCount] = useState(0);
       useEffect(() => {
         let start = 0;
@@ -43,229 +80,12 @@
         const timer = setInterval(() => {
           start += increment;
           if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
         }, 16);
         return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{count}{suffix}</span>;
+      }, [target, duration, decimals]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
     };
-
-    // Customer Tier Visualization Component
-    const CustomerTierSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid gap-4">
-          {data.tiers.map((tier, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 + i * 0.15 }}
-              className="relative"
-            >
-              <div className="flex items-center gap-4">
-                <div className="flex-shrink-0 w-32 text-right">
-                  <div className="text-2xl font-bold" style={{ color: tier.color }}>{tier.percentage}</div>
-                  <div className="text-xs text-neutral-500">{tier.label}</div>
-                </div>
-                <div className="flex-1 relative h-16 bg-neutral-100 rounded-xl overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: tier.width }}
-                    transition={{ delay: 0.3 + i * 0.15, duration: 0.8, ease: "easeOut" }}
-                    className="absolute inset-y-0 left-0 rounded-xl flex items-center justify-end px-4"
-                    style={{ background: `linear-gradient(135deg, ${tier.color}, ${tier.colorDark})` }}
-                  >
-                    <span className="text-white font-bold text-lg">{tier.revenue}</span>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="text-center text-neutral-600 text-sm mt-6 italic"
-        >
-          {data.insight}
-        </motion.p>
-      </div>
-    );
-
-    // Pro Tip Component
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-blue-500 text-white text-xs font-bold rounded-full">PRO TIP</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-blue-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-blue-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-blue-700">→ {data.action}</p>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
-      </div>
-    );
-
-    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
-    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
-
-    const LESSON_CONFIG = {
-      id: 'whale-customer-paradox',
-      title: 'The Whale Customer Paradox',
-      description: 'Why treating all customers equally is leaving money on the table and the psychology of high-LTV buyers.',
-      accentColor: '#3b82f6',
-      duration: '7 min',
-      nextLesson: { id: 'next-lesson', title: 'More Psychology Lessons Coming Soon', teaser: 'Continue mastering customer psychology and behavioral economics.' }
-    };
-
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
-    const celebrationGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
-    ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
-    const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
-    ];
-    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why 5% of customers generate 50%+ of your revenue', 'The psychology of high-LTV buyers and how they think differently', 'Why treating all customers equally leaves massive money on the table'] },
-      { type: 'hook', headline: '5% of your customers are worth more than the other 95% combined.', subtext: 'Not all customers are created equal. While you are spending equal time and resources on everyone, a tiny fraction is generating the majority of your revenue. They are your whales. They buy more. They return faster. They spend bigger. And most importantly: they respond to completely different psychology than average buyers. If you treat them the same as everyone else, you are leaving life-changing money on the table. The Pareto Principle is not just math. It is customer psychology you can leverage.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(18).jpg', brandName: 'DataDrew' },
-      { type: 'content', title: 'The 80/20 Rule of Customer Value', body: 'You have heard of the Pareto Principle. 80% of results come from 20% of effort. But in eCommerce, the distribution is even more extreme. Typically, 5% of customers generate 50-60% of revenue. Another 15% contribute 30%. The remaining 80% barely move the needle. This is not a bug. It is human nature. Some people are just wired to spend more. Higher disposable income. Impulse buying tendencies. Status-driven psychology. Collector mentality. These are your whales.' },
-      { type: 'customer-tier', title: 'The Reality of Customer Value Distribution', tiers: [
-        { label: 'Whale Customers', percentage: '5%', revenue: '55% of revenue', width: '100%', color: '#3b82f6', colorDark: '#2563eb' },
-        { label: 'Mid-Tier Customers', percentage: '15%', revenue: '30% of revenue', width: '55%', color: '#8b5cf6', colorDark: '#7c3aed' },
-        { label: 'Low-Value Customers', percentage: '80%', revenue: '15% of revenue', width: '27%', color: '#94a3b8', colorDark: '#64748b' }
-      ], insight: 'The top 5% contribute more than everyone else combined. Yet most brands treat all customers identically.' },
-      { type: 'content', title: 'The Psychology of Whale Customers', body: 'Whale customers are not just people with more money. They think differently. They buy differently. They value differently. Average customers optimize for price and discounts. Whales optimize for status, exclusivity, and convenience. Average customers need convincing. Whales need access. Average customers ask "Is this worth it?" Whales ask "Can I get this now?" Understanding this mindset shift is the key to unlocking whale revenue.' },
-      { type: 'cards', title: 'How Whale Customers Think Differently', items: [
-        { title: 'Status Over Savings', description: 'They would rather pay more for exclusive access than wait for a discount everyone gets.' },
-        { title: 'Convenience is Priceless', description: 'Time matters more than money. Fast shipping, VIP support, priority access - they will pay for it.' },
-        { title: 'FOMO on Steroids', description: 'Fear of missing out drives them harder. Limited editions, early access, insider perks trigger instant action.' },
-        { title: 'Reciprocity Amplified', description: 'When you treat them like VIPs, they reciprocate with loyalty and bigger purchases.' },
-        { title: 'Identity-Driven Buying', description: 'Purchases reinforce self-image. They buy what reflects who they are or aspire to be.' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_whispering_a_secret_hand_cupped_to_mouth_--ar__972dd80b-da4e-481d-aedc-bbcfdfb88716_3.mp4', characterPosition: 'right'},
-      { type: 'content', title: 'Why Equal Treatment is Revenue Suicide', body: 'Most brands operate on the fairness principle. Everyone gets the same experience. Same emails. Same discounts. Same support. This feels democratic. But it is financially devastating. Your whales do not want to be treated like everyone else. They WANT differentiation. They CRAVE exclusivity. When you give your biggest spenders the exact same experience as one-time bargain hunters, you are telling whales they are not special. And they will spend their money where they ARE special.' },
-      { type: 'example', scenario: 'Jewelry Brand Recognizing Whales', before: { label: 'Treating Everyone Equally (Old)', text: 'Customer who spent $8,000 last year gets the same "20% off sitewide" email as someone who bought once for $40. The whale feels unappreciated. Stops opening emails. Finds a brand that treats them like royalty. Revenue gone.' }, after: { label: 'VIP Treatment (New)', text: 'Customer gets "Early Access for Our Top 5% - Exclusive Preview Before Public Launch" email. Feels recognized. Gets concierge-level support. Buys $3,200 in one session. Becomes brand advocate. Refers three more whales.' }, insight: 'Recognition triggers reciprocity. Whales spend more when they feel valued.' },
-      { type: 'content', title: 'The Reciprocity Engine', body: 'Humans are wired for reciprocity. When someone gives us something valuable, we feel compelled to give back. But reciprocity scales with perceived value. Give a whale a generic 10% discount? Minimal reciprocity. Give them VIP treatment, early access, personal thank-you notes, priority support? Massive reciprocity. They will spend more to "pay back" the special treatment. This is not manipulation. It is acknowledging that your best customers deserve better, and they reward you for it.' },
-      { type: 'cards', title: 'VIP Strategies That Trigger Reciprocity', items: [
-        { title: 'Exclusive Early Access', description: 'Let whales shop new products 24-48 hours before public launch. Scarcity + status.' },
-        { title: 'Personalized Communication', description: 'Stop sending blast emails. Send personalized messages acknowledging their loyalty.' },
-        { title: 'VIP-Only Products', description: 'Create limited items only available to top-tier customers. Ultimate exclusivity.' },
-        { title: 'Priority Support Line', description: 'Dedicated support channel for VIPs. No waiting. No generic responses.' },
-        { title: 'Surprise Gifts', description: 'Unexpected free gifts with orders. The surprise amplifies reciprocity.' },
-        { title: 'Behind-the-Scenes Access', description: 'Show them product development, brand stories, founder insights. Insider status.' }
-      ]},
-      { type: 'pro-tip', title: 'The Power of Recognition', body: 'Sometimes the smallest gestures create the biggest reciprocity. A handwritten note thanking a whale customer for their loyalty costs you 2 minutes and $0.50. But to them? It is recognition. It is being seen. It is emotional connection. That note can trigger thousands in repeat purchases. Not because they feel obligated, but because they feel valued.', action: 'Start simple: Identify your top 5% by revenue and send them a personal thank-you email this week.' },
-      { type: 'content', title: 'Identifying Your Whales', body: 'You cannot treat whales differently if you do not know who they are. Most brands have no idea which customers drive real revenue. They look at total customer count and celebrate growth. But growth in low-value customers is not growth - it is noise. You need clarity. Who are your top 5% by lifetime value? Who buys repeatedly? Who has the highest average order value? Once you know, you can segment and personalize.' },
-      { type: 'implementation', title: 'Know Your Whales with Precision', intro: "You can\'t improve what you can\'t measure. Here\'s how to set up your tracking:", steps: [
-        { step: 1, title: 'Install a free LTV tracker', description: 'Apps like DataDrew connect to your Shopify store and calculate real customer lifetime value automatically - no spreadsheets needed.' },
-        { step: 2, title: 'Connect your store data', description: 'The app syncs with your orders and customer data to show actual LTV by segment, cohort, and acquisition channel.' },
-        { step: 3, title: 'Identify your best customers', description: 'Filter to see which customer segments have the highest LTV. These are your blueprint for growth.' },
-        { step: 4, title: 'Track weekly and optimize', description: 'Set a reminder to check your metrics every Monday. Small improvements compound into massive results.' }
-      ], toolUrl: 'https://datadrew.com', cta: 'Get Started Free' },
-      { type: 'content', title: 'The Psychological Moat', body: 'Here is the beautiful part: Once you build emotional connection with whales through VIP treatment, they become nearly impossible to poach. Competitors can match your prices. They can copy your products. But they cannot replicate the relationship and recognition you have built. Whales stay loyal not because of what you sell, but because of how you make them feel. Status. Exclusivity. Belonging. These are psychological moats that protect your highest-value revenue streams.' },
-      { type: 'quiz', question: 'Why does VIP treatment trigger higher spending from whale customers?', options: ['Because they have more money to spend', 'Because reciprocity creates psychological obligation to give back when they feel valued', 'Because exclusive products are always more expensive', 'Because whales love showing off to friends'], correctIndex: 1, feedback: { correct: 'Exactly! VIP treatment triggers reciprocity - a deep psychological principle where humans feel compelled to give back when given something valuable. When whales receive exclusive access, personalized service, and recognition, they reciprocate with loyalty and higher spending. It is not about having more money - it is about feeling valued and responding with increased investment in the relationship.', incorrect: 'Not quite. The answer is reciprocity. When you give whale customers VIP treatment - early access, personalized communication, exclusive perks - they feel valued and recognized. This triggers reciprocity, a fundamental human drive to give back when receiving something valuable. They spend more not just because they can, but because they WANT to reciprocate the special treatment. It is pure psychology.' }},
-      { type: 'completion', sources: [{ name: 'Segment Your Customers by LTV', url: 'https://datadrew.com' }] }
-    ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -273,11 +93,312 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Heart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Gift: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Square: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
     };
 
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why 5% of customers generate 50%+ of your revenue', 'The psychology of high-LTV buyers and how they think differently', 'Why treating all customers equally leaves massive money on the table'] },
+      { type: 'hook', headline: '5% of your customers are worth more than the other 95% combined.', subtext: 'While you spend equal time on everyone, a tiny fraction generates the majority of revenue. They are your whales. They buy more. They return faster. They respond to completely different psychology than average buyers.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert%20(18).jpg', brandName: 'DataDrew' },
+      { type: 'whale-tier', title: 'The Reality of Customer Value', tiers: [{ label: 'Whale Customers', percentage: 5, revenue: 55, color: '#3b82f6' }, { label: 'Mid-Tier', percentage: 15, revenue: 30, color: '#8b5cf6' }, { label: 'Low-Value', percentage: 80, revenue: 15, color: '#94a3b8' }] },
+      { type: 'pareto-principle', title: 'The 80/20 Reality', subtitle: 'In eCommerce, it is even more extreme', data: { topPercent: 5, topRevenue: 55, restPercent: 95, restRevenue: 45 } },
+      { type: 'whale-psychology', title: 'How Whale Customers Think Differently', traits: [{ icon: 'Crown', title: 'Status Over Savings', description: 'Pay more for exclusive access than wait for discounts.' }, { icon: 'Zap', title: 'Convenience is Priceless', description: 'Time matters more than money. They pay for speed.' }, { icon: 'Heart', title: 'FOMO on Steroids', description: 'Limited editions and early access trigger instant action.' }, { icon: 'Gift', title: 'Reciprocity Amplified', description: 'VIP treatment creates massive loyalty and bigger purchases.' }] },
+      { type: 'equal-treatment-danger', title: 'Why Equal Treatment is Revenue Suicide', before: { label: 'EQUAL TREATMENT', example: 'Whale who spent $8,000 gets same 20% email as $40 buyer', result: 'FEELS UNAPPRECIATED' }, after: { label: 'VIP TREATMENT', example: 'Early Access for Our Top 5% - exclusive preview email', result: 'FEELS RECOGNIZED' }, revenueLost: '$3,200+' },
+      { type: 'reciprocity-engine', title: 'VIP Strategies That Trigger Reciprocity', strategies: [{ icon: 'Star', title: 'Exclusive Early Access', description: 'Let whales shop 24-48h before public launch.' }, { icon: 'Heart', title: 'Personalized Communication', description: 'Stop blast emails. Acknowledge their loyalty personally.' }, { icon: 'Gift', title: 'Surprise Gifts', description: 'Unexpected free gifts amplify reciprocity.' }, { icon: 'Shield', title: 'Priority Support', description: 'Dedicated VIP support channel. No waiting.' }] },
+      { type: 'whale-identification', title: 'How to Identify Your Whales', steps: [{ step: 1, title: 'Calculate LTV', description: 'Who are your top 5% by lifetime value?' }, { step: 2, title: 'Track Repeat Rate', description: 'Who buys repeatedly?' }, { step: 3, title: 'Analyze AOV', description: 'Who has highest average order value?' }, { step: 4, title: 'Segment & Personalize', description: 'Create VIP segments for different treatment.' }] },
+      { type: 'psychological-moat', title: 'The Psychological Moat', insight: 'Competitors can match prices. They can copy products. But they cannot replicate the RELATIONSHIP.', moatElements: [{ label: 'Status', icon: 'Crown' }, { label: 'Exclusivity', icon: 'Star' }, { label: 'Belonging', icon: 'Heart' }] },
+      { type: 'whale-stats', title: 'The Whale Customer Impact', stats: [{ value: 5, suffix: '%', label: 'Of Customers', subtext: 'Are whales' }, { value: 55, suffix: '%', label: 'Of Revenue', subtext: 'From whales' }, { value: 3.8, suffix: 'x', label: 'Higher LTV', subtext: 'Than average', decimals: 1 }] },
+      { type: 'vip-checklist', title: 'Your Whale Action Checklist', checks: [{ text: 'Identify top 5% customers by LTV', rule: 'STEP 1' }, { text: 'Create VIP segment in email platform', rule: 'STEP 2' }, { text: 'Send personalized thank-you this week', rule: 'STEP 3' }, { text: 'Plan exclusive early access for next launch', rule: 'STEP 4' }] },
+      { type: 'quiz', question: 'Why does VIP treatment trigger higher spending from whale customers?', options: ['Because they have more money to spend', 'Because reciprocity creates psychological obligation when they feel valued', 'Because exclusive products are always more expensive', 'Because whales love showing off to friends'], correctIndex: 1, feedback: { correct: 'Exactly! VIP treatment triggers reciprocity - when whales receive exclusive access and recognition, they reciprocate with loyalty and higher spending.', incorrect: 'Not quite. The answer is reciprocity. When you give whale customers VIP treatment, they feel valued and WANT to reciprocate with increased investment.' } },
+      { type: 'elite-insight', quote: 'Your top 5% are not just customers. They are your business. Treat them accordingly.', actions: [{ icon: 'Crown', label: 'Identify Whales' }, { icon: 'Star', label: 'VIP Treatment' }, { icon: 'TrendingUp', label: 'Watch Revenue Soar' }] },
+      { type: 'completion', sources: [{ name: 'Segment Your Customers by LTV', url: 'https://datadrew.com' }] }
+    ];
+
+    // ==================== CUSTOM ELITE SLIDES ====================
+
+    const WhaleTierSlide = ({ data }) => {
+      const [animatedTiers, setAnimatedTiers] = useState([]);
+      useEffect(() => {
+        const timers = data.tiers.map((_, i) => setTimeout(() => setAnimatedTiers(prev => [...prev, i]), 500 + i * 400));
+        return () => timers.forEach(t => clearTimeout(t));
+      }, [data.tiers.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {data.tiers.map((tier, i) => {
+              const isAnimated = animatedTiers.includes(i);
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                  <div style={{ width: '100px', textAlign: 'right', flexShrink: 0 }}>
+                    <div style={{ fontSize: '28px', fontWeight: '900', color: tier.color }}>{isAnimated ? <AnimatedCounter target={tier.percentage} suffix="%" /> : '0%'}</div>
+                    <div style={{ fontSize: '12px', color: '#737373' }}>{tier.label}</div>
+                  </div>
+                  <div style={{ flex: 1, height: '56px', background: '#f5f5f5', borderRadius: '12px', overflow: 'hidden', position: 'relative' }}>
+                    <motion.div initial={{ width: 0 }} animate={{ width: isAnimated ? `${tier.revenue}%` : '0%' }} transition={{ duration: 0.8, ease: 'easeOut' }} style={{ height: '100%', background: `linear-gradient(135deg, ${tier.color}, ${tier.color}dd)`, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', paddingRight: '16px' }}>
+                      <span style={{ color: 'white', fontWeight: '700', fontSize: '16px' }}>{tier.revenue}% revenue</span>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5 }} style={{ marginTop: '32px', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p style={{ color: '#e5e5e5', fontSize: '15px' }}>The <span style={{ color: 'var(--accent)', fontWeight: '700' }}>top 5%</span> contribute more than everyone else combined.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const ParetoPrincipleSlide = ({ data }) => {
+      const [showComparison, setShowComparison] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowComparison(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} style={{ textAlign: 'center', color: '#737373', marginBottom: '40px' }}>{data.subtitle}</motion.p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', textAlign: 'center', position: 'relative', overflow: 'hidden', border: '2px solid var(--accent)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div style={{ fontSize: '64px', fontWeight: '900', color: 'var(--accent)', marginBottom: '8px' }}><AnimatedCounter target={data.data.topPercent} suffix="%" /></div>
+              <div style={{ color: 'white', fontWeight: '700', fontSize: '16px', marginBottom: '4px' }}>OF CUSTOMERS</div>
+              <div style={{ color: '#a3a3a3', fontSize: '14px' }}>Generate <span style={{ color: 'var(--accent)', fontWeight: '700' }}>{data.data.topRevenue}%</span> of revenue</div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} style={{ background: '#f5f5f5', borderRadius: '20px', padding: '32px', textAlign: 'center', border: '2px solid #e5e5e5' }}>
+              <div style={{ fontSize: '64px', fontWeight: '900', color: '#a3a3a3', marginBottom: '8px' }}><AnimatedCounter target={data.data.restPercent} suffix="%" /></div>
+              <div style={{ color: '#525252', fontWeight: '700', fontSize: '16px', marginBottom: '4px' }}>OF CUSTOMERS</div>
+              <div style={{ color: '#737373', fontSize: '14px' }}>Generate only <span style={{ fontWeight: '700' }}>{data.data.restRevenue}%</span> of revenue</div>
+            </motion.div>
+          </div>
+          <AnimatePresence>
+            {showComparison && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ marginTop: '32px', textAlign: 'center' }}>
+                <span style={{ display: 'inline-block', padding: '12px 24px', background: 'var(--accent)', color: 'white', borderRadius: '30px', fontWeight: '700', fontSize: '18px', boxShadow: '0 8px 30px rgba(var(--accent-rgb), 0.3)' }}>11x IMPACT DIFFERENCE</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    const WhalePsychologySlide = ({ data }) => {
+      const [activeTrait, setActiveTrait] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveTrait(prev => (prev + 1) % data.traits.length), 3000);
+        return () => clearInterval(timer);
+      }, [data.traits.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+            {data.traits.map((trait, i) => {
+              const Icon = Icons[trait.icon] || Icons.Zap;
+              const isActive = i === activeTrait;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} style={{ background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white', borderRadius: '16px', padding: '24px', border: isActive ? '2px solid var(--accent)' : '2px solid #e5e5e5', boxShadow: isActive ? '0 0 30px rgba(var(--accent-rgb), 0.2)' : 'none', transition: 'all 0.3s ease', position: 'relative', overflow: 'hidden' }}>
+                  {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: isActive ? 'var(--accent)' : '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: isActive ? 'white' : '#737373' }}><Icon /></div>
+                  <h3 style={{ fontWeight: '700', fontSize: '16px', marginBottom: '8px', color: isActive ? 'white' : '#171717' }}>{trait.title}</h3>
+                  <p style={{ fontSize: '14px', lineHeight: '1.6', color: isActive ? '#a3a3a3' : '#737373' }}>{trait.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    const EqualTreatmentDangerSlide = ({ data }) => {
+      const [showLoss, setShowLoss] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowLoss(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', position: 'relative' }}>
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: '#fef2f2', border: '2px solid #fca5a5', borderRadius: '20px', padding: '28px' }}>
+              <div style={{ display: 'inline-block', padding: '6px 14px', background: '#ef4444', color: 'white', borderRadius: '20px', fontSize: '12px', fontWeight: '700', marginBottom: '16px' }}>{data.before.label}</div>
+              <p style={{ color: '#525252', fontSize: '15px', lineHeight: '1.7', marginBottom: '20px' }}>{data.before.example}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Icons.X /><span style={{ color: '#dc2626', fontWeight: '700', fontSize: '16px' }}>{data.before.result}</span></div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} style={{ background: '#f0fdf4', border: '2px solid #86efac', borderRadius: '20px', padding: '28px' }}>
+              <div style={{ display: 'inline-block', padding: '6px 14px', background: '#22c55e', color: 'white', borderRadius: '20px', fontSize: '12px', fontWeight: '700', marginBottom: '16px' }}>{data.after.label}</div>
+              <p style={{ color: '#525252', fontSize: '15px', lineHeight: '1.7', marginBottom: '20px' }}>{data.after.example}</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Icons.Check /><span style={{ color: '#16a34a', fontWeight: '700', fontSize: '16px' }}>{data.after.result}</span></div>
+            </motion.div>
+            <AnimatePresence>
+              {showLoss && (
+                <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }} style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: 'linear-gradient(135deg, #ef4444, #dc2626)', color: 'white', padding: '12px 24px', borderRadius: '30px', fontWeight: '900', fontSize: '18px', boxShadow: '0 8px 30px rgba(239, 68, 68, 0.4)', zIndex: 10, whiteSpace: 'nowrap' }}>{data.revenueLost} LOST</motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const ReciprocityEngineSlide = ({ data }) => {
+      const [activeStrategy, setActiveStrategy] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveStrategy(prev => (prev + 1) % data.strategies.length), 2500);
+        return () => clearInterval(timer);
+      }, [data.strategies.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+            {data.strategies.map((strategy, i) => {
+              const Icon = Icons[strategy.icon] || Icons.Zap;
+              const isActive = i === activeStrategy;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} style={{ background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white', borderRadius: '16px', padding: '24px', border: isActive ? '2px solid var(--accent)' : '2px solid #e5e5e5', boxShadow: isActive ? '0 0 30px rgba(var(--accent-rgb), 0.2)' : 'none', transition: 'all 0.3s ease', position: 'relative', overflow: 'hidden' }}>
+                  {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: isActive ? 'var(--accent)' : '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: isActive ? 'white' : '#737373' }}><Icon /></div>
+                  <h3 style={{ fontWeight: '700', fontSize: '16px', marginBottom: '8px', color: isActive ? 'white' : '#171717' }}>{strategy.title}</h3>
+                  <p style={{ fontSize: '14px', lineHeight: '1.6', color: isActive ? '#a3a3a3' : '#737373' }}>{strategy.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    const WhaleIdentificationSlide = ({ data }) => {
+      const [completedSteps, setCompletedSteps] = useState([]);
+      useEffect(() => {
+        const timers = data.steps.map((_, i) => setTimeout(() => setCompletedSteps(prev => [...prev, i]), 1000 + i * 800));
+        return () => timers.forEach(t => clearTimeout(t));
+      }, [data.steps.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {data.steps.map((step, i) => {
+              const isCompleted = completedSteps.includes(i);
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} style={{ background: isCompleted ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white', border: isCompleted ? '2px solid var(--accent)' : '2px solid #e5e5e5', borderRadius: '16px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', position: 'relative', overflow: 'hidden', transition: 'all 0.3s ease' }}>
+                  {isCompleted && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: isCompleted ? 'var(--accent)' : '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isCompleted ? 'white' : '#a3a3a3', fontWeight: '700', fontSize: '16px', flexShrink: 0, transition: 'all 0.3s ease' }}>{isCompleted ? <Icons.Check /> : step.step}</div>
+                  <div style={{ flex: 1 }}>
+                    <h4 style={{ fontWeight: '700', fontSize: '15px', marginBottom: '4px', color: isCompleted ? 'white' : '#171717' }}>{step.title}</h4>
+                    <p style={{ fontSize: '13px', color: isCompleted ? '#a3a3a3' : '#737373' }}>{step.description}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    const PsychologicalMoatSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden', marginBottom: '32px' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <p style={{ color: '#e5e5e5', fontSize: '18px', lineHeight: '1.7', textAlign: 'center' }}>{data.insight}</p>
+        </motion.div>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '24px' }}>
+          {data.moatElements.map((element, i) => {
+            const Icon = Icons[element.icon] || Icons.Zap;
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.3)' }}><Icon /></div>
+                <span style={{ color: '#525252', fontWeight: '600', fontSize: '14px' }}>{element.label}</span>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+
+    const WhaleStatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div style={{ fontSize: '48px', fontWeight: '900', color: 'var(--accent)', marginBottom: '8px' }}><AnimatedCounter target={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} /></div>
+              <div style={{ color: 'white', fontWeight: '700', fontSize: '15px', marginBottom: '4px' }}>{stat.label}</div>
+              <div style={{ color: '#a3a3a3', fontSize: '13px' }}>{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const VIPChecklistSlide = ({ data }) => {
+      const [checkedItems, setCheckedItems] = useState([]);
+      useEffect(() => {
+        const timers = data.checks.map((_, i) => setTimeout(() => setCheckedItems(prev => [...prev, i]), 1000 + i * 800));
+        return () => timers.forEach(t => clearTimeout(t));
+      }, [data.checks.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {data.checks.map((check, i) => {
+              const isChecked = checkedItems.includes(i);
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} style={{ background: isChecked ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white', border: isChecked ? '2px solid var(--accent)' : '2px solid #e5e5e5', borderRadius: '16px', padding: '20px', display: 'flex', alignItems: 'center', gap: '16px', position: 'relative', overflow: 'hidden', transition: 'all 0.3s ease' }}>
+                  {isChecked && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: isChecked ? 'var(--accent)' : '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isChecked ? 'white' : '#d4d4d4', flexShrink: 0, transition: 'all 0.3s ease' }}>{isChecked ? <Icons.Check /> : <Icons.Square />}</div>
+                  <div style={{ flex: 1 }}><p style={{ color: isChecked ? 'white' : '#525252', fontSize: '15px', fontWeight: '500' }}>{check.text}</p></div>
+                  <div style={{ padding: '6px 12px', background: isChecked ? 'rgba(var(--accent-rgb), 0.2)' : '#f5f5f5', borderRadius: '20px', fontSize: '11px', fontWeight: '700', color: isChecked ? 'var(--accent)' : '#737373', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{check.rule}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.4)' }}><Icons.Crown /></div>
+          <p style={{ color: 'white', fontSize: '22px', fontWeight: '600', lineHeight: '1.6', marginBottom: '32px' }}>"{data.quote}"</p>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px' }}>
+            {data.actions.map((action, i) => {
+              const Icon = Icons[action.icon] || Icons.Zap;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(var(--accent-rgb), 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}><Icon /></div>
+                  <span style={{ color: '#a3a3a3', fontSize: '12px', fontWeight: '600' }}>{action.label}</span>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Standard Slides
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -286,21 +407,21 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl text-black mb-2">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-2 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-2">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-sm leading-snug">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
@@ -308,111 +429,18 @@
 
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto py-8 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '25%', maxHeight: '150px', marginRight: '60px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.9 }} />
           </motion.div>
         )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </motion.div>
-    );
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            {data.cta || 'Get Started'} <Icons.ExternalLink />
-          </a>
-        </motion.div>}
       </div>
     );
 
@@ -425,13 +453,13 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto py-8 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -439,10 +467,8 @@
               {data.options.map((option, i) => (
                 <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                    </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>{showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}</span>
+                    <span className="text-neutral-700 text-sm">{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -460,52 +486,35 @@
     };
 
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Whale Customer Paradox and why treating all customers equally leaves money on the table. By recognizing your top 5% and treating them like VIPs, you trigger reciprocity psychology that drives massive revenue growth.</motion.p>
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(var(--accent-rgb), 0.35)' }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md">Identify your whales. Treat them like VIPs. Watch reciprocity drive massive revenue growth.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
+        <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={() => window.parent.postMessage({ type: 'LESSON_COMPLETE', lessonId: LESSON_CONFIG.id }, '*')} className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Complete Lesson</motion.button>
       </div>
     );
 
+    // Main App
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
+      const [currentSlide, setCurrentSlide] = useState(() => getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
-      const currentSlideRef = React.useRef(0);
+      const currentSlideRef = React.useRef(currentSlide);
       const [gifConfig, setGifConfig] = useState(null);
       const [isAnimating, setIsAnimating] = useState(false);
 
       const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
       const hideGif = useCallback(() => setGifConfig(null), []);
 
-      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+      useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -537,12 +546,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'customer-tier': return <CustomerTierSlide data={slide} />;
-          case 'pro-tip': return <ProTipSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'whale-tier': return <WhaleTierSlide data={slide} />;
+          case 'pareto-principle': return <ParetoPrincipleSlide data={slide} />;
+          case 'whale-psychology': return <WhalePsychologySlide data={slide} />;
+          case 'equal-treatment-danger': return <EqualTreatmentDangerSlide data={slide} />;
+          case 'reciprocity-engine': return <ReciprocityEngineSlide data={slide} />;
+          case 'whale-identification': return <WhaleIdentificationSlide data={slide} />;
+          case 'psychological-moat': return <PsychologicalMoatSlide data={slide} />;
+          case 'whale-stats': return <WhaleStatsSlide data={slide} />;
+          case 'vip-checklist': return <VIPChecklistSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -564,15 +577,15 @@
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
             {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+          <div className="px-6 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">
               {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -582,7 +595,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
