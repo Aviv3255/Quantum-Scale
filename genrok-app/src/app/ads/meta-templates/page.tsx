@@ -1620,7 +1620,7 @@ export default function MetaTemplatesPage() {
                 gridTemplateColumns: 'repeat(6, 1fr)',
                 gap: '4px',
                 padding: '4px',
-                filter: 'blur(4px)'
+                filter: 'blur(2px)'
               }}
             >
               {CREATIVE_IMAGES.slice(0, 30).map((img, idx) => (
@@ -1784,7 +1784,7 @@ export default function MetaTemplatesPage() {
                     {/* Expanded Content */}
                     {expandedPost === idx && (
                       <div className="px-4 pb-4 border-t border-black/5">
-                        <pre className="mt-3 text-sm text-black whitespace-pre-wrap font-sans leading-relaxed">
+                        <pre className="mt-3 text-sm whitespace-pre-wrap font-sans leading-relaxed" style={{ color: '#000000' }}>
                           {post.content}
                         </pre>
                       </div>
