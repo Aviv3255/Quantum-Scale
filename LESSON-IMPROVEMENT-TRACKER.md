@@ -379,7 +379,7 @@ These lessons need design improvements to reach elite level.
 | 248 | three-brains-wallet | ELITE ✓ | Jan 4 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
 | 249 | three-canons-of-craft | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
 | 250 | three-cro-tests | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
-| 251 | three-growth-levers | 5 |
+| 251 | three-growth-levers | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 252 | three-levels-of-change | 5 |
 | 253 | three-second-rule | 5 |
 | 254 | trust-architecture | 5 |
@@ -420,8 +420,8 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 283 |
-| Need Improvement | 14 |
+| Improved / Don't Need Improvement | 284 |
+| Need Improvement | 13 |
 | Errors (No lesson.html) | 7 |
 | **TOTAL** | **304** |
 
