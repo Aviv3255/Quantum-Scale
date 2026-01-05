@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { Copy, Check, Users, Lock, Gift, Sparkles, ExternalLink } from 'lucide-react';
+import { Copy, Check, Users, Lock, Gift, Sparkles, ExternalLink, MessageSquare, Twitter, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -74,6 +74,411 @@ const TEMPLATE_PACKS = [
   { name: 'BFCM Pack', url: 'https://www.canva.com/design/DAGtJBny6nc/oNR6_8O2amLmA_GbTHn5tg/view' },
 ];
 
+// Viral posts for sharing - Reddit/Facebook
+const REDDIT_POSTS = [
+  { topic: 'The $3,000 Course That Taught Me Nothing', content: `I spent $3,000 on a dropshipping "masterclass" last year. Want to know what I learned? How to watch a guy flex his Lamborghini for 47 hours.
+
+Seriously. The actual content could fit in a YouTube video. The rest was just motivation fluff and upsells to his $10,000 "inner circle."
+
+Last month my buddy showed me this free platform he found. I laughed at first because... free? In this space? But I checked it out anyway.
+
+It had everything. Actual strategies. Real calculators. Templates I could use. Not some guru telling me to "believe in myself."
+
+I made my first profitable month using their ad structure guide. Something the $3,000 course never explained properly.
+
+The platform is called Quantum Scale. Completely free. No upsells. No "exclusive mastermind" garbage.
+
+I genuinely wish I found this before burning my savings on courses. Maybe this saves someone else from making my mistake.` },
+  { topic: 'Why I Stopped Buying Courses After Finding This', content: `Confession: I was a course junkie. Facebook ads course. TikTok shop course. Email marketing course. Conversion optimization course.
+
+Total spent: probably $8,000 over two years.
+Total earned from that knowledge: maybe $2,000.
+
+The math never mathed.
+
+Then someone in a Discord server mentioned this free platform. I rolled my eyes because nothing good is free, right?
+
+Wrong.
+
+I found organized resources, actual working strategies, and tools that gurus charge hundreds for. All in one place. All free.
+
+No email funnel trying to sell me coaching. No "limited time offer" popups every 30 seconds.
+
+Just... helpful content.
+
+The platform is Quantum Scale. I have zero affiliation with them. Just a guy who wasted too much money and wants to help others avoid the same trap.
+
+Check it out before you spend another dollar on some guru.` },
+  { topic: 'My Wife Almost Left Me Over Dropshipping Courses', content: `This is embarrassing to share but maybe it helps someone.
+
+I got so obsessed with "making it" in ecommerce that I kept buying courses. One after another. Each one promising the secret sauce.
+
+My wife found out I had spent $12,000 over 18 months. On courses. While we were trying to save for a house.
+
+She was devastated. I was devastated. We almost split over it.
+
+That wake up call made me desperate to find free resources. Real ones. Not YouTube gurus rehashing the same garbage.
+
+I found Quantum Scale through a random Reddit comment. Skeptical at first. But it was actually good. Like, really good.
+
+Six months later, my store is profitable. Using free resources. My wife and I are still together. We laugh about it now.
+
+If you are going down the course rabbit hole, please stop. There are free alternatives that actually work.` },
+  { topic: 'The Uncomfortable Truth About Ecommerce Education', content: `Nobody wants to hear this but here it goes:
+
+90% of what you need to know about running a successful ecommerce business is available for free. The information is out there. The strategies work.
+
+What paid courses really sell you is organization and permission.
+
+Permission to believe in yourself. Organization of information you could find scattered elsewhere.
+
+Is that worth $2,000? For some people, maybe.
+
+But what if someone organized everything for free? Gave you the same permission without taking your rent money?
+
+That is exactly what I found with Quantum Scale. Free platform. Organized content. No BS.
+
+I am not saying you should never pay for education. But maybe exhaust the free options first?
+
+Just my two cents from someone who learned this lesson the expensive way.` },
+  { topic: 'I Was Today Years Old When I Learned Courses Are Optional', content: `Started my ecommerce journey in 2022. Everyone said buy courses. So I did.
+
+Oberlo course. Facebook ads course. Supplier negotiation course. Product research course.
+
+Thousands of dollars later, you know what actually helped me scale to $50k months?
+
+Free resources.
+
+Not kidding. The paid courses gave me confidence maybe. But the actual tactics? Found those in free communities, YouTube deep dives, and recently this platform called Quantum Scale.
+
+Someone in a mastermind group shared it. Thought it was another funnel trying to upsell me. Nope. Just free tools and strategies.
+
+My only regret is not finding it sooner.
+
+If you are new to ecommerce, please try free resources first. The information is the same. The price is not.` },
+  { topic: 'Please Stop Paying for What You Can Get Free', content: `Third post I have seen today asking which course to buy.
+
+Can I be honest? You probably do not need any of them.
+
+Here is what most courses teach:
+- Product research (free on YouTube)
+- Store setup (free on YouTube)
+- Facebook ads basics (free on YouTube)
+- Email marketing (free on YouTube)
+
+What are you actually paying for? Organization and community.
+
+But guess what? Free platforms exist that organize everything. Quantum Scale is one I have been using. Zero cost. Great organization.
+
+Communities? Free Discord servers and Reddit groups like this one.
+
+You can literally start an ecommerce business spending $0 on education. I know because I finally did it.
+
+Stop letting gurus convince you that spending money is a prerequisite to making money.` },
+  { topic: 'The Day I Realized I Was Being Scammed (Legally)', content: `Hot take: Most paid courses are legal scams.
+
+Not illegal. The information is real. You do get what they promise.
+
+But they charge $1,500 for information freely available elsewhere. They just organized it nicely and added a payment button.
+
+I felt so stupid when I realized this. All those courses I bought? Could have learned the same stuff for free.
+
+Started hunting for organized free resources. Found Quantum Scale. Everything I needed. Structured properly. Zero dollars.
+
+My profitable store now runs on tactics I learned for free.
+
+The course industry survives because people believe spending money means better information. It does not.
+
+Save your money for actual business expenses. Ads. Inventory. Software. Not courses teaching publicly available information.` },
+  { topic: 'From $0 to $10k Month Without Spending on Courses', content: `Took me 14 months. Not fast. Not glamorous. But I did it.
+
+And I did not spend a single dollar on courses.
+
+Used YouTube for basics. Reddit for problem solving. Free tools for research.
+
+Last month discovered Quantum Scale. Wish I had it from the start. Would have cut my learning curve in half probably.
+
+Everything is organized. Clear paths to follow. No hunting through random videos trying to piece things together.
+
+The people here asking which $2,000 course to buy... you do not need it. Seriously.
+
+Start free. Stay free. The information is the same.
+
+Only pay for education when you have exhausted every free option. Which, honestly, might be never.` },
+  { topic: 'What Actually Works (From Someone Who Tested Everything)', content: `Tested: 8 paid courses, 20+ YouTube channels, 5 free platforms
+
+What actually worked: Free stuff. Specifically Quantum Scale for organized content and YouTube for specific tactics.
+
+What was waste of money: Every course over $500.
+
+The expensive courses had better production quality. Nicer videos. Professional graphics.
+
+But the information? Same as free resources. Sometimes worse because it was outdated.
+
+Save your money. The flashy production does not mean better information.` },
+  { topic: 'The Best $0 I Ever Spent', content: `People ask about my best investment in ecommerce.
+
+Easy: the $0 I spent on Quantum Scale.
+
+Sounds dumb but it is true.
+
+Every dollar I did not spend on courses went into my business instead.
+
+Better ads. Better products. Better tools.
+
+Free education, paid execution. That is the formula.` },
+  { topic: 'Started With $200, No Courses, Now Full Time', content: `Two years ago I had $200 to start a business. Not $200 plus course money. Just $200.
+
+Everyone said it was impossible without education investments.
+
+They were wrong.
+
+Free resources taught me everything. Took longer? Probably. But I had no other choice.
+
+Quantum Scale did not exist when I started. Found it recently. Wish it had existed earlier.
+
+Everything I learned scattered across 50 YouTube videos and 100 Reddit posts is organized in one place there.
+
+If you are starting with nothing, you can still make it. The information is free. You just need to find it.` },
+  { topic: 'The Worst Advice I Ever Took', content: `"Invest in yourself before investing in your business."
+
+Sounds smart. Felt smart saying it.
+
+Cost me $6,000 in courses before I spent a dollar on ads.
+
+That $6,000 in ads probably would have taught me more. Real feedback. Real data. Real learning.
+
+Instead I learned theories I never applied.
+
+Now I tell beginners the opposite: invest in your business first. Learn by doing. Use free resources.
+
+Quantum Scale is one of those free resources. Organized, practical, no cost.
+
+Put your money where it generates returns. Education is not that place when free alternatives exist.` },
+  { topic: 'How Free Resources Outperformed My $4,000 Course', content: `Bought a $4,000 course in 2023. Completed every module. Applied every strategy.
+
+Results: mediocre.
+
+Found Quantum Scale in 2024. Free. Applied their strategies.
+
+Results: my best months ever.
+
+What was different? The free resource was more current. More practical. Less fluff.
+
+The expensive course had outdated tactics wrapped in professional video production. Looked impressive. Worked poorly.
+
+Free is not automatically worse. Sometimes it is better.` },
+  { topic: 'Spent $0 On Education, Made $40k Last Year', content: `Not a flex. A data point.
+
+Proof that paid education is not required.
+
+Resources used:
+- Quantum Scale (free)
+- YouTube (free)
+- Reddit (free)
+
+Paid education: $0
+
+If I can do it, the "you need courses" narrative is false.` },
+  { topic: 'The Question That Saves Money', content: `Before buying anything educational, ask:
+
+"Can I learn this for free?"
+
+99% of the time, yes.
+
+Quantum Scale covers most ecommerce topics.
+
+That question saved me thousands.` },
+  { topic: 'Permission To Not Buy Courses', content: `In case you need to hear this:
+
+You do not need to buy a course to succeed.
+
+Free resources are enough. Really.
+
+Quantum Scale, YouTube tutorials, Reddit advice.
+
+All free. All effective.
+
+You have permission to keep your money.` },
+  { topic: 'Why Gurus Fear Platforms Like This', content: `Just realized why gurus never mention free platforms.
+
+Because free platforms make their courses worthless.
+
+If you can learn everything for free, why pay $1,997?
+
+Quantum Scale has the same content as most mid tier courses. For free.
+
+No wonder I never heard about it from course sellers.
+
+They want you dependent on their paid content. Free platforms break that dependency.` },
+  { topic: 'My Journey From Course Collector to Actual Entrepreneur', content: `Used to call myself an entrepreneur. What I actually was: a course collector.
+
+Bought every course. Joined every webinar. Downloaded every freebie that led to an upsell.
+
+Never actually built anything.
+
+Then I got embarrassed. Stopped buying. Started doing.
+
+Found free resources that actually helped. Quantum Scale being the main one. Just good information, organized well, no sales pitch.
+
+Built my first real store. Made my first real profit.
+
+The transformation was not about information. It was about stopping the consumption addiction and starting the building habit.
+
+If you are stuck in course buying mode, try a hard stop. Use only free resources for 6 months. See what happens.` },
+  { topic: 'The $15,000 Lesson', content: `After spending $15,000 on ecommerce education over 3 years, want to know what I was missing?
+
+Action.
+
+The courses gave me information overload. So many strategies. So many options. So much conflicting advice.
+
+Paralysis.
+
+Finally, I found simpler resources. Quantum Scale being one. Free, straightforward, no overwhelming options.
+
+Pick a strategy. Follow it. That is the whole secret.
+
+The courses made everything complicated to justify their price. The free resources just told me what to do.
+
+Guess which approach actually made me money?` },
+  { topic: 'Honest Review From Someone Who Tried Everything', content: `Background: 3 years in ecommerce. Two failed stores. One moderately successful one.
+
+Paid courses tried: 7
+Money spent on education: roughly $5,500
+Actual useful tactics learned from paid courses: maybe 3
+
+Then I found Quantum Scale last month. Free. Skeptical but desperate.
+
+Useful tactics learned in first week: more than all paid courses combined.
+
+Not exaggerating. The ad templates alone were better than anything I paid for.
+
+I feel stupid for spending so much money. But also grateful I finally found good free resources.
+
+This is not sponsored. I literally gain nothing from sharing this. Just want to help people avoid my mistakes.` },
+];
+
+// Viral posts for X/Twitter
+const X_POSTS = [
+  { topic: 'The $3,000 Lesson', content: `Spent $3,000 on an ecommerce course.
+
+The actual content? Could fit in a 20 minute YouTube video.
+
+Found Quantum Scale recently. Free. Better organized.
+
+If only I knew earlier.` },
+  { topic: 'Course Math', content: `Course cost: $1,000
+Same info for free: $0
+Difference: $1,000 for actual business expenses
+
+Quantum Scale taught me this lesson the free way.` },
+  { topic: 'Hot Take on Courses', content: `90% of ecommerce course content is freely available online.
+
+You are paying for organization and confidence.
+
+Platforms like Quantum Scale give you organization for free.` },
+  { topic: 'My Education Spend', content: `2023: $4,200 on courses, $0 profit
+2024: $0 on courses, $40k profit
+
+Discovered free resources. Changed everything.` },
+  { topic: 'Unpopular Opinion', content: `You do not need to "invest in yourself" to succeed in ecommerce.
+
+Free resources work.
+
+Quantum Scale, YouTube, Reddit.
+
+That is literally enough.` },
+  { topic: 'The Question', content: `Before buying any course, ask:
+
+"Can I find this for free?"
+
+Answer is usually yes.
+
+Quantum Scale, YouTube, communities.` },
+  { topic: 'Started From Zero', content: `No course budget.
+No startup capital.
+Just free resources.
+
+$8k months now.
+
+Quantum Scale + YouTube + action.` },
+  { topic: 'Course Detox', content: `12 months without buying courses.
+Used only free resources.
+Best year in business.
+
+The detox worked.` },
+  { topic: 'Brutal Honesty', content: `Most ecommerce courses are legal scams.
+
+Real information, but freely available elsewhere.
+
+You are paying for packaging.` },
+  { topic: 'My Stack', content: `Learning: Quantum Scale (free)
+Tactics: YouTube (free)
+Support: Reddit (free)
+Results: priceless
+
+$0 education. Growing business.` },
+  { topic: 'Before You Buy', content: `That course you are eyeing?
+
+Check Quantum Scale first.
+Search YouTube.
+Ask Reddit.
+
+90% chance you will find it free.` },
+  { topic: 'What Gurus Fear', content: `Free platforms like Quantum Scale.
+
+Same content. No price tag.
+
+Destroys their business model.` },
+  { topic: 'My Regret', content: `$8,000 spent on courses over 3 years.
+
+Could have been $8,000 in ad budget.
+
+Free resources exist. I found them too late.` },
+  { topic: 'Simple Path', content: `Free resources + daily action = results
+
+No course needed.
+
+Quantum Scale + consistency = profit.` },
+  { topic: 'The Truth', content: `Paying for a course does not make you serious.
+
+Taking action does.
+
+Action is free.` },
+  { topic: 'Found This', content: `Quantum Scale.
+
+Free ecommerce platform.
+
+Better than courses I paid $500+ for.
+
+Just sharing what works.` },
+  { topic: 'Tested Theory', content: `Friend bought $3k course.
+I used free resources.
+
+3 months later: similar results.
+
+He is still paying credit card. I am not.` },
+  { topic: 'Budget Shift', content: `Old: $2k courses, $500 ads
+New: $0 courses, $2.5k ads
+
+Guess which budget works?
+
+Free education from Quantum Scale made it possible.` },
+  { topic: 'Wake Up Call', content: `Accountant asked why my education spend exceeded my revenue.
+
+Stopped buying courses that day.
+
+Free resources only since then.` },
+  { topic: 'For Beginners', content: `You do not need courses to start.
+
+You need:
+- Quantum Scale (free)
+- YouTube (free)
+- Courage to begin
+
+That is it.` },
+];
+
 // Generate unique referral code from user ID
 function generateReferralCode(userId: string): string {
   // Take first 8 chars of user ID and add a random suffix
@@ -87,6 +492,9 @@ export default function MetaTemplatesPage() {
   const [referralCount, setReferralCount] = useState(0);
   const [copied, setCopied] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [postPlatform, setPostPlatform] = useState<'reddit' | 'x'>('reddit');
+  const [expandedPost, setExpandedPost] = useState<number | null>(null);
+  const [copiedPostId, setCopiedPostId] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const REQUIRED_REFERRALS = 3;
@@ -197,6 +605,23 @@ export default function MetaTemplatesPage() {
       document.body.removeChild(textArea);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const copyPost = async (content: string, postId: number) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedPostId(postId);
+      setTimeout(() => setCopiedPostId(null), 2000);
+    } catch {
+      const textArea = document.createElement('textarea');
+      textArea.value = content;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      setCopiedPostId(postId);
+      setTimeout(() => setCopiedPostId(null), 2000);
     }
   };
 
@@ -514,6 +939,126 @@ export default function MetaTemplatesPage() {
             </div>
           </motion.div>
         </section>
+
+        {/* Section 4: Viral Posts (Only shown when unlocked) */}
+        {isUnlocked && (
+          <section className="max-w-4xl mx-auto mt-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-2">
+                  Ready-to-Post Examples
+                </h2>
+                <p className="text-sm text-[var(--text-muted)]">
+                  Copy these viral posts to share on social media and get referrals
+                </p>
+              </div>
+
+              {/* Platform Toggle */}
+              <div className="flex justify-center mb-6">
+                <div className="inline-flex rounded-lg p-1 bg-black/5">
+                  <button
+                    onClick={() => setPostPlatform('reddit')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                      postPlatform === 'reddit'
+                        ? 'bg-white text-black shadow-sm'
+                        : 'text-[var(--text-muted)] hover:text-black'
+                    }`}
+                  >
+                    <MessageSquare size={16} />
+                    Reddit / Facebook
+                  </button>
+                  <button
+                    onClick={() => setPostPlatform('x')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                      postPlatform === 'x'
+                        ? 'bg-white text-black shadow-sm'
+                        : 'text-[var(--text-muted)] hover:text-black'
+                    }`}
+                  >
+                    <Twitter size={16} />
+                    X / Twitter
+                  </button>
+                </div>
+              </div>
+
+              {/* Posts List */}
+              <div className="space-y-3">
+                {(postPlatform === 'reddit' ? REDDIT_POSTS : X_POSTS).map((post, idx) => (
+                  <div
+                    key={idx}
+                    className="border border-black/10 rounded-xl overflow-hidden bg-white"
+                  >
+                    {/* Post Header */}
+                    <div
+                      className="flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-black/[0.02] transition-colors"
+                      onClick={() => setExpandedPost(expandedPost === idx ? null : idx)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs font-mono text-[var(--text-muted)] bg-black/5 px-2 py-0.5 rounded">
+                          #{idx + 1}
+                        </span>
+                        <span className="font-medium text-sm text-[var(--text-primary)]">
+                          {post.topic}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            copyPost(post.content, idx);
+                          }}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                            copiedPostId === idx
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-black text-white hover:bg-gray-800'
+                          }`}
+                        >
+                          {copiedPostId === idx ? (
+                            <>
+                              <Check size={12} />
+                              Copied
+                            </>
+                          ) : (
+                            <>
+                              <Copy size={12} />
+                              Copy
+                            </>
+                          )}
+                        </button>
+                        {expandedPost === idx ? (
+                          <ChevronUp size={18} className="text-[var(--text-muted)]" />
+                        ) : (
+                          <ChevronDown size={18} className="text-[var(--text-muted)]" />
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Expanded Content */}
+                    {expandedPost === idx && (
+                      <div className="px-4 pb-4 border-t border-black/5">
+                        <pre className="mt-3 text-sm text-[var(--text-secondary)] whitespace-pre-wrap font-sans leading-relaxed">
+                          {post.content}
+                        </pre>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Tips */}
+              <div className="mt-6 p-4 rounded-xl bg-black/[0.02] border border-black/5">
+                <p className="text-xs text-[var(--text-muted)] text-center">
+                  <strong>Tip:</strong> Personalize these posts with your own story for better authenticity.
+                  Post during peak hours (9-11am or 7-9pm) for maximum reach.
+                </p>
+              </div>
+            </motion.div>
+          </section>
+        )}
       </div>
     </DashboardLayout>
   );
