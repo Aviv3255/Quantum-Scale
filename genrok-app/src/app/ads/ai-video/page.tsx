@@ -144,7 +144,7 @@ const platformData: Record<Platform, {
         step: 5,
         title: 'Choose Aspect Ratio',
         description: 'Select the aspect ratio for your video (9:16 for TikTok/Reels, 1:1 for Feed):',
-        mediaUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Recording%202026-01-04%20172016.mp4',
+        mediaUrl: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Joy%20screenshots/Recording%202026-01-05%20135235.mp4',
         mediaType: 'video',
       },
       {
