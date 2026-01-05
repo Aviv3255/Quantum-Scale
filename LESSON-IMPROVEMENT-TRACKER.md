@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (281 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (282 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -364,7 +364,7 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (21 lessons remaining - 7 errors + 14 score-5)
+## CATEGORY 2: NEED IMPROVEMENT (20 lessons remaining - 7 errors + 13 score-5)
 
 These lessons need design improvements to reach elite level.
 
@@ -386,7 +386,7 @@ These lessons need design improvements to reach elite level.
 | 254 | trust-architecture | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 255 | trust-blueprint | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 256 | two-dirty-tricks | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
-| 257 | two-meta-rules | 5 |
+| 257 | two-meta-rules | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
 | 258 | two-worlds-mastery | 5 |
 | 259 | unique-mechanism | 5 |
 | 260 | unity-principle | 5 |
