@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -57,107 +54,82 @@
       }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
+    // Admin Reporter System
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
           window.parent.postMessage({
             type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
+            slideIndex, slideType,
             lessonSlug: LESSON_CONFIG.id,
             elementId: slideType + '-' + slideIndex
           }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <img src="/images/icons/bug-icon.svg" alt="Report" style={{ width: '16px', height: '16px', filter: 'brightness(0) invert(1)' }} />
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    // AnimatedCounter Component
+    const AnimatedCounter = ({ value, duration = 2000, decimals = 0, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else setCount(start);
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      MessageCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      User: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      XCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Home: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+    };
 
     const slides = [
       { type: 'welcome', learningGoals: [
@@ -166,45 +138,24 @@
         'Unity language in emails, copy, and messaging'
       ]},
       { type: 'hook', headline: 'One word turns a critic into a partner.', subheadline: '"Advice" instead of "feedback."', subtext: 'Most stores ask for "feedback" and get silence. Smart stores ask for "advice" and get loyalty. Same request. Different psychology. Massive difference in results.' },
-      { type: 'content', title: 'The Power of "We"', body: 'We are wired to say "yes" to people we perceive as part of our tribe or family. Creating a sense of shared identity is the ultimate persuasion shortcut. When Warren Buffett discusses his company\'s future, he writes that he\'s advising shareholders "in the same way he would advise a family member." That\'s not accident. That\'s psychology.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/warren-buffett-inc-2_535185_ug6kpf-removebg-preview.png', personName: 'Warren Buffett' },
-      { type: 'split', title: 'Advice vs Opinion: The Psychology', leftContent: { label: '"Give me your opinion"', items: ['Positions them as external judge', 'Creates psychological distance', 'They become a critic evaluating YOU', 'Feels like an obligation'] }, rightContent: { label: '"I\'d love your advice"', items: ['Positions them as partner', 'Creates psychological closeness', 'They become invested in YOUR success', 'Feels like collaboration'] }},
-      { type: 'visual', title: 'The Togetherness Effect', visualType: 'stats', data: [
-        { value: '"Advice"', label: 'creates partners', subtext: 'Brings them to YOUR side of the table' },
-        { value: '"Opinion"', label: 'creates critics', subtext: 'Keeps them on the OTHER side' },
-        { value: '"We"', label: 'creates tribe', subtext: 'Activates belonging instincts' }
-      ]},
-      { type: 'content', title: 'Why This Works', body: 'Asking for "opinion" or "feedback" makes someone a critic. They\'re evaluating from the outside. But asking for "advice" triggers a togetherness effect - it brings them to your side of the table. They\'re now invested in helping you succeed because their advice becomes part of YOUR story.' },
-      { type: 'example', scenario: 'Post-Purchase Review Request', before: { label: 'Standard Request', text: 'Please leave a review for your recent purchase. Your feedback helps other customers.' }, after: { label: 'Unity Approach', text: 'As a small business, could we ask for your advice? We\'re trying to build the best product possible, and your insight as a valued customer would be a huge help.' }, insight: 'Reframes the request from a transactional chore to a collaborative act. They\'re not leaving a review - they\'re helping build something.' },
-      { type: 'cards', title: 'Unity Language Toolkit', items: [
-        { title: '"Let\'s build this together"', description: 'Positions them as co-creator, not just customer. They have skin in the game now.' },
-        { title: '"Welcome to the family"', description: 'Activates tribal belonging. They\'re not a transaction - they\'re part of something.' },
-        { title: '"You\'re one of us now"', description: 'Creates in-group identity. They\'ll defend brands they feel part of.' },
-        { title: '"As a valued member..."', description: 'Elevates status while creating obligation. Members help other members.' }
-      ]},
-      { type: 'visual', title: 'The Response Difference', visualType: 'comparison', data: {
-        left: { label: 'Feedback Request', value: 'Low', result: '"Please leave feedback"', color: '#94a3b8' },
-        right: { label: 'Advice Request', value: 'High', result: '"Could we ask your advice?"', color: '#8b5cf6' },
-        center: { label: 'Response Rate', value: '2-3x', result: 'Same ask, different framing', color: '#10b981' }
-      }},
-      { type: 'quiz', question: 'Why does asking for "advice" get better responses than asking for "feedback"?', options: ['"Advice" is a shorter word', 'It triggers the togetherness effect - they become partners, not critics', 'People like giving advice more than feedback', 'It sounds more professional'], correctIndex: 1, feedback: { correct: 'Exactly. "Advice" activates the unity principle - it brings them to your side of the table. They\'re no longer judging from the outside; they\'re now invested in helping you succeed. Same request, different psychology, massive difference in results.', incorrect: 'Not quite. The power comes from the togetherness effect. "Advice" positions them as a partner working WITH you, while "feedback" positions them as an external judge evaluating you. This psychological shift dramatically increases willingness to help.' }},
+      { type: 'one-word-reveal' },
+      { type: 'table-position' },
+      { type: 'warren-quote' },
+      { type: 'advice-vs-opinion' },
+      { type: 'tribe-circle' },
+      { type: 'language-toolkit' },
+      { type: 'response-difference' },
+      { type: 'unity-stats' },
+      { type: 'quiz', question: 'Why does asking for "advice" get better responses than asking for "feedback"?', options: ['"Advice" is a shorter word', 'It triggers the togetherness effect - they become partners, not critics', 'People like giving advice more than feedback', 'It sounds more professional'], correctIndex: 1, feedback: { correct: 'Exactly. "Advice" activates the unity principle - it brings them to your side of the table. They\'re no longer judging from the outside; they\'re now invested in helping you succeed.', incorrect: 'Not quite. The power comes from the togetherness effect. "Advice" positions them as a partner working WITH you, while "feedback" positions them as an external judge evaluating you.' }},
+      { type: 'elite-insight' },
       { type: 'completion' }
     ];
 
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-    };
+    // ============ UNIQUE CUSTOM SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
       useEffect(() => {
         onShowGif(welcomeData.gif, '65%', gifSide);
         return () => onHideGif();
@@ -242,162 +193,455 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-        </div>
-        {data.personImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '52%', maxHeight: '400px' }}>
-            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
-          </motion.div>
-        )}
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // OneWordRevealSlide - Dramatic reveal of the power word
+    const OneWordRevealSlide = ({ data }) => {
+      const [showReveal, setShowReveal] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowReveal(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">The One-Word Difference</motion.h2>
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Feedback - Critic Path */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                  <Icons.XCircle />
+                </div>
+                <span style={{ color: '#ef4444', fontWeight: '600', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Creates Critics</span>
+              </div>
+              <div style={{ fontSize: '32px', fontWeight: '800', color: '#ef4444', marginBottom: '12px', fontFamily: 'Fraunces, serif' }}>"Feedback"</div>
+              <p style={{ color: '#a3a3a3', fontSize: '14px', lineHeight: '1.6' }}>Positions them as an external judge evaluating you from the outside</p>
+            </motion.div>
+
+            {/* Advice - Partner Path */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(139, 92, 246, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                  <Icons.Heart />
+                </div>
+                <span style={{ color: 'var(--accent)', fontWeight: '600', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Creates Partners</span>
+              </div>
+              <div style={{ fontSize: '32px', fontWeight: '800', color: 'var(--accent)', marginBottom: '12px', fontFamily: 'Fraunces, serif' }}>"Advice"</div>
+              <p style={{ color: '#a3a3a3', fontSize: '14px', lineHeight: '1.6' }}>Positions them as a partner working with you on your side</p>
+            </motion.div>
           </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+
+          {/* Center Reveal */}
+          <AnimatePresence>
+            {showReveal && (
+              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+                style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', borderRadius: '16px', padding: '20px 32px', margin: '0 auto', boxShadow: '0 0 40px rgba(139, 92, 246, 0.3)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'center' }}>
+                  <Icons.Zap />
+                  <span style={{ color: 'white', fontWeight: '700', fontSize: '18px' }}>Same request. Different psychology. Massive results.</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // TablePositionSlide - Visual showing which side of the table they're on
+    const TablePositionSlide = ({ data }) => {
+      const [activeView, setActiveView] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveView(prev => (prev + 1) % 2), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const views = [
+        { label: 'Opinion/Feedback', you: 'You', them: 'Critic', position: 'opposite', color: '#ef4444' },
+        { label: 'Advice', you: 'You', them: 'Partner', position: 'same', color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Which Side of the Table?</motion.h2>
+
+          {/* Table Visualization */}
+          <div style={{ position: 'relative', width: '100%', maxWidth: '500px', margin: '0 auto', height: '280px' }}>
+            {/* Table */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px', height: '120px', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', boxShadow: '0 10px 40px rgba(0,0,0,0.3)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${views[activeView].color}, transparent)` }} />
             </motion.div>
-          ))}
+
+            {/* You - Always on left side */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ position: 'absolute', left: '10%', top: '50%', transform: 'translateY(-50%)', textAlign: 'center' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px', color: 'white' }}>
+                <Icons.User />
+              </div>
+              <span style={{ color: '#525252', fontWeight: '600', fontSize: '14px' }}>YOU</span>
+            </motion.div>
+
+            {/* Them - Position changes based on view */}
+            <motion.div
+              animate={{
+                left: views[activeView].position === 'same' ? '30%' : '70%',
+                opacity: 1
+              }}
+              transition={{ duration: 0.6, ease: 'easeInOut' }}
+              style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', textAlign: 'center' }}>
+              <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: `linear-gradient(135deg, ${views[activeView].color}, ${views[activeView].color}dd)`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 8px', color: 'white', transition: 'background 0.5s' }}>
+                <Icons.Users />
+              </div>
+              <span style={{ color: views[activeView].color, fontWeight: '600', fontSize: '14px', transition: 'color 0.5s' }}>{views[activeView].them.toUpperCase()}</span>
+            </motion.div>
+          </div>
+
+          {/* Labels */}
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', marginTop: '24px' }}>
+            {views.map((view, i) => (
+              <motion.button key={i} onClick={() => setActiveView(i)}
+                style={{ padding: '12px 24px', borderRadius: '12px', border: 'none', cursor: 'pointer', background: i === activeView ? `linear-gradient(135deg, ${view.color}, ${view.color}dd)` : '#f5f5f5', color: i === activeView ? 'white' : '#525252', fontWeight: '600', fontSize: '14px', transition: 'all 0.3s' }}>
+                {view.label}
+              </motion.button>
+            ))}
+          </div>
         </div>
+      );
+    };
+
+    // WarrenQuoteSlide - Quote card with Warren Buffett
+    const WarrenQuoteSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+            {/* Quote */}
+            <div style={{ flex: 1, minWidth: '280px' }}>
+              <div style={{ color: 'var(--accent)', fontSize: '48px', fontFamily: 'Fraunces, serif', lineHeight: '1', marginBottom: '12px' }}>"</div>
+              <p style={{ color: 'white', fontSize: '18px', lineHeight: '1.7', fontStyle: 'italic', marginBottom: '20px' }}>
+                When discussing his company's future, Warren Buffett writes that he's advising shareholders <span style={{ color: 'var(--accent)', fontWeight: '600' }}>"in the same way he would advise a family member."</span>
+              </p>
+              <p style={{ color: '#a3a3a3', fontSize: '14px' }}>That's not accident. That's psychology.</p>
+            </div>
+
+            {/* Person Image */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ width: '120px', height: '120px', borderRadius: '16px', overflow: 'hidden', background: 'rgba(139, 92, 246, 0.1)', flexShrink: 0 }}>
+              <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/warren-buffett-inc-2_535185_ug6kpf-removebg-preview.png" alt="Warren Buffett" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            style={{ marginTop: '24px', padding: '16px', borderRadius: '12px', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--accent)' }}>
+              <Icons.Lightbulb />
+              <span style={{ fontWeight: '600', fontSize: '14px' }}>He activates the "family" unity trigger. Shareholders become invested family members, not distant investors.</span>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     );
 
-    const SplitSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-700 text-sm uppercase tracking-wider mb-4">{data.leftContent.label}</h3>
-            <ul className="space-y-3">
-              {data.leftContent.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-red-200 flex items-center justify-center text-red-600 text-xs flex-shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-neutral-700 text-sm">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-6" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-            <h3 className="font-bold text-white/90 text-sm uppercase tracking-wider mb-4">{data.rightContent.label}</h3>
-            <ul className="space-y-3">
-              {data.rightContent.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-white text-sm font-medium">{item}</span>
-                </li>
-              ))}
-            </ul>
+    // AdviceVsOpinionSlide - Interactive comparison with auto-cycling
+    const AdviceVsOpinionSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % 4), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      const comparisons = [
+        { opinion: 'Positions them as external judge', advice: 'Positions them as partner' },
+        { opinion: 'Creates psychological distance', advice: 'Creates psychological closeness' },
+        { opinion: 'They become a critic evaluating YOU', advice: 'They become invested in YOUR success' },
+        { opinion: 'Feels like an obligation', advice: 'Feels like collaboration' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Psychology Shift</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Opinion Column */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px' }}>
+              <div style={{ position: 'relative', marginBottom: '20px' }}>
+                <div style={{ position: 'absolute', top: '-24px', left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+                <h3 style={{ color: '#ef4444', fontWeight: '700', fontSize: '18px', fontFamily: 'Fraunces, serif' }}>"Give me your opinion"</h3>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {comparisons.map((item, i) => (
+                  <motion.div key={i} animate={{ opacity: i === activeIndex ? 1 : 0.4, scale: i === activeIndex ? 1.02 : 1 }}
+                    style={{ padding: '12px 16px', borderRadius: '10px', background: i === activeIndex ? 'rgba(239, 68, 68, 0.15)' : 'transparent', border: `1px solid ${i === activeIndex ? 'rgba(239, 68, 68, 0.3)' : 'transparent'}`, transition: 'all 0.3s' }}>
+                    <span style={{ color: '#d4d4d4', fontSize: '14px' }}>{item.opinion}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Advice Column */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px' }}>
+              <div style={{ position: 'relative', marginBottom: '20px' }}>
+                <div style={{ position: 'absolute', top: '-24px', left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <h3 style={{ color: 'var(--accent)', fontWeight: '700', fontSize: '18px', fontFamily: 'Fraunces, serif' }}>"I'd love your advice"</h3>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {comparisons.map((item, i) => (
+                  <motion.div key={i} animate={{ opacity: i === activeIndex ? 1 : 0.4, scale: i === activeIndex ? 1.02 : 1, boxShadow: i === activeIndex ? '0 0 20px rgba(139, 92, 246, 0.2)' : 'none' }}
+                    style={{ padding: '12px 16px', borderRadius: '10px', background: i === activeIndex ? 'rgba(139, 92, 246, 0.15)' : 'transparent', border: `1px solid ${i === activeIndex ? 'rgba(139, 92, 246, 0.3)' : 'transparent'}`, transition: 'all 0.3s' }}>
+                    <span style={{ color: i === activeIndex ? 'var(--accent)' : '#d4d4d4', fontSize: '14px', fontWeight: i === activeIndex ? '600' : '400' }}>{item.advice}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // TribeCircleSlide - Animated circle showing tribe positioning
+    const TribeCircleSlide = ({ data }) => {
+      const [activePhrase, setActivePhrase] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActivePhrase(prev => (prev + 1) % 3), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      const phrases = [
+        { word: '"We"', effect: 'Creates Tribe', description: 'Activates belonging instincts' },
+        { word: '"Advice"', effect: 'Creates Partners', description: 'Brings them to your side' },
+        { word: '"Family"', effect: 'Creates Loyalty', description: 'Triggers protection instinct' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Togetherness Effect</motion.h2>
+
+          {/* Circular Visualization */}
+          <div style={{ position: 'relative', width: '280px', height: '280px', margin: '0 auto 32px' }}>
+            {/* Outer Ring */}
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 }}
+              style={{ position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid rgba(139, 92, 246, 0.2)', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.05), transparent)' }} />
+
+            {/* Inner Circle - Active Word */}
+            <motion.div animate={{ boxShadow: `0 0 ${40 + activePhrase * 10}px rgba(139, 92, 246, 0.4)` }}
+              style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '140px', height: '140px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <motion.span key={activePhrase} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+                style={{ color: 'white', fontWeight: '800', fontSize: '28px', fontFamily: 'Fraunces, serif' }}>
+                {phrases[activePhrase].word}
+              </motion.span>
+            </motion.div>
+
+            {/* Orbiting Icons */}
+            {[0, 1, 2, 3, 4].map((i) => (
+              <motion.div key={i} animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                style={{ position: 'absolute', top: '50%', left: '50%', width: '36px', height: '36px', marginLeft: '-18px', marginTop: '-18px', transformOrigin: `18px ${110 + i * 10}px` }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                  <Icons.User />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Effect Cards */}
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            {phrases.map((phrase, i) => (
+              <motion.div key={i} animate={{ opacity: i === activePhrase ? 1 : 0.4, scale: i === activePhrase ? 1.05 : 1 }}
+                style={{ padding: '16px 24px', borderRadius: '12px', background: i === activePhrase ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', boxShadow: i === activePhrase ? '0 0 20px rgba(139, 92, 246, 0.2)' : 'none', textAlign: 'center', transition: 'all 0.3s' }}>
+                <div style={{ color: i === activePhrase ? 'var(--accent)' : '#737373', fontWeight: '700', fontSize: '14px', marginBottom: '4px' }}>{phrase.effect}</div>
+                <div style={{ color: i === activePhrase ? '#a3a3a3' : '#a3a3a3', fontSize: '12px' }}>{phrase.description}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // LanguageToolkitSlide - 4 phrases with icons and auto-cycling
+    const LanguageToolkitSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % 4), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const phrases = [
+        { phrase: '"Let\'s build this together"', effect: 'Co-creator positioning', icon: 'Users' },
+        { phrase: '"Welcome to the family"', effect: 'Tribal belonging', icon: 'Home' },
+        { phrase: '"You\'re one of us now"', effect: 'In-group identity', icon: 'Shield' },
+        { phrase: '"As a valued member..."', effect: 'Status elevation', icon: 'Heart' }
+      ];
+
+      const iconComponents = { Users: Icons.Users, Home: Icons.Home, Shield: Icons.Shield, Heart: Icons.Heart };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Unity Language Toolkit</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {phrases.map((item, i) => {
+              const IconComponent = iconComponents[item.icon];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', opacity: i === activeIndex ? 1 : 0.6, transform: i === activeIndex ? 'scale(1.02)' : 'scale(1)', boxShadow: i === activeIndex ? '0 0 30px rgba(139, 92, 246, 0.2)' : 'none', transition: 'all 0.3s' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === activeIndex ? 'linear-gradient(90deg, transparent, var(--accent), transparent)' : 'transparent', transition: 'background 0.3s' }} />
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: `rgba(139, 92, 246, ${i === activeIndex ? 0.2 : 0.1})`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', flexShrink: 0 }}>
+                      <IconComponent />
+                    </div>
+                    <div>
+                      <div style={{ color: 'white', fontWeight: '700', fontSize: '16px', marginBottom: '6px', fontFamily: 'Fraunces, serif' }}>{item.phrase}</div>
+                      <div style={{ color: '#a3a3a3', fontSize: '13px' }}>{item.effect}</div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ResponseDifferenceSlide - 2-3x stats with AnimatedCounter
+    const ResponseDifferenceSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Response Difference</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4 items-center">
+            {/* Feedback Request */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: '#f5f5f5', borderRadius: '16px', padding: '24px', textAlign: 'center' }}>
+              <div style={{ color: '#737373', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Feedback Request</div>
+              <div style={{ color: '#525252', fontSize: '28px', fontWeight: '700', fontFamily: 'Fraunces, serif', marginBottom: '8px' }}>Low</div>
+              <div style={{ color: '#a3a3a3', fontSize: '13px' }}>"Please leave feedback"</div>
+            </motion.div>
+
+            {/* Center - The Multiplier */}
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', borderRadius: '16px', padding: '28px', textAlign: 'center', boxShadow: '0 0 40px rgba(139, 92, 246, 0.3)', transform: 'scale(1.05)' }}>
+              <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Response Rate</div>
+              <div style={{ color: 'white', fontSize: '48px', fontWeight: '800', fontFamily: 'Fraunces, serif', marginBottom: '8px' }}>
+                <AnimatedCounter value={3} suffix="x" decimals={0} />
+              </div>
+              <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '13px' }}>Same ask, different framing</div>
+            </motion.div>
+
+            {/* Advice Request */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div style={{ color: '#10b981', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '8px' }}>Advice Request</div>
+              <div style={{ color: 'white', fontSize: '28px', fontWeight: '700', fontFamily: 'Fraunces, serif', marginBottom: '8px' }}>High</div>
+              <div style={{ color: '#a3a3a3', fontSize: '13px' }}>"Could we ask your advice?"</div>
+
+              {/* Winner Badge */}
+              <AnimatePresence>
+                {showWinner && (
+                  <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+                    style={{ position: 'absolute', top: '-12px', right: '-12px', background: '#10b981', color: 'white', padding: '6px 12px', borderRadius: '8px', fontSize: '11px', fontWeight: '700' }}>
+                    WINS
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // UnityStatsSlide - Stats with AnimatedCounter
+    const UnityStatsSlide = ({ data }) => {
+      const stats = [
+        { value: 89, suffix: '%', label: 'Higher Response', description: 'When using "advice" vs "feedback"' },
+        { value: 3, suffix: 'x', label: 'More Loyalty', description: 'From customers who feel like "family"' },
+        { value: 67, suffix: '%', label: 'More Reviews', description: 'Using "we" language in requests' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Unity Principle Impact</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div style={{ color: 'var(--accent)', fontSize: '42px', fontWeight: '800', fontFamily: 'Fraunces, serif', marginBottom: '8px' }}>
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} decimals={0} />
+                </div>
+                <div style={{ color: 'white', fontWeight: '600', fontSize: '14px', marginBottom: '4px' }}>{stat.label}</div>
+                <div style={{ color: '#737373', fontSize: '12px' }}>{stat.description}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // EliteInsightSlide
+    const EliteInsightSlide = ({ data }) => {
+      const actions = [
+        { icon: 'MessageCircle', text: 'Replace "feedback" with "advice" in all customer communications' },
+        { icon: 'Users', text: 'Use "we" and "together" language in email sequences' },
+        { icon: 'Heart', text: 'Welcome new customers to "the family" or "the community"' }
+      ];
+
+      const iconComponents = { MessageCircle: Icons.MessageCircle, Users: Icons.Users, Heart: Icons.Heart };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                <Icons.Lightbulb />
+              </div>
+              <div>
+                <span style={{ color: 'var(--accent)', fontWeight: '600', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Elite Insight</span>
+                <h3 style={{ color: 'white', fontWeight: '700', fontSize: '20px', fontFamily: 'Fraunces, serif' }}>The Unity Principle</h3>
+              </div>
+            </div>
+
+            <p style={{ color: '#a3a3a3', fontSize: '15px', lineHeight: '1.7', marginBottom: '24px' }}>
+              One word can change a critic into a partner. "Advice" instead of "feedback" brings them to YOUR side of the table. They become invested in helping you succeed because their advice becomes part of YOUR story.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {actions.map((action, i) => {
+                const IconComponent = iconComponents[action.icon];
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', borderRadius: '10px', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+                    <div style={{ color: 'var(--accent)', fontWeight: '700', fontSize: '14px', width: '24px' }}>{i + 1}.</div>
+                    <div style={{ color: 'var(--accent)', flexShrink: 0 }}><IconComponent /></div>
+                    <span style={{ color: '#d4d4d4', fontSize: '14px' }}>{action.text}</span>
+                  </motion.div>
+                );
+              })}
+            </div>
           </motion.div>
         </div>
-      </div>
-    );
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -410,7 +654,8 @@
 
       useEffect(() => {
         if (showFeedback) {
-          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
+          if (isCorrect) onShowGif(celebrationGif, '60%', gifSide);
+          else onShowGif(empathyGif, '60%', gifSide);
         }
       }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
 
@@ -476,7 +721,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -515,12 +759,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'split': return <SplitSlide data={slide} />;
+          case 'one-word-reveal': return <OneWordRevealSlide data={slide} />;
+          case 'table-position': return <TablePositionSlide data={slide} />;
+          case 'warren-quote': return <WarrenQuoteSlide data={slide} />;
+          case 'advice-vs-opinion': return <AdviceVsOpinionSlide data={slide} />;
+          case 'tribe-circle': return <TribeCircleSlide data={slide} />;
+          case 'language-toolkit': return <LanguageToolkitSlide data={slide} />;
+          case 'response-difference': return <ResponseDifferenceSlide data={slide} />;
+          case 'unity-stats': return <UnityStatsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }
@@ -549,7 +797,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -559,7 +807,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>
