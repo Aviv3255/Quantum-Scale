@@ -1,7 +1,7 @@
-// Auto-generated from XLS import - 2026-01-06T15:24:23.166Z
+// Auto-generated from XLS import - 2026-01-06T15:36:34.328Z
 // Total templates: 141
-// Cover images: 84
-// Hover images: 84
+// Cover images: 109
+// Hover images: 109
 
 export interface MetaAdTemplate {
   id: number;
@@ -785,8 +785,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pH0iQxk/ydrh7rMMQNjxFvJ63zQuHw/view?utm_content=DAG9pH0iQxk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pH0iQxk",
     "shareToken": "ydrh7rMMQNjxFvJ63zQuHw",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-086-cover.png",
+    "hoverImage": "/images/meta-templates/template-086-hover.png"
   },
   {
     "id": 87,
@@ -794,8 +794,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pDl4TO8/V2Ct3YNGCPb4xSn2n93erg/view?utm_content=DAG9pDl4TO8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pDl4TO8",
     "shareToken": "V2Ct3YNGCPb4xSn2n93erg",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-087-cover.png",
+    "hoverImage": "/images/meta-templates/template-087-hover.png"
   },
   {
     "id": 88,
@@ -803,8 +803,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pKOCUXQ/_wjASt3MTz0GJpe69O80Og/view?utm_content=DAG9pKOCUXQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pKOCUXQ",
     "shareToken": "_wjASt3MTz0GJpe69O80Og",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-088-cover.png",
+    "hoverImage": "/images/meta-templates/template-088-hover.png"
   },
   {
     "id": 89,
@@ -812,8 +812,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pCa7_fc/FOwfo-kjTMDEGOtfTNdMVA/view?utm_content=DAG9pCa7_fc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pCa7_fc",
     "shareToken": "FOwfo-kjTMDEGOtfTNdMVA",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-089-cover.png",
+    "hoverImage": "/images/meta-templates/template-089-hover.png"
   },
   {
     "id": 90,
@@ -821,8 +821,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pHD-GOc/Vi0U1kVe4HncZ6orSqw71g/view?utm_content=DAG9pHD-GOc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pHD-GOc",
     "shareToken": "Vi0U1kVe4HncZ6orSqw71g",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-090-cover.png",
+    "hoverImage": "/images/meta-templates/template-090-hover.png"
   },
   {
     "id": 91,
@@ -830,8 +830,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pJ26v4g/6uUAs9U5EutO9PhDS_X37A/view?utm_content=DAG9pJ26v4g&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pJ26v4g",
     "shareToken": "6uUAs9U5EutO9PhDS_X37A",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-091-cover.png",
+    "hoverImage": "/images/meta-templates/template-091-hover.png"
   },
   {
     "id": 92,
@@ -839,8 +839,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pF9LW9U/9XF2OacLkmTZhBjVVR-uOQ/view?utm_content=DAG9pF9LW9U&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pF9LW9U",
     "shareToken": "9XF2OacLkmTZhBjVVR-uOQ",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-092-cover.png",
+    "hoverImage": "/images/meta-templates/template-092-hover.png"
   },
   {
     "id": 93,
@@ -848,8 +848,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pGZbE5U/q5J4kzWDY3SGoBB-CpUe1w/view?utm_content=DAG9pGZbE5U&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pGZbE5U",
     "shareToken": "q5J4kzWDY3SGoBB-CpUe1w",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-093-cover.png",
+    "hoverImage": "/images/meta-templates/template-093-hover.png"
   },
   {
     "id": 94,
@@ -857,8 +857,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pIVNcZY/TTbjH70jx5OWIf0ewPDkdA/view?utm_content=DAG9pIVNcZY&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pIVNcZY",
     "shareToken": "TTbjH70jx5OWIf0ewPDkdA",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-094-cover.png",
+    "hoverImage": "/images/meta-templates/template-094-hover.png"
   },
   {
     "id": 95,
@@ -866,8 +866,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pDxfZug/VvDs9oyEDNR4EC1A4nURoA/view?utm_content=DAG9pDxfZug&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pDxfZug",
     "shareToken": "VvDs9oyEDNR4EC1A4nURoA",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-095-cover.png",
+    "hoverImage": "/images/meta-templates/template-095-hover.png"
   },
   {
     "id": 96,
@@ -875,8 +875,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pD7DgeE/4w_61HZOhtsbWMAfeICWmg/view?utm_content=DAG9pD7DgeE&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pD7DgeE",
     "shareToken": "4w_61HZOhtsbWMAfeICWmg",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-096-cover.png",
+    "hoverImage": "/images/meta-templates/template-096-hover.png"
   },
   {
     "id": 97,
@@ -884,8 +884,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pGXfNRI/ma_-hFGol1qDRmyJBVbDQQ/view?utm_content=DAG9pGXfNRI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pGXfNRI",
     "shareToken": "ma_-hFGol1qDRmyJBVbDQQ",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-097-cover.png",
+    "hoverImage": "/images/meta-templates/template-097-hover.png"
   },
   {
     "id": 98,
@@ -893,8 +893,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pMlKOR8/MyM7mH6fDJgFw_ZiKaw6oA/view?utm_content=DAG9pMlKOR8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pMlKOR8",
     "shareToken": "MyM7mH6fDJgFw_ZiKaw6oA",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-098-cover.png",
+    "hoverImage": "/images/meta-templates/template-098-hover.png"
   },
   {
     "id": 99,
@@ -902,8 +902,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pQwayyM/l2s5uND7bfVLsPdY2ahXPg/view?utm_content=DAG9pQwayyM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pQwayyM",
     "shareToken": "l2s5uND7bfVLsPdY2ahXPg",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-099-cover.png",
+    "hoverImage": "/images/meta-templates/template-099-hover.png"
   },
   {
     "id": 100,
@@ -911,8 +911,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pTk-UJI/pAkcF9jAHytmpMpm-2Gl5A/view?utm_content=DAG9pTk-UJI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pTk-UJI",
     "shareToken": "pAkcF9jAHytmpMpm-2Gl5A",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-100-cover.png",
+    "hoverImage": "/images/meta-templates/template-100-hover.png"
   },
   {
     "id": 101,
@@ -920,8 +920,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pSS0gps/X9mavOT2tlfIiNw7-fIxNA/view?utm_content=DAG9pSS0gps&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pSS0gps",
     "shareToken": "X9mavOT2tlfIiNw7-fIxNA",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-101-cover.png",
+    "hoverImage": "/images/meta-templates/template-101-hover.png"
   },
   {
     "id": 102,
@@ -929,8 +929,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pRL2d5U/R1C_ivuMG_sbfg_T6lUdyw/view?utm_content=DAG9pRL2d5U&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pRL2d5U",
     "shareToken": "R1C_ivuMG_sbfg_T6lUdyw",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-102-cover.png",
+    "hoverImage": "/images/meta-templates/template-102-hover.png"
   },
   {
     "id": 103,
@@ -938,8 +938,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pVzVgWY/gFwLsiIFw9BjyOb0UQ_hbg/view?utm_content=DAG9pVzVgWY&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pVzVgWY",
     "shareToken": "gFwLsiIFw9BjyOb0UQ_hbg",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-103-cover.png",
+    "hoverImage": "/images/meta-templates/template-103-hover.png"
   },
   {
     "id": 104,
@@ -947,8 +947,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pa9ffgw/HlyyER4wB2Lg69_uub_EBw/view?utm_content=DAG9pa9ffgw&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pa9ffgw",
     "shareToken": "HlyyER4wB2Lg69_uub_EBw",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-104-cover.png",
+    "hoverImage": "/images/meta-templates/template-104-hover.png"
   },
   {
     "id": 105,
@@ -956,8 +956,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pc79u8s/RbmVnpK0W7ut_cU-g3VlBQ/view?utm_content=DAG9pc79u8s&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pc79u8s",
     "shareToken": "RbmVnpK0W7ut_cU-g3VlBQ",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-105-cover.png",
+    "hoverImage": "/images/meta-templates/template-105-hover.png"
   },
   {
     "id": 106,
@@ -965,8 +965,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pR6e1Wo/ERa1ltk1sF8mPBcLhi9mAg/view?utm_content=DAG9pR6e1Wo&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pR6e1Wo",
     "shareToken": "ERa1ltk1sF8mPBcLhi9mAg",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-106-cover.png",
+    "hoverImage": "/images/meta-templates/template-106-hover.png"
   },
   {
     "id": 107,
@@ -974,8 +974,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pTY7VB8/DS5jMcFiG4IDDLQDvuHrfg/view?utm_content=DAG9pTY7VB8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pTY7VB8",
     "shareToken": "DS5jMcFiG4IDDLQDvuHrfg",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-107-cover.png",
+    "hoverImage": "/images/meta-templates/template-107-hover.png"
   },
   {
     "id": 108,
@@ -983,8 +983,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pUAJw4I/Rv5ZEHYLrLtAqQE4PgvTUw/view?utm_content=DAG9pUAJw4I&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pUAJw4I",
     "shareToken": "Rv5ZEHYLrLtAqQE4PgvTUw",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-108-cover.png",
+    "hoverImage": "/images/meta-templates/template-108-hover.png"
   },
   {
     "id": 109,
@@ -992,8 +992,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pdzHInQ/bmGeT2g8JyOPQpFadSIjug/view?utm_content=DAG9pdzHInQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pdzHInQ",
     "shareToken": "bmGeT2g8JyOPQpFadSIjug",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-109-cover.png",
+    "hoverImage": "/images/meta-templates/template-109-hover.png"
   },
   {
     "id": 110,
@@ -1001,8 +1001,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9pbTV4xw/C3bn6fPdQybK1wxjdV-2aQ/view?utm_content=DAG9pbTV4xw&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9pbTV4xw",
     "shareToken": "C3bn6fPdQybK1wxjdV-2aQ",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-110-cover.png",
+    "hoverImage": "/images/meta-templates/template-110-hover.png"
   },
   {
     "id": 111,
