@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { supabase, updateUserProfile } from '@/lib/supabase';
+import { metaAdTemplates } from '@/data/meta-ad-templates';
 
 // Creative images for the masonry grid
 const CREATIVE_IMAGES = [
@@ -3189,7 +3190,74 @@ export default function MetaTemplatesPage() {
           </motion.div>
         </section>
 
-        {/* Section 4: Viral Posts - Premium Luxurious Design */}
+        {/* Section 4: Templates Grid - Only when unlocked */}
+        {isUnlocked && (
+          <section className="max-w-7xl mx-auto mb-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+            >
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-3">
+                  All Templates
+                </h2>
+                <p className="text-[var(--text-muted)]">
+                  {metaAdTemplates.length} ready-to-use templates. Click to edit in Canva.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {metaAdTemplates.map((template) => (
+                  <motion.div
+                    key={template.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="group relative"
+                  >
+                    <a
+                      href={template.canvaLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-all duration-300 hover:shadow-xl hover:border-[#7435E6]"
+                    >
+                      {template.coverImage ? (
+                        <img
+                          src={template.coverImage}
+                          alt={template.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
+                          <div className="text-center p-4">
+                            <div className="w-10 h-10 mx-auto mb-2 rounded-lg bg-[#7435E6]/10 flex items-center justify-center">
+                              <ExternalLink size={20} className="text-[#7435E6]" />
+                            </div>
+                            <span className="text-xs text-[var(--text-muted)]">
+                              {template.name}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Always visible button - bottom right */}
+                      <div
+                        className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-semibold transition-transform duration-200 group-hover:scale-105"
+                        style={{ backgroundColor: '#7435E6' }}
+                      >
+                        <ExternalLink size={12} />
+                        Edit
+                      </div>
+                    </a>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </section>
+        )}
+
+        {/* Section 5: Viral Posts - Premium Luxurious Design */}
         <section className="mt-32 mb-20">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
