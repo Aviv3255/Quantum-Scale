@@ -108,6 +108,7 @@
         { value: '3', suffix: '', label: 'Friction Types', desc: 'Action, Trust, Attention' }
       ]},
       { type: 'elite-insight', quote: 'Big revenue gains do not require big changes. Three simple tests generated $2.8M for The Oodie.', author: 'The Oodie Case Study', actions: ['Start with floating CTAs (highest impact)', 'Move reviews under product title', 'Add NEW/BESTSELLER badges to top products'] },
+      { type: 'run-your-tests' },
       { type: 'quiz', question: 'Which CRO test generated the most additional revenue for The Oodie?', options: ['Social proof placement under title', 'Floating add-to-cart button ($1.73M)', 'Novelty badges on product images', 'All three tests equally'], correctIndex: 1, feedback: { correct: 'The floating add-to-cart button alone generated $1.73M in additional revenue. When customers scroll and the buy button stays visible, decision moments become action moments instantly.', incorrect: 'The floating add-to-cart button generated the most - $1.73M. By keeping the buy button always visible, The Oodie eliminated the friction between "I want this" and "I bought this."' }},
       { type: 'completion' }
     ];
@@ -543,6 +544,51 @@
       );
     };
 
+    const RunYourTestsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Run These Tests On Your Store</h2>
+          <p className="text-neutral-500 text-sm mt-2">Start testing today - see what works for YOUR audience</p>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5 bg-neutral-50 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center text-neutral-500"><Icons.Clock /></div>
+              <span className="font-semibold text-neutral-400 text-sm">Manual Testing</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-400">
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Guess which variation wins</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>No statistical significance</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Can't run multiple tests at once</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Risk making wrong decisions</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-200">
+              <span className="text-xs text-neutral-400">Risk: Implement losing variations</span>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #10b981', boxShadow: '0 0 30px rgba(16, 185, 129, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#10b981', color: 'white' }}><Icons.Target /></div>
+              <span className="font-semibold text-white text-sm">A/B Test with Data</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-300">
+              <li className="flex items-start gap-2"><span style={{ color: '#10b981' }}>✓</span>Statistical significance built-in</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#10b981' }}>✓</span>Test CTAs, badges, copy at once</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#10b981' }}>✓</span>See revenue impact per test</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#10b981' }}>✓</span>Auto-pick winners confidently</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-700">
+              <a href="https://apps.shopify.com/ab-convert" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80" style={{ background: '#10b981', color: 'white' }}>
+                Try ABConvert <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -610,6 +656,7 @@
           case 'compound-effect': return <CompoundEffectSlide data={slide} />;
           case 'impact-stats': return <ImpactStatsSlide data={slide} />;
           case 'elite-insight': return <EliteInsightSlide data={slide} />;
+          case 'run-your-tests': return <RunYourTestsSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
