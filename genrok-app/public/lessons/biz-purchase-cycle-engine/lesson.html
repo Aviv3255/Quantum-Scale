@@ -118,6 +118,7 @@
         { title: 'Collector Psychology', description: 'Frame ownership as collecting. Complete sets. Color families.', icon: 'Star' },
         { title: 'Regular Cadence', description: 'Create predictable rhythm. Customers learn to expect launches.', icon: 'Bell' }
       ] },
+      { type: 'track-cycles' },
       { type: 'quiz', question: 'What is the primary mechanism Le Creuset uses to turn a once-a-decade purchase into annual buying?', options: ['Offering steep discounts to repeat customers', 'Introducing and retiring colors each year', 'Planned product obsolescence', 'Aggressive upselling tactics'], correctIndex: 1, feedback: { correct: 'Exactly. Le Creuset introduces new colors annually and retires old ones. This creates 4-5 annual touchpoints.', incorrect: 'Not quite. Le Creuset introduces new colors each year and retires old ones. This transforms cookware into collectibles.' } },
       { type: 'mindset-shift', title: 'The Cycle Paradox', insight: 'You do not need planned obsolescence. You need planned desirability. Give customers new reasons to return, and they will return forever.' },
       { type: 'completion', sources: ['Le Creuset - Color Strategy'] }
@@ -403,6 +404,51 @@
       );
     };
 
+    const TrackCyclesSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Know Your Purchase Cycles</h2>
+          <p className="text-neutral-500 text-sm mt-2">Track which customers are repeat buyers and when they return</p>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5 bg-neutral-50 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center text-neutral-500"><Icons.Clock /></div>
+              <span className="font-semibold text-neutral-400 text-sm">Manual Analysis</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-400">
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Export order history (30+ min)</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Calculate purchase frequency manually</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Identify repeat buyers in spreadsheet</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Segment by purchase count (complex)</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-200">
+              <span className="text-xs text-neutral-400">Time required: 2-3 hours monthly</span>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent)', color: 'white' }}><Icons.RefreshCw /></div>
+              <span className="font-semibold text-white text-sm">Auto-Track with App</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-300">
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>✓</span>See purchase frequency per customer</li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>✓</span>Identify repeat buyers automatically</li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>✓</span>Track time between purchases</li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>✓</span>Export top repeat customers for targeting</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-700">
+              <a href="https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80" style={{ background: 'var(--accent)', color: 'white' }}>
+                Get DataDrew (Free) <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Check /></motion.div>
@@ -444,6 +490,7 @@
           case 'utility-to-collectible': return <UtilityToCollectibleSlide data={slide} />;
           case 'email-cadence': return <EmailCadenceSlide data={slide} />;
           case 'apply-cards': return <ApplyCardsSlide data={slide} />;
+          case 'track-cycles': return <TrackCyclesSlide />;
           case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
