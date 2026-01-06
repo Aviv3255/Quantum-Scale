@@ -3190,9 +3190,8 @@ export default function MetaTemplatesPage() {
           </motion.div>
         </section>
 
-        {/* Section 4: Templates Grid - Only when unlocked */}
-        {isUnlocked && (
-          <section className="max-w-7xl mx-auto mb-20">
+        {/* Section 4: Templates Grid - Available to everyone */}
+        <section className="max-w-7xl mx-auto mb-20">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -3254,8 +3253,7 @@ export default function MetaTemplatesPage() {
                 ))}
               </div>
             </motion.div>
-          </section>
-        )}
+        </section>
 
         {/* Section 5: Viral Posts - Premium Luxurious Design */}
         <section className="mt-32 mb-20">
