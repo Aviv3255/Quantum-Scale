@@ -83,63 +83,6 @@ function TemplateCardWithToggle({ template }: { template: MetaAdTemplate }) {
   );
 }
 
-// Original template card (keeps hover behavior)
-function TemplateCard({ template }: { template: MetaAdTemplate }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      className="group relative"
-    >
-      <a
-        href={template.canvaLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-all duration-300 hover:shadow-xl hover:border-[#7435E6]"
-      >
-        {/* Cover Image (default) */}
-        {template.coverImage ? (
-          <img
-            src={template.coverImage}
-            alt={template.name}
-            className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
-            <div className="text-center p-4">
-              <div className="w-10 h-10 mx-auto mb-2 rounded-lg bg-[#7435E6]/10 flex items-center justify-center">
-                <ExternalLink size={20} className="text-[#7435E6]" />
-              </div>
-              <span className="text-xs text-[var(--text-muted)]">
-                {template.name}
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Hover Image (editable version - slide 2) */}
-        {template.hoverImage && (
-          <img
-            src={template.hoverImage}
-            alt={`${template.name} - Editable`}
-            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          />
-        )}
-
-        {/* Always visible button - bottom right */}
-        <div
-          className="absolute bottom-3 right-3 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-transform duration-200 group-hover:scale-105 z-20"
-          style={{ backgroundColor: '#7435E6', color: '#FFFFFF' }}
-        >
-          <ExternalLink size={16} color="#FFFFFF" />
-          Edit in Canva
-        </div>
-      </a>
-    </motion.div>
-  );
-}
-
 export default function MetaTemplatesPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -195,13 +138,8 @@ export default function MetaTemplatesPage() {
             transition={{ delay: 0.2 }}
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
           >
-            {filteredTemplates.map((template, index) => (
-              // Use toggle version for first 12, hover version for rest
-              index < 12 ? (
-                <TemplateCardWithToggle key={template.id} template={template} />
-              ) : (
-                <TemplateCard key={template.id} template={template} />
-              )
+            {filteredTemplates.map((template) => (
+              <TemplateCardWithToggle key={template.id} template={template} />
             ))}
           </motion.div>
 
