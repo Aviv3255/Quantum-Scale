@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #06b6d4; --accent-dark: #0891b2; --accent-light: #22d3ee; --accent-rgb: 6, 182, 212; }
+    :root { --accent: #8b5cf6; --accent-dark: #7c3aed; --accent-light: #a78bfa; --accent-rgb: 139, 92, 246; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -25,6 +22,7 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulse-one { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
   </style>
 </head>
 <body>
@@ -37,170 +35,91 @@
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
+    };
+
     const LESSON_CONFIG = {
       id: 'rule-of-one',
       title: 'The Rule of One',
       description: 'One reader. One big idea. One offer. One action. The foundation of all persuasive copy.',
-      accentColor: '#06b6d4',
+      accentColor: '#8b5cf6',
       duration: '7 min',
       nextLesson: { id: 'persuasion-palette', title: 'The Persuasion Palette', teaser: 'Master the 6 emotional triggers that unlock action in any buyer.' }
     };
 
+    // ============ UNIQUE CONFIGURATION DATA ============
+    const FOUR_PILLARS = [
+      { id: 1, name: 'ONE Reader', description: 'Write to a specific person, not a demographic', icon: 'User', color: '#8b5cf6', example: 'Sarah, 32, building her side business' },
+      { id: 2, name: 'ONE Big Idea', description: 'One compelling concept that demands attention', icon: 'Lightbulb', color: '#f97316', example: 'The 20-Second Breakfast That Builds Muscle' },
+      { id: 3, name: 'ONE Offer', description: 'One clear solution, no alternatives', icon: 'Package', color: '#10b981', example: 'Complete Access for $47. Period.' },
+      { id: 4, name: 'ONE Action', description: 'One single next step, no distractions', icon: 'MousePointer', color: '#06b6d4', example: 'Get Started Now. One button.' }
+    ];
+
+    const CONFUSION_EXAMPLES = [
+      { id: 1, type: 'reader', scattered: 'Athletes, busy moms, fitness beginners!', focused: 'For Sarah, 32, with 90 minutes daily to build her dream.' },
+      { id: 2, type: 'idea', scattered: 'Burns fat, builds muscle, boosts energy!', focused: 'The 20-Second Breakfast That Builds Muscle While You Work.' },
+      { id: 3, type: 'offer', scattered: 'Buy now OR subscribe OR download the guide!', focused: 'Get Complete Access for $47.' },
+      { id: 4, type: 'action', scattered: '6 different buttons competing for attention', focused: 'One button: "Get Your First Bag for $1"' }
+    ];
+
+    const CONVERSION_STATS = [
+      { id: 1, value: 5, suffix: 'x', label: 'Higher Conversions', subtext: 'Single CTA vs multiple', color: '#8b5cf6' },
+      { id: 2, value: 67, suffix: '%', label: 'Less Bounce', subtext: 'When message is focused', color: '#10b981' },
+      { id: 3, value: 3, suffix: 's', label: 'Decision Time', subtext: 'Confused minds leave', color: '#f97316' }
+    ];
+
+    const ELITE_INSIGHT = {
+      title: 'The Focus Paradox',
+      quote: 'When you stop trying to say everything, you finally say something that matters. When you stop trying to be everything to everyone, you become irresistible to the right someone.',
+      insight: 'Narrow your focus to expand your impact.'
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why scattered messaging kills conversions', 'The 4 components of the Rule of One framework', 'How to focus your copy for maximum persuasion'] },
-      { type: 'hook', headline: 'When you try to speak to everyone, you speak to no one.', subtext: 'Most Shopify store owners make the same fatal mistake: they pile on multiple benefits, throw in various offers, and scatter calls-to-action everywhere. The result? A confused prospect who does nothing. Because a confused mind always says no. The Rule of One is your cure for conversion-killing confusion.' },
-      { type: 'content', title: 'The Core Problem', body: 'Your visitor lands on your product page. Within 3 seconds, they see: "Perfect for athletes, busy moms, and fitness beginners!" Three different readers. "Burns fat, builds muscle, boosts energy!" Three different ideas. "Buy now OR subscribe OR download the free guide!" Three different actions. Their brain shuts down. Decision paralysis sets in. They click away. You just lost a sale to confusion.' },
-      { type: 'visual', title: 'The Confusion Equation', visualType: 'comparison', data: {
-        left: { label: 'Scattered', value: 'MANY', result: 'Multiple messages', color: '#ef4444' },
-        right: { label: 'Focused', value: 'ONE', result: 'Single clear path', color: '#22c55e' },
-        center: { label: 'Result', value: '10x', result: 'More conversions', color: '#06b6d4' }
-      }},
-      { type: 'content', title: 'Foundation #1: ONE Reader', body: 'Stop writing to "business owners" or "women 25-45." Write to Sarah, 32, who runs a side business while working full-time and has exactly 90 minutes per day to build her dream. The more specific your reader, the more people like them will feel understood. This is the paradox of persuasion: narrow your focus to expand your impact.' },
-      { type: 'example', scenario: 'Yoga Mat Store - ONE Reader', before: { label: 'Generic (Everyone)', text: '"Perfect yoga mat for beginners, experts, and everyone in between! Great for yoga, pilates, stretching, and more."' }, after: { label: 'Specific (ONE Reader)', text: '"For the 30-something woman who\'s tired of cheap mats that slip during downward dog and leave knee imprints that last for hours. You deserve better."' }, insight: 'The second version speaks to ONE person. But everyone with that pain feels seen.' },
-      { type: 'cards', title: 'How to Find Your ONE Reader', items: [
-        { title: 'Mine Reviews', description: 'Read 50+ Amazon reviews in your niche. Look for recurring frustrations, desires, and specific language they use.' },
-        { title: 'Analyze Support Tickets', description: 'What questions do customers ask before buying? What almost stopped them? This is gold.' },
-        { title: 'Reddit Deep Dive', description: 'Find subreddits where your customer hangs out. Read their posts. Copy their exact words and pain points.' },
-        { title: 'Create Your Avatar', description: 'Give them a name, age, job, daily frustration. Write TO this person. Not AT a demographic.' }
-      ]},
-      { type: 'content', title: 'Foundation #2: ONE Big Idea', body: 'Your product page should communicate one dominant concept. Not three good ideas. ONE concept so compelling it demands attention and can\'t be ignored. A big idea is instantly clear, different from competitors, and memorable enough to repeat to a friend. If your visitor can\'t explain your offer in one sentence, you failed the test.' },
-      { type: 'example', scenario: 'Protein Powder Store - ONE Big Idea', before: { label: 'Multiple Ideas (Weak)', text: '"Our protein helps you build muscle, lose fat, recover faster, improve gut health, and boost your immune system. Plus it tastes amazing!"' }, after: { label: 'ONE Big Idea (Strong)', text: '"The 20-Second Breakfast That Builds Muscle While You Work. No blender. No cleanup. No excuses."' }, insight: 'One clear concept. Everything else supports this single promise.' },
-      { type: 'visual', title: 'The Big Idea Test', visualType: 'stats', data: [
-        { value: '5 SEC', label: 'clarity check', subtext: 'Can they understand it instantly?' },
-        { value: 'DIFF', label: 'differentiation', subtext: 'Is it what everyone else says?' },
-        { value: 'MEMO', label: 'memorability', subtext: 'Can they repeat it tomorrow?' }
-      ]},
-      { type: 'content', title: 'Foundation #3: ONE Offer', body: 'Options kill conversions. When you give three pricing tiers, you create doubt. When you say "Buy OR subscribe OR download," you create paralysis. Present ONE clear solution that solves their ONE problem. Remove alternatives. Make the decision binary: yes or no. Never maybe.' },
-      { type: 'cards', title: 'The Offer Clarity Formula', items: [
-        { title: 'One Price', description: 'Not "Basic $29, Pro $49, Premium $99." Just: "Get Complete Access for $47."' },
-        { title: 'One Solution', description: 'Not "Choose from 20 products." One recommended solution for their specific problem.' },
-        { title: 'One Path', description: 'Every element on the page points to ONE action. No distractions. No alternatives.' }
-      ]},
-      { type: 'example', scenario: 'Skincare Store - ONE Offer', before: { label: 'Choice Paralysis', text: '"Shop our collection: Anti-Aging Serum ($39), Vitamin C Serum ($35), Retinol Serum ($42), or get our Best-Seller Bundle ($89) OR subscribe for 15% off!"' }, after: { label: 'Clear Path', text: '"The 3-Step Age-Reversing System. Everything you need. One price. $67. Free shipping. 60-day guarantee. Start today."' }, insight: 'One offer. One decision. Maximum clarity drives maximum conversions.' },
-      { type: 'content', title: 'Foundation #4: ONE Action', body: 'Every piece of copy should drive toward a single, clear next step. Not "Buy now or subscribe or download or contact us." Just ONE action. Your CTA should be the inevitable conclusion of everything above it. When they reach your button, there should be no question what to do next.' },
-      { type: 'visual', title: 'The CTA Hierarchy', visualType: 'stats', data: [
-        { value: '1st', label: 'primary CTA', subtext: 'One dominant action' },
-        { value: '0', label: 'alternatives', subtext: 'No competing options' },
-        { value: '100%', label: 'clarity', subtext: 'Zero confusion allowed' }
-      ]},
-      { type: 'example', scenario: 'Coffee Store - ONE Action', before: { label: 'Scattered Actions', text: '"Buy Now" + "Subscribe & Save" + "Read Reviews" + "Compare Products" + "Contact Us" + "Download Our App"' }, after: { label: 'Single Focus', text: 'Every section leads to ONE button: "Get Your First Bag for $1" (Trial offer). No alternatives. No distractions.' }, insight: 'One path to conversion. Every word points to this single action.' },
-      { type: 'content', title: 'The Holy Shift Moment', body: 'Here\'s the breakthrough insight: The Rule of One doesn\'t limit you - it liberates you. When you stop trying to say everything, you finally say something that matters. When you stop trying to be everything to everyone, you become irresistible to the right someone. Focus is your superpower. Clarity is your competitive advantage.' },
-      { type: 'cards', title: 'Apply It Now: The 4-Step Audit', items: [
-        { title: '1. ONE Reader Audit', description: 'Read your product page. Who exactly are you talking to? If you can\'t name them, rewrite it.' },
-        { title: '2. ONE Idea Audit', description: 'What\'s your dominant concept? Can a 12-year-old explain it in one sentence? If not, simplify.' },
-        { title: '3. ONE Offer Audit', description: 'Count your options. More than one? Cut everything except the best solution.' },
-        { title: '4. ONE Action Audit', description: 'Count your CTAs. More than one? Remove all but the most important action.' }
-      ]},
-      { type: 'visual', title: 'The Power of ONE', visualType: 'stats', data: [
-        { value: '3-5x', label: 'higher conversions', subtext: 'Single CTA vs multiple' },
-        { value: '67%', label: 'less bounce', subtext: 'When message is focused' },
-        { value: '1+1+1+1', label: 'equals conversion', subtext: 'The multiplication effect' }
-      ]},
-      { type: 'quiz', question: 'According to the Rule of One, what happens when you write to ONE specific person?', options: ['You limit your market and lose potential customers', 'Everyone like that person feels understood and connects with your message', 'You need to create separate pages for every customer type', 'Your message becomes too narrow to be effective'], correctIndex: 1, feedback: { correct: 'Exactly! This is the paradox of persuasion: when you narrow your focus to ONE specific person, everyone like them feels seen and understood. Specificity creates connection, not limitation. This is why the most successful copy speaks to an individual, not a crowd.', incorrect: 'Not quite. The magic of the Rule of One is this: when you write to ONE specific person, everyone LIKE that person feels understood. You\'re not limiting your market - you\'re creating deeper connection. Specificity doesn\'t narrow your reach; it amplifies your impact.' }},
-      { type: 'completion', sources: [] }
-    ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -209,9 +128,424 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      User: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Package: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
+      MousePointer: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Focus: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="M2 12h4"/><path d="M18 12h4"/></svg>
     };
+
+    const IconMap = { User: Icons.User, Lightbulb: Icons.Lightbulb, Package: Icons.Package, MousePointer: Icons.MousePointer, Target: Icons.Target, AlertTriangle: Icons.AlertTriangle, Users: Icons.Users, Focus: Icons.Focus };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why scattered messaging kills conversions', 'The 4 components of the Rule of One framework', 'How to focus your copy for maximum persuasion'] },
+      { type: 'hook', headline: 'When you try to speak to everyone, you speak to no one.', subtext: 'Most stores pile on multiple benefits, throw in various offers, and scatter CTAs everywhere. The result? A confused prospect who does nothing. Because a confused mind always says no. The Rule of One is your cure.' },
+      { type: 'confusion-demo' },
+      { type: 'four-pillars' },
+      { type: 'pillar-detail', pillarIndex: 0 },
+      { type: 'pillar-detail', pillarIndex: 1 },
+      { type: 'pillar-detail', pillarIndex: 2 },
+      { type: 'pillar-detail', pillarIndex: 3 },
+      { type: 'conversion-stats' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'According to the Rule of One, what happens when you write to ONE specific person?', options: ['You limit your market and lose potential customers', 'Everyone like that person feels understood and connects', 'You need separate pages for every customer type', 'Your message becomes too narrow to be effective'], correctIndex: 1, feedback: { correct: 'Exactly! This is the paradox of persuasion: when you narrow your focus to ONE specific person, everyone like them feels seen and understood. Specificity creates connection, not limitation.', incorrect: 'Not quite. The magic of the Rule of One: when you write to ONE specific person, everyone LIKE that person feels understood. Specificity amplifies impact, not limits it.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    // ============ UNIQUE CUSTOM SLIDE COMPONENTS ============
+
+    const ConfusionDemoSlide = () => {
+      const [activeExample, setActiveExample] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveExample(prev => (prev + 1) % CONFUSION_EXAMPLES.length);
+        }, 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const example = CONFUSION_EXAMPLES[activeExample];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">
+            The Confusion Killer
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} style={{ textAlign: 'center', color: '#71717a', marginBottom: '32px', fontSize: '15px' }}>
+            Same message, completely different impact
+          </motion.p>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Scattered */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '24px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#ef444420', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                  <Icons.Users />
+                </div>
+                <div>
+                  <span style={{ fontSize: '12px', color: '#ef4444', fontWeight: '700', letterSpacing: '0.05em' }}>SCATTERED</span>
+                  <div style={{ fontSize: '11px', color: '#71717a' }}>Speaking to everyone</div>
+                </div>
+              </div>
+
+              <div style={{ background: '#27272a', borderRadius: '12px', padding: '16px', minHeight: '80px' }}>
+                <motion.p
+                  key={`scattered-${activeExample}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  style={{ fontSize: '14px', color: '#a1a1aa', lineHeight: '1.6', fontStyle: 'italic' }}
+                >
+                  "{example.scattered}"
+                </motion.p>
+              </div>
+
+              <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Icons.AlertTriangle />
+                <span style={{ fontSize: '12px', color: '#ef4444' }}>Confused mind = No action</span>
+              </div>
+            </motion.div>
+
+            {/* Focused */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '24px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#10b98120', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10b981' }}>
+                  <Icons.User />
+                </div>
+                <div>
+                  <span style={{ fontSize: '12px', color: '#10b981', fontWeight: '700', letterSpacing: '0.05em' }}>FOCUSED</span>
+                  <div style={{ fontSize: '11px', color: '#71717a' }}>Speaking to ONE</div>
+                </div>
+              </div>
+
+              <div style={{ background: '#27272a', borderRadius: '12px', padding: '16px', minHeight: '80px' }}>
+                <motion.p
+                  key={`focused-${activeExample}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  style={{ fontSize: '14px', color: '#d4d4d8', lineHeight: '1.6', fontStyle: 'italic' }}
+                >
+                  "{example.focused}"
+                </motion.p>
+              </div>
+
+              <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px', color: '#10b981' }}>
+                <Icons.Check />
+                <span style={{ fontSize: '12px' }}>Clear path = Action taken</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Progress dots */}
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '24px' }}>
+            {CONFUSION_EXAMPLES.map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: i === activeExample ? '#8b5cf6' : '#3f3f46',
+                  transition: 'all 0.3s'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    const FourPillarsSlide = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % FOUR_PILLARS.length);
+        }, 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">
+            The Rule of One Formula
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} style={{ textAlign: 'center', color: '#71717a', marginBottom: '32px', fontSize: '15px' }}>
+            Four pillars that create unstoppable persuasion
+          </motion.p>
+
+          {/* Formula visualization */}
+          <div className="grid grid-cols-4 gap-3 md:gap-4 mb-6">
+            {FOUR_PILLARS.map((pillar, i) => {
+              const IconComponent = IconMap[pillar.icon];
+              const isActive = i === activeIndex;
+              return (
+                <motion.div
+                  key={pillar.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0, scale: isActive ? 1.05 : 1 }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
+                  style={{
+                    background: isActive ? `linear-gradient(135deg, ${pillar.color}20, ${pillar.color}10)` : 'white',
+                    borderRadius: '12px',
+                    padding: '16px',
+                    textAlign: 'center',
+                    border: isActive ? `2px solid ${pillar.color}` : '2px solid #e5e7eb',
+                    position: 'relative'
+                  }}
+                >
+                  {isActive && (
+                    <div style={{ position: 'absolute', top: '-8px', left: '50%', transform: 'translateX(-50%)', background: pillar.color, color: 'white', fontSize: '10px', fontWeight: '700', padding: '2px 8px', borderRadius: '4px' }}>
+                      ACTIVE
+                    </div>
+                  )}
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    background: `${pillar.color}20`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 12px',
+                    color: pillar.color
+                  }}>
+                    <IconComponent />
+                  </div>
+                  <div style={{ fontSize: '14px', fontWeight: '700', color: '#18181b', marginBottom: '4px' }}>
+                    {pillar.name}
+                  </div>
+                  <p style={{ fontSize: '11px', color: '#71717a', lineHeight: '1.4' }}>
+                    {pillar.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Equals conversion */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderRadius: '16px',
+              padding: '24px',
+              textAlign: 'center',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '20px', fontWeight: '800', color: '#8b5cf6' }}>1</span>
+              <span style={{ color: '#71717a' }}>+</span>
+              <span style={{ fontSize: '20px', fontWeight: '800', color: '#f97316' }}>1</span>
+              <span style={{ color: '#71717a' }}>+</span>
+              <span style={{ fontSize: '20px', fontWeight: '800', color: '#10b981' }}>1</span>
+              <span style={{ color: '#71717a' }}>+</span>
+              <span style={{ fontSize: '20px', fontWeight: '800', color: '#06b6d4' }}>1</span>
+              <span style={{ color: '#71717a' }}>=</span>
+              <span style={{ fontSize: '24px', fontWeight: '900', color: 'white', animation: 'pulse-one 2s ease-in-out infinite' }}>CONVERSION</span>
+            </div>
+            <p style={{ color: '#a1a1aa', fontSize: '13px', marginTop: '12px' }}>
+              The multiplication effect of focused messaging
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const PillarDetailSlide = ({ pillarIndex }) => {
+      const pillar = FOUR_PILLARS[pillarIndex];
+      const IconComponent = IconMap[pillar.icon];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderRadius: '24px',
+              padding: '40px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, transparent, ${pillar.color}, transparent)` }} />
+
+            {/* Pillar number badge */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: `${pillar.color}20`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '20px',
+                fontWeight: '800',
+                color: pillar.color
+              }}
+            >
+              {pillarIndex + 1}
+            </motion.div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+              <div style={{
+                width: '64px',
+                height: '64px',
+                borderRadius: '16px',
+                background: `linear-gradient(135deg, ${pillar.color}, ${pillar.color}dd)`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                boxShadow: `0 0 30px ${pillar.color}40`
+              }}>
+                <IconComponent />
+              </div>
+              <div>
+                <span style={{ fontSize: '11px', color: pillar.color, fontWeight: '700', letterSpacing: '0.1em' }}>PILLAR {pillarIndex + 1}</span>
+                <h2 className="slide-title" style={{ fontSize: '28px', color: 'white', marginTop: '4px' }}>{pillar.name}</h2>
+              </div>
+            </div>
+
+            <p style={{ fontSize: '18px', color: '#d4d4d8', lineHeight: '1.7', marginBottom: '24px' }}>
+              {pillar.description}
+            </p>
+
+            {/* Example */}
+            <div style={{ background: '#27272a', borderRadius: '12px', padding: '20px', borderLeft: `4px solid ${pillar.color}` }}>
+              <span style={{ fontSize: '11px', color: '#71717a', fontWeight: '600', letterSpacing: '0.05em' }}>EXAMPLE</span>
+              <p style={{ fontSize: '16px', color: 'white', marginTop: '8px', fontStyle: 'italic' }}>
+                "{pillar.example}"
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const ConversionStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+          The Power of Focus
+        </motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {CONVERSION_STATS.map((stat, i) => (
+            <motion.div
+              key={stat.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.15 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '32px 24px',
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+
+              <div style={{ fontSize: '48px', fontWeight: '800', color: stat.color, marginBottom: '8px' }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={2000} />
+              </div>
+              <div style={{ fontSize: '16px', fontWeight: '700', color: 'white', marginBottom: '4px' }}>
+                {stat.label}
+              </div>
+              <p style={{ fontSize: '13px', color: '#a1a1aa' }}>
+                {stat.subtext}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            borderRadius: '24px',
+            padding: '48px 40px',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+            width: '100%'
+          }}
+        >
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', boxShadow: '0 0 30px rgba(139,92,246,0.4)', color: 'white' }}>
+            <Icons.Lightbulb />
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} style={{ fontSize: '11px', color: '#8b5cf6', fontWeight: '700', letterSpacing: '0.1em', marginBottom: '16px' }}>
+            ELITE INSIGHT
+          </motion.div>
+
+          <motion.h2 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="slide-title" style={{ fontSize: '28px', color: 'white', marginBottom: '24px' }}>
+            {ELITE_INSIGHT.title}
+          </motion.h2>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} style={{ fontSize: '16px', color: '#d4d4d8', lineHeight: '1.7', marginBottom: '24px', fontStyle: 'italic' }}>
+            "{ELITE_INSIGHT.quote}"
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '16px 24px', background: 'rgba(139,92,246,0.1)', borderRadius: '12px', border: '1px solid rgba(139,92,246,0.2)' }}>
+            <Icons.Target />
+            <span style={{ color: '#a78bfa', fontWeight: '600', fontSize: '15px' }}>{ELITE_INSIGHT.insight}</span>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -242,130 +576,12 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
       </div>
     );
 
@@ -416,25 +632,12 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the foundation of persuasive copy: ONE reader, ONE idea, ONE offer, ONE action. This isn't a limitation - it's liberation. Clarity is your competitive advantage.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now have the Rule of One: ONE reader, ONE idea, ONE offer, ONE action. Focus is your superpower. Clarity is your competitive advantage.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -451,14 +654,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -490,10 +687,11 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'confusion-demo': return <ConfusionDemoSlide />;
+          case 'four-pillars': return <FourPillarsSlide />;
+          case 'pillar-detail': return <PillarDetailSlide pillarIndex={slide.pillarIndex} />;
+          case 'conversion-stats': return <ConversionStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

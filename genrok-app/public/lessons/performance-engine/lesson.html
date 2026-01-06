@@ -12,17 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #3b82f6;
-      --accent-dark: #2563eb;
-      --accent-light: #60a5fa;
-      --accent-rgb: 59, 130, 246;
-    }
+    :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -49,7 +41,7 @@
       title: 'The Performance Engine',
       description: 'Your brand isn\'t a long-term asset you build over years - it\'s a high-performance engine you tune daily.',
       accentColor: '#3b82f6',
-      duration: '5 min',
+      duration: '7 min',
       nextLesson: {
         id: 'brand-promise-code',
         title: 'The Brand Promise Code',
@@ -57,136 +49,85 @@
       }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
+    // ============ ENGINE COMPONENTS CONFIG ============
+    const ENGINE_COMPONENTS = [
+      {
+        num: '1',
+        title: 'Strategic Foundation',
+        subtitle: 'POSITIONING',
+        description: 'Who you serve, what you promise, why they should care. The filter that makes everything else work.',
+        color: '#8b5cf6',
+        metrics: ['ICP Clarity', 'Positioning', 'Differentiation']
+      },
+      {
+        num: '2',
+        title: 'Conversion Engine',
+        subtitle: 'IMMEDIATE ACTION',
+        description: 'Visual identity, messaging, trust signals. Every element designed to reduce friction and drive action.',
+        color: '#3b82f6',
+        metrics: ['Trust Signals', 'Visual Identity', 'CRO Systems']
+      },
+      {
+        num: '3',
+        title: 'Value Multiplier',
+        subtitle: 'LIFETIME VALUE',
+        description: 'Retention mechanics, ascension paths, ecosystem lock-in. Systems that compound customer value.',
+        color: '#10b981',
+        metrics: ['Retention', 'Upsells', 'Lock-in']
       }
+    ];
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    let __isAdmin = false;
+    window.addEventListener('message', function(e) {
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }} onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
-
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
       { type: 'welcome', learningGoals: [
         'Why treating brand as a long-term asset will destroy your DTC business',
-        'The 3 brutal realities of the modern DTC battlefield',
-        'The Performance Engine framework: Strategic Foundation → Conversion Engine → Value Multiplier'
+        'The 3 engine components: Strategic Foundation, Conversion Engine, Value Multiplier',
+        'How to measure performance: Revenue, not awareness'
       ]},
-      { type: 'hook', headline: 'Your brand is not a logo. It\'s not a vibe. It\'s definitely not "something you build over years."', subtext: 'In 2025, the DTC battlefield is brutal. Rising CAC. Platform saturation. Competition from every angle. If your brand doesn\'t convert immediately and retain efficiently, you\'re already dead. This lesson rewrites everything you thought you knew about brand building.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Facebook' },
-      { type: 'content', title: 'The Old Brand Playbook Is Dead', body: 'For decades, brand was treated like a long-term investment. Build awareness. Create emotional connections. Wait years to see results. That worked when CAC was $5 and Facebook ads were magic money printers. But the battlefield has changed. Now, your brand must convert immediately and retain efficiently - or you lose.' },
-      { type: 'visual', title: 'The DTC Battlefield Today', visualType: 'stats', data: [
-        { value: '3x', label: 'CAC increase', subtext: 'Since 2019 across platforms' },
-        { value: '87%', label: 'saturated markets', subtext: 'Every niche has 100+ competitors' },
-        { value: '2.3s', label: 'attention span', subtext: 'You have seconds to convert' }
-      ]},
-      { type: 'content', title: 'Brand as Performance Engine', body: 'Stop thinking of brand as a long-term asset. Start thinking of it as a high-performance engine you tune daily. Every color choice, every word, every design decision is a conversion tool. Your brand either drives sales today or it\'s worthless. This is the Performance Brand Playbook.' },
-      { type: 'cards', title: 'The 3 Engine Components', items: [
-        { title: '1. Strategic Foundation', description: 'Who you serve, what you promise, why they should care. This is your positioning - the filter that makes everything else work.' },
-        { title: '2. Conversion Engine', description: 'Visual identity, messaging, trust signals. Every element designed to reduce friction and drive action immediately.' },
-        { title: '3. Value Multiplier', description: 'Systems that increase customer lifetime value. Retention mechanics, ascension paths, ecosystem lock-in.' }
-      ]},
-      { type: 'example', scenario: 'Traditional Brand vs Performance Brand', before: { label: 'Old Playbook', text: 'Focus: "Build brand awareness"\nGoal: "Create emotional connection"\nTimeline: "Wait 2-3 years for ROI"\n\nResult: Bleeding money while competitors eat your lunch' }, after: { label: 'Performance Engine', text: 'Focus: "Convert and retain efficiently"\nGoal: "Every element drives immediate action"\nTimeline: "Positive ROI in 30 days"\n\nResult: Profitable growth from day one' }, insight: 'Same marketing spend. Different philosophy. Radically different outcomes.' },
-      { type: 'content', title: 'The Performance Mindset Shift', body: 'Every brand decision must answer: "Will this convert today or retain tomorrow?" If the answer is no, cut it. No vanity metrics. No "building awareness." No "long-term plays." Your brand is a machine. Tune it daily. Measure everything. Optimize ruthlessly.' },
-      { type: 'visual', title: 'What Gets Measured', visualType: 'comparison', data: {
-        left: { label: 'Traditional Brand', value: 'Awareness', result: 'Impressions, reach, engagement', color: '#94a3b8' },
-        right: { label: 'Performance Brand', value: 'Revenue', result: 'CVR, LTV, payback period', color: '#3b82f6' },
-        center: { label: 'Your Focus', value: 'Action', result: 'Conversions that pay back', color: '#10b981' }
-      }},
-      { type: 'content', title: 'The Foundation Comes First', body: 'You can\'t optimize what you haven\'t defined. Before you touch visual identity or messaging, you need crystal-clear positioning. Who are you for? What change do you make? Why should they care? Get this wrong and no amount of beautiful design will save you. Get it right and everything else becomes easy.' },
-      { type: 'quiz', question: 'What is the PRIMARY difference between traditional brand building and the Performance Engine approach?', options: ['Performance brands use better designers', 'Performance brands measure awareness instead of sales', 'Performance brands treat every element as a conversion tool that must work immediately', 'Performance brands focus on long-term emotional connections'], correctIndex: 2, feedback: { correct: 'Exactly! Performance brands treat every design decision, every word, every visual element as a conversion tool that must drive immediate action. No vanity metrics, no waiting years for ROI.', incorrect: 'Not quite. Performance brands aren\'t about better design or awareness - they\'re about treating every brand element as a conversion tool that must work immediately, not in years.' }},
+      { type: 'hook', headline: 'Your brand is not a logo. It\'s not a vibe. It\'s definitely not "something you build over years."', subtext: 'In 2025, the DTC battlefield is brutal. Rising CAC. Platform saturation. Competition from every angle. If your brand doesn\'t convert immediately and retain efficiently, you\'re already dead. This lesson rewrites everything you thought you knew about brand building.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
+      { type: 'battlefield-stats' },
+      { type: 'old-playbook-dead' },
+      { type: 'engine-visualization' },
+      { type: 'engine-components' },
+      { type: 'playbook-comparison' },
+      { type: 'measurement-comparison' },
+      { type: 'performance-mindset' },
+      { type: 'quiz', question: 'What is the PRIMARY difference between traditional brand building and the Performance Engine approach?', options: ['Performance brands use better designers', 'Performance brands measure awareness instead of sales', 'Performance brands treat every element as a conversion tool that must work immediately', 'Performance brands focus on long-term emotional connections'], correctIndex: 2, feedback: { correct: 'Exactly! Performance brands treat every design decision, every word, every visual element as a conversion tool that must drive immediate action. No vanity metrics, no waiting years for ROI.', incorrect: 'Not quite. Performance brands aren\'t about better design or awareness - they\'re about treating every brand element as a conversion tool that must work immediately.' }},
+      { type: 'impact-stats' },
+      { type: 'elite-insight' },
       { type: 'completion' }
     ];
 
@@ -196,10 +137,46 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Settings: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      BarChart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Skull: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="11" r="9"/><path d="M12 20v2"/><path d="M9 23h6"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/><path d="M9 16h6"/></svg>,
+      Rocket: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      RefreshCw: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Activity: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
     };
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, duration = 2000, suffix = '', prefix = '' }) => {
+      const [count, setCount] = useState(0);
+      const numericValue = parseFloat(value.toString().replace(/[^0-9.]/g, ''));
+
+      useEffect(() => {
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.floor(eased * numericValue));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [numericValue, duration]);
+
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // ============ WELCOME SLIDE ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -232,6 +209,7 @@
       );
     };
 
+    // ============ HOOK SLIDE ============
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -241,15 +219,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -259,107 +228,514 @@
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // ============ BATTLEFIELD STATS SLIDE ============
+    const BattlefieldStatsSlide = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % 3);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, []);
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+      const stats = [
+        { value: 3, suffix: 'x', label: 'CAC Increase', subtext: 'Since 2019 across all platforms', icon: Icons.TrendingUp, color: '#ef4444' },
+        { value: 87, suffix: '%', label: 'Saturated Markets', subtext: 'Every niche has 100+ competitors', icon: Icons.Users, color: '#f59e0b' },
+        { value: 2.3, suffix: 's', label: 'Attention Span', subtext: 'You have seconds to convert', icon: Icons.Activity, color: '#3b82f6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Brutal Reality</span>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">The DTC Battlefield in 2025</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+            {stats.map((stat, i) => {
+              const Icon = stat.icon;
+              const isActive = activeIndex === i;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.15 }}
+                  className="relative overflow-hidden rounded-2xl p-6 text-center transition-all duration-500"
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    boxShadow: isActive ? `0 0 40px ${stat.color}40, 0 8px 32px rgba(0,0,0,0.3)` : '0 4px 20px rgba(0,0,0,0.2)',
+                    transform: isActive ? 'scale(1.03)' : 'scale(1)',
+                  }}
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)`, opacity: isActive ? 1 : 0.3 }} />
+                  <motion.div
+                    className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4"
+                    style={{ background: `linear-gradient(135deg, ${stat.color}20, ${stat.color}40)` }}
+                    animate={{ scale: isActive ? [1, 1.1, 1] : 1 }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <Icon style={{ color: stat.color }} />
+                  </motion.div>
+                  <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: stat.color }}>
+                    <AnimatedCounter value={stat.value} suffix={stat.suffix} duration={1500} />
+                  </div>
+                  <div className="text-white font-semibold mb-2">{stat.label}</div>
+                  <div className="text-neutral-400 text-sm">{stat.subtext}</div>
                 </motion.div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        );
-      }
-      return null;
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center text-neutral-500 text-sm mt-8">
+            The old playbook is dead. If your brand doesn't convert immediately, you're already losing.
+          </motion.p>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // ============ OLD PLAYBOOK DEAD SLIDE ============
+    const OldPlaybookDeadSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Problem</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">The Old Brand Playbook Is Dead</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="relative overflow-hidden rounded-2xl p-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
+                <Icons.Skull style={{ color: '#ef4444' }} />
+              </div>
+              <span className="text-red-400 font-semibold">Old Playbook (Dead)</span>
+            </div>
+            <ul className="space-y-3">
+              {['Build awareness over time', 'Create emotional connections', 'Wait 2-3 years for ROI', 'Focus on impressions & reach'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-2">
+                  <Icons.X style={{ color: '#ef4444', flexShrink: 0, marginTop: 2 }} />
+                  <span className="text-neutral-300 text-sm">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+            <div className="mt-4 pt-4 border-t border-neutral-700">
+              <p className="text-neutral-500 text-xs">Worked when CAC was $5 and Facebook ads were magic money printers</p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="relative overflow-hidden rounded-2xl p-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                <Icons.Rocket style={{ color: '#3b82f6' }} />
+              </div>
+              <span className="text-blue-400 font-semibold">Performance Engine (Now)</span>
+            </div>
+            <ul className="space-y-3">
+              {['Convert immediately', 'Retain efficiently', 'Positive ROI in 30 days', 'Every element drives action'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-start gap-2">
+                  <Icons.Check style={{ color: '#3b82f6', flexShrink: 0, marginTop: 2 }} />
+                  <span className="text-neutral-300 text-sm">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+            <div className="mt-4 pt-4 border-t border-neutral-700">
+              <p className="text-blue-400 text-xs font-semibold">This is the only way to win in 2025</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // ============ ENGINE VISUALIZATION SLIDE ============
+    const EngineVisualizationSlide = () => {
+      const [activeComponent, setActiveComponent] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveComponent(prev => (prev + 1) % 3);
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>The Framework</span>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">Brand as Performance Engine</h2>
+          </motion.div>
+
+          <div className="relative">
+            {/* Engine Flow */}
+            <div className="flex items-center justify-center gap-4 md:gap-8 mb-8">
+              {ENGINE_COMPONENTS.map((comp, i) => (
+                <React.Fragment key={i}>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{
+                      opacity: 1,
+                      scale: activeComponent === i ? 1.05 : 1,
+                    }}
+                    transition={{ delay: 0.2 + i * 0.15 }}
+                    className="relative rounded-2xl p-4 md:p-6 text-center transition-all duration-500 flex-1 max-w-[200px]"
+                    style={{
+                      background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                      boxShadow: activeComponent === i ? `0 0 30px ${comp.color}40` : '0 4px 20px rgba(0,0,0,0.2)',
+                    }}
+                  >
+                    <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${comp.color}, transparent)`, opacity: activeComponent === i ? 1 : 0.3 }} />
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-3 text-white font-bold" style={{ background: comp.color }}>
+                      {comp.num}
+                    </div>
+                    <div className="text-white font-semibold text-sm mb-1">{comp.title}</div>
+                    <div className="text-xs font-medium px-2 py-1 rounded-full inline-block" style={{ background: `${comp.color}20`, color: comp.color }}>
+                      {comp.subtitle}
+                    </div>
+                  </motion.div>
+                  {i < 2 && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.5 + i * 0.1 }}
+                      className="text-neutral-400 hidden md:block"
+                    >
+                      <Icons.ArrowRight />
+                    </motion.div>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+
+            {/* Active Component Details */}
+            <motion.div
+              key={activeComponent}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-2xl p-6"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: `1px solid ${ENGINE_COMPONENTS[activeComponent].color}40` }}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl" style={{ background: ENGINE_COMPONENTS[activeComponent].color }}>
+                  {ENGINE_COMPONENTS[activeComponent].num}
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-lg">{ENGINE_COMPONENTS[activeComponent].title}</h3>
+                  <p className="text-neutral-400 text-sm">{ENGINE_COMPONENTS[activeComponent].subtitle}</p>
+                </div>
+              </div>
+              <p className="text-neutral-300 mb-4">{ENGINE_COMPONENTS[activeComponent].description}</p>
+              <div className="flex flex-wrap gap-2">
+                {ENGINE_COMPONENTS[activeComponent].metrics.map((metric, i) => (
+                  <span key={i} className="px-3 py-1 rounded-full text-xs font-medium" style={{ background: `${ENGINE_COMPONENTS[activeComponent].color}20`, color: ENGINE_COMPONENTS[activeComponent].color }}>
+                    {metric}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // ============ ENGINE COMPONENTS SLIDE ============
+    const EngineComponentsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>Deep Dive</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">The 3 Engine Components</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {ENGINE_COMPONENTS.map((comp, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.15 }}
+              className="relative overflow-hidden rounded-2xl p-5"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${comp.color}, transparent)` }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: comp.color }}>
+                  {comp.num}
+                </div>
+                <div>
+                  <h3 className="text-white font-bold">{comp.title}</h3>
+                  <span className="text-xs" style={{ color: comp.color }}>{comp.subtitle}</span>
+                </div>
+              </div>
+              <p className="text-neutral-400 text-sm mb-4 leading-relaxed">{comp.description}</p>
+              <div className="space-y-2">
+                {comp.metrics.map((metric, j) => (
+                  <div key={j} className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full" style={{ background: comp.color }} />
+                    <span className="text-neutral-300 text-xs">{metric}</span>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-center text-neutral-500 text-sm mt-6">
+          Each component works together. Strategic Foundation informs Conversion Engine, which feeds Value Multiplier.
+        </motion.p>
       </div>
     );
 
+    // ============ PLAYBOOK COMPARISON SLIDE ============
+    const PlaybookComparisonSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>Before & After</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Traditional Brand vs Performance Engine</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Before */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="relative overflow-hidden rounded-2xl p-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold bg-red-500/20 text-red-400">
+              OLD PLAYBOOK
+            </div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-neutral-700 flex items-center justify-center">
+                <Icons.Eye style={{ color: '#94a3b8' }} />
+              </div>
+              <div>
+                <h3 className="text-white font-bold">Focus: Awareness</h3>
+                <p className="text-neutral-500 text-sm">Build over time</p>
+              </div>
+            </div>
+            <div className="space-y-3 mb-4">
+              <div className="bg-neutral-800/50 rounded-lg p-3">
+                <div className="text-xs text-neutral-500 mb-1">Goal</div>
+                <div className="text-neutral-300 text-sm">"Create emotional connections"</div>
+              </div>
+              <div className="bg-neutral-800/50 rounded-lg p-3">
+                <div className="text-xs text-neutral-500 mb-1">Timeline</div>
+                <div className="text-neutral-300 text-sm">Wait 2-3 years for ROI</div>
+              </div>
+              <div className="bg-neutral-800/50 rounded-lg p-3">
+                <div className="text-xs text-neutral-500 mb-1">Metrics</div>
+                <div className="text-neutral-300 text-sm">Impressions, reach, engagement</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-red-400 text-sm font-medium">
+              <Icons.TrendingDown style={{ width: 16, height: 16 }} />
+              <span>Bleeding money while competitors eat your lunch</span>
+            </div>
+          </motion.div>
+
+          {/* After */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="relative overflow-hidden rounded-2xl p-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-400">
+              PERFORMANCE ENGINE
+            </div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                <Icons.DollarSign style={{ color: 'white' }} />
+              </div>
+              <div>
+                <h3 className="text-white font-bold">Focus: Revenue</h3>
+                <p className="text-green-400 text-sm">Convert & retain</p>
+              </div>
+            </div>
+            <div className="space-y-3 mb-4">
+              <div className="bg-green-500/10 rounded-lg p-3 border border-green-500/20">
+                <div className="text-xs text-green-400 mb-1">Goal</div>
+                <div className="text-white text-sm">"Every element drives immediate action"</div>
+              </div>
+              <div className="bg-green-500/10 rounded-lg p-3 border border-green-500/20">
+                <div className="text-xs text-green-400 mb-1">Timeline</div>
+                <div className="text-white text-sm">Positive ROI in 30 days</div>
+              </div>
+              <div className="bg-green-500/10 rounded-lg p-3 border border-green-500/20">
+                <div className="text-xs text-green-400 mb-1">Metrics</div>
+                <div className="text-white text-sm">CVR, LTV, payback period</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 text-green-400 text-sm font-medium">
+              <Icons.TrendingUp style={{ width: 16, height: 16 }} />
+              <span>Profitable growth from day one</span>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-6 text-center"
+        >
+          <span className="inline-block px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white' }}>
+            Same Marketing Spend. Radically Different Outcomes.
+          </span>
+        </motion.div>
+      </div>
+    );
+
+    // ============ MEASUREMENT COMPARISON SLIDE ============
+    const MeasurementComparisonSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>The Shift</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">What Gets Measured Gets Done</h2>
+        </motion.div>
+
+        <div className="grid grid-cols-3 gap-4 md:gap-6">
+          {/* Traditional */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl p-5 text-center"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="w-12 h-12 rounded-xl bg-neutral-700 flex items-center justify-center mx-auto mb-4">
+              <Icons.Eye style={{ color: '#94a3b8' }} />
+            </div>
+            <div className="text-3xl md:text-4xl font-bold text-neutral-400 mb-2">Awareness</div>
+            <div className="text-xs font-semibold text-neutral-500 mb-3">TRADITIONAL BRAND</div>
+            <div className="text-neutral-400 text-xs">Impressions, reach, engagement</div>
+          </motion.div>
+
+          {/* Center - Your Focus */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="rounded-2xl p-5 text-center transform scale-105"
+            style={{
+              background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+              boxShadow: '0 0 40px rgba(59, 130, 246, 0.3)'
+            }}
+          >
+            <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mx-auto mb-4">
+              <Icons.Target style={{ color: 'white' }} />
+            </div>
+            <div className="text-3xl md:text-4xl font-bold text-white mb-2">Action</div>
+            <div className="text-xs font-semibold text-white/80 mb-3">YOUR FOCUS</div>
+            <div className="text-white/70 text-xs">Conversions that pay back</div>
+          </motion.div>
+
+          {/* Performance */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="rounded-2xl p-5 text-center"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center mx-auto mb-4">
+              <Icons.DollarSign style={{ color: '#10b981' }} />
+            </div>
+            <div className="text-3xl md:text-4xl font-bold text-green-400 mb-2">Revenue</div>
+            <div className="text-xs font-semibold text-green-400/80 mb-3">PERFORMANCE BRAND</div>
+            <div className="text-neutral-400 text-xs">CVR, LTV, payback period</div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // ============ PERFORMANCE MINDSET SLIDE ============
+    const PerformanceMindsetSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>The Mindset</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">The Performance Mindset Shift</h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="relative overflow-hidden rounded-2xl p-8"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            boxShadow: '0 0 40px rgba(139, 92, 246, 0.2)'
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full" style={{ background: 'rgba(139, 92, 246, 0.2)' }}>
+              <Icons.Brain style={{ color: '#8b5cf6' }} />
+              <span className="text-purple-400 font-semibold">The Decision Filter</span>
+            </div>
+          </div>
+
+          <div className="text-center mb-8">
+            <p className="text-2xl md:text-3xl text-white font-bold leading-relaxed">
+              "Will this convert today<br/>or retain tomorrow?"
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-red-500/10 rounded-xl p-4 border border-red-500/20">
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.X style={{ color: '#ef4444', width: 16, height: 16 }} />
+                <span className="text-red-400 font-semibold text-sm">If NO, cut it:</span>
+              </div>
+              <ul className="space-y-1 text-neutral-400 text-xs">
+                <li>• No vanity metrics</li>
+                <li>• No "building awareness"</li>
+                <li>• No "long-term plays"</li>
+              </ul>
+            </div>
+            <div className="bg-green-500/10 rounded-xl p-4 border border-green-500/20">
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.Check style={{ color: '#10b981', width: 16, height: 16 }} />
+                <span className="text-green-400 font-semibold text-sm">If YES, optimize:</span>
+              </div>
+              <ul className="space-y-1 text-neutral-400 text-xs">
+                <li>• Tune it daily</li>
+                <li>• Measure everything</li>
+                <li>• Optimize ruthlessly</li>
+              </ul>
+            </div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="text-center text-neutral-500 text-sm mt-6"
+          >
+            Your brand is a machine. Every decision runs through this filter.
+          </motion.p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -373,7 +749,7 @@
         if (showFeedback) {
           if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
         }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      }, [showFeedback, isCorrect]);
 
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
@@ -408,6 +784,71 @@
       );
     };
 
+    // ============ IMPACT STATS SLIDE ============
+    const ImpactStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Performance Engine Impact</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { value: 30, suffix: ' days', label: 'To Positive ROI', subtext: 'Not 2-3 years', color: '#3b82f6' },
+            { value: 3, suffix: 'x', label: 'Faster Growth', subtext: 'Compared to traditional brand', color: '#10b981' },
+            { value: 100, suffix: '%', label: 'Accountability', subtext: 'Every element measured', color: '#8b5cf6' }
+          ].map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} duration={1800} />
+              </div>
+              <div className="text-white font-semibold mb-1">{stat.label}</div>
+              <div className="text-neutral-400 text-xs">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative overflow-hidden rounded-2xl p-8 text-center"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            boxShadow: '0 0 60px rgba(59, 130, 246, 0.2)'
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
+
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring' }}
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+            style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
+          >
+            <Icons.Settings style={{ color: 'white', width: 32, height: 32 }} />
+          </motion.div>
+
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <span className="text-blue-400 text-sm font-semibold">Elite Insight</span>
+          </div>
+
+          <h3 className="text-white text-2xl md:text-3xl font-bold mb-6">The Engine Paradox</h3>
+
+          <p className="text-neutral-300 text-base md:text-lg leading-relaxed mb-6">
+            Brand was always sold as a long-term investment that pays off eventually. But in the modern DTC landscape, "eventually" means death. Rising CAC, platform saturation, and shrinking attention spans have changed the game forever.
+          </p>
+
+          <p className="text-blue-400 text-base md:text-lg leading-relaxed font-medium">
+            The paradox: by treating brand as a performance engine you tune daily, you actually build stronger brand equity faster. Immediate results compound into long-term moats. The Performance Engine doesn't reject brand - it accelerates it.
+          </p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -421,6 +862,7 @@
       </div>
     );
 
+    // ============ LESSON APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -434,14 +876,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -473,11 +909,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'battlefield-stats': return <BattlefieldStatsSlide />;
+          case 'old-playbook-dead': return <OldPlaybookDeadSlide />;
+          case 'engine-visualization': return <EngineVisualizationSlide />;
+          case 'engine-components': return <EngineComponentsSlide />;
+          case 'playbook-comparison': return <PlaybookComparisonSlide />;
+          case 'measurement-comparison': return <MeasurementComparisonSlide />;
+          case 'performance-mindset': return <PerformanceMindsetSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'impact-stats': return <ImpactStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }

@@ -169,6 +169,7 @@
         { title: 'No Jargon', description: 'If a 12-year-old can\'t understand it, rewrite it.' }
       ]},
       { type: 'quiz', question: 'Which headline would pass the 5-second test for a meal prep delivery service?', options: ['"Fuel Your Journey to Greatness"', '"Where Nutrition Meets Convenience"', '"Healthy Meal Prep Delivered to Your Door"', '"Empowering Your Wellness Revolution"'], correctIndex: 2, feedback: { correct: 'Option C is the ONLY clear headline. It says exactly what they do (meal prep), the key benefit (healthy), and how it works (delivered). The others are vague corporate speak that communicate nothing specific. Clarity crushes cleverness.', incorrect: 'Not quite. The correct answer is "Healthy Meal Prep Delivered to Your Door." It\'s the only headline that tells you exactly what the company does, for whom, and how. The others sound impressive but say nothing specific.' }},
+      { type: 'test-headlines' },
       { type: 'before-after', title: 'The Confusion Tax', before: [
         '1,000 visitors land on vague page',
         '700 bounce immediately (confused)',
@@ -512,6 +513,82 @@
       );
     };
 
+    const TestHeadlinesSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+            <Icons.Target size={14} /> How To Do It
+          </span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Test Your Headlines</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+          {/* Manual Testing - Grayed */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-2xl p-5 md:p-6 border-2 border-neutral-200 opacity-60">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-neutral-200 flex items-center justify-center">
+                <Icons.Eye size={20} color="#9CA3AF" />
+              </div>
+              <span className="text-neutral-400 font-bold text-sm uppercase tracking-wider">Manual Testing</span>
+            </div>
+            <div className="space-y-3 mb-4">
+              <div className="flex items-start gap-2 text-neutral-400 text-sm">
+                <Icons.X size={16} color="#9CA3AF" />
+                <span>Show page to friends/family</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-400 text-sm">
+                <Icons.X size={16} color="#9CA3AF" />
+                <span>Ask "What does this company do?"</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-400 text-sm">
+                <Icons.X size={16} color="#9CA3AF" />
+                <span>Subjective feedback only</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-400 text-sm">
+                <Icons.X size={16} color="#9CA3AF" />
+                <span>No real conversion data</span>
+              </div>
+            </div>
+            <div className="pt-4 border-t border-neutral-200">
+              <span className="text-neutral-400 text-xs">Limited insights, no scale</span>
+            </div>
+          </motion.div>
+
+          {/* A/B Test with Data - Highlighted */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-5 md:p-6 border-2" style={{ borderColor: 'var(--accent)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.25)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                <Icons.TrendingUp size={20} color="var(--accent)" />
+              </div>
+              <span className="font-bold text-sm uppercase tracking-wider" style={{ color: 'var(--accent)' }}>A/B Test with Data</span>
+            </div>
+            <div className="space-y-3 mb-4">
+              <div className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check size={16} color="var(--accent)" />
+                <span>Test multiple headlines simultaneously</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check size={16} color="var(--accent)" />
+                <span>Real visitor behavior data</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check size={16} color="var(--accent)" />
+                <span>Statistical significance built-in</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check size={16} color="var(--accent)" />
+                <span>Know which headline converts better</span>
+              </div>
+            </div>
+            <div className="pt-4 border-t border-neutral-700">
+              <a href="https://apps.shopify.com/ab-convert" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 4px 15px rgba(var(--accent-rgb), 0.4)' }}>
+                Try ABConvert <Icons.ExternalLink />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -584,6 +661,7 @@
           case 'before-after': return <BeforeAfterSlide data={slide} />;
           case 'highlight-box': return <HighlightBoxSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'test-headlines': return <TestHeadlinesSlide />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }

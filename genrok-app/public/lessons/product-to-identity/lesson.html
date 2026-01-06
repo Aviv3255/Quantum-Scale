@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -57,26 +54,43 @@
       }
     };
 
+    // Configuration Arrays
+    const BRAND_EXAMPLES = [
+      { id: 1, brand: 'Rolex', icon: 'Watch', color: '#c9a227', product: 'Luxury timepiece with Swiss craftsmanship', identity: 'I have arrived. Success is visible.', price: '$8,000+' },
+      { id: 2, brand: 'Tesla', icon: 'Car', color: '#e82127', product: 'Electric vehicle with autopilot features', identity: 'I am the future. Innovation drives me.', price: '$45,000+' },
+      { id: 3, brand: 'Lululemon', icon: 'Activity', color: '#d31334', product: 'Premium athletic wear, moisture-wicking', identity: 'I invest in myself. Wellness is my lifestyle.', price: '$98+' },
+      { id: 4, brand: 'Apple', icon: 'Smartphone', color: '#555555', product: 'Smartphone with iOS ecosystem', identity: 'I value design and creativity. I think different.', price: '$999+' }
+    ];
+
+    const TRANSFORMATION_STEPS = [
+      { step: 1, title: 'Define Desired Identity', icon: 'User', description: 'Who do they WANT to become? Not what they want to have.', example: 'Entrepreneur? Elite athlete? Conscious consumer?' },
+      { step: 2, title: 'Position as Bridge', icon: 'ArrowRight', description: 'Your product enables their transformation, not the destination.', example: '"For builders who execute, not dreamers who plan"' },
+      { step: 3, title: 'Use Tribal Language', icon: 'Users', description: 'Stop saying "customers." Create belonging with identity words.', example: '"Builders," "Creators," "The 1%," "Serious athletes"' }
+    ];
+
+    const IDENTITY_IMPACT = [
+      { value: 40, suffix: '%', label: 'Higher Prices', subtext: 'Identity buyers pay premium' },
+      { value: 3, suffix: 'x', label: 'More Loyalty', subtext: 'Return rate vs product buyers' },
+      { value: 10, suffix: 'x', label: 'More Referrals', subtext: 'Identity = advocacy' }
+    ];
+
+    const LANGUAGE_EXAMPLES = [
+      { type: 'product', phrase: 'Customers who buy watches', brand: 'Generic' },
+      { type: 'identity', phrase: 'Those who understand what a Rolex represents', brand: 'Rolex' },
+      { type: 'product', phrase: 'People who wear our clothes', brand: 'Generic' },
+      { type: 'identity', phrase: 'The sweat life community', brand: 'Lululemon' }
+    ];
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -92,71 +106,26 @@
       };
 
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
@@ -166,31 +135,23 @@
         'The 3-step transformation framework for your product'
       ]},
       { type: 'hook', headline: 'People don\'t buy products. They buy versions of themselves.', subtext: 'A Rolex isn\'t a watch. Tesla isn\'t a car. Lululemon isn\'t yoga pants. They\'re identity purchases disguised as products. Your customers aren\'t paying for features - they\'re paying for who they become when they use what you sell.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/pngimg.com%20-%20tesla_logo_PNG12.png', brandName: 'Tesla' },
-      { type: 'content', title: 'The Identity Shift', body: 'When you buy a Rolex, you\'re not buying superior timekeeping. Your iPhone tells time better. You\'re buying "I\'ve made it." When someone buys a Tesla, they\'re not buying transportation. They\'re buying "I\'m the future." When someone buys Lululemon, they\'re not buying fabric. They\'re buying "I\'m that person." The product is the vehicle. The identity is the destination.' },
-      { type: 'cards', title: 'Product vs Identity Examples', items: [
-        { title: 'Rolex', description: 'Product: Luxury timepiece with Swiss craftsmanship. Identity: "I\'ve achieved success and everyone can see it."' },
-        { title: 'Tesla', description: 'Product: Electric vehicle with autopilot features. Identity: "I\'m forward-thinking, innovative, and environmentally conscious."' },
-        { title: 'Lululemon', description: 'Product: Premium athletic wear with moisture-wicking fabric. Identity: "I\'m someone who invests in wellness and quality."' },
-        { title: 'Apple', description: 'Product: Smartphone with iOS ecosystem. Identity: "I value design, simplicity, and being part of the creative class."' }
-      ]},
-      { type: 'visual', title: 'The Transformation Visual', visualType: 'comparison', data: {
-        left: { label: 'What They Buy', value: 'Product', result: 'Physical features', color: '#94a3b8' },
-        right: { label: 'What They REALLY Buy', value: 'Identity', result: 'Who they become', color: '#ec4899' },
-        center: { label: 'The Truth', value: 'Vehicle → Vision', result: 'Product enables identity', color: '#10b981' }
-      }},
-      { type: 'content', title: 'Why This Matters for Your Business', body: 'Most eCommerce stores sell products. They list features. They compare specs. They compete on price. The problem? Features are commodities. Anyone can copy them. Identity is unique. When customers buy identity, they pay premium prices, return for more, and defend your brand against critics. They become advocates, not just buyers.' },
-      { type: 'example', scenario: 'Fitness Supplement Store', before: { label: 'Product Framing', text: 'Premium whey protein. 25g protein per serving. Mixes easily. Available in 3 flavors.' }, after: { label: 'Identity Framing', text: 'For serious builders who refuse to settle. This isn\'t protein powder. It\'s fuel for the 1% who show up every single day.' }, insight: 'Same product. Different identity. Customers who buy the second version pay 40% more and become brand evangelists.' },
-      { type: 'cards', title: 'The 3-Step Identity Transformation', items: [
-        { title: 'Step 1: Define Your Customer\'s Desired Identity', description: 'Who do they WANT to be? Not what they want to have - who they want to BECOME. Entrepreneur? Elite athlete? Conscious consumer? Sophisticated parent?' },
-        { title: 'Step 2: Position Your Product as the Bridge', description: 'Your product isn\'t the destination. It\'s the vehicle. "This productivity tool is for builders who execute, not dreamers who plan." Your product enables their identity shift.' },
-        { title: 'Step 3: Use Tribal Language', description: 'Stop saying "customers." Say "builders," "creators," "the 1%," "serious athletes." Language creates belonging. Belonging reinforces identity. Identity drives loyalty.' }
-      ]},
-      { type: 'content', title: 'The Language of Identity', body: 'Notice how premium brands talk. Rolex doesn\'t say "customers who buy watches." They say "those who understand what a Rolex represents." Lululemon doesn\'t say "people who wear our clothes." They say "the sweat life community." Tesla doesn\'t say "car owners." They say "pioneers of sustainable transport." This isn\'t marketing fluff. It\'s identity reinforcement. Every word you use either strengthens or weakens the identity you\'re selling.' },
-      { type: 'example', scenario: 'Phone Case Brand', before: { label: 'Product Language', text: 'Buy our premium phone cases. Durable materials. Lifetime warranty. Free shipping on orders over $50.' }, after: { label: 'Identity Language', text: 'For creators who refuse to blend in. Designed by artists, built for people who see their phone as a canvas, not a screen.' }, insight: 'The second version attracts buyers willing to pay 3x more because they\'re not buying protection - they\'re buying creative identity.' },
-      { type: 'quiz', question: 'Why do identity-based products command higher prices than feature-based products?', options: ['They have better materials', 'They create emotional value that transcends physical features', 'They target wealthier customers', 'They spend more on marketing'], correctIndex: 1, feedback: { correct: 'Exactly. Identity purchases create emotional and psychological value that goes far beyond the physical product. People will pay premium prices for products that help them become who they want to be, not just for better features.', incorrect: 'Not quite. The power is in the emotional transformation. When a product becomes part of someone\'s identity - who they are or want to be - price becomes secondary to the identity shift they\'re purchasing.' }},
+      { type: 'mentor', text: 'The Identity Shift: When you buy a Rolex, you\'re not buying superior timekeeping. Your iPhone tells time better. You\'re buying "I\'ve made it." When someone buys a Tesla, they\'re not buying transportation. They\'re buying "I\'m the future." The product is the vehicle. The identity is the destination.' },
+      { type: 'identity-transformation', title: 'The Real Purchase Flow' },
+      { type: 'brand-examples-grid', title: 'Products vs Identities' },
+      { type: 'brand-detail', brandIndex: 0 },
+      { type: 'brand-detail', brandIndex: 1 },
+      { type: 'transformation-framework', title: 'The 3-Step Identity Transformation' },
+      { type: 'step-detail', stepIndex: 0 },
+      { type: 'step-detail', stepIndex: 1 },
+      { type: 'step-detail', stepIndex: 2 },
+      { type: 'language-comparison', title: 'The Language of Identity' },
+      { type: 'identity-impact', title: 'The Identity Advantage' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why do identity-based products command higher prices than feature-based products?', options: ['They have better materials', 'They create emotional value that transcends physical features', 'They target wealthier customers', 'They spend more on marketing'], correctIndex: 1, feedback: { correct: 'Exactly. Identity purchases create emotional and psychological value that goes far beyond the physical product. People will pay premium prices for products that help them become who they want to be.', incorrect: 'Not quite. The power is in the emotional transformation. When a product becomes part of someone\'s identity - who they are or want to be - price becomes secondary to the identity shift.' }},
       { type: 'completion' }
     ];
 
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -198,12 +159,58 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Watch: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="6"/><polyline points="12 10 12 12 13 13"/><path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05"/><path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05"/></svg>,
+      Car: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"/><circle cx="6.5" cy="16.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>,
+      Activity: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+      Smartphone: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>,
+      User: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Crown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      MessageCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>
     };
+
+    const BrandIcons = {
+      Watch: Icons.Watch,
+      Car: Icons.Car,
+      Activity: Icons.Activity,
+      Smartphone: Icons.Smartphone
+    };
+
+    const StepIcons = {
+      User: Icons.User,
+      ArrowRight: Icons.ArrowRight,
+      Users: Icons.Users
+    };
+
+    // AnimatedCounter Component
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseInt(value);
+        const stepTime = Math.abs(Math.floor(duration / end));
+        const timer = setInterval(() => {
+          start += 1;
+          setCount(start);
+          if (start >= end) clearInterval(timer);
+        }, stepTime);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
       useEffect(() => {
         onShowGif(welcomeData.gif, '65%', gifSide);
         return () => onHideGif();
@@ -241,15 +248,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -259,88 +257,399 @@
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
+    const MentorSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-2xl p-6 md:p-8" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="w-2 h-16 rounded-full mb-4" style={{ background: `linear-gradient(180deg, var(--accent), var(--accent-dark))` }} />
+          <p className="text-white text-lg md:text-xl leading-relaxed">{data.text}</p>
+        </motion.div>
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
+    // UNIQUE: Identity Transformation Flow Slide
+    const IdentityTransformationSlide = ({ data }) => {
+      const [activePhase, setActivePhase] = useState(0);
+      const phases = [
+        { label: 'PRODUCT', description: 'Physical features & specs', icon: 'Package', color: '#94a3b8' },
+        { label: 'VEHICLE', description: 'Bridge to transformation', icon: 'ArrowRight', color: '#f59e0b' },
+        { label: 'IDENTITY', description: 'Who they become', icon: 'Crown', color: '#ec4899' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActivePhase(prev => (prev + 1) % phases.length);
+        }, 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="flex items-center justify-center gap-4 md:gap-8 mb-8">
+            {phases.map((phase, i) => {
+              const IconComponent = phase.icon === 'Package' ? Icons.Package : phase.icon === 'ArrowRight' ? Icons.ArrowRight : Icons.Crown;
+              const isActive = i === activePhase;
+              return (
+                <React.Fragment key={i}>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: isActive ? 1.1 : 1 }}
+                    transition={{ delay: 0.1 + i * 0.1 }}
+                    className="flex flex-col items-center"
+                  >
+                    <div
+                      className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center mb-3 transition-all duration-500"
+                      style={{
+                        background: isActive ? `linear-gradient(135deg, ${phase.color}, ${phase.color}dd)` : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                        boxShadow: isActive ? `0 0 30px ${phase.color}40` : 'none',
+                        transform: isActive ? 'scale(1.1)' : 'scale(1)'
+                      }}
+                    >
+                      <div style={{ color: isActive ? 'white' : phase.color }}><IconComponent /></div>
+                    </div>
+                    <div className="text-sm md:text-base font-bold" style={{ color: isActive ? phase.color : '#6b7280' }}>{phase.label}</div>
+                    <div className="text-xs text-neutral-500 text-center max-w-[100px]">{phase.description}</div>
+                  </motion.div>
+                  {i < phases.length - 1 && (
+                    <motion.div
+                      initial={{ opacity: 0, scaleX: 0 }}
+                      animate={{ opacity: 1, scaleX: 1 }}
+                      transition={{ delay: 0.3 + i * 0.1 }}
+                      className="w-8 md:w-16 h-1 rounded-full"
+                      style={{ background: i < activePhase ? `linear-gradient(90deg, ${phases[i].color}, ${phases[i+1].color})` : '#d4d4d4' }}
+                    />
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="text-center p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-neutral-300 text-sm md:text-base">
+              <span className="text-white font-bold">The Truth:</span> People don't buy what you sell. They buy who they become when they use it.
+            </p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // UNIQUE: Brand Examples Grid with Auto-Cycling
+    const BrandExamplesGridSlide = ({ data }) => {
+      const [activeBrand, setActiveBrand] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveBrand(prev => (prev + 1) % BRAND_EXAMPLES.length);
+        }, 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {BRAND_EXAMPLES.map((brand, i) => {
+              const IconComponent = BrandIcons[brand.icon];
+              const isActive = i === activeBrand;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                  className="rounded-xl p-4 transition-all duration-500 cursor-pointer"
+                  onClick={() => setActiveBrand(i)}
+                  style={{
+                    background: isActive ? `linear-gradient(135deg, ${brand.color}15, ${brand.color}05)` : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    border: isActive ? `2px solid ${brand.color}` : '2px solid transparent',
+                    boxShadow: isActive ? `0 0 20px ${brand.color}30` : 'none'
+                  }}
+                >
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `${brand.color}20` }}>
+                    <div style={{ color: brand.color }}><IconComponent /></div>
+                  </div>
+                  <div className="font-bold text-sm md:text-base mb-1" style={{ color: isActive ? brand.color : 'white' }}>{brand.brand}</div>
+                  <div className="text-xs text-neutral-400">{brand.price}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="mt-6 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderTop: `3px solid ${BRAND_EXAMPLES[activeBrand].color}` }}>
+            <div className="flex items-start gap-4">
+              <div className="flex-1">
+                <div className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Product</div>
+                <div className="text-white text-sm">{BRAND_EXAMPLES[activeBrand].product}</div>
+              </div>
+              <div className="w-px h-12 bg-neutral-700" />
+              <div className="flex-1">
+                <div className="text-xs uppercase tracking-wider mb-1" style={{ color: BRAND_EXAMPLES[activeBrand].color }}>Identity</div>
+                <div className="text-white text-sm font-semibold">"{BRAND_EXAMPLES[activeBrand].identity}"</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Individual Brand Detail Slide
+    const BrandDetailSlide = ({ data }) => {
+      const brand = BRAND_EXAMPLES[data.brandIndex];
+      const IconComponent = BrandIcons[brand.icon];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl p-6 md:p-8"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderTop: `4px solid ${brand.color}`
+            }}
+          >
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ background: `${brand.color}20` }}>
+                <div style={{ color: brand.color }}><IconComponent /></div>
+              </div>
+              <div>
+                <div className="px-2 py-0.5 rounded text-xs font-bold inline-block mb-1" style={{ background: `${brand.color}30`, color: brand.color }}>BRAND #{brand.id}</div>
+                <h3 className="text-white text-2xl font-bold">{brand.brand}</h3>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+              <div className="bg-neutral-800/50 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Icons.Package />
+                  <span className="text-neutral-400 text-xs uppercase tracking-wider">The Product</span>
+                </div>
+                <p className="text-white text-sm">{brand.product}</p>
+              </div>
+              <div className="rounded-xl p-4" style={{ background: `${brand.color}15` }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <div style={{ color: brand.color }}><Icons.Crown /></div>
+                  <span className="text-xs uppercase tracking-wider" style={{ color: brand.color }}>The Identity</span>
+                </div>
+                <p className="text-white text-sm font-semibold">"{brand.identity}"</p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-800/30">
+              <span className="text-neutral-400 text-sm">Price Point</span>
+              <span className="text-white font-bold">{brand.price}</span>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Transformation Framework Overview
+    const TransformationFrameworkSlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % TRANSFORMATION_STEPS.length);
+        }, 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="flex items-start gap-2 md:gap-4">
+            {TRANSFORMATION_STEPS.map((step, i) => {
+              const IconComponent = StepIcons[step.icon];
+              const isActive = i === activeStep;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  className="flex-1 rounded-xl p-4 transition-all duration-500"
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    boxShadow: isActive ? '0 0 30px rgba(var(--accent-rgb), 0.3)' : 'none'
+                  }}
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: isActive ? 'rgba(255,255,255,0.2)' : 'rgba(var(--accent-rgb), 0.2)' }}>
+                      <span className="text-sm font-bold" style={{ color: isActive ? 'white' : 'var(--accent)' }}>{step.step}</span>
+                    </div>
+                    <div style={{ color: isActive ? 'white' : 'var(--accent)' }}><IconComponent /></div>
+                  </div>
+                  <h3 className="font-bold text-sm md:text-base mb-2" style={{ color: isActive ? 'white' : '#e5e5e5' }}>{step.title}</h3>
+                  <p className="text-xs" style={{ color: isActive ? 'rgba(255,255,255,0.8)' : '#9ca3af' }}>{step.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Step Detail Slide
+    const StepDetailSlide = ({ data }) => {
+      const step = TRANSFORMATION_STEPS[data.stepIndex];
+      const IconComponent = StepIcons[step.icon];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl p-6 md:p-8"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                <div style={{ color: 'var(--accent)' }}><IconComponent /></div>
+              </div>
+              <div>
+                <div className="px-2 py-0.5 rounded text-xs font-bold inline-block mb-1" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>STEP {step.step}</div>
+                <h3 className="text-white text-xl md:text-2xl font-bold">{step.title}</h3>
+              </div>
+            </div>
+
+            <p className="text-neutral-300 text-base md:text-lg mb-6">{step.description}</p>
+
+            <div className="bg-neutral-800/50 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.Lightbulb />
+                <span className="text-neutral-400 text-xs uppercase tracking-wider">Example</span>
+              </div>
+              <p className="text-white text-sm italic">{step.example}</p>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Language Comparison Slide
+    const LanguageComparisonSlide = ({ data }) => {
+      const [activeExample, setActiveExample] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveExample(prev => (prev + 1) % 2);
+        }, 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const productExamples = LANGUAGE_EXAMPLES.filter(e => e.type === 'product');
+      const identityExamples = LANGUAGE_EXAMPLES.filter(e => e.type === 'identity');
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-2 h-6 rounded-full bg-neutral-500" />
+                <span className="text-neutral-400 font-semibold text-sm uppercase tracking-wider">Product Language</span>
+              </div>
+              {productExamples.map((ex, i) => (
+                <div key={i} className={`p-3 rounded-lg mb-2 transition-all duration-500 ${i === activeExample ? 'bg-neutral-700' : 'bg-neutral-800/50'}`}>
+                  <p className="text-white text-sm">"{ex.phrase}"</p>
+                  <p className="text-neutral-500 text-xs mt-1">- {ex.brand}</p>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-2 h-6 rounded-full" style={{ background: 'linear-gradient(180deg, var(--accent), var(--accent-dark))' }} />
+                <span className="font-semibold text-sm uppercase tracking-wider" style={{ color: 'var(--accent)' }}>Identity Language</span>
+              </div>
+              {identityExamples.map((ex, i) => (
+                <div key={i} className={`p-3 rounded-lg mb-2 transition-all duration-500 ${i === activeExample ? 'bg-white/10' : 'bg-white/5'}`} style={{ border: i === activeExample ? '1px solid var(--accent)' : '1px solid transparent' }}>
+                  <p className="text-white text-sm font-semibold">"{ex.phrase}"</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--accent)' }}>- {ex.brand}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="mt-4 text-center p-3 rounded-lg" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-neutral-300 text-sm">
+              <span style={{ color: 'var(--accent)' }}><Icons.MessageCircle /></span> Every word you use either strengthens or weakens the identity you're selling.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE: Identity Impact Stats Slide
+    const IdentityImpactSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid grid-cols-3 gap-4 md:gap-6">
+          {IDENTITY_IMPACT.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="rounded-xl p-5 text-center"
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.1)'
+              }}
+            >
+              <div className="h-1 w-12 mx-auto mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, var(--accent), var(--accent-dark))' }} />
+              <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              </div>
+              <div className="text-white font-semibold text-sm mb-1">{stat.label}</div>
+              <div className="text-neutral-500 text-xs">{stat.subtext}</div>
             </motion.div>
           ))}
         </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+          className="mt-6 flex items-center justify-center gap-3 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))' }}>
+          <Icons.TrendingUp />
+          <p className="text-sm" style={{ color: 'var(--accent)' }}>Identity purchases create customers for life</p>
+        </motion.div>
+      </div>
+    );
+
+    // UNIQUE: Elite Insight Slide
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl p-6 md:p-8"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.15)'
+          }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+              <Icons.Lightbulb />
+            </div>
+            <span className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--accent)' }}>Elite Insight</span>
+          </div>
+
+          <h3 className="text-white text-2xl md:text-3xl font-bold mb-4">"The Identity Paradox"</h3>
+
+          <p className="text-neutral-300 text-base md:text-lg leading-relaxed mb-6">
+            The companies that focus least on their product often have the strongest brands. Rolex barely mentions timekeeping. Tesla rarely talks about range. Apple doesn't lead with specs. They sell transformation, not features. The paradox: by making your product secondary to identity, you make it infinitely more valuable.
+          </p>
+
+          <div className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <Icons.Crown />
+            <p className="text-sm" style={{ color: 'var(--accent)' }}>Stop selling what you make. Start selling who they become.</p>
+          </div>
+        </motion.div>
       </div>
     );
 
@@ -418,7 +727,17 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
+      useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const slideParam = params.get('slide');
+        if (slideParam) {
+          const slideIndex = parseInt(slideParam, 10) - 1;
+          if (slideIndex >= 0 && slideIndex < slides.length) {
+            setCurrentSlide(slideIndex);
+          }
+        }
+      }, []);
+
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -457,10 +776,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'mentor': return <MentorSlide data={slide} />;
+          case 'identity-transformation': return <IdentityTransformationSlide data={slide} />;
+          case 'brand-examples-grid': return <BrandExamplesGridSlide data={slide} />;
+          case 'brand-detail': return <BrandDetailSlide data={slide} />;
+          case 'transformation-framework': return <TransformationFrameworkSlide data={slide} />;
+          case 'step-detail': return <StepDetailSlide data={slide} />;
+          case 'language-comparison': return <LanguageComparisonSlide data={slide} />;
+          case 'identity-impact': return <IdentityImpactSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

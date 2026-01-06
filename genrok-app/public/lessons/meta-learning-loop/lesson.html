@@ -191,6 +191,8 @@
         { value: '50+', label: 'Conversions/Week', sublabel: 'Fuel the learning loop', color: '#ec4899' }
       ]},
 
+      { type: 'track-attribution' },
+
       { type: 'quiz', question: 'What is the STRONGEST signal you can give Meta\'s algorithm?', options: [
         { text: 'Link Click', isCorrect: false, feedback: 'Clicks are weak signals. They show curiosity, not intent. The algorithm needs stronger proof.' },
         { text: 'Add to Cart', isCorrect: false, feedback: 'Close! Add to cart is strong, but there\'s one signal that\'s even more powerful.' },
@@ -817,6 +819,51 @@
       );
     };
 
+    const TrackAttributionSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Track True Attribution</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-xl p-5 opacity-60">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-neutral-400 flex items-center justify-center text-white">
+                <Icons.X />
+              </div>
+              <span className="font-semibold text-neutral-500 text-sm">Platform Reporting</span>
+            </div>
+            <ul className="space-y-2">
+              <li className="text-neutral-500 text-sm flex items-start gap-2"><span className="text-neutral-400 mt-0.5">•</span>Rely on Meta's inflated numbers</li>
+              <li className="text-neutral-500 text-sm flex items-start gap-2"><span className="text-neutral-400 mt-0.5">•</span>Can't see true ROAS</li>
+              <li className="text-neutral-500 text-sm flex items-start gap-2"><span className="text-neutral-400 mt-0.5">•</span>Attribution window confusion</li>
+              <li className="text-neutral-500 text-sm flex items-start gap-2"><span className="text-neutral-400 mt-0.5">•</span>Making decisions on bad data</li>
+            </ul>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
+                <Icons.Check />
+              </div>
+              <span className="font-semibold text-sm" style={{ color: 'var(--accent)' }}>First-Party Attribution</span>
+            </div>
+            <ul className="space-y-2">
+              <li className="text-neutral-700 text-sm flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5">•</span>Track true customer journeys</li>
+              <li className="text-neutral-700 text-sm flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5">•</span>Accurate ROAS by campaign</li>
+              <li className="text-neutral-700 text-sm flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5">•</span>See which ads actually convert</li>
+              <li className="text-neutral-700 text-sm flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5">•</span>Make data-driven scaling decisions</li>
+            </ul>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center">
+          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <span>Try Triple Whale</span>
+            <Icons.ExternalLink />
+          </a>
+        </motion.div>
+      </div>
+    );
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -933,6 +980,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'track-attribution': return <TrackAttributionSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

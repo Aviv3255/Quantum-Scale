@@ -146,6 +146,7 @@
       { type: 'language-toolkit' },
       { type: 'response-difference' },
       { type: 'unity-stats' },
+      { type: 'build-community' },
       { type: 'quiz', question: 'Why does asking for "advice" get better responses than asking for "feedback"?', options: ['"Advice" is a shorter word', 'It triggers the togetherness effect - they become partners, not critics', 'People like giving advice more than feedback', 'It sounds more professional'], correctIndex: 1, feedback: { correct: 'Exactly. "Advice" activates the unity principle - it brings them to your side of the table. They\'re no longer judging from the outside; they\'re now invested in helping you succeed.', incorrect: 'Not quite. The power comes from the togetherness effect. "Advice" positions them as a partner working WITH you, while "feedback" positions them as an external judge evaluating you.' }},
       { type: 'elite-insight' },
       { type: 'completion' }
@@ -692,6 +693,65 @@
       );
     };
 
+    // BuildCommunitySlide - Tool recommendation for building customer community
+    const BuildCommunitySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">Turn Customers Into Community</h2>
+          <p className="text-neutral-500 text-sm md:text-base max-w-xl mx-auto">The unity principle works best when customers genuinely feel like part of your tribe. Here's how to build that belonging at scale.</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+          {/* Manual Method - Grayed Out */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            style={{ background: '#f5f5f5', borderRadius: '16px', padding: '24px', opacity: 0.6 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a3a3a3' }}>
+                <Icons.User />
+              </div>
+              <span style={{ color: '#737373', fontWeight: '600', fontSize: '14px' }}>Manual Approach</span>
+            </div>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {['Track every customer interaction manually', 'Send individual appreciation messages', 'Create custom VIP experiences one by one', 'Hope customers feel connected'].map((item, i) => (
+                <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: '#737373', fontSize: '13px' }}>
+                  <span style={{ color: '#d4d4d4', marginTop: '2px' }}><Icons.X /></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* App Method - Highlighted */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: '2px solid var(--accent)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(139, 92, 246, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                <Icons.Users />
+              </div>
+              <span style={{ color: 'var(--accent)', fontWeight: '600', fontSize: '14px' }}>Joy Loyalty App</span>
+            </div>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '20px' }}>
+              {['Automated loyalty program that builds belonging', 'Points & rewards create "member" identity', 'VIP tiers make customers feel exclusive', 'Referrals turn customers into advocates'].map((item, i) => (
+                <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: '#d4d4d4', fontSize: '13px' }}>
+                  <span style={{ color: 'var(--accent)', marginTop: '2px' }}><Icons.Check /></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <a href="https://apps.shopify.com/joy-loyalty?mref=lsbqcbva" target="_blank" rel="noopener noreferrer"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 20px', borderRadius: '10px', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', color: 'white', fontWeight: '600', fontSize: '14px', textDecoration: 'none', transition: 'transform 0.2s, box-shadow 0.2s' }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(139, 92, 246, 0.3)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+              Build Your Community
+              <Icons.ArrowRight />
+            </a>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Users /></motion.div>
@@ -767,6 +827,7 @@
           case 'language-toolkit': return <LanguageToolkitSlide data={slide} />;
           case 'response-difference': return <ResponseDifferenceSlide data={slide} />;
           case 'unity-stats': return <UnityStatsSlide data={slide} />;
+          case 'build-community': return <BuildCommunitySlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'completion': return <CompletionSlide />;

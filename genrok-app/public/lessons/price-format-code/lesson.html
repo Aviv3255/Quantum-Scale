@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -30,48 +27,14 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-
-    /* Split Screen Layout */
-    .split-screen-container { display: grid; grid-template-columns: 40% 60%; height: 100%; gap: 0; }
-    .split-left { background: #f5f5f5; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-    .split-left img { max-width: 100%; max-height: 80vh; object-fit: contain; }
-    .split-right { display: flex; flex-direction: column; justify-content: center; padding: 3rem 4rem; }
-    @media (max-width: 768px) {
-      .split-screen-container { grid-template-columns: 1fr; grid-template-rows: 40% 60%; }
-      .split-right { padding: 2rem; }
-    }
-
-    /* Side Panel Layout */
-    .side-panel-container { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; height: 100%; padding: 3rem 4rem; align-items: center; }
-    .panel { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: white; padding: 2rem; border-radius: 16px; }
-    .panel h4 { font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 700; }
-    .panel p { font-size: 0.875rem; line-height: 1.6; opacity: 0.95; }
-    @media (max-width: 768px) {
-      .side-panel-container { grid-template-columns: 1fr; padding: 2rem; }
-      .panel { margin-top: 1.5rem; }
-    }
-
-    /* Comparison Layout */
-    .comparison-container { height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 2rem 3rem; }
-    .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem; }
-    .comparison-card { padding: 2rem; border-radius: 16px; border: 2px solid; }
-    .comparison-card.bad { background: #fef2f2; border-color: #fca5a5; }
-    .comparison-card.good { background: #f0fdf4; border-color: #86efac; }
-    .comparison-card h4 { font-size: 1.125rem; font-weight: 700; margin-bottom: 1rem; }
-    .comparison-card.bad h4 { color: #dc2626; }
-    .comparison-card.good h4 { color: #16a34a; }
-    .comparison-card p { font-size: 0.9375rem; line-height: 1.6; color: #404040; }
-    @media (max-width: 768px) {
-      .comparison-grid { grid-template-columns: 1fr; }
-    }
   </style>
 </head>
 <body>
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, AnimatePresence, useInView } = window.Motion;
-    const { useState, useEffect, useCallback, useMemo, useRef } = React;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
@@ -91,26 +54,48 @@
       }
     };
 
+    // ============ ELITE CONFIGURATION ARRAYS ============
+
+    const PRICE_FORMATS = [
+      { format: '$12.00', label: 'Full Format', result: 'Worst', perception: 'Payment pain emphasized', color: '#ef4444', icon: 'X' },
+      { format: 'Twelve Dollars', label: 'Written Out', result: 'Second', perception: 'Less transactional', color: '#f59e0b', icon: 'Minus' },
+      { format: '12', label: 'Simple Numeral', result: 'Best', perception: 'Minimal friction', color: '#10b981', icon: 'Check' }
+    ];
+
+    const FORMAT_RULES = [
+      { category: 'Everyday Items', format: '12', example: 'Supplements, consumables', icon: 'ShoppingCart', color: '#10b981', desc: 'No symbol, no decimals. Feels lighter, casual.' },
+      { category: 'Deals & Bargains', format: '$39', example: 'Fashion, accessories', icon: 'Tag', color: '#f59e0b', desc: 'Charm pricing signals value. "9" triggers bargain psychology.' },
+      { category: 'Luxury Products', format: '$250', example: 'Premium goods, tech', icon: 'Diamond', color: '#8b5cf6', desc: 'Rounded = confidence. No gimmicks, worth it.' }
+    ];
+
+    const CHARM_PRICING_DATA = {
+      prices: [
+        { price: '$34', sales: 38, color: '#ef4444' },
+        { price: '$39', sales: 52, color: '#10b981' },
+        { price: '$44', sales: 35, color: '#f59e0b' }
+      ],
+      winner: '$39'
+    };
+
+    const LUXURY_COMPARISON = {
+      wrong: { price: '$1,499.99', perception: 'Discount hunting', trust: 23, problems: ['Undermines premium', 'Signals price competition', 'Cognitive dissonance'] },
+      right: { price: '$1,500', perception: 'Confident, honest', trust: 87, benefits: ['No gimmicks', 'Worth exactly this', 'Respects luxury buyers'] }
+    };
+
+    const IMPACT_STATS = [
+      { value: 14, suffix: '%', label: 'Conversion Increase', subtext: 'Simple numerals vs $XX.00' },
+      { value: 23, suffix: '%', label: 'Sales Volume', subtext: 'Charm pricing boost' },
+      { value: 30, suffix: '%', label: 'Format Swing', subtext: 'Matched vs mismatched' }
+    ];
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -126,279 +111,115 @@
       };
 
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/bug-icon.svg"
+            width="16" height="16" alt="Report" style={{ filter: 'invert(1)' }}
+            onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.innerHTML = '🐛'; }} />
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    // PREMIUM ANIMATION COMPONENTS
+    // ============ ICONS ============
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Minus: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ShoppingCart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      Tag: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>,
+      Diamond: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2.7 10.3a2.41 2.41 0 0 0 0 3.41l7.59 7.59a2.41 2.41 0 0 0 3.41 0l7.59-7.59a2.41 2.41 0 0 0 0-3.41l-7.59-7.59a2.41 2.41 0 0 0-3.41 0Z"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      AlertCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+    };
 
-    const AnimatedNumber = ({ value, suffix = '', prefix = '' }) => {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      const [current, setCurrent] = useState(0);
+    const IconComponents = {
+      ShoppingCart: Icons.ShoppingCart,
+      Tag: Icons.Tag,
+      Diamond: Icons.Diamond,
+      DollarSign: Icons.DollarSign,
+      TrendingUp: Icons.TrendingUp,
+      Target: Icons.Target,
+      Lightbulb: Icons.Lightbulb,
+      Brain: Icons.Brain,
+      Crown: Icons.Crown,
+      Shield: Icons.Shield,
+      AlertCircle: Icons.AlertCircle,
+      Check: Icons.Check,
+      X: Icons.X,
+      Minus: Icons.Minus
+    };
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
       useEffect(() => {
-        if (!isInView) return;
-
-        const duration = 1500;
-        const steps = 60;
-        const increment = value / steps;
-        let step = 0;
-
+        let start = 0;
+        const end = parseInt(value);
+        if (start === end) return;
         const timer = setInterval(() => {
-          step++;
-          setCurrent(Math.min(Math.floor(increment * step), value));
-          if (step >= steps) clearInterval(timer);
-        }, duration / steps);
-
+          start += Math.ceil(end / (duration / 50));
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 50);
         return () => clearInterval(timer);
-      }, [value, isInView]);
-
-      return <span ref={ref}>{prefix}{current.toLocaleString()}{suffix}</span>;
+      }, [value, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
     };
 
-    const TypingText = ({ text, speed = 40 }) => {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      const [displayed, setDisplayed] = useState('');
-
-      useEffect(() => {
-        if (!isInView) return;
-
-        let i = 0;
-        setDisplayed('');
-        const timer = setInterval(() => {
-          if (i < text.length) {
-            setDisplayed(text.substring(0, i + 1));
-            i++;
-          } else {
-            clearInterval(timer);
-          }
-        }, speed);
-        return () => clearInterval(timer);
-      }, [text, isInView, speed]);
-
-      return <span ref={ref}>{displayed}<span style={{ opacity: displayed.length < text.length ? 1 : 0 }} className="animate-pulse">|</span></span>;
-    };
-
-    const BarChart = ({ data, accentColor, darkMode = false }) => {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      const textColor = darkMode ? '#ffffff' : '#171717';
-      const bgColor = darkMode ? 'rgba(255,255,255,0.1)' : '#e5e5e5';
-
-      return (
-        <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {data.map((item, i) => (
-            <motion.div key={i}
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ delay: i * 0.15, duration: 0.5 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '6px', color: textColor }}>
-                <span>{item.label}</span>
-                <span style={{ fontWeight: 'bold', color: accentColor }}>{item.value}</span>
-              </div>
-              <div style={{ height: '14px', background: bgColor, borderRadius: '999px', overflow: 'hidden' }}>
-                <motion.div
-                  style={{ height: '100%', borderRadius: '999px', background: `linear-gradient(90deg, ${accentColor}, ${accentColor}dd)` }}
-                  initial={{ width: 0 }}
-                  animate={isInView ? { width: `${item.percentage}%` } : { width: 0 }}
-                  transition={{ delay: i * 0.15 + 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      );
-    };
-
-    const IconGrid = ({ items }) => (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
-        {items.map((item, i) => (
-          <motion.div key={i} initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ delay: i * 0.1, type: 'spring' }}
-            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'rgba(245, 158, 11, 0.1)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', fontSize: '28px' }}>
-              {item.icon}
-            </div>
-            <span style={{ fontSize: '14px', fontWeight: '600' }}>{item.label}</span>
-          </motion.div>
-        ))}
-      </div>
-    );
-
-    const VisualContrastSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-5xl mx-auto py-8 slide-scroll overflow-y-auto">
-        {data.title && (
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        )}
-        <div className="grid md:grid-cols-2 gap-4 md:gap-6 w-full">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1, type: 'spring', stiffness: 100 }}
-            className="relative rounded-2xl overflow-hidden"
-            style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}
-          >
-            <img src={data.leftImage} alt={data.leftLabel} className="w-full h-48 md:h-56 object-cover" />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-              <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }}></span>
-                {data.leftLabel}
-              </span>
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
-            className="relative rounded-2xl overflow-hidden"
-            style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}
-          >
-            <img src={data.rightImage} alt={data.rightLabel} className="w-full h-48 md:h-56 object-cover" />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-              <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }}></span>
-                {data.rightLabel}
-              </span>
-            </div>
-          </motion.div>
-        </div>
-        {data.caption && (
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-5 text-center text-base md:text-lg text-neutral-500 font-medium">{data.caption}</motion.p>
-        )}
-      </div>
-    );
-
+    // ============ SLIDES DATA ============
     const slides = [
       { type: 'welcome', learningGoals: [
         'The 3 price formats and when to use each one',
         'How Cornell study proved simple numerals reduce payment pain',
         'MIT research on charm pricing and the psychology of $39 vs $34'
       ]},
-      { type: 'hook', headline: '$12.00 vs 12 vs $12. Same price. Wildly different results.', subtext: 'A Cornell study tested the exact same menu items at three different price formats. "$12.00" performed the worst. "Twelve dollars" came in second. But "12" - just the numeral, no dollar sign, no decimals - outsold both significantly. The price didn\'t change. The FORMAT did. And format changes perception.', image: 'images/restaurant-menu.png' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Visa_Inc._logo.svg.png', brandName: 'Visa' },
-      { type: 'visualContrast', title: 'The Same Price, Three Different Perceptions', leftImage: 'images/restaurant-menu.png', rightImage: 'images/brain-psychology.png', leftLabel: 'Restaurant Menu — Where It Started', rightLabel: 'Your Brain — Where It Matters' },
-      { type: 'priceComparison', formats: [
-        { format: '12', label: 'Everyday Items', description: 'No symbol, minimal friction', delay: 0.1 },
-        { format: '$39', label: 'Deals & Bargains', description: 'Charm pricing signals value', delay: 0.3 },
-        { format: '$250', label: 'Luxury Products', description: 'Rounded = confidence', delay: 0.5 }
-      ]},
-      { type: 'typingReveal', text: 'Format is psychology, not just formatting.' },
+      { type: 'hook', headline: '$12.00 vs 12 vs $12. Same price. Wildly different results.', subtext: 'A Cornell study tested the exact same menu items at three different price formats. "$12.00" performed the worst. "Twelve dollars" came in second. But "12" - just the numeral, no dollar sign, no decimals - outsold both significantly. The price didn\'t change. The FORMAT did. And format changes perception.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Visa_Inc._logo.svg.png', brandName: 'Visa' },
+      { type: 'price-format-battle' },
       { type: 'content', title: 'Price Format Psychology', body: 'Your brain processes price formats differently based on context and product category. The FORMAT you choose signals whether you\'re selling everyday items, deals, or luxury goods. Get it right, and customers buy easier. Get it wrong, and you create friction where none should exist.' },
-      { type: 'visual', title: 'The Cornell Menu Study', visualType: 'comparison', data: {
-        left: { label: '$12.00', value: 'Worst', result: 'Emphasized payment pain', color: '#ef4444' },
-        right: { label: '12', value: 'Best', result: 'Reduced payment friction', color: '#10b981' },
-        center: { label: 'Same Price', value: 'Different Format', result: 'Format changes perception', color: '#14b8a6' }
-      }},
-      { type: 'iconGrid', title: 'The 3 Price Format Rules', items: [
-        { icon: '🛒', label: 'Everyday: "12"' },
-        { icon: '🏷️', label: 'Deals: "$39"' },
-        { icon: '💎', label: 'Luxury: "$250"' }
-      ]},
-      { type: 'sidePanel', title: 'Rule 1: Everyday Purchases - Reduce Payment Pain', body: 'For supplements, consumables, routine purchases - use simple numerals. No dollar signs. No decimals. Just "19" instead of "$19.00". Why? The dollar sign triggers loss aversion. Decimals emphasize exactness of payment. Simple numerals feel lighter, easier, more casual. Less friction = more conversions.', panelTitle: 'Quick Test', panelText: 'Look at your bestselling consumables. Are they priced "19" or "$19.00"? Switch to numerals only and track conversion for 7 days.' },
-      { type: 'example', scenario: 'Supplement Store', before: { label: 'High Friction Format', text: 'Daily Vitamins: $19.00 per bottle' }, after: { label: 'Low Friction Format', text: 'Daily Vitamins: 19 per bottle' }, insight: 'Conversion rate increased 14%. Customers perceived the purchase as smaller and more casual. Repeat purchase rate also improved.' },
+      { type: 'three-format-rules' },
+      { type: 'content', title: 'Rule 1: Everyday Purchases', body: 'For supplements, consumables, routine purchases - use simple numerals. No dollar signs. No decimals. Just "19" instead of "$19.00". Why? The dollar sign triggers loss aversion. Decimals emphasize exactness of payment. Simple numerals feel lighter, easier, more casual. Less friction = more conversions.' },
+      { type: 'example', scenario: 'Supplement Store', before: { label: 'High Friction Format', text: 'Daily Vitamins: $19.00 per bottle' }, after: { label: 'Low Friction Format', text: 'Daily Vitamins: 19 per bottle' }, insight: 'Conversion rate increased 14%. Customers perceived the purchase as smaller and more casual.' },
+      { type: 'charm-pricing-study' },
       { type: 'content', title: 'Rule 2: Charm Pricing for Deals', body: 'MIT and University of Chicago tested identical garments at $34, $39, and $44. The $39 version outsold $34 despite being MORE expensive. Why? The "9" ending signals a deal. It triggers bargain-hunter psychology. Use this for fashion, accessories, anything where customers are comparison shopping.' },
-      { type: 'barChart', title: 'Conversion by Price Format', data: [
-        { label: 'Simple Numerals (12)', value: '87%', percentage: 87 },
-        { label: 'Charm Pricing ($39)', value: '79%', percentage: 79 },
-        { label: 'Full Format ($12.00)', value: '54%', percentage: 54 }
-      ]},
-      { type: 'example', scenario: 'Fashion Accessories Store', before: { label: 'Rounded Pricing', text: 'Handbag Collection: $50, $75, $100' }, after: { label: 'Charm Pricing', text: 'Handbag Collection: $49, $79, $99' }, insight: 'Sales volume increased 23%. Customers perceived items as better deals. Cart size remained similar but conversion improved.' },
-      { type: 'comparison', title: 'Luxury Pricing Psychology', bad: { title: 'Charm Pricing on Luxury', description: 'Premium watch at $1,499.99: The ".99" signals discount hunting. Luxury buyers see through it. Creates cognitive dissonance - "Is this actually premium or are they trying to trick me?" Undermines positioning.' }, good: { title: 'Rounded Pricing on Luxury', description: 'Premium watch at $1,500: Clean, confident, no gimmicks. Signals "This is worth exactly this much, maybe more." Aligns with premium positioning. Luxury buyers respect the honesty.' } },
-      { type: 'cards', title: 'Luxury Pricing Signals', items: [
-        { title: 'Rounded = Confidence', description: '$500 says "We don\'t need gimmicks." It signals the product is worth exactly this much, maybe more.' },
-        { title: 'Charm = Discount', description: '$499.99 says "We\'re trying to make this look cheaper." It signals you\'re competing on price, not quality.' },
-        { title: 'Context Matters', description: 'A $10,000 watch at $9,999? Instant credibility loss. Luxury buyers see through it. Stay rounded.' },
-        { title: 'Premium Tech Exception', description: 'High-end gadgets, professional equipment - use rounded numbers. $1,500, not $1,499. Signals serious tools for serious buyers.' }
-      ]},
-      { type: 'example', scenario: 'Premium Watch Store', before: { label: 'Charm Pricing (Wrong)', text: 'Luxury Timepiece: $1,499.99 - undermines premium positioning' }, after: { label: 'Rounded Pricing (Right)', text: 'Luxury Timepiece: $1,500 - signals confidence and quality' }, insight: 'Perceived value increased. Customers who bought at $1,500 reported higher satisfaction than those who bought at discount prices.' },
-      { type: 'visualTakeaways', title: 'Key Takeaways', image: 'images/premium-price-tag.png', items: [
-        { icon: '🛒', title: 'Everyday Items', description: 'Use simple numerals (19) — no symbols, minimal friction' },
-        { icon: '🏷️', title: 'Deals & Bargains', description: 'Use charm pricing ($39) — the "9" triggers deal psychology' },
-        { icon: '💎', title: 'Luxury Products', description: 'Use rounded pricing ($250) — signals confidence and quality' },
-        { icon: '🎯', title: 'Match Your Brand', description: 'Premium + .99 = mixed signals. Format must align with positioning' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_taking_notes_furiously_pencil_flying_across_pa_05ef64dd-3e45-44ef-a3d0-9c5ad185cb8a_3.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'Format Impact on Conversion', visualType: 'comparison', data: {
-        left: { label: 'Mismatched Format', value: '-12%', result: 'Premium product with $.99 pricing', color: '#ef4444' },
-        right: { label: 'Matched Format', value: '+18%', result: 'Premium product with rounded pricing', color: '#10b981' },
-        center: { label: 'Format Alignment', value: '30% Swing', result: 'Same product, aligned psychology', color: '#14b8a6' }
-      }},
-      { type: 'quiz', question: 'Why did the garment priced at $39 outsell the same garment at $34 in the MIT study?', options: ['$39 is actually a more attractive number visually', 'The "9" ending signals a deal and triggers bargain-hunter psychology, making it feel like better value', 'Customers assumed $39 was higher quality', 'The study was conducted in a region where $39 is lucky'], correctIndex: 1, feedback: { correct: 'Exactly! Charm pricing (ending in 9) triggers deal-seeking psychology. Even at a higher price, $39 FELT like a better bargain than $34 because the format signaled "discounted from something higher."', incorrect: 'Not quite. The power is in psychological signaling. The "9" ending makes the brain think "This was discounted" even when it wasn\'t. It triggers bargain-hunting instincts that rounded numbers don\'t activate.' }},
+      { type: 'example', scenario: 'Fashion Accessories Store', before: { label: 'Rounded Pricing', text: 'Handbag Collection: $50, $75, $100' }, after: { label: 'Charm Pricing', text: 'Handbag Collection: $49, $79, $99' }, insight: 'Sales volume increased 23%. Customers perceived items as better deals.' },
+      { type: 'luxury-psychology' },
+      { type: 'content', title: 'Rule 3: Luxury = Rounded Numbers', body: 'Premium watch at $1,499.99? The ".99" signals discount hunting. Luxury buyers see through it. Creates cognitive dissonance - "Is this actually premium?" But $1,500? Clean, confident, no gimmicks. Signals "This is worth exactly this much, maybe more." Aligns with premium positioning. Luxury buyers respect the honesty.' },
+      { type: 'example', scenario: 'Premium Watch Store', before: { label: 'Charm Pricing (Wrong)', text: 'Luxury Timepiece: $1,499.99 - undermines premium positioning' }, after: { label: 'Rounded Pricing (Right)', text: 'Luxury Timepiece: $1,500 - signals confidence and quality' }, insight: 'Perceived value increased. Buyers reported higher satisfaction.' },
+      { type: 'impact-stats' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why did the garment priced at $39 outsell the same garment at $34 in the MIT study?', options: ['$39 is actually a more attractive number visually', 'The "9" ending signals a deal and triggers bargain-hunter psychology', 'Customers assumed $39 was higher quality', 'The study was conducted in a region where $39 is lucky'], correctIndex: 1, feedback: { correct: 'Exactly! Charm pricing (ending in 9) triggers deal-seeking psychology. Even at a higher price, $39 FELT like a better bargain than $34 because the format signaled "discounted from something higher."', incorrect: 'Not quite. The power is in psychological signaling. The "9" ending makes the brain think "This was discounted" even when it wasn\'t. It triggers bargain-hunting instincts that rounded numbers don\'t activate.' }},
       { type: 'completion' }
     ];
 
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-    };
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -441,15 +262,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -459,122 +271,71 @@
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+    // ============ CUSTOM ELITE SLIDES ============
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
+    // Price Format Battle: $12.00 vs 12 vs $12 with auto-cycling
+    const PriceFormatBattleSlide = () => {
+      const [activeFormat, setActiveFormat] = useState(2);
 
-    const CardsSlide = ({ data }) => {
-      const getCardStyle = (i) => {
-        const styles = [
-          { bg: 'bg-neutral-900', text: 'text-white', desc: 'text-neutral-300', accent: true },
-          { bg: 'bg-white border border-neutral-200', text: 'text-neutral-900', desc: 'text-neutral-600', accent: false },
-          { bg: 'bg-white border border-neutral-200', text: 'text-neutral-900', desc: 'text-neutral-600', accent: false },
-          { bg: 'bg-neutral-900', text: 'text-white', desc: 'text-neutral-300', accent: true }
-        ];
-        return styles[i % 4];
-      };
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveFormat(prev => (prev + 1) % PRICE_FORMATS.length);
+        }, 2500);
+        return () => clearInterval(timer);
+      }, []);
+
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {data.items.map((item, i) => {
-              const style = getCardStyle(i);
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">
+            The Cornell Menu Study
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8">
+            Same price, three formats, wildly different results
+          </motion.p>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {PRICE_FORMATS.map((format, i) => {
+              const IconComponent = IconComponents[format.icon];
               return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 100 }}
-                  whileHover={{ scale: 1.02, y: -3 }}
-                  className={`${style.bg} rounded-2xl p-5 relative overflow-hidden`}
-                  style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}
-                >
-                  {style.accent && <div className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-20" style={{ background: 'var(--accent)', filter: 'blur(25px)', transform: 'translate(30%, -30%)' }}></div>}
-                  <h3 className={`font-bold mb-2 text-base ${style.text}`}>{item.title}</h3>
-                  <p className={`text-sm leading-relaxed ${style.desc}`}>{item.description}</p>
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0, scale: i === activeFormat ? 1.05 : 1 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    border: i === activeFormat ? `2px solid ${format.color}` : '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: i === activeFormat ? `0 0 30px ${format.color}20` : 'none'
+                  }}>
+                  <div style={{ height: '4px', background: `linear-gradient(90deg, transparent, ${format.color}, transparent)`, marginBottom: '20px', borderRadius: '2px' }} />
+
+                  <div className="text-center">
+                    <div className="text-4xl md:text-5xl font-bold text-white mb-3">{format.format}</div>
+                    <p className="text-neutral-400 text-sm mb-4">{format.label}</p>
+
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: format.color }}>
+                        {IconComponent && <IconComponent />}
+                      </div>
+                      <span className="font-bold text-lg" style={{ color: format.color }}>{format.result}</span>
+                    </div>
+
+                    <p className="text-neutral-300 text-xs">{format.perception}</p>
+                  </div>
+
+                  {i === 2 && (
+                    <div className="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg">
+                      WINNER
+                    </div>
+                  )}
                 </motion.div>
               );
             })}
@@ -583,34 +344,314 @@
       );
     };
 
-    const VisualTakeawaysSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          {data.items.map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: i * 0.1, type: 'spring', stiffness: 100 }}
-              className="bg-neutral-900 rounded-2xl p-5 flex items-start gap-4"
-              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
-            >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl" style={{ background: 'rgba(var(--accent-rgb), 0.15)' }}>
-                {item.icon}
+    // Three Format Rules: Category grid with icons
+    const ThreeFormatRulesSlide = () => {
+      const [activeRule, setActiveRule] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveRule(prev => (prev + 1) % FORMAT_RULES.length);
+        }, 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+            The 3 Price Format Rules
+          </motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {FORMAT_RULES.map((rule, i) => {
+              const IconComponent = IconComponents[rule.icon];
+              return (
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0, scale: i === activeRule ? 1.03 : 1 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    border: i === activeRule ? `2px solid ${rule.color}` : '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: i === activeRule ? `0 0 30px ${rule.color}20` : 'none'
+                  }}>
+                  <div style={{ height: '3px', background: `linear-gradient(90deg, transparent, ${rule.color}, transparent)`, marginBottom: '16px', borderRadius: '2px' }} />
+
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${rule.color}20`, color: rule.color }}>
+                      {IconComponent && <IconComponent />}
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-sm">{rule.category}</h3>
+                      <div className="text-2xl font-bold" style={{ color: rule.color }}>{rule.format}</div>
+                    </div>
+                  </div>
+
+                  <p className="text-neutral-400 text-xs mb-2">{rule.example}</p>
+                  <p className="text-neutral-300 text-sm leading-relaxed">{rule.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // Charm Pricing Study: $34 vs $39 vs $44 with bars
+    const CharmPricingStudySlide = () => {
+      const [showBars, setShowBars] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowBars(true), 500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">
+            The MIT Charm Pricing Study
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8">
+            Same garment, three prices - which won?
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px' }}>
+            <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)', marginBottom: '24px', borderRadius: '2px' }} />
+
+            <div className="space-y-6">
+              {CHARM_PRICING_DATA.prices.map((item, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <div className="w-20 text-right">
+                    <span className="text-2xl font-bold" style={{ color: item.color }}>{item.price}</span>
+                  </div>
+                  <div className="flex-1 h-10 rounded-lg overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: showBars ? `${item.sales}%` : 0 }}
+                      transition={{ duration: 1, delay: i * 0.2 }}
+                      className="h-full rounded-lg flex items-center justify-end px-3"
+                      style={{ background: `linear-gradient(90deg, ${item.color}80, ${item.color})` }}>
+                      <span className="text-white font-bold text-sm">{item.sales}%</span>
+                    </motion.div>
+                  </div>
+                  {item.price === CHARM_PRICING_DATA.winner && (
+                    <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.5 }}
+                      className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                      WINNER
+                    </motion.div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}
+              className="text-center text-neutral-300 text-sm mt-6 pt-4 border-t border-neutral-700">
+              $39 outsold $34 despite being <span className="text-amber-400 font-bold">MORE expensive</span>. The "9" ending signals a deal.
+            </motion.p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Luxury Psychology: Rounded vs Charm with trust meters
+    const LuxuryPsychologySlide = () => {
+      const [showMeters, setShowMeters] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowMeters(true), 500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+            Luxury Pricing Psychology
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Wrong Way */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', border: '2px solid #ef4444' }}>
+              <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)', marginBottom: '20px', borderRadius: '2px' }} />
+
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+                <span className="text-red-400 font-bold">WRONG</span>
               </div>
-              <div>
-                <h4 className="text-white font-semibold text-base mb-1">{item.title}</h4>
-                <p className="text-neutral-400 text-sm leading-relaxed">{item.description}</p>
+
+              <div className="text-4xl font-bold text-white mb-2">{LUXURY_COMPARISON.wrong.price}</div>
+              <p className="text-neutral-400 text-sm mb-4">{LUXURY_COMPARISON.wrong.perception}</p>
+
+              <div className="mb-4">
+                <div className="flex justify-between text-xs text-neutral-400 mb-1">
+                  <span>Trust Level</span>
+                  <span>{LUXURY_COMPARISON.wrong.trust}%</span>
+                </div>
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: showMeters ? `${LUXURY_COMPARISON.wrong.trust}%` : 0 }}
+                    transition={{ duration: 1 }}
+                    className="h-full rounded-full bg-red-500" />
+                </div>
               </div>
+
+              <ul className="space-y-1">
+                {LUXURY_COMPARISON.wrong.problems.map((p, i) => (
+                  <li key={i} className="flex items-center gap-2 text-xs text-neutral-400">
+                    <Icons.AlertCircle />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Right Way */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', border: '2px solid #10b981' }}>
+              <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', marginBottom: '20px', borderRadius: '2px' }} />
+
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+                <span className="text-green-400 font-bold">RIGHT</span>
+              </div>
+
+              <div className="text-4xl font-bold text-white mb-2">{LUXURY_COMPARISON.right.price}</div>
+              <p className="text-neutral-400 text-sm mb-4">{LUXURY_COMPARISON.right.perception}</p>
+
+              <div className="mb-4">
+                <div className="flex justify-between text-xs text-neutral-400 mb-1">
+                  <span>Trust Level</span>
+                  <span>{LUXURY_COMPARISON.right.trust}%</span>
+                </div>
+                <div className="h-3 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: showMeters ? `${LUXURY_COMPARISON.right.trust}%` : 0 }}
+                    transition={{ duration: 1, delay: 0.3 }}
+                    className="h-full rounded-full bg-green-500" />
+                </div>
+              </div>
+
+              <ul className="space-y-1">
+                {LUXURY_COMPARISON.right.benefits.map((b, i) => (
+                  <li key={i} className="flex items-center gap-2 text-xs text-green-400">
+                    <Icons.Check />
+                    <span>{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Impact Stats: AnimatedCounter
+    const ImpactStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+          The Format Effect
+        </motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {IMPACT_STATS.map((stat, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.15 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '32px',
+                textAlign: 'center'
+              }}>
+              <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)', marginBottom: '24px', borderRadius: '2px' }} />
+
+              <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: '#f59e0b' }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              </div>
+              <p className="text-white font-semibold mb-1">{stat.label}</p>
+              <p className="text-neutral-400 text-sm">{stat.subtext}</p>
             </motion.div>
           ))}
         </div>
-        {data.image && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 rounded-2xl overflow-hidden" style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.1)' }}>
-            <img src={data.image} alt="Takeaway visualization" className="w-full h-auto max-h-48 object-cover" />
+      </div>
+    );
+
+    // Elite Insight
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            borderRadius: '24px',
+            padding: '40px',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+            boxShadow: '0 0 60px rgba(245, 158, 11, 0.1)'
+          }}>
+          <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)', marginBottom: '32px', borderRadius: '2px' }} />
+
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(245, 158, 11, 0.2)' }}>
+              <Icons.Lightbulb />
+            </div>
+            <span className="text-amber-400 text-xs font-bold uppercase tracking-wider">Elite Insight</span>
+          </div>
+
+          <h3 className="slide-title text-2xl md:text-3xl text-white text-center mb-6">
+            "The Format Paradox"
+          </h3>
+
+          <p className="text-neutral-300 text-center text-lg leading-relaxed mb-6">
+            The price hasn't changed - only your customer's perception of it. Format is invisible psychology.
+            Most stores get this wrong because they apply one format everywhere. But Everyday, Deals, and Luxury
+            require different codes. Master the format code, and you change what customers feel about your prices
+            without changing the prices themselves.
+          </p>
+
+          <div className="flex items-center justify-center gap-2 text-amber-400">
+            <Icons.Target />
+            <span className="font-semibold">Match the format to the category. Always.</span>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD SLIDES ============
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #dc2626', borderRadius: '16px', padding: '20px' }}>
+            <div style={{ height: '3px', background: 'linear-gradient(90deg, transparent, #dc2626, transparent)', marginBottom: '16px', borderRadius: '2px' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-400 text-sm">{data.before.label}</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.before.text}</p>
           </motion.div>
-        )}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #10b981', borderRadius: '16px', padding: '20px' }}>
+            <div style={{ height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', marginBottom: '16px', borderRadius: '2px' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-emerald-400 text-sm">{data.after.label}</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="p-4 text-center rounded-xl" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+          <p className="text-amber-700 text-sm font-medium"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
       </div>
     );
 
@@ -634,7 +675,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -662,98 +703,6 @@
       );
     };
 
-    const SplitScreenSlide = ({ data }) => (
-      <div className="split-screen-container">
-        <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="split-left">
-          <img src={data.image} alt={data.imageAlt} />
-        </motion.div>
-        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="split-right">
-          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-4">{data.title}</h2>
-          <p className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</p>
-        </motion.div>
-      </div>
-    );
-
-    const SidePanelSlide = ({ data }) => (
-      <div className="side-panel-container">
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}>
-          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-4">{data.title}</h2>
-          <p className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</p>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="panel">
-          <h4>{data.panelTitle}</h4>
-          <p>{data.panelText}</p>
-        </motion.div>
-      </div>
-    );
-
-    const ComparisonSlide = ({ data }) => (
-      <div className="comparison-container">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
-        <div className="comparison-grid">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="comparison-card bad">
-            <h4>{data.bad.title}</h4>
-            <p>{data.bad.description}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="comparison-card good">
-            <h4>{data.good.title}</h4>
-            <p>{data.good.description}</p>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const PriceComparisonSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-8">
-          {data.formats.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: item.delay }} className="flex flex-col items-center justify-center">
-              <div className="text-6xl font-bold mb-4" style={{ color: 'var(--accent)' }}>
-                {item.format}
-              </div>
-              <div className="text-sm uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--accent)' }}>{item.label}</div>
-              <div className="text-xs text-neutral-600 text-center">{item.description}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const TypingRevealSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="slide-title text-4xl md:text-5xl lg:text-6xl text-black text-center">
-          <TypingText text={data.text} speed={50} />
-        </motion.h2>
-      </div>
-    );
-
-    const BarChartSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
-          className="bg-neutral-900 rounded-2xl p-8 relative overflow-hidden"
-          style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.15)' }}
-        >
-          <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
-          <div className="relative z-10">
-            <BarChart data={data.data} accentColor="var(--accent)" darkMode={true} />
-          </div>
-        </motion.div>
-      </div>
-    );
-
-    const IconGridSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-2xl p-8" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-          <IconGrid items={data.items} />
-        </motion.div>
-      </div>
-    );
-
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -766,6 +715,8 @@
         </motion.div>
       </div>
     );
+
+    // ============ MAIN APP ============
 
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
@@ -780,7 +731,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -789,6 +739,17 @@
           lessonSlug: LESSON_CONFIG.id
         }, '*');
       }, [currentSlide]);
+
+      useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const slideParam = params.get('slide');
+        if (slideParam) {
+          const slideIndex = parseInt(slideParam, 10);
+          if (!isNaN(slideIndex) && slideIndex >= 0 && slideIndex < slides.length) {
+            setCurrentSlide(slideIndex);
+          }
+        }
+      }, []);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -819,19 +780,14 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'visualContrast': return <VisualContrastSlide data={slide} />;
-          case 'priceComparison': return <PriceComparisonSlide data={slide} />;
-          case 'typingReveal': return <TypingRevealSlide data={slide} />;
-          case 'barChart': return <BarChartSlide data={slide} />;
-          case 'iconGrid': return <IconGridSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'visualTakeaways': return <VisualTakeawaysSlide data={slide} />;
-          case 'splitScreen': return <SplitScreenSlide data={slide} />;
-          case 'sidePanel': return <SidePanelSlide data={slide} />;
-          case 'comparison': return <ComparisonSlide data={slide} />;
+          case 'price-format-battle': return <PriceFormatBattleSlide />;
+          case 'three-format-rules': return <ThreeFormatRulesSlide />;
+          case 'charm-pricing-study': return <CharmPricingStudySlide />;
+          case 'luxury-psychology': return <LuxuryPsychologySlide />;
+          case 'impact-stats': return <ImpactStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

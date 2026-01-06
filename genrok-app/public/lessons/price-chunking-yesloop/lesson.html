@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -57,26 +54,50 @@
       }
     };
 
+    // ============ ELITE CONFIGURATION ARRAYS ============
+
+    const YES_LOOP_STEPS = [
+      { label: 'Entry', amount: '$19.99', desc: 'Base product', color: '#10b981', takeRate: '100%' },
+      { label: 'Checkout', amount: '+$4.99', desc: 'Add-on upsell', color: '#22c55e', takeRate: '70%' },
+      { label: 'Cart', amount: '+$9.99', desc: 'Bundle upgrade', color: '#84cc16', takeRate: '50%' },
+      { label: 'Shipping', amount: '+$4.99', desc: 'Flat rate', color: '#eab308', takeRate: '100%' },
+      { label: 'Post-Purchase', amount: '+$20', desc: 'Complementary', color: '#f59e0b', takeRate: '30%' }
+    ];
+
+    const COMMITMENT_LADDER = [
+      { step: 1, title: 'Entry Offer', percentage: '40-50%', desc: 'Foot in the door. Low friction, high perceived value.', icon: 'DoorOpen' },
+      { step: 2, title: 'Checkout Upsell', percentage: '10-20%', desc: '"Add protection for $4.99?" 60-80% take rate.', icon: 'Plus' },
+      { step: 3, title: 'Cart Upgrade', percentage: '20-30%', desc: '"Upgrade to deluxe for $9.99 more?" Obvious value.', icon: 'TrendingUp' },
+      { step: 4, title: 'Post-Purchase', percentage: '30-50%', desc: 'After payment confirmed. 25-35% conversion. Pure profit.', icon: 'Gift' }
+    ];
+
+    const CARPAY_TIERS = [
+      { qty: 1, price: '$29.99', each: '$29.99', savings: '$0', popular: false },
+      { qty: 2, price: '$53.98', each: '$26.99', savings: '$6', popular: false },
+      { qty: 3, price: '$71.97', each: '$23.99', savings: '$18', popular: true }
+    ];
+
+    const PSYCHOLOGY_PRINCIPLES = [
+      { title: 'Commitment Escalation', desc: 'Each small yes builds momentum for the next', icon: 'TrendingUp', color: '#10b981' },
+      { title: 'Loss Aversion', desc: 'Backing out feels like losing progress', icon: 'Shield', color: '#f59e0b' },
+      { title: 'Foot-in-Door Effect', desc: 'Small commitment increases larger future ones', icon: 'DoorOpen', color: '#8b5cf6' },
+      { title: 'Anchoring', desc: 'First low price makes subsequent feel reasonable', icon: 'Anchor', color: '#0891b2' }
+    ];
+
+    const IMPACT_STATS = [
+      { value: 99, suffix: '%', label: 'Revenue Increase', subtext: 'Same traffic, double revenue' },
+      { value: 3, suffix: 'x', label: 'Order Size', subtext: 'From quantity gamification' },
+      { value: 68, suffix: '%', label: 'Choose Bundle', subtext: 'vs single item' }
+    ];
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -92,115 +113,108 @@
       };
 
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px',
+            backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6,
+            transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/bug-icon.svg"
+            width="16" height="16" alt="Report" style={{ filter: 'invert(1)' }}
+            onError={(e) => { e.target.style.display = 'none'; e.target.parentNode.innerHTML = '🐛'; }} />
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'How to break $49.99 into multiple small yeses that feel easier to say',
-        'The psychology of commitment escalation (why each yes makes the next easier)',
-        'Real examples: Carpay quantity gamification, post-purchase upsells'
-      ]},
-      { type: 'hook', headline: 'Asking for $49.99 upfront? That\'s a big yes. Scary. Risky. Easy to say no.', subtext: 'But what if you asked for $19.99 first? Then $4.99. Then $9.99. Then $4.99 shipping. Then $20 post-purchase. Same final price. WAY higher conversion. Because each small yes makes the next yes easier. Welcome to the Yes-Loop.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/after%20pay%20(1).png', brandName: 'Afterpay' },
-      { type: 'content', title: 'The Psychology of Micro-Commitments', body: 'Your brain HATES big decisions. "Should I spend $50?" triggers fear, analysis paralysis, objections. But small decisions? Easy. "Is this worth $20?" feels manageable. Once you say yes to $20, saying yes to $5 feels tiny. Then $10 feels normal. By the time you hit $50 total, you\'ve already committed 3 times. You\'re in the loop.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_in_agreement_approving_nod_100_pure_wh_be253664-9147-4cef-ae06-aa315b9f0ff5_1.mp4', characterPosition: 'right'},
-      { type: 'visual', title: 'The Traditional vs Yes-Loop Approach', visualType: 'comparison', data: {
-        left: { label: 'Traditional', value: '$49.99', result: 'One big scary decision', color: '#dc2626' },
-        right: { label: 'Yes-Loop', value: '5 small', result: '$20 + $5 + $10 + $5 + $10', color: '#10b981' },
-        center: { label: 'Same Total', value: '$50', result: 'But WAY easier to say yes', color: '#f59e0b' }
-      }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_in_agreement_approving_nod_100_pure_wh_be253664-9147-4cef-ae06-aa315b9f0ff5_1.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'How It Works: The Commitment Ladder', body: 'Step 1: Low barrier entry ($19.99 base product). Step 2: Small upsell at checkout ($4.99 add-on, 70% take rate). Step 3: Medium upsell in cart ($9.99 bundle upgrade, 50% take rate). Step 4: Shipping ($4.99 flat rate). Step 5: Post-purchase upsell ($20 complementary product, 30% take rate). Final AOV: ~$45-55. But it FELT like $20 decisions.' },
-      { type: 'example', scenario: 'Real Store: Resistance Bands', before: { label: 'Before Yes-Loop', text: 'Single offer: $49.99 for complete set\n\nConversion: 2.1%\nAOV: $49.99\nRevenue per 1,000 visitors: $1,050' }, after: { label: 'With Yes-Loop', text: 'Base: $19.99 (resistance band)\nUpsell 1: $4.99 (door anchor, 70% take)\nUpsell 2: $9.99 (exercise guide, 50% take)\nShipping: $4.99\nPost-purchase: $19.99 (yoga mat, 30% take)\n\nConversion: 4.3%\nAOV: $48.50\nRevenue per 1,000 visitors: $2,086 (+99%)' }, insight: 'Same final price. Double the revenue. All from breaking it into yeses.' },
-      { type: 'cards', title: 'Building Your Yes-Loop', items: [
-        { title: 'Step 1: Entry Offer (40-50% of target AOV)', description: 'Make the initial price feel safe. This is the "foot in the door." Low friction, high perceived value.' },
-        { title: 'Step 2: Checkout Upsell (10-20% of target)', description: 'Small add-on that enhances main product. "Add protection plan for $4.99?" 60-80% take rate is normal.' },
-        { title: 'Step 3: Cart Upgrade (20-30% of target)', description: 'Bundle or premium version. "Upgrade to deluxe for only $9.99 more?" Position as obvious value.' },
-        { title: 'Step 4: Post-Purchase (30-50% of target)', description: 'After payment confirmed, offer complementary product. 25-35% conversion. Pure profit add-on.' }
-      ]},
-      { type: 'content', title: 'The Carpay Quantity Gamification Hack', body: 'Carpay (Shopify app) gamifies the quantity selector. Buy 1: $29.99 each. Buy 2: $26.99 each (save $6!). Buy 3: $23.99 each (save $18!). Customer thinks they\'re getting a deal. You just 3X\'d their order size. They said "yes" to buying. Then "yes" to 2. Then "yes" to 3. Three small yeses = 3x revenue.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_in_agreement_approving_nod_100_pure_wh_be253664-9147-4cef-ae06-aa315b9f0ff5_1.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'The Carpay Effect', visualType: 'stats', data: [
-        { value: '3x', label: 'order size increase', subtext: 'From quantity gamification' },
-        { value: '68%', label: 'choose bundle', subtext: 'vs single item' },
-        { value: '+$40', label: 'average AOV lift', subtext: 'Just from tiered pricing' }
-      ]},
-      { type: 'content', title: 'Why This Works (Behavioral Science)', body: 'Commitment Escalation: Each small yes builds momentum for the next. Loss Aversion: Once you\'ve said yes once, backing out feels like losing progress. Foot-in-the-Door Effect: Small initial commitment increases likelihood of larger future commitment. Anchoring: The first low price makes subsequent prices feel reasonable by comparison.' },
-      { type: 'example', scenario: 'The Post-Purchase Goldmine', before: { label: 'No Post-Purchase', text: 'Customer buys protein powder: $39.99\nOrder complete.\n\nAOV: $39.99' }, after: { label: 'With Post-Purchase Upsell', text: 'Customer buys protein powder: $39.99\nOrder confirmed!\n"Add a shaker bottle for $14.99?"\n30% take rate\n\nAOV: $44.49 (+11% pure profit)' }, insight: 'They already committed to buying. Post-purchase is the easiest yes they\'ll ever give you.' },
-      { type: 'quiz', question: 'Why does breaking $49.99 into smaller yeses increase conversion?', options: ['It tricks customers into spending more money', 'Small decisions feel safer and build commitment momentum', 'The total price appears lower than it actually is', 'It confuses customers so they buy without thinking'], correctIndex: 1, feedback: { correct: 'Exactly! Each small yes reduces friction and builds psychological commitment. The customer feels in control of small decisions, which makes larger total spending feel natural and safe.', incorrect: 'Not quite. It\'s not about tricks or confusion - it\'s about commitment psychology. Small decisions feel safer and create momentum. Each yes makes the next yes easier because we\'re wired to stay consistent with our choices.' }},
-      { type: 'completion' }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      ArrowDown: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      DoorOpen: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"/></svg>,
+      Plus: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+      Gift: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+      Anchor: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg>,
+      ShoppingCart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Package: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
       Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
     };
+
+    const IconComponents = {
+      DoorOpen: Icons.DoorOpen,
+      Plus: Icons.Plus,
+      TrendingUp: Icons.TrendingUp,
+      Gift: Icons.Gift,
+      Shield: Icons.Shield,
+      Anchor: Icons.Anchor,
+      ShoppingCart: Icons.ShoppingCart,
+      Target: Icons.Target,
+      Lightbulb: Icons.Lightbulb,
+      Package: Icons.Package
+    };
+
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseInt(value);
+        if (start === end) return;
+        const timer = setInterval(() => {
+          start += Math.ceil(end / (duration / 50));
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 50);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // ============ SLIDES DATA ============
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'How to break $49.99 into multiple small yeses that feel easier to say',
+        'The psychology of commitment escalation (why each yes makes the next easier)',
+        'Real examples: Carpay quantity gamification, post-purchase upsells'
+      ]},
+      { type: 'hook', headline: 'Asking for $49.99 upfront? That\'s a big yes. Scary. Risky. Easy to say no.', subtext: 'But what if you asked for $19.99 first? Then $4.99. Then $9.99. Then $4.99 shipping. Then $20 post-purchase. Same final price. WAY higher conversion. Because each small yes makes the next yes easier. Welcome to the Yes-Loop.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/after%20pay%20(1).png', brandName: 'Afterpay' },
+      { type: 'content', title: 'The Psychology of Micro-Commitments', body: 'Your brain HATES big decisions. "Should I spend $50?" triggers fear, analysis paralysis, objections. But small decisions? Easy. "Is this worth $20?" feels manageable. Once you say yes to $20, saying yes to $5 feels tiny. Then $10 feels normal. By the time you hit $50 total, you\'ve already committed 3 times. You\'re in the loop.' },
+      { type: 'yesloop-visual' },
+      { type: 'commitment-ladder' },
+      { type: 'example', scenario: 'Real Store: Resistance Bands', before: { label: 'Before Yes-Loop', text: 'Single offer: $49.99 for complete set\n\nConversion: 2.1%\nAOV: $49.99\nRevenue per 1,000 visitors: $1,050' }, after: { label: 'With Yes-Loop', text: 'Base: $19.99 (resistance band)\nUpsell 1: $4.99 (door anchor, 70% take)\nUpsell 2: $9.99 (exercise guide, 50% take)\nShipping: $4.99\nPost-purchase: $19.99 (yoga mat, 30% take)\n\nConversion: 4.3%\nAOV: $48.50\nRevenue per 1,000 visitors: $2,086 (+99%)' }, insight: 'Same final price. Double the revenue. All from breaking it into yeses.' },
+      { type: 'carpay-gamification' },
+      { type: 'psychology-pillars' },
+      { type: 'example', scenario: 'The Post-Purchase Goldmine', before: { label: 'No Post-Purchase', text: 'Customer buys protein powder: $39.99\nOrder complete.\n\nAOV: $39.99' }, after: { label: 'With Post-Purchase Upsell', text: 'Customer buys protein powder: $39.99\nOrder confirmed!\n"Add a shaker bottle for $14.99?"\n30% take rate\n\nAOV: $44.49 (+11% pure profit)' }, insight: 'They already committed to buying. Post-purchase is the easiest yes they\'ll ever give you.' },
+      { type: 'impact-stats' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why does breaking $49.99 into smaller yeses increase conversion?', options: ['It tricks customers into spending more money', 'Small decisions feel safer and build commitment momentum', 'The total price appears lower than it actually is', 'It confuses customers so they buy without thinking'], correctIndex: 1, feedback: { correct: 'Exactly! Each small yes reduces friction and builds psychological commitment. The customer feels in control of small decisions, which makes larger total spending feel natural and safe.', incorrect: 'Not quite. It\'s not about tricks or confusion - it\'s about commitment psychology. Small decisions feel safer and create momentum. Each yes makes the next yes easier because we\'re wired to stay consistent with our choices.' }},
+      { type: 'completion' }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -243,15 +257,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -261,104 +266,392 @@
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
+    // ============ CUSTOM ELITE SLIDES ============
+
+    // Yes-Loop Visual: Traditional vs Yes-Loop with animated stacking
+    const YesLoopVisualSlide = () => {
+      const [activeStep, setActiveStep] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % YES_LOOP_STEPS.length);
+        }, 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const runningTotal = YES_LOOP_STEPS.slice(0, activeStep + 1).reduce((sum, step) => {
+        const amount = parseFloat(step.amount.replace(/[^0-9.]/g, ''));
+        return sum + amount;
+      }, 0);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+            Traditional vs Yes-Loop
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Traditional - One Big Ask */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', border: '2px solid #dc2626' }}>
+              <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #dc2626, transparent)', marginBottom: '20px', borderRadius: '2px' }} />
+              <div className="text-center">
+                <p className="text-red-400 text-xs font-semibold uppercase tracking-wider mb-4">One Big Scary Ask</p>
+                <div className="text-5xl md:text-6xl font-bold text-white mb-4">$49.99</div>
+                <div className="flex items-center justify-center gap-2 text-red-400">
+                  <Icons.X />
+                  <span className="text-sm">High friction, easy to say NO</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Yes-Loop - Small Yeses */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', border: '2px solid #10b981' }}>
+              <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', marginBottom: '20px', borderRadius: '2px' }} />
+              <p className="text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-4 text-center">5 Easy Yeses</p>
+
+              <div className="space-y-2">
+                {YES_LOOP_STEPS.map((step, i) => (
+                  <motion.div key={i}
+                    initial={{ opacity: 0.3, x: -10 }}
+                    animate={{ opacity: i <= activeStep ? 1 : 0.3, x: 0, scale: i === activeStep ? 1.02 : 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex items-center justify-between p-2 rounded-lg"
+                    style={{ background: i <= activeStep ? `${step.color}15` : 'transparent', border: i === activeStep ? `1px solid ${step.color}` : '1px solid transparent' }}>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
+                        style={{ background: i <= activeStep ? step.color : '#444', color: 'white' }}>
+                        {i <= activeStep ? <Icons.Check /> : i + 1}
+                      </div>
+                      <span className="text-white text-sm">{step.label}</span>
+                    </div>
+                    <span className="font-bold" style={{ color: step.color }}>{step.amount}</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-neutral-700 flex items-center justify-between">
+                <span className="text-neutral-400 text-sm">Running Total:</span>
+                <span className="text-2xl font-bold text-emerald-400">${runningTotal.toFixed(2)}</span>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-center mt-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(16, 185, 129, 0.1)' }}>
+              <Icons.Target />
+              <span className="text-emerald-600 font-semibold text-sm">Same final price. WAY easier to say yes.</span>
+            </div>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3 relative z-10">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // Commitment Ladder: 4-step progression
+    const CommitmentLadderSlide = () => {
+      const [activeStep, setActiveStep] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % COMMITMENT_LADDER.length);
+        }, 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">
+            Building Your Yes-Loop
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8">
+            Each step as % of target AOV
+          </motion.p>
+
+          <div className="grid md:grid-cols-4 gap-4">
+            {COMMITMENT_LADDER.map((step, i) => {
+              const IconComponent = IconComponents[step.icon];
+              return (
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0, scale: i === activeStep ? 1.03 : 1 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    border: i === activeStep ? '2px solid #10b981' : '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: i === activeStep ? '0 0 30px rgba(16, 185, 129, 0.2)' : 'none'
+                  }}>
+                  <div style={{ height: '3px', background: i === activeStep ? 'linear-gradient(90deg, transparent, #10b981, transparent)' : 'linear-gradient(90deg, transparent, #444, transparent)', marginBottom: '16px', borderRadius: '2px' }} />
+
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white"
+                      style={{ background: i === activeStep ? '#10b981' : '#333' }}>
+                      {IconComponent && <IconComponent />}
+                    </div>
+                    <span className="text-xs font-bold text-neutral-400">STEP {step.step}</span>
+                  </div>
+
+                  <h3 className="text-white font-bold mb-1">{step.title}</h3>
+                  <div className="text-emerald-400 font-bold text-lg mb-2">{step.percentage}</div>
+                  <p className="text-neutral-400 text-xs leading-relaxed">{step.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Progress arrows */}
+          <div className="hidden md:flex justify-center mt-6 gap-4">
+            {[0, 1, 2].map(i => (
+              <motion.div key={i}
+                animate={{ x: [0, 5, 0] }}
+                transition={{ repeat: Infinity, duration: 1, delay: i * 0.2 }}>
+                <Icons.ArrowRight />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Carpay Gamification: Quantity tiers visualization
+    const CarpayGamificationSlide = () => {
+      const [selectedTier, setSelectedTier] = useState(2);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setSelectedTier(prev => prev === 2 ? 0 : prev + 1);
+        }, 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">
+            The Carpay Quantity Gamification
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8">
+            3 small yeses = 3x revenue
+          </motion.p>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {CARPAY_TIERS.map((tier, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0, scale: i === selectedTier ? 1.05 : 1 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setSelectedTier(i)}
+                style={{
+                  background: tier.popular ? 'linear-gradient(135deg, #059669, #10b981)' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  cursor: 'pointer',
+                  border: i === selectedTier ? '2px solid #10b981' : '1px solid rgba(255,255,255,0.1)',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}>
+                {tier.popular && (
+                  <div className="absolute top-0 right-0 bg-yellow-400 text-black text-[10px] font-bold px-3 py-1 rounded-bl-lg">
+                    MOST POPULAR
+                  </div>
+                )}
+
+                <div className="text-center">
+                  <div className="text-5xl font-bold text-white mb-2">{tier.qty}</div>
+                  <p className="text-neutral-300 text-sm mb-4">units</p>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-400">Each:</span>
+                      <span className={tier.popular ? 'text-white font-bold' : 'text-emerald-400 font-bold'}>{tier.each}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-400">Total:</span>
+                      <span className="text-white">{tier.price}</span>
+                    </div>
+                    {tier.savings !== '$0' && (
+                      <div className="mt-3 py-2 px-3 rounded-lg" style={{ background: 'rgba(16, 185, 129, 0.2)' }}>
+                        <span className="text-emerald-400 font-bold text-sm">Save {tier.savings}!</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="mt-6 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-neutral-300 text-sm">
+              <span className="text-emerald-400 font-bold">68%</span> of customers choose the bundle.
+              They said "yes" to buying, then "yes" to 2, then "yes" to 3.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Psychology Pillars: 4 principles grid
+    const PsychologyPillarsSlide = () => {
+      const [activePillar, setActivePillar] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActivePillar(prev => (prev + 1) % PSYCHOLOGY_PRINCIPLES.length);
+        }, 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+            Why Yes-Loop Works (Science)
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {PSYCHOLOGY_PRINCIPLES.map((principle, i) => {
+              const IconComponent = IconComponents[principle.icon];
+              return (
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0, scale: i === activePillar ? 1.02 : 1 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    border: i === activePillar ? `2px solid ${principle.color}` : '1px solid rgba(255,255,255,0.1)',
+                    boxShadow: i === activePillar ? `0 0 30px ${principle.color}20` : 'none'
+                  }}>
+                  <div style={{ height: '3px', background: `linear-gradient(90deg, transparent, ${principle.color}, transparent)`, marginBottom: '16px', borderRadius: '2px' }} />
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: `${principle.color}20`, color: principle.color }}>
+                      {IconComponent && <IconComponent />}
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold mb-1">{principle.title}</h3>
+                      <p className="text-neutral-400 text-sm">{principle.desc}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // Impact Stats: AnimatedCounter stats
+    const ImpactStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+          The Yes-Loop Effect
+        </motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {IMPACT_STATS.map((stat, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.15 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '32px',
+                textAlign: 'center'
+              }}>
+              <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', marginBottom: '24px', borderRadius: '2px' }} />
+
+              <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: '#10b981' }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              </div>
+              <p className="text-white font-semibold mb-1">{stat.label}</p>
+              <p className="text-neutral-400 text-sm">{stat.subtext}</p>
             </motion.div>
           ))}
         </div>
+      </div>
+    );
+
+    // Elite Insight: The Yes-Loop Mindset
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            borderRadius: '24px',
+            padding: '40px',
+            border: '1px solid rgba(16, 185, 129, 0.3)',
+            boxShadow: '0 0 60px rgba(16, 185, 129, 0.1)'
+          }}>
+          <div style={{ height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', marginBottom: '32px', borderRadius: '2px' }} />
+
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(16, 185, 129, 0.2)' }}>
+              <Icons.Lightbulb />
+            </div>
+            <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider">Elite Insight</span>
+          </div>
+
+          <h3 className="slide-title text-2xl md:text-3xl text-white text-center mb-6">
+            "The Momentum Paradox"
+          </h3>
+
+          <p className="text-neutral-300 text-center text-lg leading-relaxed mb-6">
+            Each small yes isn't just a purchase - it's a psychological commitment. The customer isn't just buying products, they're building an identity as "someone who buys from you." By the fifth yes, they're not deciding anymore. They're just... continuing.
+          </p>
+
+          <div className="flex items-center justify-center gap-2 text-emerald-400">
+            <Icons.Target />
+            <span className="font-semibold">Stack the yeses. Watch the loop compound.</span>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD SLIDES ============
+
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #dc2626', borderRadius: '16px', padding: '20px' }}>
+            <div style={{ height: '3px', background: 'linear-gradient(90deg, transparent, #dc2626, transparent)', marginBottom: '16px', borderRadius: '2px' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-400 text-sm">{data.before.label}</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #10b981', borderRadius: '16px', padding: '20px' }}>
+            <div style={{ height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', marginBottom: '16px', borderRadius: '2px' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-emerald-400 text-sm">{data.after.label}</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="p-4 text-center rounded-xl" style={{ background: 'rgba(16, 185, 129, 0.1)' }}>
+          <p className="text-emerald-700 text-sm font-medium"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </motion.div>
       </div>
     );
 
@@ -382,7 +675,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -423,6 +716,8 @@
       </div>
     );
 
+    // ============ MAIN APP ============
+
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -436,7 +731,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -445,6 +739,18 @@
           lessonSlug: LESSON_CONFIG.id
         }, '*');
       }, [currentSlide]);
+
+      // URL parameter for direct slide access
+      useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const slideParam = params.get('slide');
+        if (slideParam) {
+          const slideIndex = parseInt(slideParam, 10);
+          if (!isNaN(slideIndex) && slideIndex >= 0 && slideIndex < slides.length) {
+            setCurrentSlide(slideIndex);
+          }
+        }
+      }, []);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -477,8 +783,12 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'yesloop-visual': return <YesLoopVisualSlide />;
+          case 'commitment-ladder': return <CommitmentLadderSlide />;
+          case 'carpay-gamification': return <CarpayGamificationSlide />;
+          case 'psychology-pillars': return <PsychologyPillarsSlide />;
+          case 'impact-stats': return <ImpactStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

@@ -153,6 +153,7 @@
       { type: 'speed-killers' },
       { type: 'store-comparison' },
       { type: 'mobile-disaster' },
+      { type: 'optimize-speed' },
       { type: 'quiz', question: 'Your store loads in 3.5 seconds. Industry average is 3 seconds. Do you need to optimize?', options: ['No - only 0.5 seconds slower than average', 'No - visitors cannot notice half a second', 'Yes - every 100ms matters for subconscious trust', 'Yes - but only if conversion is already low'], correctIndex: 2, feedback: { correct: 'That 0.5 second difference is FIVE opportunities to increase conversions by 1% each. You are potentially leaving 5% of revenue on the table!', incorrect: 'Actually, every 100ms matters! That half second is 5 opportunities for 1% conversion improvement each. The subconscious detects delays you cannot consciously feel.' }},
       { type: 'pagespeed-audit' },
       { type: 'elite-insight' },
@@ -761,6 +762,93 @@
       );
     };
 
+    // OptimizeSpeedSlide - Tool recommendation for speed optimization
+    const OptimizeSpeedSlide = () => {
+      const manualDownsides = [
+        'Requires technical knowledge of Core Web Vitals',
+        'Hours spent manually compressing images',
+        'Complex code optimization and lazy loading setup',
+        'Ongoing maintenance as you add new content'
+      ];
+
+      const appBenefits = [
+        'One-click image compression and lazy loading',
+        'Automatic Core Web Vitals optimization',
+        'SEO improvements included (meta tags, JSON-LD)',
+        'Real-time speed monitoring dashboard'
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Optimize Your Store Speed</h2>
+            <p className="text-neutral-500 text-sm mt-2">Turn those milliseconds into money</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+            {/* Manual Method - Grayed out */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', opacity: 0.6 }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(148,163,184,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+                  <Icons.Code />
+                </div>
+                <div>
+                  <span className="text-neutral-400 font-semibold text-sm block">Manual Optimization</span>
+                  <span className="text-neutral-600 text-xs">The hard way</span>
+                </div>
+              </div>
+              <ul className="space-y-2">
+                {manualDownsides.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.05 }}
+                    className="flex items-start gap-2 text-neutral-500 text-xs">
+                    <span className="text-neutral-600 mt-0.5">-</span>
+                    <span>{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* App Method - Highlighted */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', border: '2px solid var(--accent)', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.15)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(var(--accent-rgb), 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                  <Icons.Zap />
+                </div>
+                <div>
+                  <span className="text-white font-semibold text-sm block">Tapita SEO & Speed</span>
+                  <span className="text-neutral-500 text-xs">Automated optimization</span>
+                </div>
+              </div>
+              <ul className="space-y-2 mb-4">
+                {appBenefits.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.05 }}
+                    className="flex items-start gap-2 text-neutral-300 text-xs">
+                    <span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span>
+                    <span>{item}</span>
+                  </motion.li>
+                ))}
+              </ul>
+              <motion.a href="https://apps.shopify.com/tapita-seo-speed-optimizer" target="_blank" rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+                className="block w-full py-3 rounded-xl text-white font-semibold text-sm text-center transition-all hover:opacity-90"
+                style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                Get Tapita on Shopify
+              </motion.a>
+            </motion.div>
+          </div>
+
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+            className="text-neutral-500 text-xs text-center mt-5">
+            Every 100ms you save is 1% more revenue. Automate the optimization.
+          </motion.p>
+        </div>
+      );
+    };
+
     // CompletionSlide
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
@@ -828,6 +916,7 @@
           case 'speed-killers': return <SpeedKillersSlide />;
           case 'store-comparison': return <StoreComparisonSlide />;
           case 'mobile-disaster': return <MobileDisasterSlide />;
+          case 'optimize-speed': return <OptimizeSpeedSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'pagespeed-audit': return <PageSpeedAuditSlide />;
           case 'elite-insight': return <EliteInsightSlide />;

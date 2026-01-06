@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #ff3b30; --accent-dark: #d32f2f; --accent-light: #ff6b61; --accent-rgb: 255, 59, 48; }
+    :root { --accent: #ef4444; --accent-dark: #dc2626; --accent-light: #f87171; --accent-rgb: 239, 68, 68; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -40,139 +37,736 @@
     const LESSON_CONFIG = {
       id: 'race-to-bottom-escape',
       title: 'Why Your ROAS Is Killing Your Business',
-      description: 'You are winning every battle and still losing the war. Here is why optimizing ROAS might be the worst thing you ever did.',
-      accentColor: '#ff3b30',
+      description: 'You are winning every battle and still losing the war.',
+      accentColor: '#ef4444',
       duration: '8 min',
       nextLesson: { id: 'founder-operating-system', title: 'The 4 Traits of Legendary Brand Founders', teaser: 'Most founders optimize for tactics. The legends operate from a different system.' }
     };
 
+    // ============ CONFIGURATION ARRAYS ============
+    const THREE_SPIRALS = [
+      { id: 1, name: 'Rising Costs', icon: 'TrendingUp', color: '#ef4444', stat: '+140%', statLabel: 'CPM increase', description: 'The auction extracts maximum value. What worked at $5 CPM now costs $12.' },
+      { id: 2, name: 'Commoditization', icon: 'Tag', color: '#f97316', stat: '40%', statLabel: 'margin erosion', description: 'Competing on performance means discounts. You become a commodity.' },
+      { id: 3, name: 'Zero Loyalty', icon: 'UserX', color: '#eab308', stat: '73%', statLabel: 'will leave for 10% off', description: 'Customers acquired by transaction, not relationship. No moat.' }
+    ];
+
+    const CPM_TIMELINE = [
+      { quarter: 'Q1 2023', cpm: 5, label: '$5 CPM' },
+      { quarter: 'Q2 2023', cpm: 7, label: '$7 CPM' },
+      { quarter: 'Q3 2023', cpm: 9, label: '$9 CPM' },
+      { quarter: 'Q4 2023', cpm: 12, label: '$12 CPM' }
+    ];
+
+    const DISCOUNT_CYCLE = [
+      { step: 1, label: 'DISCOUNT', description: 'Run 25% off sale to hit numbers' },
+      { step: 2, label: 'COMPETE', description: 'Competitors match or beat your price' },
+      { step: 3, label: 'DISCOUNT MORE', description: 'Must go deeper to maintain volume' },
+      { step: 4, label: 'TRAPPED', description: 'Customers only buy during sales' }
+    ];
+
+    const ESCAPE_FORMULA = [
+      { component: 'Brand Psychology', icon: 'Heart', color: '#8b5cf6', elements: ['Emotional connection', 'Cultural relevance', 'Long-term positioning'] },
+      { component: 'DR Execution', icon: 'Target', color: '#10b981', elements: ['Measurable', 'Optimizable', 'Scalable'] }
+    ];
+
+    const ROAS_PARADOX = {
+      title: 'The ROAS Paradox',
+      insight: 'Optimizing for transactions destroys the relationships that create transactions.',
+      quote: 'Performance marketing funds your growth today. Brand marketing ensures you are still here tomorrow.'
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    const celebrationGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
-    ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
-    const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4'
-    ];
-    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why optimizing ROAS can destroy your business long-term', 'The three death spirals of performance-only marketing', 'How to escape the race to the bottom'] },
-      { type: 'hook', headline: 'You are winning every battle and still losing the war.', subtext: 'Your dashboard looks beautiful. ROAS is climbing. CTR is up. Conversion rate is optimized to the third decimal place. Yet somehow, your margins are shrinking. Customer acquisition costs keep rising. And last month\'s winning campaign is already losing this month. The paradox: You are winning every tactical battle while slowly losing the strategic war.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Facebook' },
-      { type: 'cards', title: 'The Three Death Spirals', items: [
-        { title: 'Rising Costs', description: 'The auction is designed to extract maximum value for the platform, not you. What worked at $5 CPM last quarter now costs $12 CPM.' },
-        { title: 'Commoditization', description: 'Competing on performance means discounts and promotions. You become a commodity racing to the bottom on price.' },
-        { title: 'Zero Loyalty', description: 'Customers acquired via transaction, not relationship. They will leave for 10% off somewhere else.' }
-      ]},
-      { type: 'content', title: 'Death Spiral 1: Rising Costs', body: 'Here is what nobody tells you about auction-based advertising: the platform always wins. Facebook, Google, TikTok—they are not charities. Their algorithms are designed to extract the maximum amount you are willing to pay. The moment you find a winning campaign, two things happen: Your competitors copy it, and the platform algorithmically raises your costs. What worked at $5 CPM last quarter now costs $12 CPM. Your ROAS stays the same because you raised prices... which leads to Death Spiral 2.' },
-      { type: 'visual', visualType: 'stats', title: 'The Commoditization Trap', data: [
-        { value: '25%', label: 'Off Sale', subtext: 'Constant discounting' },
-        { value: 'BOGO', label: 'Promotions', subtext: 'Race to the bottom' },
-        { value: '40%', label: 'Off Flash', subtext: 'Training customers to wait' }
-      ]},
-      { type: 'content', title: 'Death Spiral 2: Commoditization', body: 'When you compete purely on direct response performance, you enter a race you cannot win. Everyone is optimizing the same metrics. Same split tests. Same proven frameworks. The only lever left to pull? Price. Congratulations. You have just trained your customers to never buy at full price. You are now a commodity competing with every other discount brand on the internet.' },
-      { type: 'content', title: 'Death Spiral 3: Zero Loyalty', body: 'Here is the brutal truth about performance-only marketing: you are not building customers. You are renting transactions. Someone clicks your ad because of FOMO, urgency, or a discount code. They do not know who you are. They do not care about your mission. They just wanted the thing at a good price. What happens when your competitor offers 10% more off? They are gone. No hesitation. No loyalty. Just the cold logic of price optimization.' },
-      { type: 'example', scenario: 'Performance vs. Brand Approach', before: { label: 'Performance Only', text: 'Optimize ROAS. Split-test everything. Rising CPMs. Constant discounts. Zero loyalty. Customers leave for 10% off.' }, after: { label: 'Brand + Performance', text: 'Build emotional connection. Stand for something. Create moat. Pricing power. Loyal customers who stay.' }, insight: 'Performance marketing without brand positioning is a treadmill you can never get off.' },
-      { type: 'quiz', question: 'According to Seth Godin, why does direct marketing race to the bottom?', options: ['It is too expensive for small businesses', 'You are trying to get clicks from people dumb enough to pay you', 'The algorithms are broken', 'Competitors always copy your ads'], correctIndex: 1, feedback: { correct: 'Exactly. When your entire strategy is "find people who will click and buy right now," you are selecting for the least discerning, most price-sensitive customers in the market. Then you wonder why they churn, demand discounts, and why your LTV looks like a rounding error. This is the uncomfortable truth of performance-only marketing.', incorrect: 'The core issue is who you are attracting. Performance-only marketing selects for the least discerning, most price-sensitive customers. As Seth Godin says, you are targeting people dumb enough to click and buy right now—not building relationships with customers who value your brand. That is why they churn and demand endless discounts.' }},
-      { type: 'pro-tip', title: 'The Only Escape', body: 'Stop optimizing for the transaction. Start building for the relationship. Fuse brand psychology (long-term positioning, cultural relevance, emotional connection) with direct response execution (measurable, optimizable, scalable). Performance marketing funds your growth today. Brand marketing ensures you are still here tomorrow.', action: 'Play only one game, and you have already lost. Master both to dominate.' },
-      { type: 'completion', sources: [] }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Tag: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>,
+      UserX: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      RefreshCw: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Plus: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+      Equals: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54z"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
     };
 
+    const SpiralIcons = {
+      TrendingUp: Icons.TrendingUp,
+      Tag: Icons.Tag,
+      UserX: Icons.UserX
+    };
+
+    const FormulaIcons = {
+      Heart: Icons.Heart,
+      Target: Icons.Target
+    };
+
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, duration = 2000, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          setCount(Math.floor(progress * value));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [value, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // ============ CELEBRATION/EMPATHY GIFS ============
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+    ];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    // ============ SLIDES DATA ============
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why optimizing ROAS can destroy your business long-term', 'The three death spirals of performance-only marketing', 'How to escape the race to the bottom with brand + performance fusion'] },
+      { type: 'hook', headline: 'You are winning every battle and still losing the war.', subtext: 'Your dashboard looks beautiful. ROAS is climbing. CTR is up. Conversion rate is optimized to the third decimal place. Yet somehow, your margins are shrinking. Customer acquisition costs keep rising. And last month\'s winning campaign is already losing this month.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
+      { type: 'three-spirals-grid' },
+      { type: 'spiral-detail', spiralIndex: 0 },
+      { type: 'cpm-timeline' },
+      { type: 'spiral-detail', spiralIndex: 1 },
+      { type: 'discount-cycle' },
+      { type: 'spiral-detail', spiralIndex: 2 },
+      { type: 'performance-vs-brand' },
+      { type: 'escape-formula' },
+      { type: 'quiz', question: 'According to Seth Godin, why does direct marketing race to the bottom?', options: ['It is too expensive for small businesses', 'You are trying to get clicks from people dumb enough to pay you', 'The algorithms are broken', 'Competitors always copy your ads'], correctIndex: 1, feedback: { correct: 'Exactly. When your entire strategy is "find people who will click and buy right now," you are selecting for the least discerning, most price-sensitive customers in the market.', incorrect: 'The core issue is WHO you attract. Performance-only marketing selects for the least discerning, most price-sensitive customers.' }},
+      { type: 'elite-insight' },
+      { type: 'completion' }
+    ];
+
+    // ============ UNIQUE SLIDE COMPONENTS ============
+
+    // Three Spirals Grid - Animated overview of all 3 death spirals
+    const ThreeSpiralsGridSlide = () => {
+      const [activeSpiral, setActiveSpiral] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveSpiral(prev => (prev + 1) % 3);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-3">
+            The Three Death Spirals
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-center mb-8 text-sm md:text-base">
+            Each spiral feeds the next. Together, they destroy your business.
+          </motion.p>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
+            {THREE_SPIRALS.map((spiral, i) => {
+              const IconComponent = SpiralIcons[spiral.icon];
+              const isActive = activeSpiral === i;
+              return (
+                <motion.div
+                  key={spiral.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.15 }}
+                  onClick={() => setActiveSpiral(i)}
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                    border: isActive ? `2px solid ${spiral.color}` : '2px solid #e5e5e5',
+                    boxShadow: isActive ? `0 0 30px ${spiral.color}30` : 'none',
+                    cursor: 'pointer'
+                  }}
+                  className="w-full md:w-64 rounded-2xl p-6 transition-all duration-500"
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <motion.div
+                      animate={{ rotate: isActive ? 360 : 0 }}
+                      transition={{ duration: 1, ease: "easeInOut" }}
+                      className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
+                      style={{ background: `${spiral.color}20`, color: spiral.color }}
+                    >
+                      <IconComponent />
+                    </motion.div>
+                    <div className="text-xs font-bold mb-2" style={{ color: spiral.color }}>
+                      SPIRAL {spiral.id}
+                    </div>
+                    <h3 className={`font-bold text-lg mb-2 ${isActive ? 'text-white' : 'text-neutral-900'}`}>
+                      {spiral.name}
+                    </h3>
+                    <div className="text-3xl font-black mb-1" style={{ color: spiral.color }}>
+                      {spiral.stat}
+                    </div>
+                    <div className={`text-xs ${isActive ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                      {spiral.statLabel}
+                    </div>
+                  </div>
+
+                  {/* Arrow connecting to next spiral */}
+                  {i < 2 && (
+                    <motion.div
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                      className="hidden md:block absolute -right-5 top-1/2 -translate-y-1/2 text-neutral-300"
+                    >
+                      <Icons.ArrowRight />
+                    </motion.div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="mt-8 text-center"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 text-red-600 text-sm font-medium">
+              <Icons.AlertTriangle />
+              <span>Each spiral makes the next one worse</span>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Spiral Detail - Individual deep dive into each spiral
+    const SpiralDetailSlide = ({ spiralIndex }) => {
+      const spiral = THREE_SPIRALS[spiralIndex];
+      const IconComponent = SpiralIcons[spiral.icon];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-4xl mx-auto py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-8"
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4" style={{ background: `${spiral.color}20`, color: spiral.color }}>
+              DEATH SPIRAL {spiral.id}
+            </div>
+            <h2 className="slide-title text-3xl md:text-5xl text-black">{spiral.name}</h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="rounded-2xl p-8 mb-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <motion.div
+                animate={{
+                  scale: [1, 1.1, 1],
+                  rotate: spiralIndex === 0 ? [0, 10, 0] : 0
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="w-24 h-24 rounded-2xl flex items-center justify-center flex-shrink-0"
+                style={{ background: `${spiral.color}20`, color: spiral.color }}
+              >
+                <IconComponent />
+              </motion.div>
+
+              <div className="flex-1 text-center md:text-left">
+                <div className="text-5xl md:text-7xl font-black mb-2" style={{ color: spiral.color }}>
+                  <AnimatedCounter value={parseInt(spiral.stat)} suffix={spiral.stat.includes('%') ? '%' : ''} prefix={spiral.stat.includes('+') ? '+' : ''} />
+                </div>
+                <div className="text-neutral-400 text-lg mb-4">{spiral.statLabel}</div>
+                <p className="text-white text-lg leading-relaxed">{spiral.description}</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {spiralIndex === 0 && (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-neutral-600 text-center text-sm">
+              The platform always wins. Your competitors copy. Your costs rise. And you must raise prices... which leads to Spiral 2.
+            </motion.p>
+          )}
+          {spiralIndex === 1 && (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-neutral-600 text-center text-sm">
+              Congratulations. You have trained customers to never buy at full price. You are now a commodity.
+            </motion.p>
+          )}
+          {spiralIndex === 2 && (
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-neutral-600 text-center text-sm">
+              Someone clicks because of FOMO or discount. They do not care about you. When competitors offer 10% more, they are gone.
+            </motion.p>
+          )}
+        </div>
+      );
+    };
+
+    // CPM Timeline - Animated rising costs visualization
+    const CPMTimelineSlide = () => {
+      const maxCPM = Math.max(...CPM_TIMELINE.map(t => t.cpm));
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">
+            Watch Your CPMs Rise
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8 text-sm">
+            The auction extracts maximum value. What worked last quarter now costs more.
+          </motion.p>
+
+          <div className="flex items-end justify-center gap-4 md:gap-8 h-64 mb-6">
+            {CPM_TIMELINE.map((item, i) => (
+              <motion.div
+                key={item.quarter}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: `${(item.cpm / maxCPM) * 100}%`, opacity: 1 }}
+                transition={{ delay: 0.3 + i * 0.2, duration: 0.8 }}
+                className="w-16 md:w-24 rounded-t-xl relative flex flex-col items-center"
+                style={{
+                  background: `linear-gradient(to top, ${LESSON_CONFIG.accentColor}, ${LESSON_CONFIG.accentColor}90)`,
+                  boxShadow: `0 0 20px ${LESSON_CONFIG.accentColor}30`
+                }}
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 + i * 0.2 }}
+                  className="absolute -top-10 text-center"
+                >
+                  <div className="text-xl md:text-2xl font-black text-neutral-900">{item.label}</div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 + i * 0.2 }}
+                  className="absolute -bottom-8 text-xs text-neutral-500 whitespace-nowrap"
+                >
+                  {item.quarter}
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="flex items-center justify-center gap-2 mt-8"
+          >
+            <Icons.TrendingUp />
+            <span className="text-2xl font-black" style={{ color: LESSON_CONFIG.accentColor }}>+140% in 12 months</span>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Discount Cycle - Animated trap visualization
+    const DiscountCycleSlide = () => {
+      const [activeStep, setActiveStep] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % 4);
+        }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">
+            The Discount Death Trap
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8 text-sm">
+            A cycle you cannot escape once you enter.
+          </motion.p>
+
+          <div className="relative">
+            {/* Circular cycle visualization */}
+            <div className="flex flex-wrap justify-center gap-4">
+              {DISCOUNT_CYCLE.map((item, i) => {
+                const isActive = activeStep === i;
+                return (
+                  <motion.div
+                    key={item.step}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{
+                      opacity: 1,
+                      scale: isActive ? 1.05 : 1,
+                    }}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                    className="w-full sm:w-40 md:w-48 rounded-xl p-4 transition-all duration-300"
+                    style={{
+                      background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                      border: isActive ? '2px solid #f97316' : '2px solid #e5e5e5',
+                      boxShadow: isActive ? '0 0 30px rgba(249, 115, 22, 0.3)' : 'none'
+                    }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-lg flex-shrink-0"
+                        style={{ background: isActive ? '#f97316' : '#d4d4d4' }}
+                      >
+                        {item.step}
+                      </div>
+                      <div>
+                        <div className={`font-bold text-sm ${isActive ? 'text-white' : 'text-neutral-900'}`}>
+                          {item.label}
+                        </div>
+                        <div className={`text-xs ${isActive ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                          {item.description}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Arrow to next */}
+                    {i < 3 && (
+                      <motion.div
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        className="hidden sm:flex absolute -right-3 top-1/2 -translate-y-1/2 text-orange-400"
+                      >
+                        <Icons.ArrowRight />
+                      </motion.div>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Loop back arrow */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 }}
+              className="flex justify-center mt-6"
+            >
+              <div className="flex items-center gap-2 text-red-500">
+                <Icons.RefreshCw />
+                <span className="text-sm font-medium">Repeat forever</span>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Performance vs Brand - Side-by-side comparison with winner
+    const PerformanceVsBrandSlide = () => {
+      const [showWinner, setShowWinner] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+            Two Approaches. One Winner.
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Performance Only */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-6 border-2 border-red-200 bg-red-50 relative"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-red-500 flex items-center justify-center">
+                  <Icons.X />
+                </div>
+                <h3 className="font-bold text-red-900 text-lg">Performance Only</h3>
+              </div>
+              <ul className="space-y-3">
+                {['Optimize ROAS obsessively', 'Split-test everything', 'Rising CPMs every quarter', 'Constant discounts to compete', 'Zero customer loyalty', 'Customers leave for 10% off'].map((item, i) => (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + i * 0.1 }}
+                    className="flex items-center gap-2 text-red-800 text-sm"
+                  >
+                    <Icons.X />
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+
+              {showWinner && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="absolute -top-3 -right-3 px-3 py-1 rounded-full bg-red-500 text-white text-xs font-bold"
+                >
+                  LOSES
+                </motion.div>
+              )}
+            </motion.div>
+
+            {/* Brand + Performance */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-2xl p-6 relative"
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: '2px solid #10b981',
+                boxShadow: '0 0 30px rgba(16, 185, 129, 0.2)'
+              }}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center text-white">
+                  <Icons.Check />
+                </div>
+                <h3 className="font-bold text-white text-lg">Brand + Performance</h3>
+              </div>
+              <ul className="space-y-3">
+                {['Build emotional connection', 'Stand for something bigger', 'Create uncopiable moat', 'Pricing power over discounts', 'Loyal customers who stay', 'Referrals from believers'].map((item, i) => (
+                  <motion.li
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + i * 0.1 }}
+                    className="flex items-center gap-2 text-green-400 text-sm"
+                  >
+                    <Icons.Check />
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+
+              {showWinner && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="absolute -top-3 -right-3 px-4 py-1.5 rounded-full bg-green-500 text-white text-xs font-bold"
+                >
+                  WINS
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Escape Formula - Brand + DR = Escape equation
+    const EscapeFormulaSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">
+            The Escape Formula
+          </motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8 text-sm">
+            Fuse both. Master the combination.
+          </motion.p>
+
+          {/* Formula equation */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
+            {ESCAPE_FORMULA.map((item, i) => {
+              const IconComponent = FormulaIcons[item.icon];
+              return (
+                <React.Fragment key={item.component}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 + i * 0.2 }}
+                    className="w-full md:w-64 rounded-2xl p-6"
+                    style={{
+                      background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                      border: `2px solid ${item.color}`,
+                      boxShadow: `0 0 20px ${item.color}20`
+                    }}
+                  >
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${item.color}20`, color: item.color }}>
+                        <IconComponent />
+                      </div>
+                      <h3 className="text-white font-bold">{item.component}</h3>
+                    </div>
+                    <ul className="space-y-2">
+                      {item.elements.map((el, j) => (
+                        <li key={j} className="text-neutral-400 text-sm flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full" style={{ background: item.color }} />
+                          {el}
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+
+                  {i === 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.6 }}
+                      className="text-4xl font-black text-neutral-300"
+                    >
+                      <Icons.Plus />
+                    </motion.div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8 }}
+              className="text-4xl font-black text-neutral-300"
+            >
+              <Icons.Equals />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1 }}
+              className="w-full md:w-40 h-32 rounded-2xl flex items-center justify-center"
+              style={{
+                background: 'linear-gradient(135deg, #10b981, #059669)',
+                boxShadow: '0 0 40px rgba(16, 185, 129, 0.4)'
+              }}
+            >
+              <div className="text-center">
+                <Icons.Shield />
+                <div className="text-white font-black text-xl mt-2">ESCAPE</div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="text-center"
+          >
+            <p className="text-neutral-600 text-sm">
+              Performance marketing funds your growth today. Brand marketing ensures you are still here tomorrow.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Elite Insight - The ROAS Paradox
+    const EliteInsightSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl p-8 md:p-12 text-center relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              boxShadow: '0 0 60px rgba(239, 68, 68, 0.15)'
+            }}
+          >
+            {/* Top accent line */}
+            <div
+              className="absolute top-0 left-0 right-0 h-1"
+              style={{ background: `linear-gradient(90deg, transparent, ${LESSON_CONFIG.accentColor}, transparent)` }}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center"
+              style={{ background: `${LESSON_CONFIG.accentColor}20`, color: LESSON_CONFIG.accentColor }}
+            >
+              <Icons.Brain />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="text-xs font-bold tracking-wider mb-4"
+              style={{ color: LESSON_CONFIG.accentColor }}
+            >
+              ELITE INSIGHT
+            </motion.div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="slide-title text-3xl md:text-4xl text-white mb-6"
+            >
+              {ROAS_PARADOX.title}
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-neutral-300 text-lg md:text-xl leading-relaxed mb-8"
+            >
+              "{ROAS_PARADOX.insight}"
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl"
+              style={{ background: `${LESSON_CONFIG.accentColor}15`, border: `1px solid ${LESSON_CONFIG.accentColor}30` }}
+            >
+              <Icons.Lightbulb />
+              <span className="text-sm font-medium" style={{ color: LESSON_CONFIG.accentColor }}>
+                Play only one game, and you have already lost.
+              </span>
+            </motion.div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ STANDARD SLIDE COMPONENTS ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -210,115 +804,12 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.8 }} />
           </motion.div>
         )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-red-500 text-white text-xs font-bold rounded-full">THE ESCAPE</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-red-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-red-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-red-700">{data.action}</p>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
       </div>
     );
 
@@ -365,32 +856,20 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
+    const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why ROAS optimization alone kills businesses. Performance marketing without brand positioning is a treadmill. Escape the three death spirals by fusing brand and performance.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why ROAS optimization alone kills businesses. Performance marketing without brand positioning is a treadmill. Escape by fusing brand psychology with direct response execution.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -404,14 +883,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -443,13 +916,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'pro-tip': return <ProTipSlide data={slide} />;
+          case 'three-spirals-grid': return <ThreeSpiralsGridSlide />;
+          case 'spiral-detail': return <SpiralDetailSlide spiralIndex={slide.spiralIndex} />;
+          case 'cpm-timeline': return <CPMTimelineSlide />;
+          case 'discount-cycle': return <DiscountCycleSlide />;
+          case 'performance-vs-brand': return <PerformanceVsBrandSlide />;
+          case 'escape-formula': return <EscapeFormulaSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

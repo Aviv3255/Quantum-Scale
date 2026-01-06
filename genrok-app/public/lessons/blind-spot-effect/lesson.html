@@ -173,6 +173,7 @@
         { value: '70%', label: 'more likely to buy', subtext: 'When seeing "bestseller" badge' }
       ]},
       { type: 'content', title: 'The Ethical Reframe', body: 'Some people worry: "Isn\'t this manipulation?" Here\'s the paradigm shift. You\'re not manipulating people\'s psychology against them. You\'re communicating in the language the brain actually understands. These biases work whether you use them or not. Ignoring them doesn\'t make you ethical - it makes you invisible. Using them ethically to sell genuine value? That\'s mastery.' },
+      { type: 'reveal-blindspots', title: 'Reveal Your Customer Blind Spots' },
       { type: 'quiz', question: 'According to neuroscience research, what percentage of decision-making happens below conscious awareness?', options: ['25% - Most decisions are conscious', '50% - It\'s about half and half', '75% - Mostly subconscious', '95% - Almost entirely subconscious'], correctIndex: 3, feedback: { correct: 'Exactly! 95% of decision-making happens subconsciously. This is why understanding cognitive biases isn\'t manipulation - it\'s speaking the language your customer\'s brain actually uses. Your copy must reach the subconscious level to truly convert.', incorrect: 'Not quite. Research shows that 95% of decision-making happens below conscious awareness. The rational mind thinks it\'s in control, but the subconscious is making decisions before conscious thought even begins. This is why cognitive biases are so powerful.' }},
       { type: 'completion', sources: [] }
     ];
@@ -590,6 +591,112 @@
       );
     };
 
+    // RevealBlindspotsSlide - Tool recommendation for uncovering customer blind spots
+    const RevealBlindspotsSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>
+              How To Do It
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Manual Method - Grayed out */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl p-5 relative overflow-hidden opacity-60"
+              style={{ background: '#f5f5f5', border: '2px solid #e5e5e5' }}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-neutral-300 text-neutral-500">
+                  <Icons.X />
+                </div>
+                <span className="font-bold text-neutral-500 text-sm">The Guessing Game</span>
+              </div>
+              <ul className="space-y-2.5">
+                <li className="flex items-start gap-2 text-neutral-500 text-sm">
+                  <span className="text-neutral-400 mt-0.5">-</span>
+                  <span>Assuming you know what customers think</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-500 text-sm">
+                  <span className="text-neutral-400 mt-0.5">-</span>
+                  <span>Never discovering real objections</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-500 text-sm">
+                  <span className="text-neutral-400 mt-0.5">-</span>
+                  <span>Blind to what actually drives purchases</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-500 text-sm">
+                  <span className="text-neutral-400 mt-0.5">-</span>
+                  <span>Marketing based on hunches, not data</span>
+                </li>
+              </ul>
+            </motion.div>
+
+            {/* App Method - Highlighted */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-5 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(139, 92, 246, 0.1))', border: '2px solid #8b5cf6' }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#8b5cf6' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                  </svg>
+                </div>
+                <span className="font-bold text-neutral-800 text-sm">Grapevine Surveys</span>
+              </div>
+              <ul className="space-y-2.5">
+                <li className="flex items-start gap-2 text-neutral-700 text-sm">
+                  <span style={{ color: '#8b5cf6' }} className="mt-0.5">+</span>
+                  <span>Ask customers right after purchase</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-700 text-sm">
+                  <span style={{ color: '#8b5cf6' }} className="mt-0.5">+</span>
+                  <span>Discover hidden objections and motivations</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-700 text-sm">
+                  <span style={{ color: '#8b5cf6' }} className="mt-0.5">+</span>
+                  <span>See what ACTUALLY convinced them to buy</span>
+                </li>
+                <li className="flex items-start gap-2 text-neutral-700 text-sm">
+                  <span style={{ color: '#8b5cf6' }} className="mt-0.5">+</span>
+                  <span>Turn blind spots into competitive advantages</span>
+                </li>
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-6 text-center"
+          >
+            <a
+              href="https://apps.shopify.com/grapevine-post-purchase-survey"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 4px 14px rgba(139, 92, 246, 0.4)' }}
+            >
+              <span>Reveal Your Blind Spots</span>
+              <Icons.ExternalLink />
+            </a>
+            <p className="text-neutral-400 text-xs mt-3">Post-purchase surveys uncover what you can&apos;t see</p>
+          </motion.div>
+        </div>
+      );
+    };
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -677,6 +784,7 @@
           case 'brain-split': return <BrainSplitSlide data={slide} />;
           case 'bias-grid': return <BiasGridSlide data={slide} />;
           case 'anchoring-demo': return <AnchoringDemoSlide data={slide} />;
+          case 'reveal-blindspots': return <RevealBlindspotsSlide data={slide} />;
           default: return null;
         }
       };

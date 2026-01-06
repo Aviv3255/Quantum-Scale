@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -49,7 +46,7 @@
       title: 'Your Product Is a Placebo',
       description: 'Perception literally alters reality. Engineer experience, not just features.',
       accentColor: '#8b5cf6',
-      duration: '5 min',
+      duration: '6 min',
       nextLesson: {
         id: 'information-asymmetry',
         title: 'The Prada Mystery Play',
@@ -57,26 +54,33 @@
       }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
+    // ============ CONFIGURATION ARRAYS ============
+    const TOUCHPOINTS = [
+      { icon: 'Package', title: 'Packaging Weight', description: 'Heavier boxes and bottles signal premium quality. Your brain equates physical weight with value and efficacy.', stat: '2.3x', statLabel: 'Trust increase' },
+      { icon: 'Eye', title: 'Visual Presentation', description: 'Beautiful plating makes food taste better. Clean product photography makes products feel more effective.', stat: '47%', statLabel: 'Higher ratings' },
+      { icon: 'DollarSign', title: 'Price Anchoring', description: 'Higher prices create expectation of quality. That expectation alters the experienced reality.', stat: '40%', statLabel: 'More effective' },
+      { icon: 'Shield', title: 'Brand Recognition', description: 'Familiar logos trigger trust and safety. Trust amplifies perceived effectiveness and satisfaction.', stat: '78%', statLabel: 'Buy again' }
+    ];
 
-    // Listen for admin status from parent
+    const EXPERIMENTS = [
+      { title: 'Wine Bottle Weight', description: 'Same wine from a heavier bottle is rated 38% better tasting', icon: 'Wine', color: '#ef4444' },
+      { title: 'Food Plating', description: 'Beautiful presentation increases perceived flavor by 47%', icon: 'Plate', color: '#f59e0b' },
+      { title: 'MasterCard Logo', description: 'Logo presence increases spending by 30% - without using the card', icon: 'CreditCard', color: '#3b82f6' },
+      { title: 'Tylenol Effect', description: 'Branded version perceived 40% more effective than identical generic', icon: 'Pill', color: '#8b5cf6' }
+    ];
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    let __isAdmin = false;
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -92,106 +96,32 @@
       };
 
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
           </svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
-
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
 
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'The Placebo Effect in commerce - perception alters physical reality',
-        'Tylenol vs Generic - same ingredients, different perceived effectiveness',
-        'Every touchpoint shapes experience - not just the product itself'
-      ]},
-      { type: 'hook', headline: 'This will blow your mind.', subheadline: 'Your product doesn\'t work the way you think it does.', subtext: 'Branded Tylenol and generic ibuprofen have IDENTICAL active ingredients. But the branded pill is perceived as MORE effective. The placebo effect isn\'t just in medicine - it\'s in EVERY product you sell. Perception literally alters reality.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Mastercard-Logo.png', brandName: 'MasterCard'},
-      { type: 'content', title: 'The Placebo Effect in Commerce', body: 'Studies show that branded painkillers are rated as more effective than generic versions - even when they contain the exact same active ingredients. Why? Because your brain uses contextual cues (packaging, price, brand recognition) to predict efficacy. And those predictions become self-fulfilling. You\'re not selling a product. You\'re engineering a perception that changes physical experience.' },
-      { type: 'example', scenario: 'The Tylenol Paradox', before: { label: 'Generic Version', text: 'White bottle. Simple label. $4.99 for 100 pills. Same active ingredient as branded.' }, after: { label: 'Branded Tylenol', text: 'Red packaging. Trusted name. $12.99 for 100 pills. Perceived as 40% more effective.' }, insight: 'Same chemical compound. Different perceived effectiveness. The packaging, price, and brand ARE part of the product experience.' },
-      { type: 'visual', title: 'Perception Shapes Reality', visualType: 'stats', data: [
-        { value: '40%', label: 'more effective', subtext: 'Branded vs generic perception' },
-        { value: '30%', label: 'more spending', subtext: 'With MasterCard logo present' },
-        { value: '100%', label: 'identical', subtext: 'Active ingredients comparison' }
-      ]},
-      { type: 'content', title: 'Wine, Weight, and Beautiful Plating', body: 'Wine tastes better when poured from a heavier bottle. Food tastes better when beautifully plated. Customers spend 30% more when a MasterCard logo is subtly present. These aren\'t optical illusions - they\'re perceptual realities. Your brain integrates EVERY sensory input to construct the experience. Cheap packaging creates a cheap experience, regardless of product quality.' },
-      { type: 'cards', title: 'Touchpoints That Shape Experience', items: [
-        { title: 'Packaging Weight', description: 'Heavier boxes and bottles signal premium quality. Your brain equates physical weight with value and efficacy.' },
-        { title: 'Visual Presentation', description: 'Beautiful plating makes food taste better. Clean product photography makes products feel more effective.' },
-        { title: 'Price Anchoring', description: 'Higher prices create expectation of quality. That expectation alters the experienced reality.' },
-        { title: 'Brand Recognition', description: 'Familiar logos trigger trust and safety. Trust amplifies perceived effectiveness and satisfaction.' }
-      ]},
-      { type: 'split', title: 'Product vs Perception Engineering', leftContent: { label: 'What Most Sellers Focus On', items: ['Product features and specifications', 'Manufacturing cost optimization', 'Functional performance metrics', 'Shipping the physical item'] }, rightContent: { label: 'What ACTUALLY Drives Sales', items: ['Packaging and unboxing experience', 'Visual presentation and photography', 'Price positioning and anchoring', 'Every touchpoint\'s perceived quality'] }},
-      { type: 'example', scenario: 'DTC Skincare Application', before: { label: 'Feature-Focused', text: 'Our serum contains hyaluronic acid and vitamin C. Clinically proven results in 4 weeks.' }, after: { label: 'Experience-Engineered', text: 'Luxury glass bottle with weighted cap. Subtle gold accents. Opening reveals embossed tissue paper. The serum itself? Same formula. The perceived efficacy? 10x higher.' }, insight: 'Customers don\'t buy serums. They buy the feeling of luxury self-care. Engineer THAT experience, and efficacy perception follows.' },
-      { type: 'content', title: 'The MasterCard Logo Experiment', body: 'Researchers found that simply displaying a MasterCard logo near products increased customer spending by 30%. Not because they paid with MasterCard - but because the logo subconsciously primed spending behavior. Every visual element in your store sends signals. Your job: engineer those signals to create the perception you want.' },
-      { type: 'visual', title: 'The Perception Equation', visualType: 'comparison', data: {
-        left: { label: 'Product Quality', value: '50%', result: 'Actual performance', color: '#94a3b8' },
-        right: { label: 'Perception Quality', value: '50%', result: 'Packaging + Price + Brand', color: '#8b5cf6' },
-        center: { label: 'Experience', value: '100%', result: 'What customer feels', color: '#10b981' }
-      }},
-      { type: 'quiz', question: 'Why does branded Tylenol feel more effective than generic ibuprofen despite identical ingredients?', options: ['Tylenol actually has better ingredients', 'The placebo effect - perception shapes physical experience', 'Generics are lower quality', 'Marketing tricks people into believing it works'], correctIndex: 1, feedback: { correct: 'Exactly. The placebo effect isn\'t deception - it\'s neuroscience. Your brain uses contextual cues (brand, price, packaging) to set expectations. Those expectations literally alter how you experience the product. You\'re not lying to customers - you\'re engineering a better experience through perception.', incorrect: 'Close, but it\'s deeper. The ingredients are IDENTICAL. The difference is the placebo effect - your brain integrates packaging, price, and brand trust to predict efficacy. Those predictions become self-fulfilling. The branded pill works better because your brain expects it to. Engineer those expectations, and you engineer reality.' }},
-      { type: 'completion' }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -200,8 +130,75 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Pill: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>,
+      Package: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
+      Eye: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Wine: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg>,
+      CreditCard: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>,
+      Sparkles: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Scale: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
     };
 
+    const IconComponents = {
+      Package: Icons.Package,
+      Eye: Icons.Eye,
+      DollarSign: Icons.DollarSign,
+      Shield: Icons.Shield,
+      Wine: Icons.Wine,
+      CreditCard: Icons.CreditCard,
+      Pill: Icons.Pill,
+      Plate: Icons.Eye,
+    };
+
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, duration = 2000, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      const numValue = parseFloat(value.toString().replace(/[^0-9.]/g, ''));
+      const decimals = value.toString().includes('.') ? (value.toString().split('.')[1] || '').length : 0;
+
+      useEffect(() => {
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          setCount(numValue * easeOut);
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [numValue, duration]);
+
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.round(count)}{suffix}</span>;
+    };
+
+    // ============ SLIDES DATA ============
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'The Placebo Effect in commerce - perception alters physical reality',
+        'Tylenol vs Generic - same ingredients, different perceived effectiveness',
+        'Every touchpoint shapes experience - not just the product itself'
+      ]},
+      { type: 'hook', headline: 'This will blow your mind.', subheadline: 'Your product doesn\'t work the way you think it does.', subtext: 'Branded Tylenol and generic ibuprofen have IDENTICAL active ingredients. But the branded pill is perceived as MORE effective. The placebo effect isn\'t just in medicine - it\'s in EVERY product you sell. Perception literally alters reality.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Mastercard-Logo.png', brandName: 'MasterCard' },
+      { type: 'tylenol-paradox' },
+      { type: 'brain-mechanism' },
+      { type: 'experiments-grid' },
+      { type: 'touchpoints-carousel' },
+      { type: 'product-vs-perception' },
+      { type: 'skincare-case-study' },
+      { type: 'mastercard-experiment' },
+      { type: 'perception-equation' },
+      { type: 'impact-stats' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why does branded Tylenol feel more effective than generic ibuprofen despite identical ingredients?', options: ['Tylenol actually has better ingredients', 'The placebo effect - perception shapes physical experience', 'Generics are lower quality', 'Marketing tricks people into believing it works'], correctIndex: 1, feedback: { correct: 'Exactly. The placebo effect isn\'t deception - it\'s neuroscience. Your brain uses contextual cues (brand, price, packaging) to set expectations. Those expectations literally alter how you experience the product.', incorrect: 'The ingredients are IDENTICAL. The difference is the placebo effect - your brain integrates packaging, price, and brand trust to predict efficacy. Those predictions become self-fulfilling.' }},
+      { type: 'completion' }
+    ];
+
+    // ============ WELCOME SLIDE ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -234,6 +231,7 @@
       );
     };
 
+    // ============ HOOK SLIDE ============
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -243,15 +241,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -261,137 +250,547 @@
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // ============ TYLENOL PARADOX SLIDE ============
+    const TylenolParadoxSlide = () => {
+      const [showResult, setShowResult] = useState(false);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>The Paradox</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Tylenol Effect</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
-          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Generic Version */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-neutral-700 flex items-center justify-center">
+                  <Icons.Pill />
+                </div>
+                <div>
+                  <div className="text-white font-bold text-lg">Generic Ibuprofen</div>
+                  <div className="text-neutral-400 text-sm">White bottle, plain label</div>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-3xl font-bold text-neutral-400">$4.99</span>
+                <span className="text-neutral-500 text-sm">for 100 pills</span>
+              </div>
+              <div className="bg-neutral-800/50 rounded-lg p-3">
+                <div className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Active Ingredient</div>
+                <div className="text-neutral-300 font-medium">Ibuprofen 200mg</div>
+              </div>
+            </motion.div>
+
+            {/* Branded Version */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold">PREMIUM</div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}>
+                  <Icons.Pill />
+                </div>
+                <div>
+                  <div className="text-white font-bold text-lg">Tylenol Extra Strength</div>
+                  <div className="text-neutral-400 text-sm">Red box, trusted brand</div>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-3xl font-bold text-white">$12.99</span>
+                <span className="text-neutral-500 text-sm">for 100 pills</span>
+              </div>
+              <div className="bg-neutral-800/50 rounded-lg p-3">
+                <div className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Active Ingredient</div>
+                <div className="text-neutral-300 font-medium">Ibuprofen 200mg</div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* The Result */}
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, y: 20, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="grid md:grid-cols-3 gap-4">
+                <div className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="text-2xl font-bold text-white mb-1">100%</div>
+                  <div className="text-neutral-400 text-sm">Same ingredients</div>
+                </div>
+                <div className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 0 30px rgba(139, 92, 246, 0.3)' }}>
+                  <div className="text-2xl font-bold text-white mb-1">40%</div>
+                  <div className="text-white/80 text-sm">MORE effective (perceived)</div>
+                </div>
+                <div className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="text-2xl font-bold text-white mb-1">2.6x</div>
+                  <div className="text-neutral-400 text-sm">Higher price</div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              {item.description && <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>}
+    // ============ BRAIN MECHANISM SLIDE ============
+    const BrainMechanismSlide = () => {
+      const [activeStage, setActiveStage] = useState(0);
+      const stages = [
+        { label: 'Context', desc: 'Brand, price, packaging signals enter brain', icon: 'Eye', color: '#3b82f6' },
+        { label: 'Prediction', desc: 'Brain predicts product efficacy', icon: 'Brain', color: '#8b5cf6' },
+        { label: 'Experience', desc: 'Prediction shapes actual experience', icon: 'Sparkles', color: '#10b981' },
+      ];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveStage(prev => (prev + 1) % stages.length);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>The Mechanism</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">How Perception Becomes Reality</h2>
+          </motion.div>
+
+          {/* Brain Flow Visualization */}
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 mb-8">
+            {stages.map((stage, i) => {
+              const IconComp = Icons[stage.icon] || Icons.Brain;
+              const isActive = i === activeStage;
+              return (
+                <React.Fragment key={i}>
+                  <motion.div
+                    animate={{ scale: isActive ? 1.05 : 1, y: isActive ? -5 : 0 }}
+                    className="rounded-2xl p-5 text-center w-full md:w-48 transition-all"
+                    style={{
+                      background: isActive ? `linear-gradient(135deg, ${stage.color}, ${stage.color}dd)` : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                      boxShadow: isActive ? `0 0 30px ${stage.color}40` : 'none'
+                    }}>
+                    <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center"
+                      style={{ background: isActive ? 'rgba(255,255,255,0.2)' : `${stage.color}30` }}>
+                      <span style={{ color: isActive ? 'white' : stage.color }}><IconComp /></span>
+                    </div>
+                    <div className="font-bold text-white mb-1">{stage.label}</div>
+                    <div className="text-xs" style={{ color: isActive ? 'rgba(255,255,255,0.8)' : '#9ca3af' }}>{stage.desc}</div>
+                  </motion.div>
+                  {i < stages.length - 1 && (
+                    <motion.div animate={{ opacity: activeStage > i ? 1 : 0.3 }} className="hidden md:block text-neutral-400">
+                      <Icons.ArrowRight />
+                    </motion.div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+
+          {/* Key Insight */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="rounded-xl p-5 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="flex items-center justify-center gap-2 text-amber-400 text-sm font-semibold mb-2">
+              <Icons.Lightbulb />
+              <span>Key Insight</span>
+            </div>
+            <p className="text-neutral-300 text-sm md:text-base">
+              Your brain doesn't wait for evidence. It uses context clues to <span className="text-white font-semibold">predict</span> the experience - and then shapes reality to match the prediction.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ EXPERIMENTS GRID SLIDE ============
+    const ExperimentsGridSlide = () => {
+      const [activeExp, setActiveExp] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveExp(prev => (prev + 1) % EXPERIMENTS.length);
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>Research</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Perception Experiments</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {EXPERIMENTS.map((exp, i) => {
+              const IconComp = IconComponents[exp.icon] || Icons.Brain;
+              const isActive = i === activeExp;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0, scale: isActive ? 1.02 : 1 }} transition={{ delay: i * 0.1 }}
+                  className="rounded-xl p-4 md:p-5 relative overflow-hidden cursor-pointer"
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    boxShadow: isActive ? `0 0 25px ${exp.color}30` : 'none'
+                  }}
+                  onClick={() => setActiveExp(i)}>
+                  <div className="h-1 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${exp.color}, transparent)` }} />
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${exp.color}20` }}>
+                      <span style={{ color: exp.color }}><IconComp /></span>
+                    </div>
+                    <div className="font-bold text-white text-sm">{exp.title}</div>
+                  </div>
+                  <p className="text-neutral-400 text-xs md:text-sm leading-relaxed">{exp.description}</p>
+                  {isActive && (
+                    <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ duration: 3 }}
+                      className="absolute bottom-0 left-0 h-1" style={{ background: exp.color }} />
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ TOUCHPOINTS CAROUSEL SLIDE ============
+    const TouchpointsCarouselSlide = () => {
+      const [activeTouch, setActiveTouch] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveTouch(prev => (prev + 1) % TOUCHPOINTS.length);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>Touchpoints</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Experience Engineering Points</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-4 gap-2 mb-6">
+            {TOUCHPOINTS.map((t, i) => {
+              const IconComp = IconComponents[t.icon] || Icons.Package;
+              const isActive = i === activeTouch;
+              return (
+                <motion.div key={i} onClick={() => setActiveTouch(i)}
+                  animate={{ scale: isActive ? 1.05 : 1 }}
+                  className="rounded-xl p-3 text-center cursor-pointer transition-all"
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #8b5cf6, #7c3aed)' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    boxShadow: isActive ? '0 0 20px rgba(139, 92, 246, 0.3)' : 'none'
+                  }}>
+                  <div className="w-10 h-10 rounded-lg mx-auto mb-2 flex items-center justify-center"
+                    style={{ background: isActive ? 'rgba(255,255,255,0.2)' : 'rgba(139, 92, 246, 0.2)' }}>
+                    <span style={{ color: isActive ? 'white' : '#8b5cf6' }}><IconComp /></span>
+                  </div>
+                  <div className="text-[10px] md:text-xs font-medium" style={{ color: isActive ? 'white' : '#9ca3af' }}>{t.title.split(' ')[0]}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Active Touchpoint Detail */}
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTouch} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+              className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex-1">
+                  <h3 className="text-white font-bold text-xl mb-2">{TOUCHPOINTS[activeTouch].title}</h3>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{TOUCHPOINTS[activeTouch].description}</p>
+                </div>
+                <div className="text-center md:text-right">
+                  <div className="text-3xl font-bold text-white">{TOUCHPOINTS[activeTouch].stat}</div>
+                  <div className="text-neutral-500 text-sm">{TOUCHPOINTS[activeTouch].statLabel}</div>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ PRODUCT VS PERCEPTION SLIDE ============
+    const ProductVsPerceptionSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Product vs Perception Engineering</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* What Most Focus On */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+            <div className="flex items-center gap-2 mb-4">
+              <div className="px-2 py-1 rounded-full bg-neutral-700 text-neutral-300 text-xs font-semibold">COMMON</div>
+            </div>
+            <h3 className="text-neutral-400 font-bold uppercase text-sm tracking-wider mb-4">What Most Sellers Focus On</h3>
+            <ul className="space-y-3">
+              {['Product features and specs', 'Manufacturing cost optimization', 'Functional performance', 'Shipping the physical item'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.08 }}
+                  className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-full bg-neutral-700 flex items-center justify-center text-neutral-400 text-xs">{i + 1}</span>
+                  <span className="text-neutral-400 text-sm">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* What Actually Drives Sales */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 relative" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 0 30px rgba(139, 92, 246, 0.3)' }}>
+            <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent)' }} />
+            <div className="absolute top-4 right-4 px-2 py-1 rounded-full bg-white/20 text-white text-xs font-bold">WINS</div>
+            <h3 className="text-white/80 font-bold uppercase text-sm tracking-wider mb-4">What Actually Drives Sales</h3>
+            <ul className="space-y-3">
+              {['Packaging and unboxing experience', 'Visual presentation and photography', 'Price positioning and anchoring', 'Every touchpoint\'s perceived quality'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.08 }}
+                  className="flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-white text-xs">{i + 1}</span>
+                  <span className="text-white text-sm font-medium">{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // ============ SKINCARE CASE STUDY SLIDE ============
+    const SkincareCaseStudySlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>Case Study</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">DTC Skincare Application</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          {/* Before */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            className="rounded-2xl p-5 border-2 border-red-200 bg-red-50">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white">
+                <Icons.X />
+              </div>
+              <span className="font-bold text-red-700">Feature-Focused</span>
+            </div>
+            <p className="text-neutral-700 text-sm leading-relaxed mb-4">
+              "Our serum contains hyaluronic acid and vitamin C. Clinically proven results in 4 weeks."
+            </p>
+            <div className="flex items-center gap-2 text-red-600 text-xs">
+              <Icons.TrendingUp />
+              <span>Conversion: 1.2%</span>
+            </div>
+          </motion.div>
+
+          {/* After */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-5 border-2 border-green-200 bg-green-50 relative">
+            <div className="absolute -top-3 right-4 px-3 py-1 rounded-full bg-green-500 text-white text-xs font-bold">10x BETTER</div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white">
+                <Icons.Check />
+              </div>
+              <span className="font-bold text-green-700">Experience-Engineered</span>
+            </div>
+            <p className="text-neutral-700 text-sm leading-relaxed mb-4">
+              Luxury glass bottle with weighted cap. Subtle gold accents. Opening reveals embossed tissue paper. The serum itself? <span className="font-semibold">Same formula.</span>
+            </p>
+            <div className="flex items-center gap-2 text-green-600 text-xs">
+              <Icons.TrendingUp />
+              <span>Conversion: 8.7%</span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Insight */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="flex items-center justify-center gap-2 text-amber-400 text-sm">
+            <Icons.Zap />
+            <span>Customers don't buy serums. They buy the feeling of luxury self-care. Engineer THAT experience.</span>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ MASTERCARD EXPERIMENT SLIDE ============
+    const MasterCardExperimentSlide = () => {
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>Experiment</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The MasterCard Logo Effect</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6 mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="w-20 h-20 rounded-xl bg-white flex items-center justify-center p-2">
+                <div className="flex">
+                  <div className="w-8 h-8 rounded-full bg-red-500" />
+                  <div className="w-8 h-8 rounded-full bg-amber-500 -ml-3" />
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-white font-bold text-lg mb-2">Simply displaying the logo...</h3>
+                <p className="text-neutral-400 text-sm">
+                  Researchers found that a MasterCard logo near products increased customer spending -
+                  <span className="text-amber-400 font-semibold"> without customers using MasterCard to pay.</span>
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 0 40px rgba(139, 92, 246, 0.4)' }}>
+                <div className="text-5xl md:text-6xl font-bold text-white mb-2">
+                  +<AnimatedCounter value={30} suffix="%" />
+                </div>
+                <div className="text-white/80 text-lg">Increase in spending</div>
+                <div className="text-white/60 text-sm mt-2">Just from logo presence. No card used.</div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ PERCEPTION EQUATION SLIDE ============
+    const PerceptionEquationSlide = () => {
+      const [animated, setAnimated] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setAnimated(true), 500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Perception Equation</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-5 gap-2 md:gap-4 items-center mb-8">
+            {/* Product Quality */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+              className="col-span-2 rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="text-3xl md:text-4xl font-bold text-neutral-400 mb-2">50%</div>
+              <div className="text-sm font-semibold text-white mb-1">Product Quality</div>
+              <div className="text-xs text-neutral-500">Actual performance</div>
+              <motion.div className="h-2 rounded-full bg-neutral-800 mt-3 overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: animated ? '100%' : 0 }} transition={{ duration: 1, delay: 0.5 }}
+                  className="h-full rounded-full bg-neutral-500" />
+              </motion.div>
+            </motion.div>
+
+            {/* Plus */}
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
+              className="text-2xl md:text-3xl font-bold text-neutral-400 text-center">+</motion.div>
+
+            {/* Perception Quality */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="col-span-2 rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' }}>
+              <div className="text-3xl md:text-4xl font-bold text-white mb-2">50%</div>
+              <div className="text-sm font-semibold text-white mb-1">Perception Quality</div>
+              <div className="text-xs text-white/70">Packaging + Price + Brand</div>
+              <motion.div className="h-2 rounded-full bg-white/30 mt-3 overflow-hidden">
+                <motion.div initial={{ width: 0 }} animate={{ width: animated ? '100%' : 0 }} transition={{ duration: 1, delay: 0.7 }}
+                  className="h-full rounded-full bg-white" />
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Equals Experience */}
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', boxShadow: '0 0 40px rgba(16, 185, 129, 0.3)' }}>
+            <div className="text-5xl md:text-6xl font-bold text-white mb-2">=</div>
+            <div className="text-4xl md:text-5xl font-bold text-white mb-2">100%</div>
+            <div className="text-lg font-semibold text-white/90">Customer Experience</div>
+            <div className="text-sm text-white/70 mt-1">What they actually feel and remember</div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ IMPACT STATS SLIDE ============
+    const ImpactStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>Impact</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Perception Engineering Results</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { value: 40, suffix: '%', label: 'More effective', subtext: 'Branded vs generic perception' },
+            { value: 30, suffix: '%', label: 'More spending', subtext: 'With trust symbols present' },
+            { value: 10, suffix: 'x', label: 'Higher perceived value', subtext: 'Premium packaging vs basic' }
+          ].map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+              className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: '#8b5cf6' }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              </div>
+              <div className="text-white font-semibold mb-1">{stat.label}</div>
+              <div className="text-neutral-500 text-sm">{stat.subtext}</div>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
-    const SplitSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-6">
-            <h3 className="font-bold text-neutral-500 text-sm uppercase tracking-wider mb-4">{data.leftContent.label}</h3>
-            <ul className="space-y-3">
-              {data.leftContent.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-neutral-600 text-sm">{item}</span>
-                </li>
-              ))}
-            </ul>
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+          className="rounded-2xl p-8 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="h-1 w-full absolute top-0 left-0 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }}
+            className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 0 30px rgba(139, 92, 246, 0.4)' }}>
+            <Icons.Brain />
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-6" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-            <h3 className="font-bold text-white/80 text-sm uppercase tracking-wider mb-4">{data.rightContent.label}</h3>
-            <ul className="space-y-3">
-              {data.rightContent.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-white text-sm font-medium">{item}</span>
-                </li>
-              ))}
-            </ul>
+
+          <motion.h3 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="text-2xl md:text-3xl font-bold text-white mb-4">The Placebo Paradox</motion.h3>
+
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-neutral-300 text-base md:text-lg leading-relaxed mb-6">
+            The best products don't just work - they work better because customers <span className="text-white font-semibold">believe</span> they will.
+            Perception isn't separate from reality. <span className="font-semibold" style={{ color: '#8b5cf6' }}>Perception IS reality.</span>
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(139, 92, 246, 0.2)' }}>
+            <Icons.Lightbulb />
+            <span className="text-sm font-medium" style={{ color: '#8b5cf6' }}>Engineer the belief, and reality follows</span>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     );
 
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -440,9 +839,10 @@
       );
     };
 
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 6px 24px rgba(139, 92, 246, 0.35)' }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">Your product is a placebo. Perception shapes reality. Engineer every touchpoint, not just the product itself.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 max-w-md w-full">
@@ -456,6 +856,7 @@
       </div>
     );
 
+    // ============ LESSON APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -469,7 +870,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -508,11 +908,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'split': return <SplitSlide data={slide} />;
+          case 'tylenol-paradox': return <TylenolParadoxSlide />;
+          case 'brain-mechanism': return <BrainMechanismSlide />;
+          case 'experiments-grid': return <ExperimentsGridSlide />;
+          case 'touchpoints-carousel': return <TouchpointsCarouselSlide />;
+          case 'product-vs-perception': return <ProductVsPerceptionSlide />;
+          case 'skincare-case-study': return <SkincareCaseStudySlide />;
+          case 'mastercard-experiment': return <MasterCardExperimentSlide />;
+          case 'perception-equation': return <PerceptionEquationSlide />;
+          case 'impact-stats': return <ImpactStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
@@ -536,7 +941,7 @@
           </div>
           <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? '#8b5cf6' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
           <AnimatePresence>

@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -24,23 +21,9 @@
       --accent-rgb: 20, 184, 166;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: transparent;
-      -webkit-font-smoothing: antialiased;
-    }
-    .title-font {
-      font-family: 'Fraunces', serif;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-    h1, h2, h3, .slide-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
@@ -53,189 +36,97 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    // ============================================
-    // GET USER NAME FROM URL PARAM
-    // ============================================
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
       return params.get('userName') || 'Builder';
     };
 
-    // ============================================
-    // LESSON CONFIGURATION
-    // ============================================
     const LESSON_CONFIG = {
       id: 'persuasion-stack',
       title: 'The Persuasion Stack',
       description: 'Layer your skills from foundation to mastery - each level amplifies the one below.',
       accentColor: '#14b8a6',
-      duration: '6 min',
-      nextLesson: {
-        id: 'emotional-precision',
-        title: 'Emotional Precision',
-        teaser: 'The specific emotions that trigger buying decisions - and how to activate them on command.'
-      }
+      duration: '7 min',
+      nextLesson: { id: 'emotional-precision', title: 'Emotional Precision', teaser: 'The specific emotions that trigger buying decisions - and how to activate them on command.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
+      const handleReport = (e) => { e.stopPropagation(); e.preventDefault(); if (window.parent !== window) { window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*'); } };
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }} onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     // ============================================
-    // TIME-BASED WELCOME ANIMATIONS (GIF + Greeting pairs)
-    // Each time slot has matched GIF + greeting combinations
+    // CONFIGURATION DATA
     // ============================================
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
+    const STACK_LAYERS = [
+      { num: '4', title: 'Relentless Refinement', subtitle: 'MASTERY', description: '19 drafts. A/B test everything. The 16th coat of paint.', color: '#8b5cf6' },
+      { num: '3', title: "Copywriter's Toolkit", subtitle: 'EXECUTION', description: 'PAS, AIDA frameworks. Headlines and bullets do 80% of the work.', color: '#3b82f6' },
+      { num: '2', title: 'Message Architecture', subtitle: 'STRATEGY', description: 'Bridge the gap between painful present and desired future.', color: '#f59e0b' },
+      { num: '1', title: 'Human Psychology', subtitle: 'FOUNDATION', description: 'Pain is 2X stronger than pleasure. Fear of loss drives action.', color: '#14b8a6' }
+    ];
 
+    const CORE_DRIVERS = [
+      { icon: 'DollarSign', title: 'Make Money', desc: 'This product helps me earn more, save more, or build wealth', color: '#10b981' },
+      { icon: 'Clock', title: 'Save Time', desc: 'This gives me hours back. I can focus on what matters.', color: '#3b82f6' },
+      { icon: 'Zap', title: 'Avoid Effort', desc: 'This makes my life easier. Autopilot instead of manual grind.', color: '#f59e0b' },
+      { icon: 'AlertTriangle', title: 'Escape Pain', desc: 'This solves my problem. The frustration ends today.', color: '#ef4444' },
+      { icon: 'Star', title: 'Gain Status', desc: 'This makes me look good. I become the person I want to be.', color: '#8b5cf6' }
+    ];
+
+    const FRAMEWORKS = [
+      { icon: 'Target', title: 'PAS Framework', desc: 'Pain → Agitate → Solve', detail: 'Perfect for ads, emails, product pages', color: '#ef4444' },
+      { icon: 'TrendingUp', title: 'AIDA Framework', desc: 'Attention → Interest → Desire → Action', detail: 'For long-form landing pages', color: '#3b82f6' },
+      { icon: 'List', title: 'Bullet Mastery', desc: 'Features tell. Benefits sell.', detail: 'But curiosity bullets convert.', color: '#14b8a6' }
+    ];
+
+    // ============================================
+    // CELEBRATION/EMPATHY GIFS
+    // ============================================
     const celebrationGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4', // Victory Dance
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4', // Jump Celebration
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4', // Air Guitar
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4', // Running Man
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4', // Standing Ovation
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4', // Fast Clap
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4', // Clap Above Head
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4' // Slow to Fast Clap
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
-    const getRandomCelebrationGif = () => {
-      return celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-    };
-
-    // ============================================
-    // EMPATHY GIFS (Quiz Incorrect Answer)
-    // Same settings as celebration GIFs: 60% height, bottom, behind content
-    // ============================================
     const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4', // Thumbs Down
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4', // Sad Head Shake
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4', // Facepalm
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4', // Looking Down Sad
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4', // Tear Wipe
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4', // Sad Sigh
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4', // Disappointed Slouch
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4', // Hand on Forehead Sad
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4' // Slow Sad Nod
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
-    const getRandomEmpathyGif = () => {
-      return empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-    };
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     // ============================================
-    // SLIDE DATA - ECOMMERCE FOCUSED
+    // SLIDE DATA
     // ============================================
     const slides = [
-      { type: 'welcome', learningGoals: [
-        'Why amateurs throw tactics at the wall while masters build layer by layer',
-        'The 4-layer skill stack that separates $10K/month from $100K/month stores',
-        'How pain drives 2X more action than pleasure - and how to leverage it ethically'
-      ]},
-      { type: 'hook', title: 'People Love to Buy', body: 'But they hate to be sold. The amateur pushes. The master pulls. The difference? A stack of skills, layered in the right order. Most store owners throw tactics everywhere. Masters build from the foundation up.', punchline: 'Miss one layer, the whole stack crumbles.' },
-      { type: 'content', subtitle: 'The Truth', title: 'Communication That Sells', body: 'Gary Halbert said it: "You are only one sales letter away from being rich." Not a better product. Not cheaper prices. Better communication. The right words in the right order at the right time.', callout: 'Your product pages are sales letters. Your emails are sales letters. Your ads are sales letters.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Gary-Halbert-removebg-preview.png', personName: 'Gary Halbert' },
-      { type: 'visual', visualType: 'stack' },
-      { type: 'content', subtitle: 'Layer 1: Foundation', title: 'Human Psychology', body: 'At the core lies a simple truth: people move toward pleasure and away from pain. But here\'s what most miss - pain is the stronger motivator. Fear of loss outweighs promise of gain by 2:1. Your job isn\'t to sell dreams. It\'s to amplify pain until action becomes inevitable.', highlight: { label: 'The Core', text: 'Make latent pain extreme. That\'s where sales happen.' }},
-      { type: 'cards', title: 'The 5 Core Drivers', subtitle: 'Every Shopify sale stems from one:', cards: [
-        { icon: 'money', title: 'Make Money', desc: 'This product helps me earn more, save more, or build wealth' },
-        { icon: 'time', title: 'Save Time', desc: 'This gives me hours back. I can focus on what matters.' },
-        { icon: 'effort', title: 'Avoid Effort', desc: 'This makes my life easier. Autopilot instead of manual grind.' },
-        { icon: 'pain', title: 'Escape Pain', desc: 'This solves my problem. The frustration ends today.' },
-        { icon: 'status', title: 'Gain Status', desc: 'This makes me look good. I become the person I want to be.' }
-      ]},
-      { type: 'content', subtitle: 'Layer 2: Strategy', title: 'Message Architecture', body: 'Every sale bridges two points: their painful present and their desired future. The gap between these points? That\'s where your product lives. Your job is to make that gap feel unbearable. Take latent pain and make it extreme.', callout: 'Your Shopify store isn\'t selling products. It\'s selling the bridge across their gap.' },
-      { type: 'example', subtitle: 'Pain Escalation Example', bad: { label: 'Weak Pain', text: '"Are your ads not performing as well as you\'d like? Try our tool."' }, good: { label: 'Extreme Pain', text: '"You\'re burning $200/day on ads that don\'t convert. That\'s $73K/year down the drain. How much longer can you afford to bleed cash?"' }, insight: 'Make the pain visceral. Make it expensive. Make it urgent. Then offer the solution.' },
-      { type: 'visual', visualType: 'pain' },
-      { type: 'content', subtitle: 'Layer 3: Execution', title: 'The Copywriter\'s Toolkit', body: 'Frameworks are your weapons. PAS for short-form (Pain → Agitate → Solve). AIDA for long-form (Attention → Interest → Desire → Action). But remember: headlines and bullets do 80% of the work. Everything else is supporting cast.', highlight: { label: 'The 80/20', text: 'Master headlines and bullets. That\'s where $100K months live.' }},
-      { type: 'cards', title: 'Framework Arsenal', subtitle: 'Choose your weapon based on format:', cards: [
-        { icon: 'pas', title: 'PAS Framework', desc: 'Pain → Agitate → Solve. Perfect for ads, emails, product pages.' },
-        { icon: 'aida', title: 'AIDA Framework', desc: 'Attention → Interest → Desire → Action. For long-form landing pages.' },
-        { icon: 'bullets', title: 'Bullet Mastery', desc: 'Features tell. Benefits sell. But curiosity bullets convert.' }
-      ]},
-      { type: 'example', subtitle: 'Headline Power', bad: { label: 'Feature Focus', text: '"Premium organic yoga mats with non-slip surface and eco-friendly materials"' }, good: { label: 'Transformation Focus', text: '"How Sarah Lost 12 Pounds Doing Yoga in Her Living Room (No Gym Membership Required)"' }, insight: 'People don\'t buy yoga mats. They buy the version of themselves who does yoga at 6am.' },
-      { type: 'content', subtitle: 'Layer 4: Mastery', title: 'Relentless Refinement', body: 'The difference between good and legendary? Iteration. Alex Hormozi wrote 19 drafts of $100M Leads. The best returns come at the end - the 16th coat of paint, the 19th draft. Test for validity AND utility. A/B test everything.', callout: 'Most stores quit after draft 3. Six-figure stores keep going until draft 19.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc81vaj73li2pag9pt7-removebg-preview.png', personName: 'Alex Hormozi' },
-      { type: 'cards', title: 'The Testing Mindset', subtitle: 'What high-converting stores do:', cards: [
-        { icon: 'test1', title: 'Test Headlines', desc: 'The same product page with 5 different headlines. Winner gets 3.2X conversion.' },
-        { icon: 'test2', title: 'Test Pain Points', desc: 'Ad A: "Save time." Ad B: "Stop wasting 4 hours daily." B wins 2.1X.' },
-        { icon: 'test3', title: 'Test Everything', desc: 'Button color, CTA copy, guarantee length, video vs image. Tiny tweaks = massive gains.' }
-      ]},
-      { type: 'content', subtitle: 'The Real Leverage', title: 'The 80/20 of Copywriting', body: 'Here\'s what nobody tells you: Headlines and bullets do 80% of the work. Your body copy? Supporting cast. If your headline doesn\'t stop the scroll, nothing else matters. If your bullets don\'t sell, your paragraphs won\'t save you.', highlight: { label: 'The Truth', text: 'Master the 20% that drives 80% of results. That\'s the persuasion stack.' }},
-      { type: 'quiz', question: 'Why does pain drive more action than pleasure in eCommerce?', options: ['Pain is easier to describe in marketing copy', 'Fear of loss is 2X stronger than desire for gain - it creates urgency and forces action', 'People are naturally pessimistic and respond to negative emotions', 'Pain-based marketing is the only ethical approach'], correctIndex: 1, feedback: { correct: 'Exactly. Fear of loss outweighs promise of gain 2:1. Your customer isn\'t buying a Shopify app because it\'s nice to have - they\'re buying because NOT having it costs them $73K/year. Pain creates urgency. Pleasure creates "maybe later."', incorrect: 'The answer is psychological: Fear of loss is 2X stronger than desire for gain. Your customer moves faster to avoid losing $73K than to gain $73K. That\'s why pain-focused copy converts higher - it triggers the urgency response.' }},
+      { type: 'welcome', learningGoals: ['Why amateurs throw tactics at the wall while masters build layer by layer', 'The 4-layer skill stack that separates $10K/month from $100K/month stores', 'How pain drives 2X more action than pleasure - and how to leverage it ethically'] },
+      { type: 'hook', title: 'People Love to Buy', subtext: 'But they hate to be sold. The amateur pushes. The master pulls. The difference? A stack of skills, layered in the right order. Most store owners throw tactics everywhere. Masters build from the foundation up.' },
+      { type: 'gary-halbert-quote' },
+      { type: 'four-layer-stack' },
+      { type: 'psychology-foundation' },
+      { type: 'five-core-drivers' },
+      { type: 'message-architecture' },
+      { type: 'pain-escalation' },
+      { type: 'pain-escalator' },
+      { type: 'framework-arsenal' },
+      { type: 'headline-power' },
+      { type: 'refinement-mastery' },
+      { type: 'eighty-twenty-rule' },
+      { type: 'impact-stats' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why does pain drive more action than pleasure in eCommerce?', options: ['Pain is easier to describe in marketing copy', 'Fear of loss is 2X stronger than desire for gain - it creates urgency and forces action', 'People are naturally pessimistic and respond to negative emotions', 'Pain-based marketing is the only ethical approach'], correctIndex: 1, feedback: { correct: 'Exactly. Fear of loss outweighs promise of gain 2:1. Your customer isn\'t buying a Shopify app because it\'s nice to have - they\'re buying because NOT having it costs them $73K/year. Pain creates urgency. Pleasure creates "maybe later."', incorrect: 'The answer is psychological: Fear of loss is 2X stronger than desire for gain. Your customer moves faster to avoid losing $73K than to gain $73K. That\'s why pain-focused copy converts higher - it triggers the urgency response.' } },
       { type: 'completion' }
     ];
 
     // ============================================
-    // ICONS (Minimalist SVG)
+    // ICONS
     // ============================================
     const Icons = {
       ArrowLeft: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
@@ -243,212 +134,533 @@
       Clock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      Money: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-      Time: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Effort: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20"/><path d="m15 19-3 3-3-3"/><path d="m19 9 3 3-3 3"/><path d="M2 12h20"/><path d="m5 9-3 3 3 3"/></svg>,
-      Pain: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
-      Status: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
-      PAS: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-      AIDA: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
-      Bullets: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>,
-      Test1: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>,
-      Test2: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="21.5 2 9 2 5.5 5.5 12 12"/><path d="m16 16 5 5"/><path d="m16 21 5-5"/></svg>,
-      Test3: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      List: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>,
+      Quote: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.94Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.94Z"/></svg>,
+      Layers: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      ArrowRightCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>,
+      RefreshCw: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Edit: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    };
+
+    const IconComponents = {
+      DollarSign: Icons.DollarSign,
+      Clock: Icons.Clock,
+      Zap: Icons.Zap,
+      AlertTriangle: Icons.AlertTriangle,
+      Star: Icons.Star,
+      Target: Icons.Target,
+      TrendingUp: Icons.TrendingUp,
+      List: Icons.List
     };
 
     // ============================================
-    // VISUAL COMPONENTS (25% larger)
+    // ANIMATED COUNTER COMPONENT
     // ============================================
-    const StackVisual = () => {
-      const layers = [
-        { title: 'Relentless Refinement', subtitle: 'MASTERY', color: 'from-teal-600 to-teal-700', width: '85%' },
-        { title: "Copywriter's Toolkit", subtitle: 'EXECUTION', color: 'from-teal-500 to-teal-600', width: '90%' },
-        { title: 'Message Architecture', subtitle: 'STRATEGY', color: 'from-teal-400 to-teal-500', width: '95%' },
-        { title: 'Human Psychology', subtitle: 'FOUNDATION', color: 'from-teal-300 to-teal-400', width: '100%' }
-      ];
-      return (
-        <div className="w-full h-full flex items-center justify-center p-8">
-          <div className="bg-neutral-900 rounded-3xl p-8 md:p-12 w-full max-w-xl">
-            <p className="text-center text-neutral-500 text-sm mb-8 uppercase tracking-widest">The 4-Layer Stack</p>
-            <div className="space-y-3">
-              {layers.map((layer, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15, duration: 0.5 }} className="mx-auto" style={{ width: layer.width }}>
-                  <div className={`rounded-xl p-5 text-white bg-gradient-to-r ${layer.color}`} style={{ boxShadow: `0 4px 20px rgba(var(--accent-rgb), 0.25)` }}>
-                    <div className="text-xs opacity-70 mb-1">{layer.subtitle}</div>
-                    <div className="text-lg font-bold">{layer.title}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="text-center text-neutral-600 text-sm mt-8">
-              Each layer amplifies the one below. Build from foundation to mastery.
-            </motion.p>
-          </div>
-        </div>
-      );
-    };
-
-    const PainVisual = () => {
-      const levels = [
-        { level: 'Extreme Pain', desc: 'Fire behind them - forces immediate action', width: '100%', color: 'bg-red-600' },
-        { level: 'Realized Pain', desc: 'They know something is wrong', width: '65%', color: 'bg-orange-500' },
-        { level: 'Latent Pain', desc: "They don't know they have a problem", width: '30%', color: 'bg-neutral-600' }
-      ];
-      return (
-        <div className="w-full h-full flex items-center justify-center p-8">
-          <div className="w-full max-w-3xl">
-            <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">The Pain Escalator</p>
-            <div className="space-y-4">
-              {levels.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="font-semibold text-neutral-900">{item.level}</span>
-                    <span className="text-neutral-500">{item.desc}</span>
-                  </div>
-                  <div className="h-3 bg-neutral-200 rounded-full overflow-hidden">
-                    <motion.div className={`h-full ${item.color} rounded-full`} initial={{ width: 0 }} animate={{ width: item.width }} transition={{ duration: 0.8, delay: 0.3 + i * 0.15 }} />
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }} className="text-center text-neutral-500 text-sm mt-8">
-              Your job: Take latent pain and make it extreme. That's where sales happen.
-            </motion.p>
-          </div>
-        </div>
-      );
-    };
-
-    // ============================================
-    // SLIDE COMPONENTS (25% larger content)
-    // ============================================
-
-    // Welcome Slide - GIF rendered at app level
-    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
-      // Show GIF on mount, hide on unmount
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
       useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+        let start = 0;
+        const end = parseInt(target);
+        if (start === end) return;
+        const timer = setInterval(() => {
+          start += Math.ceil(end / (duration / 50));
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 50);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
+    };
 
+    // ============================================
+    // CUSTOM SLIDE COMPONENTS
+    // ============================================
+
+    // Gary Halbert Quote Slide
+    const GaryHalbertQuoteSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl w-full">
+          <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '48px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #14b8a6, transparent)' }} />
+            <div className="flex items-start gap-6">
+              <div className="flex-shrink-0">
+                <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #14b8a6, #0d9488)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icons.Quote />
+                </div>
+              </div>
+              <div className="flex-1">
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="text-2xl md:text-3xl text-white leading-relaxed mb-6" style={{ fontFamily: 'Fraunces, serif', fontWeight: 600 }}>
+                  "You are only one sales letter away from being rich."
+                </motion.p>
+                <div className="flex items-center gap-4">
+                  <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Gary-Halbert-removebg-preview.png" alt="Gary Halbert" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(20, 184, 166, 0.5)' }} />
+                  <div>
+                    <p className="text-white font-semibold">Gary Halbert</p>
+                    <p className="text-neutral-400 text-sm">Legendary Copywriter</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-neutral-400 mt-8 text-center">
+              Not a better product. Not cheaper prices. Better communication. The right words in the right order at the right time.
+            </motion.p>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Four Layer Stack Slide
+    const FourLayerStackSlide = () => {
+      const [activeLayer, setActiveLayer] = useState(3);
+      useEffect(() => {
+        const timer = setInterval(() => { setActiveLayer(prev => (prev + 1) % 4); }, 2500);
+        return () => clearInterval(timer);
+      }, []);
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          {/* Main content - centered, z-20 to stay above GIF */}
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            {/* Lesson Title */}
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
-              {LESSON_CONFIG.title}
-            </motion.h1>
-
-            {/* Personalized greeting */}
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3">
-              <Icons.Clock />
-              <span>{LESSON_CONFIG.duration}</span>
+        <div className="h-full flex items-center justify-center p-8">
+          <div className="max-w-4xl w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(20, 184, 166, 0.1)', color: '#14b8a6' }}>The System</span>
+              <h2 className="slide-title text-3xl md:text-4xl text-black">The 4-Layer Persuasion Stack</h2>
             </motion.div>
-
-            {/* In This Lesson - 15% bigger */}
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Button - 10% bigger, no glow */}
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              Let's Go
-            </motion.button>
+            <div className="space-y-3">
+              {STACK_LAYERS.map((layer, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} onClick={() => setActiveLayer(3 - i)} className="cursor-pointer" style={{ width: `${100 - i * 5}%`, marginLeft: 'auto', marginRight: 'auto' }}>
+                  <div style={{ background: activeLayer === (3 - i) ? `linear-gradient(135deg, ${layer.color}, ${layer.color}dd)` : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px 24px', position: 'relative', overflow: 'hidden', transition: 'all 0.3s ease', boxShadow: activeLayer === (3 - i) ? `0 0 30px ${layer.color}40` : 'none' }}>
+                    {activeLayer === (3 - i) && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, white, transparent)` }} />}
+                    <div className="flex items-center gap-4">
+                      <span className="text-2xl font-bold" style={{ color: activeLayer === (3 - i) ? 'white' : layer.color }}>{layer.num}</span>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs font-semibold tracking-wider" style={{ color: activeLayer === (3 - i) ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.5)' }}>{layer.subtitle}</span>
+                        </div>
+                        <h3 className="text-lg font-bold text-white">{layer.title}</h3>
+                      </div>
+                    </div>
+                    {activeLayer === (3 - i) && (
+                      <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="text-white/70 text-sm mt-3 pl-10">{layer.description}</motion.p>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center text-neutral-500 text-sm mt-6">Each layer amplifies the one below. Build from foundation to mastery.</motion.p>
           </div>
         </div>
       );
     };
 
-    // Hook Slide (25% larger)
-    const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+    // Psychology Foundation Slide
+    const PsychologyFoundationSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <div className="max-w-3xl w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(20, 184, 166, 0.1)', color: '#14b8a6' }}>Layer 1: Foundation</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black mb-2">Human Psychology</h2>
+            <p className="text-neutral-500">People move toward pleasure and away from pain. But here's what most miss...</p>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const VisualSlide = ({ data }) => (
-      <div className="h-full flex items-center justify-center">
-        {data.visualType === 'stack' && <StackVisual />}
-        {data.visualType === 'pain' && <PainVisual />}
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    // Cards Slide (25% larger)
-    const CardsSlide = ({ data }) => {
-      const getIcon = (iconName) => {
-        const icons = { money: Icons.Money, time: Icons.Time, effort: Icons.Effort, pain: Icons.Pain, status: Icons.Status, pas: Icons.PAS, aida: Icons.AIDA, bullets: Icons.Bullets, test1: Icons.Test1, test2: Icons.Test2, test3: Icons.Test3 };
-        const IconComp = icons[iconName];
-        return IconComp ? <IconComp /> : null;
-      };
-      return (
-        <div className="h-full flex flex-col justify-center px-8 md:px-12 slide-scroll overflow-y-auto py-10">
-          <div className="text-center mb-6">
-            {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-neutral-500 text-sm mb-2">{data.subtitle}</motion.p>}
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-2xl md:text-3xl text-black">{data.title}</motion.h2>
+          <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #14b8a6, transparent)' }} />
+            <div className="text-center mb-8">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }} className="inline-flex items-center gap-3">
+                <span className="text-5xl md:text-6xl font-bold" style={{ color: '#ef4444' }}>2</span>
+                <span className="text-3xl text-white">:</span>
+                <span className="text-5xl md:text-6xl font-bold" style={{ color: '#10b981' }}>1</span>
+              </motion.div>
+              <p className="text-neutral-400 mt-4">Pain is 2X stronger than pleasure</p>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Icons.AlertTriangle />
+                  <span className="text-white font-semibold">Fear of Loss</span>
+                </div>
+                <div className="h-4 rounded-full overflow-hidden" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                  <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ delay: 0.5, duration: 1 }} className="h-full rounded-full" style={{ background: '#ef4444' }} />
+                </div>
+                <p className="text-neutral-400 text-sm mt-2">Drives immediate action</p>
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <Icons.Star />
+                  <span className="text-white font-semibold">Promise of Gain</span>
+                </div>
+                <div className="h-4 rounded-full overflow-hidden" style={{ background: 'rgba(16, 185, 129, 0.2)' }}>
+                  <motion.div initial={{ width: 0 }} animate={{ width: '50%' }} transition={{ delay: 0.7, duration: 1 }} className="h-full rounded-full" style={{ background: '#10b981' }} />
+                </div>
+                <p className="text-neutral-400 text-sm mt-2">Creates "maybe later"</p>
+              </div>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
-            {data.cards.map((card, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-neutral-50 rounded-xl p-5 border border-neutral-100">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))`, color: 'var(--accent)' }}>{getIcon(card.icon)}</div>
-                <h4 className="font-semibold text-black text-base mb-2">{card.title}</h4>
-                <p className="text-neutral-500 text-sm leading-relaxed">{card.desc}</p>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="text-center mt-6 text-neutral-600 font-medium">Your job isn't to sell dreams. It's to amplify pain until action becomes inevitable.</motion.p>
+        </div>
+      </div>
+    );
+
+    // Five Core Drivers Slide
+    const FiveCoreDriversSlide = () => (
+      <div className="h-full flex flex-col justify-center px-8 py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(20, 184, 166, 0.1)', color: '#14b8a6' }}>The Core Drivers</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Every Shopify Sale Stems From One</h2>
+        </motion.div>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 max-w-5xl mx-auto">
+          {CORE_DRIVERS.map((driver, i) => {
+            const IconComp = IconComponents[driver.icon];
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${driver.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3" style={{ background: `${driver.color}20`, color: driver.color }}>
+                  {IconComp && <IconComp />}
+                </div>
+                <h4 className="text-white font-semibold text-sm mb-1">{driver.title}</h4>
+                <p className="text-neutral-400 text-xs leading-relaxed">{driver.desc}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+
+    // Message Architecture Slide
+    const MessageArchitectureSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <div className="max-w-4xl w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>Layer 2: Strategy</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black">Message Architecture</h2>
+          </motion.div>
+          <div className="flex items-center justify-center gap-4 md:gap-8">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)', borderRadius: '20px', padding: '24px', textAlign: 'center', flex: 1, maxWidth: '200px' }}>
+              <Icons.AlertTriangle />
+              <h3 className="text-white font-bold text-lg mt-3">Painful Present</h3>
+              <p className="text-white/70 text-sm mt-2">Where they are now</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }} className="flex flex-col items-center">
+              <div style={{ background: 'linear-gradient(135deg, #14b8a6, #0d9488)', borderRadius: '50%', width: '80px', height: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 40px rgba(20, 184, 166, 0.4)' }}>
+                <span className="text-white font-bold">GAP</span>
+              </div>
+              <p className="text-neutral-500 text-sm mt-3 text-center">Your product lives here</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }} style={{ background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '20px', padding: '24px', textAlign: 'center', flex: 1, maxWidth: '200px' }}>
+              <Icons.Star />
+              <h3 className="text-white font-bold text-lg mt-3">Desired Future</h3>
+              <p className="text-white/70 text-sm mt-2">Where they want to be</p>
+            </motion.div>
+          </div>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-8">
+            <p className="text-neutral-600 font-medium">Your job is to make that gap feel unbearable. Take latent pain and make it extreme.</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Pain Escalation Slide
+    const PainEscalationSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <div className="max-w-4xl w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>Pain Escalation</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black">Weak vs. Extreme Pain</h2>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', position: 'relative', overflow: 'hidden' }}>
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>WEAK</span>
+              <p className="text-white text-lg leading-relaxed">"Are your ads not performing as well as you'd like? Try our tool."</p>
+              <div className="mt-4 flex items-center gap-2">
+                <Icons.X />
+                <span className="text-neutral-400 text-sm">Vague, no urgency, forgettable</span>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' }}>EXTREME</span>
+              <p className="text-white text-lg leading-relaxed">"You're burning $200/day on ads that don't convert. That's <span style={{ color: '#ef4444', fontWeight: 'bold' }}>$73K/year</span> down the drain. How much longer can you afford to bleed cash?"</p>
+              <div className="mt-4 flex items-center gap-2">
+                <Icons.Check />
+                <span className="text-neutral-400 text-sm">Visceral, expensive, urgent</span>
+              </div>
+            </motion.div>
+          </div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-6 text-neutral-500 text-sm">Make the pain visceral. Make it expensive. Make it urgent. Then offer the solution.</motion.p>
+        </div>
+      </div>
+    );
+
+    // Pain Escalator Slide
+    const PainEscalatorSlide = () => {
+      const levels = [
+        { level: 'Extreme Pain', desc: 'Fire behind them - forces immediate action', width: 100, color: '#ef4444' },
+        { level: 'Realized Pain', desc: 'They know something is wrong', width: 65, color: '#f59e0b' },
+        { level: 'Latent Pain', desc: "They don't know they have a problem", width: 30, color: '#6b7280' }
+      ];
+      return (
+        <div className="h-full flex items-center justify-center p-8">
+          <div className="max-w-3xl w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Escalator</span>
+              <h2 className="slide-title text-3xl md:text-4xl text-black">Pain Levels</h2>
+            </motion.div>
+            <div className="space-y-6">
+              {levels.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-semibold text-black">{item.level}</span>
+                    <span className="text-neutral-500 text-sm">{item.desc}</span>
+                  </div>
+                  <div className="h-6 bg-neutral-200 rounded-full overflow-hidden">
+                    <motion.div className="h-full rounded-full" initial={{ width: 0 }} animate={{ width: `${item.width}%` }} transition={{ duration: 1, delay: 0.4 + i * 0.15 }} style={{ background: item.color }} />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="mt-8 p-4 rounded-xl" style={{ background: 'rgba(20, 184, 166, 0.1)' }}>
+              <p className="text-center text-neutral-700 font-medium">Your job: Take latent pain and make it extreme. That's where sales happen.</p>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Framework Arsenal Slide
+    const FrameworkArsenalSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <div className="max-w-4xl w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>Layer 3: Execution</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black">The Framework Arsenal</h2>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {FRAMEWORKS.map((fw, i) => {
+              const IconComp = IconComponents[fw.icon];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${fw.color}, transparent)` }} />
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4" style={{ background: `${fw.color}20`, color: fw.color }}>
+                    {IconComp && <IconComp />}
+                  </div>
+                  <h3 className="text-white font-bold text-lg mb-2">{fw.title}</h3>
+                  <p className="text-white/80 text-sm mb-2">{fw.desc}</p>
+                  <p className="text-neutral-400 text-xs">{fw.detail}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-6 text-neutral-500">Headlines and bullets do 80% of the work. Everything else is supporting cast.</motion.p>
+        </div>
+      </div>
+    );
+
+    // Headline Power Slide
+    const HeadlinePowerSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <div className="max-w-4xl w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>Headline Mastery</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black">Feature Focus vs. Transformation Focus</h2>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px' }}>
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>FEATURE FOCUS</span>
+              <p className="text-white text-lg leading-relaxed">"Premium organic yoga mats with non-slip surface and eco-friendly materials"</p>
+              <div className="mt-4 flex items-center gap-2">
+                <Icons.X />
+                <span className="text-neutral-400 text-sm">Describes the product</span>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' }}>TRANSFORMATION FOCUS</span>
+              <p className="text-white text-lg leading-relaxed">"How Sarah Lost 12 Pounds Doing Yoga in Her Living Room <span style={{ color: '#14b8a6' }}>(No Gym Membership Required)</span>"</p>
+              <div className="mt-4 flex items-center gap-2">
+                <Icons.Check />
+                <span className="text-neutral-400 text-sm">Describes the outcome</span>
+              </div>
+            </motion.div>
+          </div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-6 text-neutral-500">People don't buy yoga mats. They buy the version of themselves who does yoga at 6am.</motion.p>
+        </div>
+      </div>
+    );
+
+    // Refinement Mastery Slide
+    const RefinementMasterySlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <div className="max-w-3xl w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>Layer 4: Mastery</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black">Relentless Refinement</h2>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+            <div className="flex items-center gap-6 mb-6">
+              <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc81vaj73li2pag9pt7-removebg-preview.png" alt="Alex Hormozi" style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '3px solid rgba(139, 92, 246, 0.5)' }} />
+              <div>
+                <p className="text-white font-semibold text-lg">Alex Hormozi</p>
+                <p className="text-neutral-400">$100M Leads Author</p>
+              </div>
+            </div>
+            <div className="text-center mb-6">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: 'spring' }} className="inline-block">
+                <span className="text-6xl md:text-7xl font-bold" style={{ color: '#8b5cf6' }}>19</span>
+                <span className="text-2xl text-white ml-2">drafts</span>
+              </motion.div>
+              <p className="text-neutral-400 mt-3">Written for $100M Leads. The best returns come at the end.</p>
+            </div>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <p className="text-2xl font-bold text-white">16th</p>
+                <p className="text-neutral-400 text-xs">coat of paint</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-white">A/B</p>
+                <p className="text-neutral-400 text-xs">test everything</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-white">3.2X</p>
+                <p className="text-neutral-400 text-xs">conversion gains</p>
+              </div>
+            </div>
+          </motion.div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center mt-6 text-neutral-500">Most stores quit after draft 3. Six-figure stores keep going until draft 19.</motion.p>
+        </div>
+      </div>
+    );
+
+    // Eighty Twenty Rule Slide
+    const EightyTwentyRuleSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <div className="max-w-3xl w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(20, 184, 166, 0.1)', color: '#14b8a6' }}>The Real Leverage</span>
+            <h2 className="slide-title text-3xl md:text-4xl text-black">The 80/20 of Copywriting</h2>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '32px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #14b8a6, transparent)' }} />
+            <div className="flex items-center justify-center gap-8 mb-8">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }} className="text-center">
+                <div className="text-7xl font-bold" style={{ color: '#14b8a6' }}>80%</div>
+                <p className="text-neutral-400 mt-2">of the work</p>
+              </motion.div>
+              <div className="text-4xl text-white">=</div>
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: 'spring' }} className="text-center">
+                <div className="text-7xl font-bold text-white">20%</div>
+                <p className="text-neutral-400 mt-2">of elements</p>
+              </motion.div>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(20, 184, 166, 0.1)' }}>
+                <p className="text-2xl font-bold text-white mb-1">Headlines</p>
+                <p className="text-neutral-400 text-sm">Stop the scroll or die</p>
+              </div>
+              <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(20, 184, 166, 0.1)' }}>
+                <p className="text-2xl font-bold text-white mb-1">Bullets</p>
+                <p className="text-neutral-400 text-sm">Where decisions happen</p>
+              </div>
+            </div>
+          </motion.div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-center mt-6 text-neutral-500">If your headline doesn't stop the scroll, nothing else matters.</motion.p>
+        </div>
+      </div>
+    );
+
+    // Impact Stats Slide
+    const ImpactStatsSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <div className="max-w-3xl w-full">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-3xl md:text-4xl text-black">The Stack Impact</h2>
+          </motion.div>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { value: '2', suffix: ':1', label: 'Pain vs Pleasure', sublabel: 'Psychology foundation', color: '#ef4444' },
+              { value: '4', suffix: '', label: 'Stack Layers', sublabel: 'Build in order', color: '#14b8a6' },
+              { value: '19', suffix: '', label: 'Hormozi Drafts', sublabel: 'Mastery level', color: '#8b5cf6' }
+            ].map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color }}>
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                </div>
+                <p className="text-white font-semibold">{stat.label}</p>
+                <p className="text-neutral-400 text-xs mt-1">{stat.sublabel}</p>
               </motion.div>
             ))}
           </div>
         </div>
+      </div>
+    );
+
+    // Elite Insight Slide
+    const EliteInsightSlide = () => (
+      <div className="h-full flex items-center justify-center p-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-2xl w-full">
+          <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '48px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(20, 184, 166, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #14b8a6, transparent)' }} />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'linear-gradient(135deg, #14b8a6, #0d9488)' }}>
+              <Icons.Layers />
+            </div>
+            <p className="text-neutral-400 text-sm text-center mb-2">Elite Insight</p>
+            <h3 className="slide-title text-2xl md:text-3xl text-white text-center mb-6">The Stack Paradox</h3>
+            <p className="text-neutral-300 leading-relaxed text-center mb-6">
+              Most stores fail not because they lack skills, but because they have no structure. Random tactics. Scattered efforts. Activity without architecture.
+            </p>
+            <p className="text-white leading-relaxed text-center" style={{ fontFamily: 'Fraunces, serif' }}>
+              "The paradox: structure creates freedom. By forcing yourself through four layers in order, you eliminate the chaos that kills most stores. Each layer amplifies the one below. Skip one, the whole stack crumbles."
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============================================
+    // STANDARD SLIDE COMPONENTS
+    // ============================================
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, []);
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-2"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-7 py-3 rounded-xl text-white font-semibold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Let's Go</motion.button>
+          </div>
+        </div>
       );
     };
 
-    // Quiz Slide - GIF rendered at app level on answer (celebration or empathy)
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto py-8 relative z-10">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.title}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -457,39 +669,21 @@
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
-
-      // Show GIF when answer selected (celebration for correct, empathy for incorrect)
-      useEffect(() => {
-        if (showFeedback) {
-          if (isCorrect) {
-            onShowGif(celebrationGif, '60%', gifSide);
-          } else {
-            onShowGif(empathyGif, '60%', gifSide);
-          }
-        }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-
-      // Hide GIF on unmount
-      useEffect(() => {
-        return () => onHideGif();
-      }, [onHideGif]);
-
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback]);
+      useEffect(() => { return () => onHideGif(); }, []);
       return (
         <div className="h-full w-full relative overflow-hidden">
-          {/* Quiz content - z-30 to stay above GIF (z-15) */}
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto py-10 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+              <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
                 <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                    </span>
-                    <span className="text-neutral-700 text-base">{option}</span>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>{showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}</span>
+                    <span className="text-neutral-700">{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -506,12 +700,11 @@
       );
     };
 
-    // Completion Slide (25% larger)
     const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(var(--accent-rgb), 0.35)' }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand the stack. Psychology. Strategy. Execution. Mastery. Build layer by layer. Each one amplifies the next.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md">You now understand the stack. Psychology. Strategy. Execution. Mastery. Build layer by layer. Each one amplifies the next.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
           <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -528,29 +721,16 @@
       const [direction, setDirection] = useState(0);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
 
-      // GIF state - managed at app level so it can render outside slide area
-      const [gifConfig, setGifConfig] = useState(null); // { url, height, side }
-      const [isAnimating, setIsAnimating] = useState(false); // Prevent rapid clicks during animation
-
-      const showGif = useCallback((url, height, side) => {
-        setGifConfig({ url, height, side });
-      }, []);
-
-      const hideGif = useCallback(() => {
-        setGifConfig(null);
-      }, []);
+      const showGif = useCallback((url, height, side) => { setGifConfig({ url, height, side }); }, []);
+      const hideGif = useCallback(() => { setGifConfig(null); }, []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -582,10 +762,19 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'gary-halbert-quote': return <GaryHalbertQuoteSlide />;
+          case 'four-layer-stack': return <FourLayerStackSlide />;
+          case 'psychology-foundation': return <PsychologyFoundationSlide />;
+          case 'five-core-drivers': return <FiveCoreDriversSlide />;
+          case 'message-architecture': return <MessageArchitectureSlide />;
+          case 'pain-escalation': return <PainEscalationSlide />;
+          case 'pain-escalator': return <PainEscalatorSlide />;
+          case 'framework-arsenal': return <FrameworkArsenalSlide />;
+          case 'headline-power': return <HeadlinePowerSlide />;
+          case 'refinement-mastery': return <RefinementMasterySlide />;
+          case 'eighty-twenty-rule': return <EightyTwentyRuleSlide />;
+          case 'impact-stats': return <ImpactStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
@@ -612,26 +801,10 @@
               {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
-
-          {/* GIF - absolute positioned at bottom, z-15 to cover separator line */}
           <AnimatePresence>
             {gifConfig && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
-                transition={{ type: 'spring', stiffness: 100 }}
-                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`}
-                style={{ zIndex: 15, height: gifConfig.height }}
-              >
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="h-full w-auto object-contain object-bottom"
-                  style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
-                >
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>

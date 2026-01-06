@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -57,26 +54,93 @@
       }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
+    // ============ CONFIGURATION ARRAYS ============
+    const PAGE_ELEMENTS = [
+      {
+        id: 1,
+        name: 'Hero Section',
+        icon: 'Image',
+        color: '#0ea5e9',
+        description: 'Clear headline, compelling sub-headline, high-quality imagery. First impression is everything.',
+        tactics: ['Clear promise headline', 'Credibility sub-headline', 'In-context imagery', 'Above the fold']
+      },
+      {
+        id: 2,
+        name: 'Consolidated Offer',
+        icon: 'Package',
+        color: '#10b981',
+        description: 'Variants, quantity bumps, subscribe & save - all visible at once. Don\'t hide behind dropdowns.',
+        tactics: ['All variants visible', 'Quantity tiers shown', 'Subscribe toggle', 'Price savings highlighted']
+      },
+      {
+        id: 3,
+        name: 'Clear Benefits',
+        icon: 'CheckCircle',
+        color: '#f59e0b',
+        description: 'Icons + punchy lines. Benefits not features. Scannable wins over walls of text.',
+        tactics: ['Icon-based benefits', 'Outcomes not specs', 'Expandable accordions', 'Top 3 prioritized']
+      },
+      {
+        id: 4,
+        name: 'Integrated Trust',
+        icon: 'Shield',
+        color: '#8b5cf6',
+        description: 'Reviews above fold, UGC photos, policy badges - all integrated, not scattered.',
+        tactics: ['Featured reviews up top', 'Real customer photos', 'Policy trust badges', 'Social proof numbers']
+      },
+      {
+        id: 5,
+        name: 'Objection Handling',
+        icon: 'HelpCircle',
+        color: '#ec4899',
+        description: 'Answer "How would I use this?" with recipes, tutorials, styling tips.',
+        tactics: ['Usage examples', 'Recipe cards', 'Tutorial content', 'Styling guides']
+      }
+    ];
 
-    // Listen for admin status from parent
+    const HERO_STATS = [
+      { value: 70, suffix: '%', label: 'Bounce if Unclear', subtext: 'Within first 3 seconds' },
+      { value: 3, suffix: 'x', label: 'Higher Attention', subtext: 'With in-context imagery' },
+      { value: 91, suffix: '%', label: 'Judge by Visuals', subtext: 'Before reading copy' }
+    ];
+
+    const FRAMEWORK_STATS = [
+      { value: 127, prefix: '+', suffix: '%', label: 'Average CVR Lift', subtext: 'When all 5 elements optimized' },
+      { value: 3, suffix: ' sec', label: 'Decision Window', subtext: 'Get it right or they bounce' },
+      { value: 5, suffix: '/5', label: 'Elements Needed', subtext: 'Miss one, conversion suffers' }
+    ];
+
+    const OFFER_COMPARISON = {
+      scattered: {
+        variants: 'Hidden in dropdown',
+        quantity: 'Tiny +/- buttons',
+        subscribe: 'Mentioned in fine print',
+        savings: 'Not highlighted',
+        cvr: '2.1%',
+        aov: '$42'
+      },
+      consolidated: {
+        variants: 'All visible as tiles',
+        quantity: 'Tiered pricing (Buy 2 Save 15%)',
+        subscribe: 'Toggle switch, saves 20%',
+        savings: '"$12 saved!" in green',
+        cvr: '3.8%',
+        aov: '$61'
+      }
+    };
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    let __isAdmin = false;
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -131,83 +195,21 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'The 5 essential elements every high-converting product page must have',
-        'How to consolidate variants, upsells, and subscriptions into one visible offer',
-        'Why scattered trust signals kill conversion (and how to integrate them properly)'
-      ]},
-      { type: 'hook', headline: 'Your product page has 3 seconds to convince someone to stay. Most fail in 1.5.', subtext: 'Why? They bury the offer. Hide the variants. Scatter reviews at the bottom. Make benefits vague. Force visitors to hunt for answers. High-converting pages don\'t make you work. They guide you through 5 critical elements in perfect order. Miss one? Conversion tanks.' },
-      { type: 'content', title: 'The 5 Elements of a Converting Product Page', body: 'Element 1: Hero Section (clear headline, compelling sub-headline, high-quality imagery). Element 2: Consolidated Offer Block (variants, quantity bumps, subscribe & save - all visible). Element 3: Clear Benefits (icons, punchy lines, expandable accordions). Element 4: Integrated Trust (top reviews using "At first I thought" framework, UGC, policy info). Element 5: Objection Handling (recipes/tutorials answering "How would I use this?"). Get all 5 right and CVR soars.' },
-      { type: 'cards', title: 'Element 1: Hero Section', items: [
-        { title: 'Clear Headline', description: 'Not a creative tagline. A clear promise. "Portable Blender That Actually Crushes Ice" beats "Blend Your Way to Better."' },
-        { title: 'Compelling Sub-Headline', description: 'Expands on the headline. Addresses the main objection or adds credibility. "12+ smoothies per charge. Used by 50K+ fitness enthusiasts."' },
-        { title: 'High-Quality Imagery', description: 'Show the product in use, not just floating on white background. Context sells. Show the transformation, not just the tool.' },
-        { title: 'Above The Fold Visibility', description: 'All three elements visible without scrolling. First impression is everything. Make it count.' }
-      ]},
-      { type: 'visual', title: 'Hero Section Impact', visualType: 'stats', data: [
-        { value: '70%', label: 'bounce if unclear', subtext: 'Within first 3 seconds' },
-        { value: '3x', label: 'higher attention', subtext: 'With in-context imagery' },
-        { value: '91%', label: 'judge by visuals', subtext: 'Before reading copy' }
-      ]},
-      { type: 'cards', title: 'Element 2: Consolidated Offer Block', items: [
-        { title: 'All Variants Visible', description: 'Size, color, bundle options - show them all at once. Don\'t hide behind dropdowns. Visibility increases selection.' },
-        { title: 'Quantity Bumps Front & Center', description: 'Buy 2 Save 10%, Buy 3 Save 20% - make it gamified. Carpay-style tier visibility drives multi-unit purchases.' },
-        { title: 'Subscribe & Save Option', description: 'Not buried. Not an afterthought. Right next to one-time purchase. Default to subscribe if margin allows.' },
-        { title: 'Price Breakdown Clarity', description: 'Show savings. "$39.99 $29.99 (Save $10!)" - make the value obvious. Numbers speak louder than words.' }
-      ]},
-      { type: 'example', scenario: 'Consolidated vs Scattered Offer', before: { label: 'Scattered Offer', text: 'Variants: Hidden in dropdown\nQuantity: Tiny +/- buttons\nSubscribe: Mentioned in fine print\nSavings: Not highlighted\n\nResult: 2.1% CVR, $42 AOV' }, after: { label: 'Consolidated Offer Block', text: 'Variants: All visible as tiles\nQuantity: Tiered pricing shown (Buy 2 Save 15%)\nSubscribe: Toggle switch, saves 20%\nSavings: "$12 saved!" in green\n\nResult: 3.8% CVR, $61 AOV (+81%)' }, insight: 'Same product. Better presentation. Massive conversion lift.' },
-      { type: 'cards', title: 'Element 3: Clear Benefits', items: [
-        { title: 'Icon-Based Benefits', description: 'Visual icons + short punchy lines. "🔋 12-hour battery" beats a paragraph about power specs. Scannable wins.' },
-        { title: 'Benefit Not Feature', description: '"Keeps drinks cold for 24 hours" (benefit) beats "Double-wall vacuum insulation" (feature). Outcome matters.' },
-        { title: 'Expandable Accordions', description: 'Core benefits visible. Details hidden in expandable sections. Let users choose depth. Don\'t force walls of text.' },
-        { title: 'Prioritize Top 3', description: 'Lead with the 3 benefits that matter most. Bury the rest. Focus beats exhaustive. Decision fatigue kills sales.' }
-      ]},
-      { type: 'cards', title: 'Element 4: Integrated Trust', items: [
-        { title: 'Featured Reviews (At First I Thought)', description: 'Pull top 3 objection-addressing reviews. Place them ABOVE the fold, not buried at bottom. Make trust immediate.' },
-        { title: 'UGC Content (Photos/Videos)', description: 'Real customers using the product. Not stock photos. Authenticity builds trust faster than polish.' },
-        { title: 'Policy Trust Signals', description: 'Free returns, 30-day guarantee, secure checkout badges - integrate into offer block. Don\'t scatter across page.' },
-        { title: 'Social Proof Numbers', description: '"50,000+ happy customers" or "4.8★ from 12,000 reviews" - big numbers build confidence. Make them prominent.' }
-      ]},
-      { type: 'content', title: 'Element 5: Objection Handling', body: 'Most buyers ask: "How would I actually use this?" Answer it. Show recipes if it\'s a kitchen product. Show workout routines if it\'s fitness. Show styling tips if it\'s fashion. Tutorial content doesn\'t sell features. It removes the "I don\'t know what to do with this" objection. Make the use case crystal clear.' },
-      { type: 'example', scenario: 'Before/After: Protein Powder Page', before: { label: 'Missing Elements', text: 'Hero: Generic "Premium Protein" headline\nOffer: Flavors in dropdown, no subscribe option\nBenefits: Listed as bullet points (boring)\nTrust: Reviews buried at bottom\nObjection: No usage examples\n\nCVR: 1.9%' }, after: { label: 'All 5 Elements Optimized', text: 'Hero: "Protein That Actually Tastes Good"\nOffer: Flavor tiles, subscribe saves 20%, buy 3 save 25%\nBenefits: Icons (💪 25g protein, 🍫 No chalky taste, 🌱 Vegan options)\nTrust: 3 featured reviews above fold, 4.9★ from 18K\nObjection: 5 recipe cards shown\n\nCVR: 4.7% (+147%)' }, insight: 'Same product. 5 elements optimized. Conversion more than doubled.' },
-      { type: 'visual', title: 'The 5-Element Framework Impact', visualType: 'stats', data: [
-        { value: '+127%', label: 'average CVR lift', subtext: 'When all 5 elements optimized' },
-        { value: '3 sec', label: 'decision window', subtext: 'Get it right or they bounce' },
-        { value: '5/5', label: 'elements needed', subtext: 'Miss one, conversion suffers' }
-      ]},
-      { type: 'quiz', question: 'Which element is most commonly missing from product pages that hurts conversion?', options: ['High-quality hero images', 'Consolidated offer block showing all variants/options visibly', 'Detailed product specifications', 'Multiple color schemes'], correctIndex: 1, feedback: { correct: 'Exactly! Most stores hide variants in dropdowns, bury subscribe options, and scatter the offer. Consolidating everything into ONE visible offer block can double CVR instantly.', incorrect: 'Not quite. The most common miss is the consolidated offer block. Most stores hide variants in dropdowns, bury quantity discounts, and make subscribe & save an afterthought. Show it all at once and watch conversion soar.' }},
-      { type: 'completion' }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -215,9 +217,66 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Image: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>,
+      Package: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
+      CheckCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      HelpCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+      Layout: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>,
     };
 
+    const ElementIcons = {
+      Image: Icons.Image,
+      Package: Icons.Package,
+      CheckCircle: Icons.CheckCircle,
+      Shield: Icons.Shield,
+      HelpCircle: Icons.HelpCircle
+    };
+
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, prefix = '', suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          setCount(Math.floor(progress * value));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [value, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // ============ SLIDES DATA ============
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'The 5 essential elements every high-converting product page must have',
+        'How to consolidate variants, upsells, and subscriptions into one visible offer',
+        'Why scattered trust signals kill conversion (and how to integrate them properly)'
+      ]},
+      { type: 'hook', headline: 'Your product page has 3 seconds to convince someone to stay. Most fail in 1.5.', subtext: 'Why? They bury the offer. Hide the variants. Scatter reviews at the bottom. Make benefits vague. Force visitors to hunt for answers. High-converting pages don\'t make you work. They guide you through 5 critical elements in perfect order. Miss one? Conversion tanks.' },
+      { type: 'mentor', title: 'The 5 Elements of a Converting Product Page', body: 'Element 1: Hero Section (clear headline, compelling sub-headline, high-quality imagery). Element 2: Consolidated Offer Block (variants, quantity bumps, subscribe & save - all visible). Element 3: Clear Benefits (icons, punchy lines, expandable accordions). Element 4: Integrated Trust (top reviews using "At first I thought" framework, UGC, policy info). Element 5: Objection Handling (recipes/tutorials answering "How would I use this?"). Get all 5 right and CVR soars.' },
+      { type: 'five-elements-overview' },
+      { type: 'element-detail', elementIndex: 0 },
+      { type: 'hero-stats' },
+      { type: 'element-detail', elementIndex: 1 },
+      { type: 'offer-comparison' },
+      { type: 'element-detail', elementIndex: 2 },
+      { type: 'element-detail', elementIndex: 3 },
+      { type: 'element-detail', elementIndex: 4 },
+      { type: 'example', scenario: 'Before/After: Protein Powder Page', before: { label: 'Missing Elements', text: 'Hero: Generic "Premium Protein" headline\nOffer: Flavors in dropdown, no subscribe option\nBenefits: Listed as bullet points (boring)\nTrust: Reviews buried at bottom\nObjection: No usage examples\n\nCVR: 1.9%' }, after: { label: 'All 5 Elements Optimized', text: 'Hero: "Protein That Actually Tastes Good"\nOffer: Flavor tiles, subscribe saves 20%, buy 3 save 25%\nBenefits: Icons (25g protein, No chalky taste, Vegan options)\nTrust: 3 featured reviews above fold, 4.9 from 18K\nObjection: 5 recipe cards shown\n\nCVR: 4.7% (+147%)' }, insight: 'Same product. 5 elements optimized. Conversion more than doubled.' },
+      { type: 'framework-stats' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Which element is most commonly missing from product pages that hurts conversion?', options: ['High-quality hero images', 'Consolidated offer block showing all variants/options visibly', 'Detailed product specifications', 'Multiple color schemes'], correctIndex: 1, feedback: { correct: 'Exactly! Most stores hide variants in dropdowns, bury subscribe options, and scatter the offer. Consolidating everything into ONE visible offer block can double CVR instantly.', incorrect: 'Not quite. The most common miss is the consolidated offer block. Most stores hide variants in dropdowns, bury quantity discounts, and make subscribe & save an afterthought. Show it all at once and watch conversion soar.' }},
+      { type: 'completion' }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -259,45 +318,346 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
+    const MentorSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
+    // ============ FIVE ELEMENTS OVERVIEW SLIDE ============
+    const FiveElementsOverviewSlide = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % 5);
+        }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">
+            The 5-Element Framework
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+            {PAGE_ELEMENTS.map((element, i) => {
+              const IconComponent = ElementIcons[element.icon];
+              const isActive = activeIndex === i;
+              return (
+                <motion.div
+                  key={element.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.08 }}
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                    borderRadius: '16px',
+                    padding: '20px 16px',
+                    border: isActive ? `2px solid ${element.color}` : '2px solid #e5e5e5',
+                    boxShadow: isActive ? `0 0 30px ${element.color}30` : 'none',
+                    transition: 'all 0.4s ease',
+                    position: 'relative',
+                    textAlign: 'center'
+                  }}
+                >
+                  {/* Top accent line */}
+                  <div style={{
+                    position: 'absolute',
+                    top: 0, left: 0, right: 0, height: '3px',
+                    background: isActive ? `linear-gradient(90deg, transparent, ${element.color}, transparent)` : 'transparent',
+                    borderRadius: '16px 16px 0 0'
+                  }} />
+
+                  <div style={{
+                    width: '48px', height: '48px', borderRadius: '12px',
+                    background: isActive ? `linear-gradient(135deg, ${element.color}, ${element.color}dd)` : '#f5f5f5',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    margin: '0 auto 12px',
+                    color: isActive ? 'white' : '#6b7280'
+                  }}>
+                    {IconComponent && <IconComponent />}
+                  </div>
+
+                  <div style={{
+                    background: isActive ? element.color : '#d4d4d4',
+                    color: 'white',
+                    width: '24px', height: '24px', borderRadius: '6px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '12px', fontWeight: 700,
+                    margin: '0 auto 8px'
+                  }}>
+                    {element.id}
+                  </div>
+
+                  <div style={{
+                    color: isActive ? 'white' : '#1a1a1a',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    fontFamily: 'Fraunces, serif'
+                  }}>
+                    {element.name}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ ELEMENT DETAIL SLIDE ============
+    const ElementDetailSlide = ({ data }) => {
+      const element = PAGE_ELEMENTS[data.elementIndex];
+      const IconComponent = ElementIcons[element.icon];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderRadius: '20px',
+              padding: '32px',
+              border: `2px solid ${element.color}40`,
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            {/* Top accent line */}
+            <div style={{
+              position: 'absolute',
+              top: 0, left: 0, right: 0, height: '4px',
+              background: `linear-gradient(90deg, transparent, ${element.color}, transparent)`
+            }} />
+
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+              <div style={{
+                width: '60px', height: '60px', borderRadius: '16px',
+                background: `linear-gradient(135deg, ${element.color}, ${element.color}dd)`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                color: 'white',
+                boxShadow: `0 0 30px ${element.color}40`
+              }}>
+                {IconComponent && <IconComponent />}
+              </div>
+              <div>
+                <div style={{
+                  background: element.color,
+                  color: 'white',
+                  padding: '4px 12px',
+                  borderRadius: '20px',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  display: 'inline-block',
+                  marginBottom: '8px'
+                }}>
+                  ELEMENT #{element.id}
+                </div>
+                <h3 style={{ color: 'white', fontSize: '28px', fontWeight: 800, fontFamily: 'Fraunces, serif' }}>
+                  {element.name}
+                </h3>
+              </div>
+            </div>
+
+            {/* Description */}
+            <p style={{ color: '#d4d4d4', fontSize: '16px', lineHeight: 1.7, marginBottom: '24px' }}>
+              {element.description}
+            </p>
+
+            {/* Tactics */}
+            <div>
+              <div style={{ color: '#9ca3af', fontSize: '11px', fontWeight: 600, marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                Key Requirements
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                {element.tactics.map((tactic, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                    style={{
+                      background: `${element.color}20`,
+                      border: `1px solid ${element.color}40`,
+                      color: element.color,
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      fontWeight: 500
+                    }}
+                  >
+                    {tactic}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ HERO STATS SLIDE ============
+    const HeroStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+          Hero Section Impact
+        </motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {HERO_STATS.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '24px',
+                textAlign: 'center',
+                border: '1px solid rgba(14, 165, 233, 0.2)'
+              }}
+            >
+              <div style={{ color: '#0ea5e9', fontSize: '48px', fontWeight: 800, marginBottom: '8px', fontFamily: 'Fraunces, serif' }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              </div>
+              <div style={{ color: 'white', fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>{stat.label}</div>
+              <div style={{ color: '#9ca3af', fontSize: '13px' }}>{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ============ OFFER COMPARISON SLIDE ============
+    const OfferComparisonSlide = () => {
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      const rows = ['variants', 'quantity', 'subscribe', 'savings'];
+      const labels = { variants: 'Variants', quantity: 'Quantity', subscribe: 'Subscribe', savings: 'Savings' };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+            Scattered vs Consolidated Offer
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Scattered */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              style={{
+                background: 'linear-gradient(135deg, #fef2f2, #fee2e2)',
+                borderRadius: '16px',
+                padding: '24px',
+                border: '2px solid #fecaca'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                  <Icons.X />
+                </div>
+                <span style={{ fontWeight: 700, color: '#dc2626', fontSize: '16px' }}>Scattered Offer</span>
+              </div>
+              {rows.map((key, i) => (
+                <motion.div
+                  key={key}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
+                  style={{
+                    display: 'flex', justifyContent: 'space-between',
+                    padding: '8px 0', borderBottom: i < rows.length - 1 ? '1px solid #fecaca' : 'none'
+                  }}
+                >
+                  <span style={{ color: '#991b1b', fontSize: '13px' }}>{labels[key]}</span>
+                  <span style={{ color: '#dc2626', fontSize: '13px', fontWeight: 500 }}>{OFFER_COMPARISON.scattered[key]}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Consolidated */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)',
+                borderRadius: '16px',
+                padding: '24px',
+                border: '2px solid #bbf7d0'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                  <Icons.Check />
+                </div>
+                <span style={{ fontWeight: 700, color: '#059669', fontSize: '16px' }}>Consolidated Block</span>
+              </div>
+              {rows.map((key, i) => (
+                <motion.div
+                  key={key}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  style={{
+                    display: 'flex', justifyContent: 'space-between',
+                    padding: '8px 0', borderBottom: i < rows.length - 1 ? '1px solid #bbf7d0' : 'none'
+                  }}
+                >
+                  <span style={{ color: '#166534', fontSize: '13px' }}>{labels[key]}</span>
+                  <span style={{ color: '#059669', fontSize: '13px', fontWeight: 500 }}>{OFFER_COMPARISON.consolidated[key]}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Result comparison */}
+          <AnimatePresence>
+            {showResult && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '12px',
+                  padding: '16px 24px',
+                  display: 'flex', justifyContent: 'space-around', alignItems: 'center'
+                }}
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ color: '#ef4444', fontSize: '24px', fontWeight: 800 }}>2.1% CVR</div>
+                  <div style={{ color: '#9ca3af', fontSize: '12px' }}>$42 AOV</div>
+                </div>
+                <div style={{ color: '#10b981', fontSize: '24px' }}>
+                  <Icons.ArrowRight />
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <div style={{ color: '#10b981', fontSize: '24px', fontWeight: 800 }}>3.8% CVR</div>
+                  <div style={{ color: '#9ca3af', fontSize: '12px' }}>$61 AOV (+81%)</div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ EXAMPLE SLIDE ============
     const ExampleSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -305,55 +665,95 @@
           <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
         </motion.div>
         <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #fef2f2, #fee2e2)', border: '2px solid #fecaca' }}>
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
             <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)', border: '2px solid #bbf7d0' }}>
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
             <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <p className="text-neutral-300 text-sm flex items-center justify-center gap-2"><Icons.Zap />{data.insight}</p>
         </motion.div>
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // ============ FRAMEWORK STATS SLIDE ============
+    const FrameworkStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+          The 5-Element Impact
+        </motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {FRAMEWORK_STATS.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 + i * 0.1 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '24px',
+                textAlign: 'center',
+                border: '1px solid rgba(14, 165, 233, 0.2)'
+              }}
+            >
+              <div style={{ color: '#0ea5e9', fontSize: '48px', fontWeight: 800, marginBottom: '8px', fontFamily: 'Fraunces, serif' }}>
+                <AnimatedCounter value={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix} />
+              </div>
+              <div style={{ color: 'white', fontSize: '16px', fontWeight: 600, marginBottom: '4px' }}>{stat.label}</div>
+              <div style={{ color: '#9ca3af', fontSize: '13px' }}>{stat.subtext}</div>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            borderRadius: '20px',
+            padding: '32px',
+            textAlign: 'center',
+            border: '2px solid rgba(14, 165, 233, 0.3)',
+            boxShadow: '0 0 40px rgba(14, 165, 233, 0.15)'
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '16px' }}>
+            <Icons.Lightbulb />
+            <span style={{ color: '#0ea5e9', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Elite Insight</span>
+          </div>
+          <h3 style={{ color: 'white', fontSize: '28px', fontWeight: 800, marginBottom: '16px', fontFamily: 'Fraunces, serif' }}>
+            "The Consolidation Paradox"
+          </h3>
+          <p style={{ color: '#d4d4d4', fontSize: '16px', lineHeight: 1.8, marginBottom: '24px' }}>
+            Most stores think they need more options, more pages, more clicks. The truth? Consolidation converts. Show everything at once. Variants as tiles, not dropdowns. Quantity tiers visible, not hidden. Subscribe toggle prominent, not buried. The visitor who can see all options decides faster than the one who has to hunt. Make the decision easy by making the offer visible.
+          </p>
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+            background: 'rgba(14, 165, 233, 0.1)',
+            border: '1px solid rgba(14, 165, 233, 0.3)',
+            padding: '12px 20px',
+            borderRadius: '12px'
+          }}>
+            <Icons.Layout />
+            <span style={{ color: '#0ea5e9', fontSize: '14px', fontWeight: 600 }}>
+              All 5 elements. All visible. All converting.
+            </span>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -402,11 +802,12 @@
       );
     };
 
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now have the 5-element product page framework. Apply all 5. Don\'t skip any. Watch your conversion rate climb.</motion.p>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Product Page Mastered</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now have the 5-element product page framework. Apply all 5. Don't skip any. Watch your conversion rate climb.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
           <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -415,6 +816,7 @@
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -428,7 +830,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -437,6 +838,18 @@
           lessonSlug: LESSON_CONFIG.id
         }, '*');
       }, [currentSlide]);
+
+      // Handle URL param for direct slide navigation
+      useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const slideParam = params.get('slide');
+        if (slideParam) {
+          const slideIndex = parseInt(slideParam, 10);
+          if (!isNaN(slideIndex) && slideIndex >= 0 && slideIndex < slides.length) {
+            setCurrentSlide(slideIndex);
+          }
+        }
+      }, []);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -467,10 +880,14 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
+          case 'mentor': return <MentorSlide data={slide} />;
+          case 'five-elements-overview': return <FiveElementsOverviewSlide />;
+          case 'element-detail': return <ElementDetailSlide data={slide} />;
+          case 'hero-stats': return <HeroStatsSlide />;
+          case 'offer-comparison': return <OfferComparisonSlide />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'framework-stats': return <FrameworkStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

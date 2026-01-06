@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Premium Flywheel: Why Racing to the Bottom Kills Your Business | Quantum Scale</title>
+  <title>The Premium Flywheel | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #a855f7; --accent-dark: #9333ea; --accent-light: #c084fc; --accent-rgb: 168, 85, 247; }
@@ -34,8 +31,149 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+    // ============ CONFIGURATION ARRAYS ============
+    const CUSTOMER_PROFILES = {
+      budget: {
+        title: 'Budget Customer',
+        price: '$12',
+        color: '#ef4444',
+        icon: 'TrendingDown',
+        traits: [
+          { label: 'Purchase Trigger', value: 'Lowest price, discount codes' },
+          { label: 'Expectations', value: 'Luxury at budget price' },
+          { label: 'Support Needs', value: 'High-touch, frequent complaints' },
+          { label: 'Loyalty', value: 'Zero - switches for $1' },
+          { label: 'LTV', value: 'One purchase, negative WOM' }
+        ]
+      },
+      premium: {
+        title: 'Premium Customer',
+        price: '$48',
+        color: '#a855f7',
+        icon: 'Crown',
+        traits: [
+          { label: 'Purchase Trigger', value: 'Quality, brand story, status' },
+          { label: 'Expectations', value: 'Premium experience' },
+          { label: 'Support Needs', value: 'Low-touch, understanding' },
+          { label: 'Loyalty', value: 'High - price validates choice' },
+          { label: 'LTV', value: 'Multiple purchases, advocacy' }
+        ]
+      }
+    };
+
+    const FLYWHEEL_STEPS = [
+      { title: 'Premium Price', desc: 'Filter for quality-conscious customers', icon: 'DollarSign', color: '#a855f7' },
+      { title: 'Better Margins', desc: 'Invest in quality & service', icon: 'TrendingUp', color: '#22c55e' },
+      { title: 'Better Service', desc: 'Exceptional customer experience', icon: 'Heart', color: '#ec4899' },
+      { title: 'Premium Perception', desc: 'Advocacy strengthens brand', icon: 'Star', color: '#f59e0b' }
+    ];
+
+    const DEATH_SPIRAL_STEPS = [
+      { title: 'Low Price', desc: 'Attract price-sensitive buyers' },
+      { title: 'Thin Margins', desc: 'Force cost-cutting' },
+      { title: 'Poor Service', desc: 'Cheap packaging, slow support' },
+      { title: 'Bad Reviews', desc: 'Complaints, refunds, chargebacks' }
+    ];
+
+    const PSYCHOLOGY_EFFECTS = [
+      { title: 'Veblen Effect', desc: 'Higher price = more desirable', icon: 'TrendingUp' },
+      { title: 'Confirmation Bias', desc: 'Seek evidence of smart choice', icon: 'CheckCircle' },
+      { title: 'Sunk Cost', desc: 'Investment creates loyalty', icon: 'Lock' },
+      { title: 'Status Signal', desc: 'Price becomes identity', icon: 'Crown' },
+      { title: 'Quality Heuristic', desc: 'Expensive = better materials', icon: 'Shield' }
+    ];
+
+    const PREMIUM_TACTICS = [
+      { title: 'Never Discount', desc: 'Scarcity > sales', icon: 'XCircle' },
+      { title: 'Invest in Experience', desc: 'Unboxing, packaging, inserts', icon: 'Gift' },
+      { title: 'Selective Distribution', desc: 'Not everywhere = exclusive', icon: 'Lock' },
+      { title: 'Premium Messaging', desc: 'Transformation, not features', icon: 'MessageCircle' },
+      { title: 'Higher Standards', desc: 'Fast, generous, white-glove', icon: 'Star' },
+      { title: 'Community Building', desc: 'Tribe > transactions', icon: 'Users' }
+    ];
+
+    const VOLUME_COMPARISON = {
+      premium: { units: 100, profit: 100, total: 10000, stress: 'Low', quality: 'High' },
+      budget: { units: 2000, profit: 5, total: 10000, stress: 'High', quality: 'Low' }
+    };
+
+    const CASE_STUDY = {
+      budget: {
+        timeline: [
+          { month: 'Month 1', event: 'Launch at $12. High volume.' },
+          { month: 'Month 3', event: 'Cut packaging. Margins thin.' },
+          { month: 'Month 6', event: '"Cheap feeling" reviews. Drop to $9.99.' },
+          { month: 'Month 12', event: 'Out of business.' }
+        ],
+        result: 'FAILED'
+      },
+      premium: {
+        timeline: [
+          { month: 'Month 1', event: 'Launch at $48. Healthy margins.' },
+          { month: 'Month 3', event: 'Invest in packaging & influencers.' },
+          { month: 'Month 6', event: '"Luxury feel" reviews. Raise to $52.' },
+          { month: 'Month 12', event: 'Profitable, growing, loyalty.' }
+        ],
+        result: 'THRIVING'
+      }
+    };
+
+    const IMPACT_STATS = [
+      { value: 4, suffix: 'x', label: 'Higher LTV', subtext: 'Premium vs budget customers' },
+      { value: 73, suffix: '%', label: 'Less Support', subtext: 'Premium customers need less help' },
+      { value: 89, suffix: '%', label: 'Advocacy Rate', subtext: 'Premium buyers recommend' }
+    ];
+
+    // ============ ICONS ============
+    const Icons = {
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Crown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Lock: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Gift: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+      MessageCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      XCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
+      CheckCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+      RefreshCw: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Skull: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v2h8v-2"/><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M16 20a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20"/></svg>,
+      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Brain: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 14.5 2"/></svg>
+    };
+
+    const IconComponents = {
+      DollarSign: Icons.DollarSign,
+      TrendingUp: Icons.TrendingUp,
+      TrendingDown: Icons.TrendingDown,
+      Heart: Icons.Heart,
+      Star: Icons.Star,
+      Crown: Icons.Crown,
+      Shield: Icons.Shield,
+      Lock: Icons.Lock,
+      Users: Icons.Users,
+      Gift: Icons.Gift,
+      MessageCircle: Icons.MessageCircle,
+      XCircle: Icons.XCircle,
+      CheckCircle: Icons.CheckCircle,
+      RefreshCw: Icons.RefreshCw,
+      Skull: Icons.Skull,
+      Zap: Icons.Zap,
+      Lightbulb: Icons.Lightbulb,
+      Brain: Icons.Brain
+    };
+
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
       const [count, setCount] = useState(0);
       useEffect(() => {
         let start = 0;
@@ -47,258 +185,421 @@
         }, 16);
         return () => clearInterval(timer);
       }, [target, duration]);
-      return <span>{count}{suffix}</span>;
+      return <span>{prefix}{count}{suffix}</span>;
     };
 
-    // Flywheel Visual Component
-    const FlywheelSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="relative">
-          <div className="grid grid-cols-2 gap-4">
-            {data.steps.map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.1 + i * 0.15 }}
-                className="bg-gradient-to-br from-purple-50 to-purple-100 border-2 border-purple-300 rounded-xl p-5"
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-lg">{i + 1}</div>
-                  <h3 className="font-bold text-purple-900">{step.title}</h3>
-                </div>
-                <p className="text-purple-800 text-sm leading-relaxed">{step.description}</p>
-              </motion.div>
-            ))}
-          </div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1, rotate: 360 }}
-            transition={{ delay: 0.8, duration: 1.5, ease: "easeInOut" }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 rounded-full bg-white border-4 border-purple-500 flex items-center justify-center shadow-xl"
-          >
-            <div className="text-3xl">🔄</div>
-          </motion.div>
-        </div>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }} className="text-center text-purple-700 text-sm mt-6 italic">{data.insight}</motion.p>
-      </div>
-    );
-
-    // Comparison Table Component
-    const ComparisonTableSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">✗</div>
-              <h3 className="font-bold text-red-700 text-lg">{data.budget.title}</h3>
-            </div>
-            <div className="space-y-3">
-              {data.budget.characteristics.map((char, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.08 }} className="bg-white rounded-lg p-3 border border-red-100">
-                  <p className="text-sm text-red-900 font-medium mb-1">{char.label}</p>
-                  <p className="text-xs text-red-700">{char.value}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-lg">✓</div>
-              <h3 className="font-bold text-green-700 text-lg">{data.premium.title}</h3>
-            </div>
-            <div className="space-y-3">
-              {data.premium.characteristics.map((char, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.08 }} className="bg-white rounded-lg p-3 border border-green-100">
-                  <p className="text-sm text-green-900 font-medium mb-1">{char.label}</p>
-                  <p className="text-xs text-green-700">{char.value}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-
+    // ============ LESSON CONFIG ============
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'premium-flywheel',
       title: 'The Premium Flywheel',
-      description: 'Why racing to the bottom on price attracts the worst customers and how premium pricing creates a self-reinforcing cycle of success.',
+      description: 'Why racing to the bottom destroys businesses and how premium pricing creates a self-reinforcing cycle.',
       accentColor: '#a855f7',
       duration: '8 min',
       nextLesson: { id: 'next-lesson', title: 'Next Psychology Lesson Coming Soon', teaser: 'More counterintuitive pricing psychology ahead.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }} onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // celebrationGifs and empathyGifs arrays
+    // ============ VIDEO GIFS ============
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why racing to the bottom on price attracts the worst customers who drain your resources', 'How price-quality inference shapes customer expectations before they even see your product', 'The self-reinforcing cycle: Premium price → Better margins → Better service → Stronger brand → Premium perception'] },
-      { type: 'hook', headline: 'The cheapest product in your category is a ticking time bomb.', subtext: 'Every dollar you cut from your price attracts a different type of customer. Not just "budget-conscious." Price-obsessed. Entitlement-driven. Support-draining. These customers cost more to serve, complain more often, and never become brand advocates. Meanwhile, premium brands charge 3-5x more for similar products and their customers LOVE them. The difference is not the product. It is the psychology of price-quality inference and the self-reinforcing flywheel it creates.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/REI_logo.svg.png', brandName: 'REI' },
-      { type: 'content', title: 'The Race to the Bottom is a Race to Bankruptcy', body: 'Picture two brands selling water bottles. Brand A charges $12. Brand B charges $48. Same materials. Same factory. Same function. Brand A fights for every sale. Constant discounts. Price shoppers who return products for tiny defects. One-star reviews over shipping delays. Support tickets about $2 refunds. Brand B? Customers brag about their purchase. Instagram it. Recommend it to friends. Never complain. Reorder without hesitation. The price IS the product. It signals quality. It attracts a specific customer psychographic. It creates expectations. And those expectations shape the entire relationship.' },
-      { type: 'comparison-table', title: 'Budget vs Premium Customer Profiles', budget: { title: 'Budget Customers ($12 bottle)', characteristics: [
-        { label: 'Purchase Trigger', value: 'Lowest price, discount codes, sales' },
-        { label: 'Expectations', value: 'Luxury experience at budget price' },
-        { label: 'Support Behavior', value: 'High-touch, frequent complaints, refund requests' },
-        { label: 'Loyalty', value: 'Zero. Will switch for $1 cheaper option' },
-        { label: 'Lifetime Value', value: 'One purchase, negative word-of-mouth' }
-      ]}, premium: { title: 'Premium Customers ($48 bottle)', characteristics: [
-        { label: 'Purchase Trigger', value: 'Quality perception, brand story, status' },
-        { label: 'Expectations', value: 'Premium experience that matches price' },
-        { label: 'Support Behavior', value: 'Low-touch, understanding, gives benefit of doubt' },
-        { label: 'Loyalty', value: 'High. Price reinforces their smart choice' },
-        { label: 'Lifetime Value', value: 'Multiple purchases, organic advocacy' }
-      ]}},
-      { type: 'content', title: 'Price-Quality Inference: Your Brain\'s Shortcut', body: 'Humans use price as a proxy for quality. We cannot evaluate a product\'s true quality instantly. So our brain takes a shortcut: "Expensive = good. Cheap = bad." This is price-quality inference. Studies show people LITERALLY experience products differently based on price. Same wine, different price tags? The "expensive" one tastes better. Same painkiller, different prices? The expensive one works faster. This is not rational. It is deeply psychological. Your price does not just signal value. It CREATES value in the customer\'s mind.' },
-      { type: 'cards', title: 'The Psychology of Premium Pricing', items: [
-        { title: 'Veblen Effect', description: 'Higher price increases desirability. Luxury goods become MORE attractive as they get MORE expensive.' },
-        { title: 'Confirmation Bias', description: 'After paying premium price, customers seek evidence they made the right choice. They notice quality, ignore flaws.' },
-        { title: 'Sunk Cost Fallacy', description: 'Premium investment creates commitment. Customers defend their purchase, become brand advocates.' },
-        { title: 'Status Signaling', description: 'Price becomes identity. "I\'m the type of person who buys quality, not cheap stuff."' },
-        { title: 'Quality Heuristic', description: 'Brain assumes: expensive = better materials, better craftsmanship, better results. Often true, but works even when it\'s not.' }
-      ]},
-      { type: 'flywheel', title: 'The Premium Flywheel (Self-Reinforcing Cycle)', steps: [
-        { title: 'Premium Price', description: 'You charge significantly more than competitors. This filters for quality-conscious customers and creates higher perceived value before purchase.' },
-        { title: 'Better Margins', description: 'Higher prices mean more profit per unit. You can afford better materials, better packaging, better customer service without cutting corners.' },
-        { title: 'Better Service', description: 'With healthy margins, you invest in exceptional customer experience. Fast shipping, thoughtful packaging, responsive support, generous policies.' },
-        { title: 'Premium Perception', description: 'Customers experience the quality they expected. Their price-quality inference is confirmed. They become advocates, share on social, reorder. The premium reputation strengthens.' }
-      ], insight: 'Each rotation of the flywheel makes the next rotation easier. Premium price enables better service. Better service strengthens premium perception. Stronger perception justifies higher prices. The cycle compounds.' },
-      { type: 'content', title: 'The Budget Death Spiral (The Opposite Flywheel)', body: 'Low price attracts price-sensitive customers. Thin margins force cost-cutting. Cheap packaging, slow shipping, minimal support. Customer experience fails to meet expectations. Complaints, refunds, chargebacks. Negative reviews tank conversion rates. You lower prices further to compete. Margins shrink more. Service gets worse. Death spiral. Budget brands do not die from one catastrophic event. They die from a thousand tiny margin cuts and a customer base that drains more value than they create.' },
-      { type: 'example', scenario: 'Two Water Bottle Brands Over 12 Months', before: { label: 'Budget Brand ($12)', text: 'Month 1: Launch at $12. High volume, thin margins. Month 3: Support costs eating profits. Cut packaging quality. Month 6: Reviews mention "cheap feeling." Lower price to $9.99. Month 9: Competitor at $8.99. Match price. Margins now 8%. Month 12: Out of business. Could not afford to continue.' }, after: { label: 'Premium Brand ($48)', text: 'Month 1: Launch at $48. Lower volume, healthy margins. Month 3: Invest profits in premium packaging, influencer samples. Month 6: Reviews rave about "luxury feel." Raise price to $52. Month 9: Customers see higher price as validation. Month 12: Profitable, growing, brand loyalty established.' }, insight: 'The budget brand optimized for volume and died. The premium brand optimized for margin and thrived. Price is not just revenue. It is strategy.' },
-      { type: 'content', title: 'Premium Pricing Builds a Moat', body: 'When you establish premium positioning, you create a competitive moat. Budget competitors cannot touch you. Their customers would never spend your prices. Your customers would never buy their cheap alternatives. You operate in different markets despite selling similar products. Even better: budget brands legitimize your pricing. "Why is theirs $12 and yours $48?" "Because we use premium materials, offer lifetime warranty, and our customers expect excellence." The budget option makes your price seem REASONABLE by comparison. Anchoring effect in action.' },
-      { type: 'cards', title: 'How Premium Brands Maintain the Flywheel', items: [
-        { title: 'Never Discount', description: 'Sales train customers to wait for discounts. Premium brands hold price. Scarcity and exclusivity, not discounts.' },
-        { title: 'Invest in Experience', description: 'Unboxing, packaging, inserts, thank-you notes. These cost pennies but reinforce premium perception.' },
-        { title: 'Selective Distribution', description: 'Not available everywhere. Exclusivity creates desirability. If it\'s at every gas station, it\'s not premium.' },
-        { title: 'Premium Messaging', description: 'Language, visuals, storytelling all signal quality. Budget brands talk features. Premium brands talk transformation.' },
-        { title: 'Higher Support Standards', description: 'Premium customers expect premium service. Fast responses, generous policies, white-glove treatment.' },
-        { title: 'Community Building', description: 'Premium customers become tribe members. They identify with the brand. You are not selling water bottles. You are selling identity.' }
-      ]},
-      { type: 'content', title: 'The Counterintuitive Truth About Volume', body: 'Budget brands need massive volume to survive on thin margins. They optimize for scale. Premium brands need far less volume because each sale is highly profitable. You can build a thriving business selling 100 units per month at $100 profit each. Or you can struggle selling 2,000 units per month at $5 profit each. Same revenue. Wildly different stress levels, customer quality, and business sustainability. Lower volume with premium customers is often the better path. Fewer support tickets. Fewer refunds. Less chaos. More profit. Better life.' },
-      { type: 'content', title: 'When to Charge Premium (and When Not To)', body: 'Premium pricing is not universal. It works when: (1) Your product has differentiation (real or perceived). (2) Your target market values quality over price. (3) You can deliver an experience that matches the price point. It does NOT work when: (1) Your product is truly commodity with no differentiation. (2) Your market is purely price-driven (race-to-bottom industries). (3) You cannot afford to invest margin back into customer experience. If you are in a commodity market, you have two options: find differentiation or accept budget positioning and optimize ruthlessly for efficiency. There is no sustainable middle ground.' },
-      { type: 'quiz', question: 'What is the PRIMARY psychological mechanism that makes premium pricing effective?', options: ['Customers with more money prefer expensive products', 'Price-quality inference: the brain uses price as a shortcut to assume quality', 'Premium brands spend more on advertising', 'Expensive products are always made with better materials'], correctIndex: 1, feedback: { correct: 'Exactly right! Price-quality inference is the psychological shortcut where your brain assumes expensive = high quality and cheap = low quality. This happens BEFORE customers experience the product. The price itself creates expectations, shapes perception, and influences how customers experience everything from taste to performance. This inference then becomes self-fulfilling through confirmation bias - customers paid premium, so they look for evidence they made the right choice. The flywheel begins.', incorrect: 'Not quite. The answer is price-quality inference. Your brain uses price as a proxy for quality because it cannot instantly evaluate true quality. This is a deeply ingrained heuristic: expensive things FEEL better, work better, taste better - even in blind tests with identical products at different price points. The premium price creates the premium perception, which shapes the entire customer experience. It is not about having more money or better materials. It is about psychology.' }},
-      { type: 'completion', sources: [] }
-    ];
+    // ============ UNIQUE CUSTOM SLIDES ============
 
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+    // Customer Battle Slide - Budget vs Premium with WINS badge
+    const CustomerBattleSlide = ({ data }) => {
+      const [activeProfile, setActiveProfile] = useState('budget');
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveProfile(prev => prev === 'budget' ? 'premium' : 'budget');
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6 relative">
+            {/* Budget Customer */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: activeProfile === 'budget' ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', border: activeProfile === 'budget' ? '2px solid rgba(239, 68, 68, 0.5)' : '2px solid #e5e5e5', boxShadow: activeProfile === 'budget' ? '0 0 30px rgba(239, 68, 68, 0.2)' : 'none' }}
+              className="rounded-2xl p-6 transition-all duration-500">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}>
+                  <Icons.TrendingDown />
+                </div>
+                <div>
+                  <h3 className={`font-bold text-lg ${activeProfile === 'budget' ? 'text-white' : 'text-neutral-900'}`}>{CUSTOMER_PROFILES.budget.title}</h3>
+                  <p className={`text-2xl font-bold ${activeProfile === 'budget' ? 'text-red-400' : 'text-red-500'}`}>{CUSTOMER_PROFILES.budget.price}</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {CUSTOMER_PROFILES.budget.traits.map((trait, i) => (
+                  <div key={i} className={`flex justify-between text-sm ${activeProfile === 'budget' ? 'text-neutral-300' : 'text-neutral-600'}`}>
+                    <span className="font-medium">{trait.label}:</span>
+                    <span className="text-right">{trait.value}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* VS Badge */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 hidden md:block">
+              <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 2, repeat: Infinity }}
+                className="w-14 h-14 rounded-full bg-neutral-900 flex items-center justify-center text-white font-bold text-lg shadow-xl">
+                VS
+              </motion.div>
+            </div>
+
+            {/* Premium Customer */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: activeProfile === 'premium' ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', border: activeProfile === 'premium' ? '2px solid rgba(168, 85, 247, 0.5)' : '2px solid #e5e5e5', boxShadow: activeProfile === 'premium' ? '0 0 30px rgba(168, 85, 247, 0.2)' : 'none' }}
+              className="rounded-2xl p-6 transition-all duration-500 relative">
+              {activeProfile === 'premium' && (
+                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+                  className="absolute -top-3 -right-3 px-3 py-1 rounded-full text-xs font-bold text-white"
+                  style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}>
+                  WINS
+                </motion.div>
+              )}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #a855f7, #9333ea)' }}>
+                  <Icons.Crown />
+                </div>
+                <div>
+                  <h3 className={`font-bold text-lg ${activeProfile === 'premium' ? 'text-white' : 'text-neutral-900'}`}>{CUSTOMER_PROFILES.premium.title}</h3>
+                  <p className={`text-2xl font-bold ${activeProfile === 'premium' ? 'text-purple-400' : 'text-purple-600'}`}>{CUSTOMER_PROFILES.premium.price}</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {CUSTOMER_PROFILES.premium.traits.map((trait, i) => (
+                  <div key={i} className={`flex justify-between text-sm ${activeProfile === 'premium' ? 'text-neutral-300' : 'text-neutral-600'}`}>
+                    <span className="font-medium">{trait.label}:</span>
+                    <span className="text-right">{trait.value}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
     };
 
+    // Flywheel vs Death Spiral Slide
+    const FlywheelVsDeathSpiralSlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % 4);
+        }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Death Spiral */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} className="relative">
+              <div className="text-center mb-4">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)' }}>
+                  <Icons.Skull /> Death Spiral
+                </span>
+              </div>
+              <div className="relative">
+                {DEATH_SPIRAL_STEPS.map((step, i) => (
+                  <motion.div key={i} animate={{ scale: activeStep === i ? 1.05 : 1, opacity: activeStep === i ? 1 : 0.6 }}
+                    className="flex items-center gap-3 p-3 mb-2 rounded-xl transition-all"
+                    style={{ background: activeStep === i ? 'rgba(239, 68, 68, 0.15)' : 'transparent', border: activeStep === i ? '1px solid rgba(239, 68, 68, 0.3)' : '1px solid transparent' }}>
+                    <div className="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center text-sm font-bold">{i + 1}</div>
+                    <div>
+                      <p className="font-bold text-neutral-900 text-sm">{step.title}</p>
+                      <p className="text-neutral-600 text-xs">{step.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+                <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                  className="absolute top-1/2 right-0 -translate-y-1/2 text-red-400 opacity-30">
+                  <Icons.RefreshCw />
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Premium Flywheel */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} className="relative">
+              <div className="text-center mb-4">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, #a855f7, #9333ea)' }}>
+                  <Icons.Star /> Premium Flywheel
+                </span>
+              </div>
+              <div className="relative">
+                {FLYWHEEL_STEPS.map((step, i) => {
+                  const IconComp = IconComponents[step.icon];
+                  return (
+                    <motion.div key={i} animate={{ scale: activeStep === i ? 1.05 : 1, opacity: activeStep === i ? 1 : 0.6 }}
+                      className="flex items-center gap-3 p-3 mb-2 rounded-xl transition-all"
+                      style={{ background: activeStep === i ? `rgba(168, 85, 247, 0.15)` : 'transparent', border: activeStep === i ? '1px solid rgba(168, 85, 247, 0.3)' : '1px solid transparent' }}>
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: step.color }}>
+                        {IconComp && <IconComp />}
+                      </div>
+                      <div>
+                        <p className="font-bold text-neutral-900 text-sm">{step.title}</p>
+                        <p className="text-neutral-600 text-xs">{step.desc}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+                <motion.div animate={{ rotate: -360 }} transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+                  className="absolute top-1/2 right-0 -translate-y-1/2 text-purple-400 opacity-30">
+                  <Icons.RefreshCw />
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Psychology Effects Grid
+    const PsychologyGridSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {PSYCHOLOGY_EFFECTS.map((effect, i) => {
+            const IconComp = IconComponents[effect.icon];
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+                className="rounded-xl p-5 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                    {IconComp && <IconComp />}
+                  </div>
+                  <span className="text-xs font-bold text-neutral-500 uppercase">{i + 1}</span>
+                </div>
+                <h3 className="font-bold text-white mb-2">{effect.title}</h3>
+                <p className="text-neutral-400 text-sm">{effect.desc}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+
+    // Volume Comparison Slide
+    const VolumeComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-3">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8">Same revenue. Different reality.</motion.p>
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Premium Path */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid rgba(168, 85, 247, 0.3)', boxShadow: '0 0 30px rgba(168, 85, 247, 0.15)' }}
+            className="rounded-2xl p-6 relative">
+            <div className="absolute -top-3 -right-3 px-3 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}>BETTER</div>
+            <div className="flex items-center gap-3 mb-4">
+              <Icons.Crown />
+              <h3 className="font-bold text-white text-lg">Premium Path</h3>
+            </div>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-400">Units/month</span>
+                <span className="text-2xl font-bold text-white"><AnimatedCounter target={VOLUME_COMPARISON.premium.units} /></span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-400">Profit/unit</span>
+                <span className="text-xl font-bold text-purple-400">$<AnimatedCounter target={VOLUME_COMPARISON.premium.profit} /></span>
+              </div>
+              <div className="h-px bg-neutral-700" />
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-400">Total Revenue</span>
+                <span className="text-2xl font-bold text-green-400">$<AnimatedCounter target={VOLUME_COMPARISON.premium.total} suffix="" /></span>
+              </div>
+              <div className="flex justify-between items-center pt-2">
+                <span className="text-neutral-400">Stress Level</span>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-400">{VOLUME_COMPARISON.premium.stress}</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Budget Path */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="rounded-2xl p-6 bg-neutral-100 border-2 border-neutral-200">
+            <div className="flex items-center gap-3 mb-4">
+              <Icons.TrendingDown />
+              <h3 className="font-bold text-neutral-900 text-lg">Budget Path</h3>
+            </div>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-500">Units/month</span>
+                <span className="text-2xl font-bold text-neutral-900"><AnimatedCounter target={VOLUME_COMPARISON.budget.units} /></span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-500">Profit/unit</span>
+                <span className="text-xl font-bold text-red-500">$<AnimatedCounter target={VOLUME_COMPARISON.budget.profit} /></span>
+              </div>
+              <div className="h-px bg-neutral-300" />
+              <div className="flex justify-between items-center">
+                <span className="text-neutral-500">Total Revenue</span>
+                <span className="text-2xl font-bold text-neutral-700">$<AnimatedCounter target={VOLUME_COMPARISON.budget.total} suffix="" /></span>
+              </div>
+              <div className="flex justify-between items-center pt-2">
+                <span className="text-neutral-500">Stress Level</span>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/20 text-red-500">{VOLUME_COMPARISON.budget.stress}</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Case Study Timeline Slide
+    const CaseStudyTimelineSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Budget Timeline */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-bold text-red-700">Budget Brand ($12)</span>
+              <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-red-500 text-white">{CASE_STUDY.budget.result}</span>
+            </div>
+            <div className="space-y-3">
+              {CASE_STUDY.budget.timeline.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  className="flex gap-3 p-3 rounded-xl bg-red-50 border border-red-100">
+                  <span className="text-xs font-bold text-red-500 whitespace-nowrap">{item.month}</span>
+                  <span className="text-sm text-red-900">{item.event}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Premium Timeline */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-bold text-green-700">Premium Brand ($48)</span>
+              <span className="ml-auto px-3 py-1 rounded-full text-xs font-bold bg-green-500 text-white">{CASE_STUDY.premium.result}</span>
+            </div>
+            <div className="space-y-3">
+              {CASE_STUDY.premium.timeline.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: 15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  className="flex gap-3 p-3 rounded-xl bg-green-50 border border-green-100">
+                  <span className="text-xs font-bold text-green-500 whitespace-nowrap">{item.month}</span>
+                  <span className="text-sm text-green-900">{item.event}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Premium Tactics Grid
+    const PremiumTacticsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {PREMIUM_TACTICS.map((tactic, i) => {
+            const IconComp = IconComponents[tactic.icon];
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 + i * 0.06 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+                className="rounded-xl p-4 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                    <span className="text-white text-xs">{IconComp && <IconComp />}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-sm mb-1">{tactic.title}</h3>
+                    <p className="text-neutral-400 text-xs">{tactic.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+
+    // Impact Stats Slide
+    const ImpactStatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          {IMPACT_STATS.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(168, 85, 247, 0.15)' }}
+              className="rounded-2xl p-6 text-center relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <p className="text-4xl md:text-5xl font-bold text-white mb-2">
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+              </p>
+              <p className="font-bold text-purple-400 mb-1">{stat.label}</p>
+              <p className="text-neutral-500 text-sm">{stat.subtext}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Elite Insight Slide
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(168, 85, 247, 0.2)' }}
+          className="rounded-2xl p-8 text-center relative overflow-hidden w-full">
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <Icons.Lightbulb />
+          </motion.div>
+          <motion.h3 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="text-2xl md:text-3xl font-bold text-white mb-4">{data.title}</motion.h3>
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-neutral-300 text-lg leading-relaxed">{data.insight}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD SLIDES ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
-
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
@@ -331,15 +632,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -349,60 +641,10 @@
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
     );
 
@@ -414,10 +656,8 @@
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
-
       useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
-
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
@@ -453,7 +693,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the premium flywheel and why racing to the bottom on price destroys businesses. Premium pricing filters for better customers, creates healthier margins, enables better service, and strengthens brand perception in a self-reinforcing cycle. The cheapest option is rarely the winning strategy.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the premium flywheel. Premium pricing filters for better customers, creates healthier margins, enables better service, and strengthens brand perception in a self-reinforcing cycle.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -462,6 +702,26 @@
       </div>
     );
 
+    // ============ SLIDES DATA ============
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why racing to the bottom attracts the worst customers', 'How price-quality inference shapes customer expectations', 'The self-reinforcing cycle of premium pricing success'] },
+      { type: 'hook', headline: 'The cheapest product in your category is a ticking time bomb.', subtext: 'Every dollar you cut from your price attracts a different type of customer. Not just "budget-conscious." Price-obsessed. Entitlement-driven. Support-draining. These customers cost more to serve, complain more often, and never become brand advocates. Meanwhile, premium brands charge 3-5x more for similar products and their customers LOVE them.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/REI_logo.svg.png', brandName: 'REI' },
+      { type: 'content', title: 'The Race to the Bottom is a Race to Bankruptcy', body: 'Picture two brands selling water bottles. Brand A charges $12. Brand B charges $48. Same materials. Same factory. Same function. Brand A fights for every sale. Constant discounts. Price shoppers who return products for tiny defects. One-star reviews over shipping delays. Support tickets about $2 refunds. Brand B? Customers brag about their purchase. Instagram it. Recommend it to friends. Never complain. Reorder without hesitation. The price IS the product.' },
+      { type: 'customer-battle', title: 'Budget vs Premium Customer Profiles' },
+      { type: 'content', title: 'Price-Quality Inference: Your Brain\'s Shortcut', body: 'Humans use price as a proxy for quality. We cannot evaluate a product\'s true quality instantly. So our brain takes a shortcut: "Expensive = good. Cheap = bad." This is price-quality inference. Studies show people LITERALLY experience products differently based on price. Same wine, different price tags? The "expensive" one tastes better. Same painkiller, different prices? The expensive one works faster.' },
+      { type: 'psychology-grid', title: 'The Psychology of Premium Pricing' },
+      { type: 'flywheel-comparison', title: 'Two Paths, Two Outcomes' },
+      { type: 'content', title: 'The Budget Death Spiral', body: 'Low price attracts price-sensitive customers. Thin margins force cost-cutting. Cheap packaging, slow shipping, minimal support. Customer experience fails to meet expectations. Complaints, refunds, chargebacks. Negative reviews tank conversion rates. You lower prices further to compete. Margins shrink more. Service gets worse. Death spiral. Budget brands die from a thousand tiny margin cuts.' },
+      { type: 'case-study', title: 'Two Water Bottle Brands: 12 Months Later' },
+      { type: 'volume-comparison', title: 'The Counterintuitive Truth About Volume' },
+      { type: 'premium-tactics', title: 'How Premium Brands Maintain the Flywheel' },
+      { type: 'impact-stats', title: 'The Premium Customer Advantage' },
+      { type: 'elite-insight', title: 'The Premium Paradox', insight: 'The cheapest option is rarely the winning strategy. Premium pricing is not about charging more - it\'s about building a self-reinforcing system where every dollar creates more value than it captures.' },
+      { type: 'quiz', question: 'What is the PRIMARY psychological mechanism that makes premium pricing effective?', options: ['Customers with more money prefer expensive products', 'Price-quality inference: the brain uses price as a shortcut to assume quality', 'Premium brands spend more on advertising', 'Expensive products are always made with better materials'], correctIndex: 1, feedback: { correct: 'Exactly right! Price-quality inference is the psychological shortcut where your brain assumes expensive = high quality. This happens BEFORE customers experience the product. The price itself creates expectations and shapes perception.', incorrect: 'Not quite. The answer is price-quality inference. Your brain uses price as a proxy for quality because it cannot instantly evaluate true quality. This is a deeply ingrained heuristic: expensive things FEEL better.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -475,14 +735,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -515,10 +769,14 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'comparison-table': return <ComparisonTableSlide data={slide} />;
-          case 'flywheel': return <FlywheelSlide data={slide} />;
+          case 'customer-battle': return <CustomerBattleSlide data={slide} />;
+          case 'psychology-grid': return <PsychologyGridSlide data={slide} />;
+          case 'flywheel-comparison': return <FlywheelVsDeathSpiralSlide data={slide} />;
+          case 'case-study': return <CaseStudyTimelineSlide data={slide} />;
+          case 'volume-comparison': return <VolumeComparisonSlide data={slide} />;
+          case 'premium-tactics': return <PremiumTacticsSlide data={slide} />;
+          case 'impact-stats': return <ImpactStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

@@ -139,7 +139,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why click fraud is more dangerous than just wasted budget', 'How invalid clicks pollute data and harm campaign optimization', 'Manual defense #1: IP exclusions to block suspicious patterns', 'Manual defense #2: Geo-targeting and placement exclusions'] },
-      { type: 'hook', headline: 'Every click fraud isn\'t just costing you money. It\'s worse than that. Invalid clicks from competitors and bots are feeding garbage data into Google\'s algorithm, poisoning the optimization process that determines which ads perform best.', subtext: 'Budget waste is obvious. Data pollution is insidious. When your conversion data includes fake clicks, Google optimizes toward the wrong signals. You can\'t win a race with a broken compass.' },
+      { type: 'hook', headline: 'Every click fraud isn\'t just costing you money. It\'s worse than that. Invalid clicks from competitors and bots are feeding garbage data into Google\'s algorithm, poisoning the optimization process that determines which ads perform best.', subtext: 'Budget waste is obvious. Data pollution is insidious. When your conversion data includes fake clicks, Google optimizes toward the wrong signals. You can\'t win a race with a broken compass.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Google_Ads_logo.svg.png', brandName: 'Google Ads' },
       { type: 'content', title: 'The Real Danger: Data Pollution', body: 'Most advertisers only think about click fraud as wasted budget:\n\n"Competitor clicked my ad 10 times. That\'s $50 down the drain."\n\nBut budget waste is the LEAST of your problems.\n\nThe real damage is DATA POLLUTION.\n\nGoogle\'s algorithm learns from your campaign data. Which ads get clicks. Which audiences convert. Which placements drive sales. It uses this data to optimize your campaigns automatically.\n\nBut what happens when that data includes:\n- Competitor clicks with zero purchase intent\n- Bot traffic that inflates click counts\n- Invalid clicks from countries you don\'t ship to\n\nGoogle\'s algorithm thinks these signals are real. It optimizes toward them. It shows your ads to more people like the bots and competitors.\n\nThis is why click fraud isn\'t just expensive - it\'s poisonous.' },
       { type: 'content', title: 'Defense #1: IP Exclusions', body: 'Your first line of defense is manual IP blocking.\n\n**How it works:**\nIn your Google Ads account settings, you can manually exclude specific IP addresses from seeing your ads.\n\n**When to use it:**\nWhen you notice repeated clicking patterns from the same IP address. Check your campaign data for IPs with:\n- High click frequency, zero conversions\n- Clicks at unusual times (3am, weekends)\n- Same IP clicking across multiple campaigns\n\n**Why it matters:**\nThis is CRUCIAL for high-cost-per-click industries. If your CPC is $20, a competitor clicking 5 times costs you $100. Block their IP, stop the bleeding.\n\n**How to do it:**\nAccount Settings → IP Exclusions → Add IP addresses to block list\n\nThis won\'t catch sophisticated fraud, but it stops the obvious repeat offenders.' },
       { type: 'content', title: 'Defense #2: Geo-Targeting Adjustments', body: 'Not all countries produce equal-quality traffic. Some regions are known for high bot activity and click farms.\n\n**Strategy:**\nExclude countries with high fraud rates unless they\'re core markets.\n\n**Focus your budget on:**\n- Countries where your best customers are located\n- Regions with proven conversion history\n- Markets you can actually ship to and support\n\n**Why this works:**\nBy tightening your geographic targeting, you reduce exposure to international click fraud operations. Your ads only show to people in locations where real customers exist.\n\n**Example:**\nIf 90% of your revenue comes from US, Canada, UK, and Australia - why are your ads showing in countries you\'ve never shipped to? Tighten the targeting. Protect the budget.\n\nEvery excluded region is one less source of potential fraud.' },
@@ -165,6 +165,12 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Globe: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      Server: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>,
+      Database: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -320,32 +326,112 @@
                 </motion.g>
               </svg>
             </div>
+
+            {/* Elite Insight Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '20px 24px',
+                marginTop: '24px',
+                position: 'relative',
+                overflow: 'hidden',
+                maxWidth: '600px',
+                marginLeft: 'auto',
+                marginRight: 'auto'
+              }}
+            >
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '3px',
+                background: 'linear-gradient(90deg, transparent, var(--accent), transparent)'
+              }} />
+              <div className="flex items-center gap-3">
+                <div style={{
+                  background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
+                  borderRadius: '10px',
+                  padding: '10px',
+                  flexShrink: 0
+                }}>
+                  <span style={{ color: 'white' }}><Icons.Shield /></span>
+                </div>
+                <div>
+                  <p className="text-white font-bold text-sm md:text-base mb-1">Triple Defense = Clean Data</p>
+                  <p className="text-neutral-400 text-xs md:text-sm">Each shield removes a source of pollution. Layer all three and your AI optimization runs on pure, real customer signals.</p>
+                </div>
+              </div>
+            </motion.div>
           </div>
         );
       }
     };
 
-    const StatsGridSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          {data.items.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-xl p-6 text-center">
-              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-              <div className="text-sm font-semibold text-neutral-700 mb-2">{stat.label}</div>
-              <div className="text-xs text-neutral-500">{stat.description}</div>
-            </motion.div>
-          ))}
+    const StatsGridSlide = ({ data }) => {
+      const iconMap = { 'IP': Icons.Server, 'GEO': Icons.Globe, 'Sites': Icons.Database, 'Data': Icons.Shield };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            {data.items.map((stat, i) => {
+              const IconComponent = iconMap[stat.value] || Icons.Shield;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  className="rounded-xl p-6 relative overflow-hidden"
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    border: '1px solid rgba(249, 115, 22, 0.2)'
+                  }}
+                >
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}
+                    >
+                      <span className="text-white"><IconComponent /></span>
+                    </div>
+                    <div className="text-left">
+                      <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+                      <div className="text-sm font-semibold mb-1" style={{ color: 'var(--accent)' }}>{stat.label}</div>
+                      <div className="text-xs text-neutral-400">{stat.description}</div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     const QuoteSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-2xl p-8 md:p-12">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="rounded-2xl p-8 md:p-12 relative overflow-hidden"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            border: '1px solid rgba(249, 115, 22, 0.2)',
+            boxShadow: '0 0 40px rgba(249, 115, 22, 0.1)'
+          }}
+        >
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
           <div className="text-6xl mb-6 text-center" style={{ color: 'var(--accent)' }}>"</div>
-          <p className="text-xl md:text-2xl font-semibold text-black text-center mb-6 leading-relaxed">{data.data.quote}</p>
-          <p className="text-sm text-neutral-500 text-center italic">{data.data.context}</p>
+          <p className="text-xl md:text-2xl font-semibold text-white text-center mb-6 leading-relaxed">{data.data.quote}</p>
+          <p className="text-sm text-neutral-400 text-center italic">{data.data.context}</p>
         </motion.div>
       </div>
     );

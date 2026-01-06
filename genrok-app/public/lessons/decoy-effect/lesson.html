@@ -207,6 +207,7 @@
         center: { label: 'Subscriptions', value: 'Monthly', result: 'Annual looks like a steal', color: '#10b981' }
       }},
       { type: 'content', title: 'The Golden Rules', body: 'Rule #1: The decoy must be OBVIOUSLY inferior. Not slightly worse - embarrassingly worse for the price. Rule #2: Never sell the decoy. If people start buying it, you\'ve failed. Rule #3: Keep the price gap tiny between decoy and target. That\'s what creates the "no-brainer" moment.' },
+      { type: 'test-decoys' },
       { type: 'quiz', question: 'Why does the medium popcorn exist at $6.50 when the large is only $7?', options: ['To give customers more choices', 'To make the large look like an obvious deal by comparison', 'Because medium-sized popcorn costs $6.50 to make', 'To maximize sales of medium popcorn'], correctIndex: 1, feedback: { correct: 'Exactly! The medium exists only to make the large look like a steal. Nobody is supposed to buy the medium - it\'s a decoy that guides you to the premium option.', incorrect: 'Not quite. The medium isn\'t there to be purchased or offer choice - it exists solely to make the large look like an obvious bargain at only 50 cents more.' }},
       { type: 'completion' }
     ];
@@ -464,6 +465,82 @@
       );
     };
 
+    const TestDecoysSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Test Decoy Pricing On Your Store</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+          {/* Manual Testing - Grayed */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-xl p-5 opacity-60">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-lg bg-neutral-300 flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </div>
+              <span className="font-semibold text-neutral-500 text-sm">Manual Testing</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-500">
+              <li className="flex items-start gap-2">
+                <span className="text-neutral-400 mt-0.5">-</span>
+                <span>Change prices by hand</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-neutral-400 mt-0.5">-</span>
+                <span>Wait weeks for data</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-neutral-400 mt-0.5">-</span>
+                <span>No statistical confidence</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-neutral-400 mt-0.5">-</span>
+                <span>Risk losing sales during tests</span>
+              </li>
+            </ul>
+          </motion.div>
+
+          {/* A/B Test with Data - Highlighted */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 rounded-xl p-5 relative overflow-hidden" style={{ borderColor: '#f59e0b', boxShadow: '0 8px 32px rgba(245, 158, 11, 0.15)' }}>
+            <div className="absolute top-0 right-0 px-2 py-1 text-[10px] font-bold text-white rounded-bl-lg" style={{ background: '#f59e0b' }}>RECOMMENDED</div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+              </div>
+              <span className="font-semibold text-neutral-800 text-sm">A/B Test with Data</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-700">
+              <li className="flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Test decoy vs control pricing</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Real-time revenue tracking</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Statistical significance built-in</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Find optimal decoy position</span>
+              </li>
+            </ul>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 text-center">
+          <a href="https://apps.shopify.com/ab-convert" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 16px rgba(245, 158, 11, 0.35)' }}>
+            <span>Try ABConvert</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <p className="text-neutral-400 text-xs mt-3">A/B testing app for Shopify stores</p>
+        </motion.div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -534,6 +611,7 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'test-decoys': return <TestDecoysSlide />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }

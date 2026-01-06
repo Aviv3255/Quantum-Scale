@@ -133,7 +133,7 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why pixel-only tracking loses 30-40% of conversion data', 'How CAPI (Conversions API) fills the iOS 14.5+ gaps', 'The dual-tracking setup that gives Andromeda complete data'] },
-      { type: 'hook', headline: 'iOS 14.5 didn\'t just change privacy. It blinded your ads.', subtext: 'When Apple introduced App Tracking Transparency, pixel tracking broke for 70%+ of iPhone users. Your ads kept running. But Meta stopped seeing conversions. It optimized based on incomplete data. Costs went up. ROAS went down. CAPI is the fix most advertisers still haven\'t implemented properly.' },
+      { type: 'hook', headline: 'iOS 14.5 didn\'t just change privacy. It blinded your ads.', subtext: 'When Apple introduced App Tracking Transparency, pixel tracking broke for 70%+ of iPhone users. Your ads kept running. But Meta stopped seeing conversions. It optimized based on incomplete data. Costs went up. ROAS went down. CAPI is the fix most advertisers still haven\'t implemented properly.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
       { type: 'problem-visual', title: 'The Problem: Pixel Tracking Is Broken', problems: [
         { icon: 'shield', text: 'Safari blocks third-party cookies by default' },
         { icon: 'chrome', text: 'Chrome is phasing out cookies in 2025' },
@@ -160,6 +160,7 @@
         { task: 'Verify both Pixel AND CAPI are firing (check Events Manager)', path: 'Look for "Browser" and "Server" event sources' },
         { task: 'Send enhanced parameters: email, phone for better matching', path: 'Configure in your CAPI integration settings' }
       ], bottomNote: 'CAPI setup typically takes 15-30 minutes on Shopify. The ROI is immediate.' },
+      { type: 'enhance-tracking' },
       { type: 'completion', sources: [] }
     ];
 
@@ -763,6 +764,119 @@
       );
     };
 
+    // Enhance Tracking Slide - Triple Whale Attribution Integration
+    const EnhanceTrackingSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Complement CAPI with Attribution</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          {/* CAPI Only Column - Grayed/Limited */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-300 rounded-xl p-5 opacity-75">
+            <div className="text-center mb-4">
+              <span className="inline-block px-3 py-1 bg-neutral-200 text-neutral-600 rounded-full text-xs font-bold">CAPI Only</span>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 text-neutral-500">
+                <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center">
+                  <Icons.Activity />
+                </div>
+                <span className="text-sm">Event tracking</span>
+              </div>
+              <div className="flex items-center gap-3 text-neutral-500">
+                <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center">
+                  <Icons.Target />
+                </div>
+                <span className="text-sm">Conversion data</span>
+              </div>
+              <div className="flex items-center gap-3 text-neutral-400">
+                <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center">
+                  <Icons.X />
+                </div>
+                <span className="text-sm line-through">Cross-channel attribution</span>
+              </div>
+              <div className="flex items-center gap-3 text-neutral-400">
+                <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center">
+                  <Icons.X />
+                </div>
+                <span className="text-sm line-through">True ROAS by channel</span>
+              </div>
+              <div className="flex items-center gap-3 text-neutral-400">
+                <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center">
+                  <Icons.X />
+                </div>
+                <span className="text-sm line-through">Customer journey view</span>
+              </div>
+            </div>
+            <div className="mt-4 pt-3 border-t border-neutral-300">
+              <div className="text-xs text-neutral-500 text-center">Limited visibility into true performance</div>
+            </div>
+          </motion.div>
+
+          {/* CAPI + Attribution Column - Highlighted/Complete */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-blue-50 border-2 border-blue-400 rounded-xl p-5 relative overflow-hidden">
+            <div className="absolute top-2 right-2">
+              <span className="px-2 py-0.5 bg-blue-500 text-white text-[10px] font-bold rounded">RECOMMENDED</span>
+            </div>
+            <div className="text-center mb-4">
+              <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold">CAPI + Attribution</span>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 text-blue-700">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <Icons.Check />
+                </div>
+                <span className="text-sm font-medium">Event tracking</span>
+              </div>
+              <div className="flex items-center gap-3 text-blue-700">
+                <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <Icons.Check />
+                </div>
+                <span className="text-sm font-medium">Conversion data</span>
+              </div>
+              <div className="flex items-center gap-3 text-green-600">
+                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                  <Icons.Check />
+                </div>
+                <span className="text-sm font-medium">Cross-channel attribution</span>
+              </div>
+              <div className="flex items-center gap-3 text-green-600">
+                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                  <Icons.Check />
+                </div>
+                <span className="text-sm font-medium">True ROAS by channel</span>
+              </div>
+              <div className="flex items-center gap-3 text-green-600">
+                <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                  <Icons.Check />
+                </div>
+                <span className="text-sm font-medium">Customer journey view</span>
+              </div>
+            </div>
+            <div className="mt-4 pt-3 border-t border-blue-300">
+              <div className="text-xs text-blue-700 text-center font-medium">Complete picture of your ad performance</div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-center">
+          <p className="text-neutral-600 text-sm mb-4">CAPI sends data to Meta. Attribution tools show you where every dollar actually comes from.</p>
+          <a
+            href="https://apps.shopify.com/triple-whale"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105"
+            style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}
+          >
+            Try Triple Whale
+            <Icons.ExternalLink />
+          </a>
+        </motion.div>
+      </div>
+    );
+
     // Completion Slide
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
@@ -839,6 +953,7 @@
           case 'event-match-quality': return <EventMatchQualitySlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'action-checklist': return <ActionChecklistSlide data={slide} />;
+          case 'enhance-tracking': return <EnhanceTrackingSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

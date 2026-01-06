@@ -12,17 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Pacifico&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #f59e0b;
-      --accent-dark: #d97706;
-      --accent-light: #fbbf24;
-      --accent-rgb: 245, 158, 11;
-    }
+    :root { --accent: #f59e0b; --accent-dark: #d97706; --accent-light: #fbbf24; --accent-rgb: 245, 158, 11; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -30,6 +22,9 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    .serif-demo { font-family: 'Playfair Display', serif; }
+    .sans-demo { font-family: 'Inter', sans-serif; }
+    .script-demo { font-family: 'Pacifico', cursive; }
   </style>
 </head>
 <body>
@@ -39,177 +34,73 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    const getUserName = () => {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'Builder';
-    };
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'nine-trust-levers',
       title: 'The 9 Trust Levers',
       description: 'How brand consistency builds subconscious trust - and why customers can\'t tell you why they don\'t trust a site.',
       accentColor: '#f59e0b',
-      duration: '5 min',
-      nextLesson: {
-        id: 'ascension-ladder',
-        title: 'The Ascension Ladder',
-        teaser: 'How to turn a $7 customer into a $10,000 customer without feeling salesy.'
-      }
+      duration: '8 min',
+      nextLesson: { id: 'ascension-ladder', title: 'The Ascension Ladder', teaser: 'How to turn a $7 customer into a $10,000 customer without feeling salesy.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/>
           </svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // ============ ELITE SLIDES DATA ============
     const slides = [
-      { type: 'welcome', learningGoals: [
-        'Why brand consistency isn\'t about aesthetics - it\'s subconscious trust',
-        'The 4 main levers: Color, Fonts, Tone, Layout',
-        'How to choose colors based on customer psychology (not your preference)'
-      ]},
-      { type: 'hook', headline: 'People can\'t tell you WHY they don\'t trust a site. But their wallet knows.', subtext: 'You land on two stores selling the same product. One has random fonts, clashing colors, and inconsistent spacing. The other is clean, consistent, predictable. Which do you trust? You can\'t explain why. But you FEEL it. That feeling is subconscious pattern recognition. Your brain is scanning for consistency. Consistency = predictable = safe = trust. Inconsistency = chaos = risk = bounce.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Lucid-Motors-Logo.jpg', brandName: 'Lucid' },
-      { type: 'content', title: 'Brand Consistency Isn\'t Aesthetics', body: 'Most people think brand consistency is about "looking pretty." It\'s not. It\'s about building subconscious trust through repetition. When your colors, fonts, tone, and layout are consistent, your customer\'s brain stops questioning. It recognizes the pattern. It relaxes. When they\'re inconsistent, the brain stays alert. Suspicious. Looking for danger. That suspicion kills conversions.' },
-      { type: 'visual', title: 'The Trust Equation', visualType: 'stats', data: [
-        { value: '94%', label: 'of first impressions', subtext: 'Are design-related' },
-        { value: '0.05s', label: 'judgment time', subtext: 'Trust decided in milliseconds' },
-        { value: '75%', label: 'credibility', subtext: 'Comes from visual design' }
-      ]},
-      { type: 'content', title: 'The 4 Main Trust Levers', body: 'There are four levers that build (or destroy) trust instantly: Color Palette, Font Choices, Tone of Voice, and Layout Consistency. Get these right, customers trust you without knowing why. Get them wrong, customers bounce without knowing why. Let\'s break down each one.' },
-      { type: 'cards', title: 'Lever 1: Color Palette', items: [
-        { title: 'Not Your Favorite Color', description: 'Choose colors based on customer psychology, not personal preference. Blue = trust (banks use it). Red = urgency (sales use it). Green = growth (finance uses it). Black = luxury (premium brands use it).' },
-        { title: 'Limit To 3 Colors', description: 'Primary color (brand identity), secondary color (accents/CTAs), neutral color (backgrounds/text). More than 3 creates visual chaos. Less feels incomplete.' },
-        { title: 'Use Everywhere', description: 'Buttons, headlines, icons, borders - every element should pull from your 3-color palette. No random colors. Ever. Consistency is the entire point.' },
-        { title: 'Test Psychology, Not Preference', description: 'Run A/B tests on color psychology. Does your audience respond to trust (blue) or urgency (red)? Let data decide, not your gut.' }
-      ]},
-      { type: 'cards', title: 'Lever 2: Font Personality', items: [
-        { title: 'Fonts Have Worldviews', description: 'Serif fonts (like Times) = traditional, trustworthy, established. Sans-serif (like Arial) = modern, clean, accessible. Script fonts = elegant, personal, creative. Your font choice signals your worldview.' },
-        { title: 'Match Customer Expectation', description: 'Selling to lawyers? Serif builds credibility. Selling to Gen Z? Sans-serif feels native. Selling luxury skincare? Script adds elegance. Font must match the customer\'s mental model.' },
-        { title: 'Stick To 2 Fonts Max', description: 'One for headlines (bold, attention-grabbing). One for body text (readable, clean). Using 5 different fonts screams "I don\'t know what I\'m doing."' },
-        { title: 'Hierarchy Matters', description: 'Size creates priority. H1 should be massive. H2 slightly smaller. Body text small. Consistent sizing across all pages = your brain learns the hierarchy = faster comprehension.' }
-      ]},
-      { type: 'example', scenario: 'Inconsistent vs Consistent Fonts', before: { label: 'Inconsistent', text: 'Homepage: Comic Sans headline\nProduct page: Times New Roman headline\nCheckout: Arial headline\n\nBounce rate: 68%' }, after: { label: 'Consistent', text: 'Every page: Montserrat headlines\nEvery page: Inter body text\n\nBounce rate: 41% (-40%)' }, insight: 'Same products. Same prices. Font consistency dropped bounce rate by 40%.' },
-      { type: 'cards', title: 'Lever 3: Tone of Voice', items: [
-        { title: 'Tone Is A Trust Signal', description: 'Formal tone = professional, serious (B2B SaaS). Casual tone = friendly, approachable (DTC brands). Irreverent tone = bold, rebellious (streetwear). Pick one. Stick to it everywhere.' },
-        { title: 'Consistency Across Touchpoints', description: 'If your homepage is casual but your checkout is formal, customers notice. Subconsciously. It feels like talking to two different companies. That breaks trust.' },
-        { title: 'Match Customer Language', description: 'Listen to how your customers talk. Reddit threads. Support tickets. Reviews. Use their exact words. Mirror their tone. That\'s instant rapport.' },
-        { title: 'Document Your Voice', description: 'Create a 1-page tone guide. "We say X, not Y." "We use contractions." "We avoid jargon." Share it with anyone who writes copy. Enforce it ruthlessly.' }
-      ]},
-      { type: 'cards', title: 'Lever 4: Layout Consistency', items: [
-        { title: 'Predictable = Easy = Trust', description: 'Your logo in the same spot on every page. Nav bar in the same place. CTA buttons in the same position. Predictability reduces cognitive load. Easy feels trustworthy.' },
-        { title: 'Spacing Creates Rhythm', description: 'Consistent padding, margins, and whitespace create visual rhythm. Your brain recognizes the pattern. Random spacing feels chaotic, untrustworthy.' },
-        { title: 'Component Reusability', description: 'Use the same button style everywhere. Same card design. Same section headers. Reusable components = consistent experience = faster trust-building.' },
-        { title: 'Mobile & Desktop Match', description: 'If desktop is clean but mobile is cramped, trust breaks. Same spacing rules. Same font sizes (scaled). Same button styles. Consistency across devices is non-negotiable.' }
-      ]},
-      { type: 'content', title: 'Why This Actually Matters', body: 'Brand consistency doesn\'t just "look nice." It directly impacts revenue. Consistent brands see 23% higher revenue on average (Lucidpress study). Why? Because trust converts. Inconsistent brands force customers to re-evaluate trust on every page. That friction kills sales. Consistent brands let customers relax. Relaxed customers buy.' },
-      { type: 'implementation', title: 'Instant Visual Trust Signals', intro: "Here\'s how to implement this in your store:", steps: [
-        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
-        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
-        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
-        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
-      ], toolUrl: 'https://platform.shoffi.app/r/rl_uUHJkiZx', cta: 'Get Started Free' },
-      { type: 'tool-setup', title: 'Implementing Trust Badges', toolName: 'Essential Trust Badges', steps: ['Install Essential Trust Badges from the Shopify App Store', 'Choose badge styles that match your brand aesthetic (colors, size)', 'Place badges near Add to Cart buttons and at checkout', 'Enable payment icons (Visa, Mastercard, PayPal, etc.)', 'Add guarantee badges that match your actual policies'], proTip: 'Consistency is key. Use the same badge styles across your entire store - mixing styles breaks the pattern and reduces trust.' },
-      { type: 'quiz', question: 'Why does font consistency across pages increase trust?', options: ['Because customers consciously notice and appreciate the effort', 'Because it reduces cognitive load - the brain recognizes the pattern and relaxes', 'Because it makes the site load faster', 'Because Google ranks consistent sites higher'], correctIndex: 1, feedback: { correct: 'Exactly! Consistency reduces cognitive load. Your brain stops questioning and starts trusting. The pattern recognition happens subconsciously - customers can\'t explain it, but they FEEL it.', incorrect: 'Not quite. Font consistency isn\'t about conscious appreciation or technical performance - it builds subconscious trust by reducing cognitive load. The brain recognizes the pattern and stops looking for danger.' }},
+      { type: 'welcome', learningGoals: ['Why brand consistency isn\'t aesthetics - it\'s subconscious trust', 'The 4 main trust levers: Color, Fonts, Tone, Layout', 'How to choose colors based on customer psychology (not preference)'] },
+      { type: 'hook', headline: 'People can\'t tell you WHY they don\'t trust a site. But their wallet knows.', subtext: 'You land on two stores selling the same product. One has random fonts, clashing colors, and inconsistent spacing. The other is clean, consistent, predictable. Which do you trust? You can\'t explain why. But you FEEL it. That feeling is subconscious pattern recognition.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Apple_logo_grey.svg.png', brandName: 'Apple' },
+      { type: 'trust-equation', title: 'The Trust Equation' },
+      { type: 'trust-meter', title: 'How Consistency Builds Trust' },
+      { type: 'four-levers-overview', title: 'The 4 Trust Levers' },
+      { type: 'color-psychology', title: 'Lever 1: Color Psychology' },
+      { type: 'font-personality', title: 'Lever 2: Font Personality' },
+      { type: 'font-comparison', title: 'Font Consistency Impact' },
+      { type: 'tone-spectrum', title: 'Lever 3: Tone of Voice' },
+      { type: 'layout-consistency', title: 'Lever 4: Layout Consistency' },
+      { type: 'revenue-impact', title: 'Why This Actually Matters' },
+      { type: 'trust-checklist', title: 'Your Trust Audit' },
+      { type: 'elite-insight', title: 'The Trust Paradox' },
+      { type: 'quiz', question: 'Why does font consistency across pages increase trust?', options: ['Because customers consciously notice and appreciate the effort', 'Because it reduces cognitive load - the brain recognizes the pattern and relaxes', 'Because it makes the site load faster', 'Because Google ranks consistent sites higher'], correctIndex: 1, feedback: { correct: 'Exactly! Consistency reduces cognitive load. Your brain stops questioning and starts trusting. The pattern recognition happens subconsciously.', incorrect: 'Not quite. Font consistency isn\'t about conscious appreciation or technical performance - it builds subconscious trust by reducing cognitive load.' }},
       { type: 'completion', sources: [{ name: 'Essential Trust Badges', url: 'https://platform.shoffi.app/r/rl_uUHJkiZx' }] }
     ];
 
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -217,11 +108,55 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Palette: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></svg>,
+      Type: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>,
+      MessageSquare: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Layout: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>,
+      Eye: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      Shield: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      CheckCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
     };
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ target, duration = 2000, prefix = '', suffix = '', decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(target);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
+    // ============ THE 4 TRUST LEVERS DATA ============
+    const trustLevers = [
+      { icon: Icons.Palette, color: '#3b82f6', title: 'Color', subtitle: 'Psychology-based palette', desc: 'Blue=Trust, Red=Urgency, Black=Luxury. Choose based on customer emotions, not preference.' },
+      { icon: Icons.Type, color: '#8b5cf6', title: 'Fonts', subtitle: '2 fonts maximum', desc: 'Serif=Traditional, Sans=Modern, Script=Elegant. Match customer expectations.' },
+      { icon: Icons.MessageSquare, color: '#10b981', title: 'Tone', subtitle: 'Consistent voice', desc: 'Formal, Casual, or Irreverent. Pick one. Use it everywhere.' },
+      { icon: Icons.Layout, color: '#f59e0b', title: 'Layout', subtitle: 'Predictable patterns', desc: 'Same logo position, nav bar, CTA buttons. Predictability = Trust.' }
+    ];
+
+    // ============ COLOR PSYCHOLOGY DATA ============
+    const colorPsychology = [
+      { color: '#3b82f6', name: 'Blue', emotion: 'Trust', examples: 'Banks, Tech, Healthcare' },
+      { color: '#ef4444', name: 'Red', emotion: 'Urgency', examples: 'Sales, CTAs, Warnings' },
+      { color: '#22c55e', name: 'Green', emotion: 'Growth', examples: 'Finance, Eco, Health' },
+      { color: '#000000', name: 'Black', emotion: 'Luxury', examples: 'Premium, Fashion, Elite' }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -263,221 +198,486 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 0.12, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '40%', maxHeight: '280px', marginRight: '5%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ filter: 'grayscale(100%)' }} />
           </motion.div>
         )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // ============ TRUST EQUATION SLIDE ============
+    const TrustEquationSlide = ({ data }) => {
+      const stats = [
+        { value: 94, suffix: '%', label: 'of first impressions', subtext: 'Are design-related' },
+        { value: 0.05, suffix: 's', label: 'judgment time', subtext: 'Trust decided instantly', decimals: 2 },
+        { value: 75, suffix: '%', label: 'credibility', subtext: 'Comes from visual design' }
+      ];
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
 
-    const PopcornVisual = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Decoy In Action</motion.h2>
-        <div className="flex items-end justify-center gap-4 md:gap-8">
-          {/* Small */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex flex-col items-center">
-            <div className="w-16 h-20 md:w-20 md:h-24 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-t-2xl rounded-b-lg relative overflow-hidden shadow-lg">
-              <div className="absolute top-2 left-1/2 -translate-x-1/2 text-3xl">🍿</div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
-            <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-neutral-800">{data.small.price}</div>
-              <div className="text-sm text-neutral-500">{data.small.label}</div>
-            </div>
-          </motion.div>
-
-          {/* Medium (Decoy) */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex flex-col items-center relative">
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-red-500 text-white text-[10px] font-bold rounded-full">DECOY</div>
-            <div className="w-20 h-28 md:w-24 md:h-32 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-t-2xl rounded-b-lg relative overflow-hidden shadow-lg opacity-60 border-2 border-dashed border-red-400">
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 text-4xl">🍿</div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
-            <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-red-500 line-through">{data.medium.price}</div>
-              <div className="text-sm text-red-400">{data.medium.label}</div>
-            </div>
-          </motion.div>
-
-          {/* Large (Best) */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex flex-col items-center relative">
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-500 text-white text-[10px] font-bold rounded-full flex items-center gap-1"><Icons.Star />BEST</div>
-            <div className="w-24 h-36 md:w-28 md:h-40 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-t-3xl rounded-b-lg relative overflow-hidden shadow-xl ring-4 ring-amber-400">
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 text-5xl">🍿</div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
-            <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-amber-600">{data.large.price}</div>
-              <div className="text-sm text-amber-600 font-semibold">{data.large.label}</div>
-              <div className="text-xs text-green-600 mt-1">Only 50¢ more!</div>
-            </div>
-          </motion.div>
-        </div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center mt-8 text-neutral-500 text-sm max-w-md">The medium exists only to make the large look like a steal. Nobody buys it.</motion.p>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'popcorn') {
-        return <PopcornVisual data={data.data} />;
-      }
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                className="relative rounded-xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(245, 158, 11, 0.1)' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                  <AnimatedCounter target={stat.value} duration={1500} suffix={stat.suffix} decimals={stat.decimals || 0} />
+                </div>
+                <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                <div className="text-xs text-neutral-400">{stat.subtext}</div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
+            ))}
           </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="mt-8 text-center">
+            <div className="inline-flex items-center gap-3 px-5 py-3 rounded-xl bg-neutral-100">
+              <Icons.Brain className="text-neutral-600" />
+              <span className="text-neutral-700 text-sm font-medium">Trust is decided before you can explain it</span>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ TRUST METER SLIDE ============
+    const TrustMeterSlide = ({ data }) => {
+      const [trustLevel, setTrustLevel] = useState(0);
+      const [phase, setPhase] = useState(0);
+
+      useEffect(() => {
+        const phases = [
+          { level: 25, delay: 500 },
+          { level: 50, delay: 1200 },
+          { level: 75, delay: 1900 },
+          { level: 100, delay: 2600 }
+        ];
+        phases.forEach((p, i) => {
+          setTimeout(() => {
+            setTrustLevel(p.level);
+            setPhase(i + 1);
+          }, p.delay);
+        });
+      }, []);
+
+      const elements = ['Color', 'Fonts', 'Tone', 'Layout'];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          {/* Trust Meter */}
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+            className="relative rounded-2xl p-6 mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-neutral-400 text-sm">Trust Level</span>
+              <span className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>{trustLevel}%</span>
+            </div>
+
+            <div className="w-full h-4 bg-neutral-700 rounded-full overflow-hidden mb-6">
+              <motion.div className="h-full rounded-full" animate={{ width: `${trustLevel}%` }} transition={{ duration: 0.5, ease: 'easeOut' }}
+                style={{ background: `linear-gradient(90deg, var(--accent-dark), var(--accent))` }} />
+            </div>
+
+            <div className="grid grid-cols-4 gap-2">
+              {elements.map((el, i) => (
+                <motion.div key={i} initial={{ opacity: 0.3 }} animate={{ opacity: phase > i ? 1 : 0.3 }}
+                  className="text-center p-3 rounded-lg transition-all" style={{ background: phase > i ? 'rgba(245, 158, 11, 0.15)' : 'transparent', border: phase > i ? '1px solid rgba(245, 158, 11, 0.3)' : '1px solid transparent' }}>
+                  <p className={`text-xs font-semibold ${phase > i ? 'text-amber-400' : 'text-neutral-500'}`}>{el}</p>
+                  {phase > i && <Icons.Check className="mx-auto mt-1 text-green-400 w-4 h-4" />}
                 </motion.div>
               ))}
             </div>
-          </div>
-        );
-      }
-      return null;
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 3 }}
+            className="text-center text-neutral-500 text-sm">
+            Each consistent element adds to the trust equation. Miss one, and customers feel it.
+          </motion.p>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+    // ============ FOUR LEVERS OVERVIEW SLIDE ============
+    const FourLeversOverviewSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(-1);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % 4);
+        }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid grid-cols-2 gap-4">
+            {trustLevers.map((lever, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="relative rounded-xl p-5 transition-all duration-300"
+                style={{
+                  background: activeIndex === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                  border: activeIndex === i ? `1px solid ${lever.color}40` : '2px solid #e5e5e5',
+                  boxShadow: activeIndex === i ? `0 0 30px ${lever.color}20` : 'none'
+                }}>
+                {activeIndex === i && (
+                  <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${lever.color}, transparent)` }} />
+                )}
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${lever.color}, ${lever.color}80)` }}>
+                    <lever.icon className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className={`font-bold ${activeIndex === i ? 'text-white' : 'text-neutral-900'}`}>{lever.title}</h3>
+                    <p className={`text-xs ${activeIndex === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{lever.subtitle}</p>
+                  </div>
+                </div>
+                <p className={`text-sm leading-relaxed ${activeIndex === i ? 'text-neutral-300' : 'text-neutral-600'}`}>{lever.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ COLOR PSYCHOLOGY SLIDE ============
+    const ColorPsychologySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {colorPsychology.map((cp, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="relative rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${cp.color}, transparent)` }} />
+              <div className="w-12 h-12 rounded-full mx-auto mb-3" style={{ background: cp.color, boxShadow: `0 0 20px ${cp.color}40` }} />
+              <h3 className="text-white font-bold mb-1">{cp.name}</h3>
+              <p className="text-lg font-semibold mb-1" style={{ color: cp.color }}>{cp.emotion}</p>
+              <p className="text-neutral-500 text-xs">{cp.examples}</p>
             </motion.div>
           ))}
         </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+          className="mt-6 rounded-xl p-4 text-center bg-amber-50 border border-amber-200">
+          <p className="text-amber-800 text-sm font-medium">
+            <Icons.Lightbulb className="inline mr-2" />
+            Choose based on what emotion you want customers to feel, not what you personally like.
+          </p>
+        </motion.div>
       </div>
     );
 
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+    // ============ FONT PERSONALITY SLIDE ============
+    const FontPersonalitySlide = ({ data }) => {
+      const fonts = [
+        { class: 'serif-demo', name: 'Serif', personality: 'Traditional & Trustworthy', example: 'Law firms, News, Finance', sample: 'Established 1892' },
+        { class: 'sans-demo', name: 'Sans-Serif', personality: 'Modern & Clean', example: 'Tech, Startups, DTC', sample: 'Future Forward' },
+        { class: 'script-demo', name: 'Script', personality: 'Elegant & Personal', example: 'Luxury, Beauty, Weddings', sample: 'Signature Style' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {fonts.map((font, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                className="relative rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+                <p className={`${font.class} text-2xl md:text-3xl text-white mb-4 text-center`}>{font.sample}</p>
+
+                <div className="text-center">
+                  <h3 className="text-white font-bold mb-1">{font.name}</h3>
+                  <p className="text-sm mb-2" style={{ color: 'var(--accent)' }}>{font.personality}</p>
+                  <p className="text-neutral-500 text-xs">{font.example}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="mt-6 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100">
+              <Icons.Type className="text-neutral-600" />
+              <span className="text-neutral-700 text-sm font-medium">Rule: Maximum 2 fonts per site</span>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ FONT COMPARISON SLIDE ============
+    const FontComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            className="rounded-xl p-5 bg-red-50 border-2 border-red-200">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-700 text-sm">Inconsistent</span>
+            </div>
+            <div className="space-y-2 mb-4">
+              <p className="serif-demo text-lg text-neutral-700">Homepage: Times New Roman</p>
+              <p className="text-lg text-neutral-700" style={{ fontFamily: 'Comic Sans MS, cursive' }}>Product: Comic Sans</p>
+              <p className="sans-demo text-lg text-neutral-700">Checkout: Arial</p>
+            </div>
+            <div className="rounded-lg p-3 bg-red-100">
+              <p className="text-red-700 text-sm font-semibold">Bounce Rate: 68%</p>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="relative rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.15)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-green-400 text-sm">Consistent</span>
+            </div>
+            <div className="space-y-2 mb-4">
+              <p className="sans-demo text-lg text-neutral-300">Homepage: Inter</p>
+              <p className="sans-demo text-lg text-neutral-300">Product: Inter</p>
+              <p className="sans-demo text-lg text-neutral-300">Checkout: Inter</p>
+            </div>
+            <div className="rounded-lg p-3 bg-green-500/20">
+              <p className="text-green-400 text-sm font-semibold">Bounce Rate: 41% (-40%)</p>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="mt-6 rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <p className="text-neutral-300 text-sm">
+            <Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />
+            Same products. Same prices. Font consistency dropped bounce rate by 40%.
+          </p>
         </motion.div>
-        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+      </div>
+    );
+
+    // ============ TONE SPECTRUM SLIDE ============
+    const ToneSpectrumSlide = ({ data }) => {
+      const [activeTone, setActiveTone] = useState(1);
+      const tones = [
+        { name: 'Formal', example: '"We are pleased to inform you that your order has been dispatched."', use: 'B2B, Legal, Finance', color: '#3b82f6' },
+        { name: 'Casual', example: '"Hey! Your order is on its way. Get excited!"', use: 'DTC, Lifestyle, Apps', color: '#10b981' },
+        { name: 'Irreverent', example: '"Holy sh*t, your order shipped. It\'s about time."', use: 'Streetwear, Bold Brands', color: '#ef4444' }
+      ];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveTone(prev => (prev + 1) % 3);
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          {/* Tone Spectrum Bar */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
+            <div className="flex justify-between mb-2">
+              {tones.map((t, i) => (
+                <span key={i} className={`text-sm font-semibold transition-all ${activeTone === i ? 'text-neutral-900 scale-110' : 'text-neutral-400'}`}>{t.name}</span>
+              ))}
+            </div>
+            <div className="h-3 rounded-full bg-neutral-200 relative overflow-hidden">
+              <motion.div className="absolute top-0 h-full w-1/3 rounded-full"
+                animate={{ left: `${activeTone * 33.33}%` }}
+                style={{ background: tones[activeTone].color }} />
+            </div>
+          </motion.div>
+
+          {/* Active Tone Card */}
+          <motion.div key={activeTone} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+            className="relative rounded-xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: `0 0 30px ${tones[activeTone].color}20` }}>
+            <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${tones[activeTone].color}, transparent)` }} />
+
+            <p className="text-xl md:text-2xl text-white mb-4 leading-relaxed">"{tones[activeTone].example}"</p>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Icons.MessageSquare style={{ color: tones[activeTone].color }} />
+                <span className="font-semibold" style={{ color: tones[activeTone].color }}>{tones[activeTone].name} Tone</span>
               </div>
-            </motion.div>
-          ))}
+              <span className="text-neutral-500 text-sm">Best for: {tones[activeTone].use}</span>
+            </div>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+            className="text-center text-neutral-500 text-sm mt-6">
+            Pick one tone. Use it everywhere. Homepage, emails, checkout, support.
+          </motion.p>
         </div>
-        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            {data.cta || 'Get Started'} <Icons.ExternalLink />
-          </a>
-        </motion.div>}
+      );
+    };
+
+    // ============ LAYOUT CONSISTENCY SLIDE ============
+    const LayoutConsistencySlide = ({ data }) => {
+      const rules = [
+        { icon: Icons.Eye, title: 'Logo Position', desc: 'Same spot on every page' },
+        { icon: Icons.Layout, title: 'Navigation', desc: 'Same structure everywhere' },
+        { icon: Icons.Zap, title: 'CTA Buttons', desc: 'Same style and position' },
+        { icon: Icons.Shield, title: 'Spacing', desc: 'Consistent padding/margins' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            {rules.map((rule, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="relative rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                    <rule.icon className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold text-sm">{rule.title}</h3>
+                    <p className="text-neutral-400 text-xs">{rule.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="rounded-xl p-5 text-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <p className="text-white text-lg font-semibold mb-2">Predictable = Easy = Trust</p>
+            <p className="text-white/80 text-sm">When customers don't have to think about navigation, they can focus on buying.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ REVENUE IMPACT SLIDE ============
+    const RevenueImpactSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+          className="relative rounded-2xl p-8 text-center mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 50px rgba(245, 158, 11, 0.15)' }}>
+          <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <Icons.TrendingUp className="mx-auto mb-4" style={{ color: 'var(--accent)', width: 40, height: 40 }} />
+
+          <p className="text-6xl md:text-7xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+            +<AnimatedCounter target={23} duration={1500} suffix="%" />
+          </p>
+          <p className="text-white text-xl font-semibold mb-2">Higher Revenue</p>
+          <p className="text-neutral-400">for brands with consistent visual identity</p>
+          <p className="text-neutral-500 text-xs mt-4">Source: Lucidpress Brand Consistency Study</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="grid md:grid-cols-2 gap-3">
+          <div className="rounded-xl p-4 bg-red-50 border border-red-200 text-center">
+            <p className="text-red-600 font-semibold text-sm">Inconsistent Brands</p>
+            <p className="text-neutral-600 text-xs">Force customers to re-evaluate trust on every page</p>
+          </div>
+          <div className="rounded-xl p-4 bg-green-50 border border-green-200 text-center">
+            <p className="text-green-600 font-semibold text-sm">Consistent Brands</p>
+            <p className="text-neutral-600 text-xs">Let customers relax. Relaxed customers buy.</p>
+          </div>
+        </motion.div>
       </div>
     );
 
-    const ToolSetupSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Quick Setup</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <div className="space-y-3 mb-6">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm md:text-base leading-relaxed pt-1">{step}</p>
-            </motion.div>
-          ))}
+    // ============ TRUST CHECKLIST SLIDE ============
+    const TrustChecklistSlide = ({ data }) => {
+      const [checkedItems, setCheckedItems] = useState([]);
+      const items = [
+        { lever: 'Color', check: '3 colors max (primary, secondary, neutral)' },
+        { lever: 'Fonts', check: '2 fonts max (headline + body)' },
+        { lever: 'Tone', check: 'One voice documented and enforced' },
+        { lever: 'Layout', check: 'Consistent spacing on all pages' }
+      ];
+
+      const toggleItem = (i) => {
+        setCheckedItems(prev => prev.includes(i) ? prev.filter(x => x !== i) : [...prev, i]);
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="space-y-3">
+            {items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => toggleItem(i)}
+                className={`relative rounded-xl p-4 cursor-pointer transition-all ${checkedItems.includes(i) ? '' : 'hover:bg-neutral-50'}`}
+                style={{
+                  background: checkedItems.includes(i) ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                  border: checkedItems.includes(i) ? '1px solid rgba(245, 158, 11, 0.3)' : '2px solid #e5e5e5'
+                }}>
+                {checkedItems.includes(i) && (
+                  <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                )}
+                <div className="flex items-center gap-4">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${checkedItems.includes(i) ? 'bg-green-500' : 'bg-neutral-100'}`}>
+                    {checkedItems.includes(i) ? <Icons.Check className="text-white w-5 h-5" /> : <span className="text-neutral-400 text-sm font-bold">{i + 1}</span>}
+                  </div>
+                  <div>
+                    <span className={`text-xs uppercase tracking-wider ${checkedItems.includes(i) ? 'text-amber-400' : 'text-neutral-500'}`}>{item.lever}</span>
+                    <p className={`font-medium ${checkedItems.includes(i) ? 'text-white' : 'text-neutral-700'}`}>{item.check}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+            className="text-center text-neutral-500 text-sm mt-6">
+            Click to check off each item as you audit your store
+          </motion.p>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4">
-          <p className="text-neutral-300 text-sm"><span className="text-white font-semibold">Pro Tip:</span> {data.proTip}</p>
+      );
+    };
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          className="relative rounded-2xl p-8 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(245, 158, 11, 0.2)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+          <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }}
+            className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <Icons.Lightbulb className="text-white" />
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="text-xs uppercase tracking-wider mb-4" style={{ color: 'var(--accent)' }}>The Trust Paradox</motion.p>
+
+          <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-white text-2xl md:text-3xl font-bold leading-tight mb-4">
+            "Customers can't tell you WHY they trust you.<br/>But their wallet knows."
+          </motion.h3>
+
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="text-neutral-400 leading-relaxed">
+            Trust is built through consistency: colors, fonts, tone, layout. It happens subconsciously.
+            The brain recognizes patterns and relaxes. That relaxation converts.
+          </motion.p>
         </motion.div>
       </div>
     );
 
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -526,19 +726,20 @@
       );
     };
 
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand the trust levers. Pick your 3 colors. Choose 2 fonts. Lock in your tone. Keep your layout consistent. Watch trust build automatically.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the 4 trust levers. Pick 3 colors, choose 2 fonts, lock in your tone, keep layout consistent. Watch trust build automatically.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
         {data?.sources && data.sources.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Tools Mentioned</p>
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
                 <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
@@ -552,11 +753,12 @@
       </div>
     );
 
+    // ============ LESSON APP ============
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
-      const currentSlideRef = React.useRef(0);
+      const currentSlideRef = React.useRef(currentSlide);
       const [gifConfig, setGifConfig] = useState(null);
       const [isAnimating, setIsAnimating] = useState(false);
 
@@ -565,14 +767,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -604,12 +800,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
-          case 'tool-setup': return <ToolSetupSlide data={slide} />;
+          case 'trust-equation': return <TrustEquationSlide data={slide} />;
+          case 'trust-meter': return <TrustMeterSlide data={slide} />;
+          case 'four-levers-overview': return <FourLeversOverviewSlide data={slide} />;
+          case 'color-psychology': return <ColorPsychologySlide data={slide} />;
+          case 'font-personality': return <FontPersonalitySlide data={slide} />;
+          case 'font-comparison': return <FontComparisonSlide data={slide} />;
+          case 'tone-spectrum': return <ToneSpectrumSlide data={slide} />;
+          case 'layout-consistency': return <LayoutConsistencySlide data={slide} />;
+          case 'revenue-impact': return <RevenueImpactSlide data={slide} />;
+          case 'trust-checklist': return <TrustChecklistSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -632,8 +833,8 @@
             {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
           </div>
           <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
-            <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            <div className="flex items-center justify-center gap-2">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2 h-2 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.4)' : 'scale(1)' }} />)}
             </div>
           </div>
           <AnimatePresence>

@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #f59e0b; --accent-dark: #d97706; --accent-light: #fbbf24; --accent-rgb: 245, 158, 11; }
@@ -35,161 +32,123 @@
     const { useState, useEffect, useCallback, useMemo } = React;
 
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
-    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'pattern-interrupts',
       title: 'Pattern Interrupts',
       description: 'Why your customer\'s brain ignores 90% of what you show them - and how to hijack their attention back.',
       accentColor: '#f59e0b',
-      duration: '6 min',
-      nextLesson: { id: 'dopamine-blueprint', title: 'The Dopamine Blueprint', teaser: 'Why anticipation is more addictive than the reward itself - and how to create irresistible buying loops.' }
+      duration: '7 min',
+      nextLesson: { id: 'dopamine-blueprint', title: 'The Dopamine Blueprint', teaser: 'Why anticipation is more addictive than the reward itself.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/bug-icon.svg" alt="Report" style={{ width: '16px', height: '16px', filter: 'invert(1)' }} onError={(e) => { e.target.style.display = 'none'; }} />
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why your customer\'s brain automatically ignores most of what you show them', 'The "Pattern Interrupt" technique that forces conscious attention', 'How to break the scroll and make them STOP on your content'] },
-      { type: 'hook', headline: 'Your customer scrolled past 347 ads today. They didn\'t see a single one.', subtext: 'Not because the ads were bad. Because the brain is designed to ignore predictable patterns. It\'s called "habituation" - the neural process that makes you stop noticing your clothes against your skin, the hum of your refrigerator, and yes... that well-designed ad in their feed. Your content blends into the wallpaper of their mind. Unless you break the pattern.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Facebook' },
-      { type: 'visual', title: 'The Attention Crisis', visualType: 'stats', data: [
-        { value: '90%', label: 'Content ignored', subtext: 'Brain filters it as "expected"' },
-        { value: '1.7s', label: 'Average ad view time', subtext: 'Before scroll continues' },
-        { value: '10K+', label: 'Daily brand exposures', subtext: 'Most never reach consciousness' }
-      ]},
-      { type: 'content', title: 'The Brain\'s Energy Conservation System', body: 'Your brain uses 20% of your body\'s energy - more than any other organ. To survive, it evolved a filtering system: ignore anything predictable, only pay attention to the unexpected. This is why you stop noticing your watch on your wrist. Why you tune out the background music at a cafe. Why you scroll past ads that look like... ads. The brain says: "I\'ve seen this pattern before. Not a threat. Not an opportunity. Ignore." This is your biggest enemy in marketing.' },
-      { type: 'content', title: 'What Is a Pattern Interrupt?', body: 'A Pattern Interrupt is anything that breaks the expected sequence. It forces the brain to STOP filtering and START paying attention. Think of it like a record scratch in the middle of a song - the brain can\'t ignore it. Comedians use it to land jokes. Magicians use it to create wonder. Hypnotists use it to bypass resistance. And the best marketers use it to capture attention in a world where everyone is on autopilot.' },
-      { type: 'cards', title: 'The 4 Pattern Interrupt Types', items: [
-        { title: 'Visual Interrupt', description: 'Something that looks "wrong" in the feed. Unusual colors, unexpected images, faces with strange expressions. The brain flags it: "Wait, what is THAT?"' },
-        { title: 'Verbal Interrupt', description: 'Words that break expectations. "DON\'T read this" makes you read it. "This product sucks" in a sales page. Contradiction creates curiosity.' },
-        { title: 'Contextual Interrupt', description: 'Something in the wrong place. A formal product in a casual setting. A meme format selling luxury goods. The mismatch demands attention.' },
-        { title: 'Emotional Interrupt', description: 'A sudden shift in emotional tone. From serious to absurd. From calm to urgent. The brain can\'t predict it, so it must pay attention.' }
-      ]},
-      { type: 'example', scenario: 'Facebook Ad for Supplements', before: { label: 'Standard Ad (Ignored)', text: '"Premium Vitamin D3 - Natural, High Absorption, Doctor Recommended. Shop Now."' }, after: { label: 'Pattern Interrupt (Stops Scroll)', text: '"I threw away my vitamin D pills. Then I found out I was taking the WRONG form. Here\'s the one thing that actually works..."' }, insight: 'The first looks like every supplement ad ever. The second breaks pattern with "threw away" (unexpected action), creates curiosity (wrong form?), and implies insider knowledge. The brain can\'t scroll past.' },
-      { type: 'visual', title: 'Before vs After Pattern Interrupt', visualType: 'comparison', data: {
-        left: { label: 'Standard Ad', value: '1.2s', result: 'View time before scroll', color: '#94a3b8' },
-        right: { label: 'Pattern Interrupt', value: '8.4s', result: 'View time before scroll', color: '#f59e0b' },
-        center: { label: 'Attention Increase', value: '7x', result: 'More time to deliver message', color: '#10b981' }
-      }},
-      { type: 'cards', title: 'Pattern Interrupt Techniques', items: [
-        { title: 'The Contradiction Open', description: '"This is the WORST advice I ever got... and it made me rich." Contradiction demands resolution. They must keep reading.' },
-        { title: 'The Unexpected Admission', description: '"Our product isn\'t for everyone. In fact, most people shouldn\'t buy it." Honesty is so rare it becomes a pattern interrupt.' },
-        { title: 'The Weird Specific', description: '"How a 47-year-old accountant from Ohio discovered a 3,000-year-old secret..." Bizarre specifics bypass the filter.' }
-      ]},
-      { type: 'example', scenario: 'Email Subject Line', before: { label: 'Expected Pattern', text: '"50% OFF - Summer Sale Ends Tonight!"' }, after: { label: 'Pattern Interrupt', text: '"I messed up your order (not really, but now you\'re reading this)"' }, insight: 'Discount emails are expected. "I messed up" triggers concern, then "(not really)" creates relief mixed with amusement. The emotional rollercoaster forces attention.' },
-      { type: 'content', title: 'The Danger of Pattern Interrupts', body: 'Warning: Pattern interrupts are powerful, but they come with a trap. If your interrupt doesn\'t connect to your actual message, you get attention but lose trust. The "messed up your order" email works because it transitions to a relevant offer. A random shocking image that has nothing to do with your product? That\'s clickbait. It gets attention but destroys credibility. The rule: Interrupt the pattern, but EARN the attention by delivering value after.' },
-      { type: 'quiz', question: 'A pet food brand wants to stop the scroll on Instagram. Which is the most effective Pattern Interrupt?', options: ['"Premium Dog Food - 100% Natural Ingredients, Vet Approved"', '"Your dog is judging your food choices. Here\'s what they REALLY think..."', '"Best Dog Food 2024 - Free Shipping!"', '"Healthy Dog Food - Order Now"'], correctIndex: 1, feedback: { correct: 'Perfect! "Your dog is judging you" is unexpected and amusing. It breaks the pattern of typical pet food ads, creates curiosity (what do they think?), and emotionally connects with dog owners. The brain can\'t scroll past the unexpexted.', incorrect: 'The winner is the one that breaks expectations. "Your dog is judging you" is unexpected, amusing, and creates curiosity. Standard benefit-focused ads blend into the noise. Pattern interrupts demand attention by being anything BUT normal.' }},
-      { type: 'completion', sources: [] }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Eye: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      EyeOff: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+      MessageCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>,
+      Shuffle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Filter: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Activity: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Image: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
     };
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(target);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.round(count)}{suffix}</span>;
+    };
+
+    // ============ SLIDE DATA ============
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why your customer\'s brain automatically ignores most of what you show them',
+        'The 4 Pattern Interrupt types that force conscious attention',
+        'How to break the scroll and make them STOP on your content',
+        'The danger zone: when interrupts backfire'
+      ]},
+      { type: 'hook', headline: 'Your customer scrolled past 347 ads today. They didn\'t see a single one.', subtext: 'Not because the ads were bad. Because the brain is designed to ignore predictable patterns. It\'s called "habituation" - the neural process that makes you stop noticing your clothes against your skin, the hum of your refrigerator, and yes... that well-designed ad in their feed. Your content blends into the wallpaper of their mind. Unless you break the pattern.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
+      { type: 'brain-filter' },
+      { type: 'what-is-interrupt' },
+      { type: 'interrupt-types' },
+      { type: 'before-after-ad' },
+      { type: 'attention-comparison' },
+      { type: 'techniques-playbook' },
+      { type: 'danger-zone' },
+      { type: 'quiz', question: 'A pet food brand wants to stop the scroll on Instagram. Which is the most effective Pattern Interrupt?', options: ['"Premium Dog Food - 100% Natural Ingredients, Vet Approved"', '"Your dog is judging your food choices. Here\'s what they REALLY think..."', '"Best Dog Food 2024 - Free Shipping!"', '"Healthy Dog Food - Order Now"'], correctIndex: 1, feedback: { correct: 'Perfect! "Your dog is judging you" is unexpected and amusing. It breaks the pattern of typical pet food ads, creates curiosity (what do they think?), and emotionally connects with dog owners.', incorrect: 'The winner is the one that breaks expectations. "Your dog is judging you" is unexpected, amusing, and creates curiosity. Standard benefit-focused ads blend into the noise.' }},
+      { type: 'impact-stats' },
+      { type: 'elite-insight' },
+      { type: 'completion' }
+    ];
+
+    // ============ INTERRUPT TYPES CONFIG ============
+    const INTERRUPT_TYPES = [
+      { name: 'Visual Interrupt', icon: Icons.Image, color: '#8b5cf6', desc: 'Something that looks "wrong" in the feed. Unusual colors, unexpected images, faces with strange expressions.', trigger: 'The brain flags: "Wait, what is THAT?"' },
+      { name: 'Verbal Interrupt', icon: Icons.MessageCircle, color: '#f59e0b', desc: '"DON\'T read this" makes you read it. "This product sucks" in a sales page. Contradiction creates curiosity.', trigger: 'Words that break expectations' },
+      { name: 'Contextual Interrupt', icon: Icons.Shuffle, color: '#10b981', desc: 'Something in the wrong place. A formal product in a casual setting. A meme format selling luxury goods.', trigger: 'The mismatch demands attention' },
+      { name: 'Emotional Interrupt', icon: Icons.Heart, color: '#ef4444', desc: 'A sudden shift in emotional tone. From serious to absurd. From calm to urgent. The brain can\'t predict it.', trigger: 'Emotional rollercoaster forces focus' }
+    ];
+
+    // ============ WELCOME SLIDE ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -218,6 +177,7 @@
       );
     };
 
+    // ============ HOOK SLIDE ============
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -227,15 +187,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -245,107 +196,434 @@
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // ============ BRAIN FILTER SLIDE ============
+    const BrainFilterSlide = () => {
+      const [filtered, setFiltered] = useState([]);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      useEffect(() => {
+        const items = ['Ad 1', 'Ad 2', 'Ad 3', 'Ad 4', 'Ad 5', 'Ad 6', 'Ad 7', 'Ad 8', 'Ad 9', 'Ad 10'];
+        let index = 0;
+        const interval = setInterval(() => {
+          if (index < items.length) {
+            setFiltered(prev => [...prev, items[index]]);
+            index++;
+          } else {
+            setFiltered([]);
+            index = 0;
+          }
+        }, 400);
+        return () => clearInterval(interval);
+      }, []);
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Problem</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Brain's Energy Conservation System</h2>
+          </motion.div>
+
+          {/* Brain Filter Visualization */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+
+            <div className="flex items-center justify-between gap-4">
+              {/* Input - Ads Coming In */}
+              <div className="flex-1">
+                <div className="text-neutral-400 text-xs mb-3 text-center">Daily Exposures</div>
+                <div className="grid grid-cols-5 gap-1">
+                  {[...Array(10)].map((_, i) => (
+                    <motion.div key={i}
+                      animate={{ opacity: filtered.includes(`Ad ${i + 1}`) ? 0.3 : 1, scale: filtered.includes(`Ad ${i + 1}`) ? 0.8 : 1 }}
+                      className="h-8 rounded flex items-center justify-center text-[8px] text-white font-bold"
+                      style={{ background: filtered.includes(`Ad ${i + 1}`) ? '#374151' : 'linear-gradient(135deg, #f59e0b, #d97706)' }}>
+                      {i + 1}
+                    </motion.div>
+                  ))}
+                </div>
+                <div className="text-center mt-2 text-white font-bold">10K+ brands</div>
+              </div>
+
+              {/* Filter - Brain */}
+              <div className="flex flex-col items-center">
+                <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1.5, repeat: Infinity }}
+                  className="w-16 h-16 rounded-full flex items-center justify-center" style={{ background: 'rgba(245, 158, 11, 0.2)', border: '2px solid #f59e0b' }}>
+                  <Icons.Filter />
                 </motion.div>
+                <div className="text-neutral-400 text-xs mt-2">Brain Filter</div>
+                <div className="text-red-400 text-xs font-bold">-90%</div>
+              </div>
+
+              {/* Output - What Gets Through */}
+              <div className="flex-1">
+                <div className="text-neutral-400 text-xs mb-3 text-center">Conscious Attention</div>
+                <div className="h-20 rounded-lg flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px dashed rgba(239, 68, 68, 0.3)' }}>
+                  <div className="text-center">
+                    <div className="text-2xl font-black text-red-400"><AnimatedCounter target={10} suffix="%" /></div>
+                    <div className="text-neutral-500 text-[10px]">actually noticed</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              {[
+                { value: '90%', label: 'Content ignored', desc: 'Brain filters as "expected"' },
+                { value: '1.7s', label: 'Average ad view', desc: 'Before scroll continues' },
+                { value: '10K+', label: 'Daily exposures', desc: 'Most never reach consciousness' }
+              ].map((stat, i) => (
+                <div key={i} className="text-center p-3 rounded-lg" style={{ background: 'rgba(0,0,0,0.3)' }}>
+                  <div className="text-xl font-black" style={{ color: 'var(--accent)' }}>{stat.value}</div>
+                  <div className="text-white text-xs font-bold">{stat.label}</div>
+                  <div className="text-neutral-500 text-[10px]">{stat.desc}</div>
+                </div>
               ))}
             </div>
-          </div>
-        );
-      }
-      return null;
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            className="text-center mt-4 text-neutral-500 text-sm font-medium">
+            Your brain uses 20% of body energy. It evolved to ignore anything predictable.
+          </motion.p>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
+    // ============ WHAT IS INTERRUPT SLIDE ============
+    const WhatIsInterruptSlide = () => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Solution</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">What Is a Pattern Interrupt?</h2>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(245, 158, 11, 0.15)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+
+          <div className="text-center mb-6">
+            <motion.div animate={{ rotate: [0, -5, 5, 0] }} transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
+              className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}>
+              <Icons.Zap />
             </motion.div>
-          ))}
+            <p className="text-white text-lg font-bold mb-2">Anything that breaks the expected sequence</p>
+            <p className="text-neutral-400 text-sm">It forces the brain to STOP filtering and START paying attention</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {[
+              { icon: Icons.Activity, label: 'Comedians', desc: 'Use it to land jokes' },
+              { icon: Icons.Eye, label: 'Magicians', desc: 'Use it to create wonder' },
+              { icon: Icons.Brain, label: 'Hypnotists', desc: 'Use it to bypass resistance' }
+            ].map((item, i) => {
+              const IconComponent = item.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  className="text-center p-4 rounded-xl" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                  <div className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ background: 'rgba(245, 158, 11, 0.2)', color: 'var(--accent)' }}>
+                    <IconComponent />
+                  </div>
+                  <div className="text-white font-bold text-sm">{item.label}</div>
+                  <div className="text-neutral-400 text-xs">{item.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+          className="text-center mt-4 text-neutral-600 text-sm font-medium">
+          Think of it like a record scratch in the middle of a song - the brain can't ignore it.
+        </motion.p>
+      </div>
+    );
+
+    // ============ INTERRUPT TYPES SLIDE ============
+    const InterruptTypesSlide = () => {
+      const [activeType, setActiveType] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveType(t => (t + 1) % 4);
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Framework</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The 4 Pattern Interrupt Types</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {INTERRUPT_TYPES.map((type, i) => {
+              const IconComponent = type.icon;
+              const isActive = i === activeType;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  onClick={() => setActiveType(i)}
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)',
+                    borderRadius: '16px',
+                    padding: '20px',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    boxShadow: isActive ? `0 0 30px ${type.color}30` : 'none',
+                    transition: 'all 0.3s ease'
+                  }}>
+                  {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${type.color}, transparent)` }} />}
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: isActive ? type.color : `${type.color}20`, color: isActive ? 'white' : type.color }}>
+                      <IconComponent />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+                          style={{ background: type.color }}>{i + 1}</span>
+                        <h3 className="font-bold" style={{ color: isActive ? 'white' : '#1a1a1a' }}>{type.name}</h3>
+                      </div>
+                      <p className="text-sm leading-relaxed mb-2" style={{ color: isActive ? 'rgba(255,255,255,0.7)' : '#666' }}>{type.desc}</p>
+                      <div className="px-3 py-1.5 rounded-full text-xs font-medium inline-block"
+                        style={{ background: isActive ? `${type.color}20` : 'rgba(0,0,0,0.05)', color: isActive ? type.color : '#666' }}>
+                        {type.trigger}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ BEFORE/AFTER AD SLIDE ============
+    const BeforeAfterAdSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Facebook Ad for Supplements</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          {/* Before */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: '#374151' }}>
+                <Icons.EyeOff />
+              </div>
+              <span className="text-neutral-400 font-bold text-sm">Standard Ad (Ignored)</span>
+              <span className="ml-auto px-2 py-1 rounded text-[10px] font-bold bg-neutral-700 text-neutral-400">INVISIBLE</span>
+            </div>
+
+            <div className="p-4 rounded-lg mb-4" style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              <p className="text-neutral-300 text-sm italic">"Premium Vitamin D3 - Natural, High Absorption, Doctor Recommended. Shop Now."</p>
+            </div>
+
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-neutral-500">Looks like every ad</span>
+              <span className="text-red-400 font-bold">Scroll past</span>
+            </div>
+          </motion.div>
+
+          {/* After */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 40px rgba(245, 158, 11, 0.2)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'var(--accent)' }}>
+                <Icons.Eye />
+              </div>
+              <span className="font-bold text-sm" style={{ color: 'var(--accent)' }}>Pattern Interrupt (Stops Scroll)</span>
+              <span className="ml-auto px-2 py-1 rounded text-[10px] font-bold" style={{ background: 'rgba(245, 158, 11, 0.2)', color: 'var(--accent)' }}>ATTENTION</span>
+            </div>
+
+            <div className="p-4 rounded-lg mb-4" style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+              <p className="text-white text-sm italic">"I threw away my vitamin D pills. Then I found out I was taking the WRONG form. Here's the one thing that actually works..."</p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 text-center text-xs">
+              <div className="p-2 rounded" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                <div className="text-white font-bold">"Threw away"</div>
+                <div className="text-neutral-500">Unexpected</div>
+              </div>
+              <div className="p-2 rounded" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                <div className="text-white font-bold">"WRONG form"</div>
+                <div className="text-neutral-500">Curiosity</div>
+              </div>
+              <div className="p-2 rounded" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                <div className="text-white font-bold">"One thing"</div>
+                <div className="text-neutral-500">Insider info</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* CVR Badge */}
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }}
+          className="flex justify-center">
+          <div className="px-6 py-3 rounded-full font-bold text-white" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}>
+            +312% Click Rate
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ ATTENTION COMPARISON SLIDE ============
+    const AttentionComparisonSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Data</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Attention Time Comparison</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {/* Standard Ad */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+            <div className="text-5xl font-black text-neutral-400 mb-2"><AnimatedCounter target={1.2} suffix="s" decimals={1} /></div>
+            <div className="text-white font-bold text-sm mb-1">Standard Ad</div>
+            <div className="text-neutral-500 text-xs">Before scroll continues</div>
+
+            {/* Bar representation */}
+            <div className="mt-4 h-3 rounded-full bg-neutral-700 overflow-hidden">
+              <motion.div initial={{ width: 0 }} animate={{ width: '14%' }} transition={{ delay: 0.5, duration: 0.8 }}
+                className="h-full rounded-full" style={{ background: '#94a3b8' }} />
+            </div>
+          </motion.div>
+
+          {/* Center - Result */}
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', borderRadius: '16px', padding: '24px', textAlign: 'center', transform: 'scale(1.05)', boxShadow: '0 10px 40px rgba(245, 158, 11, 0.3)' }}>
+            <div className="text-5xl font-black text-white mb-2">7x</div>
+            <div className="text-white font-bold text-sm mb-1">Attention Increase</div>
+            <div className="text-white/70 text-xs">More time to deliver message</div>
+
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <Icons.TrendingUp />
+              <span className="text-white font-bold">Pattern Interrupt Effect</span>
+            </div>
+          </motion.div>
+
+          {/* Pattern Interrupt */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+            <div className="text-5xl font-black mb-2" style={{ color: 'var(--accent)' }}><AnimatedCounter target={8.4} suffix="s" decimals={1} /></div>
+            <div className="text-white font-bold text-sm mb-1">Pattern Interrupt</div>
+            <div className="text-neutral-500 text-xs">Time to capture and convert</div>
+
+            {/* Bar representation */}
+            <div className="mt-4 h-3 rounded-full bg-neutral-700 overflow-hidden">
+              <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ delay: 0.7, duration: 0.8 }}
+                className="h-full rounded-full" style={{ background: 'linear-gradient(90deg, #f59e0b, #d97706)' }} />
+            </div>
+          </motion.div>
         </div>
       </div>
     );
 
+    // ============ TECHNIQUES PLAYBOOK SLIDE ============
+    const TechniquesPlaybookSlide = () => {
+      const techniques = [
+        { title: 'The Contradiction Open', example: '"This is the WORST advice I ever got... and it made me rich."', why: 'Contradiction demands resolution. They must keep reading.', color: '#8b5cf6' },
+        { title: 'The Unexpected Admission', example: '"Our product isn\'t for everyone. In fact, most people shouldn\'t buy it."', why: 'Honesty is so rare it becomes a pattern interrupt.', color: '#f59e0b' },
+        { title: 'The Weird Specific', example: '"How a 47-year-old accountant from Ohio discovered a 3,000-year-old secret..."', why: 'Bizarre specifics bypass the filter.', color: '#10b981' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Playbook</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">3 Proven Techniques</h2>
+          </motion.div>
+
+          <div className="space-y-4">
+            {techniques.map((tech, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${tech.color}, transparent)` }} />
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white font-bold"
+                    style={{ background: tech.color }}>{i + 1}</div>
+                  <div className="flex-1">
+                    <h3 className="text-white font-bold mb-2">{tech.title}</h3>
+                    <div className="p-3 rounded-lg mb-2" style={{ background: 'rgba(0,0,0,0.3)' }}>
+                      <p className="text-neutral-300 text-sm italic">{tech.example}</p>
+                    </div>
+                    <p className="text-neutral-400 text-xs flex items-center gap-2">
+                      <Icons.Lightbulb />
+                      {tech.why}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ DANGER ZONE SLIDE ============
+    const DangerZoneSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>Warning</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">The Danger of Pattern Interrupts</h2>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(239, 68, 68, 0.15)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+          <div className="flex items-center gap-4 mb-6">
+            <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
+              className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>
+              <Icons.AlertTriangle />
+            </motion.div>
+            <div>
+              <p className="text-white font-bold text-lg">The Clickbait Trap</p>
+              <p className="text-neutral-400 text-sm">When your interrupt doesn't connect to your message</p>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <div className="p-4 rounded-xl" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.X />
+                <span className="text-red-400 font-bold text-sm">Clickbait</span>
+              </div>
+              <p className="text-neutral-300 text-sm">Random shocking image that has nothing to do with your product. Gets attention but destroys credibility.</p>
+            </div>
+
+            <div className="p-4 rounded-xl" style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.Check />
+                <span className="font-bold text-sm" style={{ color: 'var(--accent)' }}>Earned Attention</span>
+              </div>
+              <p className="text-neutral-300 text-sm">Interrupt that transitions to relevant offer. "Messed up your order" email works because it leads to value.</p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+            <p className="text-white font-bold mb-1">The Golden Rule</p>
+            <p className="text-neutral-300 text-sm">Interrupt the pattern, but EARN the attention by delivering value after.</p>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -389,34 +667,79 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand Pattern Interrupts: the art of breaking the brain\'s autopilot to capture conscious attention. Go review your ads, emails, and landing pages. Ask: "Does this look expected, or does it break the pattern?" If it blends in, it gets ignored.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
+    // ============ IMPACT STATS SLIDE ============
+    const ImpactStatsSlide = () => {
+      const stats = [
+        { value: 7, suffix: 'x', label: 'Attention Increase', desc: 'With pattern interrupt vs standard' },
+        { value: 90, suffix: '%', label: 'Content Ignored', desc: 'By brain\'s filter system' },
+        { value: 312, suffix: '%', label: 'Click Rate Lift', desc: 'Using interrupt techniques' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Psychology of Attention</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+                <div className="text-4xl md:text-5xl font-black mb-2" style={{ color: 'var(--accent)' }}>
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-white font-bold text-sm mb-1">{stat.label}</div>
+                <div className="text-neutral-500 text-xs">{stat.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(245, 158, 11, 0.15)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 8px 32px rgba(245, 158, 11, 0.4)' }}>
+              <Icons.Lightbulb />
             </div>
-          </motion.div>
-        )}
+            <div>
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Elite Insight</p>
+              <h3 className="text-white text-xl font-bold">The Interruption Paradox</h3>
+            </div>
+          </div>
+
+          <p className="text-neutral-300 text-base leading-relaxed mb-4">
+            The brain evolved to ignore predictable patterns to conserve energy. This is why 90% of content disappears into the mental wallpaper. Your ads, emails, and landing pages are invisible - not because they're bad, but because they look <span className="text-white font-bold">expected</span>.
+          </p>
+          <p className="text-neutral-400 text-base leading-relaxed">
+            Pattern interrupts break the autopilot. They force conscious attention by being anything BUT normal. The key: <span className="text-white font-bold">interrupt, then earn</span>. Grab attention with the unexpected, deliver value with the relevant. That's not clickbait - that's cognitive engineering.
+          </p>
+        </motion.div>
       </div>
     );
 
+    // ============ COMPLETION SLIDE ============
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand Pattern Interrupts: the art of breaking the brain's autopilot to capture conscious attention. Ask yourself: "Does this look expected, or does it break the pattern?"</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ MAIN APP ============
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
+      const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
@@ -428,14 +751,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -467,12 +784,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'brain-filter': return <BrainFilterSlide />;
+          case 'what-is-interrupt': return <WhatIsInterruptSlide />;
+          case 'interrupt-types': return <InterruptTypesSlide />;
+          case 'before-after-ad': return <BeforeAfterAdSlide />;
+          case 'attention-comparison': return <AttentionComparisonSlide />;
+          case 'techniques-playbook': return <TechniquesPlaybookSlide />;
+          case 'danger-zone': return <DangerZoneSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          case 'impact-stats': return <ImpactStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

@@ -12,17 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #dc2626;
-      --accent-dark: #b91c1c;
-      --accent-light: #ef4444;
-      --accent-rgb: 220, 38, 38;
-    }
+    :root { --accent: #dc2626; --accent-dark: #b91c1c; --accent-light: #ef4444; --accent-rgb: 220, 38, 38; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -30,6 +22,7 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulse-warning { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
   </style>
 </head>
 <body>
@@ -39,189 +32,359 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    const getUserName = () => {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'Builder';
-    };
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'scammer-playbook-good',
       title: 'The Scammer\'s Playbook (Used for Good)',
       description: 'The 7 levers of persuasion that con artists use - applied ethically.',
       accentColor: '#dc2626',
-      duration: '7 min',
-      nextLesson: {
-        id: 'invisible-influence',
-        title: 'The Invisible Influence',
-        teaser: 'Background images prime buying decisions unconsciously.'
-      }
+      duration: '8 min',
+      nextLesson: { id: 'invisible-influence', title: 'The Invisible Influence', teaser: 'Background images prime buying decisions unconsciously.' }
+    };
+
+    // ============ CONFIGURATION ARRAYS ============
+    const SEVEN_LEVERS = [
+      { id: 1, name: 'Authority', icon: 'Award', color: '#dc2626', scammer: 'Fake credentials, invented experts, photoshopped diplomas', ethical: 'Real credentials, verified partnerships, earned expertise', example: { bad: '"Dr. Johnson recommends..." (doesn\'t exist)', good: '"Featured in Forbes" with actual link' } },
+      { id: 2, name: 'Social Proof', icon: 'Users', color: '#f97316', scammer: 'Fake reviews, bought testimonials, fabricated customer counts', ethical: 'Real reviews, verified purchases, authentic case studies', example: { bad: '"10,000 customers!" (actually 12)', good: '230 verified reviews (4.6 stars)' } },
+      { id: 3, name: 'Commitment', icon: 'Target', color: '#eab308', scammer: 'Forcing micro-commitments that trap people into endless upsells', ethical: 'Ask small commitments that genuinely help prove value', example: { bad: '"Just answer one question..." then upselling', good: '"Try our free sample" to prove value first' } },
+      { id: 4, name: 'Liking', icon: 'Heart', color: '#ec4899', scammer: 'Fake relatability, manufactured similarity, performing a character', ethical: 'Authentic brand voice, real founder story, genuine connection', example: { bad: '"I\'m just like you!" (they\'re not)', good: 'Real story of how founder started' } },
+      { id: 5, name: 'Scarcity', icon: 'Clock', color: '#8b5cf6', scammer: 'Fake countdown timers that reset, artificial stock limits', ethical: 'Real inventory limits, actual deadlines, genuine exclusivity', example: { bad: '"Only 3 left!" (number never changes)', good: 'Limited spring batch - 47 units remaining' } },
+      { id: 6, name: 'Reciprocity', icon: 'Gift', color: '#06b6d4', scammer: 'Worthless "free gifts" designed to guilt people into buying', ethical: 'Genuinely valuable free content, no strings attached', example: { bad: 'Fake generosity to manipulate', good: 'Give so much value they WANT to buy' } },
+      { id: 7, name: 'Unity', icon: 'Users2', color: '#10b981', scammer: 'Fake tribes, manufactured "us vs them," cult-like followings', ethical: 'Real communities around shared values and identity', example: { bad: 'Exploiting identity for division', good: '"We\'re all builders here" - genuine' } }
+    ];
+
+    const CONVERSION_STATS = [
+      { id: 1, value: 73, suffix: '%', label: 'Trust Increase', subtext: 'When claims are verifiable', color: '#10b981' },
+      { id: 2, value: 4.2, suffix: 'x', label: 'LTV Difference', subtext: 'Ethical vs manipulative brands', color: '#dc2626', decimals: 1 },
+      { id: 3, value: 89, suffix: '%', label: 'Repeat Purchase', subtext: 'From trust-based selling', color: '#8b5cf6' }
+    ];
+
+    const ELITE_INSIGHT = {
+      title: 'The Ethics Paradox',
+      quote: 'The same psychology that makes scams work makes ethical marketing work better. Truth is not a handicap. It is an amplifier.',
+      insight: 'Lies work once. Truth compounds forever.'
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
+        e.stopPropagation(); e.preventDefault();
+        if (window.parent !== window) { window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*'); }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'The 7 levers of persuasion that make con artists millions',
-        'How to use each lever ethically in eCommerce marketing',
-        'Real examples of persuasion done right vs done wrong'
-      ]},
-      { type: 'hook', headline: 'Con artists don\'t invent psychology. They weaponize it.', subtext: 'The same 7 levers that scammers use to steal millions are the exact levers that ethical marketers use to build billion-dollar brands. The tactics are neutral. Your integrity decides how you use them.'  },
-      { type: 'content', title: 'The 7 Levers of Persuasion', body: 'Robert Cialdini identified 7 core principles that influence human behavior. Scammers exploit them with lies. Smart marketers use them with truth. Same psychology. Different ethics. Understanding these levers means you can persuade without manipulating.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Robert+Cialdini-removebg-preview.png', personName: 'Robert Cialdini' },
-      { type: 'cards', title: 'Lever 1: Authority', items: [
-        { title: 'Scammer Version', description: 'Fake credentials, invented experts, photoshopped diplomas. "Dr. Johnson recommends..." when Dr. Johnson doesn\'t exist.' },
-        { title: 'Ethical Version', description: 'Real credentials, actual experts, verified partnerships. "Featured in Forbes" with a link to the article. Earned authority, not fabricated.' }
-      ]},
-      { type: 'cards', title: 'Lever 2: Social Proof', items: [
-        { title: 'Scammer Version', description: 'Fake reviews, bought testimonials, fabricated customer counts. "10,000 satisfied customers!" when you have 12.' },
-        { title: 'Ethical Version', description: 'Real reviews, verified purchases, actual case studies. Show the good AND the critical feedback. Transparency builds trust.' }
-      ]},
-      { type: 'cards', title: 'Lever 3: Commitment & Consistency', items: [
-        { title: 'Scammer Version', description: 'Forcing micro-commitments that trap people. "Just answer one question..." then upselling endlessly.' },
-        { title: 'Ethical Version', description: 'Ask small commitments that genuinely help. "Try our free sample" to prove value before asking for a purchase.' }
-      ]},
-      { type: 'cards', title: 'Lever 4: Liking', items: [
-        { title: 'Scammer Version', description: 'Fake relatability, manufactured similarity. "I\'m just like you!" when they\'re performing a character.' },
-        { title: 'Ethical Version', description: 'Authentic brand voice, real founder story, genuine connection. Show who you actually are, not who you think people want.' }
-      ]},
-      { type: 'cards', title: 'Lever 5: Scarcity', items: [
-        { title: 'Scammer Version', description: 'Fake countdown timers that reset, artificial stock limits. "Only 3 left!" but the number never changes.' },
-        { title: 'Ethical Version', description: 'Real inventory limits, actual deadlines, genuine exclusivity. Limited edition products that truly won\'t restock.' }
-      ]},
-      { type: 'cards', title: 'Lever 6: Reciprocity', items: [
-        { title: 'Scammer Version', description: 'Giving worthless "free gifts" to guilt people into buying. Fake generosity designed to manipulate.' },
-        { title: 'Ethical Version', description: 'Genuinely valuable free content, no strings attached. Give so much value people WANT to reciprocate, not feel obligated.' }
-      ]},
-      { type: 'cards', title: 'Lever 7: Unity', items: [
-        { title: 'Scammer Version', description: 'Creating fake tribes, manufactured "us vs them." Exploiting identity to build cult-like followings.' },
-        { title: 'Ethical Version', description: 'Building real communities around shared values. "We\'re all builders here" based on actual shared identity, not invented division.' }
-      ]},
-      { type: 'example', scenario: 'eCommerce Product Page', before: { label: 'Scammer Approach', text: 'HURRY! Only 2 left! 10,000 customers bought this! Dr. Michael says it\'s the best! Timer: 4:59 remaining!' }, after: { label: 'Ethical Approach', text: 'Limited spring batch - 47 units remaining. 230 verified reviews (4.6 stars). Featured in Wired Magazine. Free returns, 60-day guarantee.' }, insight: 'Both use the same levers - scarcity, social proof, authority. One lies. One tells the truth. Guess which builds long-term trust?' },
-      { type: 'content', title: 'The Ethics Line', body: 'The difference between persuasion and manipulation is simple: Can you back up your claims? If your scarcity is real, use it. If your authority is earned, show it. If your social proof is verified, display it. The levers work with truth. Lies aren\'t required.' },
-      { type: 'quiz', question: 'What\'s the key difference between using persuasion levers ethically vs as a scammer?', options: ['Ethical marketers use different psychological principles', 'Ethical marketers back up their claims with truth while scammers fabricate everything', 'Ethical marketers don\'t use persuasion at all', 'Scammers are better at psychology'], correctIndex: 1, feedback: { correct: 'Exactly. The psychology is identical. Scammers lie (fake scarcity, fake reviews). Ethical marketers tell the truth (real inventory, verified reviews). Same levers. Different integrity.', incorrect: 'Not quite. The persuasion levers are the same. The difference is truth. Scammers fabricate authority, social proof, and scarcity. Ethical marketers use real credentials, verified reviews, and actual limits. Psychology is neutral. Ethics decide how you use it.' }},
-      { type: 'completion' }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Clock: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> };
+      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Award: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Gift: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+      Users2: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 19a6 6 0 0 0-12 0"/><circle cx="8" cy="9" r="4"/><path d="M22 19a6 6 0 0 0-6-6 4 4 0 1 0 0-8"/></svg>,
+      AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Skull: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v2h8v-2"/><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M16 20a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20"/></svg>,
+    };
 
+    const IconMap = { Award: Icons.Award, Users: Icons.Users, Target: Icons.Target, Heart: Icons.Heart, Clock: Icons.Clock, Gift: Icons.Gift, Users2: Icons.Users2, AlertTriangle: Icons.AlertTriangle, Shield: Icons.Shield, Lightbulb: Icons.Lightbulb, Skull: Icons.Skull, Zap: Icons.Zap };
+
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, suffix = '', decimals = 0, duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{decimals > 0 ? count.toFixed(decimals) : Math.round(count)}{suffix}</span>;
+    };
+
+    // ============ SLIDES ============
+    const slides = [
+      { type: 'welcome', learningGoals: ['The 7 levers of persuasion that make con artists millions', 'How to use each lever ethically in eCommerce marketing', 'Real examples of persuasion done right vs done wrong'] },
+      { type: 'hook', headline: 'Con artists don\'t invent psychology. They weaponize it.', subtext: 'The same 7 levers that scammers use to steal millions are the exact levers that ethical marketers use to build billion-dollar brands. The tactics are neutral. Your integrity decides how you use them.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/robert-cialdini.png' },
+      { type: 'levers-overview' },
+      { type: 'lever-comparison', leverIndex: 0 },
+      { type: 'lever-comparison', leverIndex: 1 },
+      { type: 'lever-comparison', leverIndex: 2 },
+      { type: 'lever-comparison', leverIndex: 3 },
+      { type: 'lever-comparison', leverIndex: 4 },
+      { type: 'lever-comparison', leverIndex: 5 },
+      { type: 'lever-comparison', leverIndex: 6 },
+      { type: 'ethics-spectrum' },
+      { type: 'conversion-stats' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'What\'s the key difference between using persuasion levers ethically vs as a scammer?', options: ['Ethical marketers use different psychological principles', 'Ethical marketers back up their claims with truth while scammers fabricate everything', 'Ethical marketers don\'t use persuasion at all', 'Scammers are better at psychology'], correctIndex: 1, feedback: { correct: 'Exactly. The psychology is identical. Scammers lie (fake scarcity, fake reviews). Ethical marketers tell the truth (real inventory, verified reviews). Same levers. Different integrity.', incorrect: 'Not quite. The persuasion levers are the same. The difference is truth. Scammers fabricate authority, social proof, and scarcity. Ethical marketers use real credentials, verified reviews, and actual limits. Psychology is neutral. Ethics decide how you use it.' }},
+      { type: 'completion', sources: [] }
+    ];
+
+    // ============ UNIQUE SLIDE COMPONENTS ============
+
+    // Levers Overview - 7 levers in visual grid
+    const LeversOverviewSlide = () => {
+      const [activeLever, setActiveLever] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => setActiveLever(prev => (prev + 1) % 7), 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">The 7 Levers of Persuasion</motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8">Robert Cialdini identified these core principles that influence human behavior</motion.p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {SEVEN_LEVERS.slice(0, 4).map((lever, i) => {
+              const IconComponent = IconMap[lever.icon];
+              const isActive = activeLever === i;
+              return (
+                <motion.div key={lever.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.05 }}
+                  style={{ padding: '16px', borderRadius: '16px', background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', transition: 'all 0.3s ease', textAlign: 'center' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', borderRadius: '16px 16px 0 0', background: isActive ? `linear-gradient(90deg, transparent, ${lever.color}, transparent)` : 'transparent' }} />
+                  <div style={{ width: '40px', height: '40px', margin: '0 auto 8px', borderRadius: '10px', background: isActive ? lever.color : '#e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isActive ? 'white' : '#666' }}>
+                    <IconComponent />
+                  </div>
+                  <div style={{ fontSize: '14px', fontWeight: 'bold', color: isActive ? 'white' : '#1a1a1a' }}>{lever.name}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            {SEVEN_LEVERS.slice(4).map((lever, i) => {
+              const IconComponent = IconMap[lever.icon];
+              const isActive = activeLever === (i + 4);
+              return (
+                <motion.div key={lever.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 + i * 0.05 }}
+                  style={{ padding: '16px', borderRadius: '16px', background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', transition: 'all 0.3s ease', textAlign: 'center' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', borderRadius: '16px 16px 0 0', background: isActive ? `linear-gradient(90deg, transparent, ${lever.color}, transparent)` : 'transparent' }} />
+                  <div style={{ width: '40px', height: '40px', margin: '0 auto 8px', borderRadius: '10px', background: isActive ? lever.color : '#e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isActive ? 'white' : '#666' }}>
+                    <IconComponent />
+                  </div>
+                  <div style={{ fontSize: '14px', fontWeight: 'bold', color: isActive ? 'white' : '#1a1a1a' }}>{lever.name}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            className="text-center mt-6" style={{ padding: '12px 20px', borderRadius: '12px', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p style={{ fontSize: '13px', color: '#a3a3a3' }}>Same psychology. Different ethics. Your integrity decides how you use them.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Lever Comparison - Scammer vs Ethical side-by-side
+    const LeverComparisonSlide = ({ leverIndex }) => {
+      const lever = SEVEN_LEVERS[leverIndex];
+      const IconComponent = IconMap[lever.icon];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div style={{ width: '56px', height: '56px', margin: '0 auto 12px', borderRadius: '14px', background: lever.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+              <IconComponent />
+            </div>
+            <span style={{ display: 'inline-block', padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '600', background: 'rgba(0,0,0,0.05)', color: '#666', marginBottom: '8px' }}>Lever {leverIndex + 1} of 7</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{lever.name}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ padding: '24px', borderRadius: '16px', background: 'linear-gradient(135deg, #450a0a, #7f1d1d)', border: '2px solid #dc2626' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                  <Icons.Skull />
+                </div>
+                <div>
+                  <span style={{ fontSize: '10px', fontWeight: '600', color: '#fca5a5', letterSpacing: '0.1em' }}>SCAMMER VERSION</span>
+                  <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'white' }}>The Dark Path</div>
+                </div>
+              </div>
+              <p style={{ fontSize: '14px', color: '#fecaca', lineHeight: '1.6', marginBottom: '16px' }}>{lever.scammer}</p>
+              <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(0,0,0,0.3)' }}>
+                <div style={{ fontSize: '10px', fontWeight: '600', color: '#f87171', marginBottom: '4px' }}>EXAMPLE</div>
+                <p style={{ fontSize: '13px', fontStyle: 'italic', color: '#fca5a5' }}>{lever.example.bad}</p>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ padding: '24px', borderRadius: '16px', background: 'linear-gradient(135deg, #052e16, #166534)', border: '2px solid #10b981' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                  <Icons.Shield />
+                </div>
+                <div>
+                  <span style={{ fontSize: '10px', fontWeight: '600', color: '#86efac', letterSpacing: '0.1em' }}>ETHICAL VERSION</span>
+                  <div style={{ fontSize: '16px', fontWeight: 'bold', color: 'white' }}>The Right Way</div>
+                </div>
+              </div>
+              <p style={{ fontSize: '14px', color: '#bbf7d0', lineHeight: '1.6', marginBottom: '16px' }}>{lever.ethical}</p>
+              <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(0,0,0,0.3)' }}>
+                <div style={{ fontSize: '10px', fontWeight: '600', color: '#4ade80', marginBottom: '4px' }}>EXAMPLE</div>
+                <p style={{ fontSize: '13px', fontStyle: 'italic', color: '#86efac' }}>{lever.example.good}</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            style={{ padding: '16px 24px', borderRadius: '12px', background: '#f5f5f5', textAlign: 'center' }}>
+            <p style={{ fontSize: '13px', color: '#666' }}>Same lever. Same psychology. <span style={{ fontWeight: 'bold', color: lever.color }}>Different integrity.</span></p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Ethics Spectrum - Visual manipulation to persuasion
+    const EthicsSpectrumSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">The Ethics Line</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-10">One simple question separates persuasion from manipulation</motion.p>
+
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          style={{ padding: '32px', borderRadius: '20px', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', marginBottom: '24px' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', borderRadius: '20px 20px 0 0', background: 'linear-gradient(90deg, #dc2626, #eab308, #10b981)' }} />
+
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <div style={{ fontSize: '14px', fontWeight: '600', color: '#a3a3a3', marginBottom: '8px' }}>THE QUESTION</div>
+            <h3 style={{ fontSize: '24px', fontWeight: 'bold', color: 'white' }}>Can you back up your claims?</h3>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                <Icons.X />
+              </div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#dc2626', marginBottom: '4px' }}>MANIPULATION</div>
+              <div style={{ fontSize: '12px', color: '#a3a3a3' }}>Claims are fabricated</div>
+            </div>
+            <div style={{ textAlign: 'center', transform: 'scale(1.1)' }}>
+              <div style={{ width: '56px', height: '56px', margin: '0 auto 12px', borderRadius: '14px', background: 'linear-gradient(135deg, #eab308, #f97316)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                <Icons.AlertTriangle />
+              </div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#eab308', marginBottom: '4px' }}>GRAY ZONE</div>
+              <div style={{ fontSize: '12px', color: '#a3a3a3' }}>Exaggerated or misleading</div>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                <Icons.Check />
+              </div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#10b981', marginBottom: '4px' }}>PERSUASION</div>
+              <div style={{ fontSize: '12px', color: '#a3a3a3' }}>Claims are verifiable</div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="grid grid-cols-3 gap-3">
+          <div style={{ padding: '16px', borderRadius: '12px', background: '#fef2f2', textAlign: 'center' }}>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: '#dc2626', marginBottom: '4px' }}>FAKE SCARCITY</div>
+            <div style={{ fontSize: '11px', color: '#666' }}>Timer resets every visit</div>
+          </div>
+          <div style={{ padding: '16px', borderRadius: '12px', background: '#fffbeb', textAlign: 'center' }}>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: '#d97706', marginBottom: '4px' }}>VAGUE CLAIMS</div>
+            <div style={{ fontSize: '11px', color: '#666' }}>"Thousands love it"</div>
+          </div>
+          <div style={{ padding: '16px', borderRadius: '12px', background: '#ecfdf5', textAlign: 'center' }}>
+            <div style={{ fontSize: '12px', fontWeight: '600', color: '#10b981', marginBottom: '4px' }}>REAL PROOF</div>
+            <div style={{ fontSize: '11px', color: '#666' }}>"47 units remaining"</div>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Conversion Stats with AnimatedCounters
+    const ConversionStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">The Truth Advantage</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-10">Ethical persuasion does not just feel better. It performs better.</motion.p>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {CONVERSION_STATS.map((stat, i) => (
+            <motion.div key={stat.id} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+              style={{ padding: '32px 24px', borderRadius: '20px', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', textAlign: 'center' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', borderRadius: '20px 20px 0 0', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+              <div style={{ fontSize: '48px', fontWeight: 'bold', color: stat.color, marginBottom: '8px' }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
+              </div>
+              <div style={{ fontSize: '16px', fontWeight: '600', color: 'white', marginBottom: '4px' }}>{stat.label}</div>
+              <div style={{ fontSize: '13px', color: '#666' }}>{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // Elite Insight Slide
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+          style={{ padding: '40px', borderRadius: '24px', background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', textAlign: 'center' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', borderRadius: '24px 24px 0 0', background: 'linear-gradient(90deg, transparent, #dc2626, transparent)' }} />
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }}
+            style={{ width: '64px', height: '64px', margin: '0 auto 20px', borderRadius: '16px', background: 'linear-gradient(135deg, #dc2626, #b91c1c)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+            <Icons.Lightbulb />
+          </motion.div>
+          <div style={{ fontSize: '12px', fontWeight: '600', color: '#dc2626', marginBottom: '12px', letterSpacing: '0.1em' }}>ELITE INSIGHT</div>
+          <h2 className="slide-title text-2xl md:text-3xl text-white mb-6">{ELITE_INSIGHT.title}</h2>
+          <p style={{ fontSize: '18px', color: '#d4d4d4', lineHeight: '1.7', marginBottom: '24px', fontStyle: 'italic' }}>"{ELITE_INSIGHT.quote}"</p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '16px 24px', borderRadius: '12px', background: 'rgba(220, 38, 38, 0.1)' }}>
+            <Icons.Zap />
+            <span style={{ fontSize: '14px', fontWeight: '600', color: '#dc2626' }}>{ELITE_INSIGHT.insight}</span>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD SLIDES ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
-      useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
@@ -243,97 +406,18 @@
 
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 100 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.8 }}
+            style={{ position: 'absolute', bottom: '5%', right: '5%', zIndex: 0, width: '52%', maxWidth: '400px' }}>
+            <img src={data.personImage} alt="" style={{ width: '100%', height: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))' }} />
+          </motion.div>
+        )}
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
             <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
             <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-        </div>
-        {data.personImage && (
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-[5%] z-0 pointer-events-none"
-            style={{ height: '45%', maxHeight: '350px' }}
-          >
-            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
-          </motion.div>
-        )}
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
         </div>
       </div>
     );
@@ -346,19 +430,13 @@
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
-
-      useEffect(() => {
-        if (showFeedback) {
-          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
-        }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -386,21 +464,22 @@
       );
     };
 
-    const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">Persuasion levers are neutral. Truth makes them ethical. Use them with integrity.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know the 7 levers of persuasion and how to use them ethically. Same psychology, different integrity. Truth is your advantage.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
@@ -412,14 +491,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -451,11 +524,13 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'levers-overview': return <LeversOverviewSlide />;
+          case 'lever-comparison': return <LeverComparisonSlide leverIndex={slide.leverIndex} />;
+          case 'ethics-spectrum': return <EthicsSpectrumSlide />;
+          case 'conversion-stats': return <ConversionStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide />;
+          case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }
       };
