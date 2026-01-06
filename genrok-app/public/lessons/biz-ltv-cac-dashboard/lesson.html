@@ -165,6 +165,7 @@
       { type: 'cac-rise', title: 'CAC Always Rises Over Time' },
       { type: 'content', title: 'The Real Dashboard', body: 'Smart operators watch LTV:CAC like a hawk. It\'s their health check. If the ratio drops, something broke. Maybe CAC spiked. Maybe LTV declined. Maybe both. This single metric tells you if your business model is working or dying. Everything else is noise. This is the signal.' },
       { type: 'dashboard-gauge', title: 'What the Ratios Mean' },
+      { type: 'track-dashboard' },
       { type: 'cards', title: 'How to Improve Your Ratio', items: [
         { title: 'Increase LTV', description: 'Get customers to buy more often, spend more per order, and stay longer. This multiplies your profit per customer.' },
         { title: 'Decrease CAC', description: 'Better targeting, better creative, better conversion. Every dollar saved on acquisition drops straight to profit.' },
@@ -387,6 +388,69 @@
               </motion.div>
             ))}
           </div>
+        </div>
+      );
+    };
+
+    // TrackYourDashboardSlide - How to actually track LTV:CAC
+    const TrackYourDashboardSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Track Your Own LTV:CAC</h2>
+            <p className="text-neutral-500 text-sm mt-2">Two ways to build your operator dashboard</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Manual Method */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-neutral-400 font-semibold text-sm">Option A: Spreadsheet</span>
+                <span className="text-xs px-2 py-0.5 bg-neutral-700 text-neutral-400 rounded">Complex</span>
+              </div>
+              <div className="space-y-2">
+                {['Export all orders monthly', 'Calculate revenue per customer', 'Track over time for LTV', 'Pull ad spend for CAC', 'Build formulas & update weekly'].map((step, i) => (
+                  <p key={i} className="text-neutral-400 text-xs flex items-start gap-2">
+                    <span className="text-neutral-500 font-mono">{i + 1}.</span>{step}
+                  </p>
+                ))}
+              </div>
+              <div className="mt-4 pt-3 border-t border-neutral-700">
+                <p className="text-neutral-500 text-xs">Prone to errors. Constant maintenance.</p>
+              </div>
+            </motion.div>
+
+            {/* Automated Method */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', border: '2px solid var(--accent)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <span className="font-semibold text-sm" style={{ color: 'var(--accent)' }}>Option B: Auto-Dashboard</span>
+                <span className="text-xs px-2 py-0.5 rounded" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>Real-time</span>
+              </div>
+              <div className="space-y-2 mb-4">
+                {['Install DataDrew (free)', 'Syncs your Shopify data', 'Auto-calculates LTV per customer', 'See cohort LTV over time'].map((step, i) => (
+                  <p key={i} className="text-neutral-300 text-xs flex items-start gap-2">
+                    <span style={{ color: 'var(--accent)' }} className="font-mono">{i + 1}.</span>{step}
+                  </p>
+                ))}
+              </div>
+              <a href="https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
+                style={{ background: 'var(--accent)', color: 'white' }}>
+                Get DataDrew (Free)
+                <Icons.ExternalLink />
+              </a>
+            </motion.div>
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            className="text-center text-neutral-500 text-xs mt-5">
+            DataDrew auto-tracks LTV by customer segment, cohort, and product category.
+          </motion.p>
         </div>
       );
     };
@@ -761,6 +825,7 @@
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           case 'dashboard-gauge': return <DashboardGaugeSlide data={slide} />;
+          case 'track-dashboard': return <TrackYourDashboardSlide />;
           case 'automation-spectrum': return <AutomationSpectrumSlide data={slide} />;
           case 'cac-rise': return <CACRiseVisualizerSlide data={slide} />;
           default: return null;

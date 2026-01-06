@@ -1252,7 +1252,7 @@ These lessons teach LTV concepts - DataDrew directly implements LTV tracking and
 | Lesson | Topic | Recommended Tool | Status |
 |--------|-------|------------------|--------|
 | ~~**starbucks-ltv**~~ | How Starbucks makes $14,099 from every customer | **DataDrew** - Track your own customer LTV like Starbucks | ✅ DONE |
-| **biz-ltv-cac-dashboard** | LTV to CAC ratio tracking | **DataDrew** - Real-time LTV dashboard |
+| ~~**biz-ltv-cac-dashboard**~~ | LTV to CAC ratio tracking | **DataDrew** - Real-time LTV dashboard | ✅ DONE |
 | **biz-lifetime-gross-profit** | Calculating true customer profit | **DataDrew** - Lifetime value by customer segments |
 | **biz-affiliate-ltv-hack** | Using LTV data for affiliate optimization | **DataDrew** - Export top spenders for targeting |
 | **biz-brand-ltv-engine** | Building a brand that increases LTV | **DataDrew** - Track LTV improvements over time |
