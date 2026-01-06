@@ -1,7 +1,7 @@
-// Auto-generated from XLS import - 2026-01-06T14:52:05.380Z
+// Auto-generated from XLS import - 2026-01-06T15:06:38.520Z
 // Total templates: 141
-// Cover images: 54
-// Hover images: 20
+// Cover images: 55
+// Hover images: 50
 
 export interface MetaAdTemplate {
   id: number;
@@ -201,7 +201,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9onXCMgs",
     "shareToken": "Hey9_3irg1lS0avbmc4S2A",
     "coverImage": "/images/meta-templates/template-021-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-021-hover.png"
   },
   {
     "id": 22,
@@ -210,7 +210,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9olA6s7k",
     "shareToken": "mWQHupjhdFFC2XH71fwjsQ",
     "coverImage": "/images/meta-templates/template-022-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-022-hover.png"
   },
   {
     "id": 23,
@@ -219,7 +219,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9opDYUPc",
     "shareToken": "56wjz9LRb9GR-Q2QgwDT-Q",
     "coverImage": "/images/meta-templates/template-023-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-023-hover.png"
   },
   {
     "id": 24,
@@ -228,7 +228,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9osLvS8g",
     "shareToken": "FLs81KvXYmSKFCoIvTNPKw",
     "coverImage": "/images/meta-templates/template-024-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-024-hover.png"
   },
   {
     "id": 25,
@@ -236,8 +236,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9ovEEfTA/UPXaDn-4jdBAbPhnbDLQbA/view?utm_content=DAG9ovEEfTA&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9ovEEfTA",
     "shareToken": "UPXaDn-4jdBAbPhnbDLQbA",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-025-cover.png",
+    "hoverImage": "/images/meta-templates/template-025-hover.png"
   },
   {
     "id": 26,
@@ -246,7 +246,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9odZkP2s",
     "shareToken": "VRQegZzcs_2tGJOrli5vWQ",
     "coverImage": "/images/meta-templates/template-026-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-026-hover.png"
   },
   {
     "id": 27,
@@ -255,7 +255,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oo5ENgU",
     "shareToken": "4s_Nt1U3daoxkFXHlH-UZg",
     "coverImage": "/images/meta-templates/template-027-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-027-hover.png"
   },
   {
     "id": 28,
@@ -264,7 +264,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9op0WLbM",
     "shareToken": "I8vMbqOYlnYoWuM70YwERg",
     "coverImage": "/images/meta-templates/template-028-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-028-hover.png"
   },
   {
     "id": 29,
@@ -273,7 +273,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9opsx4pA",
     "shareToken": "0FNu_9Y-82Cae4oWb27v2w",
     "coverImage": "/images/meta-templates/template-029-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-029-hover.png"
   },
   {
     "id": 30,
@@ -282,7 +282,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ordnmeM",
     "shareToken": "UqWqTsNdN_xscuD8ZfeiUg",
     "coverImage": "/images/meta-templates/template-030-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-030-hover.png"
   },
   {
     "id": 31,
@@ -291,7 +291,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oq9_EDE",
     "shareToken": "ZjKG8mdXkunReFvBZGr9vA",
     "coverImage": "/images/meta-templates/template-031-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-031-hover.png"
   },
   {
     "id": 32,
@@ -300,7 +300,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ogz86Xs",
     "shareToken": "ZYyood1qgjZvZDKxmGJaAg",
     "coverImage": "/images/meta-templates/template-032-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-032-hover.png"
   },
   {
     "id": 33,
@@ -309,7 +309,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ol3e98Y",
     "shareToken": "wOj5rbbVDJbZ3FOcZzzQ1w",
     "coverImage": "/images/meta-templates/template-033-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-033-hover.png"
   },
   {
     "id": 34,
@@ -318,7 +318,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9okFGS2I",
     "shareToken": "7x-H29SWwJw2A6rA09GMAQ",
     "coverImage": "/images/meta-templates/template-034-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-034-hover.png"
   },
   {
     "id": 35,
@@ -327,7 +327,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9olZle9Q",
     "shareToken": "0nq5RFP6V-PsNZpqcssZ7g",
     "coverImage": "/images/meta-templates/template-035-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-035-hover.png"
   },
   {
     "id": 36,
@@ -336,7 +336,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ouPAN8k",
     "shareToken": "uXkobxTgeLDIp1mPsgbD4w",
     "coverImage": "/images/meta-templates/template-036-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-036-hover.png"
   },
   {
     "id": 37,
@@ -345,7 +345,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9olLVFHY",
     "shareToken": "DkkknMaEs1cCtc56e-oO6g",
     "coverImage": "/images/meta-templates/template-037-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-037-hover.png"
   },
   {
     "id": 38,
@@ -354,7 +354,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9orJ44-0",
     "shareToken": "vTWAKW_aiC_do1f8Q_HHKg",
     "coverImage": "/images/meta-templates/template-038-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-038-hover.png"
   },
   {
     "id": 39,
@@ -363,7 +363,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ouhVVmQ",
     "shareToken": "PipJLbmr1hrHKiY91awukw",
     "coverImage": "/images/meta-templates/template-039-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-039-hover.png"
   },
   {
     "id": 40,
@@ -372,7 +372,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ohpo36s",
     "shareToken": "C7TV0mRlaj56JjVLnF-XEw",
     "coverImage": "/images/meta-templates/template-040-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-040-hover.png"
   },
   {
     "id": 41,
@@ -381,7 +381,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9olJcak0",
     "shareToken": "-tgYIP4pOwQxb8B2_ozxDg",
     "coverImage": "/images/meta-templates/template-041-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-041-hover.png"
   },
   {
     "id": 42,
@@ -390,7 +390,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oqfEbbU",
     "shareToken": "QR5av2INIp3EeYYG3gRSIg",
     "coverImage": "/images/meta-templates/template-042-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-042-hover.png"
   },
   {
     "id": 43,
@@ -399,7 +399,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ouVMGWM",
     "shareToken": "-rLbG8-sDL3VFhGLgSDgKw",
     "coverImage": "/images/meta-templates/template-043-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-043-hover.png"
   },
   {
     "id": 44,
@@ -408,7 +408,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9okLyREw",
     "shareToken": "8oNPxkmRQDU8CifOlssN3A",
     "coverImage": "/images/meta-templates/template-044-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-044-hover.png"
   },
   {
     "id": 45,
@@ -417,7 +417,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oofqCao",
     "shareToken": "vctYbNcIwlS957AWwK92cA",
     "coverImage": "/images/meta-templates/template-045-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-045-hover.png"
   },
   {
     "id": 46,
@@ -426,7 +426,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oi1q158",
     "shareToken": "_Iqb4nmXlU2r7QfdpvNf0Q",
     "coverImage": "/images/meta-templates/template-046-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-046-hover.png"
   },
   {
     "id": 47,
@@ -435,7 +435,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oi6ol_k",
     "shareToken": "e_EH9pPvkBIuaIXHFOoIKA",
     "coverImage": "/images/meta-templates/template-047-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-047-hover.png"
   },
   {
     "id": 48,
@@ -444,7 +444,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oiuQnRY",
     "shareToken": "euCoMf6I5m-RRqFLYQGfFg",
     "coverImage": "/images/meta-templates/template-048-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-048-hover.png"
   },
   {
     "id": 49,
@@ -453,7 +453,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oudkHtU",
     "shareToken": "Q4v16ckzKG3wAYjI1SSOMg",
     "coverImage": "/images/meta-templates/template-049-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-049-hover.png"
   },
   {
     "id": 50,
@@ -462,7 +462,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ot0IWc4",
     "shareToken": "Ax0b2ujuWJwndsK4gUfFJA",
     "coverImage": "/images/meta-templates/template-050-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-050-hover.png"
   },
   {
     "id": 51,

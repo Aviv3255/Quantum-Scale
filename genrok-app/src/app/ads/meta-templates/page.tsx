@@ -106,10 +106,10 @@ export default function MetaTemplatesPage() {
 
                   {/* Always visible button - bottom right */}
                   <div
-                    className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-semibold transition-transform duration-200 group-hover:scale-105 z-10"
+                    className="absolute bottom-3 right-3 flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-semibold transition-transform duration-200 group-hover:scale-105 z-10"
                     style={{ backgroundColor: '#7435E6' }}
                   >
-                    <ExternalLink size={12} />
+                    <ExternalLink size={16} />
                     Edit in Canva
                   </div>
                 </a>
