@@ -1,6 +1,7 @@
-// Auto-generated from XLS import - 2026-01-06T11:46:54.046Z
-// Total templates: 55
-// Images extracted: 52
+// Auto-generated from XLS import - 2026-01-06T14:52:05.380Z
+// Total templates: 141
+// Cover images: 54
+// Hover images: 20
 
 export interface MetaAdTemplate {
   id: number;
@@ -20,7 +21,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9odZkP2s",
     "shareToken": "VRQegZzcs_2tGJOrli5vWQ",
     "coverImage": "/images/meta-templates/template-001-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-001-hover.png"
   },
   {
     "id": 2,
@@ -29,7 +30,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oX4yQDs",
     "shareToken": "4-X5M2gcaoJBrxHlmjl_wQ",
     "coverImage": "/images/meta-templates/template-002-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-002-hover.png"
   },
   {
     "id": 3,
@@ -38,7 +39,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oZtvyp0",
     "shareToken": "XQfUKtexkZXHxDG-C3grOg",
     "coverImage": "/images/meta-templates/template-003-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-003-hover.png"
   },
   {
     "id": 4,
@@ -47,7 +48,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9on9KJik",
     "shareToken": "V31Njy_RRdav8vffWVbNvA",
     "coverImage": "/images/meta-templates/template-004-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-004-hover.png"
   },
   {
     "id": 5,
@@ -56,7 +57,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9or8UBZ0",
     "shareToken": "FoNQYGEGCxilz7UgtVu0-g",
     "coverImage": "/images/meta-templates/template-005-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-005-hover.png"
   },
   {
     "id": 6,
@@ -65,7 +66,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9omE8YXU",
     "shareToken": "hsL12ZYwgLtczffEMtcZHQ",
     "coverImage": "/images/meta-templates/template-006-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-006-hover.png"
   },
   {
     "id": 7,
@@ -74,7 +75,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9okED91w",
     "shareToken": "L_7jdqMT71GzoJAomypZ8A",
     "coverImage": "/images/meta-templates/template-007-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-007-hover.png"
   },
   {
     "id": 8,
@@ -83,7 +84,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9osoFaFM",
     "shareToken": "2QFv2rxI159GwlhhMAvgwA",
     "coverImage": "/images/meta-templates/template-008-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-008-hover.png"
   },
   {
     "id": 9,
@@ -92,7 +93,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9oiZrPOE",
     "shareToken": "x4MaK203-oIZmkR75aS5gg",
     "coverImage": "/images/meta-templates/template-009-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-009-hover.png"
   },
   {
     "id": 10,
@@ -101,7 +102,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9otzeniE",
     "shareToken": "ZdWJt7d2JbaRhaaub1fB8A",
     "coverImage": "/images/meta-templates/template-010-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-010-hover.png"
   },
   {
     "id": 11,
@@ -110,7 +111,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ojY911o",
     "shareToken": "Hb4IMBEc3dDQ28KXhiEq9w",
     "coverImage": "/images/meta-templates/template-011-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-011-hover.png"
   },
   {
     "id": 12,
@@ -119,7 +120,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9osStQ3c",
     "shareToken": "d0beD6DJwoiMP9ArJZxlMA",
     "coverImage": "/images/meta-templates/template-012-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-012-hover.png"
   },
   {
     "id": 13,
@@ -128,7 +129,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9otkO-78",
     "shareToken": "j2cdX82CQAIsDApUwDMb2Q",
     "coverImage": "/images/meta-templates/template-013-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-013-hover.png"
   },
   {
     "id": 14,
@@ -137,7 +138,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ortXOn4",
     "shareToken": "Bz_2_ognPvQKTygYob15qA",
     "coverImage": "/images/meta-templates/template-014-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-014-hover.png"
   },
   {
     "id": 15,
@@ -145,8 +146,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9opx5sM0/vDIkAqdbXAHHHcd8OtH-Dg/view?utm_content=DAG9opx5sM0&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9opx5sM0",
     "shareToken": "vDIkAqdbXAHHHcd8OtH-Dg",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-015-cover.png",
+    "hoverImage": "/images/meta-templates/template-015-hover.png"
   },
   {
     "id": 16,
@@ -155,7 +156,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9opH3VYg",
     "shareToken": "fkC4tArMp2gSLLmH9mhghQ",
     "coverImage": "/images/meta-templates/template-016-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-016-hover.png"
   },
   {
     "id": 17,
@@ -164,7 +165,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9okjnsNk",
     "shareToken": "Kd6TB6f1YNf6KOHr8EnWUA",
     "coverImage": "/images/meta-templates/template-017-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-017-hover.png"
   },
   {
     "id": 18,
@@ -173,7 +174,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ohdb208",
     "shareToken": "_wAag-rY55rGsDnw-WVSjw",
     "coverImage": "/images/meta-templates/template-018-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-018-hover.png"
   },
   {
     "id": 19,
@@ -181,8 +182,8 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "canvaLink": "https://www.canva.com/design/DAG9okzbQP0/onjPzf9S3O74NYJaMGYEaA/view?utm_content=DAG9okzbQP0&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
     "designId": "DAG9okzbQP0",
     "shareToken": "onjPzf9S3O74NYJaMGYEaA",
-    "coverImage": null,
-    "hoverImage": null
+    "coverImage": "/images/meta-templates/template-019-cover.png",
+    "hoverImage": "/images/meta-templates/template-019-hover.png"
   },
   {
     "id": 20,
@@ -191,7 +192,7 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9okcrppQ",
     "shareToken": "DZFrSb9cmBlmlJERFmrWiQ",
     "coverImage": "/images/meta-templates/template-020-cover.png",
-    "hoverImage": null
+    "hoverImage": "/images/meta-templates/template-020-hover.png"
   },
   {
     "id": 21,
@@ -506,6 +507,780 @@ export const metaAdTemplates: MetaAdTemplate[] = [
     "designId": "DAG9ogjx92k",
     "shareToken": "ZCSzHVGRzxWopNfvsSiq6w",
     "coverImage": "/images/meta-templates/template-055-cover.png",
+    "hoverImage": null
+  },
+  {
+    "id": 56,
+    "name": "Meta template 56",
+    "canvaLink": "https://www.canva.com/design/DAG9oonM5iM/Rt3UE1C4re4v-K3t9EPZCA/view?utm_content=DAG9oonM5iM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9oonM5iM",
+    "shareToken": "Rt3UE1C4re4v-K3t9EPZCA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 57,
+    "name": "Meta template 57",
+    "canvaLink": "https://www.canva.com/design/DAG9osQJAOE/a0Vi9vISlCwvlV7kFQjAlA/view?utm_content=DAG9osQJAOE&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9osQJAOE",
+    "shareToken": "a0Vi9vISlCwvlV7kFQjAlA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 58,
+    "name": "Meta template 58",
+    "canvaLink": "https://www.canva.com/design/DAG9o1S3uFA/dp1vxLGXDUttKw_V_vZ_ew/view?utm_content=DAG9o1S3uFA&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o1S3uFA",
+    "shareToken": "dp1vxLGXDUttKw_V_vZ_ew",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 59,
+    "name": "Meta template 59",
+    "canvaLink": "https://www.canva.com/design/DAG9o9eXJ2c/sVuFmNG0grPpCVLAcyyCpQ/view?utm_content=DAG9o9eXJ2c&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o9eXJ2c",
+    "shareToken": "sVuFmNG0grPpCVLAcyyCpQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 60,
+    "name": "Meta template 60",
+    "canvaLink": "https://www.canva.com/design/DAG9o8FGVrc/XcX-nrgG9D3vgARsWnvUEA/view?utm_content=DAG9o8FGVrc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o8FGVrc",
+    "shareToken": "XcX-nrgG9D3vgARsWnvUEA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 61,
+    "name": "Meta template 61",
+    "canvaLink": "https://www.canva.com/design/DAG9o1ZoYp4/b7CH3c3eHd4TyMXQ1QPKyw/view?utm_content=DAG9o1ZoYp4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o1ZoYp4",
+    "shareToken": "b7CH3c3eHd4TyMXQ1QPKyw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 62,
+    "name": "Meta template 62",
+    "canvaLink": "https://www.canva.com/design/DAG9oyei3zI/95F7tIX4cS4PbqDPIlbqjA/view?utm_content=DAG9oyei3zI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9oyei3zI",
+    "shareToken": "95F7tIX4cS4PbqDPIlbqjA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 63,
+    "name": "Meta template 63",
+    "canvaLink": "https://www.canva.com/design/DAG9o_0FnM0/ezC4bXSH336IzsSDWGksuA/view?utm_content=DAG9o_0FnM0&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o_0FnM0",
+    "shareToken": "ezC4bXSH336IzsSDWGksuA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 64,
+    "name": "Meta template 64",
+    "canvaLink": "https://www.canva.com/design/DAG9o6AVW14/n9To_gI2BpGdhjplsljzJg/view?utm_content=DAG9o6AVW14&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o6AVW14",
+    "shareToken": "n9To_gI2BpGdhjplsljzJg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 65,
+    "name": "Meta template 65",
+    "canvaLink": "https://www.canva.com/design/DAG9o01Jb7I/L-Fg8LtH8IqcBDo5solkEg/view?utm_content=DAG9o01Jb7I&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o01Jb7I",
+    "shareToken": "L-Fg8LtH8IqcBDo5solkEg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 66,
+    "name": "Meta template 66",
+    "canvaLink": "https://www.canva.com/design/DAG9ozBK2tQ/6VVyztw6Lk3exnywiRqBIg/view?utm_content=DAG9ozBK2tQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9ozBK2tQ",
+    "shareToken": "6VVyztw6Lk3exnywiRqBIg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 67,
+    "name": "Meta template 67",
+    "canvaLink": "https://www.canva.com/design/DAG9o0wdZ54/-vu3h-r9kzctzID2ubt_NQ/view?utm_content=DAG9o0wdZ54&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o0wdZ54",
+    "shareToken": "-vu3h-r9kzctzID2ubt_NQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 68,
+    "name": "Meta template 68",
+    "canvaLink": "https://www.canva.com/design/DAG9o7USrY4/Lj3_KSiPEPxlvREcXNMrhw/view?utm_content=DAG9o7USrY4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o7USrY4",
+    "shareToken": "Lj3_KSiPEPxlvREcXNMrhw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 69,
+    "name": "Meta template 69",
+    "canvaLink": "https://www.canva.com/design/DAG9o39y_AU/AzsgSOcLEthNc_B0-c6J_Q/view?utm_content=DAG9o39y_AU&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o39y_AU",
+    "shareToken": "AzsgSOcLEthNc_B0-c6J_Q",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 70,
+    "name": "Meta template 70",
+    "canvaLink": "https://www.canva.com/design/DAG9oytvKwk/PEs25OrGDyZ2Dk4aSGCVvg/view?utm_content=DAG9oytvKwk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9oytvKwk",
+    "shareToken": "PEs25OrGDyZ2Dk4aSGCVvg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 71,
+    "name": "Meta template 71",
+    "canvaLink": "https://www.canva.com/design/DAG9o64cP4M/YeVxDd_qzbli7GiUpdP-AQ/view?utm_content=DAG9o64cP4M&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o64cP4M",
+    "shareToken": "YeVxDd_qzbli7GiUpdP-AQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 72,
+    "name": "Meta template 72",
+    "canvaLink": "https://www.canva.com/design/DAG9ozuXC-I/97LsDOsucyBh_5vce11gRw/view?utm_content=DAG9ozuXC-I&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9ozuXC-I",
+    "shareToken": "97LsDOsucyBh_5vce11gRw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 73,
+    "name": "Meta template 73",
+    "canvaLink": "https://www.canva.com/design/DAG9ozzbOTQ/SMJs6DlPeyx2OqPR5EAkgg/view?utm_content=DAG9ozzbOTQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9ozzbOTQ",
+    "shareToken": "SMJs6DlPeyx2OqPR5EAkgg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 74,
+    "name": "Meta template 74",
+    "canvaLink": "https://www.canva.com/design/DAG9o1dwybE/EY4kZFajyVmhy227W47LBw/view?utm_content=DAG9o1dwybE&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o1dwybE",
+    "shareToken": "EY4kZFajyVmhy227W47LBw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 75,
+    "name": "Meta template 75",
+    "canvaLink": "https://www.canva.com/design/DAG9o9pRLpc/ncYw3sgUiJ9R4ySTQOprCQ/view?utm_content=DAG9o9pRLpc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o9pRLpc",
+    "shareToken": "ncYw3sgUiJ9R4ySTQOprCQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 76,
+    "name": "Meta template 76",
+    "canvaLink": "https://www.canva.com/design/DAG9o9jXZE4/xj6wD_7SY1ptI6aOsBFPyA/view?utm_content=DAG9o9jXZE4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o9jXZE4",
+    "shareToken": "xj6wD_7SY1ptI6aOsBFPyA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 77,
+    "name": "Meta template 77",
+    "canvaLink": "https://www.canva.com/design/DAG9o_R2Jqc/fRvyQzrL0uEbzd28rOX6DQ/view?utm_content=DAG9o_R2Jqc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o_R2Jqc",
+    "shareToken": "fRvyQzrL0uEbzd28rOX6DQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 78,
+    "name": "Meta template 78",
+    "canvaLink": "https://www.canva.com/design/DAG9o5mcOA0/0Ai416OCndi-p_uUR7U11Q/view?utm_content=DAG9o5mcOA0&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o5mcOA0",
+    "shareToken": "0Ai416OCndi-p_uUR7U11Q",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 79,
+    "name": "Meta template 79",
+    "canvaLink": "https://www.canva.com/design/DAG9o_LKy2w/CboqmcqSSTAg4w511FgPhw/view?utm_content=DAG9o_LKy2w&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o_LKy2w",
+    "shareToken": "CboqmcqSSTAg4w511FgPhw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 80,
+    "name": "Meta template 80",
+    "canvaLink": "https://www.canva.com/design/DAG9o0gE_qI/g3LwaGa9oPSF8va4zsP8Ng/view?utm_content=DAG9o0gE_qI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o0gE_qI",
+    "shareToken": "g3LwaGa9oPSF8va4zsP8Ng",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 81,
+    "name": "Meta template 81",
+    "canvaLink": "https://www.canva.com/design/DAG9oyhuJzI/jKc8lmu64_KeKlTjO3XwkQ/view?utm_content=DAG9oyhuJzI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9oyhuJzI",
+    "shareToken": "jKc8lmu64_KeKlTjO3XwkQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 82,
+    "name": "Meta template 82",
+    "canvaLink": "https://www.canva.com/design/DAG9o6MaV8g/mYeC7P_6Clw0vTyzbKJF_Q/view?utm_content=DAG9o6MaV8g&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o6MaV8g",
+    "shareToken": "mYeC7P_6Clw0vTyzbKJF_Q",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 83,
+    "name": "Meta template 83",
+    "canvaLink": "https://www.canva.com/design/DAG9oxQWliQ/1dSZrTTOWasSPyBSoCzh3w/view?utm_content=DAG9oxQWliQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9oxQWliQ",
+    "shareToken": "1dSZrTTOWasSPyBSoCzh3w",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 84,
+    "name": "Meta template 84",
+    "canvaLink": "https://www.canva.com/design/DAG9o7N3z-s/wrpnbqe5K4i7Bh0kPq_BKg/view?utm_content=DAG9o7N3z-s&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9o7N3z-s",
+    "shareToken": "wrpnbqe5K4i7Bh0kPq_BKg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 85,
+    "name": "Meta template 85",
+    "canvaLink": "https://www.canva.com/design/DAG9pEpHqLk/8lL3bJtmRxdVzlYLWAHvTQ/view?utm_content=DAG9pEpHqLk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pEpHqLk",
+    "shareToken": "8lL3bJtmRxdVzlYLWAHvTQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 86,
+    "name": "Meta template 86",
+    "canvaLink": "https://www.canva.com/design/DAG9pH0iQxk/ydrh7rMMQNjxFvJ63zQuHw/view?utm_content=DAG9pH0iQxk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pH0iQxk",
+    "shareToken": "ydrh7rMMQNjxFvJ63zQuHw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 87,
+    "name": "Meta template 87",
+    "canvaLink": "https://www.canva.com/design/DAG9pDl4TO8/V2Ct3YNGCPb4xSn2n93erg/view?utm_content=DAG9pDl4TO8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pDl4TO8",
+    "shareToken": "V2Ct3YNGCPb4xSn2n93erg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 88,
+    "name": "Meta template 88",
+    "canvaLink": "https://www.canva.com/design/DAG9pKOCUXQ/_wjASt3MTz0GJpe69O80Og/view?utm_content=DAG9pKOCUXQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pKOCUXQ",
+    "shareToken": "_wjASt3MTz0GJpe69O80Og",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 89,
+    "name": "Meta template 89",
+    "canvaLink": "https://www.canva.com/design/DAG9pCa7_fc/FOwfo-kjTMDEGOtfTNdMVA/view?utm_content=DAG9pCa7_fc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pCa7_fc",
+    "shareToken": "FOwfo-kjTMDEGOtfTNdMVA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 90,
+    "name": "Meta template 90",
+    "canvaLink": "https://www.canva.com/design/DAG9pHD-GOc/Vi0U1kVe4HncZ6orSqw71g/view?utm_content=DAG9pHD-GOc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pHD-GOc",
+    "shareToken": "Vi0U1kVe4HncZ6orSqw71g",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 91,
+    "name": "Meta template 91",
+    "canvaLink": "https://www.canva.com/design/DAG9pJ26v4g/6uUAs9U5EutO9PhDS_X37A/view?utm_content=DAG9pJ26v4g&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pJ26v4g",
+    "shareToken": "6uUAs9U5EutO9PhDS_X37A",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 92,
+    "name": "Meta template 92",
+    "canvaLink": "https://www.canva.com/design/DAG9pF9LW9U/9XF2OacLkmTZhBjVVR-uOQ/view?utm_content=DAG9pF9LW9U&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pF9LW9U",
+    "shareToken": "9XF2OacLkmTZhBjVVR-uOQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 93,
+    "name": "Meta template 93",
+    "canvaLink": "https://www.canva.com/design/DAG9pGZbE5U/q5J4kzWDY3SGoBB-CpUe1w/view?utm_content=DAG9pGZbE5U&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pGZbE5U",
+    "shareToken": "q5J4kzWDY3SGoBB-CpUe1w",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 94,
+    "name": "Meta template 94",
+    "canvaLink": "https://www.canva.com/design/DAG9pIVNcZY/TTbjH70jx5OWIf0ewPDkdA/view?utm_content=DAG9pIVNcZY&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pIVNcZY",
+    "shareToken": "TTbjH70jx5OWIf0ewPDkdA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 95,
+    "name": "Meta template 95",
+    "canvaLink": "https://www.canva.com/design/DAG9pDxfZug/VvDs9oyEDNR4EC1A4nURoA/view?utm_content=DAG9pDxfZug&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pDxfZug",
+    "shareToken": "VvDs9oyEDNR4EC1A4nURoA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 96,
+    "name": "Meta template 96",
+    "canvaLink": "https://www.canva.com/design/DAG9pD7DgeE/4w_61HZOhtsbWMAfeICWmg/view?utm_content=DAG9pD7DgeE&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pD7DgeE",
+    "shareToken": "4w_61HZOhtsbWMAfeICWmg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 97,
+    "name": "Meta template 97",
+    "canvaLink": "https://www.canva.com/design/DAG9pGXfNRI/ma_-hFGol1qDRmyJBVbDQQ/view?utm_content=DAG9pGXfNRI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pGXfNRI",
+    "shareToken": "ma_-hFGol1qDRmyJBVbDQQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 98,
+    "name": "Meta template 98",
+    "canvaLink": "https://www.canva.com/design/DAG9pMlKOR8/MyM7mH6fDJgFw_ZiKaw6oA/view?utm_content=DAG9pMlKOR8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pMlKOR8",
+    "shareToken": "MyM7mH6fDJgFw_ZiKaw6oA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 99,
+    "name": "Meta template 99",
+    "canvaLink": "https://www.canva.com/design/DAG9pQwayyM/l2s5uND7bfVLsPdY2ahXPg/view?utm_content=DAG9pQwayyM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pQwayyM",
+    "shareToken": "l2s5uND7bfVLsPdY2ahXPg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 100,
+    "name": "Meta template 100",
+    "canvaLink": "https://www.canva.com/design/DAG9pTk-UJI/pAkcF9jAHytmpMpm-2Gl5A/view?utm_content=DAG9pTk-UJI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pTk-UJI",
+    "shareToken": "pAkcF9jAHytmpMpm-2Gl5A",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 101,
+    "name": "Meta template 101",
+    "canvaLink": "https://www.canva.com/design/DAG9pSS0gps/X9mavOT2tlfIiNw7-fIxNA/view?utm_content=DAG9pSS0gps&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pSS0gps",
+    "shareToken": "X9mavOT2tlfIiNw7-fIxNA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 102,
+    "name": "Meta template 102",
+    "canvaLink": "https://www.canva.com/design/DAG9pRL2d5U/R1C_ivuMG_sbfg_T6lUdyw/view?utm_content=DAG9pRL2d5U&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pRL2d5U",
+    "shareToken": "R1C_ivuMG_sbfg_T6lUdyw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 103,
+    "name": "Meta template 103",
+    "canvaLink": "https://www.canva.com/design/DAG9pVzVgWY/gFwLsiIFw9BjyOb0UQ_hbg/view?utm_content=DAG9pVzVgWY&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pVzVgWY",
+    "shareToken": "gFwLsiIFw9BjyOb0UQ_hbg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 104,
+    "name": "Meta template 104",
+    "canvaLink": "https://www.canva.com/design/DAG9pa9ffgw/HlyyER4wB2Lg69_uub_EBw/view?utm_content=DAG9pa9ffgw&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pa9ffgw",
+    "shareToken": "HlyyER4wB2Lg69_uub_EBw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 105,
+    "name": "Meta template 105",
+    "canvaLink": "https://www.canva.com/design/DAG9pc79u8s/RbmVnpK0W7ut_cU-g3VlBQ/view?utm_content=DAG9pc79u8s&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pc79u8s",
+    "shareToken": "RbmVnpK0W7ut_cU-g3VlBQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 106,
+    "name": "Meta template 106",
+    "canvaLink": "https://www.canva.com/design/DAG9pR6e1Wo/ERa1ltk1sF8mPBcLhi9mAg/view?utm_content=DAG9pR6e1Wo&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pR6e1Wo",
+    "shareToken": "ERa1ltk1sF8mPBcLhi9mAg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 107,
+    "name": "Meta template 107",
+    "canvaLink": "https://www.canva.com/design/DAG9pTY7VB8/DS5jMcFiG4IDDLQDvuHrfg/view?utm_content=DAG9pTY7VB8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pTY7VB8",
+    "shareToken": "DS5jMcFiG4IDDLQDvuHrfg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 108,
+    "name": "Meta template 108",
+    "canvaLink": "https://www.canva.com/design/DAG9pUAJw4I/Rv5ZEHYLrLtAqQE4PgvTUw/view?utm_content=DAG9pUAJw4I&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pUAJw4I",
+    "shareToken": "Rv5ZEHYLrLtAqQE4PgvTUw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 109,
+    "name": "Meta template 109",
+    "canvaLink": "https://www.canva.com/design/DAG9pdzHInQ/bmGeT2g8JyOPQpFadSIjug/view?utm_content=DAG9pdzHInQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pdzHInQ",
+    "shareToken": "bmGeT2g8JyOPQpFadSIjug",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 110,
+    "name": "Meta template 110",
+    "canvaLink": "https://www.canva.com/design/DAG9pbTV4xw/C3bn6fPdQybK1wxjdV-2aQ/view?utm_content=DAG9pbTV4xw&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pbTV4xw",
+    "shareToken": "C3bn6fPdQybK1wxjdV-2aQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 111,
+    "name": "Meta template 111",
+    "canvaLink": "https://www.canva.com/design/DAG9pVIiDJo/rro3Rk5mxTTmYP2EoZAO7A/view?utm_content=DAG9pVIiDJo&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pVIiDJo",
+    "shareToken": "rro3Rk5mxTTmYP2EoZAO7A",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 112,
+    "name": "Meta template 112",
+    "canvaLink": "https://www.canva.com/design/DAG9pUfCNn0/F6Yt5rV_3LMoDiF4e3lZhg/view?utm_content=DAG9pUfCNn0&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pUfCNn0",
+    "shareToken": "F6Yt5rV_3LMoDiF4e3lZhg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 113,
+    "name": "Meta template 113",
+    "canvaLink": "https://www.canva.com/design/DAG9pQukoj0/MbcRdSEJkk9fTbosypa1Gg/view?utm_content=DAG9pQukoj0&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pQukoj0",
+    "shareToken": "MbcRdSEJkk9fTbosypa1Gg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 114,
+    "name": "Meta template 114",
+    "canvaLink": "https://www.canva.com/design/DAG9pRehtAs/Tckev6RI4h7iQtglrFFQxA/view?utm_content=DAG9pRehtAs&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pRehtAs",
+    "shareToken": "Tckev6RI4h7iQtglrFFQxA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 115,
+    "name": "Meta template 115",
+    "canvaLink": "https://www.canva.com/design/DAG9peb68PU/Jh9lJXgptZxabZE-Qd5rDQ/view?utm_content=DAG9peb68PU&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9peb68PU",
+    "shareToken": "Jh9lJXgptZxabZE-Qd5rDQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 116,
+    "name": "Meta template 116",
+    "canvaLink": "https://www.canva.com/design/DAG9pb9w7RY/yHEzw-6Vji1T46JIfkkc5w/view?utm_content=DAG9pb9w7RY&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pb9w7RY",
+    "shareToken": "yHEzw-6Vji1T46JIfkkc5w",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 117,
+    "name": "Meta template 117",
+    "canvaLink": "https://www.canva.com/design/DAG9pZZE-eI/XX1ve1HKnrEbsCW8DYprKw/view?utm_content=DAG9pZZE-eI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pZZE-eI",
+    "shareToken": "XX1ve1HKnrEbsCW8DYprKw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 118,
+    "name": "Meta template 118",
+    "canvaLink": "https://www.canva.com/design/DAG9pUXjVBA/ambsZGL84EQr-6TbMI2e7w/view?utm_content=DAG9pUXjVBA&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pUXjVBA",
+    "shareToken": "ambsZGL84EQr-6TbMI2e7w",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 119,
+    "name": "Meta template 119",
+    "canvaLink": "https://www.canva.com/design/DAG9pbmUJUg/MqL1RzPM-atx_vUy9LnnJw/view?utm_content=DAG9pbmUJUg&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pbmUJUg",
+    "shareToken": "MqL1RzPM-atx_vUy9LnnJw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 120,
+    "name": "Meta template 120",
+    "canvaLink": "https://www.canva.com/design/DAG9pSSbGOA/lGgfj73vUsPG10vcmBcvEQ/view?utm_content=DAG9pSSbGOA&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pSSbGOA",
+    "shareToken": "lGgfj73vUsPG10vcmBcvEQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 121,
+    "name": "Meta template 121",
+    "canvaLink": "https://www.canva.com/design/DAG9pSpvCdU/DIzRtnqMaLooghdyEP8wsA/view?utm_content=DAG9pSpvCdU&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pSpvCdU",
+    "shareToken": "DIzRtnqMaLooghdyEP8wsA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 122,
+    "name": "Meta template 122",
+    "canvaLink": "https://www.canva.com/design/DAG9pfTTC1c/OcTlxa3Jr8q3OXyZnBD2MA/view?utm_content=DAG9pfTTC1c&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pfTTC1c",
+    "shareToken": "OcTlxa3Jr8q3OXyZnBD2MA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 123,
+    "name": "Meta template 123",
+    "canvaLink": "https://www.canva.com/design/DAG9pS64OwY/NdtaBEZZPBm60RIt3ERSQg/view?utm_content=DAG9pS64OwY&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pS64OwY",
+    "shareToken": "NdtaBEZZPBm60RIt3ERSQg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 124,
+    "name": "Meta template 124",
+    "canvaLink": "https://www.canva.com/design/DAG9pVh5_tk/uQ8kdvx-p_3TLCBd6IGxbw/view?utm_content=DAG9pVh5_tk&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pVh5_tk",
+    "shareToken": "uQ8kdvx-p_3TLCBd6IGxbw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 125,
+    "name": "Meta template 125",
+    "canvaLink": "https://www.canva.com/design/DAG9pcfQVP8/HAf9ZDgrVZKMamkC_i-EqA/view?utm_content=DAG9pcfQVP8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pcfQVP8",
+    "shareToken": "HAf9ZDgrVZKMamkC_i-EqA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 126,
+    "name": "Meta template 126",
+    "canvaLink": "https://www.canva.com/design/DAG9pRUlzRU/54eA3GRACiUx_yqaHw-yCg/view?utm_content=DAG9pRUlzRU&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pRUlzRU",
+    "shareToken": "54eA3GRACiUx_yqaHw-yCg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 127,
+    "name": "Meta template 127",
+    "canvaLink": "https://www.canva.com/design/DAG9pUNWYfI/UqjfIpsHjvD2QD3ueG32JQ/view?utm_content=DAG9pUNWYfI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pUNWYfI",
+    "shareToken": "UqjfIpsHjvD2QD3ueG32JQ",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 128,
+    "name": "Meta template 128",
+    "canvaLink": "https://www.canva.com/design/DAG9pWOLy_A/qpHfi-2xYu52OGUsyGybJw/view?utm_content=DAG9pWOLy_A&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pWOLy_A",
+    "shareToken": "qpHfi-2xYu52OGUsyGybJw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 129,
+    "name": "Meta template 129",
+    "canvaLink": "https://www.canva.com/design/DAG9pfMEHJQ/dGpxFc44SrZXzkpToGt3Mw/view?utm_content=DAG9pfMEHJQ&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pfMEHJQ",
+    "shareToken": "dGpxFc44SrZXzkpToGt3Mw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 130,
+    "name": "Meta template 130",
+    "canvaLink": "https://www.canva.com/design/DAG9pUy9iGo/nTujE08vzIL8nXCrmiKA8A/view?utm_content=DAG9pUy9iGo&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pUy9iGo",
+    "shareToken": "nTujE08vzIL8nXCrmiKA8A",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 131,
+    "name": "Meta template 131",
+    "canvaLink": "https://www.canva.com/design/DAG9pQdx1J4/jGi_g5NJ2AR-E27wWK_U_A/view?utm_content=DAG9pQdx1J4&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pQdx1J4",
+    "shareToken": "jGi_g5NJ2AR-E27wWK_U_A",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 132,
+    "name": "Meta template 132",
+    "canvaLink": "https://www.canva.com/design/DAG9pZ6fvqM/pMxo2fSYgT1puBz4SKb72A/view?utm_content=DAG9pZ6fvqM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pZ6fvqM",
+    "shareToken": "pMxo2fSYgT1puBz4SKb72A",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 133,
+    "name": "Meta template 133",
+    "canvaLink": "https://www.canva.com/design/DAG9pQsj9j8/sJMOI4O_F0PlPvXS7qbSQg/view?utm_content=DAG9pQsj9j8&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pQsj9j8",
+    "shareToken": "sJMOI4O_F0PlPvXS7qbSQg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 134,
+    "name": "Meta template 134",
+    "canvaLink": "https://www.canva.com/design/DAG9pVdVFzM/ZQLgyMZc9nqCjBvch-9k_w/view?utm_content=DAG9pVdVFzM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pVdVFzM",
+    "shareToken": "ZQLgyMZc9nqCjBvch-9k_w",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 135,
+    "name": "Meta template 135",
+    "canvaLink": "https://www.canva.com/design/DAG9pYul-n0/O6Mz_od281XUbMZxIFaAQg/view?utm_content=DAG9pYul-n0&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pYul-n0",
+    "shareToken": "O6Mz_od281XUbMZxIFaAQg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 136,
+    "name": "Meta template 136",
+    "canvaLink": "https://www.canva.com/design/DAG9pXBjojM/xI0_A2_6PqaBHmwWAzCxGw/view?utm_content=DAG9pXBjojM&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pXBjojM",
+    "shareToken": "xI0_A2_6PqaBHmwWAzCxGw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 137,
+    "name": "Meta template 137",
+    "canvaLink": "https://www.canva.com/design/DAG9pfRH14E/NYVX6eQanBYfAaSTE-4GMA/view?utm_content=DAG9pfRH14E&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pfRH14E",
+    "shareToken": "NYVX6eQanBYfAaSTE-4GMA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 138,
+    "name": "Meta template 138",
+    "canvaLink": "https://www.canva.com/design/DAG9pfwlo3A/kk1vQeemmTLKO4OD7BXSkw/view?utm_content=DAG9pfwlo3A&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9pfwlo3A",
+    "shareToken": "kk1vQeemmTLKO4OD7BXSkw",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 139,
+    "name": "Meta template 139",
+    "canvaLink": "https://www.canva.com/design/DAG9ptJiSZc/WWxQNQ6KVWFy1WS5XfjblA/view?utm_content=DAG9ptJiSZc&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9ptJiSZc",
+    "shareToken": "WWxQNQ6KVWFy1WS5XfjblA",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 140,
+    "name": "Meta template 140",
+    "canvaLink": "https://www.canva.com/design/DAG9plKGLdI/I31IFnUTpIjL2GkQmOX1fg/view?utm_content=DAG9plKGLdI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9plKGLdI",
+    "shareToken": "I31IFnUTpIjL2GkQmOX1fg",
+    "coverImage": null,
+    "hoverImage": null
+  },
+  {
+    "id": 141,
+    "name": "Meta template 141",
+    "canvaLink": "https://www.canva.com/design/DAG9psipl54/US7QUR1Bq1HfV9UI9iWFMg/view?utm_content=DAG9psipl54&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
+    "designId": "DAG9psipl54",
+    "shareToken": "US7QUR1Bq1HfV9UI9iWFMg",
+    "coverImage": null,
     "hoverImage": null
   }
 ];
