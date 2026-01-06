@@ -82,7 +82,6 @@
       { type: 'hidden-reveal' },
       { type: 'aspiration-pyramid' },
       { type: 'ladder-stats' },
-      { type: 'automate-ladder' },
       { type: 'quiz', question: 'Why do high-end restaurants keep their best dishes off the public menu?', options: ['To save money on printing costs', 'Hidden exclusivity creates aspiration - customers want access to what others can\'t see', 'They forgot to add them', 'The chef wants to keep secrets'], correctIndex: 1, feedback: { correct: 'Exactly. The hidden menu creates aspiration. When customers know there\'s a tier above what they see, they want access. The ladder creates desire for the climb.', incorrect: 'Not quite. The power is in aspiration. By keeping premium offerings hidden, restaurants create curiosity and desire. Customers want what\'s reserved for "those who know."' }},
       { type: 'elite-insight' },
       { type: 'completion' }
@@ -523,7 +522,7 @@
             <h2 className="slide-title text-2xl md:text-3xl text-black">Value Ladder Impact</h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-3 gap-4 mb-4">
             {stats.map((stat, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center transition-all duration-300" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeIndex === i ? `0 0 30px ${stat.color}40` : 'none', transform: activeIndex === i ? 'scale(1.05)' : 'scale(1)' }}>
                 <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
@@ -564,6 +563,12 @@
                 <div className="text-xs text-neutral-500 mt-1">{item.desc}</div>
               </div>
             ))}
+          </motion.div>
+        
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="flex items-center justify-center gap-3 p-3 rounded-xl bg-neutral-50 border border-neutral-200">
+            <span className="text-neutral-500 text-xs">Pro tip:</span>
+            <a href="https://apps.shopify.com/reconvert-post-purchase-upsell" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>ReConvert</a>
+            <span className="text-neutral-500 text-xs">automates Entry→Core upsells on your thank you page</span>
           </motion.div>
         </div>
       );
