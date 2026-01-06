@@ -154,6 +154,7 @@
       { type: 'two-way-flow' },
       { type: 'revenue-calculator' },
       { type: 'best-practices' },
+      { type: 'get-started-sms' },
       { type: 'elite-insight' },
       { type: 'quiz', question: 'Why does SMS have such higher open rates than email for cart recovery?', options: ['SMS messages are shorter', 'SMS lands in a personal space where people expect important messages', 'SMS has better formatting options', 'SMS allows for more discount codes'], correctIndex: 1, feedback: { correct: 'Exactly! SMS works because it lands in personal territory. Your phone is where friends, family, and important notifications live. When a brand message appears there, it triggers the same "this might be important" response as a text from someone you know.', incorrect: 'The real reason is that SMS lands in personal space. Your phone is where important messages arrive. When a cart recovery appears there, it triggers genuine attention. Email is expected to be noisy. SMS is expected to be personal.' }},
       { type: 'completion' }
@@ -675,6 +676,51 @@
       );
     };
 
+    const GetStartedSMSSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Start SMS Cart Recovery</h2>
+          <p className="text-neutral-500 text-sm mt-2">Turn abandoned carts into revenue with AI-powered SMS</p>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5 bg-neutral-50 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center text-neutral-500"><Icons.Clock /></div>
+              <span className="font-semibold text-neutral-400 text-sm">Build It Yourself</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-400">
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Set up Twilio or SMS gateway</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Build cart abandonment triggers</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Write conversational flows manually</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Handle replies & support yourself</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-200">
+              <span className="text-xs text-neutral-400">Time: 10+ hours setup + ongoing</span>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #6366f1', boxShadow: '0 0 30px rgba(99, 102, 241, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #6366f1, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#6366f1', color: 'white' }}><Icons.Smartphone /></div>
+              <span className="font-semibold text-white text-sm">AI-Powered SMS Platform</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-300">
+              <li className="flex items-start gap-2"><span style={{ color: '#6366f1' }}>✓</span>95% open rate SMS cart recovery</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#6366f1' }}>✓</span>AI handles 2-way conversations</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#6366f1' }}>✓</span>Conversational commerce built-in</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#6366f1' }}>✓</span>10-45% cart recovery rates</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-700">
+              <a href="https://txtcartapp.com/affiliate/?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80" style={{ background: '#6366f1', color: 'white' }}>
+                Try TxtCart <Icons.ExternalLink />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -734,6 +780,7 @@
           case 'two-way-flow': return <TwoWayFlowSlide />;
           case 'revenue-calculator': return <RevenueCalculatorSlide />;
           case 'best-practices': return <BestPracticesSlide />;
+          case 'get-started-sms': return <GetStartedSMSSlide />;
           case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
