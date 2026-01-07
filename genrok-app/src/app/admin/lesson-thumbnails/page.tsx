@@ -16,6 +16,9 @@ import {
   List,
   Copy,
   Check,
+  Flag,
+  MessageSquare,
+  ClipboardList,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/auth';
@@ -28,6 +31,8 @@ interface LessonThumbnail {
   title: string;
   thumbnail_url: string | null;
   updated_at: string | null;
+  needs_new_prompt?: boolean;
+  prompt_feedback?: string;
 }
 
 // Brand/Entrepreneur image URLs
@@ -607,6 +612,63 @@ export default function AdminLessonThumbnailsPage() {
   const [filter, setFilter] = useState<'all' | 'with' | 'without'>('all');
   const [dragOver, setDragOver] = useState<string | null>(null);
   const [copiedSlug, setCopiedSlug] = useState<string | null>(null);
+  const [promptTasks, setPromptTasks] = useState<Record<string, { needsNewPrompt: boolean; feedback: string }>>({});
+  const [showTasksPanel, setShowTasksPanel] = useState(false);
+  const [expandedFeedback, setExpandedFeedback] = useState<string | null>(null);
+
+  // Load prompt tasks from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('promptTasks');
+    if (saved) {
+      setPromptTasks(JSON.parse(saved));
+    }
+  }, []);
+
+  // Save prompt tasks to localStorage whenever they change
+  useEffect(() => {
+    if (Object.keys(promptTasks).length > 0) {
+      localStorage.setItem('promptTasks', JSON.stringify(promptTasks));
+    }
+  }, [promptTasks]);
+
+  // Toggle needs new prompt flag
+  const toggleNeedsNewPrompt = useCallback((slug: string) => {
+    setPromptTasks(prev => {
+      const current = prev[slug] || { needsNewPrompt: false, feedback: '' };
+      const updated = { ...prev, [slug]: { ...current, needsNewPrompt: !current.needsNewPrompt } };
+      // Remove entry if both values are false/empty
+      if (!updated[slug].needsNewPrompt && !updated[slug].feedback) {
+        delete updated[slug];
+      }
+      return updated;
+    });
+  }, []);
+
+  // Update feedback for a lesson
+  const updateFeedback = useCallback((slug: string, feedback: string) => {
+    setPromptTasks(prev => {
+      const current = prev[slug] || { needsNewPrompt: false, feedback: '' };
+      const updated = { ...prev, [slug]: { ...current, feedback } };
+      // Remove entry if both values are false/empty
+      if (!updated[slug].needsNewPrompt && !updated[slug].feedback) {
+        delete updated[slug];
+      }
+      return updated;
+    });
+  }, []);
+
+  // Clear a task (after prompt is updated)
+  const clearTask = useCallback((slug: string) => {
+    setPromptTasks(prev => {
+      const updated = { ...prev };
+      delete updated[slug];
+      localStorage.setItem('promptTasks', JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
+
+  // Get count of tasks needing attention
+  const tasksCount = Object.values(promptTasks).filter(t => t.needsNewPrompt).length;
 
   // Admin email check
   const ADMIN_EMAILS = ['admin@quantum-scale.co', 'aviv32552@gmail.com'];
@@ -814,6 +876,104 @@ export default function AdminLessonThumbnailsPage() {
           )}
         </AnimatePresence>
 
+        {/* Tasks Panel Modal */}
+        <AnimatePresence>
+          {showTasksPanel && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+              onClick={() => setShowTasksPanel(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="p-6 border-b border-[var(--border-light)]">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
+                        <ClipboardList size={20} className="text-red-500" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl font-bold text-[var(--text-primary)]">Prompt Tasks</h2>
+                        <p className="text-sm text-[var(--text-muted)]">{tasksCount} prompts need attention</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setShowTasksPanel(false)}
+                      className="p-2 rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-6 overflow-y-auto max-h-[60vh]">
+                  {tasksCount === 0 ? (
+                    <div className="text-center py-12">
+                      <CheckCircle size={48} className="mx-auto mb-4 text-green-500" />
+                      <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">All caught up!</h3>
+                      <p className="text-[var(--text-muted)]">No prompts need attention right now.</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {Object.entries(promptTasks)
+                        .filter(([, task]) => task.needsNewPrompt)
+                        .map(([slug, task]) => (
+                          <div key={slug} className="border border-[var(--border-light)] rounded-xl p-4">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-[var(--text-primary)]">
+                                  {lessonMeta[slug]?.title || slug}
+                                </h4>
+                                <p className="text-xs text-[var(--text-muted)] mt-1">Slug: {slug}</p>
+
+                                {task.feedback && (
+                                  <div className="mt-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                                    <p className="text-xs font-medium text-red-600 mb-1">Your feedback:</p>
+                                    <p className="text-sm text-red-800">{task.feedback}</p>
+                                  </div>
+                                )}
+
+                                <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                                  <p className="text-xs font-medium text-[var(--text-muted)] mb-1">Current prompt:</p>
+                                  <p className="text-xs text-[var(--text-secondary)] line-clamp-3">
+                                    {lessonPromptData[slug]?.prompt || 'No custom prompt'}
+                                  </p>
+                                </div>
+                              </div>
+
+                              <button
+                                onClick={() => clearTask(slug)}
+                                className="shrink-0 p-2 rounded-lg bg-green-100 text-green-600 hover:bg-green-200 transition-colors"
+                                title="Mark as resolved"
+                              >
+                                <Check size={16} />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  )}
+                </div>
+
+                {tasksCount > 0 && (
+                  <div className="p-4 border-t border-[var(--border-light)] bg-gray-50">
+                    <p className="text-xs text-[var(--text-muted)] text-center">
+                      Tell Claude to &quot;review prompt tasks&quot; to update these prompts based on your feedback.
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
@@ -849,6 +1009,23 @@ export default function AdminLessonThumbnailsPage() {
                 <div className="text-2xl font-bold text-orange-500">{withoutThumbnails}</div>
                 <div className="text-xs text-[var(--text-muted)]">Need Thumbnail</div>
               </div>
+              {/* Review Tasks Button */}
+              <button
+                onClick={() => setShowTasksPanel(true)}
+                className={`flex flex-col items-center px-4 py-2 rounded-lg transition-all ${
+                  tasksCount > 0
+                    ? 'bg-red-100 hover:bg-red-200 border-2 border-red-500'
+                    : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+              >
+                <div className={`text-2xl font-bold ${tasksCount > 0 ? 'text-red-500' : 'text-gray-400'}`}>
+                  {tasksCount}
+                </div>
+                <div className="text-xs text-[var(--text-muted)] flex items-center gap-1">
+                  <ClipboardList size={12} />
+                  Prompt Tasks
+                </div>
+              </button>
             </div>
 
             {/* Controls */}
@@ -1066,29 +1243,63 @@ export default function AdminLessonThumbnailsPage() {
                           {promptData.prompt}
                         </div>
 
-                        {/* Copy Button */}
-                        <button
-                          onClick={() => copyPrompt(lesson.slug)}
-                          className={`
-                            mt-3 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all
-                            ${copiedSlug === lesson.slug
-                              ? 'bg-green-500 text-white'
-                              : 'bg-[var(--primary)] text-white hover:opacity-90'
-                            }
-                          `}
-                        >
-                          {copiedSlug === lesson.slug ? (
-                            <>
-                              <Check size={16} />
-                              Copied!
-                            </>
-                          ) : (
-                            <>
-                              <Copy size={16} />
-                              Copy Prompt
-                            </>
-                          )}
-                        </button>
+                        {/* Copy Button + Flag Button Row */}
+                        <div className="mt-3 flex gap-2">
+                          <button
+                            onClick={() => copyPrompt(lesson.slug)}
+                            className={`
+                              flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all
+                              ${copiedSlug === lesson.slug
+                                ? 'bg-green-500 text-white'
+                                : 'bg-[var(--primary)] text-white hover:opacity-90'
+                              }
+                            `}
+                          >
+                            {copiedSlug === lesson.slug ? (
+                              <>
+                                <Check size={16} />
+                                Copied!
+                              </>
+                            ) : (
+                              <>
+                                <Copy size={16} />
+                                Copy Prompt
+                              </>
+                            )}
+                          </button>
+
+                          {/* Flag for New Prompt Button */}
+                          <button
+                            onClick={() => toggleNeedsNewPrompt(lesson.slug)}
+                            className={`
+                              flex items-center justify-center gap-1 px-3 py-2.5 rounded-lg text-sm font-medium transition-all
+                              ${promptTasks[lesson.slug]?.needsNewPrompt
+                                ? 'bg-red-500 text-white'
+                                : 'bg-gray-200 text-gray-600 hover:bg-red-100 hover:text-red-600'
+                              }
+                            `}
+                            title={promptTasks[lesson.slug]?.needsNewPrompt ? 'Remove from tasks' : 'Flag for new prompt'}
+                          >
+                            <Flag size={16} />
+                          </button>
+                        </div>
+
+                        {/* Feedback Input (shown when flagged or has feedback) */}
+                        {(promptTasks[lesson.slug]?.needsNewPrompt || promptTasks[lesson.slug]?.feedback) && (
+                          <div className="mt-2">
+                            <div className="flex items-center gap-1 text-xs text-[var(--text-muted)] mb-1">
+                              <MessageSquare size={12} />
+                              Feedback for Claude:
+                            </div>
+                            <textarea
+                              value={promptTasks[lesson.slug]?.feedback || ''}
+                              onChange={(e) => updateFeedback(lesson.slug, e.target.value)}
+                              placeholder="What's wrong with this prompt? What should be different?"
+                              className="w-full px-3 py-2 text-sm border border-[var(--border-light)] rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-red-500"
+                              rows={2}
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
                   )}
