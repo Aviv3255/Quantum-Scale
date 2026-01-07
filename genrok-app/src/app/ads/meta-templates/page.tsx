@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { ExternalLink, Search, RefreshCw } from 'lucide-react';
-import { motion } from 'framer-motion';
+import Image from 'next/image';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { metaAdTemplates, MetaAdTemplate } from '@/data/meta-ad-templates';
 
-// Template card with toggle button (for first 12)
-function TemplateCardWithToggle({ template }: { template: MetaAdTemplate }) {
+// Memoized template card - prevents re-renders
+const TemplateCard = memo(function TemplateCard({ template }: { template: MetaAdTemplate }) {
   const [showEditable, setShowEditable] = useState(false);
 
   const handleToggle = (e: React.MouseEvent) => {
@@ -17,24 +17,22 @@ function TemplateCardWithToggle({ template }: { template: MetaAdTemplate }) {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      className="relative"
-    >
+    <div className="relative">
       <a
         href={template.canvaLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="block relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-all duration-300 hover:shadow-xl hover:border-[#7435E6]"
+        className="block relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-shadow duration-200 hover:shadow-xl hover:border-[#7435E6]"
       >
-        {/* Cover Image */}
+        {/* Cover Image - lazy loaded */}
         {template.coverImage ? (
-          <img
+          <Image
             src={template.coverImage}
             alt={template.name}
-            className={`w-full h-full object-cover transition-opacity duration-300 ${showEditable && template.hoverImage ? 'opacity-0' : 'opacity-100'}`}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className={`object-cover transition-opacity duration-200 ${showEditable && template.hoverImage ? 'opacity-0' : 'opacity-100'}`}
+            loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
@@ -49,16 +47,19 @@ function TemplateCardWithToggle({ template }: { template: MetaAdTemplate }) {
           </div>
         )}
 
-        {/* Editable Image (slide 2) */}
-        {template.hoverImage && (
-          <img
+        {/* Editable Image - only load when toggled */}
+        {template.hoverImage && showEditable && (
+          <Image
             src={template.hoverImage}
             alt={`${template.name} - Editable`}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${showEditable ? 'opacity-100' : 'opacity-0'}`}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover"
+            loading="lazy"
           />
         )}
 
-        {/* Edit in Canva button - bottom right */}
+        {/* Edit in Canva button */}
         <div
           className="absolute bottom-3 right-3 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold z-20"
           style={{ backgroundColor: '#7435E6', color: '#FFFFFF' }}
@@ -68,54 +69,47 @@ function TemplateCardWithToggle({ template }: { template: MetaAdTemplate }) {
         </div>
       </a>
 
-      {/* Toggle button - bottom left, OUTSIDE the link (only if has editable version) */}
+      {/* Toggle button - only if has editable version */}
       {template.hoverImage && (
         <button
           onClick={handleToggle}
-          className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 z-30 border-2 bg-white/90 backdrop-blur-sm"
+          className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold z-30 border-2 bg-white/90 backdrop-blur-sm"
           style={{ color: '#7435E6', borderColor: '#7435E6' }}
         >
           <RefreshCw size={14} color="#7435E6" />
           {showEditable ? 'See original' : 'See editable'}
         </button>
       )}
-    </motion.div>
+    </div>
   );
-}
+});
 
 export default function MetaTemplatesPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter templates based on search
-  const filteredTemplates = metaAdTemplates.filter((template) =>
-    template.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredTemplates = searchQuery
+    ? metaAdTemplates.filter((template) =>
+        template.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : metaAdTemplates;
 
   return (
     <DashboardLayout>
       <div className="min-h-screen" style={{ background: '#FFFFFF', margin: '-40px -48px', padding: '48px' }}>
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-10"
-          >
+          <div className="text-center mb-10">
             <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-3">
               Meta Ad Templates
             </h1>
             <p className="text-[var(--text-muted)] text-lg">
               {metaAdTemplates.length} ready-to-use templates. Click to edit in Canva.
             </p>
-          </motion.div>
+          </div>
 
           {/* Search Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mb-10 flex justify-center"
-          >
+          <div className="mb-10 flex justify-center">
             <div className="relative w-full max-w-md">
               <Search
                 size={20}
@@ -126,30 +120,21 @@ export default function MetaTemplatesPage() {
                 placeholder="Search templates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#e5e5e5] bg-white text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#7435E6] focus:border-transparent transition-all"
+                className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#e5e5e5] bg-white text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#7435E6] focus:border-transparent"
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Templates Grid */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-          >
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredTemplates.map((template) => (
-              <TemplateCardWithToggle key={template.id} template={template} />
+              <TemplateCard key={template.id} template={template} />
             ))}
-          </motion.div>
+          </div>
 
           {/* Empty State */}
           {filteredTemplates.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
+            <div className="text-center py-20">
               <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[var(--bg-secondary)] flex items-center justify-center">
                 <Search size={32} className="text-[var(--text-muted)]" />
               </div>
@@ -159,7 +144,7 @@ export default function MetaTemplatesPage() {
               <p className="text-[var(--text-muted)]">
                 Try adjusting your search query
               </p>
-            </motion.div>
+            </div>
           )}
         </div>
       </div>
