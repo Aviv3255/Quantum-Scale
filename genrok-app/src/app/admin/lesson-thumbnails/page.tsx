@@ -1003,17 +1003,46 @@ export default function AdminLessonThumbnailsPage() {
                       {/* Reference Images Row */}
                       {promptData.images.length > 0 && (
                         <div className="mb-3">
-                          <p className="text-xs font-medium text-[var(--text-muted)] mb-2">Reference Images (click to copy URL):</p>
+                          <p className="text-xs font-medium text-[var(--text-muted)] mb-2">Reference Images (click to copy image):</p>
                           <div className="flex gap-2 flex-wrap">
                             {promptData.images.map((imgUrl, idx) => (
                               <button
                                 key={idx}
                                 onClick={async () => {
-                                  await navigator.clipboard.writeText(imgUrl);
-                                  setMessage({ type: 'success', text: 'Image URL copied!' });
+                                  try {
+                                    // Fetch the image and copy as actual image to clipboard
+                                    const response = await fetch(imgUrl);
+                                    const blob = await response.blob();
+
+                                    // Convert to PNG if needed (clipboard prefers PNG)
+                                    const pngBlob = blob.type === 'image/png' ? blob : await new Promise<Blob>((resolve) => {
+                                      const img = document.createElement('img');
+                                      img.crossOrigin = 'anonymous';
+                                      img.onload = () => {
+                                        const canvas = document.createElement('canvas');
+                                        canvas.width = img.naturalWidth;
+                                        canvas.height = img.naturalHeight;
+                                        const ctx = canvas.getContext('2d');
+                                        ctx?.drawImage(img, 0, 0);
+                                        canvas.toBlob((b) => resolve(b || blob), 'image/png');
+                                      };
+                                      img.onerror = () => resolve(blob);
+                                      img.src = imgUrl;
+                                    });
+
+                                    await navigator.clipboard.write([
+                                      new ClipboardItem({ 'image/png': pngBlob })
+                                    ]);
+                                    setMessage({ type: 'success', text: 'Image copied to clipboard!' });
+                                  } catch (err) {
+                                    console.error('Failed to copy image:', err);
+                                    // Fallback to copying URL
+                                    await navigator.clipboard.writeText(imgUrl);
+                                    setMessage({ type: 'success', text: 'Image URL copied (image copy not supported)' });
+                                  }
                                 }}
                                 className="relative w-12 h-12 rounded-lg overflow-hidden border-2 border-transparent hover:border-[var(--primary)] transition-all group"
-                                title="Click to copy image URL"
+                                title="Click to copy image"
                               >
                                 <Image
                                   src={imgUrl}
