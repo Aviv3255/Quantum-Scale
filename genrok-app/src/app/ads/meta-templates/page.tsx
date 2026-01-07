@@ -17,8 +17,8 @@ const TemplateCardAlt = memo(function TemplateCardAlt({ template }: { template: 
   };
 
   return (
-    <div className="flex flex-col">
-      {/* Image container - less rounded, minimal shadow */}
+    <div className="flex flex-col py-2">
+      {/* Image container - less rounded, minimal shadow, with padding */}
       <a
         href={template.canvaLink}
         target="_blank"
@@ -61,34 +61,34 @@ const TemplateCardAlt = memo(function TemplateCardAlt({ template }: { template: 
         )}
       </a>
 
-      {/* Button container below image - white with thin black border on sides and bottom */}
+      {/* Button container below image - white with thin black border on sides and bottom, taller */}
       <div
-        className="flex items-center justify-between gap-2 px-3 py-2 bg-white rounded-b"
+        className="flex items-center justify-between gap-2 px-4 py-3 bg-white rounded-b"
         style={{ borderLeft: '1px solid #000', borderRight: '1px solid #000', borderBottom: '1px solid #000' }}
       >
-        {/* Toggle button - only if has editable version */}
+        {/* Toggle button - only if has editable version, 10% bigger */}
         {template.hoverImage ? (
           <button
             onClick={handleToggle}
-            className="flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-semibold border"
-            style={{ color: '#7435E6', borderColor: '#7435E6' }}
+            className="flex items-center gap-2 px-3 py-2 rounded font-semibold border"
+            style={{ color: '#7435E6', borderColor: '#7435E6', fontSize: '13px' }}
           >
-            <RefreshCw size={12} color="#7435E6" />
+            <RefreshCw size={14} color="#7435E6" />
             {showEditable ? 'See original' : 'See editable'}
           </button>
         ) : (
           <div></div>
         )}
 
-        {/* Edit in Canva button */}
+        {/* Edit in Canva button - 10% bigger */}
         <a
           href={template.canvaLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 px-2 py-1.5 rounded text-xs font-semibold"
-          style={{ backgroundColor: '#7435E6', color: '#FFFFFF' }}
+          className="flex items-center gap-2 px-3 py-2 rounded font-semibold"
+          style={{ backgroundColor: '#7435E6', color: '#FFFFFF', fontSize: '13px' }}
         >
-          <ExternalLink size={12} color="#FFFFFF" />
+          <ExternalLink size={14} color="#FFFFFF" />
           Edit in Canva
         </a>
       </div>
