@@ -429,9 +429,9 @@ export default function AdminLessonThumbnailsPage() {
       // Get all lesson slugs from lessonMeta
       const allSlugs = Object.keys(lessonMeta);
 
-      // Fetch existing thumbnails from Supabase
-      const { data: thumbnailData } = await supabase
-        .from('lesson_thumbnails')
+      // Fetch existing thumbnails from Supabase (using type assertion since table may not be in generated types yet)
+      const { data: thumbnailData } = await (supabase
+        .from('lesson_thumbnails') as ReturnType<typeof supabase.from>)
         .select('*');
 
       const thumbnailMap = new Map(
@@ -517,14 +517,14 @@ export default function AdminLessonThumbnailsPage() {
 
       const thumbnailUrl = urlData.publicUrl;
 
-      // Upsert to database
-      const { error: dbError } = await supabase
-        .from('lesson_thumbnails')
+      // Upsert to database (using type assertion since table may not be in generated types yet)
+      const { error: dbError } = await (supabase
+        .from('lesson_thumbnails') as ReturnType<typeof supabase.from>)
         .upsert({
           slug,
           thumbnail_url: thumbnailUrl,
           updated_at: new Date().toISOString(),
-        }, { onConflict: 'slug' });
+        } as Record<string, unknown>, { onConflict: 'slug' });
 
       if (dbError) throw dbError;
 
