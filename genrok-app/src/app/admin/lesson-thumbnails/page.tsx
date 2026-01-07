@@ -97,192 +97,410 @@ const imageAssets = {
   ikea: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/IKEA_logo.svg.png',
 };
 
-// Prompt data for each lesson - Premium YouTube Thumbnail Style Prompts
-// Style: White grid paper background, bold simple text, real product imagery, professional human cutouts
+// ==============================================
+// ULTRA-PREMIUM $10,000/THUMBNAIL PROMPT SYSTEM
+// ==============================================
+// Style Philosophy: MrBeast meets Apple meets Hormozi
+// - Hyper-realistic 3D renders and photographic elements
+// - Bold, provocative 2-4 word headlines
+// - Dramatic lighting with cinematic depth
+// - Diverse backgrounds but cohesive premium feel
+// - Every thumbnail should stop the scroll
+// ==============================================
+
+// Background Style Categories for Diversity:
+// 1. CLEAN WHITE - Minimal, Apple-style, grid paper texture
+// 2. DEEP BLACK LUXURY - Rich blacks, gold accents, premium feel
+// 3. ELECTRIC BLUE TECH - Neon gradients, digital aesthetic
+// 4. MONEY GREEN/GOLD - Wealth visualization, success imagery
+// 5. URGENT RED - Warning, mistakes, critical lessons
+// 6. SPLIT SCREEN - Comparison, before/after
+// 7. GRADIENT MODERN - Contemporary, innovative concepts
+// 8. CINEMATIC DARK - Movie poster style, dramatic lighting
+
 const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
-  // Psychology & Copywriting Core
+
+  // ============================================
+  // PSYCHOLOGY & COPYWRITING CORE
+  // ============================================
+
   'familiar-surprise-secret': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Large bold black text "it works." on left side. On the right: Apple logo floating above iPhone, both with slight shadow. Clean, minimal, professional. High-end YouTube thumbnail style. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with subtle grid paper texture, like an Apple product shot. COMPOSITION: Left side - giant bold black Impact font text "IT WORKS." with period for emphasis. Right side - floating Apple logo hovering 2 inches above a pristine iPhone 15 Pro, both with soft drop shadows on the white surface. The Apple logo should have a subtle rainbow reflection. LIGHTING: Soft studio lighting from top-left, creating gentle shadows. STYLE: MrBeast meets Apple keynote. Ultra-clean, premium, makes you stop scrolling. The kind of thumbnail a Fortune 500 company would pay $10K for. I uploaded style reference images - match that exact quality level.`,
     images: [imageAssets.apple],
   },
+
   'red-button-effect': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. Solid BLACK background. Giant realistic red glossy "DO NOT PRESS" button in center. Bold white text top: "why you click". Photorealistic button with reflection. Clean, dramatic, minimal. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Pure matte black void, like an OLED screen. HERO ELEMENT: Massive hyper-realistic glossy red button in center - think arcade button or nuclear launch button. It should have: chrome metal rim, glass-like dome top catching light, text embossed "DO NOT PRESS" in white. The button should have dramatic rim lighting (red glow underneath). TYPOGRAPHY: Bold white Impact text at top "WHY YOU CLICK" with slight 3D depth. LIGHTING: Single dramatic spotlight from above creating a pool of light on the button. MOOD: Mysterious, irresistible, psychological. The button should look so real you want to reach through the screen. MrBeast thumbnail energy. I uploaded style references - match that premium quality.`,
     images: [],
   },
+
   'fred-method': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic 3D human brain in center with 4 colored cables/hooks attached (red, blue, green, yellow). Bold black text: "F.R.E.D." Clean, professional, like a medical diagram meets YouTube. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clinical white with faint blue grid lines, like a neuroscience lab. HERO ELEMENT: Hyper-realistic 3D human brain (pink/coral tones, visible folds and texture) floating in center. Four thick cables/wires plugged into the brain - RED cable labeled F, BLUE labeled R, GREEN labeled E, YELLOW labeled D. Cables should look like premium audio cables with metallic connectors. TYPOGRAPHY: Bold black "F.R.E.D." text below brain, each letter matching its cable color. LIGHTING: Bright, even, medical-grade lighting. STYLE: Scientific diagram meets MrBeast. Educational but irresistible to click. Premium 3D rendering quality. I uploaded reference styles - replicate that exact aesthetic.`,
     images: [],
   },
+
   'emotion-decides': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic 3D heart on left, brain on right, heart is 3x bigger. Bold black text: "emotion wins." Clean shadows, professional product-style rendering. In the styles I uploaded you. I uploaded an image of the person - place them on right side looking at the heart.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Soft cream/off-white gradient, warm and inviting. COMPOSITION: LEFT SIDE - Massive hyper-realistic 3D anatomical heart (red, glossy, with visible arteries) - make it 3x larger than the brain. RIGHT SIDE - Smaller realistic brain looking almost defeated in comparison. A golden crown sits on top of the heart. TYPOGRAPHY: Bold black text "EMOTION WINS." positioned at bottom. LIGHTING: Warm golden hour lighting from left side, creating depth. I uploaded an image of Daniel Kahneman - place his professional cutout in bottom right corner, small, looking up at the heart with knowing expression. MOOD: The heart dominates. Visceral. Makes you feel something. $10K production value. Match my uploaded style references exactly.`,
     images: [imageAssets.danielKahneman],
   },
+
   'gatekeeper-method': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic brain with a small door/gate opening on it, golden light coming through. Bold black text: "4 doors." Minimal, clean, professional. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Deep charcoal gray with subtle texture. HERO ELEMENT: Massive hyper-realistic 3D brain with a small ornate golden door built into the frontal lobe. The door is slightly ajar with brilliant golden/white light streaming out, creating volumetric light rays (god rays). The brain should look wet/organic, the door should look ancient and precious. TYPOGRAPHY: Bold white text "4 DOORS." with dramatic shadow. LIGHTING: The golden light from the door is the main light source, illuminating the brain from within. MOOD: Mysterious, exclusive, like you're about to learn a secret. Premium CGI quality like a movie poster. Match the uploaded reference styles exactly.`,
     images: [],
   },
+
   'three-second-rule': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. Solid RED background. Giant white bold text: "3 seconds." Small realistic stopwatch icon below text. High contrast, urgent, clean. Like MrBeast thumbnail style. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Solid urgent RED (#FF0000) - pure, intense, no gradients. HERO ELEMENT: Giant white bold Impact font "3" with a realistic silver stopwatch/timer overlaid on or next to it. The stopwatch should show exactly 3 seconds. TYPOGRAPHY: Large white text "SECONDS." below the 3. Add small text "YOU HAVE" above in smaller font. LIGHTING: Flat but the 3 has subtle 3D depth/shadow. MOOD: URGENT. This thumbnail should create anxiety. MrBeast-style high contrast. The red should feel like an alarm. Time is running out energy. Premium but aggressive. Match uploaded reference quality.`,
     images: [],
   },
+
   'science-of-selling': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Glass laboratory beaker filled with realistic dollar bills overflowing. Bold black text: "the formula." Scientific but premium, clean shadows. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white laboratory setting with faint grid lines. HERO ELEMENT: Tall glass laboratory beaker (Erlenmeyer flask style) overflowing with crisp $100 bills. The money should be spilling over the top and scattered on the white surface. Chemical formula symbols floating nearby (like $+Psychology=💰). TYPOGRAPHY: Bold black "THE FORMULA." in clean Impact font. Add a small "=" symbol before it. LIGHTING: Bright, clinical, scientific lighting. MOOD: The secret formula for money. Scientific credibility meets wealth. Premium product photography style. Educational thumbnail that promises riches. Match my uploaded style references.`,
     images: [],
   },
+
   'persuasion-blueprint': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Rolled up blueprint paper with brain diagram visible. Bold black text: "blueprint." Professional, architectural feel. In the styles I uploaded you. I uploaded an image of Robert Cialdini - place his cutout on right side.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Aged paper texture, like an architect's desk. HERO ELEMENT: Rolled up blueprint paper partially unrolled, revealing a detailed brain diagram with connection lines and labels (like a circuit diagram but organic). The blueprint should have that classic blue/white blueprint look. A fancy brass compass and pencil nearby. TYPOGRAPHY: Bold black "BLUEPRINT." stamped like an official document. LIGHTING: Warm desk lamp lighting from top-left. I uploaded an image of Robert Cialdini - place his cutout on the right side, dressed professionally, pointing at the blueprint with authority. He should look like the architect of persuasion. MOOD: Exclusive access to the master plan. Premium, intellectual, timeless. Match uploaded styles.`,
     images: [imageAssets.robertCialdini],
   },
+
   'persuasion-stack': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Stack of 5 colorful layers like a burger diagram, each layer different color. Bold black text: "the stack." 3D rendered, professional, clean. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Soft gradient from light gray at top to white at bottom. HERO ELEMENT: A vertical stack of 5 distinct colorful layers, like a deconstructed burger but abstract/geometric. Each layer is a different vibrant color (red, blue, green, yellow, purple) with slight gaps between them showing they're separate elements. The stack should look 3D with shadows between layers. TYPOGRAPHY: Bold black "THE STACK." next to or below the stack. LIGHTING: Soft studio lighting creating depth between layers. MOOD: Building blocks of persuasion. Each layer matters. Premium 3D render quality like a tech company diagram. Clean, modern, strategic. Match uploaded reference styles.`,
     images: [],
   },
+
+  'architecture-of-influence': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Deep navy blue gradient, sophisticated and premium. HERO ELEMENT: A beautiful golden architectural blueprint/wireframe of a building that's shaped like or contains a human head profile. Combine architecture with psychology - golden lines forming both a structure and a mind. TYPOGRAPHY: Bold white "ARCHITECT" with gold accent on the A. LIGHTING: Golden accent lighting on the wireframe structure. MOOD: You're designing minds. Powerful, intellectual, premium. Like the poster for a Christopher Nolan film about influence. $10K movie poster quality. Match my uploaded style references exactly.`,
+    images: [],
+  },
+
   'wiifm-principle': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Person pointing at themselves with questioning expression. Bold black text: "what about ME?" Simple, relatable, clean. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with subtle texture. HERO ELEMENT: A realistic person silhouette/figure pointing aggressively at themselves with both hands (like "ME! ME!"). Above them, floating thought bubbles containing money, products, success symbols. TYPOGRAPHY: Giant bold black "WHAT ABOUT ME?" - the ME should be 2x larger and in red. LIGHTING: Bright, direct, confrontational. MOOD: Selfish but relatable. Everyone thinks this. Call out the truth. The kind of bold, provocative thumbnail that gets clicks because it's uncomfortably honest. Match uploaded style quality.`,
     images: [],
   },
+
   'rule-of-one': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. Solid BLACK background. Giant gold metallic "1" in center, very shiny and premium. Bold white text below: "just one." Luxury, minimal, powerful. In the styles I uploaded you. I uploaded an image of Gary Halbert - small cutout in corner.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Pure matte black, luxury void. HERO ELEMENT: Massive metallic GOLD number "1" in center - hyper-realistic 3D render with perfect reflections, like a gold bar or trophy. The 1 should be thick, bold, and have that satisfying weight. Subtle gold particles/dust floating around it. TYPOGRAPHY: Clean white "JUST ONE." below in elegant font. LIGHTING: Dramatic spotlight from above creating a pool of light on the gold 1. Rim lighting on edges. I uploaded Gary Halbert's image - small cutout in bottom corner, looking wise. MOOD: Luxury, simplicity, power. The one rule that matters. Premium like a Rolex ad. Match uploaded references.`,
     images: [imageAssets.garyHalbert],
   },
 
-  // Meta Ads Lessons
+  // ============================================
+  // META ADS LESSONS - Tech/Digital Aesthetic
+  // ============================================
+
   'meta-three-second-hook': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Large Meta logo on left. iPhone showing video ad with "3" overlay on screen. Bold black text: "3 seconds." Clean, tech-focused. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Electric blue gradient with subtle digital grid pattern, techy and modern. LEFT SIDE: Large floating Meta logo (3D, glossy). RIGHT SIDE: Realistic iPhone 15 Pro showing a video ad mid-play, with a giant red "3" overlaid on the screen like a countdown timer. Swipe-up gesture arrow visible. TYPOGRAPHY: Bold white "3 SECONDS." with blue glow effect. LIGHTING: Neon blue rim lighting on devices. MOOD: Fast, digital, urgent. Meta's algorithm is watching. Modern tech aesthetic meets MrBeast urgency. Premium digital marketing vibe. I uploaded the Meta logo - use it prominently. Match style references.`,
     images: [imageAssets.meta],
   },
+
   'meta-70-20-10-rule': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Three stacks of money - big stack (70), medium (20), small (10). Meta logo floating above. Bold black text: "70/20/10" Numbers are the focus. Clean, data-driven look. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with Meta's signature blue as accent color. COMPOSITION: Three stacks of money, dramatically different heights - TALL stack (70% label), MEDIUM stack (20%), TINY stack (10%). Money should be crisp $100 bills, photorealistic. Meta logo floating above like it's blessing the money. TYPOGRAPHY: Bold "70/20/10" in black, each number above its respective stack. LIGHTING: Bright, clean, corporate but exciting. MOOD: The perfect formula. Data-driven wealth. This is how the pros do it. Premium infographic meets MrBeast money shot. Use the Meta logo I uploaded.`,
     images: [imageAssets.meta],
   },
+
   'meta-creative-ecosystem': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Meta logo in center with 20+ small ad thumbnails orbiting around it like planets. Bold black text: "50 ads." Volume visualization, busy but organized. In the styles I uploaded you.',
-    images: [imageAssets.meta, imageAssets.tripleWhale],
-  },
-  'meta-capi-pixel-setup': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Two data streams (blue and purple) merging into one. Meta logo and code brackets visible. Bold black text: "CAPI + Pixel" Technical but clean. In the styles I uploaded you.',
-    images: [imageAssets.meta, imageAssets.tripleWhale],
-  },
-  'meta-automated-rules': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Robot hand pressing buttons on a dashboard. Meta logo visible. Bold black text: "autopilot." Clean automation aesthetic. In the styles I uploaded you.',
-    images: [imageAssets.meta, imageAssets.tripleWhale],
-  },
-  'cbo-vs-abo': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. "CBO" on left in blue, "VS" in center red, "ABO" on right in green. Boxing gloves or versus symbol. Bold, competitive. Meta logo small in corner. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Deep space black with subtle blue nebula clouds. HERO ELEMENT: Meta logo as a glowing sun in the center, with 30-50 small ad creative thumbnails orbiting around it like planets in a solar system. Each mini-thumbnail should show different ad types (video, image, carousel icons). Orbital paths visible as glowing rings. TYPOGRAPHY: Bold white "50 ADS." with cosmic glow. LIGHTING: The Meta logo emits light, illuminating the orbiting ads. MOOD: Scale. Volume. A universe of creative. Epic, cinematic, makes you feel small but inspired. Premium CGI quality. Use uploaded Meta and Triple Whale logos.`,
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
 
-  // Google Ads Lessons
+  'meta-capi-pixel-setup': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Dark charcoal with subtle code/matrix pattern. HERO ELEMENT: Two data streams - one BLUE (Pixel), one PURPLE (CAPI) - flowing from opposite sides and merging into a single powerful golden stream in the center. The streams should look like flowing light/data particles. Meta logo where they merge. Code brackets { } visible. TYPOGRAPHY: Bold white "CAPI + PIXEL" in tech font with subtle glow. LIGHTING: The data streams provide the lighting, creating a high-tech atmosphere. MOOD: Technical power. Dual tracking superiority. Premium developer/tech aesthetic. Use Meta and Triple Whale logos I uploaded.`,
+    images: [imageAssets.meta, imageAssets.tripleWhale],
+  },
+
+  'cbo-vs-abo': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Split screen - LEFT side blue, RIGHT side green. CENTER: Dramatic red dividing line with "VS" in white bold text. LEFT SIDE: "CBO" in bold white with a money bag icon, looking corporate/consolidated. RIGHT SIDE: "ABO" in bold white with multiple small ad icons, looking granular/controlled. Meta logo at the top center. TYPOGRAPHY: The VS should be massive and dramatic, like a boxing match poster. LIGHTING: Each side lit in its respective color. MOOD: Epic showdown. Which one wins? Fight night energy for marketers. MrBeast comparison thumbnail style. Premium and dramatic.`,
+    images: [imageAssets.meta, imageAssets.tripleWhale],
+  },
+
+  'meta-andromeda': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Deep space with the Andromeda galaxy visible - purple and blue cosmic clouds, stars scattered. HERO ELEMENT: Meta logo transformed into a glowing cosmic brain, connected to constellation lines forming an AI neural network across the galaxy. Binary code (0s and 1s) floating like stardust. TYPOGRAPHY: Bold white "ANDROMEDA" in futuristic font with cosmic glow. Smaller text "Meta's AI Brain" below. LIGHTING: Cosmic glow from the galaxy and neural network. MOOD: The future is here. Meta's AI is watching everything. Awe-inspiring and slightly intimidating. Cinematic sci-fi quality. Use uploaded Meta logo.`,
+    images: [imageAssets.meta],
+  },
+
+  'meta-1-1-x-structure': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean dark blue gradient, minimal and strategic. HERO ELEMENT: A simple but powerful diagram - one large box labeled "1 CAMPAIGN" at top, connected by lines to "1 AD SET" below, which connects to multiple (X) smaller boxes representing creatives spreading out like a tree. The structure should look like a flowchart but premium. Meta logo in corner. TYPOGRAPHY: Bold white "1-1-X" in center, clean and mathematical. LIGHTING: Soft glow on the diagram lines. MOOD: Simplicity is power. The winning structure revealed. Clean, strategic, premium. Match uploaded reference quality.`,
+    images: [imageAssets.meta],
+  },
+
+  'creative-volume-2026': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Dynamic gradient from electric blue to purple, energetic and modern. HERO ELEMENT: A massive flood/wave of ad creative thumbnails (40-70 visible) pouring out of a phone screen, overwhelming and impressive. Each thumbnail is tiny but recognizable as different ad content. TYPOGRAPHY: Bold white "40-70 WEEKLY" in impactful font. Add "CREATIVES" smaller below. LIGHTING: The creatives glow slightly, creating energy. MOOD: Volume wins in 2026. Overwhelming but exciting. The new reality of advertising. High energy, MrBeast style meets tech marketing. Premium and bold.`,
+    images: [imageAssets.meta],
+  },
+
+  // ============================================
+  // GOOGLE ADS LESSONS
+  // ============================================
+
   'google-highest-cpa-wins': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Gold trophy with "$50 CPA" on it, smaller losing trophies with "$20 CPA". Bold black text: "highest wins." Counterintuitive, Google colors accent. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with subtle Google colors (red, yellow, blue, green) as accents. HERO ELEMENT: A gold first-place trophy with "$50 CPA" engraved on it, shining brilliantly. Behind it, two smaller bronze/silver trophies labeled "$20 CPA" and "$30 CPA" looking defeated. Dollar signs floating upward from the winner. TYPOGRAPHY: Bold black "HIGHEST WINS." - counterintuitive and attention-grabbing. Google logo small in corner. LIGHTING: Spotlight on the winning trophy. MOOD: Counterintuitive truth bomb. Challenges everything you thought you knew. Premium trophy photography. Match uploaded references.`,
     images: [imageAssets.google],
   },
+
   'google-pmax-blueprint': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Blueprint/diagram showing PMax structure with boxes connected. Google logo. Bold black text: "PMax setup." Technical but accessible. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Blueprint blue paper texture, technical and strategic. HERO ELEMENT: A detailed flowchart/architecture diagram showing PMax campaign structure - boxes connected by lines, labeled with "Asset Groups", "Signals", "Audiences". The diagram should look complex but organized, like a master plan. Google logo integrated into the design. TYPOGRAPHY: Bold white "PMax SETUP" with blueprint aesthetic. LIGHTING: Flat, technical, like an engineering document. MOOD: The secret architecture revealed. Technical mastery. For serious marketers who want to understand the machine. Premium and educational.`,
     images: [imageAssets.google],
   },
+
   'google-product-feed-mastery': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Spreadsheet/data feed transforming into Google Shopping ad. Bold black text: "feed = ad." Data visualization, clean. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white transitioning to Google Shopping's light blue. HERO ELEMENT: LEFT - A spreadsheet/data feed (rows and columns, product data visible). RIGHT - The same data transformed into a beautiful Google Shopping ad carousel. A magical transformation arrow or particles connecting them. Shopify logo small. TYPOGRAPHY: Bold black "FEED = AD" like a mathematical equation. LIGHTING: Bright, clean, e-commerce professional. MOOD: Your product feed IS your ad. Data transformation magic. The unsexy secret to Shopping success. Premium and enlightening. Use Google and Shopify logos I uploaded.`,
     images: [imageAssets.google, imageAssets.shopify],
   },
 
-  // Business & Strategy Lessons
+  'google-shopping-intent': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Google's signature white with colorful shopping bag elements. HERO ELEMENT: A person silhouette holding a phone, with a giant search bar above them showing "buy [product]". Shopping cart icon with dollar signs. A target/bullseye on the shopper indicating "high intent". TYPOGRAPHY: Bold "ACTIVE INTENT" in Google's colors. Smaller text "Why Shopping Wins". LIGHTING: Bright, commercial, retail energy. MOOD: These people WANT to buy. Google Shopping captures demand. Premium retail marketing aesthetic. Use Google logo prominently.`,
+    images: [imageAssets.google],
+  },
+
+  'google-brand-moat': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Medieval fortress aesthetic with modern twist - stone texture meets digital. HERO ELEMENT: A castle/fortress made of brand logos (your brand) surrounded by a moat filled with Google Ads colors (blue, red, yellow, green water). Competitors outside the moat looking envious. TYPOGRAPHY: Bold "BRAND MOAT" in stone-carved style with modern font. LIGHTING: Dramatic castle lighting, slightly medieval. MOOD: Build a fortress competitors can't breach. Brand is the ultimate defense. Premium and metaphorical. Epic like a movie poster.`,
+    images: [imageAssets.google],
+  },
+
+  // ============================================
+  // BUSINESS & STRATEGY LESSONS - Money/Success Theme
+  // ============================================
+
   'biz-infinite-money-engine': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Circular arrow made of dollar bills (infinite loop). Pile of money in center. Bold black text: "infinite money." I uploaded an image of Alex Hormozi - place his cutout on right side pointing at the money loop. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Rich dark green gradient (money green) with subtle gold particles floating. HERO ELEMENT: A massive circular loop made of $100 bills arranged in an infinity symbol (∞) or circular arrow pattern. In the center of the loop, a mountain of cash piling up infinitely. The money should look crisp, photorealistic, satisfying. TYPOGRAPHY: Bold gold "INFINITE MONEY." with metallic shine. LIGHTING: Warm golden lighting making the money glow. I uploaded Alex Hormozi's image - place his cutout on right side, arms crossed confidently, looking at the money machine he built. MOOD: The money never stops. Premium wealth visualization. Match uploaded references.`,
     images: [imageAssets.alexHormozi],
   },
+
   'biz-3x-threshold': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Giant "3X" in bold red. Calculator or chart showing multiplication. Bold black text: "the threshold." Mathematical, breakthrough feeling. I uploaded an image - place person cutout pointing at the 3X. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with dramatic red accent lighting. HERO ELEMENT: Absolutely MASSIVE "3X" text dominating the frame - the 3 in bold red, the X in black. The text should have 3D depth, almost jumping out of the screen. A subtle graph line showing exponential growth behind it. TYPOGRAPHY: Smaller text "THE THRESHOLD" below in clean black. LIGHTING: Dramatic spotlight on the 3X creating intense shadows. I uploaded Alex Hormozi's image - place him small in corner, pointing up at the 3X with conviction. MOOD: This is the number that changes everything. Mathematical breakthrough. Powerful and bold. Premium quality.`,
     images: [imageAssets.alexHormozi],
   },
+
   'biz-operator-mindset': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Pilot cockpit dashboard with metrics/gauges. Bold black text: "operator mode." Gymshark logo visible. I uploaded an image of Ben Francis - place his cutout in pilot seat or pointing at dashboard. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Cockpit/control room aesthetic - dark with glowing screens and instruments. HERO ELEMENT: A pilot's cockpit dashboard, but instead of flight instruments, the gauges show business metrics: "REVENUE", "LTV", "CAC", "ROAS". All dials in the green zone. Control yoke visible. Gymshark logo on a screen. TYPOGRAPHY: Bold white "OPERATOR MODE." with subtle glow, like a cockpit display. LIGHTING: Dashboard glow illuminating the scene, blue and green instrument lights. I uploaded Ben Francis's image - place his cutout as the pilot, hands on controls, looking focused and professional. MOOD: You're in control of the machine. Premium aviation meets business aesthetic.`,
     images: [imageAssets.benFrancis, imageAssets.gymshark],
   },
+
   'biz-cash-conversion': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Money flowing in reverse/negative direction, multiplying. "-30 days" text visible. Bold black text: "negative cash." The Oodie product visible. I uploaded an image of Davie Fogarty - place his cutout on right side smiling. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Dark gradient with money green accents. HERO ELEMENT: A visual representation of negative cash conversion - money flowing IN before flowing OUT. Show a timeline with "-30 DAYS" prominently displayed, with cash multiplying. A customer hands over money that immediately multiplies. The Oodie blanket hoodie product visible in the money flow. TYPOGRAPHY: Bold green "NEGATIVE CASH." which sounds bad but is actually amazing. LIGHTING: Money emits a soft green glow. I uploaded Davie Fogarty's image - place his cutout on right side with a knowing smile, like he's sharing his secret. MOOD: Get paid before you spend. Premium financial concept visualization. Match uploaded styles.`,
     images: [imageAssets.davieFogarty, imageAssets.theOodie],
   },
+
   'biz-closer-framework': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Handshake with dollar signs. "C.L.O.S.E.R." spelled out vertically like a checklist. Bold black text: "6 steps." I uploaded an image of Alex Hormozi - place his cutout pointing at the list. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with subtle grid, professional and systematic. HERO ELEMENT: A vertical checklist showing "C.L.O.S.E.R." with each letter on its own line, each with a checkbox (some checked in green). A handshake silhouette with dollar signs emanating from it. The checklist should look premium, like a framed document. TYPOGRAPHY: Bold black "6 STEPS." at top, with C.L.O.S.E.R. as the main visual. LIGHTING: Bright, professional, success-oriented. I uploaded Alex Hormozi's image - place his cutout pointing at the checklist with authority, teaching pose. MOOD: Follow the system. Close every deal. Premium sales training aesthetic. Match uploaded references.`,
     images: [imageAssets.alexHormozi],
   },
 
-  // Psychology of Sales
+  'biz-hamster-wheel': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Dark, almost ominous gradient - gray to black. HERO ELEMENT: A realistic hamster wheel, but instead of a hamster, there's a silhouette of a business person in a suit running endlessly. The wheel is connected to nothing - just spinning. Dollar bills flying off but never accumulating. Cage bars visible around it. TYPOGRAPHY: Bold red "THE TRAP." with urgency. Add small text "Are you stuck?" LIGHTING: Harsh overhead light casting shadows, prison-like. MOOD: Are you building a business or a prison? Confrontational, makes you think. Dark but premium quality. Escape the wheel.`,
+    images: [],
+  },
+
+  'biz-leverage-equation': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with subtle mathematical symbols floating. HERO ELEMENT: A giant lever/fulcrum diagram - small effort on one side lifting massive results on the other. The small side shows a person pushing down, the large side shows money, success, freedom lifting up. Mathematical equations floating nearby. TYPOGRAPHY: Bold black "LEVERAGE." in clean font. Add the actual equation smaller below. LIGHTING: Bright, educational, empowering. MOOD: Work smarter, not harder. Physics of success. Premium educational diagram. The secret to 10x results with 1x effort. Match uploaded style quality.`,
+    images: [],
+  },
+
+  'starbucks-ltv': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Starbucks green gradient, rich and branded. HERO ELEMENT: A Starbucks coffee cup that's overflowing with $100 bills instead of coffee. The cup should be photorealistic. Giant text "$14,099" floating above the cup like steam. A timeline showing 20 years of purchases. TYPOGRAPHY: Bold white "LTV SECRET." at top. The $14,099 should be HUGE and golden. LIGHTING: Warm coffee shop lighting with golden highlights on the money. MOOD: One customer. $14,099 lifetime value. Mind-blowing revelation. Premium brand case study. Use the Starbucks logo I uploaded prominently.`,
+    images: [imageAssets.starbucks],
+  },
+
+  'million-dollar-roadmap': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Dark navy transitioning to gold at the edges, premium and aspirational. HERO ELEMENT: A literal golden roadmap/path leading to a mountain peak with "$1M/MONTH" flag at the top. Milestones along the path: "$10K", "$50K", "$100K", "$500K". The path should glow gold. TYPOGRAPHY: Bold white "THE ROADMAP" with gold outline. Add "33 customers/day" as smaller text. LIGHTING: The golden path illuminates the scene. MOOD: The exact path to $1M. Clear, achievable, premium. Aspiration meets strategy. Cinematic quality.`,
+    images: [],
+  },
+
+  // ============================================
+  // PSYCHOLOGY OF SALES
+  // ============================================
+
   'borrowed-trust': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Trust badges/verification checkmarks transferring between two figures. Bold black text: "borrow trust." Authority symbols visible. I uploaded an image of Robert Cialdini - small cutout in corner. In the styles I uploaded you.',
-    images: [imageAssets.robertCialdini],
-  },
-  'certainty-transfer': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Glowing energy/confidence transferring from seller to buyer (two silhouettes). Bold black text: "transfer it." Clean, conceptual. In the styles I uploaded you.',
-    images: [],
-  },
-  'authority-over-hope': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Split image: left side shows "hoping" (crossed fingers), right shows "knowing" (confident pointing). Bold black text: "stop hoping." In the styles I uploaded you.',
-    images: [],
-  },
-  'dopamine-blueprint': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic brain with notification badges and reward symbols attached. Red notification bubble with "99+". Bold black text: "addicted." In the styles I uploaded you.',
-    images: [],
-  },
-  'unity-principle': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Two figures merging into one, "WE" text prominent. Bold black text: "we > you." Partnership visual. I uploaded an image of Robert Cialdini - small cutout in corner. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Soft blue gradient, trustworthy and professional. HERO ELEMENT: Two business silhouettes - one has a glowing blue checkmark/badge of trust, with visible "trust energy" (blue particles/light) transferring to the other person. Verification badges, trust symbols floating. The transfer should look magical but professional. TYPOGRAPHY: Bold black "BORROW IT." - intriguing and tactical. LIGHTING: The trust badges glow and create the main lighting. I uploaded Robert Cialdini's image - small cutout in corner with approving nod. MOOD: You can transfer trust instantly. Premium psychology visualization. Match uploaded styles.`,
     images: [imageAssets.robertCialdini],
   },
 
-  // Conversion & CRO Lessons
-  'decoy-effect': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Three pricing cards - small, medium (highlighted/glowing), large. "+43%" badge on medium. Bold black text: "the decoy." Pricing psychology visual. In the styles I uploaded you.',
+  'certainty-transfer': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Gradient from dark (uncertain) on left to bright (certain) on right. HERO ELEMENT: Two silhouettes facing each other - the left one is dim and doubtful, the right one (seller) is glowing with golden confidence. A visible beam of light/energy transfers from seller to buyer. The buyer is beginning to glow. TYPOGRAPHY: Bold white "TRANSFER IT." with glowing effect. LIGHTING: Dramatic contrast - seller radiates light. MOOD: Conviction is contagious. Your certainty becomes their certainty. Powerful psychological concept visualization. Premium and transformative.`,
     images: [],
   },
+
+  'authority-over-hope': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Split screen - LEFT side is blurry/gray, RIGHT side is sharp/vibrant. HERO ELEMENT: LEFT - Crossed fingers, wishing pose, weak body language, "HOPING" text. RIGHT - Confident pointing gesture, strong stance, glowing with authority, "KNOWING" text. A big red X over the hoping side. TYPOGRAPHY: Bold red "STOP HOPING." demanding attention. LIGHTING: Left side dim and uncertain, right side bright and powerful. MOOD: Brutal truth. Hope is not a strategy. Harsh but transformative. Premium split-screen composition. Match uploaded style quality.`,
+    images: [],
+  },
+
+  'dopamine-blueprint': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Dark purple/black with subtle neural network patterns. HERO ELEMENT: A hyper-realistic 3D brain with smartphone notifications, hearts, likes, and reward symbols physically attached/embedded in it. A red notification bubble showing "99+" is prominent. The brain should look slightly hypnotized, overwhelmed with stimuli. Dopamine molecule structure subtle in background. TYPOGRAPHY: Bold white "ADDICTED." with slight red glow. LIGHTING: The notifications and rewards emit colored light. MOOD: This is what addiction looks like. Dark, revealing, slightly uncomfortable. Premium neuroscience visualization. Cinematic quality.`,
+    images: [],
+  },
+
+  'unity-principle': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Warm cream gradient, inviting and connected. HERO ELEMENT: Two separate silhouettes on the left merging into ONE unified figure on the right. The word "WE" is prominent where they merge, glowing with golden light. Connection lines between the figures. TYPOGRAPHY: Bold black "WE > YOU." - the WE in gold, mathematical comparison. LIGHTING: Warm, inclusive light where the figures merge. I uploaded Robert Cialdini's image - small cutout in corner with warm, approving expression. MOOD: Shared identity wins. The power of we. Premium psychological concept. Match uploaded reference styles.`,
+    images: [imageAssets.robertCialdini],
+  },
+
+  'pre-suasion-hack': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Chess board pattern fading into darkness - strategic and intellectual. HERO ELEMENT: A chess hand making a move BEFORE the game starts - setting up the board strategically. Or a puppet master's hands visible above chess pieces. The word "BEFORE" is crossed out, replaced with "ALREADY WON". TYPOGRAPHY: Bold white "WIN BEFORE." with checkmate symbolism. LIGHTING: Dramatic spotlight on the strategic move. MOOD: The sale is won before you speak. Master strategist energy. Cialdini-level psychology. Premium and intellectual.`,
+    images: [imageAssets.robertCialdini],
+  },
+
+  'herd-instinct': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Wide open space, crowd dynamic visual. HERO ELEMENT: A massive crowd of silhouettes all walking in one direction, with one highlighted figure in the middle being pulled along by the group energy. Arrows showing direction of movement. "SOLD OUT" signs visible. Social proof indicators (star ratings, review counts) floating above. TYPOGRAPHY: Bold "THE HERD." with crowd texture. LIGHTING: Mass movement lighting, stadium-like. MOOD: Everyone's buying. You should too. Powerful social proof visualization. Premium crowd dynamics.`,
+    images: [],
+  },
+
+  // ============================================
+  // CONVERSION & CRO LESSONS
+  // ============================================
+
+  'decoy-effect': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with subtle price tag textures. HERO ELEMENT: Three pricing cards in a row - SMALL (cheap), MEDIUM (highlighted with golden glow, green checkmark, "+43%" badge), LARGE (expensive). The medium option should have visual emphasis like a spotlight or "BEST VALUE" banner. The decoy (small) should look intentionally worse. TYPOGRAPHY: Bold black "THE DECOY." revealing the trick. LIGHTING: Spotlight effect on the middle option. MOOD: Pricing psychology exposed. The trick every SaaS uses. Premium pricing visualization. Educational but revealing. Match uploaded styles.`,
+    images: [],
+  },
+
   'paradox-of-choice': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Left side: overwhelming 24 jam jars. Right side: clean 6 jam jars. Bold black text: "less = more." I uploaded an image of Sheena Iyengar - place her cutout between the two sides looking confused at 24, happy at 6. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Split screen - LEFT chaotic, RIGHT calm. HERO ELEMENT: LEFT SIDE - Overwhelming wall of 24 jam jars, cluttered, stressful, with a confused customer frozen. RIGHT SIDE - Clean display of just 6 jam jars, happy customer pointing decisively. Big red X over the 24, green checkmark over the 6. TYPOGRAPHY: Bold black "LESS = MORE." counterintuitive revelation. LIGHTING: Left side harsh/overwhelming, right side soft/inviting. I uploaded Sheena Iyengar's image - place her cutout in center pointing at the 6 jars approvingly. MOOD: Choice paralysis is real. Fewer options win. Premium split-screen psychology. Match uploaded references.`,
     images: [imageAssets.sheenaIyengar],
   },
-  'ice-prioritization': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Ice cube with "I.C.E." letters visible inside, like frozen text. Prioritization checklist beside it. Bold black text: "prioritize." In the styles I uploaded you.',
-    images: [],
-  },
+
   'five-second-test': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Website screenshot that is half blurred/half clear. Stopwatch showing "5". Bold black text: "5 seconds." Clarity vs confusion visual. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean gradient, testing/clinical feel. HERO ELEMENT: A website screenshot that's half blurred/half crystal clear - LEFT side is a confusing mess (blurred), RIGHT side is clear and converts. A large stopwatch in the center showing "5" seconds. Red X over blurred side, green checkmark over clear side. TYPOGRAPHY: Bold black "5 SECONDS." with timer styling. LIGHTING: Bright, clinical, testing environment. MOOD: If they don't get it in 5 seconds, they leave. Clarity test. Premium UX psychology visualization. Match uploaded style quality.`,
     images: [],
   },
+
   'framing-effect-mastery': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Same product in two different frames/contexts looking completely different (cheap vs premium presentation). Bold black text: "same thing." I uploaded an image - place person cutout looking surprised. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Split composition - left side dingy/cheap, right side premium/luxury. HERO ELEMENT: The EXACT SAME PRODUCT shown twice - LEFT in a cheap context (bad lighting, no staging, discount stickers). RIGHT in a luxury context (beautiful lighting, premium display, high-end backdrop). It's clearly the same item but feels completely different. TYPOGRAPHY: Bold black "SAME THING." - mind-bending revelation. LIGHTING: Demonstrates the power of framing through lighting. I uploaded Daniel Kahneman's image - small cutout looking knowingly at the comparison. MOOD: Context changes everything. Powerful framing psychology. Premium demonstration.`,
     images: [imageAssets.danielKahneman],
   },
+
   'speed-equals-trust': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Loading bar at 99% with dollar signs. Amazon logo visible. "$1.7B" in bold red. Bold black text: "0.1 second." Speed = money visual. In the styles I uploaded you.',
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Amazon orange/dark gradient with digital speed lines. HERO ELEMENT: A loading progress bar at 99%, stuck. Dollar signs actively falling/draining away as it loads. Giant red text "$1.7 BILLION" showing the cost of slowness. Amazon logo prominent. Clock/timer showing milliseconds. TYPOGRAPHY: Bold white "0.1 SECOND." - the small number that costs billions. LIGHTING: Urgent, digital, time-pressure lighting. MOOD: Speed IS money. Amazon's billion-dollar lesson. Terrifying cost of slowness. Premium data visualization. Use Amazon logo I uploaded.`,
     images: [imageAssets.amazon],
   },
 
-  // Luxury & Brand Lessons
-  'value-ladder': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. Solid BLACK background. Velvet rope with "VIP" sign. Hidden menu card peeking out. Rolex logo small. Bold white text: "hidden menu." Luxury exclusivity. In the styles I uploaded you.',
-    images: [imageAssets.rolex, imageAssets.reconvert],
-  },
-  'ascension-ladder': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Golden ladder going upward with product icons on each rung (cheap to expensive). Bold black text: "climb up." Progression visual. In the styles I uploaded you.',
-    images: [imageAssets.reconvert],
-  },
-  'post-purchase-goldmine': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Thank you page with gold nuggets/coins spilling out. "$40 → $120" transformation. Bold black text: "hidden gold." Revenue discovery. In the styles I uploaded you.',
-    images: [imageAssets.reconvert],
-  },
-  'le-creuset-scarcity-engine': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Colorful Le Creuset Dutch ovens in a row, one with "SOLD OUT" red banner. Collector lineup implied. Bold black text: "sold out." I uploaded Le Creuset logo. In the styles I uploaded you.',
-    images: [imageAssets.leCreuset],
-  },
-  'wishlist-effect': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Heart/wishlist icon glowing around a product. "+8% CVR" in green badge. Bold black text: "wishlist trick." Emotional attachment visual. In the styles I uploaded you.',
-    images: [imageAssets.vitals],
-  },
-  'blind-spot-effect': {
-    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic eye with visible blind spot area highlighted. Hidden opportunity symbols in peripheral. Bold black text: "blind spot." In the styles I uploaded you.',
-    images: [imageAssets.grapevine],
+  'leaky-bucket-audit': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Dark blue gradient with water/liquid effects. HERO ELEMENT: A bucket filled with money/gold coins, but there are visible holes in the bucket with dollars actively leaking/pouring out. A flashlight illuminating the holes. "$50,000" in red showing what's lost. Repair tools nearby suggesting you can fix it. TYPOGRAPHY: Bold red "$50K HOLE." urgent and costly. LIGHTING: Dramatic flashlight beam exposing the leaks. MOOD: You're bleeding money and don't know it. Audit your funnel. Premium metaphor visualization. Urgent and actionable.`,
+    images: [],
   },
 
-  // Default for lessons without specific prompts
+  'von-restorff-effect': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with a row of identical gray circles. HERO ELEMENT: 10 identical gray circles in a row, but ONE circle is bright red/orange and glowing - standing out dramatically. The red circle should be impossible to ignore. Eye/attention lines pointing to the different one. TYPOGRAPHY: Bold black "STAND OUT." with the O in red/highlighted. LIGHTING: The odd one out literally glows and catches all light. MOOD: The different one gets remembered. Isolation effect. Premium psychology principle visualization. Simple but powerful.`,
+    images: [],
+  },
+
+  // ============================================
+  // LUXURY & BRAND LESSONS - Premium Black/Gold
+  // ============================================
+
+  'value-ladder': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Pure luxurious black with subtle velvet texture. HERO ELEMENT: A red velvet rope with brass stands (VIP line), slightly parted to reveal a glimpse of a glowing "SECRET MENU" card. Rolex logo subtly visible. Golden light emanating from behind the rope. High-end club exclusivity vibe. TYPOGRAPHY: Elegant white/gold "HIDDEN MENU." in premium serif font. LIGHTING: Golden glow from the exclusive area, dramatic shadows on the velvet rope. MOOD: There's a level above what you see. Luxury exclusivity. Premium VIP aesthetic. Use Rolex logo I uploaded subtly.`,
+    images: [imageAssets.rolex, imageAssets.reconvert],
+  },
+
+  'box-worth-300': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Tiffany Blue (that iconic color) with subtle sparkle. HERO ELEMENT: An empty Tiffany blue box in the center, perfectly lit like a product shot. But the price tag shows "$300" for just the box. A diamond ring outside the box worth less than the packaging. The box is the star. TYPOGRAPHY: Elegant white "$300 BOX." in premium font. LIGHTING: Jewelry store lighting, the box glows with perceived value. MOOD: The packaging IS the product. Tiffany's genius. Premium luxury psychology. Use Tiffany logo I uploaded. Match style references.`,
+    images: [imageAssets.tiffany],
+  },
+
+  'hermes-doctrine': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Rich orange (Hermès orange) gradient to black, ultra-luxury. HERO ELEMENT: An iconic Hermès Birkin bag on a pedestal, under glass like a museum piece. A velvet rope around it. Waitlist counter showing "2 YEARS". Security guard silhouette. The bag glows with exclusivity. TYPOGRAPHY: Elegant white "PROTECT THE BIRKIN." in luxury serif font. LIGHTING: Museum spotlight on the bag, reverent and exclusive. MOOD: Scarcity is the strategy. Hermès never discounts. Forever premium. Use Hermès logo I uploaded. Ultra-luxury aesthetic.`,
+    images: [imageAssets.hermes],
+  },
+
+  'dior-pricing-secret': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Soft pink/gray luxury gradient, Dior aesthetic. HERO ELEMENT: Two identical luxury bags side by side - one has a "$57" price tag (cost), the other has "$3,500" (retail). A 60x multiplier visual connecting them. Dior logo prominent. Calculator showing the math. TYPOGRAPHY: Elegant "$57 → $3,500" in luxury font, showing the transformation. LIGHTING: High-end product photography lighting. MOOD: The 60x markup that customers pay happily. Luxury pricing exposed. Premium fashion industry insight. Use Dior logo I uploaded.`,
+    images: [imageAssets.dior],
+  },
+
+  'gucci-short-termism': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Split - LEFT side vibrant and trendy, RIGHT side faded and dead. HERO ELEMENT: Gucci logo on LEFT looking flashy but cracking/fading. Compared to timeless brands (Hermès, Rolex) on RIGHT still strong. A declining graph overlay. "2024: DYING" headline style. TYPOGRAPHY: Bold red "WHY GUCCI IS DYING." confrontational and newsworthy. LIGHTING: Left side garish, right side classic and stable. MOOD: Short-term thinking kills brands. Trend chasing is death. Premium cautionary tale. Use Gucci and Hermès logos I uploaded.`,
+    images: [imageAssets.gucci, imageAssets.hermes],
+  },
+
+  'scarcity-calendar': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Warm kitchen colors with Le Creuset aesthetic. HERO ELEMENT: A row of colorful Le Creuset Dutch ovens, but one is covered with "SOLD OUT" red banner and a calendar showing "1 COLOR/YEAR". Collector's shelf behind showing the full collection. Scarcity creates desire. TYPOGRAPHY: Bold black "ONE PER YEAR." with urgency. LIGHTING: Warm, cozy, collectible lighting. MOOD: Artificial scarcity creates collectors. Le Creuset's genius. Premium collector psychology. Use Le Creuset logo I uploaded.`,
+    images: [imageAssets.leCreuset],
+  },
+
+  'anchor-moments': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Ralph Lauren navy blue, preppy and premium. HERO ELEMENT: A $20,000 alligator bag on an extreme high pedestal, far above. Below it, a $200 polo shirt that now looks incredibly affordable in comparison. Price anchoring visual. The expensive item makes the cheap item feel reasonable. TYPOGRAPHY: Elegant "$20K makes $200 CHEAP." in Ralph Lauren style font. LIGHTING: Luxury retail lighting, aspirational. MOOD: Price anchoring psychology. Ralph Lauren's strategy. Premium comparison visualization. Use Ralph Lauren logo I uploaded.`,
+    images: [imageAssets.ralphLauren],
+  },
+
+  // ============================================
+  // PRIMAL/BEHAVIORAL PSYCHOLOGY
+  // ============================================
+
+  'primal-stimuli': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Prehistoric cave wall texture meeting modern brain scan imagery. HERO ELEMENT: A realistic reptilian brain (lizard brain) with 6 glowing buttons on it - each button a different color and symbol representing primal triggers (fear, self, contrast, tangible, beginning/end, visual). The brain looks ancient but the buttons are modern. TYPOGRAPHY: Bold "6 BUY BUTTONS." in primal, impactful font. LIGHTING: Ancient fire light meets modern neon glow. MOOD: Prehistoric triggers still control us. The only 6 buttons that work. Premium neuroscience meets anthropology.`,
+    images: [],
+  },
+
+  'fly-in-the-urinal': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white bathroom tile aesthetic, clinical and behavioral. HERO ELEMENT: A realistic urinal with a small fly icon etched near the drain - the famous Amsterdam airport nudge. An arrow showing "80% BETTER AIM". Behavioral economics visualization. TYPOGRAPHY: Bold black "THE FLY." intriguing and unusual. LIGHTING: Bright, clinical, public restroom lighting. MOOD: The smallest nudge changes behavior. Nudge psychology. Premium behavioral economics case study. Unexpected but fascinating.`,
+    images: [],
+  },
+
+  'forty-million-mistake': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Corporate gray transitioning to red (warning). HERO ELEMENT: A massive pile of data/charts/graphs stacked high, BUT on fire or crumbling. Dollar signs burning: "$40 MILLION" in flames. A heart symbol emerging from the ashes - emotion surviving data. Coca-Cola logo subtly visible (New Coke disaster). TYPOGRAPHY: Bold red "$40 MILLION MISTAKE." catastrophic energy. LIGHTING: Fire and destruction lighting, dramatic. MOOD: Data without emotion = disaster. New Coke's lesson. Premium cautionary tale. Use Coca-Cola logo subtly.`,
+    images: [imageAssets.cocaCola],
+  },
+
+  'precise-price-trick': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with subtle price tag elements. HERO ELEMENT: Two large price displays side by side - LEFT: "$5,000" looking rounded and negotiable. RIGHT: "$4,988" looking precise and calculated, with a green glow indicating it wins. Checkmark on precise, X on rounded. TYPOGRAPHY: Bold black "$4,988 BEATS $5,000." counterintuitive truth. LIGHTING: Bright, retail pricing environment. MOOD: Precise numbers feel researched. Pricing psychology trick. Premium retail insight. Numbers matter.`,
+    images: [],
+  },
+
+  // ============================================
+  // CRO & TESTING
+  // ============================================
+
+  'product-page-anatomy': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with subtle e-commerce grid. HERO ELEMENT: An exploded/deconstructed product page showing 5 distinct sections floating apart but connected - like an anatomical diagram. Each section labeled: 1. Hero, 2. Benefits, 3. Social Proof, 4. FAQ, 5. CTA. "8%+ CVR" badge glowing green. TYPOGRAPHY: Bold black "5 ELEMENTS." in clean technical font. LIGHTING: Bright, clinical, educational. MOOD: The exact anatomy of pages that convert. Blueprint for success. Premium UX visualization.`,
+    images: [],
+  },
+
+  'jakobs-law': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Split - LEFT chaotic custom UI, RIGHT familiar/standard UI. HERO ELEMENT: LEFT - A bizarre, unique checkout flow that's confusing (X over it). RIGHT - A standard, familiar checkout (Amazon/Shopify style) that converts (checkmark). Users looking confused on left, happy on right. TYPOGRAPHY: Bold black "FAMILIAR WINS." revealing the truth. LIGHTING: Left harsh and confusing, right soft and welcoming. MOOD: Don't be unique in checkout. Jakob's Law. Premium UX principle visualization. Match uploaded styles.`,
+    images: [],
+  },
+
+  'ikea-effect': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean IKEA-style room aesthetic, Scandinavian minimal. HERO ELEMENT: A simple piece of furniture with "+63% VALUE" badge on it, next to an identical pre-assembled one without the badge. Assembly tools (allen key) visible. The DIY one glows with perceived value. TYPOGRAPHY: Bold "DIY = +63%." in clean IKEA-style font. LIGHTING: Bright, showroom lighting. MOOD: We value what we build. IKEA's psychology. Premium participation effect visualization. Use IKEA logo I uploaded.`,
+    images: [imageAssets.ikea],
+  },
+
+  // ============================================
+  // ADDITIONAL PREMIUM LESSONS
+  // ============================================
+
+  'pet-rock-story': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Gradient from dull gray (rock) to brilliant gold (money). HERO ELEMENT: A plain gray rock sitting on a velvet cushion, wearing a tiny crown, with $100 bills raining down around it. Price tag showing "$4" on the rock. "$30 MILLION" in giant gold text floating above. Box labeled "PET ROCK" visible. TYPOGRAPHY: Bold "$30M FROM ROCKS." unbelievable but true. LIGHTING: Spotlight on the rock like it's precious. MOOD: Sell the meaning, not the product. Ultimate marketing story. Premium absurdist business case study.`,
+    images: [],
+  },
+
+  'gary-halbert-secret': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Aged paper, vintage advertising aesthetic from the 70s/80s. HERO ELEMENT: A starving crowd of people reaching toward something (demand visualization), with money in their outstretched hands. Old-school direct mail letters floating. Typewriter visible. TYPOGRAPHY: Bold vintage "STARVING CROWD." in retro advertising font. LIGHTING: Warm, nostalgic, direct response era. I uploaded Gary Halbert's image - place his cutout as the wise teacher figure, holding a sales letter. MOOD: Find the hungry market first. Halbert's #1 lesson. Premium vintage direct response aesthetic.`,
+    images: [imageAssets.garyHalbert],
+  },
+
+  'formula-to-sell': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Clean white with mathematical equation aesthetics. HERO ELEMENT: A beautiful equation visualization: DREAM + LIKELIHOOD + TIME + EFFORT = SALE. Each element as a visual icon - dream cloud, probability percentage, clock, muscle/effort, equals sign, money. The formula should look elegant and scientific. TYPOGRAPHY: Bold black "THE FORMULA." clean and mathematical. LIGHTING: Bright, educational, breakthrough moment. MOOD: Selling reduced to 4 variables. Alex Hormozi's equation. Premium mathematical visualization. Match uploaded styles.`,
+    images: [imageAssets.alexHormozi],
+  },
+
+  'no-one-cares': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Stark, confrontational red gradient. HERO ELEMENT: A megaphone pointed at a crowd of people who are all looking at their phones, ignoring it completely. The speaker looks frustrated. "YOUR BRAND" written on the megaphone. People only care about themselves visualization. TYPOGRAPHY: Brutal bold white "NO ONE CARES." harsh truth. LIGHTING: Harsh, exposing, uncomfortable. MOOD: Brutal wake-up call. Everyone is focused on themselves. The uncomfortable truth about marketing. Premium confrontational design.`,
+    images: [],
+  },
+
+  'imperceptible-nudge': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Amazon/e-commerce aesthetic, shopping environment. HERO ELEMENT: An "Add to Cart" button that's slightly larger, a specific shade of orange that's been tested. A/B test visualization with the winning button glowing. "$200 MILLION" floating above showing revenue impact from color change. TYPOGRAPHY: Bold "THE $200M COLOR." shocking revelation. LIGHTING: E-commerce product lighting, commercial. MOOD: Invisible changes. Massive results. Amazon's A/B testing culture. Premium micro-optimization visualization.`,
+    images: [imageAssets.amazon],
+  },
+
+  'hero-mechanism': {
+    prompt: `Create a $10,000-budget YouTube thumbnail, 5:4 wide aspect ratio. BACKGROUND: Split - cheap products on left, premium Oura Ring on right. HERO ELEMENT: LEFT - Pile of cheap fitness trackers with "$12" price tag. RIGHT - Oura Ring on a velvet pedestal, glowing, with "$399" price tag and "32X PREMIUM" badge. The mechanism (what makes it special) visualized as golden tech inside the Oura ring. TYPOGRAPHY: Bold "THE $4,225 QUESTION." intriguing and premium. LIGHTING: Left cheap lighting, right luxury spotlight. MOOD: Why we pay 32X for essentially the same function. Premium positioning. Use Oura logo I uploaded.`,
+    images: [imageAssets.oura],
+  },
+
+  // Default empty for auto-generated prompts
 };
 
 // Lesson metadata - EXACT SAME ORDER as learn page
