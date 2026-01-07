@@ -2359,14 +2359,38 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'biz-look-back-window': { title: 'The Look-Back Window', description: 'Why your 30-day data is lying to you' },
 };
 // Generate prompts for lessons that don't have custom prompts in lessonPromptData
-// Uses the premium YouTube thumbnail style: white grid paper, bold simple text, clean visuals
+// Uses the premium YouTube thumbnail style with 10 golden rules
 Object.keys(lessonMeta).forEach(slug => {
   if (!lessonPromptData[slug]) {
     const lesson = lessonMeta[slug];
     // Extract a short 2-3 word hook from the title
-    const shortTitle = lesson.title.replace(/^The\s+/i, '').toLowerCase();
+    const shortTitle = lesson.title.replace(/^The\s+/i, '').toUpperCase();
+    const hookWords = shortTitle.split(' ').slice(0, 3).join(' ');
     lessonPromptData[slug] = {
-      prompt: `Create a 5:4 wide YouTube thumbnail. White grid paper background. Visual concept for: "${lesson.description}". Bold black text: "${shortTitle.split(' ').slice(0, 3).join(' ')}." Create a simple, clean visual metaphor - use real objects, not abstract illustrations. Professional shadows, minimal elements. High-end YouTube thumbnail style like MrBeast or Alex Hormozi. In the styles I uploaded you.`,
+      prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "${lesson.title}" - ${lesson.description}
+Bold text "${hookWords}" as the main headline.
+Create a powerful visual metaphor for: ${lesson.description}
+Clean white/light background with subtle grid texture.
+Use real 3D objects, not flat illustrations.
+Premium CGI quality with professional shadows and lighting.
+MrBeast meets Apple aesthetic - ultra-clean, minimal, premium.
+
+Make it $10,000 quality. Stop-the-scroll. Impossible to ignore.`,
       images: [],
     };
   }
