@@ -101,90 +101,142 @@ const imageAssets = {
 };
 
 // ==============================================
-// ULTRA-PREMIUM THUMBNAIL PROMPT SYSTEM
+// VISUAL TEMPLATE SYSTEM FOR THUMBNAIL PROMPTS
 // ==============================================
-// Quality Level: $10,000/thumbnail - MrBeast, Hormozi, Apple
-// Format: 16:10 wide aspect ratio (1600x1000px)
+// Based on analysis of 24 reference thumbnails
+// 6 proven visual formulas that work
 // ==============================================
 
-// THE 9 GOLDEN RULES FOR PREMIUM YOUTUBE THUMBNAILS
-// (Based on MrBeast, Hormozi, Iman Gadzhi reference analysis)
-// These can be edited in the CRM UI and are stored in localStorage
-const DEFAULT_THUMBNAIL_RULES = [
-  'BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.',
-  'CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.',
-  '3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.',
-  'SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.',
-  'MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.',
-  'SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.',
-  'PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.',
-  'BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.',
-  'MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.',
-];
+type TemplateType = 'product-hero' | 'diagram' | 'brain-cables' | 'person-metric' | 'logo-mashup' | 'before-after';
 
-// Function to format rules into prompt text
-const formatRulesForPrompt = (rules: string[]) => {
-  return `=== ${rules.length} GOLDEN RULES TO FOLLOW ===
-${rules.map((rule, i) => `${i + 1}. ${rule}`).join('\n')}`;
+interface VisualTemplate {
+  id: TemplateType;
+  name: string;
+  description: string;
+  promptStructure: string;
+}
+
+const VISUAL_TEMPLATES: Record<TemplateType, VisualTemplate> = {
+  'product-hero': {
+    id: 'product-hero',
+    name: 'Product Hero',
+    description: 'Big money headline + product photo + brand badge',
+    promptStructure: `YouTube thumbnail, 16:10 ratio (1600x1000px).
+
+STYLE: Product Hero - like "$300 MILLION shopify store" thumbnails
+BACKGROUND: Clean white OR solid black, with subtle grid paper texture
+LAYOUT: Big headline text at top (40%), product/visual below (60%)
+TEXT STYLE: ALL CAPS, bold sans-serif, high contrast (black on white or white on black)
+VISUAL: Real product photo or mockup, floating with soft shadow, slightly angled`,
+  },
+  'diagram': {
+    id: 'diagram',
+    name: 'Diagram',
+    description: 'Simple chart/graph + arrows + brand logos',
+    promptStructure: `YouTube thumbnail, 16:10 ratio (1600x1000px).
+
+STYLE: Diagram - like "peak-end rule" or "You're Here" growth curve thumbnails
+BACKGROUND: White or light gray with subtle grid paper texture
+LAYOUT: Text on left (40%), diagram/chart on right (60%)
+TEXT STYLE: Lowercase or mixed case, clean sans-serif font (like Inter)
+VISUAL: Simple 2D diagram - growth curve, flowchart, or comparison chart. Use arrows to point at key elements. Brand logos floating near relevant points.`,
+  },
+  'brain-cables': {
+    id: 'brain-cables',
+    name: 'Brain Cables',
+    description: 'Exposed brain + cables connecting to logos',
+    promptStructure: `YouTube thumbnail, 16:10 ratio (1600x1000px).
+
+STYLE: Brain Cables - like "Offers" thumbnail with brain connected to brand logos
+BACKGROUND: White with grid paper texture OR dark gradient
+LAYOUT: Large brain visual (60%), text above or below (40%)
+TEXT STYLE: Bold, simple, one powerful word or short phrase
+VISUAL: Top of human head with brain exposed, multiple colored cables/wires plugging into brain from different brand logos or icons floating around. Premium 3D render style.`,
+  },
+  'person-metric': {
+    id: 'person-metric',
+    name: 'Person + Metric',
+    description: 'Person cutout + glow outline + floating UI/metric',
+    promptStructure: `YouTube thumbnail, 16:10 ratio (1600x1000px).
+
+STYLE: Person + Metric - like Reddit CPC guy or ROAS thumbnails
+BACKGROUND: Clean white OR solid dark
+LAYOUT: Person cutout on one side (50%), text and metrics on other side (50%)
+TEXT STYLE: Mix of lowercase text and highlighted numbers/metrics
+VISUAL: Clean person photo cutout with subtle colored glow/outline around edges. Floating UI elements nearby - notification badges, metric displays, app logos.`,
+  },
+  'logo-mashup': {
+    id: 'logo-mashup',
+    name: 'Logo Mashup',
+    description: '3+ brand logos + simple lowercase text',
+    promptStructure: `YouTube thumbnail, 16:10 ratio (1600x1000px).
+
+STYLE: Logo Mashup - like "copy them." with Revolut, Ghost, Duolingo logos
+BACKGROUND: White or very light gray, clean and minimal
+LAYOUT: Simple text at top (30%), row of 3-4 brand logos below (70%)
+TEXT STYLE: Lowercase, casual, short phrase ending with period. Black sans-serif.
+VISUAL: 3-4 recognizable brand logos or app icons arranged in a row, clean and large. May include 3D mascots (like Duolingo owl).`,
+  },
+  'before-after': {
+    id: 'before-after',
+    name: 'Before/After',
+    description: 'Split composition comparing two states',
+    promptStructure: `YouTube thumbnail, 16:10 ratio (1600x1000px).
+
+STYLE: Before/After Split - like brain scan comparison thumbnails
+BACKGROUND: Dark/black works best for dramatic contrast
+LAYOUT: Perfect 50/50 split - "Before" on left, "After" on right
+TEXT STYLE: Simple "Before" and "After" labels, white text on dark background
+VISUAL: Same subject shown in two states - left side dull/gray/negative, right side vibrant/colorful/positive. Arrows pointing to each side.`,
+  },
 };
 
-// Function to build full prompt from rules + specific concept
-const buildFullPrompt = (specificConcept: string, rules: string[]) => {
-  return `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+// Function to build full prompt from template + specific concept
+const buildFullPrompt = (specificConcept: string, templateId: TemplateType) => {
+  const template = VISUAL_TEMPLATES[templateId];
+  return `${template.promptStructure}
 
-${formatRulesForPrompt(rules)}
-
-=== SPECIFIC THUMBNAIL ===
+=== SPECIFIC CONCEPT ===
 ${specificConcept}
 
-Make it $10,000 quality. Stop-the-scroll. Impossible to ignore.`;
+IMPORTANT: Keep it SIMPLE. Maximum 3 main elements. Lots of whitespace. One clear focal point.`;
 };
 
-// Store only the concept part - rules are added dynamically
-const lessonConceptData: Record<string, { concept: string; images: string[] }> = {
+// Store concept + recommended template for each lesson
+const lessonConceptData: Record<string, { concept: string; images: string[]; template: TemplateType }> = {
 
   // ============================================
   // PSYCHOLOGY & COPYWRITING CORE
   // ============================================
 
   'familiar-surprise-secret': {
-    concept: `Concept: "IT WORKS." - The MAYA principle (Most Advanced Yet Acceptable).
-Show how Apple makes familiar things feel magical. Use the Apple logo and iPhone I'm uploading.
-Clean white/light gray background with subtle grid texture.
-Bold black Impact font "IT WORKS." on left side.
-Floating iPhone and Apple logo on right with soft shadows.
-Apple keynote aesthetic - ultra-clean, minimal, premium.
-Professional studio lighting.
-MrBeast meets Apple.`,
+    template: 'logo-mashup',
+    concept: `TEXT: "it works." in lowercase black sans-serif
+VISUAL: Apple logo + floating iPhone with soft shadow
+EXTRA: Ultra minimal Apple keynote aesthetic, lots of whitespace`,
     images: [imageAssets.apple],
   },
 
   'red-button-effect': {
-    concept: `Concept: "WHY YOU CLICK" - Psychological reactance, the forbidden button effect.
-Pure black OLED background.
-MASSIVE hyper-realistic glossy RED button center frame.
-Chrome metal rim, glass dome catching dramatic spotlight from above.
-Text "DO NOT PRESS" embossed on button or floating nearby.
-Bold white text "WHY YOU CLICK" at top.
-Single dramatic spotlight creating god rays.
-Mysterious, irresistible, impossible to ignore.`,
+    template: 'product-hero',
+    concept: `TEXT: "don't press." in lowercase white sans-serif at top
+VISUAL: Big glossy red 3D button (arcade style) center frame, slight angle, soft shadow
+BACKGROUND: Solid black
+EXTRA: Button should look tempting and forbidden. Ultra simple composition.`,
     images: [],
   },
 
   'fred-method': {
-    concept: `Concept: "F.R.E.D." - 4 psychological hooks into the brain.
-Clean white/light background with subtle medical grid.
-Hyper-realistic 3D brain floating center frame.
-4 colored cables plugged into the brain: Red (F), Blue (R), Green (E), Yellow (D).
-Each cable glowing at connection point.
-Bold text "F.R.E.D." below - each letter matching its cable color.
-Scientific diagram meets YouTube energy.
-Bright, clinical lighting.
-Premium 3D render quality.`,
+    template: 'brain-cables',
+    concept: `TEXT: "F.R.E.D." each letter a different color (Red, Blue, Green, Yellow)
+VISUAL: Top of head with brain exposed, 4 colored cables plugging in from above
+BACKGROUND: White with subtle grid paper texture
+EXTRA: Like the "Offers" thumbnail reference. Clean, scientific diagram style.`,
     images: [],
   },
 
   'emotion-decides': {
+    template: 'diagram',
     concept: `Concept: "EMOTION WINS" - The heart beats the brain in purchasing decisions.
 Soft cream/warm gradient background.
 MASSIVE realistic 3D anatomical heart (red, glossy, detailed) on left - 3x larger than brain.
@@ -197,42 +249,34 @@ Visceral, emotional, premium CGI quality.`,
   },
 
   'gatekeeper-method': {
-    concept: `Concept: "4 DOORS" - Bypassing the brain's attention filter.
-Deep charcoal/dark gray background.
-Massive hyper-realistic 3D brain with small ornate golden door in frontal lobe.
-Door slightly ajar with brilliant golden light streaming out (god rays).
-Brain looks organic/wet, door looks ancient and precious.
-Bold white text "4 DOORS." with dramatic shadow.
-Mysterious, exclusive feel.
-Movie poster lighting - premium CGI quality.`,
+    template: 'brain-cables',
+    concept: `TEXT: "4 doors." in lowercase white sans-serif
+VISUAL: Brain with 4 small doors on different areas, one slightly open with light coming out
+BACKGROUND: Dark charcoal gray
+EXTRA: Mysterious, intriguing. Simple composition.`,
     images: [],
   },
 
   'three-second-rule': {
-    concept: `Concept: "3 SECONDS" - You have 3 seconds to capture attention or lose them forever.
-Solid URGENT RED background (#FF0000), pure and intense.
-GIANT white bold "3" dominating the frame - takes up 60% of space.
-Realistic silver stopwatch showing exactly 3 seconds.
-Text "SECONDS." below in white.
-Small "YOU HAVE" text above.
-MrBeast-style high contrast urgency.
-Creates anxiety, impossible to ignore.`,
+    template: 'product-hero',
+    concept: `TEXT: Giant "3" in white, "seconds." below in lowercase
+VISUAL: Simple stopwatch icon next to the 3
+BACKGROUND: Solid red (#FF0000)
+EXTRA: Urgent, high contrast. Like a warning sign. Super simple.`,
     images: [],
   },
 
   'science-of-selling': {
-    concept: `Concept: "THE FORMULA" - Selling is a science, not an art.
-Clean white laboratory setting with faint grid.
-Tall glass Erlenmeyer flask OVERFLOWING with crisp $100 bills.
-Money spilling onto white surface.
-Chemical formula symbols floating ($ + Psychology = $$$).
-Bold black text "THE FORMULA."
-Bright, clinical, scientific lighting.
-Premium product photography quality.`,
+    template: 'diagram',
+    concept: `TEXT: "the formula." in lowercase black sans-serif
+VISUAL: Simple equation: Brain icon + $ icon = $$$ with arrow pointing right
+BACKGROUND: White with grid paper texture
+EXTRA: Like a whiteboard diagram. Clean, minimal, scientific.`,
     images: [],
   },
 
   'persuasion-blueprint': {
+    template: 'diagram',
     concept: `Concept: "BLUEPRINT" - The master plan for persuasion.
 Aged paper/architect desk texture background.
 Rolled blueprint paper partially unrolled showing brain diagram with neural connections.
@@ -245,42 +289,34 @@ Intellectual, exclusive, premium.`,
   },
 
   'persuasion-stack': {
-    concept: `Concept: "THE STACK" - Layered persuasion techniques that build on each other.
-Soft gradient from light gray to white background.
-Vertical stack of 5 distinct colorful geometric layers/blocks.
-Colors: Red, Blue, Green, Yellow, Purple - with gaps between showing depth.
-3D perspective with shadows between layers.
-Bold black text "THE STACK." beside or below.
-Clean, modern, strategic tech company aesthetic.
-Premium 3D render quality.`,
+    template: 'diagram',
+    concept: `TEXT: "the stack." in lowercase black sans-serif on left
+VISUAL: 5 horizontal colored bars stacked vertically (like a bar chart rotated) - Red, Orange, Yellow, Green, Blue
+BACKGROUND: White, clean
+EXTRA: Simple layered visualization. Like a progress bar stack.`,
     images: [],
   },
 
   'architecture-of-influence': {
-    concept: `Concept: "ARCHITECT" - Designing minds, building influence.
-Deep navy blue gradient background.
-Beautiful golden architectural wireframe forming human head profile.
-Golden lines creating both building structure AND neural pathways.
-Bold white text "ARCHITECT" with gold accent on the A.
-Golden accent lighting on wireframe edges.
-Christopher Nolan movie poster quality.
-Powerful, intellectual, sophisticated.`,
+    template: 'diagram',
+    concept: `TEXT: "architect." in lowercase white sans-serif
+VISUAL: Simple wireframe head outline made of geometric lines, like a blueprint
+BACKGROUND: Dark navy blue
+EXTRA: Minimal, elegant. Think Apple design meets architecture.`,
     images: [],
   },
 
   'wiifm-principle': {
-    concept: `Concept: "WHAT ABOUT ME?" - Everyone only cares about themselves (WIIFM = What's In It For Me).
-Clean light background.
-Person pointing aggressively at themselves with both thumbs.
-Exaggerated confident/smug expression.
-Bold black text "WHAT ABOUT ME?" in quotes.
-Selfish but relatable energy.
-Provocative, uncomfortable truth visualization.
-Premium portrait photography style.`,
+    template: 'person-metric',
+    concept: `TEXT: "what about me?" in lowercase black sans-serif
+VISUAL: Hand pointing at viewer (like Uncle Sam poster)
+BACKGROUND: White/light gray
+EXTRA: Direct, confrontational. Simple composition.`,
     images: [],
   },
 
   'rule-of-one': {
+    template: 'diagram',
     concept: `Concept: "JUST ONE" - One reader, one idea, one offer, one action.
 Pure black background.
 Massive gold metallic "1" dominating the frame - luxury 3D render.
@@ -297,6 +333,7 @@ Simplicity equals power.`,
   // ============================================
 
   'meta-three-second-hook': {
+    template: 'diagram',
     concept: `Concept: "3 SECONDS" - Meta judges your creative in the first 3 seconds.
 Tech/digital aesthetic with Meta logo I'm uploading.
 Show a phone screen with video ad and countdown timer at 00:03.
@@ -308,6 +345,7 @@ Premium tech product photography style.`,
   },
 
   'meta-70-20-10-rule': {
+    template: 'diagram',
     concept: `Concept: "70/20/10" - The creative allocation rule (70% proven, 20% iteration, 10% wild).
 Three 3D money stacks of different heights: tallest (70%), medium (20%), small (10%).
 Meta logo floating above with soft shadow.
@@ -319,6 +357,7 @@ Professional infographic meets YouTube energy.`,
   },
 
   'meta-creative-ecosystem': {
+    template: 'diagram',
     concept: `Concept: "50 ADS" - You need 20-50 meaningfully different ads to win.
 Epic visualization: ad creatives orbiting like planets around glowing Meta logo.
 Deep space/cosmic dark blue background.
@@ -330,6 +369,7 @@ Include Meta and Triple Whale logos I'm uploading.`,
   },
 
   'meta-capi-pixel-setup': {
+    template: 'diagram',
     concept: `Concept: "CAPI + PIXEL" - Dual tracking is mandatory for success.
 Two glowing data streams (blue and purple) merging into powerful light.
 Dark tech/developer aesthetic background.
@@ -342,6 +382,7 @@ Include logos I'm uploading.`,
   },
 
   'cbo-vs-abo': {
+    template: 'diagram',
     concept: `Concept: "CBO vs ABO" - The epic campaign structure showdown.
 Split screen dramatic comparison - boxing match energy.
 "CBO" on left side (blue), "ABO" on right side (red).
@@ -353,6 +394,7 @@ Intense, competitive energy.`,
   },
 
   'meta-andromeda': {
+    template: 'diagram',
     concept: `Concept: "ANDROMEDA" - Meta's AI brain that controls everything.
 Cosmic deep space background with galaxy swirls.
 Meta logo transformed into glowing AI neural network/brain.
@@ -364,6 +406,7 @@ Premium space/tech CGI quality.`,
   },
 
   'meta-1-1-x-structure': {
+    template: 'diagram',
     concept: `Concept: "1-1-X" - The winning campaign structure (1 campaign, 1 ad set, X creatives).
 Clean white background with subtle grid.
 Premium flowchart: 1 → 1 → X expanding outward.
@@ -375,6 +418,7 @@ Minimal, strategic, Apple-keynote style.`,
   },
 
   'creative-volume-2026': {
+    template: 'diagram',
     concept: `Concept: "40-70 WEEKLY" - The insane creative volume needed in 2026.
 Flood/tsunami wave of ad creatives pouring out of a smartphone.
 Overwhelming but exciting energy.
@@ -390,6 +434,7 @@ Premium 3D render of creative explosion.`,
   // ============================================
 
   'google-highest-cpa-wins': {
+    template: 'diagram',
     concept: `Concept: "HIGHEST WINS" - Counterintuitively, the highest CPA bid wins on Google.
 Gold trophy with "$50 CPA" beating smaller silver/bronze trophies.
 Challenges everything you thought you knew about bidding.
@@ -400,6 +445,7 @@ Bold black text "HIGHEST WINS" at top.`,
   },
 
   'google-pmax-blueprint': {
+    template: 'diagram',
     concept: `Concept: "PMax SETUP" - The Performance Max campaign architecture.
 Blueprint/technical diagram aesthetic with blue and white.
 Google logo prominent.
@@ -410,6 +456,7 @@ Professional architectural diagram feel.`,
   },
 
   'google-product-feed-mastery': {
+    template: 'diagram',
     concept: `Concept: "FEED = AD" - Your product feed IS your ad.
 Data/spreadsheet visually transforming into beautiful shopping ads.
 Magical transformation visualization with sparkles.
@@ -419,6 +466,7 @@ Bold text "FEED = AD" prominently displayed.`,
   },
 
   'google-shopping-intent': {
+    template: 'diagram',
     concept: `Concept: "ACTIVE INTENT" - Google Shopping captures people who WANT to buy.
 Search bar showing "buy [product]" with target/crosshairs on buyer.
 High intent visualization - money in hand ready to purchase.
@@ -428,6 +476,7 @@ Bold text "ACTIVE INTENT" at top.`,
   },
 
   'google-brand-moat': {
+    template: 'diagram',
     concept: `Concept: "BRAND MOAT" - Brand is the fortress competitors can't breach.
 Majestic castle/fortress surrounded by deep moat in Google colors.
 Medieval meets digital aesthetic.
@@ -441,6 +490,7 @@ Bold white text "BRAND MOAT" with dramatic shadow.`,
   // ============================================
 
   'biz-infinite-money-engine': {
+    template: 'diagram',
     concept: `Concept: "INFINITE MONEY" - The flywheel that never stops generating cash.
 Money arranged in glowing infinity loop symbol (∞).
 Cash piling up in background.
@@ -451,6 +501,7 @@ Bold text "INFINITE MONEY" at top.`,
   },
 
   'biz-3x-threshold': {
+    template: 'diagram',
     concept: `Concept: "3X" - The LTV:CAC threshold that changes everything.
 MASSIVE metallic gold "3X" dominating the frame.
 Mathematical breakthrough energy.
@@ -461,6 +512,7 @@ Bold, aggressive, game-changing feel.`,
   },
 
   'biz-operator-mindset': {
+    template: 'diagram',
     concept: `Concept: "OPERATOR MODE" - Running your business like a pilot runs a cockpit.
 Airplane cockpit dashboard with business metrics as gauges.
 Aviation meets business aesthetic.
@@ -471,6 +523,7 @@ Professional, in-control energy.`,
   },
 
   'biz-cash-conversion': {
+    template: 'diagram',
     concept: `Concept: "NEGATIVE CASH" - Get paid before you spend (negative cash conversion).
 Money flowing BACKWARDS with reverse arrows.
 Bold "-30 DAYS" prominently displayed.
@@ -481,6 +534,7 @@ Clean background with focus on impossible money flow.`,
   },
 
   'biz-closer-framework': {
+    template: 'diagram',
     concept: `Concept: "6 STEPS" - The C.L.O.S.E.R. framework for closing sales.
 Premium checklist/steps visualization with the letters C.L.O.S.E.R.
 Each letter glowing as a step.
@@ -491,6 +545,7 @@ Bold text "6 STEPS" or "C.L.O.S.E.R." at top.`,
   },
 
   'biz-hamster-wheel': {
+    template: 'diagram',
     concept: `Concept: "THE TRAP" - Are you building a business or a prison?
 Business person in suit running endlessly in giant hamster wheel.
 Money flying off the wheel but never accumulating.
@@ -501,6 +556,7 @@ Existential business crisis visualization.`,
   },
 
   'biz-leverage-equation': {
+    template: 'diagram',
     concept: `Concept: "LEVERAGE" - Work smarter, not harder.
 Classic lever/fulcrum with small finger pushing down, lifting massive boulder.
 Physics of success visualization.
@@ -511,6 +567,7 @@ Clean background with dramatic lighting.`,
   },
 
   'starbucks-ltv': {
+    template: 'diagram',
     concept: `Concept: "$14,099" - The mind-blowing lifetime value of one Starbucks customer.
 Starbucks coffee cup OVERFLOWING with $100 bills.
 Money spilling out onto surface.
@@ -521,12 +578,11 @@ Mind-blowing LTV revelation.`,
   },
 
   'million-dollar-roadmap': {
-    concept: `Concept: "THE ROADMAP" - The exact path to $1M/month (33 customers per day).
-Golden path/road leading to mountain peak with "$1M" flag at top.
-Aspirational, clear, achievable journey visualization.
-Bold text "THE ROADMAP" or "$1M/MONTH" at top.
-Premium landscape/achievement aesthetic.
-Makes goal feel tangible and possible.`,
+    template: 'diagram',
+    concept: `TEXT: "$1M" in large black text, "roadmap." in lowercase below
+VISUAL: Simple dotted line path with milestones (like a simple journey map) leading to a flag
+BACKGROUND: White with grid paper texture
+EXTRA: Like the "You're Here" growth curve reference. Clean, simple, aspirational.`,
     images: [],
   },
 
@@ -535,6 +591,7 @@ Makes goal feel tangible and possible.`,
   // ============================================
 
   'borrowed-trust': {
+    template: 'diagram',
     concept: `Concept: "BORROW IT" - Transfer trust from authorities to yourself.
 Trust badges/golden energy visually transferring between two figures.
 I'm uploading Robert Cialdini's image - the persuasion master.
@@ -545,16 +602,16 @@ Warm, authoritative, trust visualization.`,
   },
 
   'certainty-transfer': {
-    concept: `Concept: "TRANSFER IT" - Your conviction becomes their conviction.
-Bright energy/light beam transferring from confident seller to uncertain buyer.
-Seller: confident, glowing. Buyer: transforming from doubt to belief.
-Transformative visualization of belief transfer.
-Bold text "TRANSFER IT" at top.
-Clean background with dramatic light beam.`,
+    template: 'before-after',
+    concept: `TEXT: "Before" on left, "After" on right in white
+VISUAL: Split screen - Left: worried face emoji/icon (gray). Right: confident face emoji/icon (bright)
+BACKGROUND: Dark/black
+EXTRA: Simple transformation visual. Shows doubt becoming certainty.`,
     images: [],
   },
 
   'authority-over-hope': {
+    template: 'diagram',
     concept: `Concept: "STOP HOPING" - Hope is not a strategy, authority is.
 Split screen: LEFT = crossed fingers (hoping, weak) with X over it.
 RIGHT = confident pointing finger (knowing, powerful) with checkmark.
@@ -565,6 +622,7 @@ Red and green color coding.`,
   },
 
   'dopamine-blueprint': {
+    template: 'diagram',
     concept: `Concept: "ADDICTED" - The dopamine triggers that create purchase addiction.
 Hyper-realistic brain with notifications, likes, hearts, rewards plugged in.
 Cables and wires connecting social media icons to pleasure centers.
@@ -575,6 +633,7 @@ Dark, revealing, uncomfortable but fascinating.`,
   },
 
   'unity-principle': {
+    template: 'diagram',
     concept: `Concept: "WE > YOU" - Shared identity wins over individual selling.
 Two silhouette figures merging/blending into ONE unified figure.
 Glowing "WE" text in the merged center.
@@ -585,6 +644,7 @@ Light background with warm golden tones.`,
   },
 
   'pre-suasion-hack': {
+    template: 'diagram',
     concept: `Concept: "WIN BEFORE" - The sale is won before you even speak.
 Chess board with winning move already made, king toppled.
 Or puppet master hands controlling the scene from above.
@@ -595,6 +655,7 @@ Strategic, intellectual, masterful energy.`,
   },
 
   'herd-instinct': {
+    template: 'diagram',
     concept: `Concept: "THE HERD" - Social proof and following the crowd.
 Massive crowd of people all moving in one direction, money in hands.
 "SOLD OUT" signs and "EVERYONE'S BUYING" energy.
@@ -609,6 +670,7 @@ Premium 3D crowd visualization.`,
   // ============================================
 
   'decoy-effect': {
+    template: 'diagram',
     concept: `Concept: "THE DECOY" - The pricing trick that makes middle option irresistible (+43%).
 Three pricing cards/options displayed.
 Middle one GLOWING with golden light - the winner.
@@ -619,6 +681,7 @@ Clean white background, premium pricing visualization.`,
   },
 
   'paradox-of-choice': {
+    template: 'diagram',
     concept: `Concept: "LESS = MORE" - Fewer options equals more sales (the jam study).
 Split screen: LEFT = 24 jam jars (chaos, overwhelm, X mark).
 RIGHT = 6 jam jars (clarity, organized, checkmark).
@@ -629,6 +692,7 @@ Choice paralysis visualization.`,
   },
 
   'five-second-test': {
+    template: 'diagram',
     concept: `Concept: "5 SECONDS" - If they don't get it instantly, they leave.
 Website split: LEFT half = blurry/unclear, RIGHT half = crystal clear.
 Stopwatch showing exactly 5 seconds.
@@ -639,6 +703,7 @@ Clean background with dramatic split effect.`,
   },
 
   'framing-effect-mastery': {
+    template: 'diagram',
     concept: `Concept: "SAME THING" - Context changes everything (framing effect).
 SAME product shown twice: LEFT = cheap context, RIGHT = luxury context.
 Mind-bending same item, wildly different perception.
@@ -649,6 +714,7 @@ Split screen with dramatic contrast.`,
   },
 
   'speed-equals-trust': {
+    template: 'diagram',
     concept: `Concept: "0.1 SECOND" - Amazon's $1.7B lesson on page speed.
 Loading bar stuck at 99% with money visibly draining/evaporating.
 Bold text "0.1 SECOND" or "$1.7 BILLION" prominently.
@@ -659,6 +725,7 @@ Red/urgent color scheme.`,
   },
 
   'leaky-bucket-audit': {
+    template: 'diagram',
     concept: `Concept: "$50K HOLE" - You're bleeding money and don't know it.
 Large bucket with money (crisp $100 bills) visibly leaking through holes.
 Flashlight beam exposing one of the holes.
@@ -669,6 +736,7 @@ Dark background with spotlight on bucket.`,
   },
 
   'von-restorff-effect': {
+    template: 'diagram',
     concept: `Concept: "STAND OUT" - The different one gets remembered (isolation effect).
 Row of identical gray circles/figures - all the same.
 ONE circle/figure in bright RED or GOLD - glowing, different.
@@ -683,6 +751,7 @@ Clean background, maximum contrast.`,
   // ============================================
 
   'value-ladder': {
+    template: 'diagram',
     concept: `Concept: "HIDDEN MENU" - The VIP level above what customers see.
 Red velvet rope dramatically parting to reveal secret/exclusive menu.
 Luxury exclusivity visualization.
@@ -693,6 +762,7 @@ Dark, mysterious, exclusive club energy.`,
   },
 
   'box-worth-300': {
+    template: 'diagram',
     concept: `Concept: "$300 BOX" - Tiffany's box is worth more than what's inside.
 Empty iconic Tiffany blue box as the star - OPEN and EMPTY.
 "$300" price tag floating near the empty box.
@@ -703,6 +773,7 @@ Clean white background with soft shadows.`,
   },
 
   'hermes-doctrine': {
+    template: 'diagram',
     concept: `Concept: "PROTECT THE BIRKIN" - Hermès infinite game strategy.
 Birkin bag displayed under glass dome like museum piece.
 "2 YEAR WAITLIST" floating text.
@@ -713,6 +784,7 @@ Dark, prestigious museum gallery aesthetic.`,
   },
 
   'dior-pricing-secret': {
+    template: 'diagram',
     concept: `Concept: "$57 → $3,500" - The 60x luxury markup customers happily pay.
 SAME bag shown twice with dramatically different price tags.
 Left: "$57" with cheap look. Right: "$3,500" with luxury presentation.
@@ -723,6 +795,7 @@ Luxury pricing psychology exposed.`,
   },
 
   'gucci-short-termism': {
+    template: 'diagram',
     concept: `Concept: "WHY GUCCI IS DYING" - Trend chasing kills brands.
 Split screen: LEFT = Gucci logo fading/crumbling.
 RIGHT = Hermès/Rolex still strong and shiny.
@@ -733,6 +806,7 @@ I'm uploading logos for both brands.`,
   },
 
   'scarcity-calendar': {
+    template: 'diagram',
     concept: `Concept: "ONE PER YEAR" - Le Creuset's scarcity engine (one color annually).
 Colorful Dutch ovens in rainbow arrangement.
 "SOLD OUT" banner dramatically across most of them.
@@ -743,6 +817,7 @@ Collector psychology and FOMO visualization.`,
   },
 
   'anchor-moments': {
+    template: 'diagram',
     concept: `Concept: "$20K makes $200 CHEAP" - Ralph Lauren's price anchoring.
 Expensive $20K bag on pedestal (spotlight, premium).
 Polo shirt nearby looking like a bargain at $200.
@@ -757,6 +832,7 @@ Luxury retail psychology exposed.`,
   // ============================================
 
   'primal-stimuli': {
+    template: 'diagram',
     concept: `Concept: "6 BUY BUTTONS" - The reptile brain triggers that work on everyone.
 Ancient/primitive style brain with 6 glowing modern buttons embedded.
 Prehistoric meets neuroscience visualization.
@@ -767,6 +843,7 @@ Primal psychology exposed.`,
   },
 
   'fly-in-the-urinal': {
+    template: 'diagram',
     concept: `Concept: "THE FLY" - Amsterdam airport nudge that changed behavior 80%.
 Target/bullseye with small fly in center.
 "80%" stat prominently displayed.
@@ -777,6 +854,7 @@ Unexpected, fascinating, clean design.`,
   },
 
   'forty-million-mistake': {
+    template: 'diagram',
     concept: `Concept: "$40 MILLION MISTAKE" - New Coke disaster (data without emotion).
 Data charts/graphs literally on FIRE, burning.
 Red heart emerging triumphant from the ashes.
@@ -787,6 +865,7 @@ Cautionary tale about ignoring emotion.`,
   },
 
   'precise-price-trick': {
+    template: 'diagram',
     concept: `Concept: "$4,988 BEATS $5,000" - Precise numbers feel researched.
 Two price tags side by side: "$5,000" (X over it) vs "$4,988" (checkmark).
 Precise price GLOWING as winner.
@@ -801,6 +880,7 @@ Clean white background with dramatic comparison.`,
   // ============================================
 
   'product-page-anatomy': {
+    template: 'diagram',
     concept: `Concept: "5 ELEMENTS" - The anatomy of pages that convert 8%+.
 Exploded product page diagram - each section separated and labeled.
 Like an engineering blueprint but for websites.
@@ -811,6 +891,7 @@ Blueprint for conversion success.`,
   },
 
   'jakobs-law': {
+    template: 'diagram',
     concept: `Concept: "FAMILIAR WINS" - Don't be unique in checkout (Jakob's Law).
 Split: LEFT = confusing custom UI with X mark.
 RIGHT = familiar Amazon-style checkout with checkmark.
@@ -821,6 +902,7 @@ Clean comparison layout.`,
   },
 
   'ikea-effect': {
+    template: 'diagram',
     concept: `Concept: "DIY = +63%" - We value what we build (IKEA effect).
 Assembled furniture with "+63% VALUE" badge glowing.
 Assembly tools (Allen key, screwdriver) visible nearby.
@@ -835,6 +917,7 @@ Participation psychology visualization.`,
   // ============================================
 
   'pet-rock-story': {
+    template: 'diagram',
     concept: `Concept: "$30M FROM ROCKS" - Pet Rock sold meaning, not products.
 Simple rock on red velvet cushion wearing tiny golden crown.
 Money ($100 bills) raining down around it.
@@ -845,6 +928,7 @@ Clean background with dramatic spotlight on rock.`,
   },
 
   'gary-halbert-secret': {
+    template: 'diagram',
     concept: `Concept: "STARVING CROWD" - Find the hungry market first.
 Massive crowd reaching desperately with money in hands.
 Everyone demanding something urgently.
@@ -855,6 +939,7 @@ Vintage direct response aesthetic.`,
   },
 
   'formula-to-sell': {
+    template: 'diagram',
     concept: `Concept: "THE FORMULA" - Dream + Likelihood + Time + Effort = Sale.
 Beautiful equation visualization with icons for each element.
 Mathematical selling representation.
@@ -865,6 +950,7 @@ Clean, scientific, premium.`,
   },
 
   'no-one-cares': {
+    template: 'diagram',
     concept: `Concept: "NO ONE CARES" - Brutal truth that everyone only cares about themselves.
 Person with megaphone being completely ignored by phone-scrolling crowd.
 Everyone absorbed in their own world.
@@ -875,6 +961,7 @@ Clean composition showing isolation.`,
   },
 
   'imperceptible-nudge': {
+    template: 'diagram',
     concept: `Concept: "THE $200M COLOR" - Amazon's button color change that made $200M.
 A/B test visualization with two buttons side by side.
 Winning orange button GLOWING with "$200M" floating above it.
@@ -885,6 +972,7 @@ Micro-optimization power revealed.`,
   },
 
   'hero-mechanism': {
+    template: 'diagram',
     concept: `Concept: "THE $4,225 QUESTION" - Why Oura Ring costs $399 vs $12 knockoffs (32X).
 Split screen: LEFT = pile of cheap $12 trackers looking cheap.
 RIGHT = Oura Ring on pedestal, glowing, premium, "$399".
@@ -1202,16 +1290,13 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
 Object.keys(lessonMeta).forEach(slug => {
   if (!lessonConceptData[slug]) {
     const lesson = lessonMeta[slug];
-    const shortTitle = lesson.title.replace(/^The\s+/i, '').toUpperCase();
-    const hookWords = shortTitle.split(' ').slice(0, 3).join(' ');
+    const shortTitle = lesson.title.replace(/^The\s+/i, '');
+    const hookWords = shortTitle.split(' ').slice(0, 3).join(' ').toLowerCase();
     lessonConceptData[slug] = {
-      concept: `Concept: "${lesson.title}" - ${lesson.description}
-Bold text "${hookWords}" as the main headline.
-Create a powerful visual metaphor for: ${lesson.description}
-Clean white/light background with subtle grid texture.
-Use real 3D objects, not flat illustrations.
-Premium CGI quality with professional shadows and lighting.
-MrBeast meets Apple aesthetic - ultra-clean, minimal, premium.`,
+      template: 'diagram' as TemplateType,
+      concept: `TEXT: "${hookWords}." in lowercase black sans-serif
+VISUAL: Simple visual metaphor for: ${lesson.description}
+EXTRA: Keep it minimal, clean, editorial style`,
       images: [],
     };
   }
@@ -1233,33 +1318,38 @@ export default function AdminLessonThumbnailsPage() {
   const [showTasksPanel, setShowTasksPanel] = useState(false);
   const [expandedFeedback, setExpandedFeedback] = useState<string | null>(null);
 
-  // Editable thumbnail rules - stored in localStorage
-  const [thumbnailRules, setThumbnailRules] = useState<string[]>(DEFAULT_THUMBNAIL_RULES);
-  const [showRulesEditor, setShowRulesEditor] = useState(false);
-  const [editingRules, setEditingRules] = useState<string[]>([]);
+  // Template overrides per lesson - stored in localStorage
+  const [templateOverrides, setTemplateOverrides] = useState<Record<string, TemplateType>>({});
 
-  // Load thumbnail rules from localStorage on mount
+  // Load template overrides from localStorage on mount
   useEffect(() => {
-    const savedRules = localStorage.getItem('thumbnailRules');
-    if (savedRules) {
+    const saved = localStorage.getItem('templateOverrides');
+    if (saved) {
       try {
-        const parsed = JSON.parse(savedRules);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setThumbnailRules(parsed);
-        }
+        setTemplateOverrides(JSON.parse(saved));
       } catch (e) {
-        console.error('Failed to parse saved rules:', e);
+        console.error('Failed to parse saved template overrides:', e);
       }
     }
   }, []);
 
-  // Save thumbnail rules to localStorage when changed
-  const saveRules = useCallback(() => {
-    localStorage.setItem('thumbnailRules', JSON.stringify(editingRules));
-    setThumbnailRules(editingRules);
-    setShowRulesEditor(false);
-    setMessage({ type: 'success', text: 'Rules saved! All prompts updated.' });
-  }, [editingRules]);
+  // Save template override for a lesson
+  const setLessonTemplate = useCallback((slug: string, template: TemplateType) => {
+    setTemplateOverrides(prev => {
+      const updated = { ...prev, [slug]: template };
+      localStorage.setItem('templateOverrides', JSON.stringify(updated));
+      return updated;
+    });
+  }, []);
+
+  // Get the effective template for a lesson (override or default)
+  const getEffectiveTemplate = useCallback((slug: string): TemplateType => {
+    if (templateOverrides[slug]) {
+      return templateOverrides[slug];
+    }
+    const conceptData = lessonConceptData[slug];
+    return conceptData?.template || 'diagram';
+  }, [templateOverrides]);
 
   // Load prompt tasks from localStorage on mount
   useEffect(() => {
@@ -1319,16 +1409,17 @@ export default function AdminLessonThumbnailsPage() {
   const ADMIN_EMAILS = ['admin@quantum-scale.co', 'aviv32552@gmail.com'];
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 
-  // Copy prompt to clipboard (includes rules + specific concept)
+  // Copy prompt to clipboard (includes template + specific concept)
   const copyPrompt = useCallback(async (slug: string) => {
     const conceptData = lessonConceptData[slug];
     if (conceptData) {
-      const fullPrompt = buildFullPrompt(conceptData.concept, thumbnailRules);
+      const template = getEffectiveTemplate(slug);
+      const fullPrompt = buildFullPrompt(conceptData.concept, template);
       await navigator.clipboard.writeText(fullPrompt);
       setCopiedSlug(slug);
       setTimeout(() => setCopiedSlug(null), 2000);
     }
-  }, [thumbnailRules]);
+  }, [getEffectiveTemplate]);
 
   // Load lessons and their thumbnails
   useEffect(() => {
@@ -1620,108 +1711,6 @@ export default function AdminLessonThumbnailsPage() {
           )}
         </AnimatePresence>
 
-        {/* Rules Editor Modal */}
-        <AnimatePresence>
-          {showRulesEditor && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-              onClick={() => setShowRulesEditor(false)}
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {/* Modal Header */}
-                <div className="p-4 border-b border-[var(--border-light)] flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold text-[var(--text-primary)]">
-                      Edit Thumbnail Rules
-                    </h3>
-                    <p className="text-sm text-[var(--text-muted)]">
-                      These rules are added to ALL thumbnail prompts
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setShowRulesEditor(false)}
-                    className="p-2 rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-
-                {/* Rules List */}
-                <div className="p-4 overflow-y-auto max-h-[60vh] space-y-3">
-                  {editingRules.map((rule, index) => (
-                    <div key={index} className="flex gap-2 items-start">
-                      <span className="text-sm font-bold text-blue-500 mt-2 w-6">{index + 1}.</span>
-                      <textarea
-                        value={rule}
-                        onChange={(e) => {
-                          const newRules = [...editingRules];
-                          newRules[index] = e.target.value;
-                          setEditingRules(newRules);
-                        }}
-                        className="flex-1 input text-sm min-h-[60px] resize-none"
-                        placeholder={`Rule ${index + 1}...`}
-                      />
-                      <button
-                        onClick={() => {
-                          const newRules = editingRules.filter((_, i) => i !== index);
-                          setEditingRules(newRules);
-                        }}
-                        className="p-2 rounded-lg hover:bg-red-100 text-red-500 transition-colors"
-                        title="Delete rule"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  ))}
-
-                  {/* Add Rule Button */}
-                  <button
-                    onClick={() => setEditingRules([...editingRules, ''])}
-                    className="w-full py-3 border-2 border-dashed border-[var(--border-light)] rounded-lg text-[var(--text-muted)] hover:border-blue-300 hover:text-blue-500 transition-all flex items-center justify-center gap-2"
-                  >
-                    <Plus size={16} />
-                    Add New Rule
-                  </button>
-                </div>
-
-                {/* Modal Footer */}
-                <div className="p-4 border-t border-[var(--border-light)] bg-gray-50 flex items-center justify-between">
-                  <button
-                    onClick={() => {
-                      setEditingRules([...DEFAULT_THUMBNAIL_RULES]);
-                    }}
-                    className="px-4 py-2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
-                  >
-                    Reset to Defaults
-                  </button>
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => setShowRulesEditor(false)}
-                      className="px-4 py-2 text-sm rounded-lg border border-[var(--border-light)] hover:bg-[var(--bg-secondary)] transition-colors"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={saveRules}
-                      className="px-6 py-2 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors font-medium"
-                    >
-                      Save Rules
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* Header */}
         <motion.header
@@ -1776,22 +1765,16 @@ export default function AdminLessonThumbnailsPage() {
                 </div>
               </button>
 
-              {/* Edit Rules Button */}
-              <button
-                onClick={() => {
-                  setEditingRules([...thumbnailRules]);
-                  setShowRulesEditor(true);
-                }}
-                className="flex flex-col items-center px-4 py-2 rounded-lg bg-blue-100 hover:bg-blue-200 transition-all"
-              >
-                <div className="text-2xl font-bold text-blue-500">
-                  {thumbnailRules.length}
+              {/* Templates Info */}
+              <div className="flex flex-col items-center px-4 py-2 rounded-lg bg-purple-100">
+                <div className="text-2xl font-bold text-purple-500">
+                  {Object.keys(VISUAL_TEMPLATES).length}
                 </div>
                 <div className="text-xs text-[var(--text-muted)] flex items-center gap-1">
-                  <Settings size={12} />
-                  Edit Rules
+                  <Grid size={12} />
+                  Templates
                 </div>
-              </button>
+              </div>
             </div>
 
             {/* Controls */}
@@ -2002,11 +1985,27 @@ export default function AdminLessonThumbnailsPage() {
                         </div>
                       )}
 
+                      {/* Template Selector */}
+                      <div className="mb-3">
+                        <p className="text-xs font-medium text-[var(--text-muted)] mb-2">Visual Template:</p>
+                        <select
+                          value={getEffectiveTemplate(lesson.slug)}
+                          onChange={(e) => setLessonTemplate(lesson.slug, e.target.value as TemplateType)}
+                          className="w-full px-3 py-2 text-sm border border-[var(--border-light)] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                        >
+                          {Object.values(VISUAL_TEMPLATES).map((tmpl) => (
+                            <option key={tmpl.id} value={tmpl.id}>
+                              {tmpl.name} {conceptData.template === tmpl.id ? '(Recommended)' : ''} - {tmpl.description}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
                       {/* Prompt Text */}
                       <div className="relative">
                         <p className="text-xs font-medium text-[var(--text-muted)] mb-2">ChatGPT Prompt:</p>
                         <div className="bg-white rounded-lg p-3 border border-[var(--border-light)] text-sm text-[var(--text-secondary)] leading-relaxed whitespace-pre-wrap max-h-64 overflow-y-auto">
-                          {buildFullPrompt(conceptData.concept, thumbnailRules)}
+                          {buildFullPrompt(conceptData.concept, getEffectiveTemplate(lesson.slug))}
                         </div>
 
                         {/* Copy Button + Flag Button Row */}
