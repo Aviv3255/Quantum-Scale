@@ -280,7 +280,7 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // Default for lessons without specific prompts
 };
 
-// Full lesson metadata (274 lessons from learn page)
+// Lesson metadata - EXACT SAME ORDER as learn page
 const lessonMeta: Record<string, { title: string; description: string }> = {
   'familiar-surprise-secret': { title: 'The Familiar Surprise Secret', description: 'Master the MAYA principle' },
   'red-button-effect': { title: 'The Red Button Effect', description: 'Understanding psychological reactance' },
@@ -315,44 +315,13 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'rule-of-one': { title: 'The Rule of One', description: 'One reader, one idea, one offer, one action' },
   'architecture-of-belief': { title: 'The Architecture of Belief', description: 'Three levels of mastery' },
   'copywriters-codex': { title: 'The Copywriter\'s Codex', description: 'A synthesized playbook from the masters' },
+  // Article-based lessons
   'best-private-agent': { title: 'Who Is the Best Private Agent', description: '5-7 day shipping, 18/6 WhatsApp support' },
   'stop-aliexpress': { title: 'Stop Using AliExpress Now', description: 'Why AliExpress destroys your brand' },
   'ltv-cheat-code': { title: 'The LTV Cheat Code', description: 'How 5% of customers generate 95% of revenue' },
   'million-dollar-roadmap': { title: 'The Roadmap to $1M/Month', description: '33 customers per day formula' },
-  'value-ladder': { title: 'The Value Ladder & Hidden Menu', description: 'Secret tiers that create aspiration' },
-  'ascension-ladder': { title: 'The Ascension Ladder', description: 'Move customers up the value chain' },
-  'post-purchase-goldmine': { title: 'The Hidden Revenue You\'re Ignoring', description: 'Turn $40 customers into $120 instantly' },
-  'dopamine-blueprint': { title: 'The Dopamine Blueprint', description: 'Create addictive loops' },
-  'unity-principle': { title: 'The Unity Principle', description: 'One word turns customers into partners' },
-  'borrowed-trust': { title: 'Borrowed Trust', description: 'Authority and Liking principles that bypass skepticism' },
-  'certainty-transfer': { title: 'Certainty Transfer', description: 'Master the art of transferring conviction' },
-  'authority-over-hope': { title: 'Authority Over Hope', description: 'Stop hoping they buy. Guide them with certainty.' },
-  'wishlist-effect': { title: 'The Wishlist Effect', description: 'Endowment Effect psychology (+8% CVR)' },
-  'le-creuset-scarcity-engine': { title: 'The Le Creuset Scarcity Engine', description: 'Limited colors create collectors' },
-  'paradox-of-choice': { title: 'The Paradox of Choice', description: 'Why fewer options = more sales' },
-  'speed-equals-trust': { title: 'The $1.7 Billion Speed Bump', description: '0.1 second = 1% more sales' },
-  'ice-prioritization': { title: 'ICE Prioritization', description: 'Impact, Confidence, Ease framework' },
-  'decoy-effect': { title: 'The Decoy Effect', description: 'Why a "useless" option boosts sales by 43%' },
-  'five-second-test': { title: 'The 5-Second Test', description: 'Why clarity crushes cleverness' },
-  'framing-effect-mastery': { title: 'The Framing Effect', description: 'Same facts. Wildly different decisions.' },
-  'cbo-vs-abo': { title: 'CBO vs ABO Under Andromeda', description: 'ABO for testing, CBO for scaling' },
-  'meta-automated-rules': { title: 'Meta Automated Rules', description: 'Set rules for automatic optimization' },
-  'meta-creative-ecosystem': { title: 'The Creative Ecosystem', description: 'Build 20-50 meaningfully different ads' },
-  'meta-learning-loop': { title: 'Meta Learning Loop', description: 'Continuous optimization through data' },
-  'meta-value-rules': { title: 'Meta Value Rules', description: 'Optimize for true value, not vanity metrics' },
-  'meta-capi-pixel-setup': { title: 'CAPI + Pixel Setup', description: 'Dual tracking is now mandatory' },
-  'meta-three-second-hook': { title: 'The 3-Second Hook Rule', description: 'Meta judges your creative in the first 3 seconds' },
-  'meta-70-20-10-rule': { title: 'The 70/20/10 Creative Rule', description: '70% proven, 20% iteration, 10% wild experiments' },
-  'google-highest-cpa-wins': { title: 'Why The Highest CPA Wins', description: 'The counterintuitive truth about Google Ads dominance' },
-  'google-pmax-blueprint': { title: 'The PMax Asset Group Blueprint', description: 'Stop forcing Google AI to guess' },
-  'google-product-feed-mastery': { title: 'Your Product Feed IS Your Ad', description: 'The hidden weapon for Shopping & PMax success' },
-  'biz-infinite-money-engine': { title: 'The Infinite Money Engine', description: 'The single equation that transforms eCommerce' },
-  'biz-3x-threshold': { title: 'The 3x Threshold', description: 'The equation separating struggling from thriving' },
-  'biz-operator-mindset': { title: 'The Operator\'s Mindset', description: 'How Ben Francis built Gymshark to $1.5B' },
-  'biz-cash-conversion': { title: 'The Negative Cash Conversion Cycle', description: 'How Davie Fogarty bootstrapped The Oodie' },
-  'biz-closer-framework': { title: 'The CLOSER Framework', description: 'Alex Hormozi\'s 6-step sales system' },
-  // Article-based lessons
   'geo-announcement-bar': { title: 'GEO-Location Announcement Bar', description: '67% conversion rate increase' },
+  'wishlist-effect': { title: 'The Wishlist Effect', description: 'Endowment Effect psychology (+8% CVR)' },
   'email-vs-sms': { title: 'Email vs SMS Revenue', description: 'Which generates more revenue?' },
   'abandoned-cart-recovery': { title: 'Abandoned Cart Recovery', description: 'AI SMS vs Email: 85% vs 60%' },
   'pareto-law-ecommerce': { title: 'The Pareto Law in eCommerce', description: '5% customers = 95% revenue' },
@@ -360,6 +329,7 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'meta-attribution-test': { title: 'Is Meta Lying About Creatives?', description: 'Meta only tracks 67% of purchases' },
   'post-purchase-surveys': { title: 'Post Purchase Surveys', description: 'Know your customers with data' },
   'fonts-psychology': { title: 'The Truth About Fonts', description: 'How fonts affect trust and conversions' },
+  // New article-based lessons (batch 2)
   'brand-search-campaign': { title: 'Brand Search Campaign', description: '18 ROAS on Google with brand search' },
   'swatch-variants': { title: 'Swatch Variants Test', description: '3.4% CVR increase with image swatches' },
   'buy-now-button': { title: 'Buy Now Button Analysis', description: 'Removing it increased REV/VISIT by 15.9%' },
@@ -380,19 +350,25 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'killer-headlines': { title: 'Killer Ad Headlines', description: '80% of success is in the headline' },
   'two-dirty-tricks': { title: 'Two Dirty Tricks to Sell', description: 'Dream Outcome + Social Proof' },
   'golden-lookalike': { title: 'Golden Lookalike Audience', description: 'LLA on top 5% spenders = $8-10 CAC' },
+  'cbo-vs-abo': { title: 'CBO vs ABO Under Andromeda', description: 'ABO for testing, CBO for scaling' },
   'geo-personalization': { title: 'GEO Personalization Power', description: 'Location-based offers increase CVR' },
   'no-one-cares': { title: 'No One Cares About You', description: 'Self-interest drives all purchases' },
   'creative-volume-2026': { title: 'Creative Volume in 2026', description: '40-70 creatives weekly for Andromeda' },
   // Psychology of Sales lessons
   'autopilot-sale': { title: 'The Autopilot Sale', description: 'How mental shortcuts make customers buy without thinking' },
+  'borrowed-trust': { title: 'Borrowed Trust', description: 'Authority and Liking principles that bypass skepticism' },
   'herd-instinct': { title: 'The Herd Instinct', description: 'Social proof and similar others create buying pressure' },
   'gift-that-sells': { title: 'The Gift That Sells', description: 'Reciprocity loops that drive sales' },
   'micro-yes-mastery': { title: 'Micro-Yes Mastery', description: 'Tiny commitments create inevitable conversions' },
+  // Additional Psychology lessons
+  'authority-over-hope': { title: 'Authority Over Hope', description: 'Stop hoping they buy. Guide them with certainty.' },
+  'certainty-transfer': { title: 'Certainty Transfer', description: 'Master the art of transferring conviction' },
   'conviction-architecture': { title: 'Conviction Architecture', description: 'The 3-layer pyramid of influence' },
   'digital-pause-power': { title: 'The Digital Pause', description: 'Confident silence converts better than discounts' },
   'fomo-engineering': { title: 'FOMO Engineering', description: 'Turn passive interest into urgent action' },
+  'framing-effect-mastery': { title: 'The Framing Effect', description: 'Same facts. Wildly different decisions.' },
   'identity-marketing': { title: 'Identity Marketing', description: 'Sell to who they WANT to be' },
-  'marketers-delusion': { title: 'The Marketer\'s Delusion', description: 'The fatal error killing conversions' },
+  'marketers-delusion': { title: "The Marketer's Delusion", description: 'The fatal error killing conversions' },
   'pain-escalation-ladder': { title: 'The Pain Escalation Ladder', description: 'Ethically escalate pain to action' },
   'telescope-flip': { title: 'The Telescope Flip', description: '97% of marketers hold it backwards' },
   'trust-blueprint': { title: 'The Trust Blueprint', description: 'Build instant credibility that converts' },
@@ -400,9 +376,12 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'three-brains-wallet': { title: 'The 3 Brains Controlling Your Customer\'s Wallet', description: 'Which brain controls the wallet' },
   'pre-suasion-hack': { title: 'The Pre-Suasion Hack', description: 'Win before the pitch' },
   'pattern-interrupts': { title: 'Pattern Interrupts', description: 'Hijack their attention' },
+  'dopamine-blueprint': { title: 'The Dopamine Blueprint', description: 'Create addictive loops' },
   'anti-sell-mastery': { title: 'The Anti-Sell', description: 'Pull, don\'t push' },
   // Primal Playbook lessons
+  'decoy-effect': { title: 'The Decoy Effect', description: 'Why a "useless" option boosts sales by 43%' },
   'precise-price-trick': { title: 'The Precise Price Trick', description: 'Why $4,988 beats $5,000' },
+  'paradox-of-choice': { title: 'The Paradox of Choice', description: 'Why fewer options = more sales' },
   'forty-million-mistake': { title: 'The $40 Million Mistake', description: 'Data without emotion = disaster' },
   'fly-in-the-urinal': { title: 'The Fly in the Urinal', description: 'Nudge psychology in action' },
   // Conversion Blueprint lessons
@@ -410,6 +389,7 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'invisible-influence': { title: 'The Invisible Influence', description: 'How backgrounds prime buying decisions' },
   'price-format-code': { title: 'The Price Format Code', description: 'How formatting changes price perception' },
   'cost-of-standing-still': { title: 'The Cost of Standing Still', description: 'Sell the cost of NOT buying' },
+  'unity-principle': { title: 'The Unity Principle', description: 'One word turns customers into partners' },
   'visual-priming': { title: 'The Invisible Influencer', description: 'How background images decide what customers buy' },
   'objection-inversion': { title: 'The Objection Judo Trick', description: 'Turn objections into reasons to buy' },
   'primal-stimuli': { title: 'The 6 Primal Buy Buttons', description: 'The only 6 triggers that get the reptile brain to say YES' },
@@ -418,6 +398,7 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'price-chunking-yesloop': { title: 'The Yes-Loop: How to 3X Your AOV', description: 'Break big prices into irresistible small yeses' },
   'objection-destroyer': { title: 'The At First I Thought Framework', description: 'Turn objections into conversions with one sentence' },
   'product-page-anatomy': { title: 'The 5-Element Product Page', description: 'The exact anatomy of pages that convert at 8%+' },
+  'post-purchase-goldmine': { title: 'The Hidden Revenue You\'re Ignoring', description: 'Turn $40 customers into $120 instantly' },
   'bottom-up-brand': { title: 'Why Movements Beat Marketing', description: 'Build a brand like a movement, not a corporation' },
   'halo-serial-position': { title: 'The First & Last Impression Hack', description: '0.05 seconds decides if they trust you' },
   'ikea-effect': { title: 'The IKEA Effect', description: 'Why DIY = 63% higher perceived value' },
@@ -425,6 +406,8 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'jakobs-law': { title: 'Jakob\'s Law', description: 'Why "unique" checkout flows kill conversions' },
   // Unseen Seller + Psychological Commerce lessons
   'gaze-direction': { title: 'The Gaze Hack', description: 'Where they look is where they click' },
+  'five-second-test': { title: 'The 5-Second Test', description: 'Why clarity crushes cleverness' },
+  'speed-equals-trust': { title: 'The $1.7 Billion Speed Bump', description: '0.1 second = 1% more sales' },
   'imperceptible-nudge': { title: 'The $200 Million Color', description: 'Invisible nudges that drive millions' },
   'cognitive-load-trap': { title: 'The Easy Brain Wins', description: 'Reduce friction, increase trust' },
   'placebo-product': { title: 'Your Product Is a Placebo', description: 'Perception literally alters reality' },
@@ -434,26 +417,27 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'hermes-doctrine': { title: 'The Hermès Infinite Game', description: 'Protect the Birkin, play forever' },
   // DTC Growth + Luxury Status + Psychology Growth lessons
   'hero-mechanism': { title: 'The $4,225 Question', description: 'Why Oura Ring costs $399 vs $12 knockoff' },
-  'scammer-playbook-good': { title: 'The Scammer\'s Playbook (Used for Good)', description: '7 ethical persuasion levers' },
+  'scammer-playbook-good': { title: "The Scammer's Playbook (Used for Good)", description: '7 ethical persuasion levers' },
   'us-vs-them': { title: 'The David vs Goliath Play', description: 'Create tribal identity through enemies' },
   'brand-universe': { title: 'Build a World, Not Just a Store', description: 'Create universes, not products' },
   'product-to-identity': { title: 'From Product to Identity Purchase', description: 'Transform commodities to identity' },
   'commodity-escape': { title: 'The Commodity Trap', description: 'How Starbucks charges $6 for $0.50 coffee' },
   'myth-and-urgency': { title: 'Weaving Myth & Manufacturing Urgency', description: 'Create irresistible desire through scarcity + story' },
-  'box-worth-300': { title: 'The $300 Empty Box', description: 'Tiffany\'s packaging IS the product' },
+  'value-ladder': { title: 'The Value Ladder & Hidden Menu', description: 'Secret tiers that create aspiration' },
+  'box-worth-300': { title: 'The $300 Empty Box', description: "Tiffany's packaging IS the product" },
   'story-taste-experiment': { title: 'Your Story Changes How Products TASTE', description: 'Story literally alters perception' },
-  'scarcity-calendar': { title: 'Le Creuset\'s Scarcity Engine', description: 'One color per year creates collectors' },
-  'anchor-moments': { title: 'Ralph Lauren\'s Anchor Moments', description: '$20K bag makes $200 polo feel cheap' },
+  'scarcity-calendar': { title: "Le Creuset's Scarcity Engine", description: 'One color per year creates collectors' },
+  'anchor-moments': { title: "Ralph Lauren's Anchor Moments", description: '$20K bag makes $200 polo feel cheap' },
   'irrational-loyalty': { title: 'The Pizza Test & Sock Test', description: 'Once identity forms, logic dies' },
-  'reciprocity-engine': { title: 'The 42% Sales Trick (That\'s Not a Trick)', description: 'Why giving away free samples increased sales 42%' },
+  'reciprocity-engine': { title: "The 42% Sales Trick (That's Not a Trick)", description: 'Why giving away free samples increased sales 42%' },
   'gucci-short-termism': { title: 'Why Gucci Is Dying', description: 'Fashion chases trends. Luxury chases timelessness' },
   'ethical-persuasion-compass': { title: 'The Magic Show Test', description: 'The ethical line between persuasion and manipulation' },
   'two-worlds-mastery': { title: 'The Two Worlds Every DTC Founder Must Master', description: 'Performance marketing vs brand building' },
-  'race-to-bottom-escape': { title: 'Why Your ROAS Is Killing Your Business', description: 'You\'re winning every battle and losing the war' },
+  'race-to-bottom-escape': { title: 'Why Your ROAS Is Killing Your Business', description: "You're winning every battle and losing the war" },
   'founder-operating-system': { title: 'The 4 Traits of Legendary Brand Founders', description: 'What separates iconic founders from the rest' },
   '13800-percent-effect': { title: 'Why 10% Better = 13,800% Better', description: 'Small improvements compound into massive advantages' },
   'dior-pricing-secret': { title: 'The $57 Bag That Sells for $3,500', description: 'What Dior and Rolex know about pricing' },
-  'consumption-conversion': { title: 'Why Your Product Page Isn\'t Converting', description: 'The gap between consumption and conversion' },
+  'consumption-conversion': { title: "Why Your Product Page Isn't Converting", description: 'The gap between consumption and conversion' },
   'luxury-mindset-shift': { title: 'The 4 Mindset Shifts That Create Premium Brands', description: 'Transform your thinking from commodity to luxury' },
   // CRO & Testing lessons
   'three-cro-tests': { title: 'The 3 CRO Tests That Actually Move Revenue', description: 'Focus on tests that impact the bottom line' },
@@ -462,12 +446,18 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'celebrity-gifting-flywheel': { title: 'The Celebrity Gifting Flywheel', description: 'Turn free products into millions in influence' },
   'forbidden-coffee-hook': { title: 'The Forbidden Coffee Hook', description: 'Mystery and exclusivity wrapped in a story' },
   // Meta Ads 2026 lessons (Andromeda)
+  'meta-three-second-hook': { title: 'The 3-Second Hook Rule', description: 'Meta judges your creative in the first 3 seconds' },
+  'meta-70-20-10-rule': { title: 'The 70/20/10 Creative Rule', description: '70% proven, 20% iteration, 10% wild experiments' },
   'meta-ga4-integration': { title: 'The GA4 Signal Hack', description: 'Feed Meta high-quality signals via GA4' },
   'meta-1-1-x-structure': { title: 'The 1-1-X Structure', description: '1 campaign, 1 ad set, X creatives' },
+  // Meta Ads 2026 lessons (Performance)
   'meta-auction-formula': { title: 'The Meta Auction Formula', description: 'Total Value = Bid × EAR × Quality' },
   'meta-controls-vs-suggestions': { title: 'Controls vs Suggestions', description: 'Hard boundaries vs soft signals in targeting' },
-  // Additional CRO & Testing lessons
+  'meta-creative-ecosystem': { title: 'The Creative Ecosystem', description: 'Build 20-50 meaningfully different ads' },
+  'meta-capi-pixel-setup': { title: 'CAPI + Pixel Setup', description: 'Dual tracking is now mandatory' },
+  // Additional missing lessons
   'product-reviews-test': { title: 'Product Reviews Test', description: 'Do reviews actually increase conversions?' },
+  'ascension-ladder': { title: 'The Ascension Ladder', description: 'Move customers up the value chain' },
   'brain-friendly-ux': { title: 'Brain-Friendly UX', description: 'Design for how the brain actually works' },
   'brand-moat': { title: 'The Brand Moat', description: 'Build defensible competitive advantages' },
   'brand-promise-code': { title: 'The Brand Promise Code', description: 'Craft promises that convert' },
@@ -476,7 +466,9 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'emotional-gap': { title: 'The Emotional Gap', description: 'Bridge the gap between desire and action' },
   'emotional-problem': { title: 'The Emotional Problem', description: 'Find the real problem behind the problem' },
   'five-value-heuristics': { title: 'The 5 Value Heuristics', description: 'Mental shortcuts for perceived value' },
+  'ice-prioritization': { title: 'ICE Prioritization', description: 'Impact, Confidence, Ease framework' },
   'identity-shift-effect': { title: 'The Identity Shift Effect', description: 'When buying becomes becoming' },
+  'le-creuset-scarcity-engine': { title: 'The Le Creuset Scarcity Engine', description: 'Limited colors create collectors' },
   'local-holiday-legitimacy': { title: 'Local Holiday Legitimacy', description: 'Cultural moments that drive sales' },
   'logo-is-worthless': { title: 'Your Logo Is Worthless', description: 'Brand equity isn\'t in the symbol' },
   'micro-yes-engine': { title: 'The Micro-Yes Engine', description: 'Build momentum through tiny commitments' },
@@ -500,42 +492,55 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'story-changes-taste': { title: 'Story Changes Taste', description: 'Narrative literally alters perception' },
   'thirty-five-thousand-decisions': { title: '35,000 Decisions', description: 'Reduce decision fatigue to convert' },
   'whale-customer-paradox': { title: 'The Whale Customer Paradox', description: 'Your best customers behave differently' },
-  // Google Ads lessons
+  // Google Ads 2026 lessons
+  'google-highest-cpa-wins': { title: 'Why The Highest CPA Wins', description: 'The counterintuitive truth about Google Ads dominance' },
+  'google-product-feed-mastery': { title: 'Your Product Feed IS Your Ad', description: 'The hidden weapon for Shopping & PMax success' },
+  'google-pmax-blueprint': { title: 'The PMax Asset Group Blueprint', description: 'Stop forcing Google AI to guess' },
   'google-data-quality-edge': { title: 'Better Data In, Better AI Out', description: 'The quality edge that wins in 2026' },
   'google-competitor-conquest': { title: 'Competitor Conquest', description: 'Steal market share legally with Google Ads' },
+  // Google Shopping Blueprint lessons
   'google-shopping-intent': { title: 'Active Intent: Why Google Shopping Wins', description: 'Capture users who are actively searching to buy' },
   'google-store-trust-checklist': { title: 'Earn Google\'s Trust First', description: 'The store readiness checklist to avoid suspension' },
   'google-hero-product-funnel': { title: 'Find Your Hero Products', description: 'From clicks to winners - buying data not profit' },
   'google-click-fraud-shield': { title: 'Shield Your Budget from Click Fraud', description: 'Protect your data from bots and competitors' },
   'google-ai-max-decision': { title: 'AI Max: Power vs Control', description: 'The decision framework for Google\'s AI automation' },
+  // Google Growth Engine lessons
   'google-negative-keyword-colander': { title: 'The Negative Keyword Colander', description: 'Filter out waste - only profitable clicks get through' },
   'google-optimization-cadence': { title: 'The Optimization Rhythm', description: 'Stop random tinkering - follow a disciplined cadence' },
   'google-ad-assets-arsenal': { title: 'Free Real Estate: Ad Assets', description: 'Make your ads bigger and more clickable - for free' },
   'google-landing-page-bridge': { title: 'The Click is Only Half the Battle', description: 'What happens AFTER the click determines success' },
   'google-ai-overviews-opportunity': { title: 'Ads in AI Overviews', description: 'Capture users in Google\'s new AI-powered search results' },
+  // Google Ads Advanced lessons
   'google-brand-moat': { title: 'Brand is the Ultimate Moat', description: 'The barrier competitors can\'t copy with a bigger budget' },
   'google-budget-reallocation': { title: 'Feed Your Winners', description: 'How to go from 2.8x to 5.1x ROAS by reallocating budget' },
   'google-focus-firepower': { title: 'Focus Your Firepower', description: 'Stop spreading thin - consolidate budget on bestsellers' },
   'google-influencer-creative': { title: 'Outsource Your Creative Genius', description: 'The scaling hack: hire influencers for ad content' },
-  // Business lessons continued
+  // Business Fundamentals lessons
+  'biz-infinite-money-engine': { title: 'The Infinite Money Engine', description: 'The single equation that transforms eCommerce into a video game with unlimited money' },
   'biz-rat-brain-hijack': { title: 'The Rat Brain Hijack', description: 'How to command attention by triggering the subconscious mind' },
   'biz-velocity-advantage': { title: 'The Velocity Advantage', description: 'Why speed is the biggest unfair advantage in business' },
   'biz-remarkable-product': { title: 'Build Something Remarkable', description: 'Why good enough products fight the laws of the matrix forever' },
   'biz-asset-not-job': { title: 'Build an Asset, Not a Job', description: 'The $3 million difference between earning income and building wealth' },
+  // Business Leverage Playbook lessons
   'biz-leverage-equation': { title: 'The Leverage Equation', description: 'Stop working harder. Start working smarter with the equation that changes everything.' },
   'biz-counter-position': { title: 'The Counter-Position Strategy', description: 'Create a battlefield where the giants\' money is worthless.' },
   'biz-awareness-sweet-spot': { title: 'The Market Awareness Sweet Spot', description: 'Enter markets where customers feel the pain but don\'t know the solution exists.' },
   'biz-barbell-strategy': { title: 'The Barbell Strategy', description: '5% big swings. 95% small wins. Avoid the dangerous middle.' },
   'biz-one-pager-blueprint': { title: 'The One-Pager Blueprint', description: 'Kill shiny object syndrome with the 4 questions that become your North Star.' },
+  // E-commerce Cheat Code Business lessons
   'biz-infinite-money-loop': { title: 'The Infinite Money Loop', description: 'The 6-step flywheel that turns paid advertising into infinite profit' },
-  'biz-marketing-company': { title: 'You\'re Not a Brand', description: 'The identity shift that separates winners from wannabes' },
+  'biz-marketing-company': { title: "You're Not a Brand", description: 'The identity shift that separates winners from wannabes' },
   'biz-product-expansion': { title: 'The Ridge Playbook', description: 'How Ridge solved their LTV problem with product expansion' },
   'biz-zero-cac-engine': { title: 'The $0 CAC Engine', description: 'Get customers for free before you ever spend on ads' },
   'biz-creative-targeting': { title: 'Creative is the New Targeting', description: 'Volume + Diversity + Measurement: The system for winning' },
+  // The Infinite Money Equation lessons
+  'biz-3x-threshold': { title: 'The 3x Threshold', description: 'The single equation that separates struggling stores from money-printing machines' },
   'biz-asymmetric-monopoly': { title: 'The Asymmetric Monopoly', description: 'How a 1400:1 ratio creates a legal monopoly nobody can compete with' },
   'biz-authenticity-anchor': { title: 'The Authenticity Anchor', description: 'How Nike stayed cool for 40 years while competitors chased trends and died' },
   'biz-brand-ltv-engine': { title: 'The Brand LTV Engine', description: 'How Ralph Lauren, LEGO, and Le Creuset engineer endless reasons to return' },
   'biz-brand-temple': { title: 'The Brand Temple Strategy', description: 'How Ralph Lauren, LEGO, and Le Creuset built billion-dollar empires through loyalty' },
+  'biz-cash-conversion': { title: 'The Negative Cash Conversion Cycle', description: 'How Davie Fogarty bootstrapped The Oodie to nearly $1B using customer money' },
+  'biz-closer-framework': { title: 'The CLOSER Framework', description: 'Alex Hormozi\'s battle-tested 6-step sales system that converts without being pushy' },
   'biz-courage-variable': { title: 'The Courage Variable', description: 'The hidden code behind every empire: 7,000 failures, £2 profit, and betting it all' },
   'biz-empathy-engine': { title: 'The Empathy Engine', description: 'The invisible difference between good service and service that creates lifelong customers' },
   'biz-four-pillars': { title: 'The Four Pillars Protocol', description: 'The complete framework to escape the wheel and build a business that prints money' },
@@ -548,12 +553,13 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'biz-ltv-levers': { title: 'The LTV Control Panel', description: '7 levers to increase customer lifetime value and maximize profitability' },
   'biz-model-vs-method': { title: 'Model vs Method', description: 'Why the best model beats the best tactics every single time' },
   'biz-objection-dance': { title: 'The Objection Dance', description: 'Handling objections is a dance, not a fight. 4 techniques that disarm resistance' },
+  'biz-operator-mindset': { title: 'The Operator\'s Mindset', description: 'How Ben Francis built Gymshark to $1.5B by putting the model above his ego' },
   'biz-purchase-cycle-engine': { title: 'The Purchase Cycle Engineer', description: 'How Le Creuset turned a once-a-decade purchase into an annual buying event' },
   'biz-replication-protocol': { title: 'The Replication Protocol', description: 'Alex Hormozi\'s secret: Simple scales, fancy fails. Why systems beat talent' },
   'biz-rfm-secret': { title: 'The RFM Secret', description: 'How to identify your best customers and make more money from fewer people' },
   'biz-rule-of-100': { title: 'The Rule of 100', description: 'The volume strategy that separates dreamers from millionaires' },
   'biz-valley-protocol': { title: 'The Valley of Despair Protocol', description: 'Why 97% of entrepreneurs quit at the exact moment they should push harder' },
-  // LTV:CAC Playbook lessons
+  // New LTV:CAC Playbook lessons
   'biz-high-margin-fortress': { title: 'The High Margin Fortress', description: 'Build a margin moat that competitors can\'t cross' },
   'biz-ridge-wallet-protocol': { title: 'The Ridge Wallet Protocol', description: 'How Ridge solved the one-product problem and unlocked infinite LTV' },
   'biz-20-domination': { title: 'The 20% Domination Rule', description: '20% of your customers generate 80% of your revenue' },
@@ -575,7 +581,6 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
   'biz-price-anchoring': { title: 'Price Anchoring Power', description: 'Why your $47 offer looks irresistible next to $297' },
   'biz-look-back-window': { title: 'The Look-Back Window', description: 'Why your 30-day data is lying to you' },
 };
-
 // Generate prompts for lessons that don't have custom prompts in lessonPromptData
 // Uses the premium YouTube thumbnail style: white grid paper, bold simple text, clean visuals
 Object.keys(lessonMeta).forEach(slug => {
@@ -634,7 +639,7 @@ export default function AdminLessonThumbnailsPage() {
         (thumbnailData || []).map((t: { slug: string; thumbnail_url: string; updated_at: string }) => [t.slug, t])
       );
 
-      // Combine lesson meta with thumbnail data
+      // Combine lesson meta with thumbnail data - KEEP ORIGINAL ORDER from lessonMeta (same as learn page)
       const lessonList: LessonThumbnail[] = allSlugs.map(slug => ({
         slug,
         title: lessonMeta[slug]?.title || slug,
@@ -642,12 +647,7 @@ export default function AdminLessonThumbnailsPage() {
         updated_at: (thumbnailMap.get(slug) as { updated_at?: string } | undefined)?.updated_at || null,
       }));
 
-      // Sort: lessons without thumbnails first, then alphabetically
-      lessonList.sort((a, b) => {
-        if (!a.thumbnail_url && b.thumbnail_url) return -1;
-        if (a.thumbnail_url && !b.thumbnail_url) return 1;
-        return a.title.localeCompare(b.title);
-      });
+      // NO SORTING - keep the exact same order as the learn page's lessonMeta
 
       setLessons(lessonList);
       setFilteredLessons(lessonList);
