@@ -92,187 +92,188 @@ const imageAssets = {
   ikea: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/IKEA_logo.svg.png',
 };
 
-// Prompt data for each lesson - ChatGPT thumbnail generation prompts
+// Prompt data for each lesson - Premium YouTube Thumbnail Style Prompts
+// Style: White grid paper background, bold simple text, real product imagery, professional human cutouts
 const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // Psychology & Copywriting Core
   'familiar-surprise-secret': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Split brain visual - one half shows familiar comfort (home icon), other half shows exciting surprise (lightning bolt). Text overlay: "MAYA" in bold. Use dramatic lighting with gold accents. Clean white background with subtle grid pattern. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Large bold black text "it works." on left side. On the right: Apple logo floating above iPhone, both with slight shadow. Clean, minimal, professional. High-end YouTube thumbnail style. In the styles I uploaded you.',
     images: [imageAssets.apple],
   },
   'red-button-effect': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Giant glowing red "DO NOT PRESS" button with a finger hovering above it. Intense psychological tension. Text: "WHY YOU CANT RESIST". Dark dramatic background with red glow. High contrast, cinematic feel. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. Solid BLACK background. Giant realistic red glossy "DO NOT PRESS" button in center. Bold white text top: "why you click". Photorealistic button with reflection. Clean, dramatic, minimal. In the styles I uploaded you.',
     images: [],
   },
   'fred-method': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Four brain sections labeled F-R-E-D, each glowing different color. Text: "F.R.E.D." prominently displayed. Professional mind-mapping aesthetic. Clean white background with subtle neural network patterns. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic 3D human brain in center with 4 colored cables/hooks attached (red, blue, green, yellow). Bold black text: "F.R.E.D." Clean, professional, like a medical diagram meets YouTube. In the styles I uploaded you.',
     images: [],
   },
   'emotion-decides': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Human head split in two - emotional colorful side vs logical grayscale side. Heart symbol dominating. Text: "Emotion DECIDES". Clean background, dramatic contrast between emotional warmth and logical coldness. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic 3D heart on left, brain on right, heart is 3x bigger. Bold black text: "emotion wins." Clean shadows, professional product-style rendering. In the styles I uploaded you. I uploaded an image of the person - place them on right side looking at the heart.',
     images: [imageAssets.danielKahneman],
   },
   'gatekeeper-method': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Brain with four different colored doors/gates, one opening with light streaming through. Text: "4 MOVES" in bold. Premium look with gold accents. Suggests bypassing mental barriers. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic brain with a small door/gate opening on it, golden light coming through. Bold black text: "4 doors." Minimal, clean, professional. In the styles I uploaded you.',
     images: [],
   },
   'three-second-rule': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Stopwatch frozen at 3 seconds with dramatic lighting. Attention grabbing urgency. Text: "3 SECONDS" as main focus. High contrast with time-critical red accents. Countdown aesthetic. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. Solid RED background. Giant white bold text: "3 seconds." Small realistic stopwatch icon below text. High contrast, urgent, clean. Like MrBeast thumbnail style. In the styles I uploaded you.',
     images: [],
   },
   'science-of-selling': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Laboratory beaker filled with dollar signs, scientific formula written on board. Text: "The FORMULA". Clean scientific aesthetic with money elements. White lab coat vibes meets wealth. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Glass laboratory beaker filled with realistic dollar bills overflowing. Bold black text: "the formula." Scientific but premium, clean shadows. In the styles I uploaded you.',
     images: [],
   },
   'persuasion-blueprint': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Architectural blueprint unrolling with persuasion elements as building blocks. Text: "BLUEPRINT" in technical font. Premium dark blue background with white line drawings. Engineering meets psychology. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Rolled up blueprint paper with brain diagram visible. Bold black text: "blueprint." Professional, architectural feel. In the styles I uploaded you. I uploaded an image of Robert Cialdini - place his cutout on right side.',
     images: [imageAssets.robertCialdini],
   },
   'persuasion-stack': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Stacked layers like a premium sandwich or tech stack, each layer labeled. Text: "THE STACK" bold. Colors progressing from bottom to top. Clean 3D visualization. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Stack of 5 colorful layers like a burger diagram, each layer different color. Bold black text: "the stack." 3D rendered, professional, clean. In the styles I uploaded you.',
     images: [],
   },
   'wiifm-principle': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Radio tuner dial with "WIIFM" frequency highlighted and glowing. Text: "WIIFM" prominently. Retro radio meets modern design. Customer asking "Whats In It For Me?" implied. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Person pointing at themselves with questioning expression. Bold black text: "what about ME?" Simple, relatable, clean. In the styles I uploaded you.',
     images: [],
   },
   'rule-of-one': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Single powerful number "1" in gold, surrounded by crossed out multiples. Text: "RULE OF ONE". Minimalist, premium feel. The power of singular focus visualized. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. Solid BLACK background. Giant gold metallic "1" in center, very shiny and premium. Bold white text below: "just one." Luxury, minimal, powerful. In the styles I uploaded you. I uploaded an image of Gary Halbert - small cutout in corner.',
     images: [imageAssets.garyHalbert],
   },
 
   // Meta Ads Lessons
   'meta-three-second-hook': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Phone screen with Meta logo and a dramatic hook visual. Stopwatch at 3 seconds. Text: "3 SEC HOOK". Split second attention capture aesthetic. Meta blue with urgent red accents. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Large Meta logo on left. iPhone showing video ad with "3" overlay on screen. Bold black text: "3 seconds." Clean, tech-focused. In the styles I uploaded you.',
     images: [imageAssets.meta],
   },
   'meta-70-20-10-rule': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Pie chart showing 70/20/10 split in Meta brand colors. Text: "70/20/10" prominently. Clean data visualization with creative elements flowing from each section. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Three stacks of money - big stack (70), medium (20), small (10). Meta logo floating above. Bold black text: "70/20/10" Numbers are the focus. Clean, data-driven look. In the styles I uploaded you.',
     images: [imageAssets.meta],
   },
   'meta-creative-ecosystem': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Ecosystem visualization with 20-50 ad creatives orbiting like planets around Meta logo sun. Text: "CREATIVE ECOSYSTEM". Vibrant, dynamic, showing volume and diversity. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Meta logo in center with 20+ small ad thumbnails orbiting around it like planets. Bold black text: "50 ads." Volume visualization, busy but organized. In the styles I uploaded you.',
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
   'meta-capi-pixel-setup': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Two tracking signals merging - Pixel and CAPI visualized as data streams combining. Text: "CAPI + PIXEL". Technical but clean, showing dual tracking power. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Two data streams (blue and purple) merging into one. Meta logo and code brackets visible. Bold black text: "CAPI + Pixel" Technical but clean. In the styles I uploaded you.',
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
   'meta-automated-rules': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Robot hand adjusting campaign settings with automation gears. Text: "AUTO RULES". Efficiency and automation aesthetic. Meta blue with mechanical elements. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Robot hand pressing buttons on a dashboard. Meta logo visible. Bold black text: "autopilot." Clean automation aesthetic. In the styles I uploaded you.',
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
   'cbo-vs-abo': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Boxing ring with "CBO" vs "ABO" in opposite corners. Text: "CBO vs ABO" as main title. Competitive tension, decision point visual. Meta colors with dramatic lighting. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. "CBO" on left in blue, "VS" in center red, "ABO" on right in green. Boxing gloves or versus symbol. Bold, competitive. Meta logo small in corner. In the styles I uploaded you.',
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
 
   // Google Ads Lessons
   'google-highest-cpa-wins': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Trophy with highest CPA number, competitors with lower CPAs below. Text: "HIGHEST CPA WINS". Counterintuitive concept visual. Google colors with gold trophy. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Gold trophy with "$50 CPA" on it, smaller losing trophies with "$20 CPA". Bold black text: "highest wins." Counterintuitive, Google colors accent. In the styles I uploaded you.',
     images: [imageAssets.google],
   },
   'google-pmax-blueprint': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: PMax structure diagram with asset groups visualized as building blocks. Text: "PMAX BLUEPRINT". Google colors, architectural precision. Technical but accessible. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Blueprint/diagram showing PMax structure with boxes connected. Google logo. Bold black text: "PMax setup." Technical but accessible. In the styles I uploaded you.',
     images: [imageAssets.google],
   },
   'google-product-feed-mastery': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Product feed transforming into a powerful ad. Data flowing into shopping results. Text: "FEED = AD". Clean visualization of feed optimization. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Spreadsheet/data feed transforming into Google Shopping ad. Bold black text: "feed = ad." Data visualization, clean. In the styles I uploaded you.',
     images: [imageAssets.google, imageAssets.shopify],
   },
 
   // Business & Strategy Lessons
   'biz-infinite-money-engine': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Perpetual motion machine made of dollar bills, infinite loop visual. Text: "INFINITE MONEY". Gold and green money colors, mechanical precision. Wealth generation visualized. In the style I uploaded you. I uploaded an image of Alex Hormozi.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Circular arrow made of dollar bills (infinite loop). Pile of money in center. Bold black text: "infinite money." I uploaded an image of Alex Hormozi - place his cutout on right side pointing at the money loop. In the styles I uploaded you.',
     images: [imageAssets.alexHormozi],
   },
   'biz-3x-threshold': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Calculator showing "3X" result with dramatic breakthrough visual. Text: "3X THRESHOLD". Line between struggling and thriving stores. Mathematical precision meets business success. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Giant "3X" in bold red. Calculator or chart showing multiplication. Bold black text: "the threshold." Mathematical, breakthrough feeling. I uploaded an image - place person cutout pointing at the 3X. In the styles I uploaded you.',
     images: [imageAssets.alexHormozi],
   },
   'biz-operator-mindset': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Control room dashboard with metrics, pilot/operator aesthetic. Text: "OPERATOR MINDSET". Professional command center vibes. Clean, systematic. In the style I uploaded you. I uploaded an image of Ben Francis.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Pilot cockpit dashboard with metrics/gauges. Bold black text: "operator mode." Gymshark logo visible. I uploaded an image of Ben Francis - place his cutout in pilot seat or pointing at dashboard. In the styles I uploaded you.',
     images: [imageAssets.benFrancis, imageAssets.gymshark],
   },
   'biz-cash-conversion': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Cash flowing in negative/reverse cycle, money multiplying. Text: "NEGATIVE CASH CYCLE". Mind-bending money visualization. Shows bootstrapping power. In the style I uploaded you. I uploaded an image of Davie Fogarty.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Money flowing in reverse/negative direction, multiplying. "-30 days" text visible. Bold black text: "negative cash." The Oodie product visible. I uploaded an image of Davie Fogarty - place his cutout on right side smiling. In the styles I uploaded you.',
     images: [imageAssets.davieFogarty, imageAssets.theOodie],
   },
   'biz-closer-framework': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Six steps arranged as ascending staircase to a handshake/close. Text: "C.L.O.S.E.R." in bold. Sales mastery aesthetic. Professional, conversion-focused. In the style I uploaded you. I uploaded an image of Alex Hormozi.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Handshake with dollar signs. "C.L.O.S.E.R." spelled out vertically like a checklist. Bold black text: "6 steps." I uploaded an image of Alex Hormozi - place his cutout pointing at the list. In the styles I uploaded you.',
     images: [imageAssets.alexHormozi],
   },
 
   // Psychology of Sales
   'borrowed-trust': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Trust being transferred like energy between two figures, one authoritative. Text: "BORROWED TRUST". Authority badges and social proof elements. Clean, credible aesthetic. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Trust badges/verification checkmarks transferring between two figures. Bold black text: "borrow trust." Authority symbols visible. I uploaded an image of Robert Cialdini - small cutout in corner. In the styles I uploaded you.',
     images: [imageAssets.robertCialdini],
   },
   'certainty-transfer': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Conviction/certainty visualized as glowing energy transferring to customer. Text: "CERTAINTY TRANSFER". Confident seller, convinced buyer visual. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Glowing energy/confidence transferring from seller to buyer (two silhouettes). Bold black text: "transfer it." Clean, conceptual. In the styles I uploaded you.',
     images: [],
   },
   'authority-over-hope': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Authority figure guiding vs hopeful person wishing. Split comparison. Text: "AUTHORITY > HOPE". Confident guidance aesthetic. Premium trust badges visible. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Split image: left side shows "hoping" (crossed fingers), right shows "knowing" (confident pointing). Bold black text: "stop hoping." In the styles I uploaded you.',
     images: [],
   },
   'dopamine-blueprint': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Brain with dopamine pathways lighting up, reward loop visualization. Text: "DOPAMINE LOOP". Addictive design aesthetic, neural pathways. Purple/gold colors. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic brain with notification badges and reward symbols attached. Red notification bubble with "99+". Bold black text: "addicted." In the styles I uploaded you.',
     images: [],
   },
   'unity-principle': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: "WE" replacing "I/YOU" visually, two figures merging into one. Text: "WE > YOU". Partnership and belonging visual. Warm, inclusive aesthetic. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Two figures merging into one, "WE" text prominent. Bold black text: "we > you." Partnership visual. I uploaded an image of Robert Cialdini - small cutout in corner. In the styles I uploaded you.',
     images: [imageAssets.robertCialdini],
   },
 
   // Conversion & CRO Lessons
   'decoy-effect': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Three pricing options with middle one as obvious "decoy". Text: "THE DECOY". 43% increase callout. Pricing psychology visual. Clean, comparative layout. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Three pricing cards - small, medium (highlighted/glowing), large. "+43%" badge on medium. Bold black text: "the decoy." Pricing psychology visual. In the styles I uploaded you.',
     images: [],
   },
   'paradox-of-choice': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Overwhelmed person facing 24 options vs calm person facing 6. Text: "LESS = MORE". Jam jar experiment visual. Choice overload contrast. In the style I uploaded you. I uploaded an image of Sheena Iyengar.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Left side: overwhelming 24 jam jars. Right side: clean 6 jam jars. Bold black text: "less = more." I uploaded an image of Sheena Iyengar - place her cutout between the two sides looking confused at 24, happy at 6. In the styles I uploaded you.',
     images: [imageAssets.sheenaIyengar],
   },
   'ice-prioritization': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: ICE cube with I-C-E letters, prioritization matrix visual. Text: "I.C.E." prominently. Clean testing framework aesthetic. Data-driven decision visual. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Ice cube with "I.C.E." letters visible inside, like frozen text. Prioritization checklist beside it. Bold black text: "prioritize." In the styles I uploaded you.',
     images: [],
   },
   'five-second-test': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Website blurring after 5 seconds, clarity vs confusion. Text: "5 SECOND TEST". Timer countdown aesthetic. First impression importance. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Website screenshot that is half blurred/half clear. Stopwatch showing "5". Bold black text: "5 seconds." Clarity vs confusion visual. In the styles I uploaded you.',
     images: [],
   },
   'framing-effect-mastery': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Same object in two different frames looking completely different. Text: "SAME FACTS. DIFFERENT FRAME." Perception manipulation visual. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Same product in two different frames/contexts looking completely different (cheap vs premium presentation). Bold black text: "same thing." I uploaded an image - place person cutout looking surprised. In the styles I uploaded you.',
     images: [imageAssets.danielKahneman],
   },
   'speed-equals-trust': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Loading bar with dollar signs filling up as speed increases. Text: "$1.7B SPEED BUMP". Performance equals revenue visual. Urgency and optimization. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Loading bar at 99% with dollar signs. Amazon logo visible. "$1.7B" in bold red. Bold black text: "0.1 second." Speed = money visual. In the styles I uploaded you.',
     images: [imageAssets.amazon],
   },
 
   // Luxury & Brand Lessons
   'value-ladder': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Hidden menu behind velvet rope, ascending tiers from basic to VIP. Text: "HIDDEN MENU". Luxury exclusivity visual. Premium gold and black. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. Solid BLACK background. Velvet rope with "VIP" sign. Hidden menu card peeking out. Rolex logo small. Bold white text: "hidden menu." Luxury exclusivity. In the styles I uploaded you.',
     images: [imageAssets.rolex, imageAssets.reconvert],
   },
   'ascension-ladder': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Customer climbing golden ladder through product tiers. Text: "ASCENSION". Upward mobility visual. Premium progression aesthetic. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Golden ladder going upward with product icons on each rung (cheap to expensive). Bold black text: "climb up." Progression visual. In the styles I uploaded you.',
     images: [imageAssets.reconvert],
   },
   'post-purchase-goldmine': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Gold nuggets hidden behind thank you page, $40 transforming to $120. Text: "$40 to $120". Hidden revenue discovery visual. Gold rush aesthetic. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Thank you page with gold nuggets/coins spilling out. "$40 → $120" transformation. Bold black text: "hidden gold." Revenue discovery. In the styles I uploaded you.',
     images: [imageAssets.reconvert],
   },
   'le-creuset-scarcity-engine': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Colorful Le Creuset pots with "LIMITED" and "SOLD OUT" tags, collectors lined up. Text: "SCARCITY ENGINE". FOMO and collection urge visual. Premium cookware aesthetic. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Colorful Le Creuset Dutch ovens in a row, one with "SOLD OUT" red banner. Collector lineup implied. Bold black text: "sold out." I uploaded Le Creuset logo. In the styles I uploaded you.',
     images: [imageAssets.leCreuset],
   },
   'wishlist-effect': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Heart wishlist icon with ownership glow around products. Text: "+8% CVR" callout. Endowment effect visual. Emotional attachment to items. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Heart/wishlist icon glowing around a product. "+8% CVR" in green badge. Bold black text: "wishlist trick." Emotional attachment visual. In the styles I uploaded you.',
     images: [imageAssets.vitals],
   },
   'blind-spot-effect': {
-    prompt: 'Create a premium 5:4 wide thumbnail. Concept: Eye with visible blind spot, hidden opportunities in peripheral. Text: "BLIND SPOT". What customers cant see about themselves. Revelation visual. In the style I uploaded you.',
+    prompt: 'Create a 5:4 wide YouTube thumbnail. White grid paper background. Realistic eye with visible blind spot area highlighted. Hidden opportunity symbols in peripheral. Bold black text: "blind spot." In the styles I uploaded you.',
     images: [imageAssets.grapevine],
   },
 
@@ -576,11 +577,14 @@ const lessonMeta: Record<string, { title: string; description: string }> = {
 };
 
 // Generate prompts for lessons that don't have custom prompts in lessonPromptData
+// Uses the premium YouTube thumbnail style: white grid paper, bold simple text, clean visuals
 Object.keys(lessonMeta).forEach(slug => {
   if (!lessonPromptData[slug]) {
     const lesson = lessonMeta[slug];
+    // Extract a short 2-3 word hook from the title
+    const shortTitle = lesson.title.replace(/^The\s+/i, '').toLowerCase();
     lessonPromptData[slug] = {
-      prompt: `Create a premium 5:4 wide thumbnail. Topic: "${lesson.title}". Concept: ${lesson.description}. Create a visually striking, conceptual image that captures this idea. Bold text overlay with the key concept. Clean white or gradient background. Premium aesthetic with dramatic lighting. In the style I uploaded you.`,
+      prompt: `Create a 5:4 wide YouTube thumbnail. White grid paper background. Visual concept for: "${lesson.description}". Bold black text: "${shortTitle.split(' ').slice(0, 3).join(' ')}." Create a simple, clean visual metaphor - use real objects, not abstract illustrations. Professional shadows, minimal elements. High-end YouTube thumbnail style like MrBeast or Alex Hormozi. In the styles I uploaded you.`,
       images: [],
     };
   }
