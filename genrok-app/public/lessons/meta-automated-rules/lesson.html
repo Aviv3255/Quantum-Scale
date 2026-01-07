@@ -163,7 +163,9 @@
         { title: 'Kill Switch (No Conversions)', description: 'If no purchases after $X spend, pause completely. Stop bleeding money.', color: '#f59e0b' },
         { title: 'Restart Rule (ROAS > Target)', description: 'If paused ad sets show strong ROAS, automatically turn back on. Capture comebacks.', color: '#3b82f6' }
       ]},
+      { type: 'automationWorkflow' },
       { type: 'content', title: 'Best Practices for Rules', body: 'Don\'t set rules too aggressive (20% budget changes are chaotic). Keep it subtle: 5-10% adjustments. Check every 6-12 hours, not every 30 minutes (too frequent = unstable campaigns). Use 24-hour attribution windows minimum - Meta needs time to optimize.' },
+      { type: 'attributionWarning' },
       { type: 'visual', title: 'Automated Rules Impact', visualType: 'stats', data: [
         { value: '24/7', label: 'Monitoring', sublabel: 'Rules never sleep', color: '#3b82f6' },
         { value: '67%', label: 'Less Manual Work', sublabel: 'Set once, runs forever', color: '#10b981' },
@@ -309,6 +311,45 @@
           </div>
         );
       }
+      if (data.visualType === 'comparison') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {data.data.left && (
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5" style={{ backgroundColor: data.data.left.color === '#ef4444' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)', borderWidth: '2px', borderColor: data.data.left.color }}>
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ background: data.data.left.color }}><Icons.X /></div>
+                    <span className="font-semibold text-sm" style={{ color: data.data.left.color }}>{data.data.left.label}</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {data.data.left.points.map((point, i) => (
+                      <li key={i} className="flex items-start gap-2 text-neutral-700 text-sm">
+                        <span style={{ color: data.data.left.color }}>-</span>{point}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+              {data.data.right && (
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5" style={{ backgroundColor: data.data.right.color === '#10b981' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(59, 130, 246, 0.1)', borderWidth: '2px', borderColor: data.data.right.color }}>
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center text-white" style={{ background: data.data.right.color }}><Icons.Check /></div>
+                    <span className="font-semibold text-sm" style={{ color: data.data.right.color }}>{data.data.right.label}</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {data.data.right.points.map((point, i) => (
+                      <li key={i} className="flex items-start gap-2 text-neutral-700 text-sm">
+                        <span style={{ color: data.data.right.color }}>+</span>{point}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+            </div>
+          </div>
+        );
+      }
       return null;
     };
 
@@ -325,6 +366,61 @@
         </div>
       </div>
     );
+    // Automated Rule Mockup Slide - Visualizes IF/THEN rule logic
+    const AutomatedRuleMockupSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+        {data.rule && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-2xl overflow-hidden">
+            {/* Rule Header */}
+            <div className="bg-neutral-900 px-5 py-3 flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent)' }}>
+                <Icons.Zap />
+              </div>
+              <div>
+                <p className="text-white font-semibold text-sm">{data.rule.name}</p>
+                <p className="text-neutral-400 text-xs">{data.rule.frequency}</p>
+              </div>
+            </div>
+            {/* Rule Body */}
+            <div className="p-5 space-y-4">
+              {/* Condition */}
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-blue-600 font-bold text-xs">IF</span>
+                </div>
+                <div className="flex-1 bg-blue-50 border border-blue-200 rounded-xl p-3">
+                  <p className="text-blue-800 font-medium text-sm">{data.rule.condition}</p>
+                  <p className="text-blue-600 text-xs mt-1">{data.rule.timeframe}</p>
+                </div>
+              </div>
+              {/* Arrow */}
+              <div className="flex justify-center">
+                <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                </div>
+              </div>
+              {/* Action */}
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
+                  <span className="text-green-600 font-bold text-xs">THEN</span>
+                </div>
+                <div className="flex-1 bg-green-50 border border-green-200 rounded-xl p-3">
+                  <p className="text-green-800 font-medium text-sm">{data.rule.action}</p>
+                </div>
+              </div>
+            </div>
+            {/* Reasoning Footer */}
+            {data.rule.reasoning && (
+              <div className="bg-neutral-50 px-5 py-3 border-t border-neutral-200">
+                <p className="text-neutral-600 text-xs"><span className="font-semibold">Why:</span> {data.rule.reasoning}</p>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </div>
+    );
+
     const StatCountdownSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
@@ -753,7 +849,11 @@
       const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
-      const isCorrect = selected === data.correctIndex;
+
+      // Support both correctIndex format and isCorrect on each option
+      const correctIndex = data.correctIndex !== undefined ? data.correctIndex : data.options.findIndex(opt => opt.isCorrect);
+      const isCorrect = selected === correctIndex;
+      const selectedOption = selected !== null ? data.options[selected] : null;
 
       useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
@@ -767,12 +867,12 @@
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className="text-neutral-700 text-sm md:text-base">{typeof option === 'string' ? option : option.text}</span>
                   </div>
                 </motion.button>
               ))}
@@ -780,7 +880,9 @@
             <AnimatePresence>
               {showFeedback && (
                 <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>
+                    {selectedOption?.feedback ? selectedOption.feedback : (isCorrect ? (data.feedback?.correct || 'Correct!') : (data.feedback?.incorrect || 'Not quite. Try again!'))}
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -788,6 +890,182 @@
         </div>
       );
     };
+
+    // Automation Workflow Slide - Shows Triple Whale's advanced automation capabilities
+    const AutomationWorkflowSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Power Up Your Rules</span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">Advanced Automation Workflow</h2>
+          <p className="text-neutral-500 text-sm mt-2">Take your automated rules to the next level with real-time data</p>
+        </motion.div>
+
+        {/* Workflow Visualization */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-5 mb-4">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {/* Step 1: Data Collection */}
+            <div className="flex-1 text-center">
+              <div className="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-2 shadow-lg shadow-blue-500/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 0 1 9-9"/></svg>
+              </div>
+              <p className="text-white text-xs font-semibold">Collect Data</p>
+              <p className="text-neutral-400 text-[10px]">Server-side tracking</p>
+            </div>
+
+            <div className="hidden md:block text-neutral-500 text-2xl">→</div>
+
+            {/* Step 2: Triple Whale Processing */}
+            <div className="flex-1 text-center">
+              <div className="w-14 h-14 mx-auto rounded-xl bg-white p-1.5 mb-2 shadow-lg">
+                <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-full h-full object-contain rounded-lg" />
+              </div>
+              <p className="text-white text-xs font-semibold">Process & Verify</p>
+              <p className="text-neutral-400 text-[10px]">Triple Whale attribution</p>
+            </div>
+
+            <div className="hidden md:block text-neutral-500 text-2xl">→</div>
+
+            {/* Step 3: Rule Triggers */}
+            <div className="flex-1 text-center">
+              <div className="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center mb-2 shadow-lg shadow-green-500/30">
+                <Icons.Zap />
+              </div>
+              <p className="text-white text-xs font-semibold">Trigger Rules</p>
+              <p className="text-neutral-400 text-[10px]">Based on true ROAS</p>
+            </div>
+
+            <div className="hidden md:block text-neutral-500 text-2xl">→</div>
+
+            {/* Step 4: Auto Actions */}
+            <div className="flex-1 text-center">
+              <div className="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center mb-2 shadow-lg shadow-purple-500/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <p className="text-white text-xs font-semibold">Auto-Scale</p>
+              <p className="text-neutral-400 text-[10px]">Smart budget control</p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Feature Cards */}
+        <div className="grid md:grid-cols-3 gap-3 mb-4">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+              </div>
+              <span className="font-semibold text-neutral-900 text-sm">Real-Time Analytics</span>
+            </div>
+            <p className="text-neutral-500 text-xs">See true performance before rules execute. No more guessing.</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <span className="font-semibold text-neutral-900 text-sm">Verified Attribution</span>
+            </div>
+            <p className="text-neutral-500 text-xs">Rules trigger on verified sales, not inflated platform numbers.</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </div>
+              <span className="font-semibold text-neutral-900 text-sm">Smart Automation</span>
+            </div>
+            <p className="text-neutral-500 text-xs">Advanced rules with custom conditions beyond basic Meta options.</p>
+          </motion.div>
+        </div>
+
+        {/* CTA */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="flex items-center justify-center gap-3">
+          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="" className="w-5 h-5 rounded" />
+            <span>Upgrade Your Automation</span>
+            <Icons.ExternalLink />
+          </a>
+        </motion.div>
+      </div>
+    );
+
+    // Attribution Warning Slide - Contextual inline mention about data accuracy
+    const AttributionWarningSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-amber-100 text-amber-700">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Critical Warning
+          </span>
+          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">Automated Rules Are Only As Good As Your Data</h2>
+        </motion.div>
+
+        {/* The Problem Visual */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-200 rounded-2xl p-5 mb-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            </div>
+            <div>
+              <h3 className="font-bold text-red-800 mb-2">The Hidden Danger</h3>
+              <p className="text-red-700 text-sm leading-relaxed mb-3">Meta over-reports conversions by 20-40% due to iOS privacy changes. When your rules trigger on inflated numbers, you scale losers and kill actual winners.</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="px-2 py-1 rounded-md bg-red-100 text-red-700 text-xs font-medium">CPA looks $35 → Actually $52</span>
+                <span className="px-2 py-1 rounded-md bg-red-100 text-red-700 text-xs font-medium">ROAS shows 3.2x → Actually 2.1x</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* The Solution */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-2xl p-5 mb-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-white border-2 border-neutral-200 p-1.5 flex-shrink-0">
+              <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-full h-full object-contain rounded-lg" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-neutral-900 mb-2">The Fix: Server-Side Attribution</h3>
+              <p className="text-neutral-600 text-sm leading-relaxed mb-3">Triple Whale tracks actual purchases from your store - not browser estimates. Your rules trigger on real data, scaling true winners and cutting real losers.</p>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-center gap-2 text-xs text-neutral-700">
+                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span>First-party data</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-neutral-700">
+                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span>iOS-proof tracking</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-neutral-700">
+                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span>True ROAS/CPA</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-neutral-700">
+                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+                  <span>Confident automation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Inline CTA */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-10 h-10 rounded-lg" />
+            <div>
+              <p className="text-white font-semibold text-sm">Fix your attribution before setting rules</p>
+              <p className="text-neutral-400 text-xs">Get accurate data with Triple Whale</p>
+            </div>
+          </div>
+          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white text-neutral-900 font-semibold text-sm hover:bg-neutral-100 transition-colors flex items-center gap-1.5">
+            <span>Get Started</span>
+            <Icons.ExternalLink />
+          </a>
+        </motion.div>
+      </div>
+    );
 
     const AccurateRulesSlide = () => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -841,34 +1119,39 @@
     );
 
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Triple Whale</a>
-            <span className="text-neutral-500 text-xs">tracks attribution accurately</span>
-          </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-14 h-14 rounded-xl flex items-center justify-center mb-3 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-2">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-sm mb-4 max-w-md leading-relaxed">You now know how to set up automated rules that scale winners and kill losers 24/7.</motion.p>
+
+        {/* Triple Whale CTA Card */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-5 max-w-md w-full mb-4">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-12 h-12 rounded-xl bg-white p-1.5 flex-shrink-0">
+              <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-full h-full object-contain rounded-lg" />
             </div>
-          </motion.div>
-        )}
+            <div className="text-left">
+              <p className="text-white font-bold text-sm">Ready to Automate Smarter?</p>
+              <p className="text-neutral-400 text-xs">Get accurate attribution for your rules</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <span className="px-2 py-1 rounded-md bg-white/10 text-neutral-300 text-[10px] font-medium">Server-side tracking</span>
+            <span className="px-2 py-1 rounded-md bg-white/10 text-neutral-300 text-[10px] font-medium">True ROAS</span>
+            <span className="px-2 py-1 rounded-md bg-white/10 text-neutral-300 text-[10px] font-medium">iOS-proof</span>
+          </div>
+          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white text-neutral-900 font-semibold text-sm transition-all hover:bg-neutral-100">
+            <span>Try Triple Whale Free</span>
+            <Icons.ExternalLink />
+          </a>
+        </motion.div>
+
+        {/* Up Next Card */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
       </div>
     );
 
@@ -962,6 +1245,9 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'automatedRuleMockup': return <AutomatedRuleMockupSlide data={slide} />;
+          case 'automationWorkflow': return <AutomationWorkflowSlide />;
+          case 'attributionWarning': return <AttributionWarningSlide />;
           case 'accurate-rules': return <AccurateRulesSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

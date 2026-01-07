@@ -169,13 +169,14 @@
         right: { label: 'Strong', value: '3.2%', result: '"Delivers 23% more conversions"', color: '#8b5cf6' },
         center: { label: 'CVR Lift', value: '+256%', result: 'Same offer, different posture', color: '#10b981' }
       }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'Tactic #2: Guided Web Design', body: 'Authority isn\'t just copy - it\'s structure. A confused buyer doesn\'t buy. Use breadcrumbs that show "You are here, next is checkout." Clear navigation that guides, not overwhelms. Structured checkout flows with progress bars. Reduce decisions, increase direction. Every page should answer: "What do I do next?" Make it so obvious they feel guided, not pressured.' },
+      { type: 'content', title: 'Tactic #2: Guided Web Design', body: 'Authority isn\'t just copy - it\'s structure. A confused buyer doesn\'t buy. Use breadcrumbs that show "You are here, next is checkout." Clear navigation that guides, not overwhelms. Structured checkout flows with progress bars. Reduce decisions, increase direction. Every page should answer: "What do I do next?" Make it so obvious they feel guided, not pressured.', toolMention: { name: 'Trust Badges Bear', text: 'Visual trust signals like payment badges and guarantees guide buyers with certainty.', link: 'https://apps.shopify.com/trust-badge-bear', logo: 'https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png' } },
       { type: 'example', scenario: 'Skincare Brand Checkout', before: { label: 'Confusing Path', text: 'Multiple CTAs, upsells everywhere, 6 form fields, "Maybe add this?" suggestions, exit intent popups' }, after: { label: 'Guided Path', text: 'One clear CTA, progress bar (Step 2 of 3), minimal fields, optional upsell AFTER purchase, clean design' }, insight: 'When you reduce decision fatigue, buyers feel guided to clarity - not pressured into confusion.' },
       { type: 'cards', title: 'Authority Design Elements', items: [
         { title: 'Single Clear CTA', description: 'One button. One action. "Add to Cart" not "Maybe Buy This?" Make the next step unmistakable.' },
         { title: 'Progress Indicators', description: 'Breadcrumbs and bars show "You\'re here, almost done." Buyers want to know they\'re on track, not lost.' },
         { title: 'Directional Copy', description: '"Next: Secure Checkout" not "Continue if you want." Every transition guides them forward with certainty.' }
       ]},
+      { type: 'authority-arsenal' },
       { type: 'content', title: 'Tactic #3: Risk Reversal as Proof of Certainty', body: 'A guarantee isn\'t just protection for the buyer - it\'s a declaration of YOUR confidence. "60-day money-back guarantee" says "I\'m so certain this works, I\'ll take all the risk." That certainty transfers. They think: "If they\'re this confident, maybe I should be too." Use guarantees as authority signals, not safety nets. Frame them as proof you believe in the outcome.' },
       { type: 'example', scenario: 'Sleep Supplement Brand', before: { label: 'Weak Guarantee', text: '"30-day money back if not satisfied"' }, after: { label: 'Authority Guarantee', text: '"Sleep better in 7 nights or we refund you AND you keep the bottle. We\'re that confident."' }, insight: 'The second guarantee screams certainty. "We KNOW this works. So much that you can keep it for free if we\'re wrong."' },
       { type: 'quiz', question: 'Which product description demonstrates the strongest authority positioning?', options: ['"Our product might help you achieve your goals if used correctly"', '"This could potentially improve your results over time"', '"Join 3,847 customers who solved [problem] in 14 days with this exact system"', '"We hope this product will work well for your needs"'], correctIndex: 2, feedback: { correct: 'Exactly! It declares a specific outcome (14 days), provides social proof (3,847), and uses certainty language ("solved" not "might help"). This is authority in action - no hoping, no maybes, just transferred certainty.', incorrect: 'Not quite. The winning answer uses certainty language ("solved" not "might"), specific outcomes (14 days), and social proof (3,847 customers). It transfers confidence to the buyer instead of asking them to hope it works.' }},
@@ -291,7 +292,26 @@
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
+
+        {data.toolMention && (
+          <motion.a
+            href={data.toolMention.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-5 flex items-center gap-3 p-3 rounded-xl bg-neutral-50 border border-neutral-200 hover:border-neutral-300 transition-all relative z-10 group"
+          >
+            <img src={data.toolMention.logo} alt={data.toolMention.name} className="w-8 h-8 rounded-lg flex-shrink-0" />
+            <div className="flex-1">
+              <span className="text-neutral-900 text-sm font-medium">{data.toolMention.name}</span>
+              <span className="text-neutral-500 text-xs block">{data.toolMention.text}</span>
+            </div>
+            <Icons.ExternalLink style={{ color: 'var(--accent)', opacity: 0.7 }} />
+          </motion.a>
+        )}
+
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -449,6 +469,63 @@
       );
     };
 
+    // Authority Arsenal Slide - showcasing trust badges as visual authority signals
+    const AuthorityArsenalSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Visual Authority</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">Your Authority Arsenal</h2>
+          <p className="text-neutral-500 text-sm md:text-base">Trust badges are instant visual proof of your authority</p>
+        </motion.div>
+
+        {/* Badge Examples Grid */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-4 gap-3 mb-6">
+          {[
+            { icon: '🔒', label: 'Secure Checkout' },
+            { icon: '💳', label: 'Payment Verified' },
+            { icon: '✓', label: 'Money-Back' },
+            { icon: '🛡️', label: 'Buyer Protected' }
+          ].map((badge, i) => (
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 + i * 0.05 }}
+              className="bg-neutral-900 rounded-xl p-3 text-center">
+              <div className="text-2xl mb-1">{badge.icon}</div>
+              <div className="text-[10px] text-neutral-400 font-medium">{badge.label}</div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Tool Integration */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)', boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.15)' }}>
+          <div className="flex items-start gap-4">
+            <img src="https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png"
+              alt="Trust Badges Bear" className="w-14 h-14 rounded-xl flex-shrink-0" />
+            <div className="flex-1">
+              <h3 className="font-bold text-neutral-900 text-base mb-1">Trust Badges Bear</h3>
+              <p className="text-neutral-600 text-sm mb-3">Add professional trust badges, payment icons, and guarantee seals to your store. These visual authority signals transfer YOUR certainty to buyers instantly.</p>
+              <div className="flex flex-wrap gap-2 mb-3">
+                <span className="px-2 py-1 bg-neutral-100 rounded-md text-[10px] font-medium text-neutral-600">Payment Icons</span>
+                <span className="px-2 py-1 bg-neutral-100 rounded-md text-[10px] font-medium text-neutral-600">Security Seals</span>
+                <span className="px-2 py-1 bg-neutral-100 rounded-md text-[10px] font-medium text-neutral-600">Guarantee Badges</span>
+                <span className="px-2 py-1 bg-neutral-100 rounded-md text-[10px] font-medium text-neutral-600">Custom Designs</span>
+              </div>
+              <a href="https://apps.shopify.com/trust-badge-bear" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition-all hover:scale-105"
+                style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+                Add Authority Badges
+                <Icons.ExternalLink />
+              </a>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+          className="text-center text-neutral-400 text-xs mt-4">
+          Buyers scan for trust signals in milliseconds. Give them visual proof of your authority.
+        </motion.p>
+      </div>
+    );
+
     const EstablishAuthoritySlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -473,10 +550,9 @@
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)', boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.15)' }}>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <Icons.Zap style={{ color: 'white', width: 16, height: 16 }} />
-              </div>
-              <span className="font-semibold text-neutral-900 text-sm">With Essential Trust Badges</span>
+              <img src="https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png"
+                alt="Trust Badges Bear" className="w-8 h-8 rounded-lg" />
+              <span className="font-semibold text-neutral-900 text-sm">With Trust Badges Bear</span>
             </div>
             <ul className="space-y-2 text-sm text-neutral-700 mb-4">
               <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span><span>Professional trust badges that radiate authority instantly</span></li>
@@ -484,7 +560,7 @@
               <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span><span>Auto-adapts to product pages, cart, and checkout</span></li>
               <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span><span>Transfers YOUR certainty to buyers with visual proof</span></li>
             </ul>
-            <a href="https://apps.shopify.com/essential-trust-badges?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition-all hover:scale-105" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <a href="https://apps.shopify.com/trust-badge-bear" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition-all hover:scale-105" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
               Add Authority Signals
               <Icons.ExternalLink />
             </a>
@@ -498,11 +574,17 @@
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand how to transfer certainty through authoritative framing, guided design, and risk reversal. Stop hoping for sales. Command them with confidence.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/essential-trust-badges?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Trust Badges</a>
-            <span className="text-neutral-500 text-xs">adds trust signals</span>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center gap-3 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
+            <img src="https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png"
+              alt="Trust Badges Bear" className="w-8 h-8 rounded-lg flex-shrink-0" />
+            <div className="flex-1 text-left">
+              <span className="text-neutral-500 text-xs">Add visual authority signals with </span>
+              <a href="https://apps.shopify.com/trust-badge-bear" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Trust Badges Bear</a>
+            </div>
+            <a href="https://apps.shopify.com/trust-badge-bear" target="_blank" rel="noopener noreferrer" className="flex-shrink-0">
+              <Icons.ExternalLink style={{ color: 'var(--accent)', width: 14, height: 14 }} />
+            </a>
           </motion.div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
@@ -581,6 +663,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'authority-arsenal': return <AuthorityArsenalSlide />;
           case 'establish-authority': return <EstablishAuthoritySlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

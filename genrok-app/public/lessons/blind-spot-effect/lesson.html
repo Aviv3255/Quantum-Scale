@@ -153,7 +153,7 @@
       { type: 'hook', headline: 'Your brain has been lying to you since birth.', subtext: 'There\'s a spot in your eye where the optic nerve connects. No vision. Complete darkness. But you\'ve never noticed it. Why? Your brain fills in what it cannot see - automatically, invisibly, perfectly. Your customers\' brains work the same way. They make decisions using shortcuts you never see. This is the Blind Spot Effect.' },
       { type: 'content', title: 'The Hidden Decision Engine', body: 'Here\'s what neuroscience reveals: 95% of your brain\'s processing happens outside your awareness. You think you\'re making rational choices, but the real decisions happen before conscious thought even begins. These aren\'t bugs in the system - they\'re features. Mental shortcuts that evolved over millions of years to help humans survive. Today, they\'re the invisible levers of human behavior.' },
       { type: 'brain-split', title: 'The Subconscious Split' },
-      { type: 'content', title: 'Cognitive Biases: Not Bugs. Features.', body: 'Your customers aren\'t irrational. They\'re running on mental shortcuts called cognitive biases - lightning-fast decision patterns that help the brain process thousands of choices per day. Understanding these biases isn\'t manipulation. It\'s speaking the native language of the human brain. When you align your message with how the brain actually works, your copy stops feeling like marketing and starts feeling like truth.' },
+      { type: 'content', title: 'Cognitive Biases: Not Bugs. Features.', body: 'Your customers aren\'t irrational. They\'re running on mental shortcuts called cognitive biases - lightning-fast decision patterns that help the brain process thousands of choices per day. Understanding these biases isn\'t manipulation. It\'s speaking the native language of the human brain. When you align your message with how the brain actually works, your copy stops feeling like marketing and starts feeling like truth.', toolMention: { text: 'The fastest way to discover which biases matter to YOUR customers? Ask them directly after purchase.', tool: 'Grapevine', link: 'https://apps.shopify.com/grapevine-post-purchase-surveys' } },
       { type: 'bias-grid', title: 'The 4 Master Biases for eCommerce' },
       { type: 'example', scenario: 'Pet Supplies Store - Halo Effect', before: { label: 'Generic Product Page', text: '"Premium Dog Food - High Quality Ingredients - $39.99 - Order Now"' }, after: { label: 'Halo Effect Applied', text: 'Clean hero image: happy golden retriever in sunlight. Minimalist design. White space. Premium typography. Price unchanged: $39.99. Conversion rate: +127%. Why? The design created a halo that made customers assume premium ingredients without reading a word.' }, insight: 'Beautiful design isn\'t decoration. It\'s a cognitive bias trigger that changes perception of value.' },
       { type: 'content', title: 'Anchoring: The First Number Wins', body: 'Your brain can\'t help it. The first number you see becomes the reference point for every judgment that follows. Show a $1,000 price first? Suddenly $497 feels like a bargain. This isn\'t trickery - it\'s how the brain processes relative value. Premium brands understand this. Budget brands ignore it. Which one are you?' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_having_a_lightbulb_moment_pure_100_white_backg_bd88fbc3-b501-446f-a37f-09b80e6320fc_3.mp4', characterPosition: 'left'},
@@ -172,9 +172,10 @@
         { value: '3.8x', label: 'conversion boost', subtext: 'When social proof is visible' },
         { value: '70%', label: 'more likely to buy', subtext: 'When seeing "bestseller" badge' }
       ]},
-      { type: 'content', title: 'The Ethical Reframe', body: 'Some people worry: "Isn\'t this manipulation?" Here\'s the paradigm shift. You\'re not manipulating people\'s psychology against them. You\'re communicating in the language the brain actually understands. These biases work whether you use them or not. Ignoring them doesn\'t make you ethical - it makes you invisible. Using them ethically to sell genuine value? That\'s mastery.' },
+      { type: 'content', title: 'The Ethical Reframe', body: 'Some people worry: "Isn\'t this manipulation?" Here\'s the paradigm shift. You\'re not manipulating people\'s psychology against them. You\'re communicating in the language the brain actually understands. These biases work whether you use them or not. Ignoring them doesn\'t make you ethical - it makes you invisible. Using them ethically to sell genuine value? That\'s mastery.', toolMention: { text: 'When customers tell you WHY they bought, you learn which biases naturally resonate with your audience.', tool: 'Grapevine', link: 'https://apps.shopify.com/grapevine-post-purchase-surveys' } },
+      { type: 'reveal-blindspots', title: 'Reveal Your Blind Spots', tool: { name: 'Grapevine Post Purchase Survey', logo: 'https://cdn.shopify.com/app-store/listing_images/61b8d79a2abde5bfe1edfeaab1bea7fb/icon/CN6e2L6r1_oCEAE=.png', link: 'https://apps.shopify.com/grapevine-post-purchase-surveys' } },
       { type: 'quiz', question: 'According to neuroscience research, what percentage of decision-making happens below conscious awareness?', options: ['25% - Most decisions are conscious', '50% - It\'s about half and half', '75% - Mostly subconscious', '95% - Almost entirely subconscious'], correctIndex: 3, feedback: { correct: 'Exactly! 95% of decision-making happens subconsciously. This is why understanding cognitive biases isn\'t manipulation - it\'s speaking the language your customer\'s brain actually uses. Your copy must reach the subconscious level to truly convert.', incorrect: 'Not quite. Research shows that 95% of decision-making happens below conscious awareness. The rational mind thinks it\'s in control, but the subconscious is making decisions before conscious thought even begins. This is why cognitive biases are so powerful.' }},
-      { type: 'completion', sources: [] }
+      { type: 'completion', sources: [], tool: { name: 'Grapevine', logo: 'https://cdn.shopify.com/app-store/listing_images/61b8d79a2abde5bfe1edfeaab1bea7fb/icon/CN6e2L6r1_oCEAE=.png', link: 'https://apps.shopify.com/grapevine-post-purchase-surveys', description: 'Uncover hidden objections with post-purchase surveys' } }
     ];
 
     const Icons = {
@@ -451,7 +452,29 @@
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
+
+        {data.toolMention && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="mt-6 p-4 rounded-xl relative z-10"
+            style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(139, 92, 246, 0.1))', border: '1px solid rgba(139, 92, 246, 0.2)' }}
+          >
+            <p className="text-sm text-neutral-600 mb-2">{data.toolMention.text}</p>
+            <a
+              href={data.toolMention.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:underline"
+              style={{ color: '#8b5cf6' }}
+            >
+              <span>Try {data.toolMention.tool}</span>
+              <Icons.ExternalLink />
+            </a>
+          </motion.div>
+        )}
+
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -592,6 +615,7 @@
 
     // RevealBlindspotsSlide - Tool recommendation for uncovering customer blind spots
     const RevealBlindspotsSlide = ({ data }) => {
+      const tool = data.tool || {};
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -645,13 +669,11 @@
               style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(139, 92, 246, 0.1))', border: '2px solid #8b5cf6' }}
             >
               <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#8b5cf6' }}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-                  </svg>
-                </div>
-                <span className="font-bold text-neutral-800 text-sm">Grapevine Surveys</span>
+              <div className="flex items-center gap-3 mb-4">
+                {tool.logo && (
+                  <img src={tool.logo} alt={tool.name} className="w-10 h-10 rounded-lg object-contain" style={{ background: 'white', padding: '2px' }} />
+                )}
+                <span className="font-bold text-neutral-800 text-sm">{tool.name || 'Grapevine Surveys'}</span>
               </div>
               <ul className="space-y-2.5">
                 <li className="flex items-start gap-2 text-neutral-700 text-sm">
@@ -681,12 +703,13 @@
             className="mt-6 text-center"
           >
             <a
-              href="https://apps.shopify.com/grapevine-post-purchase-survey"
+              href={tool.link || 'https://apps.shopify.com/grapevine-post-purchase-surveys'}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105"
+              className="inline-flex items-center gap-3 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105"
               style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 4px 14px rgba(139, 92, 246, 0.4)' }}
             >
+              {tool.logo && <img src={tool.logo} alt="" className="w-5 h-5 rounded" />}
               <span>Reveal Your Blind Spots</span>
               <Icons.ExternalLink />
             </a>
@@ -696,37 +719,58 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the invisible forces: Halo Effect for design. Anchoring for pricing. Loss Aversion for urgency. Bandwagon for social proof. These aren't tricks - they're the language your customer's brain speaks.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/grapevine-post-purchase-survey" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Grapevine</a>
-            <span className="text-neutral-500 text-xs">collects feedback</span>
+    const CompletionSlide = ({ data }) => {
+      const tool = data?.tool;
+      return (
+        <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the invisible forces: Halo Effect for design. Anchoring for pricing. Loss Aversion for urgency. Bandwagon for social proof. These aren't tricks - they're the language your customer's brain speaks.</motion.p>
+
+          {tool && (
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-4 max-w-md w-full mb-4" style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(139, 92, 246, 0.1))', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Recommended Tool</p>
+              <div className="flex items-center justify-center gap-3 mb-3">
+                {tool.logo && <img src={tool.logo} alt={tool.name} className="w-10 h-10 rounded-lg object-contain" style={{ background: 'white', padding: '2px' }} />}
+                <div className="text-left">
+                  <p className="font-bold text-neutral-800 text-sm">{tool.name}</p>
+                  <p className="text-neutral-500 text-xs">{tool.description}</p>
+                </div>
+              </div>
+              <a
+                href={tool.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold text-xs transition-all hover:scale-105"
+                style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' }}
+              >
+                <span>Reveal Your Blind Spots</span>
+                <Icons.ExternalLink />
+              </a>
+            </motion.div>
+          )}
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+            <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+            <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+            <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
           </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </div>
-    );
+          {data?.sources && data.sources.length > 0 && (
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+              <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
+              <div className="space-y-1.5">
+                {data.sources.map((source, i) => (
+                  <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
+                    {source.name}
+                    <Icons.ExternalLink />
+                  </a>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
 
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());

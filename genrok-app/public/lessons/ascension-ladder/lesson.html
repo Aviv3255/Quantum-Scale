@@ -159,6 +159,13 @@
 
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Tool integration config
+    const TOOL_CONFIG = {
+      name: 'ReConvert',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/d7c456ab4c46f0fe14c14b60c135fb26/icon/CKfh7oCa5PQCEAE=.png',
+      link: 'https://apps.shopify.com/reconvert-post-purchase-upsell'
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: [
         'How Apple turns $329 shoppers into $749 buyers',
@@ -185,6 +192,7 @@
         { value: '2.8x', label: 'higher LTV', subtext: 'Customers who climb the ladder' },
         { value: '43%', label: 'never stop', subtext: 'Continue buying ecosystem products' }
       ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_studying_the_data_looking_at_chartsgraphs_100__02345be1-0aec-48ba-a3c3-1b3e71cf1432_2.mp4', characterPosition: 'right'},
+      { type: 'tool-success-story' },
       { type: 'content', title: 'Strategy 2: The Ecosystem Prison', body: 'Once you\'re in, leaving hurts. iMessage only works with iPhone. iCloud syncs seamlessly. AirPods connect instantly. Switching to Android means losing all of this. The pain of leaving exceeds the pain of paying. So you stay. And you upgrade. And you buy more accessories. You\'re not trapped - you\'re invested.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'left'},
       { type: 'cards', title: 'Building Your Ladder (Step-by-Step)', items: [
         { title: 'Step 1: Map The Journey', description: 'What\'s the entry point? What\'s the dream purchase? Plot every logical step between them. Each tier solves a real objection or adds clear value.' },
@@ -192,6 +200,7 @@
         { title: 'Step 3: Create "Bridges"', description: 'Make adjacent tiers comparable. "For just $X more..." works when the difference is obvious. Show the contrast clearly.' },
         { title: 'Step 4: Anchor High', description: 'Show the premium option first. $2,299 iPad Pro makes $749 Air feel responsible. The high anchor reframes everything below it.' }
       ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'left'},
+      { type: 'tool-inline-tip', title: 'The Critical Moment', body: 'The best time to climb someone up your ladder? Right after they buy. Their wallet is open. Their trust is high. They\'re in "buying mode." This is when post-purchase upsells convert at 10-15% (vs 1-3% for cold traffic). The thank you page isn\'t just a confirmation - it\'s your highest-converting sales page.', tipContext: 'Post-purchase is the golden moment for ascension offers' },
       { type: 'example', scenario: 'Your Store: Fitness Equipment', before: { label: 'Without Ladder', text: 'Products:\n- Resistance bands: $29\n- Yoga mat: $49\n- Dumbbells: $89\n\nCustomers buy one thing. Never return.' }, after: { label: 'With Ladder', text: 'Entry: Starter band set - $29\nLevel 1: Home essentials kit - $79\nLevel 2: Complete gym bundle - $189\nPremium: Full setup + app - $299\n\nBridge: "You have bands. Add mat + weights for complete home gym for just $50 more than buying separately."' }, insight: 'Turn one-time buyers into ecosystem customers.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
       { type: 'visual', title: 'Where To Use Ladders', visualType: 'comparison', data: {
         left: { label: 'Physical Products', value: 'Starter → Bundle → Complete', result: 'Each tier completes the setup', color: '#8b5cf6' },
@@ -532,82 +541,93 @@
       );
     };
 
-    const ImplementUpsellsSlide = () => (
+    // ============================================
+    // TOOL SUCCESS STORY SLIDE - Unique "Case Study" Layout
+    // ============================================
+    const ToolSuccessStorySlide = () => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">Implement Post-Purchase Upsells</h2>
-          <p className="text-neutral-500 text-sm mt-2 max-w-lg mx-auto">After the initial purchase, customers are most receptive to climbing your ladder. Here's how to capture that moment.</p>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>Real Results</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">When Stores Apply This Strategy</h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-            className="bg-neutral-100 rounded-xl p-5 opacity-60">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-neutral-300 flex items-center justify-center text-neutral-500">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-              </div>
-              <span className="font-semibold text-neutral-600 text-sm">Manual Method</span>
-            </div>
-            <ul className="space-y-2 text-sm text-neutral-500">
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Build custom post-purchase pages from scratch</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Manually track upsell conversion rates</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>A/B test offers without proper analytics</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>No one-click purchase (friction kills conversions)</span>
-              </li>
-            </ul>
-          </motion.div>
+        {/* Success Story Card - Unique "newspaper clipping" style */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          className="bg-gradient-to-br from-neutral-50 to-white rounded-2xl p-6 border border-neutral-200 mb-4"
+          style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)', boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.15)' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              </div>
-              <span className="font-semibold text-neutral-800 text-sm">Use ReConvert</span>
+          {/* Quote section */}
+          <div className="flex gap-4 mb-5">
+            <div className="text-5xl text-neutral-200 font-serif leading-none">"</div>
+            <p className="text-neutral-700 text-sm md:text-base leading-relaxed italic">
+              We went from $67 average order to $112 in 6 weeks. The trick? Showing customers the next logical step right after checkout. Not aggressive - just helpful. 'You bought X, here's Y to complete your setup.'
+            </p>
+          </div>
+
+          {/* Results row - horizontal "ticker" style */}
+          <div className="flex flex-wrap justify-center gap-3 mb-5">
+            <div className="bg-white rounded-lg px-4 py-2 border border-neutral-200 text-center">
+              <div className="text-xl font-bold" style={{ color: '#10b981' }}>+67%</div>
+              <div className="text-[10px] text-neutral-500 uppercase tracking-wide">AOV increase</div>
             </div>
-            <ul className="space-y-2 text-sm text-neutral-700">
-              <li className="flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }}>+</span>
-                <span>Post-purchase upsell funnels that convert</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }}>+</span>
-                <span>One-click upsells (no re-entering payment)</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }}>+</span>
-                <span>Built-in A/B testing with real analytics</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }}>+</span>
-                <span>Thank you page customization for ladder offers</span>
-              </li>
-            </ul>
-            <a href="https://apps.shopify.com/reconvert-post-purchase-upsell" target="_blank" rel="noopener noreferrer"
-              className="mt-4 w-full py-2.5 rounded-lg text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90"
+            <div className="bg-white rounded-lg px-4 py-2 border border-neutral-200 text-center">
+              <div className="text-xl font-bold" style={{ color: '#8b5cf6' }}>15%</div>
+              <div className="text-[10px] text-neutral-500 uppercase tracking-wide">Post-purchase take rate</div>
+            </div>
+            <div className="bg-white rounded-lg px-4 py-2 border border-neutral-200 text-center">
+              <div className="text-xl font-bold" style={{ color: 'var(--accent)' }}>6 weeks</div>
+              <div className="text-[10px] text-neutral-500 uppercase tracking-wide">To see results</div>
+            </div>
+          </div>
+
+          {/* Tool attribution - subtle but clear */}
+          <div className="flex items-center justify-center gap-3 pt-4 border-t border-neutral-100">
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-8 h-8 rounded-lg" />
+            <div className="text-left">
+              <p className="text-xs text-neutral-500">Implemented with</p>
+              <p className="text-sm font-semibold text-neutral-800">{TOOL_CONFIG.name} Post-Purchase Upsells</p>
+            </div>
+            <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer"
+              className="ml-auto px-4 py-2 rounded-lg text-xs font-semibold text-white transition-all hover:opacity-90"
               style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-              <span>Try ReConvert Free</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              See How
             </a>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
 
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="text-center text-neutral-400 text-xs mt-5">
-          The ascension ladder works best when the next step is immediate. Post-purchase is that moment.
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+          className="text-center text-neutral-400 text-xs">
+          Post-purchase offers convert 10-15x better than cold traffic. Timing is everything.
         </motion.p>
+      </div>
+    );
+
+    // ============================================
+    // TOOL INLINE TIP SLIDE - Content with contextual tool mention
+    // ============================================
+    const ToolInlineTipSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
+
+        {/* Inline tool callout - "sticky note" style */}
+        <motion.div initial={{ opacity: 0, x: 20, rotate: -1 }} animate={{ opacity: 1, x: 0, rotate: -1 }} transition={{ delay: 0.25 }}
+          className="relative bg-amber-50 rounded-xl p-4 border-l-4 border-amber-400 max-w-md ml-auto"
+          style={{ boxShadow: '4px 4px 0 rgba(0,0,0,0.05)' }}>
+          <div className="flex items-start gap-3">
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-10 h-10 rounded-lg flex-shrink-0" />
+            <div>
+              <p className="text-xs text-amber-700 font-medium mb-1">{data.tipContext}</p>
+              <p className="text-sm text-neutral-700">
+                <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer"
+                  className="font-semibold hover:underline" style={{ color: 'var(--accent)' }}>
+                  {TOOL_CONFIG.name}
+                </a>
+                {' '}automates this with one-click post-purchase upsells.
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     );
 
@@ -615,17 +635,32 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand the Ascension Ladder. Build your pricing tiers. Create logical upgrade paths. Make each step feel like the smart choice. Watch average order value climb.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/reconvert-post-purchase-upsell" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>ReConvert</a>
-            <span className="text-neutral-500 text-xs">automates upsells</span>
-          </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the Ascension Ladder. Build your pricing tiers. Create logical upgrade paths. Make each step feel like the smart choice. Watch average order value climb.</motion.p>
+
+        {/* Tool CTA - Action-oriented completion card */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-5 max-w-md w-full mb-4"
+          style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}>
+          <div className="flex items-center gap-3 mb-3">
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-10 h-10 rounded-lg" />
+            <div className="text-left">
+              <p className="text-xs text-neutral-400">Ready to implement?</p>
+              <p className="text-sm font-semibold text-white">Start building your ladder today</p>
+            </div>
+          </div>
+          <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer"
+            className="w-full py-3 rounded-lg text-white font-semibold text-sm flex items-center justify-center gap-2 transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <span>Install {TOOL_CONFIG.name} Free</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          <p className="text-neutral-500 text-[10px] mt-2">Post-purchase upsells with one-click checkout</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
@@ -687,7 +722,8 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'implement-upsells': return <ImplementUpsellsSlide />;
+          case 'tool-success-story': return <ToolSuccessStorySlide />;
+          case 'tool-inline-tip': return <ToolInlineTipSlide data={slide} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }

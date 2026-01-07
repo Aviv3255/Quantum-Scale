@@ -166,19 +166,31 @@
     };
 
     // ============ SLIDES DATA ============
+    // ReConvert Tool Config
+    const RECONVERT_TOOL = {
+      name: 'ReConvert',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/d7c456ab4c46f0fe14c14b60c135fb26/icon/CKfh7oCa5PQCEAE=.png',
+      link: 'https://apps.shopify.com/reconvert-post-purchase-upsell',
+      tagline: '#1 Post-Purchase Upsell App',
+      stats: { aovIncrease: '15%', stores: '40,000+', rating: '4.9' }
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['Why checkout is the START, not the end', 'Post-purchase upsells: easiest money you\'ll ever make', 'How subscriptions turn $10 CAC into 8x ROAS instantly'] },
       { type: 'hook', headline: 'The sale doesn\'t end at checkout. That\'s where it STARTS.', subtext: 'Most stores celebrate the order confirmation like it\'s game over. But the smartest brands? They know that\'s the moment of maximum trust. The customer just gave you their credit card. They believe in you. And you\'re... doing nothing? That\'s millions left on the table.' },
       { type: 'funnel-leakage', title: 'The Reality of Your Funnel' },
       { type: 'trust-window', title: 'The Maximum Trust Moment' },
+      { type: 'tool-showcase', title: 'The Post-Purchase Revenue Engine' },
       { type: 'one-click-upsell', title: 'Strategy 1: One-Click Post-Purchase Upsell' },
       { type: 'upsell-math', title: 'The Profit Math' },
+      { type: 'page-transformation', title: 'Thank You Page: Before vs After' },
       { type: 'subscription-multiplier', title: 'Strategy 2: Subscription Economics' },
       { type: 'cart-recovery-arsenal', title: 'The Cart Recovery Arsenal' },
       { type: 'review-loop', title: 'The Review Loop That Compounds Forever' },
       { type: 'before-after', title: 'Without vs With Post-Purchase Strategy' },
       { type: 'impact-stats', title: 'The Post-Purchase Impact' },
       { type: 'elite-insight', title: 'The Goldmine Paradox' },
+      { type: 'tool-action', title: 'Start Capturing Hidden Revenue' },
       { type: 'quiz', question: 'You have 35,000 cart adds, 8,600 purchases. What\'s the FASTEST way to capture missed revenue?', options: ['Lower prices to convert more upfront', 'Run more ads to get new traffic', 'Deploy AI SMS + email recovery flows to re-engage the 26,000+ who abandoned', 'Add more products to homepage'], correctIndex: 2, feedback: { correct: 'Exactly! Those 26,000+ people already WANTED your product. They showed intent. Re-engaging them with AI SMS and interactive email flows is the fastest, cheapest revenue unlock. One brand added $60K in month 1 doing exactly this.', incorrect: 'Not quite. The fastest revenue is in the 26,000+ people who ALREADY added to cart. They wanted your product - they just got distracted. AI SMS + email recovery flows bring them back. One brand added $60K in month 1.' }},
       { type: 'completion' }
     ];
@@ -286,14 +298,14 @@
     // TRUST WINDOW VISUALIZATION
     const TrustWindowSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
           <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Opportunity</span>
           <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
 
         <div className="relative">
           {/* Timeline */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-6">
             {['Add to Cart', 'Checkout', 'Payment', 'MAXIMUM TRUST', 'Thank You'].map((step, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
                 className="flex flex-col items-center" style={{ flex: 1 }}>
@@ -311,7 +323,7 @@
 
           {/* Highlight box */}
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 }}
-            className="rounded-xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            className="rounded-xl p-5 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
             <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
             <h3 className="text-white font-bold text-xl mb-2">The Golden Window</h3>
             <p className="text-neutral-400 text-sm mb-4">Customer just gave you their credit card. They believe in you. They're at PEAK trust. This is where the magic happens.</p>
@@ -327,6 +339,13 @@
                 </div>
               ))}
             </div>
+          </motion.div>
+
+          {/* Inline Tool Hint */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="mt-4 flex items-center justify-center gap-2 p-2 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.05)', border: '1px dashed rgba(var(--accent-rgb), 0.3)' }}>
+            <img src={RECONVERT_TOOL.logo} alt="" className="w-5 h-5 rounded" />
+            <span className="text-neutral-500 text-xs">Apps like <strong className="text-neutral-700">ReConvert</strong> help you capture this golden window automatically</span>
           </motion.div>
         </div>
       </div>
@@ -580,18 +599,18 @@
     // BEFORE/AFTER COMPARISON
     const BeforeAfterSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
           <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-5">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-            className="rounded-xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #ef4444' }}>
+            className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #ef4444' }}>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
               <span className="font-bold text-white">Without Post-Purchase Strategy</span>
             </div>
-            <ul className="space-y-3 text-sm text-neutral-400">
+            <ul className="space-y-2.5 text-sm text-neutral-400">
               <li className="flex items-start gap-2"><span className="text-red-400">-</span> Generic thank you page</li>
               <li className="flex items-start gap-2"><span className="text-red-400">-</span> No upsells, no revenue capture</li>
               <li className="flex items-start gap-2"><span className="text-red-400">-</span> Abandoned carts forgotten</li>
@@ -604,13 +623,13 @@
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-            className="rounded-xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
+            className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
             <div className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>WINS</div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
               <span className="font-bold text-white">With Post-Purchase Strategy</span>
             </div>
-            <ul className="space-y-3 text-sm text-neutral-400">
+            <ul className="space-y-2.5 text-sm text-neutral-400">
               <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span> One-click upsells (+12% AOV)</li>
               <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span> Subscription offers (8x ROAS)</li>
               <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span> AI cart recovery (+$60K/mo)</li>
@@ -622,6 +641,25 @@
             </div>
           </motion.div>
         </div>
+
+        {/* Tool Callout */}
+        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          href={RECONVERT_TOOL.link} target="_blank" rel="noopener noreferrer"
+          className="mt-4 flex items-center justify-between p-3 rounded-xl transition-all hover:scale-[1.01]" style={{ background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg overflow-hidden bg-white p-1">
+              <img src={RECONVERT_TOOL.logo} alt="ReConvert" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <span className="font-semibold text-sm text-neutral-800">Implement this with ReConvert</span>
+              <p className="text-xs text-neutral-500">Post-purchase upsells, thank you page funnels, and more</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 text-xs font-medium" style={{ color: 'var(--accent)' }}>
+            <span>Learn More</span>
+            <Icons.ExternalLink />
+          </div>
+        </motion.a>
       </div>
     );
 
@@ -672,92 +710,266 @@
       </div>
     );
 
-    // UNLOCK GOLDMINE SLIDE (Tool Recommendation)
-    const UnlockGoldmineSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-          <p className="text-neutral-500 text-sm mt-2">Turn one-time buyers into repeat customers with post-purchase upsells</p>
-        </motion.div>
+    // TOOL SHOWCASE SLIDE - Introduction to ReConvert
+    const ToolShowcaseSlide = ({ data }) => {
+      const features = [
+        { icon: 'Zap', title: 'One-Click Upsells', desc: 'Post-purchase offers with zero friction' },
+        { icon: 'Target', title: 'Smart Targeting', desc: 'Right offer to right customer' },
+        { icon: 'TrendingUp', title: 'A/B Testing', desc: 'Optimize every touchpoint' },
+        { icon: 'Star', title: 'Thank You Funnels', desc: 'Turn confirmation into conversion' }
+      ];
 
-        <div className="grid md:grid-cols-2 gap-5">
-          {/* Manual Method */}
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-            className="rounded-xl p-5 opacity-60" style={{ background: '#f5f5f5', border: '1px solid #e5e5e5' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-neutral-300 flex items-center justify-center text-neutral-500">
-                <Icons.X />
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Tool</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          {/* Hero Tool Card */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            className="rounded-2xl p-6 mb-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
+
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-16 h-16 rounded-xl overflow-hidden bg-white p-2 flex-shrink-0" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                <img src={RECONVERT_TOOL.logo} alt="ReConvert" className="w-full h-full object-contain" />
               </div>
-              <span className="font-semibold text-neutral-500">Without Post-Purchase App</span>
+              <div>
+                <h3 className="text-white font-bold text-xl">{RECONVERT_TOOL.name}</h3>
+                <p className="text-neutral-400 text-sm">{RECONVERT_TOOL.tagline}</p>
+              </div>
+              <div className="ml-auto flex items-center gap-1 px-3 py-1 rounded-full" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                <Icons.Star />
+                <span className="text-white font-bold text-sm">{RECONVERT_TOOL.stats.rating}</span>
+              </div>
             </div>
-            <ul className="space-y-3 text-sm text-neutral-500">
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Generic thank you page with no monetization</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Requires developer to build custom upsell flows</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>No A/B testing or analytics on offers</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Miss the golden window of maximum trust</span>
-              </li>
-            </ul>
-            <div className="mt-4 p-3 rounded-lg bg-neutral-200/50 text-center">
-              <span className="text-neutral-500 text-sm">Result: 0% post-purchase revenue</span>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {features.map((feature, i) => {
+                const Icon = Icons[feature.icon] || Icons.Zap;
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.08 }}
+                    className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                      <Icon />
+                    </div>
+                    <div className="text-white font-medium text-xs mb-1">{feature.title}</div>
+                    <div className="text-neutral-500 text-[10px]">{feature.desc}</div>
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
 
-          {/* App Method */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-            className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
-            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
-            <div className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>RECOMMENDED</div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
-                <Icons.Check />
+          {/* Stats Row */}
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { value: RECONVERT_TOOL.stats.aovIncrease, label: 'Avg. AOV Increase', color: 'var(--accent)' },
+              { value: RECONVERT_TOOL.stats.stores, label: 'Active Stores', color: '#3b82f6' },
+              { value: 'Free', label: 'To Start', color: '#f59e0b' }
+            ].map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
+                className="p-4 rounded-xl text-center bg-white" style={{ border: '1px solid #e5e5e5' }}>
+                <div className="text-2xl font-bold mb-1" style={{ color: stat.color }}>{stat.value}</div>
+                <div className="text-xs text-neutral-500">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // PAGE TRANSFORMATION SLIDE - Visual Before/After
+    const PageTransformationSlide = ({ data }) => {
+      const [showAfter, setShowAfter] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowAfter(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Visual Transformation</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* BEFORE - Generic Thank You */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              className={`rounded-xl overflow-hidden transition-all duration-500 ${showAfter ? 'opacity-50 scale-95' : ''}`} style={{ border: '2px solid #ef4444' }}>
+              <div className="bg-red-500 px-4 py-2 flex items-center gap-2">
+                <Icons.X />
+                <span className="text-white font-bold text-sm">BEFORE: Generic Page</span>
               </div>
-              <span className="font-semibold text-white">With ReConvert</span>
+              <div className="bg-white p-6">
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 rounded-full bg-neutral-100 mx-auto mb-4 flex items-center justify-center">
+                    <Icons.Check />
+                  </div>
+                  <h4 className="text-xl font-bold text-neutral-800 mb-2">Thank you for your order!</h4>
+                  <p className="text-neutral-500 text-sm mb-4">Order #12345 confirmed</p>
+                  <div className="text-neutral-400 text-xs">You'll receive an email confirmation shortly.</div>
+                </div>
+                <div className="border-t pt-4 text-center">
+                  <span className="text-red-500 text-sm font-medium">$0 additional revenue captured</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* AFTER - ReConvert Optimized */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: showAfter ? 1 : 0.3, x: 0, scale: showAfter ? 1 : 0.95 }} transition={{ delay: 0.3 }}
+              className="rounded-xl overflow-hidden" style={{ border: '2px solid var(--accent)', boxShadow: showAfter ? '0 0 40px rgba(var(--accent-rgb), 0.3)' : 'none' }}>
+              <div className="px-4 py-2 flex items-center justify-between" style={{ background: 'var(--accent)' }}>
+                <div className="flex items-center gap-2">
+                  <Icons.Check />
+                  <span className="text-white font-bold text-sm">AFTER: ReConvert Optimized</span>
+                </div>
+                <div className="w-6 h-6 rounded bg-white/20 overflow-hidden">
+                  <img src={RECONVERT_TOOL.logo} alt="" className="w-full h-full object-contain" />
+                </div>
+              </div>
+              <div className="bg-white p-4">
+                {/* Upsell Offer */}
+                <div className="rounded-lg p-4 mb-3" style={{ background: 'linear-gradient(135deg, #fef3c7, #fde68a)', border: '2px solid #f59e0b' }}>
+                  <div className="flex items-center gap-1 text-amber-700 text-xs font-bold mb-2">
+                    <Icons.Zap />
+                    <span>EXCLUSIVE ONE-TIME OFFER</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg bg-amber-200 flex items-center justify-center">
+                      <Icons.Package />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-neutral-800 text-sm">Add Matching Moisturizer</div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-neutral-400 line-through text-xs">$28</span>
+                        <span className="text-amber-700 font-bold">$22</span>
+                        <span className="px-2 py-0.5 bg-amber-500 text-white text-[10px] rounded-full font-bold">20% OFF</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="w-full mt-3 py-2 rounded-lg text-white font-bold text-sm" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}>
+                    Yes! Add to my order
+                  </button>
+                </div>
+
+                {/* Order Status + Extras */}
+                <div className="flex gap-2 mb-3">
+                  <div className="flex-1 p-2 rounded-lg bg-emerald-50 text-center">
+                    <div className="text-emerald-600 text-[10px] font-bold">ORDER CONFIRMED</div>
+                    <div className="text-neutral-800 font-bold text-xs">#12345</div>
+                  </div>
+                  <div className="flex-1 p-2 rounded-lg bg-blue-50 text-center">
+                    <div className="text-blue-600 text-[10px] font-bold">TRACK PACKAGE</div>
+                    <div className="text-neutral-800 font-bold text-xs">Coming Soon</div>
+                  </div>
+                </div>
+
+                <div className="border-t pt-3 text-center">
+                  <span className="text-sm font-bold" style={{ color: 'var(--accent)' }}>+$5.50 avg. per order captured</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Toggle Hint */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+            className="flex justify-center mt-4">
+            <button onClick={() => setShowAfter(!showAfter)}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-neutral-100 hover:bg-neutral-200 transition-colors">
+              <span>{showAfter ? 'Show Before' : 'Show After'}</span>
+              <Icons.ArrowRight />
+            </button>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // TOOL ACTION SLIDE - Strong CTA
+    const ToolActionSlide = ({ data }) => {
+      const benefits = [
+        'Works with Shopify checkout natively',
+        'No coding required - visual drag & drop builder',
+        'Free plan available to test results',
+        'Integrates with email, SMS, and review apps'
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Take Action</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+            <p className="text-neutral-500 text-sm mt-2">Everything you learned - implemented in minutes</p>
+          </motion.div>
+
+          {/* Main CTA Card */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+            className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, var(--accent), #3b82f6, #f59e0b)' }}></div>
+
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-20 h-20 rounded-xl overflow-hidden bg-white p-2 flex-shrink-0" style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}>
+                <img src={RECONVERT_TOOL.logo} alt="ReConvert" className="w-full h-full object-contain" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-white font-bold text-xl">{RECONVERT_TOOL.name}</h3>
+                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icons.Star />
+                    {RECONVERT_TOOL.stats.rating}
+                  </div>
+                </div>
+                <p className="text-neutral-400 text-sm mb-2">{RECONVERT_TOOL.tagline}</p>
+                <div className="flex items-center gap-4 text-xs">
+                  <span className="text-neutral-500">{RECONVERT_TOOL.stats.stores} stores</span>
+                  <span className="text-emerald-400 font-bold">+{RECONVERT_TOOL.stats.aovIncrease} AOV</span>
+                </div>
+              </div>
             </div>
-            <ul className="space-y-3 text-sm text-neutral-300">
-              <li className="flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }}>+</span>
-                <span>One-click post-purchase upsells at checkout</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }}>+</span>
-                <span>Custom thank you page funnels with offers</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }}>+</span>
-                <span>Built-in A/B testing to optimize conversions</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }}>+</span>
-                <span>Birthday collector, surveys, and reorder buttons</span>
-              </li>
-            </ul>
-            <div className="mt-4 p-3 rounded-lg text-center" style={{ background: 'rgba(var(--accent-rgb), 0.15)' }}>
-              <span className="font-semibold" style={{ color: 'var(--accent)' }}>Result: +15% AOV average increase</span>
+
+            {/* Benefits List */}
+            <div className="space-y-2 mb-6">
+              {benefits.map((benefit, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.08 }}
+                  className="flex items-center gap-3 p-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'var(--accent)' }}>
+                    <Icons.Check />
+                  </div>
+                  <span className="text-neutral-300 text-sm">{benefit}</span>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA Button */}
+            <motion.a initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+              href={RECONVERT_TOOL.link} target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 w-full py-4 rounded-xl text-white font-bold text-base transition-all hover:scale-[1.02]"
+              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 30px rgba(var(--accent-rgb), 0.4)' }}>
+              <span>Start Free with ReConvert</span>
+              <Icons.ExternalLink />
+            </motion.a>
+
+            <p className="text-center text-neutral-500 text-xs mt-3">Install in 2 minutes. No credit card required.</p>
+          </motion.div>
+
+          {/* Social Proof */}
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+            className="mt-4 p-3 rounded-xl text-center" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <div className="flex items-center justify-center gap-2">
+              <div className="flex -space-x-2">
+                {[1,2,3,4].map(i => (
+                  <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-neutral-300 to-neutral-400" style={{ border: '2px solid white' }}></div>
+                ))}
+              </div>
+              <span className="text-neutral-600 text-sm">Trusted by <strong>{RECONVERT_TOOL.stats.stores}</strong> Shopify stores</span>
             </div>
           </motion.div>
         </div>
-
-        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-          href="https://apps.shopify.com/reconvert-post-purchase-upsell" target="_blank" rel="noopener noreferrer"
-          className="mt-6 mx-auto flex items-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105"
-          style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 4px 20px rgba(var(--accent-rgb), 0.3)' }}>
-          <span>Try ReConvert Free</span>
-          <Icons.ExternalLink />
-        </motion.a>
-      </div>
-    );
+      );
+    };
 
     // QUIZ SLIDE
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
@@ -806,21 +1018,42 @@
 
     // COMPLETION SLIDE
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-8">
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }}
-          className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">
-          You now have the post-purchase goldmine toolkit: one-click upsells, subscription economics, cart recovery arsenal, and the review loop that compounds forever. The sale doesn't end at checkout - that's where it starts.
+          className="w-14 h-14 rounded-xl flex items-center justify-center mb-3 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-2">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-4 max-w-md leading-relaxed">
+          You now have the post-purchase goldmine toolkit: one-click upsells, subscription economics, cart recovery arsenal, and the review loop that compounds forever.
         </motion.p>
+
+        {/* ReConvert CTA Card */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg mb-5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
-          <Icons.Zap /><span className="text-sm font-medium" style={{ color: 'var(--accent)' }}>Action: Set up one-click upsells today. Start with your best-seller.</span>
+          className="rounded-xl p-4 mb-4 max-w-md w-full relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-lg overflow-hidden bg-white p-1 flex-shrink-0">
+              <img src={RECONVERT_TOOL.logo} alt="ReConvert" className="w-full h-full object-contain" />
+            </div>
+            <div className="text-left flex-1">
+              <div className="flex items-center gap-2">
+                <span className="text-white font-bold text-sm">Start implementing today</span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>FREE</span>
+              </div>
+              <p className="text-neutral-500 text-xs">ReConvert - {RECONVERT_TOOL.stats.stores} stores, +{RECONVERT_TOOL.stats.aovIncrease} AOV</p>
+            </div>
+          </div>
+          <a href={RECONVERT_TOOL.link} target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all hover:scale-[1.02]"
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <span>Get ReConvert Free</span>
+            <Icons.ExternalLink />
+          </a>
         </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
+          <p className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
@@ -874,15 +1107,17 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'funnel-leakage': return <FunnelLeakageSlide data={slide} />;
           case 'trust-window': return <TrustWindowSlide data={slide} />;
+          case 'tool-showcase': return <ToolShowcaseSlide data={slide} />;
           case 'one-click-upsell': return <OneClickUpsellSlide data={slide} />;
           case 'upsell-math': return <UpsellMathSlide data={slide} />;
+          case 'page-transformation': return <PageTransformationSlide data={slide} />;
           case 'subscription-multiplier': return <SubscriptionMultiplierSlide data={slide} />;
           case 'cart-recovery-arsenal': return <CartRecoveryArsenalSlide data={slide} />;
           case 'review-loop': return <ReviewLoopSlide data={slide} />;
           case 'before-after': return <BeforeAfterSlide data={slide} />;
           case 'impact-stats': return <ImpactStatsSlide data={slide} />;
           case 'elite-insight': return <EliteInsightSlide data={slide} />;
-          case 'unlock-goldmine': return <UnlockGoldmineSlide data={slide} />;
+          case 'tool-action': return <ToolActionSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

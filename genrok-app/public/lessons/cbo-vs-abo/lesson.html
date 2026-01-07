@@ -183,7 +183,7 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why CBO and ABO are not alternatives - they solve different problems', 'The exact testing structure that feeds Andromeda\'s prediction engine', 'The 6-adset scaling structure that works under Andromeda'] },
       { type: 'hook', headline: 'Most store owners treat CBO and ABO like choosing between coffee or tea.', subtext: 'That\'s like asking: "Should I use a hammer or a screwdriver?" Wrong question. They\'re different tools for different jobs. Trying to scale with ABO is like hammering with a screwdriver. And testing with CBO? That\'s screwing with a hammer. Both work terribly. Here\'s what actually works.' },
-      { type: 'content', title: 'The Truth About CBO vs ABO', body: 'These are not alternatives. They are phases. ABO = your testing lab. You test concepts, hooks, angles, formats. You learn what resonates. CBO = your scaling engine. You feed it winning creatives, high budgets, and let Andromeda\'s prediction AI do the heavy lifting. Mixing these roles is where you bleed cash.' },
+      { type: 'content', title: 'The Truth About CBO vs ABO', body: 'These are not alternatives. They are phases. ABO = your testing lab. You test concepts, hooks, angles, formats. You learn what resonates. CBO = your scaling engine. You feed it winning creatives, high budgets, and let Andromeda\'s prediction AI do the heavy lifting. Mixing these roles is where you bleed cash.', toolMention: { name: 'Triple Whale', context: 'Track which phase performs better with accurate attribution' } },
       { type: 'comparison-battle', title: 'ABO vs CBO: Different Jobs', left: { label: 'ABO', subtitle: 'Testing Lab', color: '#EF4444', features: ['Small budgets ($20-50/day)', 'Test one concept at a time', 'Controlled experiments', 'Learn what resonates', '40-50 creatives weekly'] }, right: { label: 'CBO', subtitle: 'Scaling Engine', color: '#10B981', features: ['High budgets ($500+/day)', 'Feed 12-30 winners', 'Dynamic optimization', 'Andromeda distributes spend', 'Let AI find buyers'] } },
       { type: 'testing-scaling-toggle', title: 'The Complete Campaign Structure' },
       { type: 'decision-tree', title: 'When to Use Which?', question: 'What stage are you at?', paths: [
@@ -191,7 +191,8 @@
         { condition: 'Have 5+ winning creatives', recommendation: 'Switch to CBO', explanation: 'Feed all winners into one campaign, let Andromeda optimize', color: '#10B981' },
         { condition: 'Campaign is profitable', recommendation: 'Never shut it off', explanation: 'Even if ROAS dips slightly, profit is profit', color: '#3B82F6' }
       ]},
-      { type: 'content', title: 'Why This Works Under Andromeda', body: 'Andromeda is a prediction engine. It doesn\'t need you to tell it which audience to target. It needs creative diversity and accurate conversion data. When you feed CBO 12-30 diverse winning creatives and high-value audience signals, Andromeda finds the buyers. That\'s the entire system.' },
+      { type: 'analytics-dashboard', title: 'The Attribution Problem', subtitle: 'Platform reporting lies. You need ground truth.', tool: { name: 'Triple Whale', logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png', url: 'https://apps.shopify.com/triple-whale' } },
+      { type: 'content', title: 'Why This Works Under Andromeda', body: 'Andromeda is a prediction engine. It doesn\'t need you to tell it which audience to target. It needs creative diversity and accurate conversion data. When you feed CBO 12-30 diverse winning creatives and high-value audience signals, Andromeda finds the buyers. That\'s the entire system.', toolMention: { name: 'Triple Whale', context: 'Get accurate conversion data Andromeda needs' } },
       { type: 'quiz', question: 'You have 5 winning ad creatives from ABO testing. What should you do next?', options: ['Keep running them in separate ABO campaigns to maintain control', 'Feed all 5 into one CBO campaign and let Andromeda optimize distribution', 'Pick the best one and scale it alone in a new CBO', 'Turn them all off and test 5 new creatives'], correctIndex: 1, feedback: { correct: 'Exactly! Feed all diverse winners into CBO. Andromeda needs volume + diversity to predict who will buy. One creative = limited signal. Multiple winners = powerful scaling engine.', incorrect: 'Not quite. The winning move: Feed all 5 winners into one CBO campaign. Andromeda thrives on creative diversity. Give it multiple proven winners and let the prediction AI distribute spend to find buyers. That\'s how you scale profitably under Andromeda.' }},
       { type: 'completion', sources: [] }
     ];
@@ -262,12 +263,25 @@
       </div>
     );
 
-    
+
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
+
+        {data.toolMention && (
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="mt-6 flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+            <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-10 h-10 rounded-lg" />
+            <div className="flex-1">
+              <p className="text-xs text-neutral-500 mb-0.5">Pro Tip</p>
+              <p className="text-sm text-neutral-700 font-medium">{data.toolMention.context}</p>
+            </div>
+            <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 transition-colors whitespace-nowrap">
+              Try Free
+            </a>
+          </motion.div>
+        )}
+
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -612,6 +626,105 @@
       </div>
     );
 
+    const AnalyticsDashboardSlide = ({ data }) => {
+      const metrics = [
+        { label: 'CBO Campaign', value: '$4,230', sublabel: 'Revenue', change: '+34%', isPositive: true, roas: '3.2x ROAS' },
+        { label: 'ABO Testing', value: '$890', sublabel: 'Revenue', change: '+12%', isPositive: true, roas: '1.8x ROAS' },
+        { label: 'Total Spend', value: '$1,598', sublabel: 'Today', change: '', isPositive: null, roas: 'Blended 3.2x' }
+      ];
+
+      const campaignData = [
+        { name: 'CBO - Scale Winners', spend: '$1,320', revenue: '$4,230', roas: '3.2x', status: 'active', type: 'CBO' },
+        { name: 'ABO - Creative Test Batch 12', spend: '$278', revenue: '$890', roas: '3.2x', status: 'learning', type: 'ABO' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <img src={data.tool.logo} alt={data.tool.name} className="w-10 h-10 rounded-xl shadow-md" />
+              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">{data.tool.name} Dashboard</span>
+            </div>
+            <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black mb-1">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-5 mb-4 shadow-xl">
+            <div className="grid grid-cols-3 gap-4 mb-5">
+              {metrics.map((metric, i) => (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
+                  <p className="text-slate-400 text-[10px] uppercase tracking-wider mb-1">{metric.label}</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-white text-xl md:text-2xl font-bold">{metric.value}</span>
+                    {metric.change && (
+                      <span className={`text-xs font-semibold ${metric.isPositive ? 'text-emerald-400' : 'text-red-400'}`}>{metric.change}</span>
+                    )}
+                  </div>
+                  <p className="text-slate-500 text-xs mt-1">{metric.roas}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-[10px] text-slate-500 uppercase tracking-wider px-3 pb-2 border-b border-slate-700/50">
+                <span className="flex-1">Campaign</span>
+                <span className="w-20 text-right">Spend</span>
+                <span className="w-20 text-right">Revenue</span>
+                <span className="w-16 text-right">ROAS</span>
+                <span className="w-16 text-right">Status</span>
+              </div>
+              {campaignData.map((campaign, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center justify-between bg-slate-800/30 rounded-lg px-3 py-2.5 text-sm">
+                  <div className="flex-1 flex items-center gap-2">
+                    <span className={`w-2 h-2 rounded-full ${campaign.type === 'CBO' ? 'bg-emerald-400' : 'bg-amber-400'}`}></span>
+                    <span className="text-white text-xs font-medium truncate">{campaign.name}</span>
+                  </div>
+                  <span className="w-20 text-right text-slate-300 text-xs">{campaign.spend}</span>
+                  <span className="w-20 text-right text-emerald-400 text-xs font-semibold">{campaign.revenue}</span>
+                  <span className="w-16 text-right text-blue-400 text-xs font-bold">{campaign.roas}</span>
+                  <span className="w-16 text-right">
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${campaign.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                      {campaign.status}
+                    </span>
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
+                  <Icons.X />
+                </div>
+                <span className="font-semibold text-red-700 text-sm">Without Attribution</span>
+              </div>
+              <p className="text-neutral-600 text-xs leading-relaxed">Platform shows CBO at 2.1x ROAS. You cut budget. Reality: it was actually 3.2x. You just killed your best performer.</p>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                  <Icons.Check />
+                </div>
+                <span className="font-semibold text-green-700 text-sm">With Triple Whale</span>
+              </div>
+              <p className="text-neutral-600 text-xs leading-relaxed">First-party data shows true ROAS. CBO actually at 3.2x. You scale with confidence. No more guessing.</p>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-center">
+            <a href={data.tool.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg" style={{ background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }}>
+              <img src={data.tool.logo} alt="" className="w-5 h-5 rounded" />
+              <span>Get Accurate CBO vs ABO Data</span>
+              <Icons.ExternalLink />
+            </a>
+            <p className="text-neutral-400 text-xs mt-2">See which campaign structure actually makes you money</p>
+          </motion.div>
+        </div>
+      );
+    };
+
     const TimelineSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
@@ -733,23 +846,48 @@
     );
 
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand: ABO tests, CBO scales. Accurate data is non-negotiable. Feed CBO 12-30 diverse winners. Never shut off what makes money. That's the system.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Triple Whale</a>
-            <span className="text-neutral-500 text-xs">tracks attribution accurately</span>
-          </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-14 h-14 rounded-xl flex items-center justify-center mb-3 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-2">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-4 max-w-md leading-relaxed">You now understand: ABO tests, CBO scales. Accurate data is non-negotiable. Feed CBO 12-30 diverse winners. Never shut off what makes money.</motion.p>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-5 max-w-md w-full mb-4">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-12 h-12 rounded-xl shadow-md" />
+            <div className="text-left">
+              <p className="text-xs text-blue-600 font-bold uppercase tracking-wider">Recommended Tool</p>
+              <p className="text-lg font-bold text-neutral-900">Triple Whale</p>
+            </div>
+          </div>
+          <p className="text-neutral-600 text-sm mb-4 leading-relaxed">Stop guessing which campaign structure performs better. Get first-party attribution data that shows your true CBO vs ABO ROAS.</p>
+          <div className="grid grid-cols-3 gap-2 mb-4">
+            <div className="bg-white rounded-lg p-2 text-center">
+              <p className="text-xs text-neutral-400">True ROAS</p>
+              <p className="text-sm font-bold text-emerald-600">Accurate</p>
+            </div>
+            <div className="bg-white rounded-lg p-2 text-center">
+              <p className="text-xs text-neutral-400">iOS-Proof</p>
+              <p className="text-sm font-bold text-blue-600">Server-Side</p>
+            </div>
+            <div className="bg-white rounded-lg p-2 text-center">
+              <p className="text-xs text-neutral-400">Compare</p>
+              <p className="text-sm font-bold text-purple-600">CBO vs ABO</p>
+            </div>
+          </div>
+          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg" style={{ background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }}>
+            <span>Get Accurate Campaign Analytics</span>
+            <Icons.ExternalLink />
+          </a>
+          <p className="text-neutral-400 text-[10px] mt-2">See which budget strategy actually makes you money</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 max-w-md w-full mb-3">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Up Next</p>
+          <h3 className="text-white font-bold text-base mb-0.5">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
         {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-3 max-w-md w-full">
             <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
@@ -821,6 +959,7 @@
           case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
           case 'stat-countdown': return <StatCountdownSlide data={slide} />;
           case 'decision-tree': return <DecisionTreeSlide data={slide} />;
+          case 'analytics-dashboard': return <AnalyticsDashboardSlide data={slide} />;
           case 'timeline': return <TimelineSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;

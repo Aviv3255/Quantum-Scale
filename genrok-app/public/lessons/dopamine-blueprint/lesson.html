@@ -161,6 +161,14 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Tool configuration
+    const TOOL_CONFIG = {
+      name: 'Joy Loyalty & Rewards',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/8b933d5f7554d2e3ebc19f34f9d5ef0e/icon/CICUsMrK8_oCEAE=.png',
+      link: 'https://apps.shopify.com/joy-loyalty',
+      tagline: 'Turn one-time buyers into addicted repeat customers'
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['Why anticipation releases MORE dopamine than the reward itself', 'The Habit Loop: Trigger → Routine → Reward', 'How to make customers CRAVE coming back with Variable Rewards'] },
       { type: 'hook', headline: 'Scientists gave monkeys juice when a light turned on. The monkeys\' dopamine spiked. But here\'s the twist...', subtext: 'After the pattern was learned, dopamine stopped spiking at the juice. It spiked at the LIGHT. The anticipation became more rewarding than the reward itself. This is the secret casinos, social media, and the world\'s most addictive products exploit. Your customers\' brains work exactly the same way. The question is: are you triggering dopamine, or just delivering products?' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Supreme-Logo.jpg', brandName: 'Supreme' },
@@ -187,9 +195,11 @@
         { title: 'Limited Drops', description: '"New products drop every Friday at 10am" - They don\'t know WHAT will drop. The anticipation brings them back weekly.' },
         { title: 'Gamified Progress', description: '"You\'re 3 points away from a mystery reward!" - The unknown reward is more motivating than knowing exactly what they\'ll get.' }
       ]},
+      { type: 'dopamine-loop-tool', title: 'The Loyalty Dopamine Loop', subtitle: 'How smart brands engineer repeat purchases' },
       { type: 'example', scenario: 'Email Marketing Campaign', before: { label: 'Fixed Reward', text: '"Every email = 10% discount code." Subscribers stop opening because they know exactly what\'s inside. The dopamine fades.' }, after: { label: 'Variable Reward', text: '"Some emails have 50% off. Some have early access. Some have exclusive products. You never know which." Open rates stay high because each email MIGHT be the jackpot.' }, insight: 'The product hasn\'t changed. But by making the reward unpredictable, you\'ve created a slot machine effect. The anticipation of "what might this one have?" keeps them opening.' },
       { type: 'content', title: 'Building Your Dopamine Loop', body: 'To create addictive buying behavior: 1) Identify or CREATE a trigger (email notification, weekly drop reminder, low-stock alert). 2) Make the routine frictionless (one-click buy, saved payment, fast checkout). 3) Deliver variable rewards (mystery gifts, random discounts, surprise upgrades). The goal isn\'t just to make the sale. It\'s to make the ANTICIPATION of the sale as rewarding as the sale itself. When the trigger alone releases dopamine, you\'ve won.' },
       { type: 'example', scenario: 'Subscription Box Brand', before: { label: 'Predictable Experience', text: 'Same products, same box, same time. Customers know exactly what\'s coming. No anticipation. Churn increases.' }, after: { label: 'Dopamine-Optimized', text: 'Monthly "mystery item" they don\'t know about. Personalized items based on quiz. "Sneak peek" emails that show one item but hide others. Unboxing becomes an EVENT.' }, insight: 'The box itself is the reward. But by adding mystery elements, you\'ve shifted dopamine from "receiving" to "anticipating." They\'re excited BEFORE the box arrives. That\'s the goal.' },
+      { type: 'tool-comparison', title: 'Automate Your Dopamine Machine', subtitle: 'The fastest way to build variable reward systems' },
       { type: 'quiz', question: 'A skincare brand sends weekly emails. Which approach creates the strongest dopamine loop?', options: ['Every email contains a 15% discount code for any product', '"Flash sale starts now!" emails sent every Tuesday at 3pm', '"Something special might be in this email... or it might just be skincare tips. Only one way to find out."', '"Buy 3 products, get the 4th free" in every email'], correctIndex: 2, feedback: { correct: 'Exactly! The uncertainty of "might be something special... or might not" creates variable reward psychology. They HAVE to open to find out. The other options are predictable - brain adapts, dopamine fades, open rates drop.', incorrect: 'The winner is the one with UNCERTAINTY. "Might be something special... or might not" creates the variable reward effect. The brain can\'t predict what\'s inside, so it stays engaged. Predictable offers, no matter how good, lose their dopamine power over time.' }},
       { type: 'completion', sources: [] }
     ];
@@ -392,48 +402,143 @@
       );
     };
 
-    const BuildRewardsSlide = ({ data }) => (
+    // Dopamine Loop Tool Slide - Shows how loyalty programs create reward cycles
+    const DopamineLoopToolSlide = ({ data }) => {
+      const loopSteps = [
+        { icon: '1', label: 'TRIGGER', description: 'Points notification, tier unlock alert, or birthday reward email', color: '#8b5cf6' },
+        { icon: '2', label: 'ANTICIPATION', description: 'Customer wonders: "What reward will I get? How close am I to the next tier?"', color: '#a78bfa' },
+        { icon: '3', label: 'ACTION', description: 'Returns to store, makes purchase, engages with brand', color: '#7c3aed' },
+        { icon: '4', label: 'VARIABLE REWARD', description: 'Mystery discount, surprise tier upgrade, or unexpected bonus points', color: '#6d28d9' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <img src={TOOL_CONFIG.logo} alt="" className="w-4 h-4 rounded" />
+              Dopamine Engineering
+            </span>
+            <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          {/* Circular Loop Visualization */}
+          <div className="relative mb-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {loopSteps.map((step, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  className="bg-white border-2 rounded-xl p-4 text-center relative"
+                  style={{ borderColor: step.color }}
+                >
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-2" style={{ background: step.color }}>
+                    {step.icon}
+                  </div>
+                  <div className="font-bold text-xs uppercase tracking-wider mb-1" style={{ color: step.color }}>{step.label}</div>
+                  <p className="text-neutral-600 text-xs leading-snug">{step.description}</p>
+                  {i < loopSteps.length - 1 && (
+                    <div className="absolute top-1/2 -right-2 transform -translate-y-1/2 text-neutral-300 hidden md:block">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+            {/* Loop arrow back to start */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="hidden md:flex justify-center mt-3"
+            >
+              <div className="flex items-center gap-2 text-neutral-400 text-xs">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <span>Loop repeats, building stronger habits each cycle</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Joy Loyalty Integration Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-neutral-900 rounded-xl p-5 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 opacity-10" style={{ background: `radial-gradient(circle, var(--accent) 0%, transparent 70%)` }} />
+            <div className="flex flex-col md:flex-row items-center gap-4 relative z-10">
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-12 h-12 rounded-xl" />
+                <div>
+                  <h3 className="text-white font-bold text-sm">{TOOL_CONFIG.name}</h3>
+                  <p className="text-neutral-400 text-xs">{TOOL_CONFIG.tagline}</p>
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <p className="text-neutral-300 text-sm">Joy Loyalty automates this entire dopamine loop with points, tiers, mystery rewards, and birthday surprises - all triggers that keep customers coming back.</p>
+              </div>
+              <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold transition-all hover:opacity-90 flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                Start Free Trial <Icons.ExternalLink />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Tool Comparison Slide - Shows build vs buy with Joy Loyalty
+    const ToolComparisonSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>How To Do It</span>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Implementation</span>
           <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black mb-2">{data.title}</h2>
           <p className="text-neutral-500 text-sm">{data.subtitle}</p>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4">
+
+        <div className="grid md:grid-cols-2 gap-4 mb-4">
+          {/* DIY Option */}
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-50 border-2 border-neutral-200 rounded-xl p-5 opacity-60">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-neutral-300 flex items-center justify-center text-neutral-500">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+              <div className="w-10 h-10 rounded-lg bg-neutral-300 flex items-center justify-center text-neutral-500">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
               </div>
-              <span className="font-semibold text-neutral-500 text-sm">Build It Yourself</span>
+              <span className="font-semibold text-neutral-500">Build From Scratch</span>
             </div>
             <ul className="space-y-2 text-sm text-neutral-500">
-              <li className="flex items-start gap-2"><span className="text-neutral-400 mt-0.5">-</span><span>Requires custom development for points & tiers</span></li>
-              <li className="flex items-start gap-2"><span className="text-neutral-400 mt-0.5">-</span><span>No built-in variable reward mechanics</span></li>
-              <li className="flex items-start gap-2"><span className="text-neutral-400 mt-0.5">-</span><span>Manual setup for mystery rewards & gamification</span></li>
-              <li className="flex items-start gap-2"><span className="text-neutral-400 mt-0.5">-</span><span>Ongoing maintenance and updates needed</span></li>
+              <li className="flex items-start gap-2"><Icons.X /><span>Weeks of development time</span></li>
+              <li className="flex items-start gap-2"><Icons.X /><span>No variable reward mechanics</span></li>
+              <li className="flex items-start gap-2"><Icons.X /><span>Manual trigger setup required</span></li>
+              <li className="flex items-start gap-2"><Icons.X /><span>No gamification features</span></li>
+              <li className="flex items-start gap-2"><Icons.X /><span>Ongoing maintenance burden</span></li>
             </ul>
           </motion.div>
+
+          {/* Joy Loyalty Option */}
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl p-5 border-2 relative overflow-hidden" style={{ borderColor: 'var(--accent)' }}>
-            <div className="absolute top-0 right-0 px-2 py-1 text-xs font-bold text-white rounded-bl-lg" style={{ background: 'var(--accent)' }}>Recommended</div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </div>
-              <span className="font-semibold text-neutral-900 text-sm">Joy Loyalty</span>
+            <div className="absolute top-0 right-0 px-3 py-1 text-xs font-bold text-white rounded-bl-lg" style={{ background: 'var(--accent)' }}>Recommended</div>
+            <div className="flex items-center gap-3 mb-4">
+              <img src={TOOL_CONFIG.logo} alt="" className="w-10 h-10 rounded-lg" />
+              <span className="font-semibold text-neutral-900">{TOOL_CONFIG.name}</span>
             </div>
             <ul className="space-y-2 text-sm text-neutral-700 mb-4">
-              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span><span>Built-in points, tiers, and VIP programs</span></li>
-              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span><span>Mystery rewards & spin-to-win gamification</span></li>
-              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span><span>Variable reward triggers (birthdays, milestones)</span></li>
-              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span><span>Automated dopamine loops for repeat purchases</span></li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}><Icons.Check /></span><span><strong>Points & Tiers</strong> - Automatic dopamine triggers</span></li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}><Icons.Check /></span><span><strong>Mystery Rewards</strong> - Variable reward psychology built-in</span></li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}><Icons.Check /></span><span><strong>Spin-to-Win</strong> - Gamified engagement features</span></li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}><Icons.Check /></span><span><strong>Birthday & Milestone</strong> - Automated triggers</span></li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}><Icons.Check /></span><span><strong>VIP Tiers</strong> - Status-driven anticipation</span></li>
             </ul>
-            <a href="https://apps.shopify.com/joy-loyalty?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-semibold transition-all hover:opacity-90" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold transition-all hover:opacity-90 w-full justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
               Try Joy Loyalty Free <Icons.ExternalLink />
             </a>
           </motion.div>
         </div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-center text-neutral-400 text-xs mt-4">Joy handles the technical complexity so you can focus on designing addictive reward experiences.</motion.p>
+
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="bg-gradient-to-r from-purple-50 to-violet-50 border border-purple-200 rounded-xl p-4 text-center">
+          <p className="text-neutral-700 text-sm"><strong className="text-purple-700">The Dopamine Shortcut:</strong> Joy Loyalty has all the psychology built in. Mystery rewards, variable points, tier anticipation - everything you learned today, ready to deploy in minutes.</p>
+        </motion.div>
       </div>
     );
 
@@ -441,20 +546,35 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Dopamine Blueprint: Trigger → Routine → Reward, and why Variable Rewards are the ultimate addiction accelerator. Go audit your customer journey and ask: "Where can I add unpredictability to keep them coming back?"</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-3 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/joy-loyalty?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Joy Loyalty</a>
-            <span className="text-neutral-500 text-xs">has built-in points, tiers & mystery rewards</span>
-          </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Dopamine Blueprint: Trigger, Routine, Reward, and why Variable Rewards are the ultimate addiction accelerator. Go audit your customer journey and ask: "Where can I add unpredictability to keep them coming back?"</motion.p>
+
+        {/* Joy Loyalty CTA Card */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-br from-purple-50 to-violet-50 border-2 border-purple-200 rounded-xl p-4 max-w-md w-full mb-4">
+          <div className="flex items-center gap-3 mb-3">
+            <img src={TOOL_CONFIG.logo} alt="" className="w-10 h-10 rounded-lg" />
+            <div className="text-left">
+              <h4 className="font-bold text-neutral-900 text-sm">Ready to build your dopamine loop?</h4>
+              <p className="text-neutral-500 text-xs">{TOOL_CONFIG.name} has all the psychology built-in</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 mb-3">
+            <span className="px-2 py-1 bg-white rounded-full text-xs text-purple-700 font-medium">Points & Tiers</span>
+            <span className="px-2 py-1 bg-white rounded-full text-xs text-purple-700 font-medium">Mystery Rewards</span>
+            <span className="px-2 py-1 bg-white rounded-full text-xs text-purple-700 font-medium">Spin-to-Win</span>
+            <span className="px-2 py-1 bg-white rounded-full text-xs text-purple-700 font-medium">VIP Programs</span>
+          </div>
+          <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold transition-all hover:opacity-90 w-full" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            Start Your Free Trial <Icons.ExternalLink />
+          </a>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
         {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
             <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
@@ -526,7 +646,8 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'build-rewards': return <BuildRewardsSlide data={slide} />;
+          case 'dopamine-loop-tool': return <DopamineLoopToolSlide data={slide} />;
+          case 'tool-comparison': return <ToolComparisonSlide data={slide} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }

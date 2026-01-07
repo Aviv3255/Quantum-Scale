@@ -146,8 +146,16 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // ABConvert Tool Configuration
+    const ABCONVERT_TOOL = {
+      name: 'ABConvert',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/67bf9cdf91f2c9ed2893bc3f2a46a2f0/icon/CMjO6ZvF3f0CEAE=.png',
+      link: 'https://apps.shopify.com/a-b-convert-product-a-b-test',
+      description: 'A/B test your headlines with real visitor data'
+    };
+
     const slides = [
-      { type: 'welcome', learningGoals: ['Why you only have 5 seconds to win or lose a visitor', 'The difference between clever and clear headlines', 'How to pass the 5-second test every time'] },
+      { type: 'welcome', learningGoals: ['Why you only have 5 seconds to win or lose a visitor', 'The difference between clever and clear headlines', 'How to validate your headlines with real A/B test data'] },
       { type: 'hook', headline: 'You have 5 seconds. That\'s it.', subtext: 'A visitor lands on your site. Their brain asks ONE question: "Am I in the right place?" If the answer isn\'t INSTANTLY clear, they bounce. You lost the sale in 5 seconds. Not because your product was bad. Because your headline was clever instead of clear.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'left' },
       { type: 'stat-countdown', title: 'The 5-Second Reality', stats: [
         { value: 5, suffix: ' sec', label: 'Decision Time', subtext: 'How long visitors give you' },
@@ -160,7 +168,8 @@
       { type: 'strategy-steps', title: 'The 5-Second Test Protocol', steps: [
         { number: 1, title: 'SHOW', icon: 'Eye', color: '#3B82F6', description: 'Show your homepage to someone for 5 seconds. Then hide it immediately.' },
         { number: 2, title: 'ASK', icon: 'MessageCircle', color: '#8B5CF6', description: 'Ask: "What does this company do?" If they can\'t answer clearly, your headline has failed.' },
-        { number: 3, title: 'FIX', icon: 'Wrench', color: '#22C55E', description: 'The ONLY passing grade is instant, accurate clarity. "They do [exact thing] for [exact audience]."' }
+        { number: 3, title: 'FIX', icon: 'Wrench', color: '#22C55E', description: 'The ONLY passing grade is instant, accurate clarity. "They do [exact thing] for [exact audience]."' },
+        { number: 4, title: 'VALIDATE', icon: 'BarChart', color: 'var(--accent)', description: 'Run an A/B test with your new clear headline vs the old one. Let real visitor behavior prove which converts better.' }
       ]},
       { type: 'cards', title: 'The Clarity Formula', items: [
         { title: 'What You Do', description: 'The actual service/product in plain language. Not "solutions" or "platforms."' },
@@ -169,6 +178,7 @@
         { title: 'No Jargon', description: 'If a 12-year-old can\'t understand it, rewrite it.' }
       ]},
       { type: 'quiz', question: 'Which headline would pass the 5-second test for a meal prep delivery service?', options: ['"Fuel Your Journey to Greatness"', '"Where Nutrition Meets Convenience"', '"Healthy Meal Prep Delivered to Your Door"', '"Empowering Your Wellness Revolution"'], correctIndex: 2, feedback: { correct: 'Option C is the ONLY clear headline. It says exactly what they do (meal prep), the key benefit (healthy), and how it works (delivered). The others are vague corporate speak that communicate nothing specific. Clarity crushes cleverness.', incorrect: 'Not quite. The correct answer is "Healthy Meal Prep Delivered to Your Door." It\'s the only headline that tells you exactly what the company does, for whom, and how. The others sound impressive but say nothing specific.' }},
+      { type: 'validate-test', title: 'Validate Your 5-Second Test', subtitle: 'Turn gut feelings into conversion data' },
       { type: 'before-after', title: 'The Confusion Tax', before: [
         '1,000 visitors land on vague page',
         '700 bounce immediately (confused)',
@@ -201,7 +211,11 @@
       Wrench: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>,
       Target: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
       TrendingUp: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-      TrendingDown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+      TrendingDown: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      BarChart: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Users: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Layers: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Timer: ({ size = 24, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
     };
 
     // Animated Counter Component
@@ -469,6 +483,108 @@
       </div>
     );
 
+    const ValidateTestSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+            <Icons.BarChart size={14} /> Validate with Data
+          </span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6 mb-6">
+          {/* The Problem */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-2xl p-5 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                <Icons.Timer size={20} color="#D97706" />
+              </div>
+              <span className="text-amber-700 font-bold text-sm uppercase tracking-wider">The Problem</span>
+            </div>
+            <p className="text-neutral-600 text-sm mb-4">The 5-second test tells you IF visitors understand. But it doesn't tell you WHICH version converts better.</p>
+            <div className="space-y-2">
+              <div className="flex items-start gap-2 text-neutral-500 text-sm">
+                <Icons.X size={14} color="#D97706" />
+                <span>Friends give biased feedback</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-500 text-sm">
+                <Icons.X size={14} color="#D97706" />
+                <span>Small sample size</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-500 text-sm">
+                <Icons.X size={14} color="#D97706" />
+                <span>No actual purchase behavior</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* The Solution */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-5 border-2" style={{ borderColor: 'var(--accent)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.2)' }}>
+            <div className="flex items-center gap-3 mb-4">
+              <img src={ABCONVERT_TOOL.logo} alt="ABConvert" className="w-10 h-10 rounded-xl" />
+              <div>
+                <span className="font-bold text-white text-sm block">A/B Test with Real Visitors</span>
+                <span className="text-neutral-400 text-xs">Powered by ABConvert</span>
+              </div>
+            </div>
+            <p className="text-neutral-300 text-sm mb-4">Test your clear vs clever headlines with actual store visitors. See which one drives more sales.</p>
+            <div className="space-y-2 mb-4">
+              <div className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check size={14} color="var(--accent)" />
+                <span>Test multiple headline versions</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check size={14} color="var(--accent)" />
+                <span>Real customer behavior data</span>
+              </div>
+              <div className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check size={14} color="var(--accent)" />
+                <span>Statistical confidence scoring</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* How It Works */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-r from-neutral-50 to-neutral-100 rounded-2xl p-5 border border-neutral-200">
+          <h3 className="font-bold text-neutral-800 text-sm mb-4 flex items-center gap-2">
+            <Icons.Layers size={16} color="var(--accent)" />
+            How to Validate Your 5-Second Test
+          </h3>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="flex items-start gap-3">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>1</span>
+              <div>
+                <span className="text-neutral-800 font-medium text-sm block">Create Variations</span>
+                <span className="text-neutral-500 text-xs">Set up your "clear" headline variant</span>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>2</span>
+              <div>
+                <span className="text-neutral-800 font-medium text-sm block">Split Traffic</span>
+                <span className="text-neutral-500 text-xs">50% see original, 50% see clear version</span>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>3</span>
+              <div>
+                <span className="text-neutral-800 font-medium text-sm block">Measure & Win</span>
+                <span className="text-neutral-500 text-xs">See which converts better with real data</span>
+              </div>
+            </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-neutral-200 flex items-center justify-between">
+            <span className="text-neutral-500 text-xs">Turn your 5-second test insight into proven results</span>
+            <a href={ABCONVERT_TOOL.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white font-semibold text-xs transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 4px 15px rgba(var(--accent-rgb), 0.3)' }}>
+              Try ABConvert <Icons.ExternalLink />
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    );
+
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -512,94 +628,27 @@
       );
     };
 
-    const TestHeadlinesSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
-            <Icons.Target size={14} /> How To Do It
-          </span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">Test Your Headlines</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-          {/* Manual Testing - Grayed */}
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-2xl p-5 md:p-6 border-2 border-neutral-200 opacity-60">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-neutral-200 flex items-center justify-center">
-                <Icons.Eye size={20} color="#9CA3AF" />
-              </div>
-              <span className="text-neutral-400 font-bold text-sm uppercase tracking-wider">Manual Testing</span>
-            </div>
-            <div className="space-y-3 mb-4">
-              <div className="flex items-start gap-2 text-neutral-400 text-sm">
-                <Icons.X size={16} color="#9CA3AF" />
-                <span>Show page to friends/family</span>
-              </div>
-              <div className="flex items-start gap-2 text-neutral-400 text-sm">
-                <Icons.X size={16} color="#9CA3AF" />
-                <span>Ask "What does this company do?"</span>
-              </div>
-              <div className="flex items-start gap-2 text-neutral-400 text-sm">
-                <Icons.X size={16} color="#9CA3AF" />
-                <span>Subjective feedback only</span>
-              </div>
-              <div className="flex items-start gap-2 text-neutral-400 text-sm">
-                <Icons.X size={16} color="#9CA3AF" />
-                <span>No real conversion data</span>
-              </div>
-            </div>
-            <div className="pt-4 border-t border-neutral-200">
-              <span className="text-neutral-400 text-xs">Limited insights, no scale</span>
-            </div>
-          </motion.div>
-
-          {/* A/B Test with Data - Highlighted */}
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-5 md:p-6 border-2" style={{ borderColor: 'var(--accent)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.25)' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
-                <Icons.TrendingUp size={20} color="var(--accent)" />
-              </div>
-              <span className="font-bold text-sm uppercase tracking-wider" style={{ color: 'var(--accent)' }}>A/B Test with Data</span>
-            </div>
-            <div className="space-y-3 mb-4">
-              <div className="flex items-start gap-2 text-neutral-300 text-sm">
-                <Icons.Check size={16} color="var(--accent)" />
-                <span>Test multiple headlines simultaneously</span>
-              </div>
-              <div className="flex items-start gap-2 text-neutral-300 text-sm">
-                <Icons.Check size={16} color="var(--accent)" />
-                <span>Real visitor behavior data</span>
-              </div>
-              <div className="flex items-start gap-2 text-neutral-300 text-sm">
-                <Icons.Check size={16} color="var(--accent)" />
-                <span>Statistical significance built-in</span>
-              </div>
-              <div className="flex items-start gap-2 text-neutral-300 text-sm">
-                <Icons.Check size={16} color="var(--accent)" />
-                <span>Know which headline converts better</span>
-              </div>
-            </div>
-            <div className="pt-4 border-t border-neutral-700">
-              <a href="https://apps.shopify.com/ab-convert" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 4px 15px rgba(var(--accent-rgb), 0.4)' }}>
-                Try ABConvert <Icons.ExternalLink />
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've mastered the 5-second test.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/ab-convert" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>ABConvert</a>
-            <span className="text-neutral-500 text-xs">runs A/B tests easily</span>
-          </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4" style={{ boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.15)' }}>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've mastered the 5-second test. Now validate your headlines with real data.</motion.p>
+
+        {/* ABConvert CTA Card */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-r from-neutral-900 to-neutral-800 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-700" style={{ boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.2)' }}>
+          <div className="flex items-center gap-3 mb-3">
+            <img src={ABCONVERT_TOOL.logo} alt="ABConvert" className="w-10 h-10 rounded-lg" />
+            <div className="text-left">
+              <span className="text-white font-bold text-sm block">Ready to Test?</span>
+              <span className="text-neutral-400 text-xs">Validate your clear headlines with real visitors</span>
+            </div>
+          </div>
+          <a href={ABCONVERT_TOOL.link} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 4px 15px rgba(var(--accent-rgb), 0.4)' }}>
+            Start A/B Testing with ABConvert <Icons.ExternalLink />
+          </a>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4" style={{ boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.15)' }}>
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
@@ -666,7 +715,7 @@
           case 'before-after': return <BeforeAfterSlide data={slide} />;
           case 'highlight-box': return <HighlightBoxSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'test-headlines': return <TestHeadlinesSlide />;
+          case 'validate-test': return <ValidateTestSlide data={slide} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }

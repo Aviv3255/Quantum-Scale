@@ -159,6 +159,7 @@
         { title: '2. Expert Endorsements', description: 'Dermatologist-tested. Certified organic. Trainer-recommended. The expert\'s credibility transfers to your product. You borrow their authority.' },
         { title: '3. Credentials & Awards', description: 'Industry awards, certifications, professional affiliations. "Winner of 2024 Innovation Award" - even if only 12 people entered. The award EXISTS. That\'s what matters to the shortcut brain.' }
       ]},
+      { type: 'badge-arsenal', title: 'Your Visual Trust Arsenal' },
       { type: 'example', scenario: 'Coffee Brand Ad', before: { label: 'No Authority Signal', text: '"Premium Organic Coffee Beans - Ethically Sourced, Expertly Roasted"' }, after: { label: 'Authority Borrowed', text: '"As Seen In: Forbes | TechCrunch | Food & Wine. Certified Organic. Award-Winning Roasters Since 2018."' }, insight: 'Same coffee. Different trust level. The logos do the heavy lifting your copy can\'t.' },
       { type: 'content', title: 'The Liking Principle: We Buy From People Like Us', body: 'A 1970s insurance study tracked what made customers more likely to buy. Turns out, it wasn\'t the pitch. It was similarity. Customers bought more from salespeople who were like them - same age, religion, politics, even smoking habits. Why? Because similarity = safety = trust. "If they\'re like me, they GET me. They won\'t screw me over." This is the Liking Principle. And it\'s lethal in ecommerce.' },
       { type: 'borrowing-grid', title: 'The Trust Borrowing Playbook' },
@@ -363,7 +364,7 @@
       );
     };
 
-    // BorrowingGridSlide - 3 Authority + 3 Liking methods
+    // BorrowingGridSlide - 3 Authority + 3 Liking methods with tool integration
     const BorrowingGridSlide = ({ data }) => {
       const methods = [
         { category: 'Authority', items: [
@@ -384,7 +385,7 @@
             {data.title}
           </motion.h2>
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
             {methods.map((method, mi) => (
               <motion.div
                 key={mi}
@@ -423,108 +424,137 @@
               </motion.div>
             ))}
           </div>
+
+          {/* Inline Tool Mention */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center justify-center gap-2 p-2.5 rounded-lg"
+            style={{ background: 'rgba(var(--accent-rgb), 0.08)' }}
+          >
+            <img
+              src="https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png"
+              alt="Trust Badges Bear"
+              className="w-6 h-6 rounded"
+            />
+            <span className="text-neutral-600 text-xs">Display authority badges visually with</span>
+            <a
+              href="https://apps.shopify.com/trust-badge-bear"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-semibold hover:underline"
+              style={{ color: 'var(--accent)' }}
+            >
+              Trust Badges Bear
+            </a>
+          </motion.div>
         </div>
       );
     };
 
-    // AddTrustBadgesSlide - Tool recommendation for implementing trust signals
-    const AddTrustBadgesSlide = ({ data }) => {
+    // BadgeArsenalSlide - Visual trust badges demonstration with Trust Badges Bear
+    const BadgeArsenalSlide = ({ data }) => {
+      const badgeCategories = [
+        {
+          name: 'Payment Trust',
+          badges: ['Visa', 'Mastercard', 'PayPal', 'Apple Pay', 'Amex'],
+          color: '#3b82f6',
+          icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        },
+        {
+          name: 'Security Seals',
+          badges: ['SSL Secure', 'Safe Checkout', 'Encrypted', 'McAfee'],
+          color: '#22c55e',
+          icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+        },
+        {
+          name: 'Guarantees',
+          badges: ['Money Back', '30-Day Return', 'Free Shipping', 'Satisfaction'],
+          color: '#f59e0b',
+          icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+        }
+      ];
+
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Visual Authority</span>
             <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+            <p className="text-neutral-500 text-sm mt-2">Every trust badge is a borrowed uniform for your store</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {/* Manual Method - Grayed out */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
-              className="rounded-2xl p-5 relative overflow-hidden opacity-60"
-              style={{ background: '#f5f5f5', border: '2px solid #e5e5e5' }}
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#d4d4d4', color: '#737373' }}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                </div>
-                <span className="font-bold text-neutral-500 text-sm">Manual Method</span>
-              </div>
-              <ul className="space-y-2 text-sm text-neutral-500">
-                <li className="flex items-start gap-2">
-                  <span className="text-neutral-400 mt-0.5"><Icons.X /></span>
-                  <span>Design badges yourself or hire a designer</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-neutral-400 mt-0.5"><Icons.X /></span>
-                  <span>Edit theme code to place them correctly</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-neutral-400 mt-0.5"><Icons.X /></span>
-                  <span>No payment icon library included</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-neutral-400 mt-0.5"><Icons.X /></span>
-                  <span>Hours of work for each badge type</span>
-                </li>
-              </ul>
-            </motion.div>
-
-            {/* App Method - Highlighted */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="rounded-2xl p-5 relative overflow-hidden"
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent)', color: 'white' }}>
-                  <Icons.Zap />
-                </div>
-                <span className="font-bold text-white text-sm">With Essential Trust Badges</span>
-              </div>
-              <ul className="space-y-2 text-sm text-neutral-300 mb-4">
-                <li className="flex items-start gap-2">
-                  <span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span>
-                  <span>350+ professional trust badges ready to use</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span>
-                  <span>Payment icons, security seals, guarantees</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span>
-                  <span>One-click placement - no coding needed</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span>
-                  <span>Instantly borrow authority from trusted symbols</span>
-                </li>
-              </ul>
-              <a
-                href="https://apps.shopify.com/essential-trust-badges?mref=lsbqcbva"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}
+          {/* Badge Categories Grid */}
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {badgeCategories.map((category, ci) => (
+              <motion.div
+                key={ci}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + ci * 0.1 }}
+                className="rounded-xl p-4 relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
               >
-                Get Essential Trust Badges
-                <Icons.ExternalLink />
-              </a>
-            </motion.div>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${category.color}, transparent)` }} />
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${category.color}20`, color: category.color }}>
+                    {category.icon}
+                  </div>
+                  <span className="text-white font-semibold text-sm">{category.name}</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {category.badges.map((badge, bi) => (
+                    <motion.span
+                      key={bi}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.3 + ci * 0.1 + bi * 0.05 }}
+                      className="px-2 py-1 rounded text-xs font-medium"
+                      style={{ background: `${category.color}15`, color: category.color, border: `1px solid ${category.color}30` }}
+                    >
+                      {badge}
+                    </motion.span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          {/* Trust Badges Bear Tool Recommendation */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="text-center text-xs text-neutral-400 mt-5"
+            className="rounded-xl p-4 relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #0d9488, #0f766e)', border: '2px solid #14b8a6' }}
           >
-            Trust badges are the fastest way to borrow authority on your product pages.
-          </motion.p>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <img
+                  src="https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png"
+                  alt="Trust Badges Bear"
+                  className="w-12 h-12 rounded-xl shadow-lg"
+                />
+                <div>
+                  <div className="text-white font-bold text-sm">Trust Badges Bear</div>
+                  <div className="text-white/70 text-xs">One-click visual authority</div>
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <p className="text-white/90 text-sm">Add payment icons, security seals, and guarantee badges to your store in minutes. No design skills needed.</p>
+              </div>
+              <a
+                href="https://apps.shopify.com/trust-badge-bear"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all hover:scale-105 flex-shrink-0"
+                style={{ background: 'white', color: '#0d9488' }}
+              >
+                Get Trust Badges
+                <Icons.ExternalLink />
+              </a>
+            </div>
+          </motion.div>
         </div>
       );
     };
@@ -735,12 +765,30 @@
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand how to borrow trust through Authority and Liking. Add media badges, expert endorsements, and relatable UGC to your store. Stack both principles for maximum credibility.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/essential-trust-badges?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Trust Badges</a>
-            <span className="text-neutral-500 text-xs">adds trust signals</span>
-          </motion.div>
+
+        {/* Trust Badges Bear CTA */}
+        <motion.a
+          href="https://apps.shopify.com/trust-badge-bear"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex items-center gap-3 p-3 rounded-xl max-w-md w-full mb-4 transition-all hover:scale-[1.02]"
+          style={{ background: 'linear-gradient(135deg, #0d9488, #0f766e)', border: '2px solid #14b8a6' }}
+        >
+          <img
+            src="https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png"
+            alt="Trust Badges Bear"
+            className="w-10 h-10 rounded-lg"
+          />
+          <div className="flex-1 text-left">
+            <div className="text-white font-semibold text-sm">Add Visual Trust Now</div>
+            <div className="text-white/70 text-xs">Trust Badges Bear - one-click authority badges</div>
+          </div>
+          <div className="text-white"><Icons.ExternalLink /></div>
+        </motion.a>
+
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -823,7 +871,7 @@
           case 'uniform-study': return <UniformStudySlide data={slide} />;
           case 'trust-stack': return <TrustStackSlide data={slide} />;
           case 'borrowing-grid': return <BorrowingGridSlide data={slide} />;
-          case 'add-trust-badges': return <AddTrustBadgesSlide data={slide} />;
+          case 'badge-arsenal': return <BadgeArsenalSlide data={slide} />;
           default: return null;
         }
       };

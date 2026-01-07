@@ -151,9 +151,9 @@
       { type: 'brain-speed' },
       { type: 'trust-equation' },
       { type: 'speed-killers' },
+      { type: 'speed-solution-tool' },
       { type: 'store-comparison' },
       { type: 'mobile-disaster' },
-      { type: 'optimize-speed' },
       { type: 'quiz', question: 'Your store loads in 3.5 seconds. Industry average is 3 seconds. Do you need to optimize?', options: ['No - only 0.5 seconds slower than average', 'No - visitors cannot notice half a second', 'Yes - every 100ms matters for subconscious trust', 'Yes - but only if conversion is already low'], correctIndex: 2, feedback: { correct: 'That 0.5 second difference is FIVE opportunities to increase conversions by 1% each. You are potentially leaving 5% of revenue on the table!', incorrect: 'Actually, every 100ms matters! That half second is 5 opportunities for 1% conversion improvement each. The subconscious detects delays you cannot consciously feel.' }},
       { type: 'pagespeed-audit' },
       { type: 'elite-insight' },
@@ -452,6 +452,82 @@
       );
     };
 
+    // SpeedSolutionToolSlide - Tapita integration for solving speed killers
+    const SpeedSolutionToolSlide = () => {
+      const [activeFeature, setActiveFeature] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveFeature(f => (f + 1) % 4), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const speedFixes = [
+        { killer: 'Uncompressed Images', solution: 'Auto-compress to WebP', improvement: '-70% size', icon: <Icons.Image /> },
+        { killer: 'Too Many Scripts', solution: 'Smart script loading', improvement: '-1.5s load', icon: <Icons.Code /> },
+        { killer: 'Render-Blocking', solution: 'Async optimization', improvement: '-0.8s TTFB', icon: <Icons.FileCode /> },
+        { killer: 'Slow Server Response', solution: 'CDN + caching', improvement: '-60% latency', icon: <Icons.Server /> }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e' }}>The Solution</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Kill All 4 Speed Problems</h2>
+            <p className="text-neutral-500 text-sm mt-2">Automatically, with one tool</p>
+          </motion.div>
+
+          {/* Tapita Tool Card */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', marginBottom: '20px', position: 'relative', overflow: 'hidden', border: '2px solid var(--accent)', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, var(--accent), #22c55e, var(--accent))' }} />
+
+            <div className="flex items-center gap-4 mb-5">
+              <img src="https://cdn.shopify.com/app-store/listing_images/6d1f87bb1ce6d8a5b20af1e1bb001d91/icon/CMC12snH8fYCEAE=.png" alt="Tapita" style={{ width: '56px', height: '56px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }} />
+              <div>
+                <h3 className="text-white font-bold text-lg">Tapita Page Speed Optimizer</h3>
+                <p className="text-neutral-400 text-sm">One-click speed optimization for Shopify</p>
+              </div>
+              <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5 }} className="ml-auto text-xs font-bold px-3 py-1.5 rounded-full" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)', color: 'white' }}>RECOMMENDED</motion.span>
+            </div>
+
+            {/* Speed Fixes Grid */}
+            <div className="grid grid-cols-2 gap-3 mb-5">
+              {speedFixes.map((fix, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  style={{ background: activeFeature === i ? 'rgba(249,115,22,0.15)' : 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '14px', border: activeFeature === i ? '1px solid rgba(249,115,22,0.4)' : '1px solid transparent', transition: 'all 0.3s', cursor: 'pointer' }}
+                  onClick={() => setActiveFeature(i)}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div style={{ width: '28px', height: '28px', borderRadius: '6px', background: 'rgba(239,68,68,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', fontSize: '12px' }}>
+                      {fix.icon}
+                    </div>
+                    <span className="text-neutral-400 text-xs line-through">{fix.killer}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white text-xs font-medium">{fix.solution}</span>
+                    <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: 'rgba(34,197,94,0.2)', color: '#22c55e' }}>{fix.improvement}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <motion.a href="https://apps.shopify.com/tapita" target="_blank" rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+              whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
+              className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-white font-semibold text-sm transition-all"
+              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+              <Icons.Zap />
+              <span>Get Tapita - Fix Speed Now</span>
+            </motion.a>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="text-neutral-500 text-xs text-center">
+            Remember: every 100ms = 1% more revenue. Tapita automates what takes developers hours.
+          </motion.p>
+        </div>
+      );
+    };
+
     // StoreComparisonSlide - Slow vs Fast store comparison
     const StoreComparisonSlide = () => {
       const [showWinner, setShowWinner] = useState(false);
@@ -614,6 +690,15 @@
               </div>
             </div>
           </motion.div>
+
+          {/* Inline Tapita mention */}
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
+            className="mt-4 flex items-center justify-center gap-3">
+            <img src="https://cdn.shopify.com/app-store/listing_images/6d1f87bb1ce6d8a5b20af1e1bb001d91/icon/CMC12snH8fYCEAE=.png" alt="Tapita" style={{ width: '24px', height: '24px', borderRadius: '6px' }} />
+            <p className="text-neutral-400 text-xs">
+              <a href="https://apps.shopify.com/tapita" target="_blank" rel="noopener noreferrer" className="underline hover:text-white transition-colors" style={{ color: 'var(--accent)' }}>Tapita</a> automatically optimizes for mobile Core Web Vitals
+            </p>
+          </motion.div>
         </div>
       );
     };
@@ -672,6 +757,18 @@
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
             className="text-center mt-6">
             <p className="text-neutral-400 text-sm">Go to <span className="text-white font-semibold">PageSpeed Insights</span> and enter your URL. The report tells you EXACTLY what to fix.</p>
+          </motion.div>
+
+          {/* Inline Tapita Pro Tip */}
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
+            style={{ background: 'linear-gradient(135deg, rgba(249,115,22,0.1), rgba(249,115,22,0.05))', borderRadius: '12px', padding: '14px', marginTop: '16px', border: '1px solid rgba(249,115,22,0.2)' }}>
+            <div className="flex items-center gap-3">
+              <img src="https://cdn.shopify.com/app-store/listing_images/6d1f87bb1ce6d8a5b20af1e1bb001d91/icon/CMC12snH8fYCEAE=.png" alt="Tapita" style={{ width: '28px', height: '28px', borderRadius: '6px' }} />
+              <div>
+                <p className="text-neutral-300 text-xs font-medium">Pro Tip</p>
+                <p className="text-neutral-500 text-xs"><a href="https://apps.shopify.com/tapita" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent)' }} className="hover:underline">Tapita</a> automatically fixes most PageSpeed issues with one click</p>
+              </div>
+            </div>
           </motion.div>
         </div>
       );
@@ -762,100 +859,33 @@
       );
     };
 
-    // OptimizeSpeedSlide - Tool recommendation for speed optimization
-    const OptimizeSpeedSlide = () => {
-      const manualDownsides = [
-        'Requires technical knowledge of Core Web Vitals',
-        'Hours spent manually compressing images',
-        'Complex code optimization and lazy loading setup',
-        'Ongoing maintenance as you add new content'
-      ];
-
-      const appBenefits = [
-        'One-click image compression and lazy loading',
-        'Automatic Core Web Vitals optimization',
-        'SEO improvements included (meta tags, JSON-LD)',
-        'Real-time speed monitoring dashboard'
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
-            <h2 className="slide-title text-2xl md:text-3xl text-black">Optimize Your Store Speed</h2>
-            <p className="text-neutral-500 text-sm mt-2">Turn those milliseconds into money</p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-            {/* Manual Method - Grayed out */}
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', opacity: 0.6 }}>
-              <div className="flex items-center gap-3 mb-4">
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(148,163,184,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
-                  <Icons.Code />
-                </div>
-                <div>
-                  <span className="text-neutral-400 font-semibold text-sm block">Manual Optimization</span>
-                  <span className="text-neutral-600 text-xs">The hard way</span>
-                </div>
-              </div>
-              <ul className="space-y-2">
-                {manualDownsides.map((item, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.05 }}
-                    className="flex items-start gap-2 text-neutral-500 text-xs">
-                    <span className="text-neutral-600 mt-0.5">-</span>
-                    <span>{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* App Method - Highlighted */}
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', border: '2px solid var(--accent)', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.15)' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
-              <div className="flex items-center gap-3 mb-4">
-                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(var(--accent-rgb), 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
-                  <Icons.Zap />
-                </div>
-                <div>
-                  <span className="text-white font-semibold text-sm block">Tapita SEO & Speed</span>
-                  <span className="text-neutral-500 text-xs">Automated optimization</span>
-                </div>
-              </div>
-              <ul className="space-y-2 mb-4">
-                {appBenefits.map((item, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.05 }}
-                    className="flex items-start gap-2 text-neutral-300 text-xs">
-                    <span style={{ color: 'var(--accent)' }} className="mt-0.5"><Icons.Check /></span>
-                    <span>{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-              <motion.a href="https://apps.shopify.com/tapita-seo-speed-optimizer" target="_blank" rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-                className="block w-full py-3 rounded-xl text-white font-semibold text-sm text-center transition-all hover:opacity-90"
-                style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-                Get Tapita on Shopify
-              </motion.a>
-            </motion.div>
-          </div>
-
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
-            className="text-neutral-500 text-xs text-center mt-5">
-            Every 100ms you save is 1% more revenue. Automate the optimization.
-          </motion.p>
-        </div>
-      );
-    };
-
     // CompletionSlide
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(var(--accent-rgb), 0.35)' }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why every 100ms matters for trust and conversions.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+
+        {/* Tapita Action Card */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', maxWidth: '400px', width: '100%', marginBottom: '16px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(249,115,22,0.3)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <div className="flex items-center gap-3 mb-3">
+            <img src="https://cdn.shopify.com/app-store/listing_images/6d1f87bb1ce6d8a5b20af1e1bb001d91/icon/CMC12snH8fYCEAE=.png" alt="Tapita" style={{ width: '40px', height: '40px', borderRadius: '10px' }} />
+            <div className="text-left">
+              <p className="text-white font-semibold text-sm">Ready to optimize your speed?</p>
+              <p className="text-neutral-500 text-xs">Convert those milliseconds into revenue</p>
+            </div>
+          </div>
+          <a href="https://apps.shopify.com/tapita" target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <Icons.Zap />
+            <span>Get Tapita Page Speed Optimizer</span>
+          </a>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
@@ -914,9 +944,9 @@
           case 'brain-speed': return <BrainSpeedSlide />;
           case 'trust-equation': return <TrustEquationSlide />;
           case 'speed-killers': return <SpeedKillersSlide />;
+          case 'speed-solution-tool': return <SpeedSolutionToolSlide />;
           case 'store-comparison': return <StoreComparisonSlide />;
           case 'mobile-disaster': return <MobileDisasterSlide />;
-          case 'optimize-speed': return <OptimizeSpeedSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'pagespeed-audit': return <PageSpeedAuditSlide />;
           case 'elite-insight': return <EliteInsightSlide />;

@@ -165,6 +165,14 @@
       FileText: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
     };
 
+    // Tool configuration for contextual integration
+    const TOOL_CONFIG = {
+      name: 'Triple Whale',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png',
+      link: 'https://apps.shopify.com/triple-whale',
+      tagline: 'First-party attribution that feeds Meta better data'
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['Why Meta is a learning machine, not a targeting tool', 'The 4-step loop that powers the entire algorithm', 'How to feed the loop properly for better results'] },
 
@@ -202,6 +210,9 @@
         { event: 'Click', quality: 2, label: 'Weak Signal', description: 'Curiosity. Could mean anything. Don\'t optimize for clicks alone.', color: '#ef4444' }
       ]},
 
+      // NEW: Learning Data slide - Triple Whale contextual integration
+      { type: 'learningDataAccelerator', title: 'Accelerate the Learning Loop', subtitle: 'The algorithm learns from data. Better data = faster learning.' },
+
       { type: 'content', title: 'The Andromeda Update Changed Everything', body: 'Before 2024, you could succeed with narrow targeting and one winning ad. Andromeda flipped the script. Now the algorithm CRAVES volume and diversity. It wants multiple creatives to test. Broad audiences to explore. More data to learn from. Old strategies are obsolete.' },
 
       { type: 'visual', title: 'What The Algorithm Wants Now', visualType: 'stats', data: [
@@ -210,12 +221,14 @@
         { value: '50+', label: 'Conversions/Week', sublabel: 'Fuel the learning loop', color: '#ec4899' }
       ]},
 
-      { type: 'quiz', question: 'What is the STRONGEST signal you can give Meta\'s algorithm?', options: [
-        { text: 'Link Click', isCorrect: false, feedback: 'Clicks are weak signals. They show curiosity, not intent. The algorithm needs stronger proof.' },
-        { text: 'Add to Cart', isCorrect: false, feedback: 'Close! Add to cart is strong, but there\'s one signal that\'s even more powerful.' },
-        { text: 'Purchase', isCorrect: true, feedback: 'Exactly! A purchase is the ultimate signal. Money changed hands. This tells Meta: "Find MORE people exactly like this." Every purchase makes the algorithm smarter.' },
-        { text: 'Page View', isCorrect: false, feedback: 'Page views show interest, but they\'re medium-strength signals. Meta needs proof of intent.' }
-      ]},
+      { type: 'quiz', question: 'What is the STRONGEST signal you can give Meta\'s algorithm?',
+        options: ['Link Click', 'Add to Cart', 'Purchase', 'Page View'],
+        correctIndex: 2,
+        feedback: {
+          correct: 'Exactly! A purchase is the ultimate signal. Money changed hands. This tells Meta: "Find MORE people exactly like this." Every purchase makes the algorithm smarter.',
+          incorrect: 'Not quite. While all these are signals, the algorithm learns best from PURCHASES - the strongest proof of intent. Try to generate as many purchase signals as possible to feed the learning loop.'
+        }
+      },
 
       { type: 'completion', title: 'You Now Understand the Loop', summary: [
         'Meta is a learning machine that finds people who resemble your converters',
@@ -336,6 +349,49 @@
                   <div className="text-xs text-neutral-400">{stat.subtext}</div>
                 </motion.div>
               ))}
+            </div>
+          </div>
+        );
+      }
+      if (data.visualType === 'comparison') {
+        return (
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {data.data.left && (
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5" style={{ background: `${data.data.left.color}10`, border: `2px solid ${data.data.left.color}30` }}>
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: data.data.left.color }}>
+                      <Icons.X />
+                    </div>
+                    <span className="font-semibold text-sm" style={{ color: data.data.left.color }}>{data.data.left.label}</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {data.data.left.points.map((point, i) => (
+                      <li key={i} className="text-neutral-700 text-sm flex items-start gap-2">
+                        <span style={{ color: data.data.left.color }} className="mt-0.5">-</span>{point}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
+              {data.data.right && (
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5" style={{ background: `${data.data.right.color}10`, border: `2px solid ${data.data.right.color}30` }}>
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: data.data.right.color }}>
+                      <Icons.Check />
+                    </div>
+                    <span className="font-semibold text-sm" style={{ color: data.data.right.color }}>{data.data.right.label}</span>
+                  </div>
+                  <ul className="space-y-2">
+                    {data.data.right.points.map((point, i) => (
+                      <li key={i} className="text-neutral-700 text-sm flex items-start gap-2">
+                        <span style={{ color: data.data.right.color }} className="mt-0.5">+</span>{point}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              )}
             </div>
           </div>
         );
@@ -820,6 +876,165 @@
       );
     };
 
+    // Loop Visualization Slide - Animated learning cycle
+    const LoopVisualizationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="relative">
+          {/* Circular loop visualization */}
+          <div className="flex flex-wrap justify-center items-center gap-4">
+            {data.steps && data.steps.map((step, i) => (
+              <React.Fragment key={i}>
+                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
+                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 flex items-center justify-center text-center p-3" style={{ borderColor: step.color, background: 'white' }}>
+                    <div>
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold mb-1 mx-auto" style={{ background: step.color }}>{step.step}</div>
+                      <div className="text-xs md:text-sm font-bold" style={{ color: step.color }}>{step.label}</div>
+                      <div className="text-[10px] text-neutral-500">{step.sublabel}</div>
+                    </div>
+                  </div>
+                </motion.div>
+                {i < data.steps.length - 1 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.15 }} className="text-2xl" style={{ color: data.steps[i + 1].color }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </motion.div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+
+          {/* Return arrow */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 text-neutral-500 text-xs">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              <span>Loop repeats continuously</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Signal Quality Slide with inline Triple Whale mention
+    const SignalQualitySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="space-y-3 mb-5">
+          {data.signals && data.signals.map((signal, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 rounded-xl p-4 flex items-center gap-4" style={{ borderColor: signal.color }}>
+              <div className="flex-shrink-0 w-12">
+                <div className="relative">
+                  <div className="h-3 w-full bg-neutral-200 rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} animate={{ width: `${signal.quality * 10}%` }} transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }} className="h-full rounded-full" style={{ background: signal.color }} />
+                  </div>
+                  <span className="text-xs font-bold mt-1 block text-center" style={{ color: signal.color }}>{signal.quality}/10</span>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-bold text-neutral-900">{signal.event}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: `${signal.color}20`, color: signal.color }}>{signal.label}</span>
+                </div>
+                <p className="text-neutral-600 text-sm">{signal.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Inline Triple Whale mention - contextual */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-gradient-to-r from-neutral-900 to-neutral-800 rounded-xl p-4">
+          <div className="flex items-center gap-3">
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-10 h-10 rounded-lg flex-shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-white text-sm font-medium">Capture more signals with first-party tracking</p>
+              <p className="text-neutral-400 text-xs truncate">iOS 14+ blocks ~40% of conversion data. {TOOL_CONFIG.name} recovers it.</p>
+            </div>
+            <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all hover:scale-105" style={{ background: 'var(--accent)' }}>
+              Learn More
+            </a>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Learning Data Accelerator Slide - Unique Triple Whale Integration
+    const LearningDataAcceleratorSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>Level Up</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          {data.subtitle && <p className="text-neutral-500 text-sm mt-2">{data.subtitle}</p>}
+        </motion.div>
+
+        {/* The Learning Loop with Data Quality */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-6 mb-5">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                <Icons.Brain />
+              </div>
+              <div>
+                <p className="text-white font-semibold text-sm">Meta's Learning Phase</p>
+                <p className="text-neutral-400 text-xs">Needs 50+ conversions/week to optimize</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-neutral-500 text-xs">Data Quality</span>
+              <div className="flex gap-1">
+                {[1,2,3,4,5].map((i) => (
+                  <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="w-3 h-3 rounded-full" style={{ background: i <= 2 ? '#ef4444' : i <= 3 ? '#f59e0b' : '#10b981' }} />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-3">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <p className="text-red-400 text-xs font-semibold mb-1">Without Attribution</p>
+              <p className="text-white text-lg font-bold">~40%</p>
+              <p className="text-neutral-500 text-xs">of conversions tracked</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white/5 rounded-xl p-4 border border-white/10">
+              <p className="text-yellow-400 text-xs font-semibold mb-1">Basic Pixel Setup</p>
+              <p className="text-white text-lg font-bold">~65%</p>
+              <p className="text-neutral-500 text-xs">of conversions tracked</p>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-gradient-to-br from-green-500/20 to-emerald-500/10 rounded-xl p-4 border border-green-500/30">
+              <p className="text-green-400 text-xs font-semibold mb-1">First-Party Attribution</p>
+              <p className="text-white text-lg font-bold">~95%</p>
+              <p className="text-neutral-500 text-xs">of conversions tracked</p>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Triple Whale Integration Card */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-white rounded-xl border-2 border-neutral-200 p-5 hover:border-blue-300 transition-colors">
+          <div className="flex items-start gap-4">
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-14 h-14 rounded-xl object-contain flex-shrink-0" />
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="font-bold text-neutral-900">{TOOL_CONFIG.name}</h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">Attribution Tool</span>
+              </div>
+              <p className="text-neutral-600 text-sm mb-3">First-party data that feeds Meta's learning loop with accurate conversion signals. The algorithm learns 2x faster with clean attribution data.</p>
+              <div className="flex flex-wrap gap-2 mb-3">
+                <span className="px-2 py-1 rounded-lg text-xs bg-neutral-100 text-neutral-600">Server-side tracking</span>
+                <span className="px-2 py-1 rounded-lg text-xs bg-neutral-100 text-neutral-600">True ROAS</span>
+                <span className="px-2 py-1 rounded-lg text-xs bg-neutral-100 text-neutral-600">iOS 14+ recovery</span>
+              </div>
+              <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:opacity-80" style={{ color: 'var(--accent)' }}>
+                <span>Feed Meta better data</span>
+                <Icons.ExternalLink />
+              </a>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    );
+
     const TrackAttributionSlide = () => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -857,8 +1072,9 @@
           </motion.div>
         </div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center">
-          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            <span>Try Triple Whale</span>
+          <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-5 h-5 rounded" />
+            <span>Try {TOOL_CONFIG.name}</span>
             <Icons.ExternalLink />
           </a>
         </motion.div>
@@ -869,13 +1085,23 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Triple Whale</a>
-            <span className="text-neutral-500 text-xs">tracks attribution accurately</span>
-          </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You now understand how to feed Meta's learning loop.</motion.p>
+
+        {/* Enhanced Triple Whale CTA */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 max-w-md w-full mb-4">
+          <div className="flex items-center justify-center gap-3 mb-2">
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-8 h-8 rounded-lg" />
+            <div className="text-left">
+              <p className="text-neutral-900 text-sm font-semibold">Ready to supercharge the loop?</p>
+              <p className="text-neutral-500 text-xs">{TOOL_CONFIG.name} feeds Meta 2x better data</p>
+            </div>
+          </div>
+          <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }}>
+            <span>Get First-Party Attribution</span>
+            <Icons.ExternalLink />
+          </a>
+        </motion.div>
+
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -987,7 +1213,10 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'loopVisualization': return <LoopVisualizationSlide data={slide} />;
+          case 'signalQuality': return <SignalQualitySlide data={slide} />;
           case 'track-attribution': return <TrackAttributionSlide />;
+          case 'learningDataAccelerator': return <LearningDataAcceleratorSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

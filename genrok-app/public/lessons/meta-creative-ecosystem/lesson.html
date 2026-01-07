@@ -172,8 +172,8 @@
         { week: 'Week 2', task: 'Produce', description: 'Film UGC. Design statics. Create variations. Aim for 10+ ready-to-launch.' },
         { week: 'Week 3', task: 'Launch & Test', description: 'Deploy new creatives. Monitor early signals. Kill obvious losers fast.' },
         { week: 'Week 4', task: 'Analyze & Iterate', description: 'Identify patterns. What angles work? What formats? Feed insights into next cycle.' }
-      ], bottomLine: 'Continuous creative production isn\'t optional. It\'s the new table stakes.' },
-      { type: 'content', title: 'The 80/20 of Creative Production', body: '80% of your results will come from 20% of your creatives. That\'s normal. But here\'s what most advertisers miss: you can\'t predict which 20% will win. You need to produce the volume to discover the winners. The advertisers with 5 creatives are hoping their 5 are winners. The advertisers with 50 are FINDING their winners. Volume isn\'t about quantity - it\'s about discovery.' },
+      ], bottomLine: 'Continuous creative production isn\'t optional. It\'s the new table stakes.', toolMention: { name: 'Triple Whale', text: 'See true ROAS by creative', logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png', link: 'https://apps.shopify.com/triple-whale' } },
+      { type: 'content', title: 'The 80/20 of Creative Production', body: '80% of your results will come from 20% of your creatives. That\'s normal. But here\'s what most advertisers miss: you can\'t predict which 20% will win. You need to produce the volume to discover the winners. The advertisers with 5 creatives are hoping their 5 are winners. The advertisers with 50 are FINDING their winners. Volume isn\'t about quantity - it\'s about discovery.', toolMention: { name: 'Triple Whale', text: 'Track which 20% actually converts', logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png', link: 'https://apps.shopify.com/triple-whale' } },
       { type: 'quiz', question: 'You have 1 winning creative style (UGC testimonial). How do you scale creative volume meaningfully?', options: ['Create 20 more UGC testimonials with different people', 'Create variations across formats: static testimonial quotes, video compilations, carousel testimonials, AND explore new angles', 'Run the winning creative longer before making new ones', 'Slightly edit the winning creative 20 times with small changes'], correctIndex: 1, feedback: { correct: 'Perfect! Scaling meaningfully means: 1) Take the winning ANGLE (social proof/testimonial) and adapt it across formats. 2) Also explore NEW angles (problem-focused, demo, transformation) that reach different buyers. Just filming 20 similar UGC videos creates redundancy, not diversity.', incorrect: 'The key is meaningful diversity. 20 similar UGC videos aren\'t meaningfully different - Meta sees them as variations of the same ad. Instead: adapt the winning angle across formats (static, carousel, compilation) AND explore entirely new angles (problem-first, demo, etc.) to unlock new audience segments.' }},
       { type: 'action-checklist', title: 'Build Your Creative Ecosystem', items: [
         { task: 'Audit current creatives - how many are meaningfully different?', done: false },
@@ -182,6 +182,7 @@
         { task: 'Add 2-3 hook variations for each format × angle combination', done: false },
         { task: 'Establish monthly creative production cadence (10+ new per month)', done: false }
       ], bottomNote: 'The goal: always have 20-50 meaningfully different creatives running. This is how you scale.' },
+      { type: 'creative-performance-tracking', title: 'Know Which Creatives Actually Convert', subtitle: 'Meta reports clicks. You need to track what actually drives purchases.' },
       { type: 'completion', sources: [] }
     ];
 
@@ -267,7 +268,26 @@
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.div>
-      
+
+        {data.toolMention && (
+          <motion.a
+            href={data.toolMention.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            className="mt-6 flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 hover:border-blue-300 transition-all group cursor-pointer"
+          >
+            <img src={data.toolMention.logo} alt={data.toolMention.name} className="w-10 h-10 rounded-lg object-cover" />
+            <div className="flex-1">
+              <span className="text-xs text-blue-600 font-semibold">{data.toolMention.name}</span>
+              <p className="text-sm text-neutral-700">{data.toolMention.text}</p>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" className="opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </motion.a>
+        )}
+
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -716,20 +736,6 @@
       </div>
     );
 
-    const ActionChecklistSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="w-6 h-6 rounded-md border-2 border-neutral-300 flex-shrink-0 mt-0.5" />
-              <span className="text-neutral-700 text-sm md:text-base">{typeof item === 'string' ? item : item.text || item.title}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
     const QuoteSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-6xl mb-6" style={{ color: 'var(--accent)' }}>"</motion.div>
@@ -928,7 +934,7 @@
     const ProductionPipelineSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           {data.phases.map((phase, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
               <div className="text-xs font-bold text-neutral-400 mb-2">{phase.week}</div>
@@ -937,9 +943,27 @@
             </motion.div>
           ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 text-center mb-4">
           <p className="text-white text-sm font-medium">{data.bottomLine}</p>
         </motion.div>
+        {data.toolMention && (
+          <motion.a
+            href={data.toolMention.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="flex items-center justify-center gap-3 p-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 hover:border-blue-300 transition-all group cursor-pointer"
+          >
+            <img src={data.toolMention.logo} alt={data.toolMention.name} className="w-8 h-8 rounded-lg object-cover" />
+            <div className="text-left">
+              <span className="text-xs text-blue-600 font-semibold">{data.toolMention.name}</span>
+              <p className="text-sm text-neutral-700">{data.toolMention.text}</p>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" className="opacity-50 group-hover:opacity-100 transition-all"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </motion.a>
+        )}
       </div>
     );
 
@@ -1008,6 +1032,112 @@
               )}
             </AnimatePresence>
           </div>
+        </div>
+      );
+    };
+
+    const CreativePerformanceTrackingSlide = ({ data }) => {
+      const [activeMetric, setActiveMetric] = useState(0);
+      const metrics = [
+        { label: 'Hook Rate', value: '34%', change: '+12%', description: 'First 3-second retention by creative', color: '#10b981' },
+        { label: 'True ROAS', value: '3.2x', change: '+0.8x', description: 'Server-side tracked revenue', color: '#3b82f6' },
+        { label: 'CAC by Angle', value: '$28', change: '-$7', description: 'Customer acquisition cost by creative angle', color: '#8b5cf6' },
+        { label: 'Creative Fatigue', value: '12 days', change: '', description: 'Days until performance drops 20%', color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: '#e7f3ff', color: '#1877f2' }}>Creative Performance Tracking</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+            {data.subtitle && <p className="text-neutral-500 text-sm mt-1">{data.subtitle}</p>}
+          </motion.div>
+
+          {/* Dashboard mockup */}
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="rounded-2xl border border-neutral-200 overflow-hidden shadow-xl bg-white">
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-slate-900 to-slate-800 border-b border-slate-700">
+              <div className="flex items-center gap-3">
+                <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-8 h-8 rounded-lg" />
+                <div>
+                  <div className="text-white font-semibold text-sm">Triple Whale</div>
+                  <div className="text-slate-400 text-xs">Creative Analytics Dashboard</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-1 bg-green-500/20 text-green-400 text-[10px] font-bold rounded-full">LIVE</span>
+              </div>
+            </div>
+
+            {/* Metrics Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border-b border-neutral-100">
+              {metrics.map((metric, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
+                  onClick={() => setActiveMetric(i)}
+                  className={`p-4 cursor-pointer transition-all border-r border-neutral-100 last:border-r-0 ${activeMetric === i ? 'bg-blue-50' : 'hover:bg-neutral-50'}`}
+                >
+                  <div className="text-xs text-neutral-500 mb-1">{metric.label}</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-2xl font-bold text-neutral-900">{metric.value}</span>
+                    {metric.change && <span className="text-xs font-semibold" style={{ color: metric.color }}>{metric.change}</span>}
+                  </div>
+                  <div className="text-[10px] text-neutral-400 mt-1">{metric.description}</div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Creative Performance Table */}
+            <div className="p-4">
+              <div className="text-xs font-semibold text-neutral-500 mb-3 flex items-center gap-2">
+                <Icons.TrendingUp size={14} color="#3b82f6" />
+                Top Performing Creatives by Angle
+              </div>
+              <div className="space-y-2">
+                {[
+                  { angle: 'Problem Agitation', format: 'UGC Video', roas: '4.2x', spend: '$12,450', icon: '1' },
+                  { angle: 'Social Proof', format: 'Carousel', roas: '3.8x', spend: '$8,920', icon: '2' },
+                  { angle: 'How-To Demo', format: 'Static', roas: '3.1x', spend: '$6,340', icon: '3' }
+                ].map((row, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + i * 0.1 }}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-neutral-50 hover:bg-neutral-100 transition-colors"
+                  >
+                    <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">{row.icon}</span>
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-neutral-900">{row.angle}</div>
+                      <div className="text-xs text-neutral-500">{row.format}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-bold text-green-600">{row.roas}</div>
+                      <div className="text-xs text-neutral-400">{row.spend}</div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* CTA */}
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="mt-4 flex flex-col items-center gap-3">
+            <a
+              href="https://apps.shopify.com/triple-whale"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg"
+              style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
+            >
+              <span>Track Your Creative Performance</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+            <p className="text-neutral-400 text-xs text-center">Know which angles and formats actually drive revenue</p>
+          </motion.div>
         </div>
       );
     };
@@ -1117,13 +1247,29 @@
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the creative ecosystem: 20-50 meaningfully different creatives, systematically produced across angles and formats. Each creative is a key that unlocks new customer segments. Volume isn't vanity - it's discovery.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Triple Whale</a>
-            <span className="text-neutral-500 text-xs">tracks attribution accurately</span>
-          </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+
+        {/* Tool CTA Card */}
+        <motion.a
+          href="https://apps.shopify.com/triple-whale"
+          target="_blank"
+          rel="noopener noreferrer"
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 max-w-md w-full mb-4 hover:border-blue-300 hover:shadow-md transition-all group cursor-pointer"
+        >
+          <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-12 h-12 rounded-xl" />
+          <div className="flex-1 text-left">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-sm font-bold text-neutral-900">Triple Whale</span>
+              <span className="px-1.5 py-0.5 bg-blue-100 text-blue-600 text-[9px] font-bold rounded">RECOMMENDED</span>
+            </div>
+            <p className="text-xs text-neutral-600">Track which creatives actually convert with server-side attribution</p>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </motion.a>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
@@ -1225,6 +1371,7 @@
           case 'production-pipeline': return <ProductionPipelineSlide data={slide} />;
           case 'action-checklist': return <ActionChecklistSlide data={slide} />;
           case 'track-creatives': return <TrackCreativesSlide />;
+          case 'creative-performance-tracking': return <CreativePerformanceTrackingSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

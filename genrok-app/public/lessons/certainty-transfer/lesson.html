@@ -175,7 +175,7 @@
       { type: 'cards', title: 'The 3 Pillars of Projected Authority', items: [
         { title: 'Authoritative Framing', description: 'Use strong, declarative language. Instead of "Our product might help," use "This is the definitive solution for..." Create content that does the research FOR them, positioning you as the expert who\'s already figured it out.' },
         { title: 'Guided Web Design', description: 'Your site navigation should be a clear, logical path—not a maze of options. Use breadcrumbs, clear CTAs, and a structured checkout process to guide users confidently, reducing choice paralysis.' },
-        { title: 'Risk Reversal as Proof', description: 'Your guarantee isn\'t just a policy; it\'s a statement of YOUR certainty. Display guarantees, "As Seen On" logos, and expert endorsements prominently. This projects total confidence in the transaction\'s value.' }
+        { title: 'Risk Reversal as Proof', description: 'Your guarantee isn\'t just a policy; it\'s a statement of YOUR certainty. Display guarantees, trust badges, and expert endorsements prominently. Visual trust signals project confidence before customers read a word.' }
       ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'right'},
       { type: 'example', scenario: 'Product Description - Weak vs Strong Frame', before: { label: 'Weak Frame (Uncertain)', text: '"This coffee maker could potentially help you make better coffee at home. It might reduce your need for expensive cafe visits. Some customers have reported positive results."' }, after: { label: 'Strong Frame (Certain)', text: '"This is the last coffee maker you\'ll ever buy. Cafe-quality espresso, every morning, in under 60 seconds. Join 50,000+ home baristas who\'ve already made the switch."' }, insight: 'The first hedges with "could," "might," "some." The second declares with absolute certainty. Customers feel the difference.' },
       { type: 'twoColumn', title: 'Digital Tonality: The Voice of Certainty', leftTitle: 'The Reasonable Man', leftDescription: 'Calm, logical, data-driven. Appeals to the analytical mind. "Based on our research..." "The evidence suggests..." Works for high-consideration purchases where logic leads.', rightTitle: 'Utter Sincerity', rightDescription: 'Passionate, empathetic, conviction-driven. Appeals to the emotional mind. "I believe..." "This changed everything for me..." Works when trust and connection matter most.' },
@@ -188,6 +188,7 @@
       { type: 'example', scenario: 'E-commerce Guarantee - Certainty Projection', before: { label: 'Weak Certainty', text: '"30-day return policy. Contact customer service for details. Some restrictions may apply."' }, after: { label: 'Strong Certainty', text: '"Love it or we\'ll buy it back. No questions. No forms. No hassle. We\'re that confident you\'ll never want to return it."' }, insight: 'The second version projects absolute certainty in the product. The guarantee becomes proof of YOUR conviction, not just a policy.' },
       { type: 'splitComparison', title: 'Certainty in Action', leftTitle: 'Uncertainty Leaks', leftItems: ['Using "maybe" or "might"', 'Apologetic pricing ("Sorry it costs...")','Too many options/choices', 'Hiding behind corporate speak'], rightTitle: 'Certainty Projects', rightItems: ['Declarative statements', 'Confident pricing with value context', 'Clear recommended path', 'Personal, direct communication'] , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_scratching_his_chin_deep_in_thought_100_pure_w_9e857f88-67b4-4496-9988-57dd621c97fe_3.mp4', characterPosition: 'right'},
       { type: 'quiz', question: 'What is "Emotional Congruence" in certainty transfer?', options: ['Having lots of positive reviews', 'Perfect alignment of words, energy, and belief', 'Offering the lowest price', 'Using emotional language in ads'], correctIndex: 1, feedback: { correct: 'Perfect! Emotional Congruence is when your words, energy, and belief system are perfectly aligned. Your customer\'s subconscious constantly scans for this alignment—any mismatch breaks the spell of trust.', incorrect: 'Not quite. Emotional Congruence means perfect alignment of your words, your energy, and your belief system. Your customer\'s subconscious is constantly scanning for this alignment. Any doubt or mismatch, and they sense it instantly.' } },
+      { type: 'certainty-signals', title: 'Visual Certainty Signals', subtitle: 'Trust badges project your conviction before customers read a single word', tool: { name: 'Trust Badges Bear', logo: 'https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png', link: 'https://apps.shopify.com/trust-badge-bear' } },
       { type: 'completion', sources: [] }
     ];
 
@@ -527,100 +528,108 @@
       );
     };
 
-    const DisplayCertaintySlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-            <Icons.Zap />How To Do It
-          </span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
-          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
-        </motion.div>
+    const CertaintySignalsSlide = ({ data }) => {
+      const badgeTypes = [
+        { icon: 'shield', label: 'Secure Checkout', desc: 'SSL encryption signals' },
+        { icon: 'guarantee', label: 'Money-Back', desc: 'Risk reversal made visible' },
+        { icon: 'shipping', label: 'Free Shipping', desc: 'Removes friction instantly' },
+        { icon: 'verified', label: 'Verified Store', desc: 'Third-party validation' }
+      ];
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-5 opacity-60">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-neutral-400 flex items-center justify-center text-white">
-                <Icons.X />
-              </div>
-              <span className="font-bold text-neutral-500">Manual Approach</span>
-            </div>
-            <ul className="space-y-2.5">
-              <li className="text-neutral-500 text-sm flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Design badges yourself or hire a designer</span>
-              </li>
-              <li className="text-neutral-500 text-sm flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Manually code placement on every page</span>
-              </li>
-              <li className="text-neutral-500 text-sm flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>No A/B testing to find what converts</span>
-              </li>
-              <li className="text-neutral-500 text-sm flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Generic badges that don't match your brand</span>
-              </li>
-            </ul>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Shield />Visual Signals
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm max-w-lg mx-auto">{data.subtitle}</p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)', boxShadow: '0 8px 32px rgba(var(--accent-rgb),0.15)' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
-                <Icons.Check />
+          {/* Badge Types Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {badgeTypes.map((badge, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 text-center">
+                <div className="w-10 h-10 mx-auto mb-2 rounded-lg flex items-center justify-center" style={{ background: `rgba(var(--accent-rgb), 0.15)` }}>
+                  {badge.icon === 'shield' && <Icons.Shield />}
+                  {badge.icon === 'guarantee' && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>}
+                  {badge.icon === 'shipping' && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>}
+                  {badge.icon === 'verified' && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>}
+                </div>
+                <h4 className="font-semibold text-neutral-800 text-xs mb-0.5">{badge.label}</h4>
+                <p className="text-neutral-500 text-[10px]">{badge.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Tool Recommendation */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="bg-neutral-900 rounded-xl p-5 relative overflow-hidden"
+            style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+            <div className="flex items-start gap-4">
+              <img src={data.tool.logo} alt={data.tool.name} className="w-14 h-14 rounded-xl flex-shrink-0" />
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-white font-bold text-base">{data.tool.name}</h3>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-green-500/20 text-green-400">Recommended</span>
+                </div>
+                <p className="text-neutral-400 text-sm mb-3">Add 300+ professional trust badges that project certainty across your entire store. Money-back guarantees, secure checkout, free shipping, and more.</p>
+                <div className="flex items-center gap-4">
+                  <a href={data.tool.link} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-semibold transition-all hover:scale-105"
+                    style={{ background: 'var(--accent)' }}>
+                    Add Trust Badges
+                    <Icons.ExternalLink />
+                  </a>
+                  <span className="text-neutral-500 text-xs">Free plan available</span>
+                </div>
               </div>
-              <span className="font-bold text-neutral-800">Essential Trust Badges</span>
             </div>
-            <ul className="space-y-2.5 mb-4">
-              <li className="text-neutral-700 text-sm flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }} className="mt-0.5">+</span>
-                <span>300+ professional trust badges ready to use</span>
-              </li>
-              <li className="text-neutral-700 text-sm flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }} className="mt-0.5">+</span>
-                <span>Smart placement on cart, checkout & product pages</span>
-              </li>
-              <li className="text-neutral-700 text-sm flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }} className="mt-0.5">+</span>
-                <span>Money-back guarantees, secure checkout, free shipping</span>
-              </li>
-              <li className="text-neutral-700 text-sm flex items-start gap-2">
-                <span style={{ color: 'var(--accent)' }} className="mt-0.5">+</span>
-                <span>Projects certainty automatically across your store</span>
-              </li>
-            </ul>
-            <a href="https://apps.shopify.com/essential-trust-badges?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition-all hover:scale-105" style={{ background: 'var(--accent)' }}>
-              Add Trust Badges to Your Store
-              <Icons.ExternalLink />
-            </a>
+            {/* Decorative badge icons */}
+            <div className="absolute -right-4 -bottom-4 opacity-5">
+              <svg width="120" height="120" viewBox="0 0 24 24" fill="white"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
           </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="text-center text-neutral-400 text-xs mt-4">
+            Trust badges are certainty made visible - customers feel your conviction before reading a word.
+          </motion.p>
         </div>
-
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center text-neutral-400 text-xs mt-4">
-          Trust badges are risk reversal made visible - they project your certainty before customers even read your copy.
-        </motion.p>
-      </div>
-    );
+      );
+    };
 
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand Certainty Transfer. Customers don't need more information—they need to borrow your conviction. Project authority through emotional congruence, declarative language, guided design, and confident risk reversal.</motion.p>
-        
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4">
-            <span className="text-neutral-500 text-xs">Pro tip:</span>
-            <a href="https://apps.shopify.com/essential-trust-badges?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="text-xs font-medium hover:underline" style={{ color: 'var(--accent)' }}>Trust Badges</a>
-            <span className="text-neutral-500 text-xs">adds trust signals</span>
-          </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(var(--accent-rgb),0.15)' }}>
+
+        {/* Tool CTA - Trust Badges Bear */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-xl p-4 max-w-md w-full mb-4">
+          <div className="flex items-center gap-3">
+            <img src="https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png" alt="Trust Badges Bear" className="w-10 h-10 rounded-lg flex-shrink-0" />
+            <div className="flex-1 text-left">
+              <p className="text-neutral-800 text-sm font-semibold">Project Certainty Visually</p>
+              <p className="text-neutral-500 text-xs">Add trust badges that transfer your conviction instantly</p>
+            </div>
+            <a href="https://apps.shopify.com/trust-badge-bear" target="_blank" rel="noopener noreferrer"
+              className="px-3 py-1.5 rounded-lg text-white text-xs font-semibold flex-shrink-0 transition-all hover:scale-105"
+              style={{ background: 'var(--accent)' }}>
+              Try Free
+            </a>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(var(--accent-rgb),0.15)' }}>
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
         {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
             <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
@@ -695,7 +704,7 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'twoColumn': return <TwoColumnSlide data={slide} />;
           case 'splitComparison': return <SplitComparisonSlide data={slide} />;
-          case 'display-certainty': return <DisplayCertaintySlide data={slide} />;
+          case 'certainty-signals': return <CertaintySignalsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
