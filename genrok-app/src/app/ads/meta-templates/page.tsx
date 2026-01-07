@@ -18,12 +18,13 @@ const TemplateCardAlt = memo(function TemplateCardAlt({ template }: { template: 
 
   return (
     <div className="flex flex-col py-2">
-      {/* Image container - less rounded, minimal shadow, with padding */}
+      {/* Image container - less rounded, no border on bottom */}
       <a
         href={template.canvaLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="block relative aspect-square rounded overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] border-b-0 transition-shadow duration-200 hover:shadow-md"
+        className="block relative aspect-square rounded-t overflow-hidden bg-[#f5f5f5] transition-shadow duration-200 hover:shadow-sm"
+        style={{ borderTop: '1px solid #ddd', borderLeft: '1px solid #ddd', borderRight: '1px solid #ddd' }}
       >
         {/* Cover Image - lazy loaded */}
         {template.coverImage ? (
@@ -61,35 +62,35 @@ const TemplateCardAlt = memo(function TemplateCardAlt({ template }: { template: 
         )}
       </a>
 
-      {/* Button container below image - white with thin black border on sides and bottom, taller */}
+      {/* Button container below image - white with lighter border, responsive */}
       <div
-        className="flex items-center justify-between gap-2 px-4 py-3 bg-white rounded-b"
-        style={{ borderLeft: '1px solid #000', borderRight: '1px solid #000', borderBottom: '1px solid #000' }}
+        className="flex items-center justify-between gap-1 px-2 py-2 bg-white rounded-b"
+        style={{ border: '1px solid #ddd' }}
       >
-        {/* Toggle button - only if has editable version, 10% bigger */}
+        {/* Toggle button - only if has editable version */}
         {template.hoverImage ? (
           <button
             onClick={handleToggle}
-            className="flex items-center gap-2 px-3 py-2 rounded font-semibold border"
-            style={{ color: '#7435E6', borderColor: '#7435E6', fontSize: '13px' }}
+            className="flex items-center gap-1 px-2 py-1.5 rounded font-semibold border whitespace-nowrap text-xs"
+            style={{ color: '#7435E6', borderColor: '#7435E6' }}
           >
-            <RefreshCw size={14} color="#7435E6" />
-            {showEditable ? 'See original' : 'See editable'}
+            <RefreshCw size={12} className="flex-shrink-0" color="#7435E6" />
+            {showEditable ? 'Original' : 'Editable'}
           </button>
         ) : (
           <div></div>
         )}
 
-        {/* Edit in Canva button - 10% bigger */}
+        {/* Edit in Canva button */}
         <a
           href={template.canvaLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 px-3 py-2 rounded font-semibold"
-          style={{ backgroundColor: '#7435E6', color: '#FFFFFF', fontSize: '13px' }}
+          className="flex items-center gap-1 px-2 py-1.5 rounded font-semibold whitespace-nowrap text-xs"
+          style={{ backgroundColor: '#7435E6', color: '#FFFFFF' }}
         >
-          <ExternalLink size={14} color="#FFFFFF" />
-          Edit in Canva
+          <ExternalLink size={12} className="flex-shrink-0" color="#FFFFFF" />
+          Canva
         </a>
       </div>
     </div>
@@ -217,13 +218,8 @@ export default function MetaTemplatesPage() {
 
           {/* Templates Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredTemplates.map((template, index) => (
-              // Use alternate layout for first 12 templates (when not searching)
-              !searchQuery && index < 12 ? (
-                <TemplateCardAlt key={template.id} template={template} />
-              ) : (
-                <TemplateCard key={template.id} template={template} />
-              )
+            {filteredTemplates.map((template) => (
+              <TemplateCardAlt key={template.id} template={template} />
             ))}
           </div>
 
