@@ -44,26 +44,25 @@
       nextLesson: { id: 'meta-andromeda', title: 'Meta\'s New Brain: Andromeda', teaser: 'The AI engine that changed everything about how Facebook Ads work.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
+    // Tool config for Part 2
+    const TOOL_CONFIG = {
+      name: 'Triple Whale',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png',
+      link: 'https://apps.shopify.com/triple-whale'
+    };
 
-    // Listen for admin status from parent
+    // ============ ADMIN REPORTER SYSTEM ============
+    let __isAdmin = false;
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -118,7 +117,6 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
@@ -131,8 +129,11 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // ========== PART 1: THEORY SLIDES ==========
+    // ========== PART 2: PRACTICAL SLIDES ==========
     const slides = [
-      { type: 'welcome', learningGoals: ['Why pixel-only tracking loses 30-40% of conversion data', 'How CAPI (Conversions API) fills the iOS 14.5+ gaps', 'The dual-tracking setup that gives Andromeda complete data'] },
+      // PART 1: THEORY
+      { type: 'welcome', learningGoals: ['Why pixel-only tracking loses 30-40% of conversion data', 'How CAPI (Conversions API) fills the iOS 14.5+ gaps', 'The dual-tracking setup that gives Meta complete data'] },
       { type: 'hook', headline: 'iOS 14.5 didn\'t just change privacy. It blinded your ads.', subtext: 'When Apple introduced App Tracking Transparency, pixel tracking broke for 70%+ of iPhone users. Your ads kept running. But Meta stopped seeing conversions. It optimized based on incomplete data. Costs went up. ROAS went down. CAPI is the fix most advertisers still haven\'t implemented properly.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
       { type: 'problem-visual', title: 'The Problem: Pixel Tracking Is Broken', problems: [
         { icon: 'shield', text: 'Safari blocks third-party cookies by default' },
@@ -149,20 +150,16 @@
         { icon: 'trending-down', title: 'Lower CPAs', description: 'Advertisers report 15-30% CPA reduction after proper CAPI setup.' },
         { icon: 'shield-check', title: 'Future-Proof', description: 'As cookies die completely, CAPI becomes your primary tracking method.' }
       ]},
-      { type: 'shopify-setup', title: 'Shopify CAPI Setup (Step-by-Step)' },
-      { type: 'event-match-quality', title: 'Check Your Event Match Quality' },
-      { type: 'pixel-health-monitor' },
+      { type: 'content', title: 'The Event Match Quality Score', body: 'Meta assigns each pixel a score from 1-10 based on how well it can match events to users. Pixel-only typically scores 3-5. With CAPI, you can hit 7-10. This score directly impacts how well Meta\'s AI can optimize your campaigns. Higher score = better lookalikes, better retargeting, lower CPAs. The difference between a 4 and an 8 can mean 20-30% lower acquisition costs.' },
       { type: 'example', scenario: 'Skincare Brand - Before/After CAPI', before: { label: 'Pixel Only', metrics: [{ label: 'Reported Conversions', value: '45/day' }, { label: 'Actual Shopify Orders', value: '68/day' }, { label: 'Data Visibility', value: '66%' }, { label: 'CPA', value: '$34.50' }] }, after: { label: 'Pixel + CAPI', metrics: [{ label: 'Reported Conversions', value: '65/day' }, { label: 'Match Rate', value: '96%' }, { label: 'CPA', value: '$24.20' }, { label: 'ROAS', value: '2.9x' }] }, insight: 'Same product. Same ads. 30% lower CPA just by giving Meta accurate data.' },
       { type: 'quiz', question: 'Your pixel shows 50 conversions/day but Shopify shows 80 orders. What\'s the most likely cause?', options: ['The pixel is counting wrong - remove it', 'iOS 14.5+ and ad blockers are preventing pixel fires', 'Shopify\'s numbers are inflated', 'You need to lower your budget'], correctIndex: 1, feedback: { correct: 'Exactly right. The 30-conversion gap (37% missing) is classic iOS 14.5+ impact combined with ad blockers. CAPI would capture those missing events by sending data server-side, bypassing browser restrictions.', incorrect: 'The discrepancy is caused by iOS 14.5+ privacy changes and ad blockers. 30%+ of conversions are commonly lost. The solution is CAPI to send conversion data directly from your server.' }},
-      { type: 'action-checklist', title: 'Implement CAPI Today', items: [
-        { task: 'Go to Events Manager and check current Event Match Quality score', path: 'Events Manager > Data Sources > Your Pixel > Overview' },
-        { task: 'Enable CAPI in your platform settings', path: 'Shopify: Settings > Apps > Facebook & Instagram > Data Sharing' },
-        { task: 'Set Data Sharing to "Maximum" for best results', path: 'This enables server-side event sending' },
-        { task: 'Verify both Pixel AND CAPI are firing (check Events Manager)', path: 'Look for "Browser" and "Server" event sources' },
-        { task: 'Send enhanced parameters: email, phone for better matching', path: 'Configure in your CAPI integration settings' }
-      ], bottomNote: 'CAPI setup typically takes 15-30 minutes on Shopify. The ROI is immediate.' },
-      { type: 'enhance-tracking' },
-      { type: 'completion', sources: [] }
+      // PART 2: PRACTICAL
+      { type: 'section-divider' },
+      { type: 'step-enable-capi' },
+      { type: 'step-verify-events' },
+      { type: 'step-monitor-health' },
+      { type: 'step-results' },
+      { type: 'completion' }
     ];
 
     // Clean SVG Icons
@@ -182,12 +179,14 @@
       Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
       Cpu: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>,
       TrendingDown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
       Activity: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       Database: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>,
       ArrowDown: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>,
       Settings: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
       ExternalLink: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
     };
 
     const getIconComponent = (name) => {
@@ -234,15 +233,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -252,7 +242,8 @@
       </div>
     );
 
-        const ProblemVisualSlide = ({ data }) => (
+    // Problem Visual Slide
+    const ProblemVisualSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
         <div className="grid md:grid-cols-2 gap-4 mb-8">
@@ -275,11 +266,11 @@
       </div>
     );
 
-    // Tracking Comparison Slide
+    // Tracking Comparison Slide (CLEAN - no tool mentions)
     const TrackingComparisonSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
+        <div className="grid md:grid-cols-2 gap-4">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
             <div className="text-center mb-4">
               <span className="inline-block px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-bold">{data.pixel.label}</span>
@@ -323,20 +314,10 @@
             </div>
           </motion.div>
         </div>
-
-        {/* Inline Triple Whale Mention */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex items-center justify-center gap-2 text-xs text-neutral-500">
-          <img
-            src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png"
-            alt="Triple Whale"
-            className="w-4 h-4 rounded"
-          />
-          <span>Pro tip: <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Triple Whale's Pixel Doctor</a> monitors both pixel and CAPI health in real-time</span>
-        </motion.div>
       </div>
     );
 
-    // Architecture Diagram Slide (with clean icons instead of emojis)
+    // Architecture Diagram Slide
     const ArchitectureDiagramSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
@@ -382,9 +363,7 @@
       <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-4">{data.title}</motion.h2>
 
-        {/* Meta UI Mockup */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="meta-ui bg-[#f0f2f5] rounded-xl overflow-hidden shadow-lg border border-neutral-200">
-          {/* Meta Header */}
           <div className="bg-white border-b border-[#dddfe2] px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-[#1877f2] flex items-center justify-center">
@@ -395,7 +374,6 @@
             <div className="text-xs text-[#65676b]">Data Sources</div>
           </div>
 
-          {/* Events Overview */}
           <div className="p-4">
             <div className="bg-white rounded-lg border border-[#dddfe2] overflow-hidden">
               <div className="px-4 py-3 border-b border-[#dddfe2] flex items-center justify-between">
@@ -403,7 +381,6 @@
                 <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">Active</span>
               </div>
 
-              {/* Event Rows */}
               <div className="divide-y divide-[#dddfe2]">
                 <div className="px-4 py-3 flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -458,7 +435,6 @@
               </div>
             </div>
 
-            {/* Event Match Quality */}
             <div className="mt-4 bg-white rounded-lg border border-[#dddfe2] p-4">
               <div className="flex items-center justify-between mb-3">
                 <span className="font-semibold text-sm text-[#1c1e21]">Event Match Quality</span>
@@ -500,277 +476,15 @@
       </div>
     );
 
-    // Shopify Setup Mockup Slide
-    const ShopifySetupSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-4 md:px-8 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-4">{data.title}</motion.h2>
-
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Step 1 */}
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
-            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">1</span>
-              <span className="font-semibold text-sm">Go to Sales Channels</span>
-            </div>
-            <div className="p-4">
-              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3 text-sm">
-                <div className="flex items-center gap-2 text-[#1c1e21] mb-2">
-                  <Icons.Settings />
-                  <span className="font-medium">Settings</span>
-                </div>
-                <div className="ml-6 space-y-1">
-                  <div className="text-[#65676b] text-xs">Apps and sales channels</div>
-                  <div className="flex items-center gap-2 bg-white rounded px-2 py-1.5 border border-blue-300">
-                    <div className="w-5 h-5 rounded bg-[#1877f2]"></div>
-                    <span className="text-xs font-medium">Facebook & Instagram</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Step 2 */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
-            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">2</span>
-              <span className="font-semibold text-sm">Open Data Sharing Settings</span>
-            </div>
-            <div className="p-4">
-              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3 text-sm">
-                <div className="text-xs text-[#65676b] mb-2">Facebook & Instagram app</div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between bg-white rounded px-3 py-2 border border-neutral-200">
-                    <span className="text-xs">Settings</span>
-                    <Icons.ArrowRight />
-                  </div>
-                  <div className="flex items-center justify-between bg-white rounded px-3 py-2 border border-blue-300 bg-blue-50">
-                    <span className="text-xs font-medium text-blue-700">Data sharing settings</span>
-                    <Icons.ArrowRight />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Step 3 */}
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
-            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">3</span>
-              <span className="font-semibold text-sm">Select Maximum Data Sharing</span>
-            </div>
-            <div className="p-4">
-              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3">
-                <div className="text-xs text-[#65676b] mb-3">Customer data sharing level</div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3 bg-white rounded px-3 py-2 border border-neutral-200">
-                    <div className="w-4 h-4 rounded-full border-2 border-neutral-300"></div>
-                    <span className="text-xs">Standard</span>
-                  </div>
-                  <div className="flex items-center gap-3 bg-white rounded px-3 py-2 border border-neutral-200">
-                    <div className="w-4 h-4 rounded-full border-2 border-neutral-300"></div>
-                    <span className="text-xs">Enhanced</span>
-                  </div>
-                  <div className="flex items-center gap-3 bg-green-50 rounded px-3 py-2 border-2 border-green-400">
-                    <div className="w-4 h-4 rounded-full border-2 border-green-500 flex items-center justify-center">
-                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    </div>
-                    <span className="text-xs font-medium text-green-700">Maximum</span>
-                    <span className="text-[10px] bg-green-100 text-green-600 px-1.5 py-0.5 rounded ml-auto">Recommended</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Step 4 */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
-            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
-              <span className="w-6 h-6 rounded-full bg-green-500 text-white text-xs font-bold flex items-center justify-center">4</span>
-              <span className="font-semibold text-sm">Verify in Events Manager</span>
-            </div>
-            <div className="p-4">
-              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3">
-                <div className="text-xs text-[#65676b] mb-2">Connection Status</div>
-                <div className="bg-white rounded-lg p-3 border border-neutral-200">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                    <span className="text-xs font-medium">CAPI Connected</span>
-                  </div>
-                  <div className="text-[10px] text-[#65676b]">
-                    Events received: Browser + Server
-                  </div>
-                  <div className="mt-2 flex gap-2">
-                    <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-1 rounded">Pixel</span>
-                    <span className="text-[10px] bg-green-50 text-green-600 px-2 py-1 rounded">CAPI</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
+    // Content Slide
+    const ContentSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
       </div>
     );
 
-    // Pixel Health Monitor Slide - Triple Whale Integration
-    const PixelHealthMonitorSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 bg-purple-100 text-purple-700">Pro Tip</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">Monitor Your Pixel Health 24/7</h2>
-          <p className="text-neutral-500 text-sm mt-2">Even after CAPI setup, tracking can break. You need continuous monitoring.</p>
-        </motion.div>
-
-        {/* Triple Whale Pixel Doctor Mockup */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-2xl border-2 border-neutral-200 shadow-lg overflow-hidden mb-6">
-          {/* Header with Triple Whale branding */}
-          <div className="bg-gradient-to-r from-[#0f172a] to-[#1e293b] px-5 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img
-                src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png"
-                alt="Triple Whale"
-                className="w-8 h-8 rounded-lg"
-              />
-              <div>
-                <div className="text-white font-semibold text-sm">Pixel Doctor</div>
-                <div className="text-slate-400 text-xs">by Triple Whale</div>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-              <span className="text-green-400 text-xs font-medium">Live Monitoring</span>
-            </div>
-          </div>
-
-          {/* Pixel Health Dashboard */}
-          <div className="p-5">
-            {/* Health Score */}
-            <div className="flex items-center justify-between mb-5">
-              <div>
-                <div className="text-xs text-neutral-500 mb-1">Overall Pixel Health</div>
-                <div className="flex items-center gap-2">
-                  <span className="text-3xl font-bold text-green-600">98%</span>
-                  <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">Excellent</span>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className="text-xs text-neutral-500 mb-1">Events Tracked (24h)</div>
-                <div className="text-2xl font-bold text-neutral-900">12,847</div>
-              </div>
-            </div>
-
-            {/* Tracking Sources Grid */}
-            <div className="grid grid-cols-3 gap-3 mb-5">
-              <div className="bg-blue-50 rounded-xl p-3 text-center border border-blue-100">
-                <div className="text-xs text-blue-600 font-medium mb-1">Meta Pixel</div>
-                <div className="text-xl font-bold text-blue-700">Active</div>
-                <div className="flex items-center justify-center gap-1 mt-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                  <span className="text-xs text-neutral-500">Firing</span>
-                </div>
-              </div>
-              <div className="bg-green-50 rounded-xl p-3 text-center border border-green-100">
-                <div className="text-xs text-green-600 font-medium mb-1">CAPI</div>
-                <div className="text-xl font-bold text-green-700">Active</div>
-                <div className="flex items-center justify-center gap-1 mt-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                  <span className="text-xs text-neutral-500">Connected</span>
-                </div>
-              </div>
-              <div className="bg-purple-50 rounded-xl p-3 text-center border border-purple-100">
-                <div className="text-xs text-purple-600 font-medium mb-1">TikTok</div>
-                <div className="text-xl font-bold text-purple-700">Active</div>
-                <div className="flex items-center justify-center gap-1 mt-1">
-                  <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
-                  <span className="text-xs text-neutral-500">Synced</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Alert Example */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" strokeWidth="2">
-                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                  <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-              </div>
-              <div>
-                <div className="text-amber-800 font-medium text-sm">Alert: Google Ads pixel delayed</div>
-                <div className="text-amber-600 text-xs">Detected 2h ago - conversion events taking 4+ seconds to fire. May affect attribution.</div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-center">
-          <p className="text-neutral-500 text-sm mb-4">Triple Whale's Pixel Doctor catches tracking issues before they cost you money.</p>
-          <a
-            href="https://apps.shopify.com/triple-whale"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-5 py-3 bg-[#0f172a] hover:bg-[#1e293b] rounded-xl text-white font-semibold text-sm transition-all hover:scale-105 group"
-          >
-            <img
-              src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png"
-              alt="Triple Whale"
-              className="w-5 h-5 rounded"
-            />
-            <span>Get Pixel Doctor</span>
-            <Icons.ExternalLink />
-          </a>
-        </motion.div>
-      </div>
-    );
-
-    // Event Match Quality Slide
-    const EventMatchQualitySlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="meta-ui bg-white rounded-xl border-2 border-neutral-200 p-6 mb-6">
-          <div className="text-center mb-6">
-            <div className="text-sm text-[#65676b] mb-2">Your Event Match Quality Score</div>
-            <div className="flex items-center justify-center gap-1">
-              {[1,2,3,4,5,6,7,8,9,10].map((n) => (
-                <div key={n} className={`w-8 h-12 rounded flex items-center justify-center text-xs font-bold ${n <= 7 ? 'bg-green-100 text-green-700' : n <= 3 ? 'bg-red-100 text-red-700' : 'bg-neutral-100 text-neutral-400'}`}>
-                  {n}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            <div className="bg-red-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-red-600 mb-1">1-3</div>
-              <div className="text-xs text-red-700 font-medium mb-2">Poor</div>
-              <div className="text-xs text-red-600">Most events can't be matched. CAPI isn't working properly.</div>
-            </div>
-            <div className="bg-yellow-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold text-yellow-600 mb-1">4-6</div>
-              <div className="text-xs text-yellow-700 font-medium mb-2">Okay</div>
-              <div className="text-xs text-yellow-600">Basic matching. Room for improvement.</div>
-            </div>
-            <div className="bg-green-50 rounded-lg p-4 text-center border-2 border-green-300">
-              <div className="text-2xl font-bold text-green-600 mb-1">7-10</div>
-              <div className="text-xs text-green-700 font-medium mb-2">Excellent</div>
-              <div className="text-xs text-green-600">Meta sees almost everything. Optimization works well.</div>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <div className="font-semibold text-blue-800 text-sm mb-2">How to improve your score:</div>
-          <ul className="text-sm text-blue-700 space-y-1">
-            <li className="flex items-start gap-2"><Icons.Check className="w-4 h-4 mt-0.5 flex-shrink-0" /><span>Send customer email with every event</span></li>
-            <li className="flex items-start gap-2"><Icons.Check className="w-4 h-4 mt-0.5 flex-shrink-0" /><span>Include phone number when available</span></li>
-            <li className="flex items-start gap-2"><Icons.Check className="w-4 h-4 mt-0.5 flex-shrink-0" /><span>Pass first name, last name, and address</span></li>
-          </ul>
-        </motion.div>
-      </div>
-    );
-
-    // Example Slide (enhanced with metrics cards)
+    // Example Slide
     const ExampleSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -812,58 +526,6 @@
         </motion.div>
       </div>
     );
-
-    // Action Checklist Slide (with paths)
-    const ActionChecklistSlide = ({ data }) => {
-      const [checkedItems, setCheckedItems] = useState({});
-      const toggleItem = (index) => setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="space-y-3 mb-4">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} onClick={() => toggleItem(i)} className={`bg-white border-2 rounded-xl p-4 cursor-pointer transition-all ${checkedItems[i] ? 'border-green-400 bg-green-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
-                <div className="flex items-start gap-3">
-                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 transition-all ${checkedItems[i] ? 'bg-green-500 text-white' : 'bg-neutral-100'}`}>
-                    {checkedItems[i] && <Icons.Check />}
-                  </div>
-                  <div className="flex-1">
-                    <span className={`text-sm font-medium ${checkedItems[i] ? 'text-green-700 line-through' : 'text-neutral-700'}`}>{item.task}</span>
-                    {item.path && <div className="text-xs text-neutral-400 mt-1 font-mono">{item.path}</div>}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Triple Whale Bonus Step */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }} className="bg-slate-900 rounded-xl p-4 mb-4">
-            <div className="flex items-start gap-3">
-              <img
-                src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png"
-                alt="Triple Whale"
-                className="w-8 h-8 rounded-lg flex-shrink-0"
-              />
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-white font-medium text-sm">Bonus: Set up pixel monitoring</span>
-                  <span className="px-1.5 py-0.5 bg-green-500 text-white text-[9px] font-bold rounded">FREE</span>
-                </div>
-                <p className="text-slate-400 text-xs mb-2">Get alerts when your CAPI or pixel breaks. Saves hours of debugging.</p>
-                <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="text-blue-400 text-xs hover:underline inline-flex items-center gap-1">
-                  Install Triple Whale Pixel Doctor <Icons.ExternalLink />
-                </a>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
-            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
-          </motion.div>
-        </div>
-      );
-    };
 
     // Quiz Slide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
@@ -909,122 +571,282 @@
       );
     };
 
-    // Enhance Tracking Slide - Triple Whale Attribution Integration
-    const EnhanceTrackingSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 bg-slate-100 text-slate-700">Level Up</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">Go Beyond Basic CAPI</h2>
-          <p className="text-neutral-500 text-sm mt-2">CAPI fixes Meta's data. But what about your complete tracking stack?</p>
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    // Section Divider Slide
+    const SectionDividerSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to get dual tracking working today</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
-
-        {/* Triple Whale Feature Highlight */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 mb-6 relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5"/>
-              </pattern>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          </div>
-
-          <div className="relative z-10">
-            <div className="flex items-center gap-4 mb-5">
-              <img
-                src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png"
-                alt="Triple Whale"
-                className="w-12 h-12 rounded-xl shadow-lg"
-              />
-              <div>
-                <div className="text-white font-bold text-lg">Triple Whale</div>
-                <div className="text-slate-400 text-sm">The Pixel Specialist for DTC Brands</div>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mb-3">
-                  <Icons.Activity />
-                </div>
-                <div className="text-white font-semibold text-sm mb-1">Pixel Doctor</div>
-                <div className="text-slate-300 text-xs">24/7 pixel health monitoring with instant alerts when tracking breaks</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center mb-3">
-                  <Icons.Target />
-                </div>
-                <div className="text-white font-semibold text-sm mb-1">First-Party Data</div>
-                <div className="text-slate-300 text-xs">Server-side tracking that bypasses iOS restrictions completely</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur rounded-xl p-4">
-                <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center mb-3">
-                  <Icons.Zap />
-                </div>
-                <div className="text-white font-semibold text-sm mb-1">True Attribution</div>
-                <div className="text-slate-300 text-xs">See which ads actually drive revenue across all channels</div>
-              </div>
-            </div>
-
-            <div className="mt-5 pt-5 border-t border-white/10 flex items-center justify-between">
-              <div className="text-slate-300 text-sm">
-                <span className="text-green-400 font-semibold">93% of users</span> report improved ROAS accuracy
-              </div>
-              <a
-                href="https://apps.shopify.com/triple-whale"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-slate-900 rounded-lg font-semibold text-sm transition-all hover:scale-105 hover:shadow-lg"
-              >
-                <span>Install Free</span>
-                <Icons.ExternalLink />
-              </a>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-500 text-xs text-center">
-          CAPI is step one. Triple Whale completes your tracking setup with real attribution data.
-        </motion.p>
       </div>
     );
 
-    // Completion Slide
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand CAPI + Pixel dual tracking. Pixel-only misses 30-40% of conversions. CAPI fills the gaps. Together they achieve 95%+ event match rate - essential for Meta's AI optimization.</motion.p>
-
-        {/* Triple Whale Recommendation Card */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-4 max-w-md w-full mb-4">
-          <div className="flex items-center gap-3 mb-3">
-            <img
-              src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png"
-              alt="Triple Whale"
-              className="w-10 h-10 rounded-lg"
-            />
-            <div className="text-left">
-              <div className="text-white font-semibold text-sm">Complete Your Setup</div>
-              <div className="text-slate-400 text-xs">Triple Whale monitors your pixel health 24/7</div>
+    // Step 1: Enable CAPI
+    const StepEnableCAPISlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+            <div>
+              <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+              <h2 className="slide-title text-2xl md:text-3xl text-black">Enable CAPI in Shopify</h2>
             </div>
           </div>
-          <a
-            href="https://apps.shopify.com/triple-whale"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-2.5 bg-white text-slate-900 rounded-lg font-semibold text-sm transition-all hover:scale-[1.02]"
-          >
-            <span>Get Pixel Doctor Free</span>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
+            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">A</span>
+              <span className="font-semibold text-sm">Go to Sales Channels</span>
+            </div>
+            <div className="p-4">
+              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3 text-sm">
+                <div className="flex items-center gap-2 text-[#1c1e21] mb-2">
+                  <Icons.Settings />
+                  <span className="font-medium">Settings</span>
+                </div>
+                <div className="ml-6 space-y-1">
+                  <div className="text-[#65676b] text-xs">Apps and sales channels</div>
+                  <div className="flex items-center gap-2 bg-white rounded px-2 py-1.5 border border-blue-300">
+                    <div className="w-5 h-5 rounded bg-[#1877f2]"></div>
+                    <span className="text-xs font-medium">Facebook & Instagram</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl border-2 border-neutral-200 overflow-hidden">
+            <div className="bg-neutral-50 px-4 py-2 border-b border-neutral-200 flex items-center gap-2">
+              <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">B</span>
+              <span className="font-semibold text-sm">Set Maximum Data Sharing</span>
+            </div>
+            <div className="p-4">
+              <div className="meta-ui bg-[#f6f6f7] rounded-lg p-3">
+                <div className="text-xs text-[#65676b] mb-3">Customer data sharing level</div>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3 bg-white rounded px-3 py-2 border border-neutral-200 opacity-60">
+                    <div className="w-4 h-4 rounded-full border-2 border-neutral-300"></div>
+                    <span className="text-xs">Standard</span>
+                  </div>
+                  <div className="flex items-center gap-3 bg-green-50 rounded px-3 py-2 border-2 border-green-400">
+                    <div className="w-4 h-4 rounded-full border-2 border-green-500 flex items-center justify-center">
+                      <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    </div>
+                    <span className="text-xs font-medium text-green-700">Maximum</span>
+                    <span className="text-[10px] bg-green-100 text-green-600 px-1.5 py-0.5 rounded ml-auto">Required for CAPI</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+          <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Path:</strong> Shopify Admin → Settings → Apps and sales channels → Facebook & Instagram → Data sharing settings → Maximum</p>
+        </motion.div>
+      </div>
+    );
+
+    // Step 2: Verify Events
+    const StepVerifyEventsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+            <div>
+              <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+              <h2 className="slide-title text-2xl md:text-3xl text-black">Verify Both Sources Are Firing</h2>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="meta-ui bg-white rounded-xl border-2 border-neutral-200 p-5 mb-6">
+          <div className="text-sm font-semibold text-[#1c1e21] mb-4">In Events Manager, look for:</div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Icons.Globe />
+                <span className="font-semibold text-sm text-blue-800">Browser Events</span>
+              </div>
+              <div className="text-xs text-blue-700">Your existing pixel - should show events labeled "Browser" or "Pixel"</div>
+            </div>
+
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Icons.Server />
+                <span className="font-semibold text-sm text-green-800">Server Events</span>
+              </div>
+              <div className="text-xs text-green-700">New CAPI events - should show events labeled "Server" or "Conversions API"</div>
+            </div>
+          </div>
+
+          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-xs text-amber-800"><strong>Note:</strong> Both should fire for the same events (Purchase, Add to Cart, etc.). Meta automatically deduplicates them.</p>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+          <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Path:</strong> Meta Events Manager → Data Sources → Your Pixel → Overview → Check "Connection Method" column</p>
+        </motion.div>
+      </div>
+    );
+
+    // Step 3: Monitor Health
+    const StepMonitorHealthSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+            <div>
+              <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+              <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up Ongoing Monitoring</h2>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl border-2 border-neutral-200 p-5 mb-6">
+          <div className="text-sm font-semibold text-neutral-900 mb-4">Track Your Event Match Quality Score Weekly</div>
+
+          <div className="flex items-center justify-center gap-1 mb-4">
+            {[1,2,3,4,5,6,7,8,9,10].map((n) => (
+              <div key={n} className={`w-8 h-10 rounded flex items-center justify-center text-xs font-bold ${n <= 7 ? 'bg-green-100 text-green-700' : n <= 5 ? 'bg-yellow-100 text-yellow-700' : 'bg-neutral-100 text-neutral-400'}`}>
+                {n}
+              </div>
+            ))}
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-3 text-center">
+            <div className="p-3 bg-red-50 rounded-lg">
+              <div className="font-bold text-red-600">1-4</div>
+              <div className="text-xs text-red-700">Poor - Check setup</div>
+            </div>
+            <div className="p-3 bg-yellow-50 rounded-lg">
+              <div className="font-bold text-yellow-600">5-6</div>
+              <div className="text-xs text-yellow-700">Okay - Room to improve</div>
+            </div>
+            <div className="p-3 bg-green-50 rounded-lg border-2 border-green-300">
+              <div className="font-bold text-green-600">7-10</div>
+              <div className="text-xs text-green-700">Excellent - Optimal</div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Tool Integration */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-slate-900 rounded-xl p-5">
+          <div className="flex items-center gap-4 mb-4">
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-10 h-10 rounded-lg" />
+            <div>
+              <div className="text-white font-semibold text-sm">{TOOL_CONFIG.name}</div>
+              <div className="text-slate-400 text-xs">Automatic pixel health monitoring</div>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-3 text-sm text-slate-300 mb-4">
+            <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4 text-green-400" /><span>24/7 monitoring</span></div>
+            <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4 text-green-400" /><span>Instant alerts</span></div>
+            <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4 text-green-400" /><span>Multi-platform</span></div>
+          </div>
+          <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-white text-slate-900 rounded-lg font-semibold text-sm hover:scale-105 transition-all">
+            <span>Get {TOOL_CONFIG.name}</span>
             <Icons.ExternalLink />
           </a>
         </motion.div>
+      </div>
+    );
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+    // Results Slide
+    const StepResultsSlide = () => {
+      const results = [
+        { metric: '30%', label: 'More Conversions Tracked', desc: 'Events your pixel was missing', icon: Icons.TrendingUp, color: '#22c55e' },
+        { metric: '7-10', label: 'Event Match Quality', desc: 'Up from 3-5 with pixel-only', icon: Icons.Target, color: '#3b82f6' },
+        { metric: '15-30%', label: 'Lower CPAs', desc: 'From better optimization data', icon: Icons.Zap, color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Changes visible within <span className="text-white font-bold">24-48 hours</span> in Events Manager</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide - Clean with Key Takeaways
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand dual tracking with CAPI + Pixel. Complete data means better optimization, lower CPAs, and future-proof tracking.</motion.p>
+
+        {/* Key Takeaways */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Pixel-only misses 30-40% of conversions due to iOS 14.5+ and ad blockers</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">CAPI sends events server-side, bypassing browser restrictions entirely</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Dual tracking gives Meta 95%+ data coverage for optimal AI optimization</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
@@ -1043,7 +865,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -1087,14 +908,16 @@
           case 'architecture-diagram': return <ArchitectureDiagramSlide data={slide} />;
           case 'meta-events-mockup': return <MetaEventsMockupSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'shopify-setup': return <ShopifySetupSlide data={slide} />;
-          case 'event-match-quality': return <EventMatchQualitySlide data={slide} />;
-          case 'pixel-health-monitor': return <PixelHealthMonitorSlide />;
+          case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
-          case 'enhance-tracking': return <EnhanceTrackingSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide />;
+          case 'step-enable-capi': return <StepEnableCAPISlide />;
+          case 'step-verify-events': return <StepVerifyEventsSlide />;
+          case 'step-monitor-health': return <StepMonitorHealthSlide />;
+          case 'step-results': return <StepResultsSlide />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

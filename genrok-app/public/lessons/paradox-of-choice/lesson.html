@@ -54,6 +54,13 @@
       }
     };
 
+    // Tool config for Quiz Kit
+    const TOOL_CONFIG = {
+      name: 'Quiz Kit',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/8c3cce98d5a386a369e1c8da38a1e7b1/icon/CLrHr_ni1P4CEAE=.png',
+      link: 'https://apps.shopify.com/quiz-kit'
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
     let __isAdmin = false;
     window.addEventListener('message', function(e) {
@@ -75,7 +82,15 @@
           style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
-          <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/bug-icon.svg" alt="Report" style={{ width: '16px', height: '16px', filter: 'invert(1)' }} onError={(e) => { e.target.style.display = 'none'; }} />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
+            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
+            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
+            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+          </svg>
         </button>
       );
     };
@@ -114,7 +129,11 @@
       EyeOff: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>,
       Trash: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>,
       AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
-      MousePointer: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>
+      MousePointer: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>,
+      ClipboardList: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>,
+      Sparkles: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
+      Settings: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      BarChart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
     };
 
     // ============ ANIMATED COUNTER ============
@@ -135,26 +154,31 @@
     };
 
     // ============ SLIDE DATA ============
+    // PART 1: THEORY (Pure psychology, examples, no tool mentions in middle)
+    // PART 2: PRACTICAL (After quiz - how to implement with Quiz Kit)
     const slides = [
+      // ========== PART 1: THEORY ==========
       { type: 'welcome', learningGoals: [
         'The famous jam study that proves more choice = less sales',
         'Why a confused mind always says NO',
-        'The optimal number of options for maximum conversions',
-        'How quizzes eliminate choice paralysis for your customers'
+        'The optimal number of options for maximum conversions'
       ]},
       { type: 'hook', headline: 'Cheesecake Factory has 250+ menu items. Chipotle has 4.', subtext: 'Guess which one has faster table turns, higher satisfaction, and more repeat customers? Chipotle. Why? Because the Reptilian Brain hates complexity. More options = more anxiety = less action. Your product page is doing the same thing to your customers right now.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Chipotle_Mexican_Grill_logo.svg.png', brandName: 'Chipotle' },
       { type: 'jam-study-visual' },
       { type: 'choice-paralysis' },
       { type: 'optimal-choice' },
-      { type: 'quiz-simplifier' },
-      { type: 'before-after-ecommerce' },
       { type: 'simplification-playbook' },
+      { type: 'before-after-ecommerce' },
       { type: 'saas-pricing' },
       { type: 'single-choice-principle' },
-      { type: 'quiz', question: 'In the famous jam study, why did the table with fewer jams (6) outperform the table with more jams (24)?', options: ['People prefer fewer options', 'Less choice means less decision anxiety, leading to more confident purchases', 'The 6 jams were higher quality', 'Fewer jams meant lower prices'], correctIndex: 1, feedback: { correct: 'Exactly! More options create analysis paralysis. When the brain faces too many choices, fear of making the wrong decision kicks in. The easiest choice becomes no choice at all.', incorrect: 'Not quite. The key insight is that more options create decision anxiety. A confused mind says no. By reducing choices, you reduce the mental energy required to decide - making purchase more likely.' }},
-      { type: 'impact-stats' },
       { type: 'elite-insight' },
-      { type: 'tool-recommendation' },
+      { type: 'quiz', question: 'In the famous jam study, why did the table with fewer jams (6) outperform the table with more jams (24)?', options: ['People prefer fewer options', 'Less choice means less decision anxiety, leading to more confident purchases', 'The 6 jams were higher quality', 'Fewer jams meant lower prices'], correctIndex: 1, feedback: { correct: 'Exactly! More options create analysis paralysis. When the brain faces too many choices, fear of making the wrong decision kicks in. The easiest choice becomes no choice at all.', incorrect: 'Not quite. The key insight is that more options create decision anxiety. A confused mind says no. By reducing choices, you reduce the mental energy required to decide - making purchase more likely.' }},
+      // ========== PART 2: PRACTICAL ==========
+      { type: 'section-divider' },
+      { type: 'step-install-quiz' },
+      { type: 'step-build-questions' },
+      { type: 'step-map-products' },
+      { type: 'step-results' },
       { type: 'completion' }
     ];
 
@@ -241,7 +265,6 @@
                 <div className="text-neutral-400 text-sm">Jam Options</div>
               </div>
 
-              {/* Visual jam jars */}
               <div className="flex flex-wrap justify-center gap-1 mb-4" style={{ minHeight: '60px' }}>
                 {[...Array(24)].map((_, i) => (
                   <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: phase >= 1 ? 1 : 0 }} transition={{ delay: i * 0.02 }}
@@ -272,7 +295,6 @@
                 <div className="text-neutral-400 text-sm">Jam Options</div>
               </div>
 
-              {/* Visual jam jars */}
               <div className="flex flex-wrap justify-center gap-2 mb-4" style={{ minHeight: '60px' }}>
                 {[...Array(6)].map((_, i) => (
                   <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: phase >= 1 ? 1 : 0 }} transition={{ delay: 0.3 + i * 0.05 }}
@@ -357,7 +379,6 @@
             })}
           </div>
 
-          {/* Brain visualization */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
             style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px' }}>
             <div className="flex items-center justify-between">
@@ -407,7 +428,6 @@
             <h2 className="slide-title text-2xl md:text-3xl text-black">The Optimal Number of Options</h2>
           </motion.div>
 
-          {/* Number selector visualization */}
           <div className="flex justify-center items-center gap-2 mb-8">
             {numbers.map(n => {
               const isOptimal = n >= 3 && n <= 5;
@@ -430,7 +450,6 @@
             })}
           </div>
 
-          {/* Sweet spot indicator */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
             style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
@@ -468,7 +487,51 @@
       );
     };
 
-    // ============ BEFORE/AFTER ECOMMERCE SLIDE ============
+    // ============ SIMPLIFICATION PLAYBOOK ============
+    const SimplificationPlaybookSlide = () => {
+      const strategies = [
+        { icon: Icons.Star, title: 'Pre-Select The Best', desc: 'Default to your best-selling variant. Most customers will accept the default rather than explore.', color: '#8b5cf6' },
+        { icon: Icons.Award, title: 'Highlight The Winner', desc: 'Use "Most Popular" or "Best Value" badges. Give permission to choose without overthinking.', color: '#f97316' },
+        { icon: Icons.EyeOff, title: 'Hide Complexity', desc: 'Don\'t show all 50 colors upfront. Show 5 popular ones, hide the rest in "More Options."', color: '#10b981' },
+        { icon: Icons.Trash, title: 'Remove Low-Sellers', desc: 'If a variant sells less than 5% of total, consider removing it. It adds confusion, not revenue.', color: '#ef4444' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Playbook</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">4 Ways To Simplify Choice</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {strategies.map((s, i) => {
+              const IconComponent = s.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${s.color}, transparent)` }} />
+
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${s.color}20`, color: s.color }}>
+                      <IconComponent />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white" style={{ background: s.color }}>{i + 1}</span>
+                        <h3 className="text-white font-bold">{s.title}</h3>
+                      </div>
+                      <p className="text-neutral-400 text-sm leading-relaxed">{s.desc}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ BEFORE/AFTER ECOMMERCE SLIDE (Pure - no tool mention) ============
     const BeforeAfterEcommerceSlide = () => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
@@ -547,67 +610,14 @@
           </motion.div>
         </div>
 
-        {/* CVR Badge + Quiz Kit inline mention */}
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }}
           className="flex flex-col items-center gap-3">
           <div className="px-6 py-3 rounded-full font-bold text-white" style={{ background: 'linear-gradient(135deg, #22c55e, #16a34a)' }}>
             +47% CVR
           </div>
-          <div className="flex items-center gap-2 text-neutral-400 text-xs">
-            <span>Pro tip:</span>
-            <a href="https://apps.shopify.com/quiz-kit" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:underline" style={{ color: 'var(--accent)' }}>
-              <img src="https://cdn.shopify.com/app-store/listing_images/8c3cce98d5a386a369e1c8da38a1e7b1/icon/CLrHr_ni1P4CEAE=.png" alt="Quiz Kit" className="w-4 h-4 rounded" />
-              <span>Quiz Kit</span>
-            </a>
-            <span>automates guided selection</span>
-          </div>
         </motion.div>
       </div>
     );
-
-    // ============ SIMPLIFICATION PLAYBOOK ============
-    const SimplificationPlaybookSlide = () => {
-      const strategies = [
-        { icon: Icons.Star, title: 'Pre-Select The Best', desc: 'Default to your best-selling variant. Most customers will accept the default rather than explore.', color: '#8b5cf6' },
-        { icon: Icons.Award, title: 'Highlight The Winner', desc: 'Use "Most Popular" or "Best Value" badges. Give permission to choose without overthinking.', color: '#f97316' },
-        { icon: Icons.EyeOff, title: 'Hide Complexity', desc: 'Don\'t show all 50 colors upfront. Show 5 popular ones, hide the rest in "More Options."', color: '#10b981' },
-        { icon: Icons.Trash, title: 'Remove Low-Sellers', desc: 'If a variant sells less than 5% of total, consider removing it. It adds confusion, not revenue.', color: '#ef4444' }
-      ];
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Playbook</span>
-            <h2 className="slide-title text-2xl md:text-3xl text-black">4 Ways To Simplify Choice</h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-4">
-            {strategies.map((s, i) => {
-              const IconComponent = s.icon;
-              return (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
-                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${s.color}, transparent)` }} />
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${s.color}20`, color: s.color }}>
-                      <IconComponent />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white" style={{ background: s.color }}>{i + 1}</span>
-                        <h3 className="text-white font-bold">{s.title}</h3>
-                      </div>
-                      <p className="text-neutral-400 text-sm leading-relaxed">{s.desc}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      );
-    };
 
     // ============ SAAS PRICING SLIDE ============
     const SaaSPricingSlide = () => (
@@ -672,7 +682,6 @@
           </motion.div>
         </div>
 
-        {/* Result */}
         <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }}
           className="text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px' }}>
           <span className="text-neutral-400 text-sm">Reducing from 5 to 3 tiers increased signups by </span>
@@ -681,7 +690,7 @@
       </div>
     );
 
-    // ============ SINGLE CHOICE PRINCIPLE ============
+    // ============ SINGLE CHOICE PRINCIPLE (Pure - no tool mention) ============
     const SingleChoicePrincipleSlide = () => {
       const applications = [
         { icon: Icons.Package, title: 'Product Pages', desc: 'Pre-select most popular variant. Reduce visible options to 5 or fewer.' },
@@ -697,7 +706,6 @@
             <h2 className="slide-title text-2xl md:text-3xl text-black">The Single Choice Principle</h2>
           </motion.div>
 
-          {/* Key insight */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
             className="mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
@@ -705,17 +713,16 @@
               <div className="text-white text-lg font-bold mb-2">For key conversion funnels:</div>
               <div className="flex items-center justify-center gap-4 text-2xl font-black" style={{ color: 'var(--accent)' }}>
                 <span>ONE offer</span>
-                <span className="text-neutral-600">•</span>
+                <span className="text-neutral-600">|</span>
                 <span>ONE button</span>
-                <span className="text-neutral-600">•</span>
+                <span className="text-neutral-600">|</span>
                 <span>ONE path</span>
               </div>
               <div className="text-neutral-400 text-sm mt-3">Amazon does this at checkout. The only option is to complete purchase.</div>
             </div>
           </motion.div>
 
-          {/* Applications */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {applications.map((app, i) => {
               const IconComponent = app.icon;
               return (
@@ -730,17 +737,36 @@
               );
             })}
           </div>
-
-          {/* Quiz Kit mention */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
-            className="flex items-center justify-center gap-2 p-3 rounded-xl" style={{ background: 'rgba(139, 92, 246, 0.05)', border: '1px solid rgba(139, 92, 246, 0.1)' }}>
-            <img src="https://cdn.shopify.com/app-store/listing_images/8c3cce98d5a386a369e1c8da38a1e7b1/icon/CLrHr_ni1P4CEAE=.png" alt="Quiz Kit" className="w-5 h-5 rounded" />
-            <span className="text-neutral-500 text-xs">Product quizzes apply this perfectly:</span>
-            <span className="text-xs font-medium" style={{ color: 'var(--accent)' }}>One question at a time = One confident path to purchase</span>
-          </motion.div>
         </div>
       );
     };
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(139, 92, 246, 0.15)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 8px 32px rgba(139, 92, 246, 0.4)' }}>
+              <Icons.Lightbulb />
+            </div>
+            <div>
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Elite Insight</p>
+              <h3 className="text-white text-xl font-bold">The Simplicity Paradox</h3>
+            </div>
+          </div>
+
+          <p className="text-neutral-300 text-base leading-relaxed mb-4">
+            More options feel like freedom but create prison. Every additional choice requires mental energy, triggers comparison anxiety, and activates fear of regret.
+          </p>
+          <p className="text-neutral-400 text-base leading-relaxed">
+            The counterintuitive truth: <span className="text-white font-bold">Fewer options = more sales.</span> Reduce choices to 3-5, pre-select the winner, hide complexity, and watch conversions climb. A clear path is a converted customer.
+          </p>
+        </motion.div>
+      </div>
+    );
 
     // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
@@ -791,245 +817,296 @@
       );
     };
 
-    // ============ IMPACT STATS SLIDE ============
-    const ImpactStatsSlide = () => {
-      const stats = [
-        { value: 10, suffix: 'x', label: 'More Sales', desc: 'With 75% fewer options (Jam Study)' },
-        { value: 30, suffix: '%', label: 'Conversion Rate', desc: 'Vs 3% with too many choices' },
-        { value: 24, suffix: '%', label: 'Signup Increase', desc: 'By reducing pricing tiers from 5 to 3' }
-      ];
+    // ========== PART 2: PRACTICAL SLIDES ==========
 
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Psychology of Action</motion.h2>
-
-          <div className="grid md:grid-cols-3 gap-4">
-            {stats.map((stat, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
-                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
-                <div className="text-4xl md:text-5xl font-black mb-2" style={{ color: 'var(--accent)' }}>
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-                </div>
-                <div className="text-white font-bold text-sm mb-1">{stat.label}</div>
-                <div className="text-neutral-500 text-xs">{stat.desc}</div>
-              </motion.div>
+    // Section Divider - Transition to practical
+    const SectionDividerSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">Use a product recommendation quiz to eliminate choice paralysis</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
             ))}
-          </div>
-        </div>
-      );
-    };
-
-    // ============ ELITE INSIGHT SLIDE ============
-    const EliteInsightSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(139, 92, 246, 0.15)' }}>
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
-
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #8b5cf6, #7c3aed)', boxShadow: '0 8px 32px rgba(139, 92, 246, 0.4)' }}>
-              <Icons.Lightbulb />
-            </div>
-            <div>
-              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Elite Insight</p>
-              <h3 className="text-white text-xl font-bold">The Simplicity Paradox</h3>
-            </div>
-          </div>
-
-          <p className="text-neutral-300 text-base leading-relaxed mb-4">
-            More options feel like freedom but create prison. Every additional choice requires mental energy, triggers comparison anxiety, and activates fear of regret.
-          </p>
-          <p className="text-neutral-400 text-base leading-relaxed">
-            The counterintuitive truth: <span className="text-white font-bold">Fewer options = more sales.</span> Reduce choices to 3-5, pre-select the winner, hide complexity, and watch conversions climb. A clear path is a converted customer.
-          </p>
+          </motion.div>
         </motion.div>
       </div>
     );
 
-    // ============ QUIZ SIMPLIFIER SLIDE ============
-    const QuizSimplifierSlide = () => {
-      const [step, setStep] = useState(0);
+    // Step 1: Install Quiz Kit
+    const StepInstallQuizSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+            <div>
+              <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+              <h2 className="slide-title text-2xl md:text-3xl text-black">Install Quiz Kit</h2>
+            </div>
+          </div>
+        </motion.div>
 
-      useEffect(() => {
-        const timers = [
-          setTimeout(() => setStep(1), 600),
-          setTimeout(() => setStep(2), 1200),
-          setTimeout(() => setStep(3), 1800),
-          setTimeout(() => setStep(4), 2400)
-        ];
-        return () => timers.forEach(t => clearTimeout(t));
-      }, []);
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          className="p-6 rounded-xl mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
 
-      const quizSteps = [
-        { q: 'What skin type do you have?', options: ['Oily', 'Dry', 'Combination'] },
-        { q: 'What is your main concern?', options: ['Acne', 'Aging', 'Hydration'] },
-        { q: 'Your perfect match:', result: 'Vitamin C Serum', match: '98%' }
+          <div className="flex items-center gap-4 mb-6">
+            <img src={TOOL_CONFIG.logo} alt="Quiz Kit" className="w-14 h-14 rounded-xl shadow-lg" />
+            <div>
+              <h3 className="text-white font-bold text-xl">Quiz Kit</h3>
+              <p className="text-neutral-400 text-sm">Product Recommendation Quiz</p>
+            </div>
+            <div className="ml-auto flex items-center gap-1">
+              {[...Array(5)].map((_, i) => (
+                <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#facc15" stroke="#facc15" strokeWidth="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+              ))}
+              <span className="text-neutral-400 text-xs ml-1">4.9</span>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 rounded-lg" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
+              <div className="flex items-center gap-2 text-white mb-2">
+                <Icons.Sparkles />
+                <span className="font-semibold text-sm">Why Quiz Kit?</span>
+              </div>
+              <ul className="space-y-2 text-neutral-300 text-sm">
+                <li className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Turns 50+ products into 1 perfect match</span></li>
+                <li className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>One question at a time = zero overwhelm</span></li>
+                <li className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Collects zero-party data for email</span></li>
+              </ul>
+            </div>
+            <div className="p-4 rounded-lg bg-neutral-800">
+              <div className="text-neutral-400 text-xs mb-2">Setup Time</div>
+              <div className="text-3xl font-bold text-white mb-2">15-30 min</div>
+              <div className="text-neutral-500 text-xs">No coding required. Drag-and-drop builder.</div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+          <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Install Quiz Kit from the Shopify App Store. Start the 14-day free trial.</p>
+        </motion.div>
+      </div>
+    );
+
+    // Step 2: Build Your Questions
+    const StepBuildQuestionsSlide = () => {
+      const questionTypes = [
+        { q: 'What is your skin type?', options: ['Oily', 'Dry', 'Combination'], icon: Icons.Users },
+        { q: 'What is your main concern?', options: ['Acne', 'Aging', 'Hydration'], icon: Icons.Target },
+        { q: 'How much time for skincare?', options: ['< 5 min', '5-10 min', '10+ min'], icon: Icons.Clock }
       ];
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Solution</span>
-            <h2 className="slide-title text-2xl md:text-3xl text-black">Quizzes: The Choice Paradox Killer</h2>
-            <p className="text-neutral-500 text-sm mt-2">Instead of showing 50 options, ask 3 questions</p>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Build Your Questions</h2>
+              </div>
+            </div>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6 mb-6">
-            {/* Without Quiz */}
-            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-              className="opacity-60"
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-white font-bold mb-4">The 3-Question Sweet Spot</div>
 
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center">
-                  <Icons.X />
-                </div>
-                <span className="text-red-400 font-bold text-sm">Without Quiz</span>
-              </div>
-
-              <div className="text-center py-6">
-                <div className="text-5xl font-black text-white mb-2">47</div>
-                <div className="text-neutral-400 text-sm mb-4">Products to browse</div>
-                <div className="flex flex-wrap justify-center gap-1 mb-4">
-                  {[...Array(47)].map((_, i) => (
-                    <div key={i} className="w-2 h-2 rounded-sm bg-neutral-600" />
-                  ))}
-                </div>
-                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                  <div className="text-red-400 font-bold text-sm">"Too many... I'll come back later"</div>
-                </div>
+              <div className="space-y-3">
+                {questionTypes.map((q, i) => {
+                  const IconComponent = q.icon;
+                  return (
+                    <div key={i} className="p-3 rounded-lg" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-6 h-6 rounded flex items-center justify-center" style={{ background: 'var(--accent)', color: 'white' }}>
+                          <span className="text-xs font-bold">{i + 1}</span>
+                        </div>
+                        <span className="text-white text-sm font-medium">{q.q}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5 ml-8">
+                        {q.options.map((opt, j) => (
+                          <span key={j} className="px-2 py-1 rounded text-[10px]" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}>{opt}</span>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </motion.div>
 
-            {/* With Quiz */}
-            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
-              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 40px rgba(139, 92, 246, 0.2)', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
-
-              <div className="flex items-center gap-2 mb-4">
-                <img src="https://cdn.shopify.com/app-store/listing_images/8c3cce98d5a386a369e1c8da38a1e7b1/icon/CLrHr_ni1P4CEAE=.png" alt="Quiz Kit" className="w-6 h-6 rounded" />
-                <span className="font-bold text-sm" style={{ color: 'var(--accent)' }}>With Product Quiz</span>
-                <span className="ml-auto px-2 py-1 rounded text-[10px] font-bold" style={{ background: 'rgba(139, 92, 246, 0.2)', color: 'var(--accent)' }}>SMART</span>
-              </div>
-
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Question Best Practices</div>
               <div className="space-y-3">
-                {quizSteps.map((item, i) => (
-                  <motion.div key={i}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: step > i ? 1 : 0.3, y: step > i ? 0 : 10 }}
-                    className="p-3 rounded-lg"
-                    style={{ background: step > i ? 'rgba(139, 92, 246, 0.15)' : 'rgba(255,255,255,0.03)' }}>
-                    {item.result ? (
-                      <div className="text-center">
-                        <div className="text-neutral-400 text-xs mb-1">{item.q}</div>
-                        <div className="text-white font-bold">{item.result}</div>
-                        <div className="text-xs mt-1" style={{ color: 'var(--accent)' }}>{item.match} match</div>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="text-neutral-300 text-sm mb-2">{item.q}</div>
-                        <div className="flex gap-2">
-                          {item.options.map((opt, j) => (
-                            <span key={j} className="px-2 py-1 rounded text-[10px]" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.7)' }}>{opt}</span>
-                          ))}
-                        </div>
-                      </>
-                    )}
-                  </motion.div>
-                ))}
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+                    <Icons.Check className="w-3 h-3" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-neutral-800 text-sm">Keep it to 3-5 questions</div>
+                    <div className="text-xs text-neutral-500">Each question eliminates options</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+                    <Icons.Check className="w-3 h-3" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-neutral-800 text-sm">Use visual answer options</div>
+                    <div className="text-xs text-neutral-500">Images increase engagement 40%</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+                    <Icons.Check className="w-3 h-3" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-neutral-800 text-sm">Ask about needs, not products</div>
+                    <div className="text-xs text-neutral-500">"What do you need?" not "Which product?"</div>
+                  </div>
+                </div>
               </div>
-
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: step >= 4 ? 1 : 0 }}
-                className="mt-3 p-3 rounded-lg" style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)' }}>
-                <div className="text-green-400 font-bold text-sm text-center">"This is exactly what I needed!"</div>
-              </motion.div>
             </motion.div>
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-            className="text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px' }}>
-            <span className="text-neutral-400 text-sm">Quiz reduces 47 choices to </span>
-            <span className="text-3xl font-black" style={{ color: 'var(--accent)' }}>1 perfect match</span>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Create 3 questions that narrow down to your product categories. Focus on customer needs.</p>
           </motion.div>
         </div>
       );
     };
 
-    // ============ TOOL RECOMMENDATION SLIDE ============
-    const ToolRecommendationSlide = () => {
-      const benefits = [
-        { icon: Icons.Target, title: 'Guided Discovery', desc: 'Smart questions lead to perfect product matches' },
-        { icon: Icons.Brain, title: 'Zero Decision Fatigue', desc: 'Customers answer simple questions, not browse catalogs' },
-        { icon: Icons.TrendingUp, title: 'Higher Conversions', desc: 'Personalized recommendations convert 4x better' },
-        { icon: Icons.Users, title: 'Zero-Party Data', desc: 'Collect preferences for better email segmentation' }
+    // Step 3: Map Products to Answers
+    const StepMapProductsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+            <div>
+              <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+              <h2 className="slide-title text-2xl md:text-3xl text-black">Map Products to Answers</h2>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          className="p-6 rounded-xl mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <div className="text-white font-bold mb-4">Product Logic Flow</div>
+
+          <div className="relative">
+            {/* Flow visualization */}
+            <div className="grid grid-cols-3 gap-4">
+              {/* Answer combination */}
+              <div className="p-3 rounded-lg" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
+                <div className="text-neutral-400 text-xs mb-2">If answers are:</div>
+                <div className="space-y-1">
+                  <div className="px-2 py-1 rounded text-xs" style={{ background: 'rgba(255,255,255,0.1)', color: 'white' }}>Oily + Acne + Quick</div>
+                </div>
+              </div>
+
+              {/* Arrow */}
+              <div className="flex items-center justify-center">
+                <motion.div animate={{ x: [0, 10, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                  <svg width="40" height="24" viewBox="0 0 40 24" fill="none">
+                    <path d="M0 12H35M35 12L25 5M35 12L25 19" stroke="var(--accent)" strokeWidth="2"/>
+                  </svg>
+                </motion.div>
+              </div>
+
+              {/* Product result */}
+              <div className="p-3 rounded-lg" style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)' }}>
+                <div className="text-green-400 text-xs mb-2">Recommend:</div>
+                <div className="text-white font-bold text-sm">Salicylic Acid Cleanser</div>
+                <div className="text-neutral-400 text-xs mt-1">98% match</div>
+              </div>
+            </div>
+
+            <div className="mt-4 p-3 rounded-lg bg-neutral-800">
+              <div className="text-neutral-400 text-xs mb-2">Result Formula</div>
+              <div className="text-white text-sm">Answer A + Answer B + Answer C = Product Match</div>
+              <div className="text-neutral-500 text-xs mt-1">Quiz Kit calculates automatically based on product tags</div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="p-4 rounded-xl bg-neutral-50 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-2">
+              <Icons.Settings style={{ color: 'var(--accent)' }} />
+              <span className="font-semibold text-neutral-800 text-sm">Tag Your Products</span>
+            </div>
+            <p className="text-xs text-neutral-500">Add tags like "oily-skin", "anti-acne", "quick-routine" to products in Shopify</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+            className="p-4 rounded-xl bg-neutral-50 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-2">
+              <Icons.ClipboardList style={{ color: 'var(--accent)' }} />
+              <span className="font-semibold text-neutral-800 text-sm">Connect Answers to Tags</span>
+            </div>
+            <p className="text-xs text-neutral-500">Link each answer option to the relevant product tags in Quiz Kit</p>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+          <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Tag your products with relevant attributes, then connect quiz answers to those tags.</p>
+        </motion.div>
+      </div>
+    );
+
+    // Results Slide
+    const StepResultsSlide = () => {
+      const results = [
+        { metric: '4x', label: 'Higher Conversion', desc: 'Personalized recommendations', icon: Icons.TrendingUp, color: '#22c55e' },
+        { metric: '47%', label: 'CVR Increase', desc: 'Average improvement', icon: Icons.BarChart, color: '#8b5cf6' },
+        { metric: '60%', label: 'Email Capture', desc: 'Quiz completers subscribe', icon: Icons.Users, color: '#f97316' }
       ];
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Recommended Tool</span>
-            <h2 className="slide-title text-2xl md:text-3xl text-black">Implement This With Quiz Kit</h2>
-            <p className="text-neutral-500 text-sm mt-2">The #1 product recommendation quiz for Shopify</p>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
           </motion.div>
 
-          {/* Tool Card */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-            className="mb-6"
-            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(139, 92, 246, 0.15)', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
 
-            <div className="flex items-center gap-4 mb-6">
-              <img src="https://cdn.shopify.com/app-store/listing_images/8c3cce98d5a386a369e1c8da38a1e7b1/icon/CLrHr_ni1P4CEAE=.png" alt="Quiz Kit" className="w-14 h-14 rounded-xl shadow-lg" />
-              <div>
-                <h3 className="text-white font-bold text-xl">Quiz Kit</h3>
-                <p className="text-neutral-400 text-sm">by Presidio Creative</p>
-              </div>
-              <div className="ml-auto flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#facc15" stroke="#facc15" strokeWidth="2">
-                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                  </svg>
-                ))}
-                <span className="text-neutral-400 text-xs ml-1">4.9</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 mb-6">
-              {benefits.map((b, i) => {
-                const IconComponent = b.icon;
-                return (
-                  <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
-                    className="p-3 rounded-xl" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139, 92, 246, 0.2)', color: 'var(--accent)' }}>
-                        <IconComponent />
-                      </div>
-                      <span className="text-white font-semibold text-xs">{b.title}</span>
-                    </div>
-                    <p className="text-neutral-400 text-[11px] leading-snug">{b.desc}</p>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            <a href="https://apps.shopify.com/quiz-kit" target="_blank" rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]"
-              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 4px 20px rgba(139, 92, 246, 0.4)' }}>
-              <span>Get Quiz Kit</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                <polyline points="15 3 21 3 21 9"/>
-                <line x1="10" y1="14" x2="21" y2="3"/>
-              </svg>
-            </a>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">2-4 weeks</span> of launching your quiz</p>
           </motion.div>
-
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
-            className="text-center text-neutral-500 text-xs">
-            Turn the paradox of choice into your competitive advantage
-          </motion.p>
         </div>
       );
     };
@@ -1039,28 +1116,38 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the Paradox of Choice. Reduce options to 3-5, pre-select winners, or let a quiz guide customers to their perfect match.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the Paradox of Choice. Fewer options lead to more confident decisions and higher conversions.</motion.p>
 
-        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          href="https://apps.shopify.com/quiz-kit" target="_blank" rel="noopener noreferrer"
-          className="flex items-center gap-3 p-4 rounded-xl mb-6 max-w-md w-full transition-all hover:scale-[1.02]"
-          style={{ background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.05))', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
-          <img src="https://cdn.shopify.com/app-store/listing_images/8c3cce98d5a386a369e1c8da38a1e7b1/icon/CLrHr_ni1P4CEAE=.png" alt="Quiz Kit" className="w-10 h-10 rounded-lg" />
-          <div className="text-left flex-1">
-            <div className="font-semibold text-sm text-neutral-800">Eliminate choice paralysis with Quiz Kit</div>
-            <div className="text-xs text-neutral-500">Guide customers to their perfect product match</div>
+        {/* Key Takeaways - Clean summary */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">More options = more anxiety = fewer sales</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">The sweet spot is 3-5 options per decision</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Product quizzes turn 50 options into 1 perfect match</span>
+            </div>
           </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--accent)' }}>
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-            <polyline points="15 3 21 3 21 9"/>
-            <line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
-        </motion.a>
+        </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
@@ -1115,15 +1202,18 @@
           case 'jam-study-visual': return <JamStudyVisualizationSlide />;
           case 'choice-paralysis': return <ChoiceParalysisSlide />;
           case 'optimal-choice': return <OptimalChoiceSlide />;
-          case 'quiz-simplifier': return <QuizSimplifierSlide />;
-          case 'before-after-ecommerce': return <BeforeAfterEcommerceSlide />;
           case 'simplification-playbook': return <SimplificationPlaybookSlide />;
+          case 'before-after-ecommerce': return <BeforeAfterEcommerceSlide />;
           case 'saas-pricing': return <SaaSPricingSlide />;
           case 'single-choice-principle': return <SingleChoicePrincipleSlide />;
-          case 'tool-recommendation': return <ToolRecommendationSlide />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'impact-stats': return <ImpactStatsSlide />;
           case 'elite-insight': return <EliteInsightSlide />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide />;
+          case 'step-install-quiz': return <StepInstallQuizSlide />;
+          case 'step-build-questions': return <StepBuildQuestionsSlide />;
+          case 'step-map-products': return <StepMapProductsSlide />;
+          case 'step-results': return <StepResultsSlide />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }

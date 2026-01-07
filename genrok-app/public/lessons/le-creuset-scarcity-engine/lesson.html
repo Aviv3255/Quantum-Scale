@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson | Quantum Scale</title>
+  <title>Le Creuset's Scarcity Engine | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -39,88 +39,35 @@
 
     const LESSON_CONFIG = {
       id: 'le-creuset-scarcity-engine',
-      title: 'Lesson',
-      description: '',
+      title: "Le Creuset's Scarcity Engine",
+      description: 'How to create manufactured scarcity without limiting stock',
       accentColor: '#f97316',
-      duration: '5 min',
+      duration: '7 min',
       nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
 
-
+    // ============ CELEBRATION GIFS ============
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -155,112 +102,125 @@
     };
 
     const slides = [
-            {
-                type: 'welcome',
-                title: "Le Creuset's Scarcity Engine",
-                subtitle: "How to create scarcity without limited stock",
-                learningGoals: [
-                    'How Le Creuset built a $2.5B brand selling the same product',
-                    'The annual color cycle that creates manufactured scarcity',
-                    'The 4 marketing touchpoints that drive purchase urgency'
-                ]
-            },
-            {
-                type: 'hook',
-                headline: "Le Creuset sells pots. They're worth $2.5B. The product hasn't changed in 99 years.",
-                subtext: "Their secret? They don't compete on features or price. They compete on COLOR. Every year, new colors launch. Every year, old colors retire forever. The product stays the same. The scarcity is manufactured. The demand is insatiable.",
-                brandImage: "https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Le_Creuset_Logo.png",
-                brandName: "Le Creuset"
-            },
-            {
-                type: 'content',
-                title: "The Annual Color Cycle",
-                body: "Le Creuset doesn't compete on features or price. They compete on COLOR. Every year, they introduce a new color palette. Every year, they retire colors forever. The product stays the same. The scarcity is manufactured. The demand is real."
-            },
-            {
-                type: 'visual',
-                visualType: 'wheel',
-                title: "The 4-Stage Scarcity Wheel",
-                stages: [
-                    { label: 'Announce New', icon: 'megaphone', color: '#22c55e' },
-                    { label: 'Launch Colors', icon: 'rocket', color: '#3b82f6' },
-                    { label: 'Retire Warning', icon: 'alert', color: '#f59e0b' },
-                    { label: 'Final Days', icon: 'timer', color: '#ef4444' }
-                ]
-            },
-            {
-                type: 'cards',
-                title: "4 Marketing Touchpoints Per Year",
-                items: [
-                    {
-                        title: "1. New Colors Announced",
-                        description: "Tease upcoming palette. Build anticipation. Let affiliates prepare content."
-                    },
-                    {
-                        title: "2. New Colors Released",
-                        description: "Launch day. Fresh inventory. Peak media coverage. High engagement."
-                    },
-                    {
-                        title: "3. Colors Retiring Announced",
-                        description: "Create urgency. 'Last chance' messaging. FOMO kicks in hard."
-                    },
-                    {
-                        title: "4. Final Days Campaign",
-                        description: "Countdown clocks. Sold out messaging. Affiliates push hard."
-                    }
-                ]
-            },
-            {
-                type: 'scarcity-timer',
-                title: "Visual Urgency: The Missing Piece",
-                subtitle: "Le Creuset's strategy works because customers SEE the deadline",
-                timerExamples: [
-                    { label: 'Volcanic Orange Retiring', days: 3, hours: 14, minutes: 27, color: '#ea580c' },
-                    { label: 'Spring Collection Ends', days: 7, hours: 0, minutes: 0, color: '#22c55e' },
-                    { label: 'New Color Launch', days: 12, hours: 8, minutes: 45, color: '#3b82f6' }
-                ],
-                insight: "Without a visible countdown, urgency is invisible. Customers need to SEE time running out to feel FOMO."
-            },
-            {
-                type: 'content',
-                title: "DTC Application",
-                body: "You don't need Le Creuset's manufacturing complexity. APPAREL: Launch 'Colorway of the Month' drops with countdown to retirement. SUPPLEMENTS: Limited-batch flavors with visible end dates. ACCESSORIES: Seasonal color releases tied to fashion trends. The principle: Turn your product calendar into recurring, manufactured scarcity - and make the countdown VISIBLE."
-            },
-            {
-                type: 'example',
-                scenario: "How to Apply to Your Store",
-                before: {
-                    label: "Without Visible Timers",
-                    text: "\"Limited edition color\" sits on your site. No urgency. Customers think they can buy later. They don't. Sales trickle."
-                },
-                after: {
-                    label: "With Countdown Timer Bar",
-                    text: "\"Volcanic Orange retiring in 3 days 14:27:33\" - countdown visible on every page. Urgency is real. Customers buy NOW."
-                },
-                insight: "The countdown transforms vague scarcity into visceral urgency. Time becomes tangible."
-            },
-            {
-                type: 'quiz',
-                question: "What makes Le Creuset\'s scarcity strategy work?",
-                options: [
-                    "They actually produce limited quantities",
-                    "They use color as the anchor of marketing and retire colors annually",
-                    "They have celebrity endorsements",
-                    "They offer steep discounts on retiring colors"
-                ],
-                correctIndex: 1,
-                feedback: {
-                    correct: "Exactly! Le Creuset creates scarcity through their annual color cycle - introducing new colors and retiring old ones forever. The product stays the same, but the color creates perceived scarcity and multiple marketing touchpoints.",
-                    incorrect: "Not quite. Le Creuset creates scarcity through their annual color cycle - introducing new colors and retiring old ones forever. The product stays the same, but the color creates perceived scarcity and multiple marketing touchpoints."
-                }
-            },
-            {
-                type: 'completion',
-                title: "Scarcity Manufactured",
-                message: "You now understand how to create recurring scarcity without actually limiting stock. The product stays the same. The calendar creates the urgency.",
-                tool: TOOL_CONFIG
-            }
-        ];
+      // ========== PART 1: THE STRATEGY (Theory) ==========
+      {
+        type: 'welcome',
+        learningGoals: [
+          'How Le Creuset built a $2.5B brand selling the same product',
+          'The annual color cycle that creates manufactured scarcity',
+          'The 4 marketing touchpoints that drive purchase urgency'
+        ]
+      },
+      {
+        type: 'hook',
+        headline: "Le Creuset sells pots. They're worth $2.5B. The product hasn't changed in 99 years.",
+        subtext: "Their secret? They don't compete on features or price. They compete on COLOR. Every year, new colors launch. Every year, old colors retire forever. The product stays the same. The scarcity is manufactured. The demand is insatiable.",
+        brandImage: "https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Le_Creuset_Logo.png",
+        brandName: "Le Creuset"
+      },
+      {
+        type: 'content',
+        title: "The Annual Color Cycle",
+        body: "Le Creuset doesn't compete on features or price. They compete on COLOR. Every year, they introduce a new color palette. Every year, they retire colors forever. The product stays the same. The scarcity is manufactured. The demand is real. Collectors wait. Resellers profit. The brand wins."
+      },
+      {
+        type: 'visual',
+        visualType: 'wheel',
+        title: "The 4-Stage Scarcity Wheel",
+        stages: [
+          { label: 'Announce New', icon: 'megaphone', color: '#22c55e' },
+          { label: 'Launch Colors', icon: 'rocket', color: '#3b82f6' },
+          { label: 'Retire Warning', icon: 'alert', color: '#f59e0b' },
+          { label: 'Final Days', icon: 'timer', color: '#ef4444' }
+        ]
+      },
+      {
+        type: 'cards',
+        title: "4 Marketing Touchpoints Per Year",
+        items: [
+          { title: "1. New Colors Announced", description: "Tease upcoming palette. Build anticipation. Let affiliates prepare content." },
+          { title: "2. New Colors Released", description: "Launch day. Fresh inventory. Peak media coverage. High engagement." },
+          { title: "3. Colors Retiring Announced", description: "Create urgency. 'Last chance' messaging. FOMO kicks in hard." },
+          { title: "4. Final Days Campaign", description: "Countdown clocks. Sold out messaging. Affiliates push hard." }
+        ]
+      },
+      {
+        type: 'content',
+        title: "The Psychology of Manufactured Scarcity",
+        body: "When something is retiring 'forever', the brain triggers loss aversion - we fear losing the option to buy more than we desire the product itself. Le Creuset isn't selling pots. They're selling the last chance to own something that will never exist again. The countdown creates visceral urgency. Without visible timers, urgency is invisible."
+      },
+      {
+        type: 'example',
+        scenario: "DTC Application Examples",
+        before: {
+          label: "The Mistake",
+          text: "\"Limited edition color\" sits on your site. No end date visible. Customers assume it'll be there tomorrow. They don't buy. Sales trickle. No urgency."
+        },
+        after: {
+          label: "The Le Creuset Way",
+          text: "\"Volcanic Orange retiring in 3 days 14:27:33\" - countdown visible on every page. Clear end date. Visible timer. Urgency is REAL. Customers buy NOW."
+        },
+        insight: "The countdown transforms vague scarcity into visceral urgency. Time becomes tangible."
+      },
+      {
+        type: 'cards',
+        title: "How Any DTC Brand Can Apply This",
+        items: [
+          { title: "Apparel", description: "Launch 'Colorway of the Month' drops with countdown to retirement. Each color only available for limited window." },
+          { title: "Supplements", description: "Limited-batch flavors with visible end dates. 'Summer Mango ends in 5 days' creates FOMO." },
+          { title: "Accessories", description: "Seasonal color releases tied to fashion trends. 'Fall Collection' retires when winter drops." }
+        ]
+      },
+      {
+        type: 'quiz',
+        question: "What makes Le Creuset's scarcity strategy work?",
+        options: [
+          "They actually produce limited quantities",
+          "They use color as the anchor of marketing and retire colors annually",
+          "They have celebrity endorsements",
+          "They offer steep discounts on retiring colors"
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: "Exactly! Le Creuset creates scarcity through their annual color cycle - introducing new colors and retiring old ones forever. The product stays the same, but the color creates perceived scarcity and multiple marketing touchpoints.",
+          incorrect: "Not quite. Le Creuset creates scarcity through their annual color cycle - introducing new colors and retiring old ones forever. The product stays the same, but the color creates perceived scarcity and multiple marketing touchpoints."
+        }
+      },
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-plan-calendar' },
+      { type: 'step-create-variants' },
+      { type: 'step-add-timers' },
+      { type: 'step-results' },
+      { type: 'completion' }
+    ];
+
+    // ============================================
+    // ANIMATED COUNTER (Elite Pattern)
+    // ============================================
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      const [hasAnimated, setHasAnimated] = useState(false);
+
+      useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) {
+            setCount(target);
+            clearInterval(timer);
+          } else {
+            setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start));
+          }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals, hasAnimated]);
+
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
+    };
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -275,6 +235,10 @@
       Megaphone: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 11 18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>,
       Rocket: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>,
       Alert: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Calendar: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+      Palette: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -314,15 +278,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -332,24 +287,10 @@
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -362,11 +303,11 @@
         <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
             <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
           </motion.div>
         </div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
@@ -376,23 +317,6 @@
     );
 
     const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-
       if (data.visualType === 'wheel') {
         const getIcon = (iconName) => {
           switch(iconName) {
@@ -408,49 +332,27 @@
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
             <div className="relative flex items-center justify-center">
-              {/* Circular wheel visualization */}
               <div className="relative w-72 h-72 md:w-80 md:h-80">
-                {/* Center circle */}
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: 'spring' }}
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-neutral-900 flex items-center justify-center z-10"
-                >
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-neutral-900 flex items-center justify-center z-10">
                   <span className="text-white text-xs font-bold text-center leading-tight">SCARCITY<br/>CYCLE</span>
                 </motion.div>
-
-                {/* Wheel segments */}
                 {data.stages.map((stage, i) => {
-                  const angle = (i * 90) - 45; // Position at 45, 135, 225, 315 degrees
+                  const angle = (i * 90) - 45;
                   const radians = (angle * Math.PI) / 180;
-                  const radius = 100; // Distance from center
+                  const radius = 100;
                   const x = Math.cos(radians) * radius;
                   const y = Math.sin(radians) * radius;
-
                   return (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.3 + i * 0.15, type: 'spring' }}
-                      className="absolute top-1/2 left-1/2 flex flex-col items-center"
-                      style={{
-                        transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                      }}
-                    >
-                      <div
-                        className="w-16 h-16 md:w-18 md:h-18 rounded-xl flex items-center justify-center text-white shadow-lg"
-                        style={{ backgroundColor: stage.color }}
-                      >
+                    <motion.div key={i} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 + i * 0.15, type: 'spring' }}
+                      className="absolute top-1/2 left-1/2 flex flex-col items-center" style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}>
+                      <div className="w-16 h-16 md:w-18 md:h-18 rounded-xl flex items-center justify-center text-white shadow-lg" style={{ backgroundColor: stage.color }}>
                         {getIcon(stage.icon)}
                       </div>
                       <span className="mt-2 text-xs font-semibold text-neutral-700 text-center whitespace-nowrap">{stage.label}</span>
                     </motion.div>
                   );
                 })}
-
-                {/* Connecting arrows */}
                 <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 5 }}>
                   <defs>
                     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -463,21 +365,12 @@
                     const startRad = (startAngle * Math.PI) / 180;
                     const endRad = (endAngle * Math.PI) / 180;
                     const r = 70;
-                    const cx = 144; // Half of container width (288/2 for md)
+                    const cx = 144;
                     const cy = 144;
-
                     return (
-                      <motion.path
-                        key={i}
-                        initial={{ pathLength: 0, opacity: 0 }}
-                        animate={{ pathLength: 1, opacity: 1 }}
-                        transition={{ delay: 0.8 + i * 0.1, duration: 0.5 }}
+                      <motion.path key={i} initial={{ pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ delay: 0.8 + i * 0.1, duration: 0.5 }}
                         d={`M ${cx + Math.cos(startRad) * r} ${cy + Math.sin(startRad) * r} A ${r} ${r} 0 0 1 ${cx + Math.cos(endRad) * r} ${cy + Math.sin(endRad) * r}`}
-                        fill="none"
-                        stroke="#d4d4d4"
-                        strokeWidth="2"
-                        markerEnd="url(#arrowhead)"
-                      />
+                        fill="none" stroke="#d4d4d4" strokeWidth="2" markerEnd="url(#arrowhead)" />
                     );
                   })}
                 </svg>
@@ -486,14 +379,13 @@
           </div>
         );
       }
-
       return null;
     };
 
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+        <div className={`grid gap-3 relative z-10 ${data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
           {data.items.map((item, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
@@ -503,119 +395,6 @@
         </div>
       </div>
     );
-
-    // Scarcity Timer Slide - Shows countdown timer examples for urgency
-    const ScarcityTimerSlide = ({ data }) => {
-      const [timers, setTimers] = useState(data.timerExamples.map(t => ({
-        ...t,
-        totalSeconds: t.days * 86400 + t.hours * 3600 + t.minutes * 60 + Math.floor(Math.random() * 60)
-      })));
-
-      useEffect(() => {
-        const interval = setInterval(() => {
-          setTimers(prev => prev.map(timer => ({
-            ...timer,
-            totalSeconds: Math.max(0, timer.totalSeconds - 1)
-          })));
-        }, 1000);
-        return () => clearInterval(interval);
-      }, []);
-
-      const formatTime = (totalSeconds) => {
-        const days = Math.floor(totalSeconds / 86400);
-        const hours = Math.floor((totalSeconds % 86400) / 3600);
-        const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const seconds = totalSeconds % 60;
-        return { days, hours, minutes, seconds };
-      };
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-8 h-8 rounded-lg" />
-              <span className="text-xs font-medium text-neutral-500 uppercase tracking-wider">Powered by {TOOL_CONFIG.name}</span>
-            </div>
-            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
-            <p className="text-neutral-600 text-sm md:text-base">{data.subtitle}</p>
-          </motion.div>
-
-          {/* Timer examples */}
-          <div className="space-y-4 mb-6">
-            {timers.map((timer, i) => {
-              const time = formatTime(timer.totalSeconds);
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + i * 0.15 }}
-                  className="rounded-xl p-4 text-white"
-                  style={{ backgroundColor: timer.color }}
-                >
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <Icons.Timer />
-                      <span className="font-semibold text-sm md:text-base">{timer.label}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-1 bg-white/20 rounded-lg px-3 py-2">
-                        <span className="text-2xl md:text-3xl font-bold font-mono">{String(time.days).padStart(2, '0')}</span>
-                        <span className="text-xs opacity-80">d</span>
-                      </div>
-                      <span className="text-xl font-bold">:</span>
-                      <div className="flex items-center gap-1 bg-white/20 rounded-lg px-3 py-2">
-                        <span className="text-2xl md:text-3xl font-bold font-mono">{String(time.hours).padStart(2, '0')}</span>
-                        <span className="text-xs opacity-80">h</span>
-                      </div>
-                      <span className="text-xl font-bold">:</span>
-                      <div className="flex items-center gap-1 bg-white/20 rounded-lg px-3 py-2">
-                        <span className="text-2xl md:text-3xl font-bold font-mono">{String(time.minutes).padStart(2, '0')}</span>
-                        <span className="text-xs opacity-80">m</span>
-                      </div>
-                      <span className="text-xl font-bold">:</span>
-                      <div className="flex items-center gap-1 bg-white/20 rounded-lg px-3 py-2">
-                        <span className="text-2xl md:text-3xl font-bold font-mono">{String(time.seconds).padStart(2, '0')}</span>
-                        <span className="text-xs opacity-80">s</span>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Insight */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="bg-neutral-900 rounded-xl p-4 text-center"
-          >
-            <p className="text-neutral-300 text-sm flex items-center justify-center gap-2">
-              <Icons.Zap />
-              {data.insight}
-            </p>
-          </motion.div>
-
-          {/* Tool CTA */}
-          <motion.a
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            href={TOOL_CONFIG.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:opacity-90"
-            style={{ background: 'var(--accent)' }}
-          >
-            <img src={TOOL_CONFIG.logo} alt="" className="w-5 h-5 rounded" />
-            <span>Add Countdown Timer Bar to Your Store</span>
-            <Icons.ExternalLink />
-          </motion.a>
-        </div>
-      );
-    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -660,53 +439,314 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title || 'Lesson Complete'}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">{data.message || "Great work! You've completed this lesson."}</motion.p>
+    // ========== PART 2: PRACTICAL SLIDES ==========
 
-        {/* Tool CTA Card */}
-        {data.tool && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 rounded-xl p-5 max-w-md w-full mb-4" style={{ borderColor: 'var(--accent)' }}>
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <img src={data.tool.logo} alt={data.tool.name} className="w-10 h-10 rounded-xl shadow-md" />
-              <div className="text-left">
-                <p className="font-bold text-neutral-900 text-sm">{data.tool.name}</p>
-                <p className="text-neutral-500 text-xs">{data.tool.tagline}</p>
+    // Section Divider Slide
+    const SectionDividerSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">4 steps to create your own scarcity engine</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3, 4].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 4 && <div className="w-6 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Step 1: Plan Your Calendar
+    const StepPlanCalendarSlide = () => {
+      const quarters = [
+        { q: 'Q1', colors: ['Winter White', 'Frost Blue'], action: 'Launch new', color: '#3b82f6' },
+        { q: 'Q2', colors: ['Spring Green', 'Blossom Pink'], action: 'Retire Q3 last year', color: '#22c55e' },
+        { q: 'Q3', colors: ['Summer Coral', 'Sunset Orange'], action: 'Announce retirement', color: '#f59e0b' },
+        { q: 'Q4', colors: ['Autumn Burgundy', 'Harvest Gold'], action: 'Final countdown', color: '#ef4444' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Plan Your Color Calendar</h2>
               </div>
             </div>
-            <a
-              href={data.tool.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:opacity-90"
-              style={{ background: 'var(--accent)' }}
-            >
-              <span>Add Visual Urgency to Your Store</span>
-              <Icons.ExternalLink />
-            </a>
           </motion.div>
-        )}
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
+          <div className="grid md:grid-cols-4 gap-3 mb-6">
+            {quarters.map((q, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${q.color}, transparent)` }} />
+                <div className="text-white font-bold text-lg mb-2">{q.q}</div>
+                <div className="space-y-1 mb-3">
+                  {q.colors.map((color, j) => (
+                    <div key={j} className="text-neutral-400 text-xs">{color}</div>
+                  ))}
+                </div>
+                <div className="text-xs font-medium px-2 py-1 rounded-full inline-block" style={{ background: `${q.color}20`, color: q.color }}>{q.action}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Map out 4 quarterly color releases. Each color lives for 9-12 months, then retires forever.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 2: Create Color Variants
+    const StepCreateVariantsSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Create Limited Color Variants</h2>
+              </div>
             </div>
           </motion.div>
-        )}
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                  <Icons.Palette />
+                </div>
+                <div>
+                  <div className="text-white font-bold text-sm">Name Each Color</div>
+                  <div className="text-neutral-400 text-xs">Make it memorable</div>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm text-neutral-300">
+                <div className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-orange-500"></div><span>"Volcanic Orange" not "Orange"</span></div>
+                <div className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-blue-400"></div><span>"Arctic Frost" not "Light Blue"</span></div>
+                <div className="flex items-center gap-2"><div className="w-4 h-4 rounded-full bg-emerald-500"></div><span>"Forest Emerald" not "Green"</span></div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Product Page Elements</div>
+              <div className="space-y-3">
+                <div className="p-3 rounded-lg bg-white border border-neutral-100">
+                  <p className="text-neutral-600 text-sm"><span className="font-bold text-neutral-900">Badge:</span> "Limited Edition - Retiring Q4"</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white border border-neutral-100">
+                  <p className="text-neutral-600 text-sm"><span className="font-bold text-neutral-900">Description:</span> "Part of our 2024 Summer Collection"</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white border border-neutral-100">
+                  <p className="text-neutral-600 text-sm"><span className="font-bold text-neutral-900">Urgency:</span> Visible retirement countdown</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Give each color variant a unique, evocative name and add "Limited Edition" badges.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Add Countdown Timers
+    const StepAddTimersSlide = () => {
+      const [seconds, setSeconds] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => setSeconds(s => s + 1), 1000);
+        return () => clearInterval(interval);
+      }, []);
+
+      const formatTimer = (total) => {
+        const d = 3, h = 14, m = 27, s = 59 - (total % 60);
+        return { d, h, m, s: s < 0 ? 59 : s };
+      };
+      const timer = formatTimer(seconds);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Add Visible Countdown Timers</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-10 h-10 rounded-lg" />
+                <div>
+                  <div className="text-white font-bold text-sm">{TOOL_CONFIG.name}</div>
+                  <div className="text-neutral-400 text-xs">{TOOL_CONFIG.tagline}</div>
+                </div>
+              </div>
+
+              {/* Live Timer Demo */}
+              <div className="rounded-lg p-4 mb-4" style={{ background: '#ea580c' }}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-white">
+                    <Icons.Timer />
+                    <span className="font-semibold text-sm">Volcanic Orange Retiring</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="bg-white/20 rounded px-2 py-1">
+                      <span className="text-white font-mono font-bold">{String(timer.d).padStart(2, '0')}d</span>
+                    </div>
+                    <span className="text-white font-bold">:</span>
+                    <div className="bg-white/20 rounded px-2 py-1">
+                      <span className="text-white font-mono font-bold">{String(timer.h).padStart(2, '0')}h</span>
+                    </div>
+                    <span className="text-white font-bold">:</span>
+                    <div className="bg-white/20 rounded px-2 py-1">
+                      <span className="text-white font-mono font-bold">{String(timer.m).padStart(2, '0')}m</span>
+                    </div>
+                    <span className="text-white font-bold">:</span>
+                    <div className="bg-white/20 rounded px-2 py-1">
+                      <span className="text-white font-mono font-bold">{String(timer.s).padStart(2, '0')}s</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-2 text-sm text-neutral-300">
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Sticky bar on all pages</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Customizable colors & messaging</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Schedule multiple campaigns</span></div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Where to Show Timers</div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold">1</div>
+                  <div>
+                    <div className="font-bold text-neutral-800 text-sm">Announcement Bar</div>
+                    <div className="text-xs text-neutral-500">Visible on every page</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold">2</div>
+                  <div>
+                    <div className="font-bold text-neutral-800 text-sm">Product Page</div>
+                    <div className="text-xs text-neutral-500">Above add-to-cart button</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold">3</div>
+                  <div>
+                    <div className="font-bold text-neutral-800 text-sm">Collection Page</div>
+                    <div className="text-xs text-neutral-500">On retiring product cards</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Install Countdown Timer Bar and create your first retirement countdown for your oldest color variant.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide
+    const StepResultsSlide = () => {
+      const results = [
+        { metric: '+34%', label: 'Conversion Rate', desc: 'On retiring products', icon: Icons.TrendingUp, color: '#22c55e' },
+        { metric: '4x', label: 'Marketing Events', desc: 'Per year per product', icon: Icons.Calendar, color: '#f59e0b' },
+        { metric: '+67%', label: 'Email Revenue', desc: 'From scarcity campaigns', icon: Icons.Zap, color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">first retirement cycle</span> (2-3 months)</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand Le Creuset's scarcity engine. The product stays the same. The calendar creates the urgency. Time to build yours.</motion.p>
+
+        {/* Key Takeaways */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Create a color calendar with quarterly launches and retirements</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Give each color a memorable name and "Limited Edition" status</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Make urgency visible with countdown timers on all pages</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
       </div>
     );
 
@@ -723,7 +763,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -766,9 +805,14 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'scarcity-timer': return <ScarcityTimerSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide />;
+          case 'step-plan-calendar': return <StepPlanCalendarSlide />;
+          case 'step-create-variants': return <StepCreateVariantsSlide />;
+          case 'step-add-timers': return <StepAddTimersSlide />;
+          case 'step-results': return <StepResultsSlide />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

@@ -42,30 +42,22 @@
       title: 'The 4-Step Learning Loop That Powers Meta\'s AI',
       description: '',
       accentColor: '#3b82f6',
-      duration: '5 min',
-      nextLesson: { id: 'meta-creative-matrix', title: 'The 3×5 Creative Matrix', teaser: '15 ads in 30 minutes - the system that feeds Meta\'s algorithm' }
+      duration: '6 min',
+      nextLesson: { id: 'meta-creative-matrix', title: 'The 3x5 Creative Matrix', teaser: '15 ads in 30 minutes - the system that feeds Meta\'s algorithm' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -120,7 +112,6 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -146,6 +137,14 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Tool configuration for practical section
+    const TOOL_CONFIG = {
+      name: 'Triple Whale',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png',
+      link: 'https://apps.shopify.com/triple-whale',
+      tagline: 'First-party attribution that feeds Meta better data'
+    };
+
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -157,23 +156,14 @@
       Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
       Search: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      Smile: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
-      Frown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
-      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/></svg>,
       Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-      FileText: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
-    };
-
-    // Tool configuration for contextual integration
-    const TOOL_CONFIG = {
-      name: 'Triple Whale',
-      logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png',
-      link: 'https://apps.shopify.com/triple-whale',
-      tagline: 'First-party attribution that feeds Meta better data'
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Settings: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      BarChart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
     };
 
     const slides = [
+      // ========== PART 1: THE STRATEGY (Theory) ==========
       { type: 'welcome', learningGoals: ['Why Meta is a learning machine, not a targeting tool', 'The 4-step loop that powers the entire algorithm', 'How to feed the loop properly for better results'] },
 
       { type: 'hook', headline: 'Most advertisers think Meta is a targeting tool. Wrong. Meta is a learning machine.', subtext: 'You don\'t "target" people on Meta. You feed the algorithm signals - and IT finds people who resemble your best customers. Understanding this fundamental shift is the difference between burning money and printing it.' },
@@ -210,9 +200,6 @@
         { event: 'Click', quality: 2, label: 'Weak Signal', description: 'Curiosity. Could mean anything. Don\'t optimize for clicks alone.', color: '#ef4444' }
       ]},
 
-      // NEW: Learning Data slide - Triple Whale contextual integration
-      { type: 'learningDataAccelerator', title: 'Accelerate the Learning Loop', subtitle: 'The algorithm learns from data. Better data = faster learning.' },
-
       { type: 'content', title: 'The Andromeda Update Changed Everything', body: 'Before 2024, you could succeed with narrow targeting and one winning ad. Andromeda flipped the script. Now the algorithm CRAVES volume and diversity. It wants multiple creatives to test. Broad audiences to explore. More data to learn from. Old strategies are obsolete.' },
 
       { type: 'visual', title: 'What The Algorithm Wants Now', visualType: 'stats', data: [
@@ -230,13 +217,68 @@
         }
       },
 
-      { type: 'completion', title: 'You Now Understand the Loop', summary: [
-        'Meta is a learning machine that finds people who resemble your converters',
-        'The 4-step loop (TEST → OBSERVE → ANALYZE → FIND MORE) runs constantly',
-        'Your job is to feed it high-quality signals through purchases and conversions',
-        'Post-Andromeda, the algorithm craves volume and diversity - not one perfect ad'
-      ]}
+      // ========== PART 2: HOW TO FEED THE LOOP (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-pixel-setup' },
+      { type: 'step-attribution-tool' },
+      { type: 'step-feed-volume' },
+      { type: 'step-results' },
+      { type: 'completion' }
     ];
+
+    // ============================================
+    // ANIMATED COUNTER (Elite Pattern)
+    // ============================================
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      const [hasAnimated, setHasAnimated] = useState(false);
+
+      useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) {
+            setCount(target);
+            clearInterval(timer);
+          } else {
+            setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start));
+          }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals, hasAnimated]);
+
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
+    };
+
+    // ============================================
+    // ANIMATED PROGRESS BAR (Elite Pattern)
+    // ============================================
+    const AnimatedProgressBar = ({ percent, color, delay = 0, glowColor }) => {
+      const [width, setWidth] = useState(0);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setWidth(percent), delay * 1000);
+        return () => clearTimeout(timer);
+      }, [percent, delay]);
+
+      return (
+        <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${width}%` }}
+            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1], delay: delay }}
+            className="h-full rounded-full"
+            style={{
+              background: `linear-gradient(90deg, ${color}, ${color}dd)`,
+              boxShadow: glowColor ? `0 0 10px ${glowColor}` : 'none'
+            }}
+          />
+        </div>
+      );
+    };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -275,64 +317,13 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
       </div>
     );
 
@@ -346,7 +337,7 @@
                 <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
                   <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
                   <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                  <div className="text-xs text-neutral-400">{stat.sublabel}</div>
                 </motion.div>
               ))}
             </div>
@@ -402,7 +393,7 @@
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+        <div className={`grid gap-3 relative z-10 ${data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
           {data.items.map((item, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
@@ -412,423 +403,75 @@
         </div>
       </div>
     );
-    const StatCountdownSlide = ({ data }) => (
+
+    // Loop Visualization Slide - Animated learning cycle
+    const LoopVisualizationSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.stats && data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color || 'var(--accent)' }}>{stat.value}{stat.suffix}</div>
-              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-              <div className="text-xs text-neutral-400">{stat.subtext}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
 
-    const BeforeAfterSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">Before</span></div>
-            <ul className="space-y-2">{data.before && data.before.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span>{item}</li>)}</ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">After</span></div>
-            <ul className="space-y-2">{data.after && data.after.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className="text-green-500 mt-0.5">•</span>{item}</li>)}</ul>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const HighlightBoxSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-5">
-          <p className="text-white text-sm md:text-base font-medium"><Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />{data.highlight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const StrategyStepsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: step.color || 'var(--accent)' }}>{step.number || i + 1}</span>
-              <div><h3 className="font-bold text-neutral-900 mb-1">{step.title}</h3><p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p></div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ComparisonCardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className={`rounded-xl p-5 ${data.left && data.left.color === 'red' ? 'bg-red-50 border-2 border-red-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.left && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.left.color === 'red' ? 'text-red-500' : 'text-neutral-500'}`}>{data.left.label}</span>
-              {data.left.value && <h3 className={`text-2xl font-bold ${data.left.color === 'red' ? 'text-red-600' : 'text-neutral-900'}`}>{data.left.value}</h3>}
-              {data.left.subtext && <p className="text-xs text-neutral-500">{data.left.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.left.items && data.left.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.left.color === 'red' ? 'text-red-400' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className={`rounded-xl p-5 ${data.right && data.right.color === 'green' ? 'bg-green-50 border-2 border-green-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.right && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.right.color === 'green' ? 'text-green-500' : 'text-neutral-500'}`}>{data.right.label}</span>
-              {data.right.value && <h3 className={`text-2xl font-bold ${data.right.color === 'green' ? 'text-green-600' : 'text-neutral-900'}`}>{data.right.value}</h3>}
-              {data.right.subtext && <p className="text-xs text-neutral-500">{data.right.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.right.items && data.right.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.right.color === 'green' ? 'text-green-500' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const DoomLoopSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
         <div className="relative">
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center items-center gap-4">
             {data.steps && data.steps.map((step, i) => (
-              <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
-                <div className="bg-white border-2 rounded-xl p-4 w-40" style={{ borderColor: step.color }}>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold mb-2" style={{ background: step.color }}>{i + 1}</div>
-                  <h3 className="font-bold text-sm mb-1" style={{ color: step.color }}>{step.label}</h3>
-                  <p className="text-neutral-500 text-xs">{step.description}</p>
-                </div>
-                {i < data.steps.length - 1 && <div className="absolute top-1/2 -right-3 text-neutral-300 text-xl">→</div>}
-              </motion.div>
-            ))}
-          </div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="text-center mt-4">
-            <span className="text-xs text-neutral-400">↺ The cycle repeats...</span>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const EscapePlanSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: step.color || 'var(--accent)' }}>{step.number || i + 1}</span>
-              <div><h3 className="font-bold text-neutral-900 mb-1">{step.title}</h3><p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p></div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BigStatementSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl text-neutral-600 mb-2">{data.statement}</motion.p>
-        <motion.h2 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-4xl md:text-5xl lg:text-6xl mb-6" style={{ color: 'var(--accent)' }}>{data.emphasis}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg text-neutral-500 max-w-2xl">{data.footer}</motion.p>
-      </div>
-    );
-
-    const ActionSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.actions && data.actions.map((action, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-center gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-green-300 transition-colors">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
-              <span className="text-neutral-700 text-sm md:text-base">{action}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const TrapVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-32 h-32 rounded-full bg-red-100 flex items-center justify-center mb-6">
-          <span className="text-6xl">🪤</span>
-        </motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg text-neutral-500">{data.subtitle}</motion.p>
-      </div>
-    );
-
-    const MathBreakdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-4 mb-4">
-          {data.scenarios && data.scenarios.map((scenario, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-white border-2 rounded-xl p-5" style={{ borderColor: scenario.color }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl" style={{ color: scenario.color }}>{scenario.icon === 'smile' ? <Icons.Smile /> : <Icons.Frown />}</span>
-                <span className="font-bold" style={{ color: scenario.color }}>{scenario.label}</span>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4 text-sm">
-                <div><span className="text-neutral-500">Cost:</span> <span className="font-medium">{scenario.cost}</span></div>
-                <div><span className="text-neutral-500">Result:</span> <span className="font-medium">{scenario.result}</span></div>
-                <div><span className="font-bold" style={{ color: scenario.color }}>{scenario.profit}</span></div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>}
-      </div>
-    );
-
-    const RatioVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-4 gap-3">
-          {data.ratios && data.ratios.map((ratio, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 rounded-xl p-4 text-center" style={{ borderColor: ratio.color }}>
-              <div className="text-2xl font-bold mb-1" style={{ color: ratio.color }}>{ratio.value}</div>
-              <div className="text-xs font-semibold text-neutral-900 mb-1">{ratio.label}</div>
-              <div className="text-xs text-neutral-500">{ratio.description}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ToolIntegrationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Recommended Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-          {data.subtitle && <p className="text-neutral-500 text-sm mt-1">{data.subtitle}</p>}
-        </motion.div>
-        {data.tool && <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.tool.image} alt={data.tool.name} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <h3 className="font-bold text-lg mb-2">{data.tool.name}</h3>
-            <p className="text-neutral-600 text-sm leading-relaxed mb-4">{data.tool.description}</p>
-            {data.tool.features && <ul className="space-y-1.5 mb-4">
-              {data.tool.features.map((f, i) => <li key={i} className="flex items-center gap-2 text-sm text-neutral-700"><Icons.Check className="text-green-500 w-4 h-4" />{f}</li>)}
-            </ul>}
-            {data.tool.link && <a href={data.tool.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-              <span>Try {data.tool.name}</span><Icons.ExternalLink />
-            </a>}
-          </motion.div>
-        </div>}
-      </div>
-    );
-
-    const ActionChecklistSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="w-6 h-6 rounded-md border-2 border-neutral-300 flex-shrink-0 mt-0.5" />
-              <span className="text-neutral-700 text-sm md:text-base">{typeof item === 'string' ? item : item.text || item.title}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-6xl mb-6" style={{ color: 'var(--accent)' }}>"</motion.div>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl font-medium text-neutral-800 mb-6 leading-relaxed">{data.quote}</motion.blockquote>
-        {data.author && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500">— {data.author}{data.context && <span className="block text-sm mt-1">{data.context}</span>}</motion.p>}
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 bg-neutral-100 rounded-xl p-4 max-w-xl"><p className="text-sm text-neutral-600">{data.insight}</p></motion.div>}
-      </div>
-    );
-
-    const FlywheelVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, rotate: -10 }} animate={{ opacity: 1, rotate: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative">
-              <div className="w-32 h-32 rounded-full border-4 flex items-center justify-center text-center p-4" style={{ borderColor: step.color || 'var(--accent)', background: 'white' }}>
-                <div>
-                  <div className="mb-1" style={{ color: step.color || 'var(--accent)' }}>{step.icon || <Icons.Zap />}</div>
-                  <div className="text-xs font-bold" style={{ color: step.color }}>{step.label}</div>
-                </div>
-              </div>
-              {i < (data.steps.length - 1) && <div className="absolute top-1/2 -right-4 text-2xl" style={{ color: 'var(--accent)' }}>→</div>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const MathVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 text-center">
-          {data.equation && <div className="text-3xl md:text-4xl font-bold text-white mb-4 font-mono">{data.equation}</div>}
-          {data.explanation && <p className="text-neutral-400 text-sm">{data.explanation}</p>}
-        </motion.div>
-        {data.examples && <div className="grid md:grid-cols-3 gap-3 mt-4">
-          {data.examples.map((ex, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
-              <div className="text-lg font-bold" style={{ color: ex.color || 'var(--accent)' }}>{ex.value}</div>
-              <div className="text-xs text-neutral-500">{ex.label}</div>
-            </motion.div>
-          ))}
-        </div>}
-      </div>
-    );
-
-    const RequirementsVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.requirements && data.requirements.map((req, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-center gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: req.met ? '#10b981' : '#ef4444' }}>
-                {req.met ? <Icons.Check /> : <Icons.X />}
-              </div>
-              <span className="text-neutral-700 text-sm md:text-base">{req.text || req}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const FounderSpotlightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        {data.image && <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-24 h-24 rounded-full overflow-hidden mb-4 border-4 border-white shadow-lg">
-          <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
-        </motion.div>}
-        <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xl font-bold text-black mb-1">{data.name}</motion.h3>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-sm text-neutral-500 mb-4">{data.title}</motion.p>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-neutral-700 italic leading-relaxed">"{data.quote}"</motion.blockquote>
-      </div>
-    );
-
-    const VelocityMetricSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 text-center mb-4">
-          <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{data.value}</div>
-          <div className="text-white text-lg font-medium">{data.label}</div>
-          {data.subtext && <div className="text-neutral-400 text-sm mt-2">{data.subtext}</div>}
-        </motion.div>
-        {data.breakdown && <div className="grid md:grid-cols-3 gap-3">
-          {data.breakdown.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
-              <div className="text-lg font-bold" style={{ color: item.color }}>{item.value}</div>
-              <div className="text-xs text-neutral-500">{item.label}</div>
-            </motion.div>
-          ))}
-        </div>}
-      </div>
-    );
-
-    const MindsetFrameworkSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.principles && data.principles.map((principle, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="flex items-center gap-3 mb-2">
-                <span style={{ color: 'var(--accent)' }}>{principle.icon || <Icons.Lightbulb />}</span>
-                <h3 className="font-bold text-neutral-900">{principle.title}</h3>
-              </div>
-              <p className="text-neutral-600 text-sm">{principle.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const GenericListSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        {data.subtitle && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-6">{data.subtitle}</motion.p>}
-        <div className="space-y-3">
-          {(data.items || data.steps || data.points || []).map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-              <div>
-                {typeof item === 'string' ? <span className="text-neutral-700">{item}</span> : <>
-                  <h3 className="font-bold text-neutral-900 mb-1">{item.title || item.label}</h3>
-                  <p className="text-neutral-600 text-sm">{item.description || item.text}</p>
-                </>}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const AnglesSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
-              <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--accent)' }}>{item.title}</h3>
-              <p className="text-neutral-600 text-sm mb-3">{item.description}</p>
-              {item.example && <div className="bg-neutral-50 rounded-lg p-3"><p className="text-xs text-neutral-500 italic">{item.example}</p></div>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const FormatsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 rounded-xl p-4" style={{ borderColor: item.color || 'var(--accent)' }}>
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: item.color || 'var(--accent)' }}><Icons.FileText /></div>
-                <h3 className="font-bold text-sm">{item.title}</h3>
-              </div>
-              <p className="text-neutral-600 text-xs">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const MatrixVisualizationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="bg-neutral-900 rounded-2xl p-6">
-          <div className="grid grid-cols-6 gap-2 text-xs">
-            <div className="col-span-1"></div>
-            {(data.formats || ['F1', 'F2', 'F3', 'F4', 'F5']).slice(0, 5).map((f, i) => (
-              <div key={i} className="text-center text-neutral-400 font-medium truncate">{typeof f === 'string' ? f.replace('Format ', '').substring(0, 8) : f}</div>
-            ))}
-            {(data.angles || ['Angle 1', 'Angle 2', 'Angle 3']).map((angle, ai) => (
-              <React.Fragment key={ai}>
-                <div className="text-neutral-400 font-medium truncate pr-2">{typeof angle === 'string' ? angle.replace('Angle ', 'A').substring(0, 10) : angle}</div>
-                {[0, 1, 2, 3, 4].map((fi) => (
-                  <motion.div key={fi} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + (ai * 5 + fi) * 0.03 }} className="aspect-square rounded-lg flex items-center justify-center text-white font-bold" style={{ background: 'var(--accent)' }}>{ai * 5 + fi + 1}</motion.div>
-                ))}
+              <React.Fragment key={i}>
+                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
+                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 flex items-center justify-center text-center p-3" style={{ borderColor: step.color, background: 'white' }}>
+                    <div>
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold mb-1 mx-auto" style={{ background: step.color }}>{step.step}</div>
+                      <div className="text-xs md:text-sm font-bold" style={{ color: step.color }}>{step.label}</div>
+                      <div className="text-[10px] text-neutral-500">{step.sublabel}</div>
+                    </div>
+                  </div>
+                </motion.div>
+                {i < data.steps.length - 1 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.15 }} className="text-2xl" style={{ color: data.steps[i + 1].color }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </motion.div>
+                )}
               </React.Fragment>
             ))}
           </div>
-          <div className="text-center mt-4 text-neutral-400 text-sm">3 Angles × 5 Formats = 15 Unique Ads</div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 text-neutral-500 text-xs">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              <span>Loop repeats continuously</span>
+            </div>
+          </motion.div>
         </div>
       </div>
     );
 
-    const MatrixBuilderSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto text-center">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 mb-6">{data.description}</motion.p>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-xl p-8">
-          <div className="mb-4" style={{ color: 'var(--accent)', transform: 'scale(2.5)' }}><Icons.Target /></div>
-          <p className="text-neutral-600">Start building your creative matrix today</p>
+    // Signal Quality Slide - PURE THEORY (no tool mentions)
+    const SignalQualitySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="space-y-3 mb-5">
+          {data.signals && data.signals.map((signal, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 rounded-xl p-4 flex items-center gap-4" style={{ borderColor: signal.color }}>
+              <div className="flex-shrink-0 w-12">
+                <div className="relative">
+                  <div className="h-3 w-full bg-neutral-200 rounded-full overflow-hidden">
+                    <motion.div initial={{ width: 0 }} animate={{ width: `${signal.quality * 10}%` }} transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }} className="h-full rounded-full" style={{ background: signal.color }} />
+                  </div>
+                  <span className="text-xs font-bold mt-1 block text-center" style={{ color: signal.color }}>{signal.quality}/10</span>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-bold text-neutral-900">{signal.event}</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: `${signal.color}20`, color: signal.color }}>{signal.label}</span>
+                </div>
+                <p className="text-neutral-600 text-sm">{signal.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />More purchases = faster learning. The algorithm gets smarter with every sale.</p>
         </motion.div>
       </div>
     );
@@ -876,250 +519,291 @@
       );
     };
 
-    // Loop Visualization Slide - Animated learning cycle
-    const LoopVisualizationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+    // ========== PART 2: PRACTICAL SLIDES ==========
 
-        <div className="relative">
-          {/* Circular loop visualization */}
-          <div className="flex flex-wrap justify-center items-center gap-4">
-            {data.steps && data.steps.map((step, i) => (
-              <React.Fragment key={i}>
-                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
-                  <div className="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 flex items-center justify-center text-center p-3" style={{ borderColor: step.color, background: 'white' }}>
-                    <div>
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold mb-1 mx-auto" style={{ background: step.color }}>{step.step}</div>
-                      <div className="text-xs md:text-sm font-bold" style={{ color: step.color }}>{step.label}</div>
-                      <div className="text-[10px] text-neutral-500">{step.sublabel}</div>
-                    </div>
-                  </div>
-                </motion.div>
-                {i < data.steps.length - 1 && (
-                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.15 }} className="text-2xl" style={{ color: data.steps[i + 1].color }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                  </motion.div>
-                )}
-              </React.Fragment>
+    // Section Divider Slide - Transition to practical
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to supercharge your learning loop</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
             ))}
-          </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
 
-          {/* Return arrow */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center mt-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-100 text-neutral-500 text-xs">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-              <span>Loop repeats continuously</span>
+    // Step 1: Set Up Your Pixel + CAPI
+    const StepPixelSetupSlide = ({ data }) => {
+      const steps = [
+        { label: 'Install Pixel', desc: 'Base tracking code on your site', status: 'required' },
+        { label: 'Enable CAPI', desc: 'Server-side events for reliability', status: 'critical' },
+        { label: 'Verify Events', desc: 'Test with Events Manager', status: 'required' },
+        { label: 'Match Quality', desc: 'Aim for 8+ EMQ score', status: 'goal' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up Your Pixel + CAPI</h2>
+              </div>
             </div>
           </motion.div>
-        </div>
-      </div>
-    );
 
-    // Signal Quality Slide with inline Triple Whale mention
-    const SignalQualitySlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-
-        <div className="space-y-3 mb-5">
-          {data.signals && data.signals.map((signal, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 rounded-xl p-4 flex items-center gap-4" style={{ borderColor: signal.color }}>
-              <div className="flex-shrink-0 w-12">
-                <div className="relative">
-                  <div className="h-3 w-full bg-neutral-200 rounded-full overflow-hidden">
-                    <motion.div initial={{ width: 0 }} animate={{ width: `${signal.quality * 10}%` }} transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }} className="h-full rounded-full" style={{ background: signal.color }} />
-                  </div>
-                  <span className="text-xs font-bold mt-1 block text-center" style={{ color: signal.color }}>{signal.quality}/10</span>
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-bold text-neutral-900">{signal.event}</span>
-                  <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: `${signal.color}20`, color: signal.color }}>{signal.label}</span>
-                </div>
-                <p className="text-neutral-600 text-sm">{signal.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Inline Triple Whale mention - contextual */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-gradient-to-r from-neutral-900 to-neutral-800 rounded-xl p-4">
-          <div className="flex items-center gap-3">
-            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-10 h-10 rounded-lg flex-shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-sm font-medium">Capture more signals with first-party tracking</p>
-              <p className="text-neutral-400 text-xs truncate">iOS 14+ blocks ~40% of conversion data. {TOOL_CONFIG.name} recovers it.</p>
-            </div>
-            <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold text-white transition-all hover:scale-105" style={{ background: 'var(--accent)' }}>
-              Learn More
-            </a>
-          </div>
-        </motion.div>
-      </div>
-    );
-
-    // Learning Data Accelerator Slide - Unique Triple Whale Integration
-    const LearningDataAcceleratorSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>Level Up</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-          {data.subtitle && <p className="text-neutral-500 text-sm mt-2">{data.subtitle}</p>}
-        </motion.div>
-
-        {/* The Learning Loop with Data Quality */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-6 mb-5">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <Icons.Brain />
-              </div>
-              <div>
-                <p className="text-white font-semibold text-sm">Meta's Learning Phase</p>
-                <p className="text-neutral-400 text-xs">Needs 50+ conversions/week to optimize</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-neutral-500 text-xs">Data Quality</span>
-              <div className="flex gap-1">
-                {[1,2,3,4,5].map((i) => (
-                  <motion.div key={i} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }} className="w-3 h-3 rounded-full" style={{ background: i <= 2 ? '#ef4444' : i <= 3 ? '#f59e0b' : '#10b981' }} />
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-white font-bold text-lg mb-4">Setup Checklist</div>
+              <div className="space-y-3">
+                {steps.map((step, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-center gap-3">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: step.status === 'critical' ? '#ef4444' : step.status === 'goal' ? '#10b981' : 'var(--accent)' }}>
+                      <Icons.Check className="w-3 h-3 text-white" />
+                    </div>
+                    <div>
+                      <div className="text-white text-sm font-medium">{step.label}</div>
+                      <div className="text-neutral-400 text-xs">{step.desc}</div>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Why CAPI is Critical</div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-lg bg-red-100 flex items-center justify-center text-xl font-bold text-red-600">40%</div>
+                  <div>
+                    <div className="font-bold text-neutral-800 text-sm">Data lost without CAPI</div>
+                    <div className="text-xs text-neutral-500">iOS 14+ blocks browser events</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center text-xl font-bold text-green-600">95%</div>
+                  <div>
+                    <div className="font-bold text-neutral-800 text-sm">Data captured with CAPI</div>
+                    <div className="text-xs text-neutral-500">Server-side bypasses blockers</div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-3">
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white/5 rounded-xl p-4 border border-white/10">
-              <p className="text-red-400 text-xs font-semibold mb-1">Without Attribution</p>
-              <p className="text-white text-lg font-bold">~40%</p>
-              <p className="text-neutral-500 text-xs">of conversions tracked</p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-white/5 rounded-xl p-4 border border-white/10">
-              <p className="text-yellow-400 text-xs font-semibold mb-1">Basic Pixel Setup</p>
-              <p className="text-white text-lg font-bold">~65%</p>
-              <p className="text-neutral-500 text-xs">of conversions tracked</p>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-gradient-to-br from-green-500/20 to-emerald-500/10 rounded-xl p-4 border border-green-500/30">
-              <p className="text-green-400 text-xs font-semibold mb-1">First-Party Attribution</p>
-              <p className="text-white text-lg font-bold">~95%</p>
-              <p className="text-neutral-500 text-xs">of conversions tracked</p>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Triple Whale Integration Card */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-white rounded-xl border-2 border-neutral-200 p-5 hover:border-blue-300 transition-colors">
-          <div className="flex items-start gap-4">
-            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-14 h-14 rounded-xl object-contain flex-shrink-0" />
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className="font-bold text-neutral-900">{TOOL_CONFIG.name}</h3>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-100 text-blue-700">Attribution Tool</span>
-              </div>
-              <p className="text-neutral-600 text-sm mb-3">First-party data that feeds Meta's learning loop with accurate conversion signals. The algorithm learns 2x faster with clean attribution data.</p>
-              <div className="flex flex-wrap gap-2 mb-3">
-                <span className="px-2 py-1 rounded-lg text-xs bg-neutral-100 text-neutral-600">Server-side tracking</span>
-                <span className="px-2 py-1 rounded-lg text-xs bg-neutral-100 text-neutral-600">True ROAS</span>
-                <span className="px-2 py-1 rounded-lg text-xs bg-neutral-100 text-neutral-600">iOS 14+ recovery</span>
-              </div>
-              <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:opacity-80" style={{ color: 'var(--accent)' }}>
-                <span>Feed Meta better data</span>
-                <Icons.ExternalLink />
-              </a>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    );
-
-    const TrackAttributionSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">Track True Attribution</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-xl p-5 opacity-60">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-neutral-400 flex items-center justify-center text-white">
-                <Icons.X />
-              </div>
-              <span className="font-semibold text-neutral-500 text-sm">Platform Reporting</span>
-            </div>
-            <ul className="space-y-2">
-              <li className="text-neutral-500 text-sm flex items-start gap-2"><span className="text-neutral-400 mt-0.5">•</span>Rely on Meta's inflated numbers</li>
-              <li className="text-neutral-500 text-sm flex items-start gap-2"><span className="text-neutral-400 mt-0.5">•</span>Can't see true ROAS</li>
-              <li className="text-neutral-500 text-sm flex items-start gap-2"><span className="text-neutral-400 mt-0.5">•</span>Attribution window confusion</li>
-              <li className="text-neutral-500 text-sm flex items-start gap-2"><span className="text-neutral-400 mt-0.5">•</span>Making decisions on bad data</li>
-            </ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white rounded-xl p-5 border-2" style={{ borderColor: 'var(--accent)' }}>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
-                <Icons.Check />
-              </div>
-              <span className="font-semibold text-sm" style={{ color: 'var(--accent)' }}>First-Party Attribution</span>
-            </div>
-            <ul className="space-y-2">
-              <li className="text-neutral-700 text-sm flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5">•</span>Track true customer journeys</li>
-              <li className="text-neutral-700 text-sm flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5">•</span>Accurate ROAS by campaign</li>
-              <li className="text-neutral-700 text-sm flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5">•</span>See which ads actually convert</li>
-              <li className="text-neutral-700 text-sm flex items-start gap-2"><span style={{ color: 'var(--accent)' }} className="mt-0.5">•</span>Make data-driven scaling decisions</li>
-            </ul>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Go to Events Manager and verify your Pixel is firing. Check CAPI is enabled with 8+ Event Match Quality.</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center">
-          <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-5 h-5 rounded" />
-            <span>Try {TOOL_CONFIG.name}</span>
-            <Icons.ExternalLink />
-          </a>
-        </motion.div>
-      </div>
-    );
+      );
+    };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You now understand how to feed Meta's learning loop.</motion.p>
-
-        {/* Enhanced Triple Whale CTA */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 max-w-md w-full mb-4">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-8 h-8 rounded-lg" />
-            <div className="text-left">
-              <p className="text-neutral-900 text-sm font-semibold">Ready to supercharge the loop?</p>
-              <p className="text-neutral-500 text-xs">{TOOL_CONFIG.name} feeds Meta 2x better data</p>
-            </div>
-          </div>
-          <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }}>
-            <span>Get First-Party Attribution</span>
-            <Icons.ExternalLink />
-          </a>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
+    // Step 2: Add First-Party Attribution
+    const StepAttributionToolSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Add First-Party Attribution</h2>
+              </div>
             </div>
           </motion.div>
-        )}
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <img src={TOOL_CONFIG.logo} alt="Triple Whale" className="w-10 h-10 rounded-lg" />
+                <div>
+                  <div className="text-white font-bold text-sm">{TOOL_CONFIG.name}</div>
+                  <div className="text-neutral-400 text-xs">Attribution & Analytics</div>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm text-neutral-300">
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>First-party data collection</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Server-side tracking</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>True ROAS by campaign</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>iOS 14+ data recovery</span></div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Why Attribution Tools Matter</div>
+              <div className="space-y-4">
+                <div className="p-3 rounded-lg bg-white border border-neutral-100">
+                  <p className="text-neutral-600 text-sm"><span className="font-bold text-neutral-900">Problem:</span> Meta reports inflated ROAS because it takes credit for organic sales</p>
+                </div>
+                <div className="p-3 rounded-lg bg-white border border-neutral-100">
+                  <p className="text-neutral-600 text-sm"><span className="font-bold text-neutral-900">Solution:</span> First-party tracking shows TRUE performance so you scale winners</p>
+                </div>
+                <div className="p-3 rounded-lg bg-green-50 border border-green-100">
+                  <p className="text-green-700 text-sm"><span className="font-bold">Result:</span> Better data = faster algorithm learning = lower CPA</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Install an attribution tool like {TOOL_CONFIG.name} and connect it to your ad accounts.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Feed Volume to the Loop
+    const StepFeedVolumeSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Feed Volume to the Loop</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="p-5 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
+              <div className="text-3xl font-bold text-white mb-2">50+</div>
+              <div className="text-white font-bold text-sm mb-1">Conversions/Week</div>
+              <div className="text-neutral-400 text-xs">Minimum to exit learning</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-5 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+              <div className="text-3xl font-bold text-white mb-2">15+</div>
+              <div className="text-white font-bold text-sm mb-1">Active Creatives</div>
+              <div className="text-neutral-400 text-xs">Give the algorithm options</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div className="text-3xl font-bold text-white mb-2">Broad</div>
+              <div className="text-white font-bold text-sm mb-1">Audience Targeting</div>
+              <div className="text-neutral-400 text-xs">Let Meta find the buyers</div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="p-4 rounded-xl bg-red-50 border border-red-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.X className="w-4 h-4 text-red-500" />
+                <span className="font-bold text-red-700 text-sm">Don't do this</span>
+              </div>
+              <p className="text-neutral-700 text-xs">Run 2-3 ads with narrow targeting and expect magic. The algorithm starves.</p>
+            </div>
+            <div className="p-4 rounded-xl bg-green-50 border border-green-200">
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.Check className="w-4 h-4 text-green-500" />
+                <span className="font-bold text-green-700 text-sm">Do this instead</span>
+              </div>
+              <p className="text-neutral-700 text-xs">Launch 15+ creatives, go broad, and let the loop do its work. Feed the machine.</p>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Audit your ad account. Do you have 50+ weekly conversions? 15+ active creatives? If not, that's your priority.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide - What to expect
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '2x', label: 'Faster Learning', desc: 'Algorithm exits learning phase', icon: Icons.Brain, color: '#3b82f6' },
+        { metric: '-30%', label: 'Lower CPA', desc: 'With proper signal quality', icon: Icons.TrendingUp, color: '#10b981' },
+        { metric: '95%', label: 'Data Captured', desc: 'vs 40% without CAPI', icon: Icons.BarChart, color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">2-4 weeks</span> of implementation</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the learning loop. Feed the algorithm good data, give it volume, and watch it work.</motion.p>
+
+        {/* Key Takeaways - Clean summary */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Meta is a learning machine - feed it signals, not targeting rules</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Purchases are the strongest signal - optimize for sales, not clicks</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Volume matters - 50+ conversions/week, 15+ creatives, broad audiences</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
       </div>
     );
 
@@ -1136,7 +820,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -1173,52 +856,21 @@
 
       const renderSlide = (slide) => {
         switch (slide.type) {
-          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
-          case 'before-after': return <BeforeAfterSlide data={slide} />;
-          case 'highlight-box': return <HighlightBoxSlide data={slide} />;
-          case 'strategy-steps': return <StrategyStepsSlide data={slide} />;
-          case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
-          case 'doom-loop': return <DoomLoopSlide data={slide} />;
-          case 'escape-plan': return <EscapePlanSlide data={slide} />;
-          case 'bigStatement': return <BigStatementSlide data={slide} />;
-          case 'actionSlide': return <ActionSlide data={slide} />;
-          case 'trap-visual': return <TrapVisualSlide data={slide} />;
-          case 'math-breakdown': return <MathBreakdownSlide data={slide} />;
-          case 'ratio-visual': return <RatioVisualSlide data={slide} />;
-          case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
-          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
-          case 'quote': return <QuoteSlide data={slide} />;
-          case 'quote-slide': return <QuoteSlide data={slide} />;
-          case 'quote-spotlight': return <QuoteSlide data={slide} />;
-          case 'flywheel-visual': return <FlywheelVisualSlide data={slide} />;
-          case 'math-visual': return <MathVisualSlide data={slide} />;
-          case 'requirements-visual': return <RequirementsVisualSlide data={slide} />;
-          case 'founder-spotlight': return <FounderSpotlightSlide data={slide} />;
-          case 'velocity-metric': return <VelocityMetricSlide data={slide} />;
-          case 'mindset-framework': return <MindsetFrameworkSlide data={slide} />;
-          case 'angles': return <AnglesSlide data={slide} />;
-          case 'formats': return <FormatsSlide data={slide} />;
-          case 'matrixVisualization': return <MatrixVisualizationSlide data={slide} />;
-          case 'matrixBuilder': return <MatrixBuilderSlide data={slide} />;
-          case 'stats': return <StatCountdownSlide data={slide} />;
-          case 'roadmap': return <StrategyStepsSlide data={slide} />;
-          case 'triangle': return <GenericListSlide data={slide} />;
-          case 'flywheel': return <FlywheelVisualSlide data={slide} />;
-          case 'ratio-spectrum': return <RatioVisualSlide data={slide} />;
-          case 'math-comparison': return <MathBreakdownSlide data={slide} />;
-          case 'opportunity-cost': return <GenericListSlide data={slide} />;
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'loopVisualization': return <LoopVisualizationSlide data={slide} />;
           case 'signalQuality': return <SignalQualitySlide data={slide} />;
-          case 'track-attribution': return <TrackAttributionSlide />;
-          case 'learningDataAccelerator': return <LearningDataAcceleratorSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-pixel-setup': return <StepPixelSetupSlide data={slide} />;
+          case 'step-attribution-tool': return <StepAttributionToolSlide data={slide} />;
+          case 'step-feed-volume': return <StepFeedVolumeSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

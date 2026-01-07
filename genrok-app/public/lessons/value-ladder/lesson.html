@@ -68,10 +68,11 @@
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
+      // ========== PART 1: THE STRATEGY (Theory) ==========
       { type: 'welcome', learningGoals: [
         'The hidden menu psychology - why secret tiers drive aspiration',
         'Building your value ladder from entry to elite',
-        'How each tier unlocks desire for the next'
+        'How to implement this in your store step-by-step'
       ]},
       { type: 'hook', headline: 'Top restaurants have two menus.', subheadline: 'The one you see. And the one for people who know.', subtext: 'Michelin-star restaurants keep their best dishes off the public menu. You have to ask. You have to be "in the know." This isn\'t gatekeeping - it\'s aspiration engineering.' },
       { type: 'secret-menu' },
@@ -82,9 +83,14 @@
       { type: 'hidden-reveal' },
       { type: 'aspiration-pyramid' },
       { type: 'ladder-stats' },
-      { type: 'automate-ladder' },
-      { type: 'quiz', question: 'Why do high-end restaurants keep their best dishes off the public menu?', options: ['To save money on printing costs', 'Hidden exclusivity creates aspiration - customers want access to what others can\'t see', 'They forgot to add them', 'The chef wants to keep secrets'], correctIndex: 1, feedback: { correct: 'Exactly. The hidden menu creates aspiration. When customers know there\'s a tier above what they see, they want access. The ladder creates desire for the climb.', incorrect: 'Not quite. The power is in aspiration. By keeping premium offerings hidden, restaurants create curiosity and desire. Customers want what\'s reserved for "those who know."' }},
       { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why do high-end restaurants keep their best dishes off the public menu?', options: ['To save money on printing costs', 'Hidden exclusivity creates aspiration - customers want access to what others can\'t see', 'They forgot to add them', 'The chef wants to keep secrets'], correctIndex: 1, feedback: { correct: 'Exactly. The hidden menu creates aspiration. When customers know there\'s a tier above what they see, they want access. The ladder creates desire for the climb.', incorrect: 'Not quite. The power is in aspiration. By keeping premium offerings hidden, restaurants create curiosity and desire. Customers want what\'s reserved for "those who know."' }},
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-map-tiers' },
+      { type: 'step-setup-upsells' },
+      { type: 'step-hidden-tier' },
+      { type: 'step-results' },
       { type: 'completion' }
     ];
 
@@ -413,10 +419,6 @@
             <p className="text-sm text-center" style={{ color: 'var(--accent)' }}><Icons.Zap className="inline mr-2" />The cart drawer is the Entry→Core escalator. Each step feels natural because they already committed to climbing.</p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-4 flex items-center justify-center gap-3 text-xs text-neutral-500">
-            <img src="https://cdn.shopify.com/app-store/listing_images/d7c456ab4c46f0fe14c14b60c135fb26/icon/CKfh7oCa5PQCEAE=.png" alt="ReConvert" className="w-5 h-5 rounded" />
-            <span>Apps like <strong className="text-neutral-700">ReConvert</strong> automate this entire flow</span>
-          </motion.div>
         </div>
       );
     };
@@ -622,6 +624,236 @@
       );
     };
 
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    // Section Divider Slide - Transition to practical
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(8, 145, 178, 0.3)' }}>
+            <Icons.Zap className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 simple steps to implement your value ladder</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Step 1: Map Your Tiers
+    const StepMapTiersSlide = ({ data }) => {
+      const tiers = [
+        { name: 'Entry', price: '$19-49', desc: 'Low barrier, high volume', example: 'Single item, trial size', color: '#22c55e' },
+        { name: 'Core', price: '$79-149', desc: 'Your main offering', example: 'Bundle, starter kit', color: '#f59e0b' },
+        { name: 'Premium', price: '$249-499', desc: 'Better version + extras', example: 'Full kit + bonus', color: '#8b5cf6' },
+        { name: 'Elite', price: '$997+', desc: 'Hidden, invite-only', example: 'VIP access, coaching', color: '#ef4444' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Map Your Products to 4 Tiers</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-3 mb-6">
+            {tiers.map((tier, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${tier.color}, transparent)` }} />
+                <div className="text-white font-bold text-sm mb-1">{tier.name}</div>
+                <div className="text-lg font-bold mb-2" style={{ color: tier.color }}>{tier.price}</div>
+                <div className="text-neutral-400 text-xs mb-2">{tier.desc}</div>
+                <div className="text-xs px-2 py-1 rounded inline-block" style={{ background: `${tier.color}20`, color: tier.color }}>{tier.example}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(8, 145, 178, 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Write down 1-2 products for each tier. Don't have all 4? Start with 2-3 and expand.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 2: Set Up Post-Purchase Upsells
+    const StepSetupUpsellsSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up Post-Purchase Upsells</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <img src="https://cdn.shopify.com/app-store/listing_images/d7c456ab4c46f0fe14c14b60c135fb26/icon/CKfh7oCa5PQCEAE=.png" alt="ReConvert" className="w-10 h-10 rounded-lg" />
+                <div>
+                  <div className="text-white font-bold text-sm">ReConvert</div>
+                  <div className="text-neutral-400 text-xs">Post-purchase upsells</div>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm text-neutral-300">
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Entry buyer → Show Core upgrade</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Core buyer → Show Premium bundle</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>One-click add after checkout</span></div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Example Flow:</div>
+              <div className="space-y-3">
+                {[
+                  { from: '$29 Resistance Band', to: '$149 Full Kit', rate: '23%' },
+                  { from: '$149 Full Kit', to: '$349 Elite Kit', rate: '15%' },
+                  { from: '$349 Elite Kit', to: 'VIP Invite', rate: '8%' }
+                ].map((flow, i) => (
+                  <div key={i} className="flex items-center gap-2 text-xs">
+                    <span className="text-neutral-500">{flow.from}</span>
+                    <span className="text-neutral-400">→</span>
+                    <span className="text-neutral-700 font-medium">{flow.to}</span>
+                    <span className="ml-auto px-2 py-0.5 rounded text-green-600 bg-green-100 font-bold">{flow.rate}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(8, 145, 178, 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Install ReConvert and create 1 upsell: Entry → Core upgrade on your thank-you page.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Create Your Hidden Tier
+    const StepHiddenTierSlide = ({ data }) => {
+      const [showTemplate, setShowTemplate] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowTemplate(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Create Your Hidden Elite Tier</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="space-y-4">
+              <div className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Icons.Lock className="w-4 h-4" style={{ color: 'var(--accent)' }} />
+                  <span className="text-white font-bold text-sm">Make it Hidden</span>
+                </div>
+                <p className="text-neutral-400 text-xs">Not on your website. Not in emails to everyone. Only revealed to qualifying customers.</p>
+              </div>
+              <div className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Icons.Award className="w-4 h-4" style={{ color: '#f59e0b' }} />
+                  <span className="text-white font-bold text-sm">Make it Earned</span>
+                </div>
+                <p className="text-neutral-400 text-xs">After 3 purchases, $500 spent, or by invitation only. Access should feel special.</p>
+              </div>
+              <div className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Icons.Crown className="w-4 h-4" style={{ color: '#ef4444' }} />
+                  <span className="text-white font-bold text-sm">Make it Valuable</span>
+                </div>
+                <p className="text-neutral-400 text-xs">Early access, exclusive products, direct contact, community membership.</p>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Email Template</div>
+              <AnimatePresence>
+                {showTemplate && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-neutral-700 space-y-2 font-mono">
+                    <p className="text-neutral-500 italic">Subject: You've unlocked something special</p>
+                    <p>Hi [Name],</p>
+                    <p>Based on your order history, you qualify for our <strong>VIP Circle</strong> – something we don't advertise publicly.</p>
+                    <p>Members get: <span className="text-green-600">[exclusive benefit]</span></p>
+                    <p>Reply "I'm in" to join.</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(8, 145, 178, 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Define your Elite tier criteria ($ spent or # orders) and draft your invitation email.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide - What to expect
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '+$7-15', label: 'Per Order', desc: 'From post-purchase upsells', icon: Icons.DollarSign, color: '#22c55e' },
+        { metric: '2-4x', label: 'LTV Increase', desc: 'Customers climbing tiers', icon: Icons.TrendingUp, color: '#f59e0b' },
+        { metric: '15-25%', label: 'Upgrade Rate', desc: 'Entry to Core conversion', icon: Icons.Zap, color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(8, 145, 178, 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">2-4 weeks</span> of implementation</p>
+          </motion.div>
+        </div>
+      );
+    };
+
     // AUTOMATE LADDER SLIDE - Tool Recommendation
     const AutomateLadderSlide = ({ data }) => {
       return (
@@ -708,18 +940,18 @@
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Crown /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the value ladder. Entry gets them in. Core builds trust. Elite creates aspiration. Hidden tiers drive desire.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-4 mb-4 max-w-md w-full" style={{ background: 'rgba(8, 145, 178, 0.1)' }}>
-          <p className="text-sm font-medium flex items-center gap-2" style={{ color: 'var(--accent)' }}><Icons.Target className="flex-shrink-0" /><span>Action: Map your products to 4 tiers. Create one hidden "whispered about" tier.</span></p>
-        </motion.div>
-        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} href="https://apps.shopify.com/reconvert-post-purchase-upsell" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 px-5 py-3 rounded-xl mb-6 max-w-md w-full transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #333' }}>
-          <img src="https://cdn.shopify.com/app-store/listing_images/d7c456ab4c46f0fe14c14b60c135fb26/icon/CKfh7oCa5PQCEAE=.png" alt="ReConvert" className="w-10 h-10 rounded-lg flex-shrink-0" />
-          <div className="flex-1 text-left">
-            <p className="text-white font-semibold text-sm">Automate with ReConvert</p>
-            <p className="text-neutral-400 text-xs">Post-purchase upsells to move customers up your ladder</p>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-5 mb-6 max-w-md w-full text-left" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="h-0.5 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <p className="text-white font-bold text-sm mb-3">Your 3 Actions:</p>
+          <div className="space-y-2 text-sm text-neutral-300">
+            <div className="flex items-start gap-2"><span className="text-green-400">1.</span><span>Map your products to Entry, Core, Premium, Elite</span></div>
+            <div className="flex items-start gap-2"><span className="text-green-400">2.</span><span>Set up 1 post-purchase upsell (Entry → Core)</span></div>
+            <div className="flex items-start gap-2"><span className="text-green-400">3.</span><span>Draft your hidden tier invitation email</span></div>
           </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-neutral-400"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-        </motion.a>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
           <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
@@ -780,6 +1012,12 @@
           case 'automate-ladder': return <AutomateLadderSlide data={slide} />;
           case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-map-tiers': return <StepMapTiersSlide data={slide} />;
+          case 'step-setup-upsells': return <StepSetupUpsellsSlide data={slide} />;
+          case 'step-hidden-tier': return <StepHiddenTierSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }

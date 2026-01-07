@@ -38,103 +38,77 @@
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
       const [count, setCount] = useState(0);
+      const [hasAnimated, setHasAnimated] = useState(false);
       useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
         let start = 0;
         const increment = target / (duration / 16);
         const timer = setInterval(() => {
           start += increment;
           if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
         }, 16);
         return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{prefix}{count}{suffix}</span>;
+      }, [target, duration, decimals, hasAnimated]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
     };
+
+    // Animated Progress Bar
+    const AnimatedProgressBar = ({ percent, color, delay = 0, glowColor }) => {
+      const [width, setWidth] = useState(0);
+      useEffect(() => {
+        const timer = setTimeout(() => setWidth(percent), delay * 1000);
+        return () => clearTimeout(timer);
+      }, [percent, delay]);
+      return (
+        <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+          <motion.div initial={{ width: 0 }} animate={{ width: `${width}%` }} transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1], delay: delay }}
+            className="h-full rounded-full" style={{ background: `linear-gradient(90deg, ${color}, ${color}dd)`, boxShadow: glowColor ? `0 0 10px ${glowColor}` : 'none' }} />
+        </div>
+      );
+    };
+
     const LESSON_CONFIG = {
       id: 'certainty-transfer',
       title: 'Certainty Transfer',
-      description: 'Why customers don\'t need more information—they need to borrow your conviction. Master the art of transferring certainty.',
+      description: 'Why customers don\'t need more information - they need to borrow your conviction. Master the art of transferring certainty.',
       accentColor: '#0ea5e9',
       duration: '9 min',
       nextLesson: { id: 'pain-escalation-ladder', title: 'The Pain Escalation Ladder', teaser: 'How to take a customer from "meh" to "I NEED this now" in three psychological stages.' }
     };
 
+    // Tool Config
+    const TOOL_CONFIG = {
+      name: 'Trust Badges Bear',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png',
+      link: 'https://apps.shopify.com/trust-badge-bear',
+      tagline: '300+ Professional Trust Badges'
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -162,10 +136,11 @@
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
+      // ========== PART 1: THEORY ==========
       { type: 'welcome', learningGoals: ['Why information alone never converts', 'How certainty transfers from you to the customer', 'The 3 pillars of projecting unshakeable authority'] },
       { type: 'hook', headline: 'Your customers can Google everything. They don\'t need more information.', subtext: 'They can find every feature, every spec, every comparison chart. What they CAN\'T find is someone confident enough to tell them: "This is the answer. Follow me." They don\'t need data. They need to borrow your certainty.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_presenting_with_open_palms_both_hands_showing__3bb09a42-0e67-411b-ba4f-7a4abd96adb8_0.mp4', characterPosition: 'right' },
-      { type: 'bigStatement', pretext: 'The uncomfortable truth:', statement: 'Certainty isn\'t taught. It\'s transferred.', posttext: 'Your deep conviction in your solution is contagious—it\'s transferred to them, making them feel safe. And feeling safe is what makes them buy.' },
-      { type: 'content', title: 'Emotional Congruence', body: 'This requires Emotional Congruence: a perfect alignment of your words, your energy, and your belief system. Your customer\'s subconscious mind is constantly scanning for this alignment to determine if it\'s safe to follow you. Any mismatch—any hint of doubt—and the spell breaks. They sense it instantly, even if they can\'t articulate why they walked away.' },
+      { type: 'bigStatement', pretext: 'The uncomfortable truth:', statement: 'Certainty isn\'t taught. It\'s transferred.', posttext: 'Your deep conviction in your solution is contagious - it\'s transferred to them, making them feel safe. And feeling safe is what makes them buy.' },
+      { type: 'content', title: 'Emotional Congruence', body: 'This requires Emotional Congruence: a perfect alignment of your words, your energy, and your belief system. Your customer\'s subconscious mind is constantly scanning for this alignment to determine if it\'s safe to follow you. Any mismatch - any hint of doubt - and the spell breaks. They sense it instantly, even if they can\'t articulate why they walked away.' },
       { type: 'flowDiagram', title: 'The Certainty Flow', steps: [
         { label: 'Your Conviction', description: 'Deep belief in your solution', icon: 'shield' },
         { label: 'Emotional Congruence', description: 'Words + Energy + Belief aligned', icon: 'sync' },
@@ -174,12 +149,12 @@
       ]},
       { type: 'cards', title: 'The 3 Pillars of Projected Authority', items: [
         { title: 'Authoritative Framing', description: 'Use strong, declarative language. Instead of "Our product might help," use "This is the definitive solution for..." Create content that does the research FOR them, positioning you as the expert who\'s already figured it out.' },
-        { title: 'Guided Web Design', description: 'Your site navigation should be a clear, logical path—not a maze of options. Use breadcrumbs, clear CTAs, and a structured checkout process to guide users confidently, reducing choice paralysis.' },
+        { title: 'Guided Web Design', description: 'Your site navigation should be a clear, logical path - not a maze of options. Use breadcrumbs, clear CTAs, and a structured checkout process to guide users confidently, reducing choice paralysis.' },
         { title: 'Risk Reversal as Proof', description: 'Your guarantee isn\'t just a policy; it\'s a statement of YOUR certainty. Display guarantees, trust badges, and expert endorsements prominently. Visual trust signals project confidence before customers read a word.' }
       ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'right'},
       { type: 'example', scenario: 'Product Description - Weak vs Strong Frame', before: { label: 'Weak Frame (Uncertain)', text: '"This coffee maker could potentially help you make better coffee at home. It might reduce your need for expensive cafe visits. Some customers have reported positive results."' }, after: { label: 'Strong Frame (Certain)', text: '"This is the last coffee maker you\'ll ever buy. Cafe-quality espresso, every morning, in under 60 seconds. Join 50,000+ home baristas who\'ve already made the switch."' }, insight: 'The first hedges with "could," "might," "some." The second declares with absolute certainty. Customers feel the difference.' },
       { type: 'twoColumn', title: 'Digital Tonality: The Voice of Certainty', leftTitle: 'The Reasonable Man', leftDescription: 'Calm, logical, data-driven. Appeals to the analytical mind. "Based on our research..." "The evidence suggests..." Works for high-consideration purchases where logic leads.', rightTitle: 'Utter Sincerity', rightDescription: 'Passionate, empathetic, conviction-driven. Appeals to the emotional mind. "I believe..." "This changed everything for me..." Works when trust and connection matter most.' },
-      { type: 'content', title: 'Your Brand Voice IS Your Digital Tonality', body: 'Tonality is the "emotion of language." Buyers don\'t just hear the pitch—they feel your posture. Is your copy\'s tone the "Reasonable Man" (calm, logical) or "Utter Sincerity" (passionate, empathetic)? Master both to unlock different emotional states in your customers. The right tonality at the right moment creates the feeling of being understood—and understood customers buy.' },
+      { type: 'content', title: 'Your Brand Voice IS Your Digital Tonality', body: 'Tonality is the "emotion of language." Buyers don\'t just hear the pitch - they feel your posture. Is your copy\'s tone the "Reasonable Man" (calm, logical) or "Utter Sincerity" (passionate, empathetic)? Master both to unlock different emotional states in your customers. The right tonality at the right moment creates the feeling of being understood - and understood customers buy.' },
       { type: 'visual', title: 'Authority Signals That Convert', visualType: 'stats', data: [
         { value: '73%', label: 'trust increase', subtext: 'When expert endorsements displayed' },
         { value: '2.4x', label: 'conversion lift', subtext: 'With money-back guarantee visible' },
@@ -187,9 +162,14 @@
       ]},
       { type: 'example', scenario: 'E-commerce Guarantee - Certainty Projection', before: { label: 'Weak Certainty', text: '"30-day return policy. Contact customer service for details. Some restrictions may apply."' }, after: { label: 'Strong Certainty', text: '"Love it or we\'ll buy it back. No questions. No forms. No hassle. We\'re that confident you\'ll never want to return it."' }, insight: 'The second version projects absolute certainty in the product. The guarantee becomes proof of YOUR conviction, not just a policy.' },
       { type: 'splitComparison', title: 'Certainty in Action', leftTitle: 'Uncertainty Leaks', leftItems: ['Using "maybe" or "might"', 'Apologetic pricing ("Sorry it costs...")','Too many options/choices', 'Hiding behind corporate speak'], rightTitle: 'Certainty Projects', rightItems: ['Declarative statements', 'Confident pricing with value context', 'Clear recommended path', 'Personal, direct communication'] , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_scratching_his_chin_deep_in_thought_100_pure_w_9e857f88-67b4-4496-9988-57dd621c97fe_3.mp4', characterPosition: 'right'},
-      { type: 'quiz', question: 'What is "Emotional Congruence" in certainty transfer?', options: ['Having lots of positive reviews', 'Perfect alignment of words, energy, and belief', 'Offering the lowest price', 'Using emotional language in ads'], correctIndex: 1, feedback: { correct: 'Perfect! Emotional Congruence is when your words, energy, and belief system are perfectly aligned. Your customer\'s subconscious constantly scans for this alignment—any mismatch breaks the spell of trust.', incorrect: 'Not quite. Emotional Congruence means perfect alignment of your words, your energy, and your belief system. Your customer\'s subconscious is constantly scanning for this alignment. Any doubt or mismatch, and they sense it instantly.' } },
-      { type: 'certainty-signals', title: 'Visual Certainty Signals', subtitle: 'Trust badges project your conviction before customers read a single word', tool: { name: 'Trust Badges Bear', logo: 'https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png', link: 'https://apps.shopify.com/trust-badge-bear' } },
-      { type: 'completion', sources: [] }
+      { type: 'quiz', question: 'What is "Emotional Congruence" in certainty transfer?', options: ['Having lots of positive reviews', 'Perfect alignment of words, energy, and belief', 'Offering the lowest price', 'Using emotional language in ads'], correctIndex: 1, feedback: { correct: 'Perfect! Emotional Congruence is when your words, energy, and belief system are perfectly aligned. Your customer\'s subconscious constantly scans for this alignment - any mismatch breaks the spell of trust.', incorrect: 'Not quite. Emotional Congruence means perfect alignment of your words, your energy, and your belief system. Your customer\'s subconscious is constantly scanning for this alignment. Any doubt or mismatch, and they sense it instantly.' } },
+      // ========== PART 2: PRACTICAL ==========
+      { type: 'section-divider' },
+      { type: 'step-audit-copy' },
+      { type: 'step-guarantee-reframe' },
+      { type: 'step-visual-trust' },
+      { type: 'step-results' },
+      { type: 'completion' }
     ];
 
     const Icons = {
@@ -200,17 +180,21 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
       Quote: () => <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" opacity="0.15"><path d="M11 7H7a4 4 0 0 0-4 4v7h7v-7H6a2 2 0 0 1 2-2h3V7zm10 0h-4a4 4 0 0 0-4 4v7h7v-7h-4a2 2 0 0 1 2-2h3V7z"/></svg>,
       Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
       Sync: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
       ArrowFlow: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
-      // Card icons for CardsSlide
       Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
       Compass: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>,
       Award: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
-      Key: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> };
+      Key: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Edit: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+      ShieldCheck: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -258,12 +242,6 @@
             </video>
           </motion.div>
         )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
@@ -289,12 +267,8 @@
           <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</h2>
         </motion.div>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
         {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
             className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
             style={{ height: '35%', maxHeight: '280px' }}>
             <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
@@ -353,12 +327,9 @@
     );
 
     const VisualSlide = ({ data }) => {
-      // Parse stat value to extract prefix, number, and suffix
       const parseStatValue = (value) => {
         const match = value.match(/^([^\d]*)([\d.]+)(.*)$/);
-        if (match) {
-          return { prefix: match[1], number: parseFloat(match[2]), suffix: match[3] };
-        }
+        if (match) return { prefix: match[1], number: parseFloat(match[2]), suffix: match[3] };
         return { prefix: '', number: 0, suffix: value };
       };
 
@@ -376,6 +347,9 @@
                     </div>
                     <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
                     <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
+                    <div className="mt-3">
+                      <AnimatedProgressBar percent={parsed.number > 10 ? parsed.number : parsed.number * 30} color="var(--accent)" delay={0.3 + i * 0.1} glowColor="rgba(var(--accent-rgb), 0.5)" />
+                    </div>
                   </motion.div>
                 );
               })}
@@ -451,7 +425,7 @@
               <ul className="space-y-3">
                 {data.leftItems.map((item, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="text-neutral-700 text-sm flex items-start gap-2">
-                    <span className="text-red-400 mt-0.5">−</span>
+                    <span className="text-red-400 mt-0.5">-</span>
                     <span>{item}</span>
                   </motion.li>
                 ))}
@@ -528,32 +502,162 @@
       );
     };
 
-    const CertaintySignalsSlide = ({ data }) => {
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    // Section Divider Slide
+    const SectionDividerSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to project unshakeable certainty</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Step 1: Audit Your Copy
+    const StepAuditCopySlide = () => {
+      const weakWords = ['might', 'maybe', 'could', 'possibly', 'some', 'try'];
+      const strongWords = ['will', 'guaranteed', 'proven', 'always', 'every', 'absolutely'];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Audit Your Copy For Leaks</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+                <span className="text-white font-bold">Find & Kill</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {weakWords.map((word, i) => (
+                  <motion.span key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.05 }}
+                    className="px-3 py-1.5 rounded-lg text-sm font-medium bg-red-500/20 text-red-400 border border-red-500/30">
+                    "{word}"
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+                <span className="text-white font-bold">Replace With</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {strongWords.map((word, i) => (
+                  <motion.span key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 + i * 0.05 }}
+                    className="px-3 py-1.5 rounded-lg text-sm font-medium bg-green-500/20 text-green-400 border border-green-500/30">
+                    "{word}"
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Run Ctrl+F on your product pages. Search for each weak word. Replace or remove every single one.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 2: Reframe Your Guarantee
+    const StepGuaranteeReframeSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Reframe Your Guarantee</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+                <span className="text-neutral-800 font-bold">Policy Language</span>
+              </div>
+              <div className="p-4 rounded-lg bg-white border border-neutral-200">
+                <p className="text-neutral-600 text-sm italic">"30-day return policy. Contact support for details. Restrictions apply."</p>
+              </div>
+              <p className="text-neutral-500 text-xs mt-3">Sounds like you're protecting yourself, not them.</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
+                <span className="text-white font-bold">Conviction Language</span>
+              </div>
+              <div className="p-4 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.1)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+                <p className="text-white text-sm font-medium">"Love it or we'll buy it back. No questions. We're that confident."</p>
+              </div>
+              <p className="text-neutral-400 text-xs mt-3">Projects YOUR certainty in the product.</p>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Rewrite your guarantee to sound like a confident promise, not corporate protection.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Add Visual Trust Signals
+    const StepVisualTrustSlide = () => {
       const badgeTypes = [
-        { icon: 'shield', label: 'Secure Checkout', desc: 'SSL encryption signals' },
-        { icon: 'guarantee', label: 'Money-Back', desc: 'Risk reversal made visible' },
-        { icon: 'shipping', label: 'Free Shipping', desc: 'Removes friction instantly' },
-        { icon: 'verified', label: 'Verified Store', desc: 'Third-party validation' }
+        { icon: 'shield', label: 'Secure Checkout', desc: 'SSL/payment security' },
+        { icon: 'guarantee', label: 'Money-Back', desc: 'Risk reversal visible' },
+        { icon: 'shipping', label: 'Free Shipping', desc: 'Removes friction' },
+        { icon: 'verified', label: 'Verified Store', desc: 'Third-party trust' }
       ];
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-              <Icons.Shield />Visual Signals
-            </span>
-            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
-            <p className="text-neutral-500 text-sm max-w-lg mx-auto">{data.subtitle}</p>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Add Visual Trust Signals</h2>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Badge Types Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
             {badgeTypes.map((badge, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
                 className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 text-center">
                 <div className="w-10 h-10 mx-auto mb-2 rounded-lg flex items-center justify-center" style={{ background: `rgba(var(--accent-rgb), 0.15)` }}>
                   {badge.icon === 'shield' && <Icons.Shield />}
-                  {badge.icon === 'guarantee' && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>}
+                  {badge.icon === 'guarantee' && <Icons.ShieldCheck />}
                   {badge.icon === 'shipping' && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>}
                   {badge.icon === 'verified' && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>}
                 </div>
@@ -563,84 +667,108 @@
             ))}
           </div>
 
-          {/* Tool Recommendation */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
             className="bg-neutral-900 rounded-xl p-5 relative overflow-hidden"
             style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+            <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
             <div className="flex items-start gap-4">
-              <img src={data.tool.logo} alt={data.tool.name} className="w-14 h-14 rounded-xl flex-shrink-0" />
+              <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-14 h-14 rounded-xl flex-shrink-0" />
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-white font-bold text-base">{data.tool.name}</h3>
+                  <h3 className="text-white font-bold text-base">{TOOL_CONFIG.name}</h3>
                   <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-green-500/20 text-green-400">Recommended</span>
                 </div>
-                <p className="text-neutral-400 text-sm mb-3">Add 300+ professional trust badges that project certainty across your entire store. Money-back guarantees, secure checkout, free shipping, and more.</p>
-                <div className="flex items-center gap-4">
-                  <a href={data.tool.link} target="_blank" rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-semibold transition-all hover:scale-105"
-                    style={{ background: 'var(--accent)' }}>
-                    Add Trust Badges
-                    <Icons.ExternalLink />
-                  </a>
-                  <span className="text-neutral-500 text-xs">Free plan available</span>
-                </div>
+                <p className="text-neutral-400 text-sm mb-3">{TOOL_CONFIG.tagline}. Add professional trust badges that project certainty across your entire store.</p>
+                <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-semibold transition-all hover:scale-105"
+                  style={{ background: 'var(--accent)' }}>
+                  Add Trust Badges
+                  <Icons.ExternalLink />
+                </a>
               </div>
             </div>
-            {/* Decorative badge icons */}
-            <div className="absolute -right-4 -bottom-4 opacity-5">
-              <svg width="120" height="120" viewBox="0 0 24 24" fill="white"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            </div>
           </motion.div>
-
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-            className="text-center text-neutral-400 text-xs mt-4">
-            Trust badges are certainty made visible - customers feel your conviction before reading a word.
-          </motion.p>
         </div>
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand Certainty Transfer. Customers don't need more information—they need to borrow your conviction. Project authority through emotional congruence, declarative language, guided design, and confident risk reversal.</motion.p>
+    // Results Slide
+    const StepResultsSlide = () => {
+      const results = [
+        { metric: '+73%', label: 'Trust Perception', desc: 'With authority signals', icon: Icons.Shield, color: '#22c55e' },
+        { metric: '2.4x', label: 'Conversion Lift', desc: 'From certainty projection', icon: Icons.TrendingUp, color: '#f59e0b' },
+        { metric: '89%', label: 'Decision Factor', desc: 'Say confidence matters', icon: Icons.Award, color: '#8b5cf6' }
+      ];
 
-        {/* Tool CTA - Trust Badges Bear */}
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results compound over time as your <span className="text-white font-bold">brand authority</span> grows</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand Certainty Transfer. Customers don't need more information - they need to borrow your conviction.</motion.p>
+
+        {/* Key Takeaways */}
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-          className="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-xl p-4 max-w-md w-full mb-4">
-          <div className="flex items-center gap-3">
-            <img src="https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png" alt="Trust Badges Bear" className="w-10 h-10 rounded-lg flex-shrink-0" />
-            <div className="flex-1 text-left">
-              <p className="text-neutral-800 text-sm font-semibold">Project Certainty Visually</p>
-              <p className="text-neutral-500 text-xs">Add trust badges that transfer your conviction instantly</p>
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Audit your copy and eliminate uncertainty language</span>
             </div>
-            <a href="https://apps.shopify.com/trust-badge-bear" target="_blank" rel="noopener noreferrer"
-              className="px-3 py-1.5 rounded-lg text-white text-xs font-semibold flex-shrink-0 transition-all hover:scale-105"
-              style={{ background: 'var(--accent)' }}>
-              Try Free
-            </a>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Reframe guarantees as confident promises, not policies</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Add visual trust signals that project certainty instantly</span>
+            </div>
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 30px rgba(var(--accent-rgb),0.15)' }}>
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -657,7 +785,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -704,9 +831,14 @@
           case 'cards': return <CardsSlide data={slide} />;
           case 'twoColumn': return <TwoColumnSlide data={slide} />;
           case 'splitComparison': return <SplitComparisonSlide data={slide} />;
-          case 'certainty-signals': return <CertaintySignalsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide />;
+          case 'step-audit-copy': return <StepAuditCopySlide />;
+          case 'step-guarantee-reframe': return <StepGuaranteeReframeSlide />;
+          case 'step-visual-trust': return <StepVisualTrustSlide />;
+          case 'step-results': return <StepResultsSlide />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

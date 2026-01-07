@@ -42,30 +42,29 @@
       title: 'Automated Rules: Scale Winners, Kill Losers While You Sleep',
       description: '',
       accentColor: '#3b82f6',
-      duration: '5 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
+      duration: '6 min',
+      nextLesson: { id: 'meta-ai-era-edge', title: 'The AI Era Edge', teaser: 'How to leverage Meta\'s AI systems to outperform competitors still fighting the algorithm.' }
+    };
+
+    // Tool config for Part 2
+    const TOOL_CONFIG = {
+      name: 'Triple Whale',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png',
+      link: 'https://apps.shopify.com/triple-whale'
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -147,8 +146,9 @@
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['How automated rules work (condition → action logic)', 'The 2 essential rules: Scale winners, protect losers', 'Real examples with actual numbers'] },
-      { type: 'hook', headline: 'It\'s 3am. An ad set hits $35 CPA (your target is $40). You\'re asleep. Meta automatically increases the budget by 5%. By morning, it scaled itself. Zero manual work.', subtext: 'Automated Rules are IF/THEN statements for your campaigns. IF performance meets criteria, THEN take action. Scale winners while you sleep. Kill losers before they burn money. Set it once, runs forever.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
+      // ========== PART 1: THE STRATEGY (Pure Theory) ==========
+      { type: 'welcome', learningGoals: ['How automated rules work (condition → action logic)', 'The 2 essential rules: Scale winners, protect losers', 'Best practices to avoid chaotic campaigns'] },
+      { type: 'hook', headline: 'It\'s 3am. An ad set hits $35 CPA (your target is $40). You\'re asleep. Meta automatically increases the budget by 5%. By morning, it scaled itself.', subtext: 'Automated Rules are IF/THEN statements for your campaigns. IF performance meets criteria, THEN take action. Scale winners while you sleep. Kill losers before they burn money. Set it once, runs forever.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
       { type: 'content', title: 'The Problem: You Can\'t Watch Ads 24/7', body: 'Winners emerge at random times. An ad set crushes at 2am - you\'re asleep, miss the opportunity. A loser burns $200 by 6am - you wake up to wasted spend. Automated Rules solve this. They monitor performance constantly and act instantly based on rules YOU set.' },
       { type: 'visual', title: 'Manual vs Automated', visualType: 'comparison', data: {
         left: { label: 'Manual Management', points: ['Check Ads Manager every 2-4 hours', 'Miss opportunities overnight', 'Delayed reactions = wasted spend', 'Burnout from constant monitoring'], color: '#ef4444' },
@@ -163,9 +163,7 @@
         { title: 'Kill Switch (No Conversions)', description: 'If no purchases after $X spend, pause completely. Stop bleeding money.', color: '#f59e0b' },
         { title: 'Restart Rule (ROAS > Target)', description: 'If paused ad sets show strong ROAS, automatically turn back on. Capture comebacks.', color: '#3b82f6' }
       ]},
-      { type: 'automationWorkflow' },
       { type: 'content', title: 'Best Practices for Rules', body: 'Don\'t set rules too aggressive (20% budget changes are chaotic). Keep it subtle: 5-10% adjustments. Check every 6-12 hours, not every 30 minutes (too frequent = unstable campaigns). Use 24-hour attribution windows minimum - Meta needs time to optimize.' },
-      { type: 'attributionWarning' },
       { type: 'visual', title: 'Automated Rules Impact', visualType: 'stats', data: [
         { value: '24/7', label: 'Monitoring', sublabel: 'Rules never sleep', color: '#3b82f6' },
         { value: '67%', label: 'Less Manual Work', sublabel: 'Set once, runs forever', color: '#10b981' },
@@ -177,12 +175,13 @@
         { text: 'No difference - same as 6 hours', isCorrect: false, feedback: 'Big difference. Frequent checks create instability. Meta\'s algorithm needs consistent budgets to learn.' },
         { text: 'Meta charges you more', isCorrect: false, feedback: 'Meta doesn\'t charge for rules. But overly aggressive rules waste money through instability.' }
       ]},
-      { type: 'completion', title: 'You\'ve Mastered Automated Rules', summary: [
-        'Automated Rules = IF/THEN statements that monitor and adjust 24/7',
-        'Essential rules: Scale winners (CPA < target), protect losers (CPA > max)',
-        'Keep adjustments subtle (5-10%), check every 6-12 hours for stability',
-        'Set once, runs forever - no more 24/7 manual monitoring'
-      ]}
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-create-scale-rule' },
+      { type: 'step-create-protect-rule' },
+      { type: 'step-setup-attribution' },
+      { type: 'step-results' },
+      { type: 'completion' }
     ];
 
     const Icons = {
@@ -193,7 +192,8 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Settings: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -233,15 +233,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -251,46 +242,11 @@
       </div>
     );
 
-    
+
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
       </div>
     );
 
@@ -304,7 +260,7 @@
                 <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
                   <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
                   <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+                  <div className="text-xs text-neutral-400">{stat.sublabel}</div>
                 </motion.div>
               ))}
             </div>
@@ -356,7 +312,7 @@
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+        <div className={`grid gap-3 relative z-10 ${data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
           {data.items.map((item, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
               <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
@@ -366,13 +322,13 @@
         </div>
       </div>
     );
-    // Automated Rule Mockup Slide - Visualizes IF/THEN rule logic
+
+    // Automated Rule Mockup Slide
     const AutomatedRuleMockupSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
         {data.rule && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-2xl overflow-hidden">
-            {/* Rule Header */}
             <div className="bg-neutral-900 px-5 py-3 flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent)' }}>
                 <Icons.Zap />
@@ -382,9 +338,7 @@
                 <p className="text-neutral-400 text-xs">{data.rule.frequency}</p>
               </div>
             </div>
-            {/* Rule Body */}
             <div className="p-5 space-y-4">
-              {/* Condition */}
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
                   <span className="text-blue-600 font-bold text-xs">IF</span>
@@ -394,13 +348,11 @@
                   <p className="text-blue-600 text-xs mt-1">{data.rule.timeframe}</p>
                 </div>
               </div>
-              {/* Arrow */}
               <div className="flex justify-center">
                 <div className="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
                 </div>
               </div>
-              {/* Action */}
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
                   <span className="text-green-600 font-bold text-xs">THEN</span>
@@ -410,7 +362,6 @@
                 </div>
               </div>
             </div>
-            {/* Reasoning Footer */}
             {data.rule.reasoning && (
               <div className="bg-neutral-50 px-5 py-3 border-t border-neutral-200">
                 <p className="text-neutral-600 text-xs"><span className="font-semibold">Why:</span> {data.rule.reasoning}</p>
@@ -418,427 +369,6 @@
             )}
           </motion.div>
         )}
-      </div>
-    );
-
-    const StatCountdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.stats && data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color || 'var(--accent)' }}>{stat.value}{stat.suffix}</div>
-              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-              <div className="text-xs text-neutral-400">{stat.subtext}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BeforeAfterSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">Before</span></div>
-            <ul className="space-y-2">{data.before && data.before.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span>{item}</li>)}</ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">After</span></div>
-            <ul className="space-y-2">{data.after && data.after.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className="text-green-500 mt-0.5">•</span>{item}</li>)}</ul>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const HighlightBoxSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-5">
-          <p className="text-white text-sm md:text-base font-medium"><Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />{data.highlight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const StrategyStepsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: step.color || 'var(--accent)' }}>{step.number || i + 1}</span>
-              <div><h3 className="font-bold text-neutral-900 mb-1">{step.title}</h3><p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p></div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ComparisonCardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className={`rounded-xl p-5 ${data.left && data.left.color === 'red' ? 'bg-red-50 border-2 border-red-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.left && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.left.color === 'red' ? 'text-red-500' : 'text-neutral-500'}`}>{data.left.label}</span>
-              {data.left.value && <h3 className={`text-2xl font-bold ${data.left.color === 'red' ? 'text-red-600' : 'text-neutral-900'}`}>{data.left.value}</h3>}
-              {data.left.subtext && <p className="text-xs text-neutral-500">{data.left.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.left.items && data.left.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.left.color === 'red' ? 'text-red-400' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className={`rounded-xl p-5 ${data.right && data.right.color === 'green' ? 'bg-green-50 border-2 border-green-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.right && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.right.color === 'green' ? 'text-green-500' : 'text-neutral-500'}`}>{data.right.label}</span>
-              {data.right.value && <h3 className={`text-2xl font-bold ${data.right.color === 'green' ? 'text-green-600' : 'text-neutral-900'}`}>{data.right.value}</h3>}
-              {data.right.subtext && <p className="text-xs text-neutral-500">{data.right.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.right.items && data.right.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.right.color === 'green' ? 'text-green-500' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const DoomLoopSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="relative">
-          <div className="flex flex-wrap justify-center gap-3">
-            {data.steps && data.steps.map((step, i) => (
-              <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
-                <div className="bg-white border-2 rounded-xl p-4 w-40" style={{ borderColor: step.color }}>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold mb-2" style={{ background: step.color }}>{i + 1}</div>
-                  <h3 className="font-bold text-sm mb-1" style={{ color: step.color }}>{step.label}</h3>
-                  <p className="text-neutral-500 text-xs">{step.description}</p>
-                </div>
-                {i < data.steps.length - 1 && <div className="absolute top-1/2 -right-3 text-neutral-300 text-xl">→</div>}
-              </motion.div>
-            ))}
-          </div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="text-center mt-4">
-            <span className="text-xs text-neutral-400">↺ The cycle repeats...</span>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const EscapePlanSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: step.color || 'var(--accent)' }}>{step.number || i + 1}</span>
-              <div><h3 className="font-bold text-neutral-900 mb-1">{step.title}</h3><p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p></div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BigStatementSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl text-neutral-600 mb-2">{data.statement}</motion.p>
-        <motion.h2 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-4xl md:text-5xl lg:text-6xl mb-6" style={{ color: 'var(--accent)' }}>{data.emphasis}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg text-neutral-500 max-w-2xl">{data.footer}</motion.p>
-      </div>
-    );
-
-    const ActionSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.actions && data.actions.map((action, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-center gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-green-300 transition-colors">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
-              <span className="text-neutral-700 text-sm md:text-base">{action}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const TrapVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-32 h-32 rounded-full bg-red-100 flex items-center justify-center mb-6">
-          <span className="text-6xl">🪤</span>
-        </motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg text-neutral-500">{data.subtitle}</motion.p>
-      </div>
-    );
-
-    const MathBreakdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-4 mb-4">
-          {data.scenarios && data.scenarios.map((scenario, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-white border-2 rounded-xl p-5" style={{ borderColor: scenario.color }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">{scenario.icon === 'smile' ? '😊' : '😟'}</span>
-                <span className="font-bold" style={{ color: scenario.color }}>{scenario.label}</span>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4 text-sm">
-                <div><span className="text-neutral-500">Cost:</span> <span className="font-medium">{scenario.cost}</span></div>
-                <div><span className="text-neutral-500">Result:</span> <span className="font-medium">{scenario.result}</span></div>
-                <div><span className="font-bold" style={{ color: scenario.color }}>{scenario.profit}</span></div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>}
-      </div>
-    );
-
-    const RatioVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-4 gap-3">
-          {data.ratios && data.ratios.map((ratio, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 rounded-xl p-4 text-center" style={{ borderColor: ratio.color }}>
-              <div className="text-2xl font-bold mb-1" style={{ color: ratio.color }}>{ratio.value}</div>
-              <div className="text-xs font-semibold text-neutral-900 mb-1">{ratio.label}</div>
-              <div className="text-xs text-neutral-500">{ratio.description}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ToolIntegrationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Recommended Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-          {data.subtitle && <p className="text-neutral-500 text-sm mt-1">{data.subtitle}</p>}
-        </motion.div>
-        {data.tool && <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.tool.image} alt={data.tool.name} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <h3 className="font-bold text-lg mb-2">{data.tool.name}</h3>
-            <p className="text-neutral-600 text-sm leading-relaxed mb-4">{data.tool.description}</p>
-            {data.tool.features && <ul className="space-y-1.5 mb-4">
-              {data.tool.features.map((f, i) => <li key={i} className="flex items-center gap-2 text-sm text-neutral-700"><Icons.Check className="text-green-500 w-4 h-4" />{f}</li>)}
-            </ul>}
-            {data.tool.link && <a href={data.tool.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-              <span>Try {data.tool.name}</span><Icons.ExternalLink />
-            </a>}
-          </motion.div>
-        </div>}
-      </div>
-    );
-
-    const ActionChecklistSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="w-6 h-6 rounded-md border-2 border-neutral-300 flex-shrink-0 mt-0.5" />
-              <span className="text-neutral-700 text-sm md:text-base">{typeof item === 'string' ? item : item.text || item.title}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-6xl mb-6" style={{ color: 'var(--accent)' }}>"</motion.div>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl font-medium text-neutral-800 mb-6 leading-relaxed">{data.quote}</motion.blockquote>
-        {data.author && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500">— {data.author}{data.context && <span className="block text-sm mt-1">{data.context}</span>}</motion.p>}
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 bg-neutral-100 rounded-xl p-4 max-w-xl"><p className="text-sm text-neutral-600">{data.insight}</p></motion.div>}
-      </div>
-    );
-
-    const FlywheelVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, rotate: -10 }} animate={{ opacity: 1, rotate: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative">
-              <div className="w-32 h-32 rounded-full border-4 flex items-center justify-center text-center p-4" style={{ borderColor: step.color || 'var(--accent)', background: 'white' }}>
-                <div>
-                  <div className="text-2xl mb-1">{step.icon || '⚡'}</div>
-                  <div className="text-xs font-bold" style={{ color: step.color }}>{step.label}</div>
-                </div>
-              </div>
-              {i < (data.steps.length - 1) && <div className="absolute top-1/2 -right-4 text-2xl" style={{ color: 'var(--accent)' }}>→</div>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const MathVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 text-center">
-          {data.equation && <div className="text-3xl md:text-4xl font-bold text-white mb-4 font-mono">{data.equation}</div>}
-          {data.explanation && <p className="text-neutral-400 text-sm">{data.explanation}</p>}
-        </motion.div>
-        {data.examples && <div className="grid md:grid-cols-3 gap-3 mt-4">
-          {data.examples.map((ex, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
-              <div className="text-lg font-bold" style={{ color: ex.color || 'var(--accent)' }}>{ex.value}</div>
-              <div className="text-xs text-neutral-500">{ex.label}</div>
-            </motion.div>
-          ))}
-        </div>}
-      </div>
-    );
-
-    const RequirementsVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.requirements && data.requirements.map((req, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-center gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: req.met ? '#10b981' : '#ef4444' }}>
-                {req.met ? <Icons.Check /> : <Icons.X />}
-              </div>
-              <span className="text-neutral-700 text-sm md:text-base">{req.text || req}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const FounderSpotlightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        {data.image && <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-24 h-24 rounded-full overflow-hidden mb-4 border-4 border-white shadow-lg">
-          <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
-        </motion.div>}
-        <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xl font-bold text-black mb-1">{data.name}</motion.h3>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-sm text-neutral-500 mb-4">{data.title}</motion.p>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-neutral-700 italic leading-relaxed">"{data.quote}"</motion.blockquote>
-      </div>
-    );
-
-    const VelocityMetricSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 text-center mb-4">
-          <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{data.value}</div>
-          <div className="text-white text-lg font-medium">{data.label}</div>
-          {data.subtext && <div className="text-neutral-400 text-sm mt-2">{data.subtext}</div>}
-        </motion.div>
-        {data.breakdown && <div className="grid md:grid-cols-3 gap-3">
-          {data.breakdown.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
-              <div className="text-lg font-bold" style={{ color: item.color }}>{item.value}</div>
-              <div className="text-xs text-neutral-500">{item.label}</div>
-            </motion.div>
-          ))}
-        </div>}
-      </div>
-    );
-
-    const MindsetFrameworkSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.principles && data.principles.map((principle, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">{principle.icon || '💡'}</span>
-                <h3 className="font-bold text-neutral-900">{principle.title}</h3>
-              </div>
-              <p className="text-neutral-600 text-sm">{principle.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const GenericListSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        {data.subtitle && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-6">{data.subtitle}</motion.p>}
-        <div className="space-y-3">
-          {(data.items || data.steps || data.points || []).map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-              <div>
-                {typeof item === 'string' ? <span className="text-neutral-700">{item}</span> : <>
-                  <h3 className="font-bold text-neutral-900 mb-1">{item.title || item.label}</h3>
-                  <p className="text-neutral-600 text-sm">{item.description || item.text}</p>
-                </>}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const AnglesSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
-              <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--accent)' }}>{item.title}</h3>
-              <p className="text-neutral-600 text-sm mb-3">{item.description}</p>
-              {item.example && <div className="bg-neutral-50 rounded-lg p-3"><p className="text-xs text-neutral-500 italic">{item.example}</p></div>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const FormatsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 rounded-xl p-4" style={{ borderColor: item.color || 'var(--accent)' }}>
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: item.color || 'var(--accent)' }}>📝</div>
-                <h3 className="font-bold text-sm">{item.title}</h3>
-              </div>
-              <p className="text-neutral-600 text-xs">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const MatrixVisualizationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="bg-neutral-900 rounded-2xl p-6">
-          <div className="grid grid-cols-6 gap-2 text-xs">
-            <div className="col-span-1"></div>
-            {(data.formats || ['F1', 'F2', 'F3', 'F4', 'F5']).slice(0, 5).map((f, i) => (
-              <div key={i} className="text-center text-neutral-400 font-medium truncate">{typeof f === 'string' ? f.replace('Format ', '').substring(0, 8) : f}</div>
-            ))}
-            {(data.angles || ['Angle 1', 'Angle 2', 'Angle 3']).map((angle, ai) => (
-              <React.Fragment key={ai}>
-                <div className="text-neutral-400 font-medium truncate pr-2">{typeof angle === 'string' ? angle.replace('Angle ', 'A').substring(0, 10) : angle}</div>
-                {[0, 1, 2, 3, 4].map((fi) => (
-                  <motion.div key={fi} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + (ai * 5 + fi) * 0.03 }} className="aspect-square rounded-lg flex items-center justify-center text-white font-bold" style={{ background: 'var(--accent)' }}>{ai * 5 + fi + 1}</motion.div>
-                ))}
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="text-center mt-4 text-neutral-400 text-sm">3 Angles × 5 Formats = 15 Unique Ads</div>
-        </div>
-      </div>
-    );
-
-    const MatrixBuilderSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto text-center">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 mb-6">{data.description}</motion.p>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-xl p-8">
-          <div className="text-6xl mb-4">🎯</div>
-          <p className="text-neutral-600">Start building your creative matrix today</p>
-        </motion.div>
       </div>
     );
 
@@ -850,7 +380,6 @@
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
 
-      // Support both correctIndex format and isCorrect on each option
       const correctIndex = data.correctIndex !== undefined ? data.correctIndex : data.options.findIndex(opt => opt.isCorrect);
       const isCorrect = selected === correctIndex;
       const selectedOption = selected !== null ? data.options[selected] : null;
@@ -891,266 +420,260 @@
       );
     };
 
-    // Automation Workflow Slide - Shows Triple Whale's advanced automation capabilities
-    const AutomationWorkflowSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Power Up Your Rules</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">Advanced Automation Workflow</h2>
-          <p className="text-neutral-500 text-sm mt-2">Take your automated rules to the next level with real-time data</p>
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    // Section Divider Slide
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Settings className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">4 steps to set up automated rules that scale winners and kill losers</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3, 4].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 4 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
+      </div>
+    );
 
-        {/* Workflow Visualization */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-5 mb-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Step 1: Data Collection */}
-            <div className="flex-1 text-center">
-              <div className="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-2 shadow-lg shadow-blue-500/30">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M21 12a9 9 0 0 1-9 9m9-9a9 9 0 0 0-9-9m9 9H3m9 9a9 9 0 0 1-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 0 1 9-9"/></svg>
+    // Step 1: Create Scale Rule
+    const StepCreateScaleRuleSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Create Your Scale Rule</h2>
               </div>
-              <p className="text-white text-xs font-semibold">Collect Data</p>
-              <p className="text-neutral-400 text-[10px]">Server-side tracking</p>
             </div>
-
-            <div className="hidden md:block text-neutral-500 text-2xl">→</div>
-
-            {/* Step 2: Triple Whale Processing */}
-            <div className="flex-1 text-center">
-              <div className="w-14 h-14 mx-auto rounded-xl bg-white p-1.5 mb-2 shadow-lg">
-                <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-full h-full object-contain rounded-lg" />
-              </div>
-              <p className="text-white text-xs font-semibold">Process & Verify</p>
-              <p className="text-neutral-400 text-[10px]">Triple Whale attribution</p>
-            </div>
-
-            <div className="hidden md:block text-neutral-500 text-2xl">→</div>
-
-            {/* Step 3: Rule Triggers */}
-            <div className="flex-1 text-center">
-              <div className="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center mb-2 shadow-lg shadow-green-500/30">
-                <Icons.Zap />
-              </div>
-              <p className="text-white text-xs font-semibold">Trigger Rules</p>
-              <p className="text-neutral-400 text-[10px]">Based on true ROAS</p>
-            </div>
-
-            <div className="hidden md:block text-neutral-500 text-2xl">→</div>
-
-            {/* Step 4: Auto Actions */}
-            <div className="flex-1 text-center">
-              <div className="w-14 h-14 mx-auto rounded-xl bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center mb-2 shadow-lg shadow-purple-500/30">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-              </div>
-              <p className="text-white text-xs font-semibold">Auto-Scale</p>
-              <p className="text-neutral-400 text-[10px]">Smart budget control</p>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Feature Cards */}
-        <div className="grid md:grid-cols-3 gap-3 mb-4">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-              </div>
-              <span className="font-semibold text-neutral-900 text-sm">Real-Time Analytics</span>
-            </div>
-            <p className="text-neutral-500 text-xs">See true performance before rules execute. No more guessing.</p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-2xl p-5 mb-4">
+            <h3 className="font-bold text-neutral-900 mb-4">In Ads Manager:</h3>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-blue-600 font-bold text-xs">1</span>
+                </div>
+                <p className="text-neutral-700 text-sm">Go to <strong>Ads Manager → Rules → Create Rule</strong></p>
               </div>
-              <span className="font-semibold text-neutral-900 text-sm">Verified Attribution</span>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-blue-600 font-bold text-xs">2</span>
+                </div>
+                <p className="text-neutral-700 text-sm">Condition: <strong>Cost per Purchase &lt; $40</strong> (your target CPA)</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-blue-600 font-bold text-xs">3</span>
+                </div>
+                <p className="text-neutral-700 text-sm">Action: <strong>Increase daily budget by 5%</strong></p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-blue-600 font-bold text-xs">4</span>
+                </div>
+                <p className="text-neutral-700 text-sm">Frequency: <strong>Check every 6 hours</strong></p>
+              </div>
             </div>
-            <p className="text-neutral-500 text-xs">Rules trigger on verified sales, not inflated platform numbers.</p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              </div>
-              <span className="font-semibold text-neutral-900 text-sm">Smart Automation</span>
-            </div>
-            <p className="text-neutral-500 text-xs">Advanced rules with custom conditions beyond basic Meta options.</p>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Pro Tip:</strong> Start with 5% increases. You can go to 10% once you see stability.</p>
           </motion.div>
         </div>
+      );
+    };
 
-        {/* CTA */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="flex items-center justify-center gap-3">
-          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="" className="w-5 h-5 rounded" />
-            <span>Upgrade Your Automation</span>
-            <Icons.ExternalLink />
-          </a>
-        </motion.div>
-      </div>
-    );
-
-    // Attribution Warning Slide - Contextual inline mention about data accuracy
-    const AttributionWarningSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-amber-100 text-amber-700">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            Critical Warning
-          </span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">Automated Rules Are Only As Good As Your Data</h2>
-        </motion.div>
-
-        {/* The Problem Visual */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-200 rounded-2xl p-5 mb-4">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-            </div>
-            <div>
-              <h3 className="font-bold text-red-800 mb-2">The Hidden Danger</h3>
-              <p className="text-red-700 text-sm leading-relaxed mb-3">Meta over-reports conversions by 20-40% due to iOS privacy changes. When your rules trigger on inflated numbers, you scale losers and kill actual winners.</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-2 py-1 rounded-md bg-red-100 text-red-700 text-xs font-medium">CPA looks $35 → Actually $52</span>
-                <span className="px-2 py-1 rounded-md bg-red-100 text-red-700 text-xs font-medium">ROAS shows 3.2x → Actually 2.1x</span>
+    // Step 2: Create Protect Rule
+    const StepCreateProtectRuleSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Create Your Protection Rule</h2>
               </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* The Solution */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-2xl p-5 mb-4">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-white border-2 border-neutral-200 p-1.5 flex-shrink-0">
-              <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-full h-full object-contain rounded-lg" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-neutral-900 mb-2">The Fix: Server-Side Attribution</h3>
-              <p className="text-neutral-600 text-sm leading-relaxed mb-3">Triple Whale tracks actual purchases from your store - not browser estimates. Your rules trigger on real data, scaling true winners and cutting real losers.</p>
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex items-center gap-2 text-xs text-neutral-700">
-                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                  <span>First-party data</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-neutral-700">
-                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                  <span>iOS-proof tracking</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-neutral-700">
-                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                  <span>True ROAS/CPA</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-neutral-700">
-                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-                  <span>Confident automation</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Inline CTA */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-10 h-10 rounded-lg" />
-            <div>
-              <p className="text-white font-semibold text-sm">Fix your attribution before setting rules</p>
-              <p className="text-neutral-400 text-xs">Get accurate data with Triple Whale</p>
-            </div>
-          </div>
-          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white text-neutral-900 font-semibold text-sm hover:bg-neutral-100 transition-colors flex items-center gap-1.5">
-            <span>Get Started</span>
-            <Icons.ExternalLink />
-          </a>
-        </motion.div>
-      </div>
-    );
-
-    const AccurateRulesSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">Rules Need Accurate Data</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-xl p-5 opacity-60">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-lg bg-neutral-400 flex items-center justify-center text-white">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              </div>
-              <span className="font-semibold text-neutral-500 text-sm">Rules on Platform Data</span>
-            </div>
-            <ul className="space-y-2">
-              <li className="flex items-start gap-2 text-neutral-500 text-sm"><span className="text-neutral-400 mt-0.5">-</span>Over-reported conversions trigger wrong scaling</li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm"><span className="text-neutral-400 mt-0.5">-</span>Rules scale losers, kill winners</li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm"><span className="text-neutral-400 mt-0.5">-</span>Budget wasted on phantom ROAS</li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm"><span className="text-neutral-400 mt-0.5">-</span>Automation amplifies bad data</li>
-            </ul>
-            <div className="mt-4 pt-3 border-t border-neutral-300">
-              <span className="text-xs text-neutral-400 font-medium">RISKY AUTOMATION</span>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-2xl p-5 mb-4">
+            <h3 className="font-bold text-neutral-900 mb-4">In Ads Manager:</h3>
+            <div className="space-y-3">
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-red-600 font-bold text-xs">1</span>
+                </div>
+                <p className="text-neutral-700 text-sm">Create another rule: <strong>Rules → Create Rule</strong></p>
               </div>
-              <span className="font-semibold text-blue-700 text-sm">Rules on True Data</span>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-red-600 font-bold text-xs">2</span>
+                </div>
+                <p className="text-neutral-700 text-sm">Condition: <strong>Cost per Purchase &gt; $60</strong> (your max threshold)</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-red-600 font-bold text-xs">3</span>
+                </div>
+                <p className="text-neutral-700 text-sm">Action: <strong>Decrease daily budget by 5%</strong></p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <span className="text-red-600 font-bold text-xs">4</span>
+                </div>
+                <p className="text-neutral-700 text-sm">Frequency: <strong>Check every 6 hours</strong></p>
+              </div>
             </div>
-            <ul className="space-y-2">
-              <li className="flex items-start gap-2 text-neutral-700 text-sm"><span className="text-blue-500 mt-0.5">+</span>Server-side attribution = real numbers</li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm"><span className="text-blue-500 mt-0.5">+</span>Scale actual winners confidently</li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm"><span className="text-blue-500 mt-0.5">+</span>Kill real losers before damage</li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm"><span className="text-blue-500 mt-0.5">+</span>Rules work as designed</li>
-            </ul>
-            <div className="mt-4 pt-3 border-t border-blue-200">
-              <span className="text-xs font-medium" style={{ color: 'var(--accent)' }}>CONFIDENT AUTOMATION</span>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="p-4 rounded-xl bg-amber-50 border border-amber-200">
+            <p className="text-sm text-amber-800"><strong>Warning:</strong> Set your max CPA at least 50% above target. Too tight = constant pausing.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Setup Attribution (with Triple Whale)
+    const StepSetupAttributionSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Verify Your Data Source</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+                <span className="font-semibold text-red-700 text-sm">The Problem</span>
+              </div>
+              <p className="text-neutral-700 text-sm mb-3">Meta over-reports conversions by 20-40% due to iOS privacy changes.</p>
+              <p className="text-red-600 text-xs">Rules based on inflated data = scaling losers, killing winners.</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+                <span className="font-semibold text-green-700 text-sm">The Solution</span>
+              </div>
+              <p className="text-neutral-700 text-sm mb-3">Server-side attribution tracks actual purchases from your store.</p>
+              <p className="text-green-600 text-xs">Rules trigger on real data = confident automation.</p>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-5">
+            <div className="flex items-center gap-4">
+              <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-12 h-12 rounded-xl" />
+              <div className="flex-1">
+                <p className="text-white font-semibold text-sm">{TOOL_CONFIG.name}</p>
+                <p className="text-neutral-400 text-xs">Server-side attribution for accurate rule triggers</p>
+              </div>
+              <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg bg-white text-neutral-900 font-semibold text-sm hover:bg-neutral-100 transition-colors flex items-center gap-1.5">
+                <span>Get Started</span>
+                <Icons.ExternalLink />
+              </a>
             </div>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center">
-          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            <span>Try Triple Whale</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </motion.div>
-      </div>
-    );
+      );
+    };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-14 h-14 rounded-xl flex items-center justify-center mb-3 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-2">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-sm mb-4 max-w-md leading-relaxed">You now know how to set up automated rules that scale winners and kill losers 24/7.</motion.p>
+    // Step 4: Results
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '24/7', label: 'Monitoring', desc: 'Rules never sleep', icon: Icons.Clock, color: '#3b82f6' },
+        { metric: '-67%', label: 'Manual Work', desc: 'Set once, runs forever', icon: Icons.TrendingUp, color: '#10b981' },
+        { metric: '2-4x', label: 'Faster Scaling', desc: 'Catch winners immediately', icon: Icons.Zap, color: '#8b5cf6' }
+      ];
 
-        {/* Triple Whale CTA Card */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-5 max-w-md w-full mb-4">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-12 h-12 rounded-xl bg-white p-1.5 flex-shrink-0">
-              <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-full h-full object-contain rounded-lg" />
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results visible immediately. Give rules <span className="text-white font-bold">7 days</span> to show impact.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand automated rules. Set up your scale and protection rules. Let them work 24/7 while you sleep.</motion.p>
+
+        {/* Key Takeaways */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Scale winners with CPA &lt; target rule (5% budget increase)</span>
             </div>
-            <div className="text-left">
-              <p className="text-white font-bold text-sm">Ready to Automate Smarter?</p>
-              <p className="text-neutral-400 text-xs">Get accurate attribution for your rules</p>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Protect against losers with CPA &gt; max rule (5% budget decrease)</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Check every 6-12 hours for stability (not 30 minutes)</span>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2 mb-4">
-            <span className="px-2 py-1 rounded-md bg-white/10 text-neutral-300 text-[10px] font-medium">Server-side tracking</span>
-            <span className="px-2 py-1 rounded-md bg-white/10 text-neutral-300 text-[10px] font-medium">True ROAS</span>
-            <span className="px-2 py-1 rounded-md bg-white/10 text-neutral-300 text-[10px] font-medium">iOS-proof</span>
-          </div>
-          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-white text-neutral-900 font-semibold text-sm transition-all hover:bg-neutral-100">
-            <span>Try Triple Whale Free</span>
-            <Icons.ExternalLink />
-          </a>
         </motion.div>
 
-        {/* Up Next Card */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
@@ -1168,7 +691,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -1205,52 +727,20 @@
 
       const renderSlide = (slide) => {
         switch (slide.type) {
-          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
-          case 'before-after': return <BeforeAfterSlide data={slide} />;
-          case 'highlight-box': return <HighlightBoxSlide data={slide} />;
-          case 'strategy-steps': return <StrategyStepsSlide data={slide} />;
-          case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
-          case 'doom-loop': return <DoomLoopSlide data={slide} />;
-          case 'escape-plan': return <EscapePlanSlide data={slide} />;
-          case 'bigStatement': return <BigStatementSlide data={slide} />;
-          case 'actionSlide': return <ActionSlide data={slide} />;
-          case 'trap-visual': return <TrapVisualSlide data={slide} />;
-          case 'math-breakdown': return <MathBreakdownSlide data={slide} />;
-          case 'ratio-visual': return <RatioVisualSlide data={slide} />;
-          case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
-          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
-          case 'quote': return <QuoteSlide data={slide} />;
-          case 'quote-slide': return <QuoteSlide data={slide} />;
-          case 'quote-spotlight': return <QuoteSlide data={slide} />;
-          case 'flywheel-visual': return <FlywheelVisualSlide data={slide} />;
-          case 'math-visual': return <MathVisualSlide data={slide} />;
-          case 'requirements-visual': return <RequirementsVisualSlide data={slide} />;
-          case 'founder-spotlight': return <FounderSpotlightSlide data={slide} />;
-          case 'velocity-metric': return <VelocityMetricSlide data={slide} />;
-          case 'mindset-framework': return <MindsetFrameworkSlide data={slide} />;
-          case 'angles': return <AnglesSlide data={slide} />;
-          case 'formats': return <FormatsSlide data={slide} />;
-          case 'matrixVisualization': return <MatrixVisualizationSlide data={slide} />;
-          case 'matrixBuilder': return <MatrixBuilderSlide data={slide} />;
-          case 'stats': return <StatCountdownSlide data={slide} />;
-          case 'roadmap': return <StrategyStepsSlide data={slide} />;
-          case 'triangle': return <GenericListSlide data={slide} />;
-          case 'flywheel': return <FlywheelVisualSlide data={slide} />;
-          case 'ratio-spectrum': return <RatioVisualSlide data={slide} />;
-          case 'math-comparison': return <MathBreakdownSlide data={slide} />;
-          case 'opportunity-cost': return <GenericListSlide data={slide} />;
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'automatedRuleMockup': return <AutomatedRuleMockupSlide data={slide} />;
-          case 'automationWorkflow': return <AutomationWorkflowSlide />;
-          case 'attributionWarning': return <AttributionWarningSlide />;
-          case 'accurate-rules': return <AccurateRulesSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-create-scale-rule': return <StepCreateScaleRuleSlide data={slide} />;
+          case 'step-create-protect-rule': return <StepCreateProtectRuleSlide data={slide} />;
+          case 'step-setup-attribution': return <StepSetupAttributionSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

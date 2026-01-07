@@ -41,22 +41,13 @@
 
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
 
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{prefix}{count}{suffix}</span>;
-    };      return params.get('userName') || 'Builder';
+    const getInitialSlide = () => {
+      const params = new URLSearchParams(window.location.search);
+      const slide = params.get('slide');
+      return slide ? parseInt(slide, 10) : 0;
     };
 
     const LESSON_CONFIG = {
@@ -64,7 +55,7 @@
       title: 'The Decoy Effect',
       description: 'How movie theaters trick your brain into buying the large popcorn - and how you can use the same psychology.',
       accentColor: '#f59e0b',
-      duration: '5 min',
+      duration: '6 min',
       nextLesson: {
         id: 'precise-price-trick',
         title: 'The Precise Price Trick',
@@ -72,146 +63,72 @@
       }
     };
 
+    // Tool configuration
+    const TOOL_CONFIG = {
+      name: 'ABConvert',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/67bf9cdf91f2c9ed2893bc3f2a46a2f0/icon/CMjO6ZvF3f0CEAE=.png',
+      link: 'https://apps.shopify.com/a-b-convert-product-a-b-test',
+      tagline: 'A/B Test Product Pricing',
+      stats: { conversionLift: '15-43%', stores: '5,000+', rating: '4.8' }
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
 
-
+    // ============ CELEBRATION GIFS ============
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
     ];
-
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
-
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'The "useless option" trick that boosts premium sales by 43%',
-        'Why movie theaters price popcorn the way they do',
-        'How to build irresistible 3-tier pricing for your store'
-      ]},
-      { type: 'hook', headline: 'You walk into a movie theater. Small popcorn: $3. Medium: $6.50. Large: $7.', subtext: 'Which do you buy? If you said large, you just fell for one of the most powerful pricing tricks in psychology. That medium option exists for ONE reason: to make you buy the large. It\'s not meant to be purchased. It\'s a decoy. And it works every. single. time.' },
-      { type: 'content', title: 'The "Useless" Option That Prints Money', body: 'Here\'s the psychology: without the medium, your brain compares $3 vs $7. That\'s a tough call. But add a $6.50 medium - suddenly the large looks like a steal. Only 50 cents more for way more popcorn? Done. The medium\'s job isn\'t to be sold. Its job is to make the large look irresistible.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_holding_a_magnifying_glass_investigating_--ar__50d13799-7bb7-4f9d-bb20-51dab6df6ac3_2.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'The Decoy In Action', visualType: 'popcorn', data: {
-        small: { price: '$3.00', label: 'Small', size: 'small' },
-        medium: { price: '$6.50', label: 'Medium (Decoy)', size: 'medium', isDecoy: true },
-        large: { price: '$7.00', label: 'Large', size: 'large', isBest: true }
-      }},
-      { type: 'content', title: 'Why Your Brain Falls For This', body: 'Your reptilian brain hates complex decisions. Too many options = paralysis. But when one option is OBVIOUSLY better than another? That\'s easy. That\'s safe. The decoy creates a "no-brainer" comparison. Your brain thinks it\'s being smart. It\'s actually being guided.' },
-      { type: 'visual', title: 'The Psychology Behind It', visualType: 'stats', data: [
-        { value: '43%', label: 'more premium sales', subtext: 'When decoy is present' },
-        { value: '2x', label: 'faster decisions', subtext: 'Less paralysis, more action' },
-        { value: '0%', label: 'decoy purchases', subtext: 'Nobody actually buys it' }
-      ]},
-      { type: 'example', scenario: 'The Economist\'s Famous Test', before: { label: 'Without Decoy', text: 'Option A: Digital subscription - $59\nOption B: Print + Digital - $125\n\nResult: 68% chose digital only' }, after: { label: 'With Decoy', text: 'Option A: Digital only - $59\nOption B: Print only - $125 (DECOY)\nOption C: Print + Digital - $125\n\nResult: 84% chose print + digital' }, insight: 'Same prices. One "useless" option. Revenue jumped 43%.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_holding_a_magnifying_glass_investigating_--ar__50d13799-7bb7-4f9d-bb20-51dab6df6ac3_2.mp4', characterPosition: 'left'},
-      { type: 'cards', title: 'Building Your Decoy Pricing', items: [
-        { title: 'Step 1: Pick Your Target', description: 'Which option do you WANT them to buy? Usually your highest-margin product. That\'s the one the decoy will make shine.' },
-        { title: 'Step 2: Create The Decoy', description: 'Price it close to your target but with obviously less value. The exact price gap matters - test variations to optimize.' },
-        { title: 'Step 3: Position It Middle', description: 'Put the decoy in the middle or next to your target. The contrast must be immediate and obvious.' },
-        { title: 'Step 4: Test & Refine', description: 'A/B test different decoy prices. Is $6.50 better than $6.00? Data tells you - guessing leaves money on the table.' }
-      ]},
-      { type: 'test-decoys' },
-      { type: 'example', scenario: 'Shopify Store: Skincare Bundle', before: { label: 'Two Options', text: 'Single serum: $49\nComplete kit (5 products): $149\n\nConversion: 12%' }, after: { label: 'With Decoy', text: 'Single serum: $49\n3-product set: $129 (DECOY)\nComplete kit (5 products): $149 ⭐\n\nConversion: 23% (+91%)' }, insight: 'The 3-product set exists to make the complete kit look like a no-brainer. A/B test to find if $119 or $129 converts better.' },
-      { type: 'visual', title: 'Where To Use Decoy Pricing', visualType: 'comparison', data: {
-        left: { label: 'Pricing Tables', value: '3-tier', result: 'Basic / Pro (decoy) / Premium', color: '#94a3b8' },
-        right: { label: 'Product Bundles', value: 'Mid-bundle', result: 'Make top bundle irresistible', color: '#f59e0b' },
-        center: { label: 'Subscriptions', value: 'Monthly', result: 'Annual looks like a steal', color: '#10b981' }
-      }},
-      { type: 'content', title: 'The Golden Rules', body: 'Rule #1: The decoy must be OBVIOUSLY inferior. Not slightly worse - embarrassingly worse for the price. Rule #2: Never sell the decoy. If people start buying it, you\'ve failed. Rule #3: Keep the price gap tiny between decoy and target. That\'s what creates the "no-brainer" moment. Rule #4: Test your decoy prices. The exact gap that works best varies - A/B testing reveals your optimal setup.' },
-      { type: 'quiz', question: 'Why does the medium popcorn exist at $6.50 when the large is only $7?', options: ['To give customers more choices', 'To make the large look like an obvious deal by comparison', 'Because medium-sized popcorn costs $6.50 to make', 'To maximize sales of medium popcorn'], correctIndex: 1, feedback: { correct: 'Exactly! The medium exists only to make the large look like a steal. Nobody is supposed to buy the medium - it\'s a decoy that guides you to the premium option.', incorrect: 'Not quite. The medium isn\'t there to be purchased or offer choice - it exists solely to make the large look like an obvious bargain at only 50 cents more.' }},
-      { type: 'completion' }
-    ];
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      const [hasAnimated, setHasAnimated] = useState(false);
+      useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals, hasAnimated]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
+    };
 
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -220,79 +137,86 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      BarChart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Layers: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.5-8.97 4.08a2 2 0 0 1-1.66 0L2 12.5"/><path d="m22 17-8.97 4.08a2 2 0 0 1-1.66 0L2 17"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
     };
+
+    // ============ SLIDES DATA ============
+    const slides = [
+      // ========== PART 1: THE PSYCHOLOGY (Theory) ==========
+      { type: 'welcome', learningGoals: [
+        'The "useless option" trick that boosts premium sales by 43%',
+        'Why movie theaters price popcorn the way they do',
+        'The psychology that makes comparison irresistible'
+      ]},
+      { type: 'hook', headline: 'You walk into a movie theater. Small popcorn: $3. Medium: $6.50. Large: $7.', subtext: 'Which do you buy? If you said large, you just fell for one of the most powerful pricing tricks in psychology. That medium option exists for ONE reason: to make you buy the large. It\'s not meant to be purchased. It\'s a decoy. And it works every. single. time.' },
+      { type: 'popcorn-visual' },
+      { type: 'content', title: 'The "Useless" Option That Prints Money', body: 'Here\'s the psychology: without the medium, your brain compares $3 vs $7. That\'s a tough call. But add a $6.50 medium - suddenly the large looks like a steal. Only 50 cents more for way more popcorn? Done. The medium\'s job isn\'t to be sold. Its job is to make the large look irresistible.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_holding_a_magnifying_glass_investigating_--ar__50d13799-7bb7-4f9d-bb20-51dab6df6ac3_2.mp4', characterPosition: 'left'},
+      { type: 'brain-psychology' },
+      { type: 'stats-visual' },
+      { type: 'economist-example' },
+      { type: 'content', title: 'The Golden Rules of Decoy Pricing', body: 'Rule #1: The decoy must be OBVIOUSLY inferior. Not slightly worse - embarrassingly worse for the price. Rule #2: Never sell the decoy. If people start buying it, you\'ve failed. Rule #3: Keep the price gap tiny between decoy and target. That\'s what creates the "no-brainer" moment. Rule #4: Position the decoy next to or between your options. The contrast must be immediate and obvious.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_pointing_at_a_chart_presentingexplaining_100_p_d3ddf2c8-5905-4952-b8cc-0eaed3e8b732_3.mp4', characterPosition: 'right'},
+      { type: 'where-to-use' },
+      { type: 'quiz', question: 'Why does the medium popcorn exist at $6.50 when the large is only $7?', options: ['To give customers more choices', 'To make the large look like an obvious deal by comparison', 'Because medium-sized popcorn costs $6.50 to make', 'To maximize sales of medium popcorn'], correctIndex: 1, feedback: { correct: 'Exactly! The medium exists only to make the large look like a steal. Nobody is supposed to buy the medium - it\'s a decoy that guides you to the premium option.', incorrect: 'Not quite. The medium isn\'t there to be purchased or offer choice - it exists solely to make the large look like an obvious bargain at only 50 cents more.' }},
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-identify-target' },
+      { type: 'step-create-decoy' },
+      { type: 'step-test-optimize' },
+      { type: 'step-results' },
+      { type: 'completion' }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
-      useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl text-black mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-3" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-[10px] uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-2">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-xs leading-snug">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
         {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
             style={{ height: '35%', maxHeight: '280px' }}>
             <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
               <source src={data.characterVideo} type="video/mp4" />
@@ -302,29 +226,8 @@
       </div>
     );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const PopcornVisual = ({ data }) => (
+    // Popcorn Visual Slide
+    const PopcornVisualSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Decoy In Action</motion.h2>
         <div className="flex items-end justify-center gap-4 md:gap-8">
@@ -335,8 +238,8 @@
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             </div>
             <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-neutral-800">{data.small.price}</div>
-              <div className="text-sm text-neutral-500">{data.small.label}</div>
+              <div className="text-2xl font-bold text-neutral-800">$3.00</div>
+              <div className="text-sm text-neutral-500">Small</div>
             </div>
           </motion.div>
 
@@ -348,8 +251,8 @@
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             </div>
             <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-red-500 line-through">{data.medium.price}</div>
-              <div className="text-sm text-red-400">{data.medium.label}</div>
+              <div className="text-2xl font-bold text-red-500 line-through">$6.50</div>
+              <div className="text-sm text-red-400">Medium (Decoy)</div>
             </div>
           </motion.div>
 
@@ -361,9 +264,9 @@
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             </div>
             <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-amber-600">{data.large.price}</div>
-              <div className="text-sm text-amber-600 font-semibold">{data.large.label}</div>
-              <div className="text-xs text-green-600 mt-1">Only 50¢ more!</div>
+              <div className="text-2xl font-bold text-amber-600">$7.00</div>
+              <div className="text-sm text-amber-600 font-semibold">Large</div>
+              <div className="text-xs text-green-600 mt-1">Only 50c more!</div>
             </div>
           </motion.div>
         </div>
@@ -371,52 +274,121 @@
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
-                  <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
-                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
-                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
+    // Brain Psychology Slide
+    const BrainPsychologySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Psychology</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Why Your Brain Falls For This</h2>
+        </motion.div>
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 hover:shadow-lg transition-all">
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-white">Without Decoy</span>
+            </div>
+            <div className="space-y-3 text-sm text-neutral-400">
+              <p>$3 small vs $7 large</p>
+              <p>Brain: "More than double the price..."</p>
+              <p>Complex decision = paralysis</p>
+              <p className="font-semibold text-red-400">Result: 50% buy small</p>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
+            <div className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>WINS</div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
+              <span className="font-semibold text-white">With Decoy</span>
+            </div>
+            <div className="space-y-3 text-sm text-neutral-400">
+              <p>$6.50 medium vs $7 large</p>
+              <p className="text-amber-400 font-medium">Brain: "Only 50c more? No-brainer!"</p>
+              <p className="text-amber-400 font-medium">Easy comparison = action</p>
+              <p className="font-semibold" style={{ color: 'var(--accent)' }}>Result: 80%+ buy large</p>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-6 p-4 rounded-xl text-center" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+          <p className="text-sm" style={{ color: 'var(--accent)' }}>Your reptilian brain hates complex decisions. The decoy creates a "no-brainer" comparison that feels smart.</p>
+        </motion.div>
+      </div>
+    );
+
+    // Stats Visual Slide
+    const StatsVisualSlide = ({ data }) => {
+      const stats = [
+        { value: '43%', label: 'more premium sales', subtext: 'When decoy is present' },
+        { value: '2x', label: 'faster decisions', subtext: 'Less paralysis, more action' },
+        { value: '0%', label: 'decoy purchases', subtext: 'Nobody actually buys it' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Psychology Behind It</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
+                <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
+                <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                <div className="text-xs text-neutral-400">{stat.subtext}</div>
               </motion.div>
             ))}
           </div>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '45%', maxHeight: '350px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
+      );
+    };
+
+    // Economist Example Slide
+    const EconomistExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">The Economist's Famous Test</h2>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">Without Decoy</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{'Option A: Digital subscription - $59\nOption B: Print + Digital - $125\n\nResult: 68% chose digital only'}</p>
           </motion.div>
-        )}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">With Decoy</span></div>
+            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{'Option A: Digital only - $59\nOption B: Print only - $125 (DECOY)\nOption C: Print + Digital - $125\n\nResult: 84% chose print + digital'}</p>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />Same prices. One "useless" option. Revenue jumped 43%.</p>
+        </motion.div>
       </div>
     );
 
+    // Where To Use Slide
+    const WhereToUseSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Where To Use Decoy Pricing</motion.h2>
+        <div className="grid grid-cols-3 gap-3 md:gap-6">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+            <div className="text-3xl md:text-4xl font-bold mb-2 text-slate-500">3-tier</div>
+            <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">Pricing Tables</div>
+            <div className="text-[10px] md:text-xs text-neutral-500">Basic / Pro (decoy) / Premium</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
+            <div className="text-3xl md:text-4xl font-bold text-white mb-2">Mid-bundle</div>
+            <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">Product Bundles</div>
+            <div className="text-[10px] md:text-xs text-white/70">Make top bundle irresistible</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
+            <div className="text-3xl md:text-4xl font-bold mb-2 text-emerald-500">Monthly</div>
+            <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">Subscriptions</div>
+            <div className="text-[10px] md:text-xs text-neutral-500">Annual looks like a steal</div>
+          </motion.div>
+        </div>
+      </div>
+    );
 
+    // Quiz Slide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -426,38 +398,34 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => {
-        if (showFeedback) {
-          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
-        }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      useEffect(() => { if (showFeedback) onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); }, [showFeedback, isCorrect]);
+      useEffect(() => () => onHideGif(), [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-8 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback}
+                  className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className="text-neutral-700 text-sm">{option}</span>
                   </div>
                 </motion.button>
               ))}
             </div>
             <AnimatePresence>
               {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
-                </motion.div>
+                <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-4 rounded-xl text-sm ${isCorrect ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-amber-50 border border-amber-200 text-amber-800'}`}>
+                  {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+                </motion.p>
               )}
             </AnimatePresence>
           </div>
@@ -465,107 +433,290 @@
       );
     };
 
-    const TestDecoysSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>Test Your Decoy</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">Which Decoy Price Works Best?</h2>
-          <p className="text-neutral-500 text-sm mt-2">The theory is proven. But YOUR optimal decoy price? That needs testing.</p>
-        </motion.div>
+    // ========== PART 2: PRACTICAL SLIDES ==========
 
-        <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-          {/* Guessing - Grayed */}
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 border-2 border-neutral-200 rounded-xl p-5 opacity-60">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-neutral-300 flex items-center justify-center">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    // Section Divider Slide
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to implement decoy pricing in your store</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
               </div>
-              <span className="font-semibold text-neutral-500 text-sm">Guessing Your Decoy</span>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Step 1: Identify Your Target
+    const StepIdentifyTargetSlide = ({ data }) => {
+      const targets = [
+        { label: 'Best Margin Product', desc: 'Which product makes you the most profit?', icon: Icons.TrendingUp },
+        { label: 'Premium Option', desc: 'What do you WANT customers to buy?', icon: Icons.Star },
+        { label: 'High-Value Bundle', desc: 'Which bundle offers the best value?', icon: Icons.Layers }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Identify Your Target Product</h2>
+              </div>
             </div>
-            <ul className="space-y-2 text-sm text-neutral-500">
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>$6.50 decoy? Or $6.00?</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>No way to know what converts</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Leaving money on the table</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-neutral-400 mt-0.5">-</span>
-                <span>Different products need different gaps</span>
-              </li>
-            </ul>
           </motion.div>
 
-          {/* A/B Test - Highlighted */}
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white border-2 rounded-xl p-5 relative overflow-hidden" style={{ borderColor: '#f59e0b', boxShadow: '0 8px 32px rgba(245, 158, 11, 0.15)' }}>
-            <div className="absolute top-0 right-0 px-2 py-1 text-[10px] font-bold text-white rounded-bl-lg" style={{ background: '#f59e0b' }}>DATA-DRIVEN</div>
-            <div className="flex items-center gap-2 mb-4">
-              <img src="https://cdn.shopify.com/app-store/listing_images/67bf9cdf91f2c9ed2893bc3f2a46a2f0/icon/CMjO6ZvF3f0CEAE=.png" alt="ABConvert" className="w-8 h-8 rounded-lg" />
-              <span className="font-semibold text-neutral-800 text-sm">A/B Test Your Decoys</span>
-            </div>
-            <ul className="space-y-2 text-sm text-neutral-700">
-              <li className="flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Test $6.50 vs $6.00 vs $5.99 decoy</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>See which gap drives most premium sales</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Statistical proof your decoy works</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <svg className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Real revenue data, not guesses</span>
-              </li>
-            </ul>
+          <div className="grid md:grid-cols-3 gap-3 mb-6">
+            {targets.map((target, i) => {
+              const Icon = target.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-sm mb-1">{target.label}</div>
+                  <div className="text-neutral-400 text-xs">{target.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Pick the ONE product or tier you want to sell more of. The decoy's only job is to make THIS option shine.</p>
           </motion.div>
         </div>
+      );
+    };
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 text-center">
-          <a href="https://apps.shopify.com/a-b-convert-product-a-b-test" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', boxShadow: '0 4px 16px rgba(245, 158, 11, 0.35)' }}>
-            <img src="https://cdn.shopify.com/app-store/listing_images/67bf9cdf91f2c9ed2893bc3f2a46a2f0/icon/CMjO6ZvF3f0CEAE=.png" alt="ABConvert" className="w-5 h-5 rounded" />
-            <span>Test Your Decoy Pricing</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-          <p className="text-neutral-400 text-xs mt-3">A/B test product pricing on Shopify</p>
-        </motion.div>
-      </div>
-    );
+    // Step 2: Create Your Decoy
+    const StepCreateDecoySlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Create Your Decoy</h2>
+              </div>
+            </div>
+          </motion.div>
 
-    const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the Decoy Effect. Add a "useless" middle option to your pricing. Make the premium choice obvious. Watch conversions climb.</motion.p>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-white font-bold text-lg mb-4">The Decoy Formula</div>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-800">
+                  <span className="text-neutral-300">Price very close to target</span>
+                  <span className="font-bold" style={{ color: 'var(--accent)' }}>90-95%</span>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-800">
+                  <span className="text-neutral-300">Value obviously less</span>
+                  <span className="font-bold" style={{ color: 'var(--accent)' }}>50-70%</span>
+                </div>
+                <div className="flex items-center justify-between p-3 rounded-lg bg-neutral-800">
+                  <span className="text-neutral-300">Positioned next to target</span>
+                  <span className="font-bold" style={{ color: 'var(--accent)' }}>Always</span>
+                </div>
+              </div>
+            </motion.div>
 
-        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} href="https://apps.shopify.com/a-b-convert-product-a-b-test" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 rounded-xl bg-neutral-50 border border-neutral-200 max-w-md w-full mb-4 hover:border-amber-300 hover:bg-amber-50/50 transition-all group">
-          <img src="https://cdn.shopify.com/app-store/listing_images/67bf9cdf91f2c9ed2893bc3f2a46a2f0/icon/CMjO6ZvF3f0CEAE=.png" alt="ABConvert" className="w-10 h-10 rounded-lg" />
-          <div className="text-left flex-1">
-            <div className="text-sm font-semibold text-neutral-800 group-hover:text-amber-700">Test Your Decoy Pricing</div>
-            <div className="text-xs text-neutral-500">A/B test different decoy prices to find your optimal setup</div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Example: Skincare Bundle</div>
+              <div className="space-y-3">
+                <div className="p-3 rounded-lg bg-white border border-neutral-100">
+                  <div className="flex justify-between items-center">
+                    <span className="text-neutral-600 text-sm">Single serum</span>
+                    <span className="font-bold text-neutral-800">$49</span>
+                  </div>
+                </div>
+                <div className="p-3 rounded-lg bg-red-50 border border-red-200">
+                  <div className="flex justify-between items-center">
+                    <span className="text-red-600 text-sm font-medium">3-product set (DECOY)</span>
+                    <span className="font-bold text-red-600">$129</span>
+                  </div>
+                </div>
+                <div className="p-3 rounded-lg border-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', borderColor: 'var(--accent)' }}>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>Complete kit (5 products)</span>
+                    <span className="font-bold" style={{ color: 'var(--accent)' }}>$149</span>
+                  </div>
+                  <div className="text-xs text-neutral-500 mt-1">Only $20 more for 2 extra products!</div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-          <svg className="w-4 h-4 text-neutral-400 group-hover:text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </motion.a>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Create a middle option priced close to your target but with obviously less value. Make the comparison embarrassingly obvious.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Test and Optimize
+    const StepTestOptimizeSlide = ({ data }) => {
+      const testVariations = [
+        { variation: 'A', decoyPrice: '$6.00', result: '32% premium', color: '#94a3b8' },
+        { variation: 'B', decoyPrice: '$6.50', result: '43% premium', color: '#f59e0b', winner: true },
+        { variation: 'C', decoyPrice: '$6.75', result: '38% premium', color: '#94a3b8' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Test and Optimize</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <img src={TOOL_CONFIG.logo} alt="ABConvert" className="w-10 h-10 rounded-lg" />
+                <div>
+                  <div className="text-white font-bold text-sm">{TOOL_CONFIG.name}</div>
+                  <div className="text-neutral-400 text-xs">{TOOL_CONFIG.tagline}</div>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm text-neutral-300">
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Test different decoy prices</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>See which gap converts best</span></div>
+                <div className="flex items-center gap-2"><Icons.Check className="w-4 h-4" style={{ color: 'var(--accent)' }} /><span>Statistical proof, not guessing</span></div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Test Results Example</div>
+              <div className="space-y-3">
+                {testVariations.map((test, i) => (
+                  <div key={i} className={`p-3 rounded-lg ${test.winner ? 'border-2' : 'bg-white border border-neutral-100'}`} style={test.winner ? { background: 'rgba(var(--accent-rgb), 0.1)', borderColor: 'var(--accent)' } : {}}>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <span className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: test.color }}>{test.variation}</span>
+                        <span className={`text-sm ${test.winner ? 'font-semibold' : ''}`} style={test.winner ? { color: 'var(--accent)' } : { color: '#525252' }}>Decoy: {test.decoyPrice}</span>
+                      </div>
+                      <span className={`font-bold text-sm ${test.winner ? '' : 'text-neutral-600'}`} style={test.winner ? { color: 'var(--accent)' } : {}}>{test.result}</span>
+                    </div>
+                    {test.winner && <div className="text-xs mt-1" style={{ color: 'var(--accent)' }}>Winner! +11% over worst performer</div>}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Don't guess your decoy price - test it. Small differences in the gap can mean big differences in conversion.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '15-43%', label: 'Premium Lift', desc: 'More customers choose target', icon: Icons.TrendingUp, color: '#22c55e' },
+        { metric: '2x', label: 'Faster Decisions', desc: 'Less analysis paralysis', icon: Icons.Zap, color: '#f59e0b' },
+        { metric: '+AOV', label: 'Higher Order Value', desc: 'Premium options win', icon: Icons.BarChart, color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">1-2 weeks</span> of implementation</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }}
+          className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">
+          You now understand the Decoy Effect. Add a "useless" middle option to your pricing. Make the premium choice obvious. Watch conversions climb.
+        </motion.p>
+
+        {/* Key Takeaways */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">The decoy exists to be ignored, not purchased</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Price gap must be tiny, value gap must be huge</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Test your decoy prices - the exact gap matters</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
+          <p className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
@@ -577,14 +728,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -617,12 +762,19 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'popcorn-visual': return <PopcornVisualSlide data={slide} />;
+          case 'brain-psychology': return <BrainPsychologySlide data={slide} />;
+          case 'stats-visual': return <StatsVisualSlide data={slide} />;
+          case 'economist-example': return <EconomistExampleSlide data={slide} />;
+          case 'where-to-use': return <WhereToUseSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'test-decoys': return <TestDecoysSlide />;
-          case 'completion': return <CompletionSlide />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-identify-target': return <StepIdentifyTargetSlide data={slide} />;
+          case 'step-create-decoy': return <StepCreateDecoySlide data={slide} />;
+          case 'step-test-optimize': return <StepTestOptimizeSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
+          case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }
       };
@@ -642,15 +794,15 @@
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
             {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+          <div className="px-6 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">
               {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>

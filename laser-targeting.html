@@ -1,0 +1,3539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laser Targeting Hero</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body {
+margin: 0;
+padding: 0;
+background: #ffffff;
+}
+
+.landing-section {
+all: initial;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #000000 !important;
+padding: 25px 5px 28px 5px !important;
+text-align: center !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+overflow-x: hidden !important;
+display: block !important;
+isolation: isolate !important;
+z-index: 1 !important;
+}
+
+.landing-section::before,
+.landing-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+
+.landing-section::before {
+left: -100vw !important;
+}
+
+.landing-section::after {
+right: -100vw !important;
+}
+
+.landing-section * {
+box-sizing: border-box !important;
+}
+
+.content-container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 20px;
+}
+
+.intro-text {
+background: rgba(255, 0, 23, 0.15) !important;
+border: 1px solid #ff0017 !important;
+border-radius: 25px !important;
+padding: 12px 20px !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 10px !important;
+font-size: 13px !important;
+color: #ffffff !important;
+font-weight: 500 !important;
+margin: 0 0 32px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.pulse-dot {
+width: 8px !important;
+height: 8px !important;
+background: #ff0017 !important;
+border-radius: 50% !important;
+animation: pulse 2s infinite !important;
+box-shadow: 0 0 10px #ff0017 !important;
+display: block !important;
+}
+
+@keyframes pulse {
+0%, 100% {
+opacity: 1;
+transform: scale(1);
+}
+50% {
+opacity: 0.5;
+transform: scale(1.1);
+}
+}
+
+.main-headline {
+font-size: 49.94px;
+font-weight: 900;
+color: #ffffff;
+margin: 0 0 13px 0;
+line-height: 1.2;
+font-family: 'Open Sans', sans-serif;
+}
+
+.highlight {
+color: #ff0017;
+}
+
+.sub-headline {
+font-size: 21.75px;
+color: #e8e8e8;
+margin: 0 0 40px 0;
+font-weight: 400;
+line-height: 1.4;
+font-family: 'Open Sans', sans-serif;
+}
+
+.screenshot-container {
+margin: 0 0 32px 0;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.screenshot {
+max-width: 100%;
+height: auto;
+border-radius: 8px;
+box-shadow: 0 10px 30px rgba(255, 0, 23, 0.3);
+display: block;
+}
+
+.pricing-section {
+margin: 0 0 20px 0;
+}
+
+.price-text {
+font-size: 36.25px;
+color: #ffffff;
+font-weight: 700;
+margin: 0 0 8px 0;
+font-family: 'Open Sans', sans-serif;
+}
+
+.original-price {
+color: #999999;
+text-decoration: line-through;
+font-size: 27.56px;
+margin-right: 10px;
+}
+
+.current-price {
+color: #ff0017;
+}
+
+.cta-button {
+all: unset !important;
+display: inline-flex !important;
+background: radial-gradient(ellipse at bottom, #FF9999 0%, #FF0000 50%) !important;
+color: #ffffff !important;
+border-radius: 35px !important;
+font-size: 17.38px !important;
+font-weight: 700 !important;
+padding: 21px 76px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+align-items: center !important;
+justify-content: center !important;
+text-decoration: none !important;
+min-width: 421px !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 10px 30px rgba(255, 0, 23, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+height: 81px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+}
+
+.cta-button:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 15px 40px rgba(255, 0, 23, 0.6) !important;
+}
+
+.cta-button.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+
+.cta-button span {
+font-size: 17.38px !important;
+font-weight: 600 !important;
+color: #ffffff !important;
+font-family: 'Open Sans', sans-serif !important;
+position: relative !important;
+z-index: 999 !important;
+display: inline-block !important;
+line-height: 1.4 !important;
+}
+
+.bundle-wrapper {
+text-align: center !important;
+margin: 12px 0 0 0 !important;
+display: block !important;
+}
+
+.bundle-wrapper span {
+color: #e8e8e8 !important;
+font-size: 14px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.bundle-link {
+color: #ff0017 !important;
+text-decoration: underline !important;
+}
+
+.secure-payment {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 8px !important;
+font-size: 15.44px !important;
+color: #e8e8e8 !important;
+font-weight: 500 !important;
+margin-top: 10px !important;
+margin-bottom: 8px !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.secure-payment-icon {
+width: 28.31px !important;
+height: 28.31px !important;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+background-size: contain !important;
+background-repeat: no-repeat !important;
+background-position: center !important;
+display: block !important;
+}
+
+.bonus-section {
+display: flex !important;
+align-items: center !important;
+justify-content: center !important;
+gap: 20px !important;
+margin-top: 28px !important;
+padding: 0 20px !important;
+}
+
+.bonus-image {
+width: 162px !important;
+height: 162px !important;
+background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/The_New_Way_-_Sales_Page.png?v=1758114605') !important;
+background-size: contain !important;
+background-repeat: no-repeat !important;
+background-position: center !important;
+flex-shrink: 0 !important;
+display: block !important;
+}
+
+.bonus-text {
+font-size: 21.75px !important;
+font-weight: 700 !important;
+color: #ff0017 !important;
+text-align: right !important;
+line-height: 1.3 !important;
+margin-right: -3px !important;
+max-width: 180px !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+
+.divider {
+width: 2px !important;
+height: 100px !important;
+background: linear-gradient(to bottom, transparent, #ff0017, transparent) !important;
+display: block !important;
+}
+
+@media (max-width: 768px) {
+.landing-section {
+padding: 3px 3px 20px 3px !important;
+}
+
+.main-headline {
+font-size: 31.46px !important;
+}
+
+.price-text {
+font-size: 28.9px !important;
+}
+
+.original-price {
+font-size: 22px !important;
+}
+
+.sub-headline {
+font-size: 17px !important;
+}
+
+.cta-button {
+min-width: 340px !important;
+font-size: 16px !important;
+padding: 16px 30px !important;
+}
+
+.cta-button span {
+font-size: 16px !important;
+}
+
+.secure-payment {
+font-size: 14.2px !important;
+}
+
+.secure-payment-icon {
+width: 26.05px !important;
+height: 26.05px !important;
+}
+}
+
+@media (max-width: 480px) {
+.landing-section {
+padding: 2px 2px 20px 2px !important;
+}
+
+.main-headline {
+font-size: 26.45px !important;
+}
+
+.sub-headline {
+font-size: 17px !important;
+}
+
+.cta-button {
+min-width: 340px !important;
+font-size: 19px !important;
+padding: 16px 30px !important;
+}
+
+.cta-button span {
+font-size: 19px !important;
+}
+}
+</style>
+</head>
+<body>
+<div class="landing-section">
+<div class="content-container">
+<div class="intro-text">
+<div class="pulse-dot"></div>
+<span>While everyone's chasing the algorithm...</span>
+</div>
+
+<h1 class="main-headline">
+Target Like a <span class="highlight">Laser</span> and Reach Only The 0.001% Ready to Buy
+</h1>
+
+<p class="sub-headline">
+(Inject steroids into Meta's AI and reach only people who match your product 100%)
+</p>
+
+<div class="screenshot-container">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742" alt="14.84 ROAS Results" class="screenshot">
+</div>
+
+<div class="pricing-section">
+<p class="price-text">
+<span class="original-price">$197</span> <span class="current-price">Only $39 Today</span>
+</p>
+
+<button class="cta-button" id="laser-add-to-cart-btn" data-variant-id="43187825901661">
+<span>YES! I Want Laser Targeting</span>
+</button>
+
+<div class="bundle-wrapper">
+<span>$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a></span>
+</div>
+
+<div class="secure-payment">
+<div class="secure-payment-icon"></div>
+<span>Secure 256-bit SSL encrypted payment</span>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    const CONFIG = {
+        VARIANT_ID: '43187825901661',
+        DEBUG: true,
+        RETRY_ATTEMPTS: 3,
+        RETRY_DELAY: 500
+    };
+    
+    // ============================================
+    // LOGGING UTILITIES
+    // ============================================
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log(`[Laser Targeting] ℹ️ ${msg}`, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log(`[Laser Targeting] ✅ ${msg}`, data || ''),
+        error: (msg, data) => console.error(`[Laser Targeting] ❌ ${msg}`, data || ''),
+        warn: (msg, data) => console.warn(`[Laser Targeting] ⚠️ ${msg}`, data || '')
+    };
+    
+    // ============================================
+    // CLEANUP INTERFERING ELEMENTS
+    // ============================================
+    function removeInterferingElements() {
+        log.info('Removing interfering popups and overlays...');
+        
+        const interferingSelectors = [
+            '[class*="rewards"]', '[class*="Rewards"]',
+            '[id*="rewards"]', '[id*="Rewards"]',
+            '.smile-launcher-frame', 'iframe[title*="Smile.io"]',
+            '[class*="smile-"]', '.loyalty-modal', '.rewards-launcher',
+            '.modal-backdrop', '.popup-overlay'
+        ];
+        
+        let removed = 0;
+        interferingSelectors.forEach(selector => {
+            try {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                    if (el.remove) el.remove();
+                    removed++;
+                });
+            } catch (e) {
+                // Ignore selector errors
+            }
+        });
+        
+        if (removed > 0) {
+            log.success(`Removed ${removed} interfering elements`);
+        }
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 1: SHOPIFY AJAX API
+    // ============================================
+    async function addToCartAjaxAPI(variantId) {
+        log.info('Attempting Method 1: Shopify Ajax API...');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{
+                    id: parseInt(variantId),
+                    quantity: 1
+                }]
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Ajax API failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 2: FORM DATA
+    // ============================================
+    async function addToCartFormData(variantId) {
+        log.info('Attempting Method 2: FormData...');
+        
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`FormData failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 3: SIMPLE JSON
+    // ============================================
+    async function addToCartSimpleJSON(variantId) {
+        log.info('Attempting Method 3: Simple JSON...');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Simple JSON failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 4: FALLBACK FORM SUBMIT
+    // ============================================
+    function addToCartFormSubmit(variantId) {
+        log.info('Attempting Method 4: Form Submit (fallback)...');
+        
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/cart/add';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = variantId;
+        
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'quantity';
+        qtyInput.value = '1';
+        
+        form.appendChild(idInput);
+        form.appendChild(qtyInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve({ method: 'form_submit', status: 'submitted' }), 1000);
+        });
+    }
+    
+    // ============================================
+    // MAIN ADD TO CART FUNCTION WITH FALLBACKS
+    // ============================================
+    async function addToCart(variantId) {
+        log.info(`Starting add to cart process for variant: ${variantId}`);
+        
+        const methods = [
+            { name: 'Ajax API', fn: addToCartAjaxAPI },
+            { name: 'FormData', fn: addToCartFormData },
+            { name: 'Simple JSON', fn: addToCartSimpleJSON },
+            { name: 'Form Submit', fn: addToCartFormSubmit }
+        ];
+        
+        for (const method of methods) {
+            try {
+                log.info(`Trying: ${method.name}`);
+                const result = await method.fn(variantId);
+                log.success(`${method.name} succeeded!`, result);
+                return result;
+            } catch (error) {
+                log.warn(`${method.name} failed:`, error.message);
+                // Continue to next method
+            }
+        }
+        
+        throw new Error('All add-to-cart methods failed');
+    }
+    
+    // ============================================
+    // REFRESH CART UI
+    // ============================================
+    async function refreshCart() {
+        log.info('Refreshing cart...');
+        
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            
+            log.success(`Cart updated: ${cart.item_count} items, Total: ${cart.total_price}`);
+            
+            // Update cart count elements
+            const cartCountSelectors = [
+                '.cart-count', '.cart-count-bubble', '[data-cart-count]',
+                '.cart__count', '#cart-icon-bubble'
+            ];
+            
+            cartCountSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.textContent = cart.item_count;
+                    el.setAttribute('data-cart-count', cart.item_count);
+                });
+            });
+            
+            // Trigger Shopify events
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+                bubbles: true,
+                detail: { cart }
+            }));
+            
+            if (window.Shopify && window.Shopify.theme) {
+                document.documentElement.dispatchEvent(new CustomEvent('cart:updated', {
+                    bubbles: true,
+                    detail: { cart }
+                }));
+            }
+            
+            // Try to open cart drawer
+            setTimeout(() => {
+                openCartDrawer();
+            }, 300);
+            
+            return cart;
+            
+        } catch (error) {
+            log.error('Failed to refresh cart:', error);
+        }
+    }
+    
+    // ============================================
+    // OPEN CART DRAWER
+    // ============================================
+    function openCartDrawer() {
+        log.info('Attempting to open cart drawer...');
+        
+        // Method 1: Look for cart drawer trigger
+        const cartTriggers = [
+            '[href="/cart"]',
+            '.cart-link',
+            '.cart-icon',
+            '.header__icon--cart',
+            '[data-cart-drawer]',
+            '#cart-icon-bubble'
+        ];
+        
+        for (const selector of cartTriggers) {
+            const element = document.querySelector(selector);
+            if (element) {
+                log.info(`Found cart trigger: ${selector}`);
+                element.click();
+                return true;
+            }
+        }
+        
+        // Method 2: Trigger theme-specific events
+        const events = ['theme:cart:open', 'cart:open', 'drawer:open'];
+        events.forEach(eventName => {
+            document.documentElement.dispatchEvent(new CustomEvent(eventName, {
+                bubbles: true
+            }));
+        });
+        
+        log.warn('Could not find cart drawer trigger');
+        return false;
+    }
+    
+    // ============================================
+    // BUTTON CLICK HANDLER
+    // ============================================
+    async function handleButtonClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        log.info('Button clicked!');
+        
+        // Remove interfering elements
+        removeInterferingElements();
+        
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+        
+        // Disable button
+        button.disabled = true;
+        button.classList.add('loading');
+        button.style.cursor = 'wait';
+        button.innerHTML = '<span style="font-size: 17.38px; color: #ffffff; font-weight: 600;">⏳ ADDING TO CART...</span>';
+        
+        try {
+            // Add to cart with retries
+            const result = await addToCart(variantId);
+            
+            log.success('Successfully added to cart!', result);
+            
+            // Show success
+            button.style.background = 'radial-gradient(ellipse at bottom, #FF9999 0%, #FF0000 50%)';
+            button.innerHTML = '<span style="font-size: 17.38px; color: #ffffff; font-weight: 600;">✓ ADDED SUCCESSFULLY!</span>';
+            
+            // Refresh cart
+            await refreshCart();
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 2000);
+            
+        } catch (error) {
+            log.error('Failed to add to cart:', error);
+            
+            // Show error
+            button.style.background = '#d32f2f';
+            button.innerHTML = '<span style="font-size: 17.38px; color: #ffffff; font-weight: 600;">❌ ERROR - PLEASE TRY AGAIN</span>';
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 3000);
+        }
+    }
+    
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    function init() {
+        log.info('Initializing Laser Targeting System...');
+        
+        const button = document.getElementById('laser-add-to-cart-btn');
+        
+        if (!button) {
+            log.error('Button not found! Retrying...');
+            setTimeout(init, 500);
+            return;
+        }
+        
+        log.success('Button found!');
+        
+        // Remove old event listeners
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Add click handler
+        newButton.addEventListener('click', handleButtonClick);
+        
+        // Ensure button is on top
+        newButton.style.position = 'relative';
+        newButton.style.zIndex = '999999';
+        
+        log.success('Laser Targeting System ready! 🚀');
+    }
+    
+    // ============================================
+    // START THE SYSTEM
+    // ============================================
+    
+    // Remove interfering elements immediately
+    removeInterferingElements();
+    
+    // Continue removing them periodically
+    [1000, 2000, 3000, 5000].forEach(delay => {
+        setTimeout(removeInterferingElements, delay);
+    });
+    
+    // Initialize when ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    // Backup initialization
+    setTimeout(init, 500);
+    setTimeout(init, 1500);
+    
+    log.info('Laser Targeting System script loaded successfully! 🎉');
+    
+})();
+</script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laser Targeting Section 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+.profit-engines-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 60px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.profit-engines-mega-section * {
+box-sizing: border-box !important;
+}
+.profit-engines-mega-section::before,
+.profit-engines-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.profit-engines-mega-section::before {
+left: -100vw !important;
+}
+.profit-engines-mega-section::after {
+right: -100vw !important;
+}
+.content-wrapper {
+max-width: 800px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+text-align: center !important;
+}
+.section-title {
+font-size: 42px !important;
+font-weight: 800 !important;
+color: #000000 !important;
+margin: 0 0 25px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.section-title .highlight-red {
+color: #ff0017 !important;
+}
+.problem-text {
+font-size: 20px !important;
+color: #333333 !important;
+margin: 0 0 18px 0 !important;
+line-height: 1.7 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.problem-text strong {
+font-weight: 700 !important;
+color: #ff0017 !important;
+}
+.emphasized-text {
+font-size: 24px !important;
+font-weight: 700 !important;
+color: #000000 !important;
+margin: 40px 0 25px 0 !important;
+line-height: 1.4 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.emphasized-text .highlight-red {
+color: #ff0017 !important;
+}
+
+.emphasized-text-large {
+font-size: 25.68px !important;
+font-weight: 700 !important;
+color: #000000 !important;
+margin: 40px 0 25px 0 !important;
+line-height: 1.4 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.emphasized-text-large .highlight-red {
+color: #ff0017 !important;
+}
+
+.spacer-large {
+height: 60px !important;
+display: block !important;
+}
+
+@media (max-width: 768px) {
+.profit-engines-mega-section {
+padding: 40px 0 !important;
+}
+.section-title {
+font-size: 32px !important;
+}
+.problem-text {
+font-size: 18px !important;
+}
+.emphasized-text {
+font-size: 20px !important;
+}
+.emphasized-text-large {
+font-size: 23px !important;
+}
+.spacer-large {
+height: 80px !important;
+}
+}
+</style>
+</head>
+<body>
+<div class="profit-engines-mega-section">
+<div class="content-wrapper">
+<h2 class="section-title">
+While Everyone's Playing <span class="highlight-red">Russian Roulette</span> With Their Ad Budget...
+</h2>
+<p class="problem-text">
+Cold audiences...
+</p>
+<p class="problem-text">
+Warm audiences...
+</p>
+<p class="problem-text">
+Interest-based targeting...
+</p>
+<p class="problem-text">
+Lookalikes...
+</p>
+<p class="problem-text" style="margin-top: 35px;">
+All of them acting like it's the Wild West,<br>
+relying on Zuckerberg and praying the algorithm will bless them...
+</p>
+<p class="emphasized-text" style="margin-top: 50px;">
+You're burning <strong>$50, $100, $500 a day</strong> on Meta ads.
+</p>
+<p class="problem-text">
+That's 5,000 to 50,000 impressions daily.
+</p>
+<p class="problem-text">
+Enough audience to turn you into a millionaire if everyone bought.
+</p>
+<p class="emphasized-text-large" style="margin-top: 40px;">
+But <span class="highlight-red">99.7%</span> of your audience isn't relevant.
+</p>
+<p class="problem-text" style="margin-top: 25px;">
+Only 1 in 3,000 to 7,000 people will actually buy.
+</p>
+
+<div class="spacer-large"></div>
+
+<p class="emphasized-text">
+The problem isn't your product.<br>
+The problem isn't your creative.<br>
+The problem is <span class="highlight-red">who's seeing it.</span>
+</p>
+</div>
+</div>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laser Targeting Section 2</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+.profit-engines-mega-section {
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+padding: 60px 0 !important;
+background: #ffffff !important;
+font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+box-sizing: border-box !important;
+}
+.profit-engines-mega-section * {
+box-sizing: border-box !important;
+}
+.profit-engines-mega-section::before,
+.profit-engines-mega-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -2 !important;
+}
+.profit-engines-mega-section::before {
+left: -100vw !important;
+}
+.profit-engines-mega-section::after {
+right: -100vw !important;
+}
+.content-wrapper {
+max-width: 800px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+text-align: center !important;
+}
+.section-title {
+font-size: 42px !important;
+font-weight: 800 !important;
+color: #000000 !important;
+margin: 0 0 25px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.section-title .highlight-red {
+color: #ff0017 !important;
+}
+.problem-text {
+font-size: 20px !important;
+color: #333333 !important;
+margin: 0 0 18px 0 !important;
+line-height: 1.7 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.problem-text strong {
+font-weight: 700 !important;
+color: #ff0017 !important;
+}
+.emphasized-text {
+font-size: 24px !important;
+font-weight: 700 !important;
+color: #000000 !important;
+margin: 40px 0 25px 0 !important;
+line-height: 1.4 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.emphasized-text .highlight-red {
+color: #ff0017 !important;
+}
+
+.emphasized-text-large {
+font-size: 25.68px !important;
+font-weight: 700 !important;
+color: #000000 !important;
+margin: 40px 0 25px 0 !important;
+line-height: 1.4 !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+.emphasized-text-large .highlight-red {
+color: #ff0017 !important;
+}
+
+.spacer-large {
+height: 60px !important;
+display: block !important;
+}
+
+@media (max-width: 768px) {
+.profit-engines-mega-section {
+padding: 40px 0 !important;
+}
+.section-title {
+font-size: 32px !important;
+}
+.problem-text {
+font-size: 18px !important;
+}
+.emphasized-text {
+font-size: 20px !important;
+}
+.emphasized-text-large {
+font-size: 23px !important;
+}
+.spacer-large {
+height: 80px !important;
+}
+}
+</style>
+</head>
+<body>
+<div class="profit-engines-mega-section">
+<div class="content-wrapper">
+<h2 class="section-title">
+While Everyone's Playing <span class="highlight-red">Russian Roulette</span> With Their Ad Budget...
+</h2>
+<p class="problem-text">
+Cold audiences...
+</p>
+<p class="problem-text">
+Warm audiences...
+</p>
+<p class="problem-text">
+Interest-based targeting...
+</p>
+<p class="problem-text">
+Lookalikes...
+</p>
+<p class="problem-text" style="margin-top: 35px;">
+All of them acting like it's the Wild West,<br>
+relying on Zuckerberg and praying the algorithm will bless them...
+</p>
+<p class="emphasized-text" style="margin-top: 50px;">
+You're burning <strong>$50, $100, $500 a day</strong> on Meta ads.
+</p>
+<p class="problem-text">
+That's 5,000 to 50,000 impressions daily.
+</p>
+<p class="problem-text">
+Enough audience to turn you into a millionaire if everyone bought.
+</p>
+<p class="emphasized-text-large" style="margin-top: 40px;">
+But <span class="highlight-red">99.7%</span> of your audience isn't relevant.
+</p>
+<p class="problem-text" style="margin-top: 25px;">
+Only 1 in 3,000 to 7,000 people will actually buy.
+</p>
+
+<div class="spacer-large"></div>
+
+<p class="emphasized-text">
+The problem isn't your product.<br>
+The problem isn't your creative.<br>
+The problem is <span class="highlight-red">who's seeing it.</span>
+</p>
+</div>
+</div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laser Targeting Section 5 - Solution</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+.solution-section-wrapper-isolated {
+all: initial !important;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+max-width: 100vw !important;
+font-family: 'Open Sans', sans-serif !important;
+background-color: #ffffff !important;
+color: #000000 !important;
+display: block !important;
+padding: 70px 20px !important;
+box-sizing: border-box !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+font-size: 16px !important;
+font-weight: 400 !important;
+text-align: left !important;
+border: none !important;
+outline: none !important;
+box-shadow: none !important;
+}
+
+.solution-section-wrapper-isolated::before,
+.solution-section-wrapper-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -1 !important;
+}
+
+.solution-section-wrapper-isolated::before {
+left: -100vw !important;
+}
+
+.solution-section-wrapper-isolated::after {
+right: -100vw !important;
+}
+
+.solution-section-wrapper-isolated *,
+.solution-section-wrapper-isolated *::before,
+.solution-section-wrapper-isolated *::after {
+all: unset !important;
+box-sizing: border-box !important;
+}
+
+.solution-section-wrapper-isolated .content-wrapper-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+text-align: center !important;
+position: relative !important;
+z-index: 1 !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .pre-headline-isolated {
+font-size: 16px !important;
+color: #ff0017 !important;
+font-weight: 700 !important;
+text-transform: uppercase !important;
+letter-spacing: 1.5px !important;
+margin: 0 0 25px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .main-headline-isolated {
+font-size: 48px !important;
+font-weight: 900 !important;
+color: #000000 !important;
+margin: 0 0 30px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .main-headline-isolated .highlight-red-isolated {
+color: #ff0017 !important;
+}
+
+.solution-section-wrapper-isolated .body-text-isolated {
+font-size: 20px !important;
+color: #333333 !important;
+margin: 0 0 25px 0 !important;
+line-height: 1.7 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .body-text-isolated strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+
+.solution-section-wrapper-isolated .quote-box-isolated {
+background: linear-gradient(135deg, #fafafa 0%, #f8f8f8 100%) !important;
+border: 2px solid #e8e8e8 !important;
+border-left: 6px solid #ff0017 !important;
+padding: 45px 55px !important;
+margin: 60px auto !important;
+max-width: 850px !important;
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06) !important;
+text-align: left !important;
+display: block !important;
+border-radius: 8px !important;
+position: relative !important;
+}
+
+.solution-section-wrapper-isolated .quote-box-isolated::before {
+content: '"' !important;
+position: absolute !important;
+top: 15px !important;
+left: 25px !important;
+font-size: 80px !important;
+color: rgba(255, 0, 23, 0.1) !important;
+font-family: Georgia, serif !important;
+line-height: 1 !important;
+}
+
+.solution-section-wrapper-isolated .quote-text-isolated {
+font-size: 24px !important;
+font-style: italic !important;
+color: #222222 !important;
+line-height: 1.7 !important;
+margin: 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+position: relative !important;
+z-index: 1 !important;
+}
+
+.solution-section-wrapper-isolated .quote-text-isolated .highlight-red-isolated {
+color: #ff0017 !important;
+font-weight: 700 !important;
+font-style: normal !important;
+}
+
+.solution-section-wrapper-isolated .quote-text-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.solution-section-wrapper-isolated .results-showcase-isolated {
+background: #000000 !important;
+border-radius: 12px !important;
+padding: 50px 40px !important;
+margin: 60px 0 !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .results-pre-text-isolated {
+font-size: 18px !important;
+color: #ff0017 !important;
+font-weight: 600 !important;
+margin: 0 0 20px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .results-headline-isolated {
+font-size: 36px !important;
+font-weight: 900 !important;
+color: #ffffff !important;
+margin: 0 0 35px 0 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .results-headline-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.solution-section-wrapper-isolated .results-image-container-isolated {
+margin: 30px 0 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .results-image-isolated {
+max-width: 100% !important;
+height: auto !important;
+border-radius: 8px !important;
+box-shadow: 0 10px 40px rgba(255, 0, 23, 0.4) !important;
+display: inline-block !important;
+}
+
+.solution-section-wrapper-isolated .results-caption-isolated {
+font-size: 16px !important;
+color: #cccccc !important;
+margin: 20px 0 0 0 !important;
+font-style: italic !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .results-caption-isolated strong {
+color: #ff0017 !important;
+font-weight: 700 !important;
+}
+
+.solution-section-wrapper-isolated .results-caption-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.solution-section-wrapper-isolated .method-description-isolated {
+text-align: left !important;
+max-width: 800px !important;
+margin: 50px auto !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated {
+font-size: 19px !important;
+color: #333333 !important;
+margin: 0 0 22px 0 !important;
+line-height: 1.8 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated .highlight-red-isolated {
+color: #ff0017 !important;
+font-weight: 700 !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated em {
+font-style: italic !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.solution-section-wrapper-isolated .cta-wrapper-isolated {
+margin: 60px 0 40px 0 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .cta-button-isolated {
+all: unset !important;
+display: inline-block !important;
+background: radial-gradient(ellipse at bottom, #FA7D7D 0%, #FA1717 40%) !important;
+color: #ffffff !important;
+border-radius: 35px !important;
+font-size: 20px !important;
+font-weight: 700 !important;
+padding: 22px 50px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+text-decoration: none !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 6px 20px rgba(255, 0, 23, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .cta-button-isolated:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 8px 25px rgba(255, 0, 23, 0.5) !important;
+}
+
+.solution-section-wrapper-isolated .cta-button-isolated.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+
+.solution-section-wrapper-isolated .bundle-text-isolated {
+font-size: 14px !important;
+color: #666666 !important;
+margin: 15px 0 0 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .bundle-text-isolated a {
+color: #ff0017 !important;
+text-decoration: underline !important;
+}
+
+@media (max-width: 768px) {
+.solution-section-wrapper-isolated {
+padding: 50px 20px !important;
+}
+
+.solution-section-wrapper-isolated .main-headline-isolated {
+font-size: 34px !important;
+}
+
+.solution-section-wrapper-isolated .body-text-isolated {
+font-size: 18px !important;
+}
+
+.solution-section-wrapper-isolated .quote-box-isolated {
+padding: 35px 30px !important;
+}
+
+.solution-section-wrapper-isolated .quote-text-isolated {
+font-size: 20px !important;
+}
+
+.solution-section-wrapper-isolated .results-showcase-isolated {
+padding: 35px 25px !important;
+}
+
+.solution-section-wrapper-isolated .results-headline-isolated {
+font-size: 28px !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated {
+font-size: 17px !important;
+}
+}
+</style>
+</head>
+<body>
+<div class="solution-section-wrapper-isolated">
+<div class="content-wrapper-isolated">
+<p class="pre-headline-isolated">The Breakthrough Method</p>
+
+<h2 class="main-headline-isolated">
+Train Meta's AI To Work Like a <span class="highlight-red-isolated">Bloodhound</span>
+</h2>
+
+<p class="body-text-isolated">
+Hunting down <strong>only</strong> the people who match your product 100%.
+</p>
+
+<div class="quote-box-isolated">
+<p class="quote-text-isolated">
+"In marketing, all you need to do is match <span class="highlight-red-isolated">the right product to the right person.</span>
+<br><br>
+You're either chasing a product that fits everyone - or you're finding the people that match your product.
+<br><br>
+The first option leaves you broke.<br>
+<span class="highlight-red-isolated">The second one makes you rich.</span>"
+</p>
+</div>
+
+<div class="results-showcase-isolated">
+<p class="results-pre-text-isolated">AND HERE'S THE RESULT...</p>
+
+<h3 class="results-headline-isolated">
+14.84 ROAS Over 5 Months<br>
+With 23+ Million Impressions
+</h3>
+
+<div class="results-image-container-isolated">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742" alt="14.84 ROAS Results" class="results-image-isolated">
+</div>
+
+<p class="results-caption-isolated">
+<strong>Real results.</strong> Not cold traffic gambling. Not algorithm prayers.<br>
+Surgical precision targeting that prints money.
+</p>
+</div>
+
+<div class="method-description-isolated">
+<p class="method-text-isolated">
+<strong>Pay attention...</strong>
+</p>
+
+<p class="method-text-isolated">
+You're about to discover methods that <span class="highlight-red-isolated">sharpen Meta's AI</span>, inject steroids into the algorithm...
+</p>
+
+<p class="method-text-isolated">
+So it works <em>for you</em>...
+</p>
+
+<p class="method-text-isolated">
+And finds the <strong>right person</strong>, for the <strong>right product</strong>...
+</p>
+
+<p class="method-text-isolated">
+At the <span class="highlight-red-isolated">exact moment</span> they're ready to buy.
+</p>
+
+<p class="method-text-isolated" style="margin-top: 35px !important;">
+For years, we've refined this tactic to leave others behind.
+</p>
+
+<p class="method-text-isolated">
+We've reached a point where <strong>we only target the right people</strong> - and only them.
+</p>
+
+<p class="method-text-isolated">
+No more wasted impressions. No more hoping.<br>
+Just <span class="highlight-red-isolated">laser-focused precision.</span>
+</p>
+</div>
+
+<div class="cta-wrapper-isolated">
+<button class="cta-button-isolated" id="laser-section5-btn" data-variant-id="43187825901661">
+Get Laser Targeting Now - $39
+</button>
+<p class="bundle-text-isolated">
+$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder">building a bundle</a>
+</p>
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+    
+    const CONFIG = {
+        VARIANT_ID: '43187825901661',
+        DEBUG: true
+    };
+    
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log(`[Laser Section 5] ℹ️ ${msg}`, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log(`[Laser Section 5] ✅ ${msg}`, data || ''),
+        error: (msg, data) => console.error(`[Laser Section 5] ❌ ${msg}`, data || '')
+    };
+    
+    function removeInterferingElements() {
+        const interferingSelectors = [
+            '[class*="rewards"]', '[class*="Rewards"]',
+            '[id*="rewards"]', '[id*="Rewards"]',
+            '.smile-launcher-frame', 'iframe[title*="Smile.io"]',
+            '[class*="smile-"]', '.loyalty-modal', '.rewards-launcher',
+            '.modal-backdrop', '.popup-overlay'
+        ];
+        
+        interferingSelectors.forEach(selector => {
+            try {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                    if (el.remove) el.remove();
+                });
+            } catch (e) {}
+        });
+    }
+    
+    async function addToCartAjaxAPI(variantId) {
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{
+                    id: parseInt(variantId),
+                    quantity: 1
+                }]
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Ajax API failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    async function addToCartFormData(variantId) {
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`FormData failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    async function addToCartSimpleJSON(variantId) {
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Simple JSON failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    function addToCartFormSubmit(variantId) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/cart/add';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = variantId;
+        
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'quantity';
+        qtyInput.value = '1';
+        
+        form.appendChild(idInput);
+        form.appendChild(qtyInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve({ method: 'form_submit', status: 'submitted' }), 1000);
+        });
+    }
+    
+    async function addToCart(variantId) {
+        const methods = [
+            { name: 'Ajax API', fn: addToCartAjaxAPI },
+            { name: 'FormData', fn: addToCartFormData },
+            { name: 'Simple JSON', fn: addToCartSimpleJSON },
+            { name: 'Form Submit', fn: addToCartFormSubmit }
+        ];
+        
+        for (const method of methods) {
+            try {
+                const result = await method.fn(variantId);
+                log.success(`${method.name} succeeded!`, result);
+                return result;
+            } catch (error) {
+                log.info(`${method.name} failed, trying next...`);
+            }
+        }
+        
+        throw new Error('All add-to-cart methods failed');
+    }
+    
+    async function refreshCart() {
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            
+            const cartCountSelectors = [
+                '.cart-count', '.cart-count-bubble', '[data-cart-count]',
+                '.cart__count', '#cart-icon-bubble'
+            ];
+            
+            cartCountSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.textContent = cart.item_count;
+                    el.setAttribute('data-cart-count', cart.item_count);
+                });
+            });
+            
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+                bubbles: true,
+                detail: { cart }
+            }));
+            
+            if (window.Shopify && window.Shopify.theme) {
+                document.documentElement.dispatchEvent(new CustomEvent('cart:updated', {
+                    bubbles: true,
+                    detail: { cart }
+                }));
+            }
+            
+            setTimeout(() => {
+                openCartDrawer();
+            }, 300);
+            
+            return cart;
+            
+        } catch (error) {
+            log.error('Failed to refresh cart:', error);
+        }
+    }
+    
+    function openCartDrawer() {
+        const cartTriggers = [
+            '[href="/cart"]',
+            '.cart-link',
+            '.cart-icon',
+            '.header__icon--cart',
+            '[data-cart-drawer]',
+            '#cart-icon-bubble'
+        ];
+        
+        for (const selector of cartTriggers) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.click();
+                return true;
+            }
+        }
+        
+        const events = ['theme:cart:open', 'cart:open', 'drawer:open'];
+        events.forEach(eventName => {
+            document.documentElement.dispatchEvent(new CustomEvent(eventName, {
+                bubbles: true
+            }));
+        });
+        
+        return false;
+    }
+    
+    async function handleButtonClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        removeInterferingElements();
+        
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+        
+        button.disabled = true;
+        button.classList.add('loading');
+        button.style.cursor = 'wait';
+        button.innerHTML = '⏳ ADDING TO CART...';
+        
+        try {
+            const result = await addToCart(variantId);
+            
+            button.style.background = 'radial-gradient(ellipse at bottom, #FA7D7D 0%, #FA1717 40%)';
+            button.innerHTML = '✓ ADDED SUCCESSFULLY!';
+            
+            await refreshCart();
+            
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 2000);
+            
+        } catch (error) {
+            log.error('Failed to add to cart:', error);
+            
+            button.style.background = '#d32f2f';
+            button.innerHTML = '❌ ERROR - PLEASE TRY AGAIN';
+            
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 3000);
+        }
+    }
+    
+    function init() {
+        const button = document.getElementById('laser-section5-btn');
+        
+        if (!button) {
+            setTimeout(init, 500);
+            return;
+        }
+        
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', handleButtonClick);
+        
+        newButton.style.position = 'relative';
+        newButton.style.zIndex = '999999';
+        
+        log.success('Section 5 ready!');
+    }
+    
+    removeInterferingElements();
+    [1000, 2000, 3000, 5000].forEach(delay => {
+        setTimeout(removeInterferingElements, delay);
+    });
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    setTimeout(init, 500);
+    setTimeout(init, 1500);
+    
+})();
+</script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laser Targeting Section 5 - Solution</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+.solution-section-wrapper-isolated {
+all: initial !important;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+max-width: 100vw !important;
+font-family: 'Open Sans', sans-serif !important;
+background-color: #ffffff !important;
+color: #000000 !important;
+display: block !important;
+padding: 70px 20px !important;
+box-sizing: border-box !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+font-size: 16px !important;
+font-weight: 400 !important;
+text-align: left !important;
+border: none !important;
+outline: none !important;
+box-shadow: none !important;
+}
+
+.solution-section-wrapper-isolated::before,
+.solution-section-wrapper-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -1 !important;
+}
+
+.solution-section-wrapper-isolated::before {
+left: -100vw !important;
+}
+
+.solution-section-wrapper-isolated::after {
+right: -100vw !important;
+}
+
+.solution-section-wrapper-isolated *,
+.solution-section-wrapper-isolated *::before,
+.solution-section-wrapper-isolated *::after {
+all: unset !important;
+box-sizing: border-box !important;
+}
+
+.solution-section-wrapper-isolated .content-wrapper-isolated {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+text-align: center !important;
+position: relative !important;
+z-index: 1 !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .pre-headline-isolated {
+font-size: 16px !important;
+color: #ff0017 !important;
+font-weight: 700 !important;
+text-transform: uppercase !important;
+letter-spacing: 1.5px !important;
+margin: 0 0 25px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .main-headline-isolated {
+font-size: 48px !important;
+font-weight: 900 !important;
+color: #000000 !important;
+margin: 0 0 30px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .main-headline-isolated .highlight-red-isolated {
+color: #ff0017 !important;
+}
+
+.solution-section-wrapper-isolated .body-text-isolated {
+font-size: 20px !important;
+color: #333333 !important;
+margin: 0 0 25px 0 !important;
+line-height: 1.7 !important;
+font-weight: 400 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .body-text-isolated strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+
+.solution-section-wrapper-isolated .quote-box-isolated {
+background: linear-gradient(135deg, #fafafa 0%, #f8f8f8 100%) !important;
+border: 2px solid #e8e8e8 !important;
+border-left: 6px solid #ff0017 !important;
+padding: 45px 55px !important;
+margin: 60px auto !important;
+max-width: 850px !important;
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06) !important;
+text-align: left !important;
+display: block !important;
+border-radius: 8px !important;
+position: relative !important;
+}
+
+.solution-section-wrapper-isolated .quote-box-isolated::before {
+content: '"' !important;
+position: absolute !important;
+top: 15px !important;
+left: 25px !important;
+font-size: 80px !important;
+color: rgba(255, 0, 23, 0.1) !important;
+font-family: Georgia, serif !important;
+line-height: 1 !important;
+}
+
+.solution-section-wrapper-isolated .quote-text-isolated {
+font-size: 24px !important;
+font-style: italic !important;
+color: #222222 !important;
+line-height: 1.7 !important;
+margin: 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+position: relative !important;
+z-index: 1 !important;
+}
+
+.solution-section-wrapper-isolated .quote-text-isolated .highlight-red-isolated {
+color: #ff0017 !important;
+font-weight: 700 !important;
+font-style: normal !important;
+}
+
+.solution-section-wrapper-isolated .quote-text-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.solution-section-wrapper-isolated .results-showcase-isolated {
+background: #000000 !important;
+border-radius: 12px !important;
+padding: 50px 40px !important;
+margin: 60px 0 !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .results-pre-text-isolated {
+font-size: 18px !important;
+color: #ff0017 !important;
+font-weight: 600 !important;
+margin: 0 0 20px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .results-headline-isolated {
+font-size: 36px !important;
+font-weight: 900 !important;
+color: #ffffff !important;
+margin: 0 0 35px 0 !important;
+line-height: 1.3 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .results-headline-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.solution-section-wrapper-isolated .results-image-container-isolated {
+margin: 30px 0 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .results-image-isolated {
+max-width: 100% !important;
+height: auto !important;
+border-radius: 8px !important;
+box-shadow: 0 10px 40px rgba(255, 0, 23, 0.4) !important;
+display: inline-block !important;
+}
+
+.solution-section-wrapper-isolated .results-caption-isolated {
+font-size: 16px !important;
+color: #cccccc !important;
+margin: 20px 0 0 0 !important;
+font-style: italic !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .results-caption-isolated strong {
+color: #ff0017 !important;
+font-weight: 700 !important;
+}
+
+.solution-section-wrapper-isolated .results-caption-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.solution-section-wrapper-isolated .method-description-isolated {
+text-align: left !important;
+max-width: 800px !important;
+margin: 50px auto !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated {
+font-size: 19px !important;
+color: #333333 !important;
+margin: 0 0 22px 0 !important;
+line-height: 1.8 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated strong {
+font-weight: 700 !important;
+color: #000000 !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated .highlight-red-isolated {
+color: #ff0017 !important;
+font-weight: 700 !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated em {
+font-style: italic !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.solution-section-wrapper-isolated .cta-wrapper-isolated {
+margin: 60px 0 40px 0 !important;
+display: block !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .cta-button-isolated {
+all: unset !important;
+display: inline-block !important;
+background: radial-gradient(ellipse at bottom, #FA7D7D 0%, #FA1717 40%) !important;
+color: #ffffff !important;
+border-radius: 35px !important;
+font-size: 20px !important;
+font-weight: 700 !important;
+padding: 22px 50px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+text-decoration: none !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 6px 20px rgba(255, 0, 23, 0.4) !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+box-sizing: border-box !important;
+text-align: center !important;
+}
+
+.solution-section-wrapper-isolated .cta-button-isolated:hover {
+transform: translateY(-2px) !important;
+box-shadow: 0 8px 25px rgba(255, 0, 23, 0.5) !important;
+}
+
+.solution-section-wrapper-isolated .cta-button-isolated.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+
+.solution-section-wrapper-isolated .bundle-text-isolated {
+font-size: 14px !important;
+color: #666666 !important;
+margin: 15px 0 0 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+}
+
+.solution-section-wrapper-isolated .bundle-text-isolated a {
+color: #ff0017 !important;
+text-decoration: underline !important;
+}
+
+@media (max-width: 768px) {
+.solution-section-wrapper-isolated {
+padding: 50px 20px !important;
+}
+
+.solution-section-wrapper-isolated .main-headline-isolated {
+font-size: 34px !important;
+}
+
+.solution-section-wrapper-isolated .body-text-isolated {
+font-size: 18px !important;
+}
+
+.solution-section-wrapper-isolated .quote-box-isolated {
+padding: 35px 30px !important;
+}
+
+.solution-section-wrapper-isolated .quote-text-isolated {
+font-size: 20px !important;
+}
+
+.solution-section-wrapper-isolated .results-showcase-isolated {
+padding: 35px 25px !important;
+}
+
+.solution-section-wrapper-isolated .results-headline-isolated {
+font-size: 28px !important;
+}
+
+.solution-section-wrapper-isolated .method-text-isolated {
+font-size: 17px !important;
+}
+}
+</style>
+</head>
+<body>
+<div class="solution-section-wrapper-isolated">
+<div class="content-wrapper-isolated">
+<p class="pre-headline-isolated">The Breakthrough Method</p>
+
+<h2 class="main-headline-isolated">
+Train Meta's AI To Work Like a <span class="highlight-red-isolated">Bloodhound</span>
+</h2>
+
+<p class="body-text-isolated">
+Hunting down <strong>only</strong> the people who match your product 100%.
+</p>
+
+<div class="quote-box-isolated">
+<p class="quote-text-isolated">
+"In marketing, all you need to do is match <span class="highlight-red-isolated">the right product to the right person.</span>
+<br><br>
+You're either chasing a product that fits everyone - or you're finding the people that match your product.
+<br><br>
+The first option leaves you broke.<br>
+<span class="highlight-red-isolated">The second one makes you rich.</span>"
+</p>
+</div>
+
+<div class="results-showcase-isolated">
+<p class="results-pre-text-isolated">AND HERE'S THE RESULT...</p>
+
+<h3 class="results-headline-isolated">
+14.84 ROAS Over 5 Months<br>
+With 23+ Million Impressions
+</h3>
+
+<div class="results-image-container-isolated">
+<img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T183609.222.png?v=1743008742" alt="14.84 ROAS Results" class="results-image-isolated">
+</div>
+
+<p class="results-caption-isolated">
+<strong>Real results.</strong> Not cold traffic gambling. Not algorithm prayers.<br>
+Surgical precision targeting that prints money.
+</p>
+</div>
+
+<div class="method-description-isolated">
+<p class="method-text-isolated">
+<strong>Pay attention...</strong>
+</p>
+
+<p class="method-text-isolated">
+You're about to discover methods that <span class="highlight-red-isolated">sharpen Meta's AI</span>, inject steroids into the algorithm...
+</p>
+
+<p class="method-text-isolated">
+So it works <em>for you</em>...
+</p>
+
+<p class="method-text-isolated">
+And finds the <strong>right person</strong>, for the <strong>right product</strong>...
+</p>
+
+<p class="method-text-isolated">
+At the <span class="highlight-red-isolated">exact moment</span> they're ready to buy.
+</p>
+
+<p class="method-text-isolated" style="margin-top: 35px !important;">
+For years, we've refined this tactic to leave others behind.
+</p>
+
+<p class="method-text-isolated">
+We've reached a point where <strong>we only target the right people</strong> - and only them.
+</p>
+
+<p class="method-text-isolated">
+No more wasted impressions. No more hoping.<br>
+Just <span class="highlight-red-isolated">laser-focused precision.</span>
+</p>
+</div>
+
+<div class="cta-wrapper-isolated">
+<button class="cta-button-isolated" id="laser-section5-btn" data-variant-id="43187825901661">
+Get Laser Targeting Now - $39
+</button>
+<p class="bundle-text-isolated">
+$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder">building a bundle</a>
+</p>
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+    
+    const CONFIG = {
+        VARIANT_ID: '43187825901661',
+        DEBUG: true
+    };
+    
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log(`[Laser Section 5] ℹ️ ${msg}`, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log(`[Laser Section 5] ✅ ${msg}`, data || ''),
+        error: (msg, data) => console.error(`[Laser Section 5] ❌ ${msg}`, data || '')
+    };
+    
+    function removeInterferingElements() {
+        const interferingSelectors = [
+            '[class*="rewards"]', '[class*="Rewards"]',
+            '[id*="rewards"]', '[id*="Rewards"]',
+            '.smile-launcher-frame', 'iframe[title*="Smile.io"]',
+            '[class*="smile-"]', '.loyalty-modal', '.rewards-launcher',
+            '.modal-backdrop', '.popup-overlay'
+        ];
+        
+        interferingSelectors.forEach(selector => {
+            try {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                    if (el.remove) el.remove();
+                });
+            } catch (e) {}
+        });
+    }
+    
+    async function addToCartAjaxAPI(variantId) {
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{
+                    id: parseInt(variantId),
+                    quantity: 1
+                }]
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Ajax API failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    async function addToCartFormData(variantId) {
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`FormData failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    async function addToCartSimpleJSON(variantId) {
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Simple JSON failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    function addToCartFormSubmit(variantId) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/cart/add';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = variantId;
+        
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'quantity';
+        qtyInput.value = '1';
+        
+        form.appendChild(idInput);
+        form.appendChild(qtyInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve({ method: 'form_submit', status: 'submitted' }), 1000);
+        });
+    }
+    
+    async function addToCart(variantId) {
+        const methods = [
+            { name: 'Ajax API', fn: addToCartAjaxAPI },
+            { name: 'FormData', fn: addToCartFormData },
+            { name: 'Simple JSON', fn: addToCartSimpleJSON },
+            { name: 'Form Submit', fn: addToCartFormSubmit }
+        ];
+        
+        for (const method of methods) {
+            try {
+                const result = await method.fn(variantId);
+                log.success(`${method.name} succeeded!`, result);
+                return result;
+            } catch (error) {
+                log.info(`${method.name} failed, trying next...`);
+            }
+        }
+        
+        throw new Error('All add-to-cart methods failed');
+    }
+    
+    async function refreshCart() {
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            
+            const cartCountSelectors = [
+                '.cart-count', '.cart-count-bubble', '[data-cart-count]',
+                '.cart__count', '#cart-icon-bubble'
+            ];
+            
+            cartCountSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.textContent = cart.item_count;
+                    el.setAttribute('data-cart-count', cart.item_count);
+                });
+            });
+            
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+                bubbles: true,
+                detail: { cart }
+            }));
+            
+            if (window.Shopify && window.Shopify.theme) {
+                document.documentElement.dispatchEvent(new CustomEvent('cart:updated', {
+                    bubbles: true,
+                    detail: { cart }
+                }));
+            }
+            
+            setTimeout(() => {
+                openCartDrawer();
+            }, 300);
+            
+            return cart;
+            
+        } catch (error) {
+            log.error('Failed to refresh cart:', error);
+        }
+    }
+    
+    function openCartDrawer() {
+        const cartTriggers = [
+            '[href="/cart"]',
+            '.cart-link',
+            '.cart-icon',
+            '.header__icon--cart',
+            '[data-cart-drawer]',
+            '#cart-icon-bubble'
+        ];
+        
+        for (const selector of cartTriggers) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.click();
+                return true;
+            }
+        }
+        
+        const events = ['theme:cart:open', 'cart:open', 'drawer:open'];
+        events.forEach(eventName => {
+            document.documentElement.dispatchEvent(new CustomEvent(eventName, {
+                bubbles: true
+            }));
+        });
+        
+        return false;
+    }
+    
+    async function handleButtonClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        removeInterferingElements();
+        
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+        
+        button.disabled = true;
+        button.classList.add('loading');
+        button.style.cursor = 'wait';
+        button.innerHTML = '⏳ ADDING TO CART...';
+        
+        try {
+            const result = await addToCart(variantId);
+            
+            button.style.background = 'radial-gradient(ellipse at bottom, #FA7D7D 0%, #FA1717 40%)';
+            button.innerHTML = '✓ ADDED SUCCESSFULLY!';
+            
+            await refreshCart();
+            
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 2000);
+            
+        } catch (error) {
+            log.error('Failed to add to cart:', error);
+            
+            button.style.background = '#d32f2f';
+            button.innerHTML = '❌ ERROR - PLEASE TRY AGAIN';
+            
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 3000);
+        }
+    }
+    
+    function init() {
+        const button = document.getElementById('laser-section5-btn');
+        
+        if (!button) {
+            setTimeout(init, 500);
+            return;
+        }
+        
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', handleButtonClick);
+        
+        newButton.style.position = 'relative';
+        newButton.style.zIndex = '999999';
+        
+        log.success('Section 5 ready!');
+    }
+    
+    removeInterferingElements();
+    [1000, 2000, 3000, 5000].forEach(delay => {
+        setTimeout(removeInterferingElements, delay);
+    });
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    setTimeout(init, 500);
+    setTimeout(init, 1500);
+    
+})();
+</script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laser Targeting Section 8 - FAQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+<style>
+.faq-section {
+all: initial !important;
+display: block !important;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #ffffff !important;
+padding: 60px 0 !important;
+box-sizing: border-box !important;
+font-family: Arial, sans-serif !important;
+isolation: isolate !important;
+overflow-x: hidden !important;
+}
+
+.faq-section::before,
+.faq-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -1 !important;
+display: block !important;
+}
+
+.faq-section::before {
+left: -100vw !important;
+}
+
+.faq-section::after {
+right: -100vw !important;
+}
+
+.faq-section *,
+.faq-section *::before,
+.faq-section *::after {
+all: unset !important;
+display: revert !important;
+box-sizing: border-box !important;
+}
+
+.faq-section h1 {
+font-family: 'Open Sans', sans-serif !important;
+font-weight: 800 !important;
+font-size: 2.5rem !important;
+text-align: center !important;
+margin: 0 0 40px 0 !important;
+padding: 0 !important;
+color: black !important;
+display: block !important;
+}
+
+.faq-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+display: block !important;
+}
+
+.faq-section .faq-item {
+margin-bottom: 15px !important;
+display: block !important;
+}
+
+.faq-section .question {
+background-color: black !important;
+border-radius: 12px !important;
+padding: 25px !important;
+color: white !important;
+font-weight: bold !important;
+font-size: 18px !important;
+cursor: pointer !important;
+transition: opacity 0.3s ease !important;
+user-select: none !important;
+margin: 0 !important;
+box-sizing: border-box !important;
+display: flex !important;
+justify-content: space-between !important;
+align-items: center !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.faq-section .question:hover {
+opacity: 0.9 !important;
+}
+
+.faq-section .question .arrow {
+font-size: 14px !important;
+transition: transform 0.3s ease !important;
+margin-left: 15px !important;
+flex-shrink: 0 !important;
+display: inline-block !important;
+}
+
+.faq-section .question.active .arrow {
+transform: rotate(180deg) !important;
+}
+
+.faq-section .answer {
+background-color: white !important;
+border: 1px solid black !important;
+border-radius: 8px !important;
+padding: 20px !important;
+margin-top: 10px !important;
+font-size: 16px !important;
+line-height: 1.7 !important;
+color: black !important;
+display: none !important;
+box-sizing: border-box !important;
+font-family: Arial, sans-serif !important;
+}
+
+.faq-section .answer.active {
+display: block !important;
+}
+
+.faq-section .answer strong {
+color: black !important;
+font-weight: 700 !important;
+}
+
+@media (max-width: 768px) {
+.faq-section .question {
+font-size: 17px !important;
+padding: 24px !important;
+}
+
+.faq-section h1 {
+font-size: 2rem !important;
+}
+}
+</style>
+<script>
+function toggleAnswer(element) {
+element.classList.toggle('active');
+const answer = element.nextElementSibling;
+answer.classList.toggle('active');
+}
+</script>
+</head>
+<body>
+<div class="faq-section">
+<div class="faq-container">
+<h1>Common Questions</h1>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>"I already know all the targeting secrets..."</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer"><strong>No, you don't.</strong> What you know is the 3% that everyone teaches - the surface-level tactics. What we're revealing are secret, precise methods that tap into the remaining 97% of Meta's AI capabilities. These are strategies developed from years of testing and millions in ad spend. If you already knew them, you'd already be running 10+ ROAS consistently.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>What if I buy multiple courses - do they overlap?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Every course is designed to solve a <strong>specific part of the conversion equation.</strong> They complement each other without repeating content, so stacking them creates compounding impact. Laser Targeting focuses exclusively on reaching the right audience with surgical precision - it doesn't overlap with other tactics.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Will I get lifetime access?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer"><strong>Yes.</strong> One-time payment, lifetime access. No subscriptions. No hidden fees. Access it whenever you want, as many times as you want.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Is this just theory or can I apply it right away?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">This is <strong>100% practical.</strong> You'll get a clear framework + real examples + plug & play templates that you can implement immediately. No fluff, no theory for theory's sake - just actionable strategies that work.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Do I need a team to apply this?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer"><strong>Not at all.</strong> Every tactic was designed for solo operators. You can implement everything with minimal tech skills or outsource it easily if you prefer. No team required.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>What if this doesn't work for my product/niche?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Here's the thing: <strong>every product has an audience.</strong> There are 8 billion people on this planet. Even if your product is "weird" or "niche," there are thousands who want it. The Laser Targeting method works for any product in any niche because it's about finding YOUR specific buyers - not trying to appeal to everyone.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>How long does it take to see results?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Most people see improvements <strong>within the first week</strong> of implementation. Some see dramatic results within 48-72 hours. It depends on your current setup, but the tactics are designed for fast implementation and quick wins.</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laser Targeting Section 9 - Final CTA - Isolated</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+.section-9-wrapper-isolated {
+all: initial !important;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+margin-top: 0 !important;
+margin-bottom: 0 !important;
+width: 100vw !important;
+min-width: 100vw !important;
+max-width: 100vw !important;
+font-family: 'Open Sans', sans-serif !important;
+background-color: #000000 !important;
+color: #ffffff !important;
+display: block !important;
+padding: 80px 0 80px 0 !important;
+box-sizing: border-box !important;
+line-height: 1.6 !important;
+overflow-x: hidden !important;
+font-size: 16px !important;
+font-weight: 400 !important;
+text-align: left !important;
+border: none !important;
+outline: none !important;
+box-shadow: none !important;
+}
+
+.section-9-wrapper-isolated::before,
+.section-9-wrapper-isolated::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #000000 !important;
+z-index: -1 !important;
+}
+
+.section-9-wrapper-isolated::before {
+left: -100vw !important;
+}
+
+.section-9-wrapper-isolated::after {
+right: -100vw !important;
+}
+
+.section-9-wrapper-isolated .content-wrapper-isolated {
+all: initial !important;
+max-width: 800px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+text-align: center !important;
+position: relative !important;
+z-index: 1 !important;
+display: block !important;
+box-sizing: border-box !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-9-wrapper-isolated .final-message-isolated {
+all: initial !important;
+margin: 0 0 50px 0 !important;
+display: block !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-9-wrapper-isolated .final-text-isolated {
+all: initial !important;
+font-size: 18.9px !important;
+color: #e8e8e8 !important;
+line-height: 1.7 !important;
+margin: 0 0 25px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .final-text-isolated strong {
+all: initial !important;
+font-weight: 700 !important;
+color: #ffffff !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-9-wrapper-isolated .final-headline-isolated {
+all: initial !important;
+font-size: 52px !important;
+font-weight: 900 !important;
+color: #ffffff !important;
+margin: 40px 0 30px 0 !important;
+line-height: 1.2 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .final-headline-isolated .highlight-red-isolated {
+all: initial !important;
+color: #ff0017 !important;
+font-family: 'Open Sans', sans-serif !important;
+font-size: inherit !important;
+font-weight: inherit !important;
+}
+
+.section-9-wrapper-isolated .final-subtext-isolated {
+all: initial !important;
+font-size: 22px !important;
+color: #cccccc !important;
+line-height: 1.6 !important;
+margin: 0 0 50px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .final-subtext-isolated .highlight-red-isolated {
+all: initial !important;
+color: #ff0017 !important;
+font-weight: 700 !important;
+font-family: 'Open Sans', sans-serif !important;
+font-size: inherit !important;
+}
+
+.section-9-wrapper-isolated .final-subtext-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.section-9-wrapper-isolated .pricing-box-isolated {
+all: initial !important;
+background: rgba(255, 255, 255, 0.05) !important;
+border: 2px solid #ff0017 !important;
+border-radius: 12px !important;
+padding: 40px !important;
+margin: 0 0 40px 0 !important;
+display: block !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+}
+
+.section-9-wrapper-isolated .original-price-isolated {
+all: initial !important;
+font-size: 32px !important;
+color: #999999 !important;
+text-decoration: line-through !important;
+margin: 0 0 10px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .current-price-isolated {
+all: initial !important;
+font-size: 56px !important;
+font-weight: 900 !important;
+color: #ff0017 !important;
+margin: 0 0 15px 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .price-subtext-isolated {
+all: initial !important;
+font-size: 17px !important;
+color: #cccccc !important;
+margin: 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .cta-button-isolated {
+all: unset !important;
+display: block !important;
+background: radial-gradient(ellipse at bottom, #ff4444 0%, #ff0017 40%) !important;
+color: #ffffff !important;
+border-radius: 35px !important;
+font-size: 24px !important;
+font-weight: 700 !important;
+padding: 26px 70px !important;
+cursor: pointer !important;
+transition: all 0.3s ease !important;
+text-decoration: none !important;
+font-family: 'Open Sans', sans-serif !important;
+box-shadow: 0 8px 25px rgba(255, 0, 23, 0.5) !important;
+margin: 0 auto 20px auto !important;
+text-transform: uppercase !important;
+letter-spacing: 1px !important;
+max-width: fit-content !important;
+text-align: center !important;
+box-sizing: border-box !important;
+position: relative !important;
+border: none !important;
+overflow: hidden !important;
+}
+
+.section-9-wrapper-isolated .cta-button-isolated:hover {
+transform: translateY(-3px) !important;
+box-shadow: 0 12px 35px rgba(255, 0, 23, 0.6) !important;
+}
+
+.section-9-wrapper-isolated .cta-button-isolated.loading {
+opacity: 0.8 !important;
+pointer-events: none !important;
+}
+
+.section-9-wrapper-isolated .bundle-text-isolated {
+all: initial !important;
+font-size: 14px !important;
+color: #cccccc !important;
+margin: 15px 0 0 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .bundle-text-isolated a {
+all: initial !important;
+color: #ff0017 !important;
+text-decoration: underline !important;
+font-family: 'Open Sans', sans-serif !important;
+cursor: pointer !important;
+font-size: inherit !important;
+}
+
+.section-9-wrapper-isolated .guarantee-box-isolated {
+all: initial !important;
+margin: 40px 0 0 0 !important;
+padding: 30px !important;
+border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+display: block !important;
+background: rgba(255, 255, 255, 0.03) !important;
+border-radius: 8px !important;
+font-family: 'Open Sans', sans-serif !important;
+box-sizing: border-box !important;
+}
+
+.section-9-wrapper-isolated .guarantee-text-isolated {
+all: initial !important;
+font-size: 13.6px !important;
+color: #999999 !important;
+line-height: 1.6 !important;
+margin: 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .guarantee-text-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+.section-9-wrapper-isolated .closing-message-isolated {
+all: initial !important;
+margin: 50px 0 0 0 !important;
+padding-bottom: 0 !important;
+display: block !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.section-9-wrapper-isolated .closing-text-isolated {
+all: initial !important;
+font-size: 19px !important;
+color: #e8e8e8 !important;
+line-height: 1.7 !important;
+margin: 0 !important;
+font-family: 'Open Sans', sans-serif !important;
+font-style: italic !important;
+display: block !important;
+text-align: center !important;
+}
+
+.section-9-wrapper-isolated .closing-text-isolated .highlight-red-isolated {
+all: initial !important;
+color: #ff0017 !important;
+font-weight: 700 !important;
+font-style: normal !important;
+font-family: 'Open Sans', sans-serif !important;
+font-size: inherit !important;
+}
+
+.section-9-wrapper-isolated .closing-text-isolated br {
+display: block !important;
+content: '' !important;
+margin: 0.5em 0 !important;
+}
+
+@media (max-width: 768px) {
+.section-9-wrapper-isolated {
+padding: 60px 20px !important;
+}
+
+.section-9-wrapper-isolated .final-headline-isolated {
+font-size: 36px !important;
+}
+
+.section-9-wrapper-isolated .final-text-isolated {
+font-size: 16.2px !important;
+}
+
+.section-9-wrapper-isolated .final-subtext-isolated {
+font-size: 19px !important;
+}
+
+.section-9-wrapper-isolated .pricing-box-isolated {
+padding: 30px 25px !important;
+}
+
+.section-9-wrapper-isolated .original-price-isolated {
+font-size: 26px !important;
+}
+
+.section-9-wrapper-isolated .current-price-isolated {
+font-size: 44px !important;
+}
+
+.section-9-wrapper-isolated .cta-button-isolated {
+font-size: 20px !important;
+padding: 22px 45px !important;
+}
+
+.section-9-wrapper-isolated .closing-text-isolated {
+font-size: 17px !important;
+}
+
+.section-9-wrapper-isolated .guarantee-text-isolated {
+font-size: 12.24px !important;
+}
+}
+</style>
+</head>
+<body>
+<div class="section-9-wrapper-isolated">
+<div class="content-wrapper-isolated">
+<div class="final-message-isolated">
+<p class="final-text-isolated">
+So say goodbye to shots in the dark...
+</p>
+
+<p class="final-text-isolated">
+Say goodbye to praying the algorithm blesses you...
+</p>
+
+<p class="final-text-isolated">
+Say goodbye to burning money on audiences that will <strong>never buy...</strong>
+</p>
+
+<h2 class="final-headline-isolated">
+From Now On, You <span class="highlight-red-isolated">Target Like a Laser</span>
+</h2>
+
+<p class="final-subtext-isolated">
+You're not just throwing stuff out there.<br>
+Not guessing the product. Not guessing the audience.<br>
+<br>
+<span class="highlight-red-isolated">You'll reach only the people who match your product 100%</span><br>
+(Based on 52,000 data points from Meta)
+</p>
+</div>
+
+<div class="pricing-box-isolated">
+<div class="original-price-isolated">$197</div>
+<div class="current-price-isolated">Only $39</div>
+<p class="price-subtext-isolated">One-Time Payment • Lifetime Access • All 5 Weapons Included</p>
+</div>
+
+<button class="cta-button-isolated" id="laser-section9-btn" data-variant-id="43187825901661">
+Get Laser Targeting Now
+</button>
+
+<p class="bundle-text-isolated">
+$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder">building a bundle</a>
+</p>
+
+<div class="guarantee-box-isolated">
+<p class="guarantee-text-isolated">
+🔒 Secure Payment • Instant Access • No Subscriptions<br>
+Every day you wait is another day of wasted ad spend.<br>
+Every campaign you run without this is money left on the table.
+</p>
+</div>
+
+<div class="closing-message-isolated">
+<p class="closing-text-isolated">
+<span class="highlight-red-isolated">So if you've decided to join and learn the Laser Targeting Tactic today,</span><br>
+we wish you success – you won't regret it.
+</p>
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+    
+    const CONFIG = {
+        VARIANT_ID: '43187825901661',
+        DEBUG: true
+    };
+    
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log(`[Laser Section 9] ℹ️ ${msg}`, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log(`[Laser Section 9] ✅ ${msg}`, data || ''),
+        error: (msg, data) => console.error(`[Laser Section 9] ❌ ${msg}`, data || '')
+    };
+    
+    function removeInterferingElements() {
+        const interferingSelectors = [
+            '[class*="rewards"]', '[class*="Rewards"]',
+            '[id*="rewards"]', '[id*="Rewards"]',
+            '.smile-launcher-frame', 'iframe[title*="Smile.io"]',
+            '[class*="smile-"]', '.loyalty-modal', '.rewards-launcher',
+            '.modal-backdrop', '.popup-overlay'
+        ];
+        
+        interferingSelectors.forEach(selector => {
+            try {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                    if (el.remove) el.remove();
+                });
+            } catch (e) {}
+        });
+    }
+    
+    async function addToCartAjaxAPI(variantId) {
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{
+                    id: parseInt(variantId),
+                    quantity: 1
+                }]
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Ajax API failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    async function addToCartFormData(variantId) {
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`FormData failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    async function addToCartSimpleJSON(variantId) {
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Simple JSON failed: ${response.status}`);
+        }
+        
+        return await response.json();
+    }
+    
+    function addToCartFormSubmit(variantId) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/cart/add';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = variantId;
+        
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'quantity';
+        qtyInput.value = '1';
+        
+        form.appendChild(idInput);
+        form.appendChild(qtyInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve({ method: 'form_submit', status: 'submitted' }), 1000);
+        });
+    }
+    
+    async function addToCart(variantId) {
+        const methods = [
+            { name: 'Ajax API', fn: addToCartAjaxAPI },
+            { name: 'FormData', fn: addToCartFormData },
+            { name: 'Simple JSON', fn: addToCartSimpleJSON },
+            { name: 'Form Submit', fn: addToCartFormSubmit }
+        ];
+        
+        for (const method of methods) {
+            try {
+                const result = await method.fn(variantId);
+                log.success(`${method.name} succeeded!`, result);
+                return result;
+            } catch (error) {
+                log.info(`${method.name} failed, trying next...`);
+            }
+        }
+        
+        throw new Error('All add-to-cart methods failed');
+    }
+    
+    async function refreshCart() {
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            
+            const cartCountSelectors = [
+                '.cart-count', '.cart-count-bubble', '[data-cart-count]',
+                '.cart__count', '#cart-icon-bubble'
+            ];
+            
+            cartCountSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.textContent = cart.item_count;
+                    el.setAttribute('data-cart-count', cart.item_count);
+                });
+            });
+            
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+                bubbles: true,
+                detail: { cart }
+            }));
+            
+            if (window.Shopify && window.Shopify.theme) {
+                document.documentElement.dispatchEvent(new CustomEvent('cart:updated', {
+                    bubbles: true,
+                    detail: { cart }
+                }));
+            }
+            
+            setTimeout(() => {
+                openCartDrawer();
+            }, 300);
+            
+            return cart;
+            
+        } catch (error) {
+            log.error('Failed to refresh cart:', error);
+        }
+    }
+    
+    function openCartDrawer() {
+        const cartTriggers = [
+            '[href="/cart"]',
+            '.cart-link',
+            '.cart-icon',
+            '.header__icon--cart',
+            '[data-cart-drawer]',
+            '#cart-icon-bubble'
+        ];
+        
+        for (const selector of cartTriggers) {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.click();
+                return true;
+            }
+        }
+        
+        const events = ['theme:cart:open', 'cart:open', 'drawer:open'];
+        events.forEach(eventName => {
+            document.documentElement.dispatchEvent(new CustomEvent(eventName, {
+                bubbles: true
+            }));
+        });
+        
+        return false;
+    }
+    
+    async function handleButtonClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        removeInterferingElements();
+        
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+        
+        button.disabled = true;
+        button.classList.add('loading');
+        button.style.cursor = 'wait';
+        button.innerHTML = '⏳ ADDING TO CART...';
+        
+        try {
+            const result = await addToCart(variantId);
+            
+            button.style.background = 'radial-gradient(ellipse at bottom, #ff4444 0%, #ff0017 40%)';
+            button.innerHTML = '✓ ADDED SUCCESSFULLY!';
+            
+            await refreshCart();
+            
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 2000);
+            
+        } catch (error) {
+            log.error('Failed to add to cart:', error);
+            
+            button.style.background = '#d32f2f';
+            button.innerHTML = '❌ ERROR - PLEASE TRY AGAIN';
+            
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 3000);
+        }
+    }
+    
+    function init() {
+        const button = document.getElementById('laser-section9-btn');
+        
+        if (!button) {
+            setTimeout(init, 500);
+            return;
+        }
+        
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', handleButtonClick);
+        
+        newButton.style.position = 'relative';
+        newButton.style.zIndex = '999999';
+        
+        log.success('Section 9 ready!');
+    }
+    
+    removeInterferingElements();
+    [1000, 2000, 3000, 5000].forEach(delay => {
+        setTimeout(removeInterferingElements, delay);
+    });
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    setTimeout(init, 500);
+    setTimeout(init, 1500);
+    
+})();
+</script>
+</body>
+</html>
+
+

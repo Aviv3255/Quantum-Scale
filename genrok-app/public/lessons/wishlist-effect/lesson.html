@@ -35,13 +35,49 @@
       return params.get('userName') || 'Builder';
     };
 
+    const getInitialSlide = () => {
+      const params = new URLSearchParams(window.location.search);
+      const slide = params.get('slide');
+      return slide ? parseInt(slide, 10) : 0;
+    };
+
     const LESSON_CONFIG = {
       id: 'wishlist-effect',
       title: 'The Wishlist Effect',
       description: 'How psychological ownership turns window shoppers into buyers',
       accentColor: '#ec4899',
-      duration: '5 min',
+      duration: '6 min',
       nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'More conversion psychology coming soon' }
+    };
+
+    // Tool config
+    const TOOL_CONFIG = {
+      name: 'Vitals',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/9cd1bfe106c4fd0bc76f23f2c08e97f0/icon/CP2H0I7H8fYCEAE=.png',
+      link: 'https://apps.shopify.com/vitals',
+      tagline: '40+ Conversion Apps in One',
+      stats: { rating: '4.9', stores: '20,000+', cvrIncrease: '12%' }
+    };
+
+    // ============ ADMIN REPORTER SYSTEM ============
+    let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      const handleReport = (e) => {
+        e.stopPropagation();
+        if (window.parent !== window) {
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
+        }
+      };
+      return (
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
+        </button>
+      );
     };
 
     const celebrationGifs = [
@@ -78,19 +114,25 @@
     // SLIDE DATA
     // ============================================
     const slides = [
+      // ========== PART 1: THEORY ==========
       { type: 'welcome', learningGoals: ['Why "Add to Wishlist" increases both CVR and AOV', 'The Endowment Effect - psychological ownership without commitment', 'How wishlists bypass the frugal defense mechanism'] },
+      { type: 'hook', headline: 'What if customers could "own" your products before buying?', subtext: 'Every window shopper who leaves is money lost. But wishlists change everything. They let visitors claim items mentally - creating psychological ownership without commitment. By the time they return, they\'re not browsing. They\'re buying what\'s already "theirs."' },
       { type: 'endowment-effect', title: 'The Endowment Effect', subtitle: 'Why We Value What We "Own"', body: 'The moment someone saves an item to their wishlist, their brain starts treating it as partially theirs. This psychological ownership makes losing it feel like a real loss - even though they never bought it.', keyInsight: 'People value things they feel they own 2-3x more than identical items they don\'t own' },
       { type: 'cart-abandonment-stats', title: 'The Cart Problem', stats: [{ value: 68, label: 'Cart Abandonment', suffix: '%' }, { value: 24, label: 'Never Return', suffix: '%' }, { value: 8, label: 'Actually Convert', suffix: '%' }], insight: '"Add to Cart" triggers the frugal defense mechanism before they\'re ready to commit' },
-      { type: 'wishlist-vs-cart', title: 'Cart vs Wishlist Psychology', cart: { label: 'Add to Cart', trigger: 'Purchase Pressure', response: '"Can I afford this? Do I need it now?"', result: 'Frugal defense activated', color: '#ef4444' }, wishlist: { label: 'Add to Wishlist', trigger: 'Zero Pressure', response: '"I\'ll come back to this later"', result: 'Interest preserved, no anxiety', color: '#ec4899' }, toolHint: { text: 'Add wishlists instantly with', name: 'Vitals', url: 'https://apps.shopify.com/vitals' } },
+      { type: 'wishlist-vs-cart', title: 'Cart vs Wishlist Psychology', cart: { label: 'Add to Cart', trigger: 'Purchase Pressure', response: '"Can I afford this? Do I need it now?"', result: 'Frugal defense activated', color: '#ef4444' }, wishlist: { label: 'Add to Wishlist', trigger: 'Zero Pressure', response: '"I\'ll come back to this later"', result: 'Interest preserved, no anxiety', color: '#ec4899' } },
       { type: 'zeigarnik-effect', title: 'The Zeigarnik Effect', subtitle: 'Unfinished Tasks Haunt the Mind', story: 'In 1927, psychologist Bluma Zeigarnik noticed waiters remembered unpaid orders better than completed ones. Once paid, the mental tension dissolved.', application: 'A wishlist with items waiting creates the same cognitive itch - your brain literally can\'t let go until completion.' },
       { type: 'psychological-mechanism', title: 'The Three Forces at Work', mechanisms: [{ name: 'Endowment Effect', desc: 'They feel partial ownership', icon: 'heart' }, { name: 'Zeigarnik Effect', desc: 'Unfinished list creates tension', icon: 'brain' }, { name: 'Loss Aversion', desc: 'Losing "their" items hurts', icon: 'shield' }] },
       { type: 'loss-aversion', title: 'Loss Aversion Kicks In', scenario: 'After a few days, the visitor checks their wishlist. Those items are no longer "products on a website" - they\'re "my items that I saved."', alert: { text: 'Low Stock Alert', item: 'Item in your wishlist', message: 'Only 3 left' }, insight: 'If one goes out of stock, it feels like losing something they already had. This is why wishlist users convert at higher rates.' },
       { type: 'wishlist-journey', title: 'The Wishlist Journey', steps: [{ step: 'Browse', desc: 'Visitor discovers items they like' }, { step: 'Save', desc: 'Clicks heart icon, no commitment' }, { step: 'Own', desc: 'Brain treats items as "mine"' }, { step: 'Return', desc: 'Comes back with intention' }, { step: 'Buy', desc: 'Converts with higher AOV' }] },
       { type: 'impact-metrics', title: 'The Wishlist Impact', stats: [{ value: 12, label: 'CVR Improvement', suffix: '%', color: '#ec4899' }, { value: 25, label: 'AOV Increase', suffix: '%', color: '#8b5cf6' }, { value: 35, label: 'Return Visit Rate', suffix: '%', color: '#10b981' }] },
-      { type: 'wishlist-power', title: 'Wishlist Power in Action', subtitle: 'Turn psychology into technology', tool: { name: 'Vitals', logo: 'https://cdn.shopify.com/app-store/listing_images/9cd1bfe106c4fd0bc76f23f2c08e97f0/icon/CP2H0I7H8fYCEAE=.png', url: 'https://apps.shopify.com/vitals' }, features: [{ icon: 'heart', title: 'One-Click Wishlists', desc: 'Heart icon on every product - zero friction saving' }, { icon: 'mail', title: 'Smart Email Triggers', desc: 'Auto-remind when items go on sale or low stock' }, { icon: 'chart', title: 'Wishlist Analytics', desc: 'Track what gets saved most, optimize inventory' }], insight: 'Vitals handles the tech so you can focus on the psychology' },
-      { type: 'action-checklist', title: 'Implement the Wishlist Effect', steps: [{ text: 'Add wishlist functionality (heart icon on products)', toolHint: 'Vitals' }, { text: 'Enable email reminders for saved items', toolHint: 'Vitals' }, { text: 'Create urgency alerts (low stock, price drops)', toolHint: 'Vitals' }, { text: 'Track wishlist behavior for insights' }], toolNote: { text: 'Vitals includes all these features built-in', logo: 'https://cdn.shopify.com/app-store/listing_images/9cd1bfe106c4fd0bc76f23f2c08e97f0/icon/CP2H0I7H8fYCEAE=.png', url: 'https://apps.shopify.com/vitals' } },
+      { type: 'elite-insight', quote: 'A wishlist is a digital fitting room. It lets visitors collect items without the pressure to buy right now - then brings them back with psychological ownership already formed.', attribution: 'The Wishlist Effect' },
       { type: 'quiz', question: 'Why does "Add to Wishlist" convert better than "Add to Cart"?', options: ['Wishlists are more visually appealing', 'It creates psychological ownership without triggering purchase anxiety', 'It automatically applies discounts', 'It sends more notifications'], correctIndex: 1, feedback: { correct: 'Exactly! "Add to Wishlist" creates the Endowment Effect (partial ownership) without activating the frugal defense mechanism. No purchase pressure = higher conversions + higher AOV.', incorrect: 'The core insight is psychological: "Add to Wishlist" creates ownership feeling without the anxiety "Add to Cart" triggers. No purchase pressure means they save more items and convert at higher rates later.' } },
-      { type: 'elite-insight', quote: 'A wishlist is a digital fitting room. It lets visitors collect items without the pressure to buy right now - then brings them back with psychological ownership already formed.', attribution: 'The Wishlist Effect', actions: ['Add heart icons to all products', 'Send "still interested?" emails', 'Alert on price drops & low stock'] },
+      // ========== PART 2: PRACTICAL ==========
+      { type: 'section-divider' },
+      { type: 'step-add-wishlist' },
+      { type: 'step-email-triggers' },
+      { type: 'step-urgency-alerts' },
+      { type: 'step-results' },
       { type: 'completion' }
     ];
 
@@ -110,15 +152,57 @@
       AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
       Target: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
       Mail: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
+      Bell: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
       BarChart: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Lightbulb: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     };
 
     // ============================================
-    // CUSTOM SLIDE COMPONENTS
+    // SLIDE COMPONENTS - PART 1: THEORY
     // ============================================
 
-    // 1. EndowmentEffectSlide
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-2 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-1.5">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-sm">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
     const EndowmentEffectSlide = ({ data }) => {
       const [showInsight, setShowInsight] = useState(false);
       useEffect(() => {
@@ -148,7 +232,6 @@
       );
     };
 
-    // 2. CartAbandonmentStatsSlide
     const CartAbandonmentStatsSlide = ({ data }) => {
       const [showInsight, setShowInsight] = useState(false);
       useEffect(() => {
@@ -181,7 +264,6 @@
       );
     };
 
-    // 3. WishlistVsCartSlide
     const WishlistVsCartSlide = ({ data }) => {
       const [showWinner, setShowWinner] = useState(false);
       useEffect(() => {
@@ -192,7 +274,7 @@
       return (
         <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
           <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-3xl md:text-4xl text-black mb-6 text-center">{data.title}</motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 rounded-xl p-6 border-2 border-red-200">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-lg bg-red-500 flex items-center justify-center text-white"><Icons.ShoppingCart /></div>
@@ -222,26 +304,10 @@
               </AnimatePresence>
             </motion.div>
           </div>
-          {data.toolHint && (
-            <motion.a
-              href={data.toolHint.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 3 }}
-              className="flex items-center justify-center gap-1.5 text-xs text-neutral-400 hover:text-neutral-600 transition-colors"
-            >
-              <span>{data.toolHint.text}</span>
-              <span className="font-semibold" style={{ color: 'var(--accent)' }}>{data.toolHint.name}</span>
-              <Icons.ExternalLink />
-            </motion.a>
-          )}
         </div>
       );
     };
 
-    // 4. ZeigarnikEffectSlide
     const ZeigarnikEffectSlide = ({ data }) => {
       const [showApplication, setShowApplication] = useState(false);
       useEffect(() => {
@@ -274,7 +340,6 @@
       );
     };
 
-    // 5. PsychologicalMechanismSlide
     const PsychologicalMechanismSlide = ({ data }) => {
       const [activeMechanism, setActiveMechanism] = useState(0);
       useEffect(() => {
@@ -310,7 +375,6 @@
       );
     };
 
-    // 6. LossAversionSlide
     const LossAversionSlide = ({ data }) => {
       const [showAlert, setShowAlert] = useState(false);
       useEffect(() => {
@@ -346,7 +410,6 @@
       );
     };
 
-    // 7. WishlistJourneySlide
     const WishlistJourneySlide = ({ data }) => {
       const [activeStep, setActiveStep] = useState(0);
       useEffect(() => {
@@ -379,7 +442,6 @@
       );
     };
 
-    // 8. ImpactMetricsSlide
     const ImpactMetricsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center text-neutral-400 text-sm mb-4 uppercase tracking-widest">Estimated Impact</motion.p>
@@ -398,246 +460,16 @@
       </div>
     );
 
-    // 9. ActionChecklistSlide
-    const ActionChecklistSlide = ({ data }) => {
-      const [completedSteps, setCompletedSteps] = useState([]);
-      useEffect(() => {
-        const timers = data.steps.map((_, i) => setTimeout(() => setCompletedSteps(prev => [...prev, i]), 1000 + i * 700));
-        return () => timers.forEach(t => clearTimeout(t));
-      }, [data.steps.length]);
-
-      return (
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-2xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(236, 72, 153, 0.1)', color: 'var(--accent)' }}>Action Items</span>
-            <h2 className="slide-title text-3xl md:text-4xl text-black">{data.title}</h2>
-          </motion.div>
-          <div className="space-y-3 mb-4">
-            {data.steps.map((step, i) => {
-              const isCompleted = completedSteps.includes(i);
-              return (
-                <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.1 }} style={{ background: isCompleted ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', borderRadius: '12px', padding: '16px', border: isCompleted ? '1px solid var(--accent)' : '1px solid #e5e5e5', position: 'relative', overflow: 'hidden' }}>
-                  {isCompleted && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />}
-                  <div className="flex items-center gap-4">
-                    <motion.div animate={{ scale: isCompleted ? 1 : 0.8, background: isCompleted ? 'var(--accent)' : '#d4d4d4' }} className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-white">
-                      {isCompleted ? <Icons.Check /> : <span className="text-sm font-bold">{i + 1}</span>}
-                    </motion.div>
-                    <div className="flex-1 flex items-center justify-between gap-2">
-                      <p className={`font-medium ${isCompleted ? 'text-white' : 'text-neutral-500'}`}>{step.text}</p>
-                      {step.toolHint && isCompleted && (
-                        <span className="px-2 py-0.5 rounded text-xs font-medium" style={{ background: 'rgba(236, 72, 153, 0.2)', color: 'var(--accent)' }}>{step.toolHint}</span>
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-          {data.toolNote && (
-            <motion.a
-              href={data.toolNote.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              whileHover={{ scale: 1.02 }}
-              className="flex items-center justify-center gap-3 p-3 rounded-xl border border-neutral-200 bg-neutral-50 hover:bg-neutral-100 transition-colors"
-            >
-              <img src={data.toolNote.logo} alt="Vitals" className="w-6 h-6 rounded-md" />
-              <span className="text-sm text-neutral-600">{data.toolNote.text}</span>
-              <Icons.ExternalLink />
-            </motion.a>
-          )}
-        </div>
-      );
-    };
-
-    // 10. EliteInsightSlide
-    const EliteInsightSlide = ({ data }) => {
-      const [showActions, setShowActions] = useState(false);
-      useEffect(() => {
-        const timer = setTimeout(() => setShowActions(true), 1500);
-        return () => clearTimeout(timer);
-      }, []);
-
-      return (
-        <div className="h-full flex items-center justify-center px-8">
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '40px', maxWidth: '600px', position: 'relative', boxShadow: '0 0 40px rgba(236, 72, 153, 0.2)' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)', borderRadius: '24px 24px 0 0' }} />
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.15, type: 'spring' }} className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-6 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}><Icons.Heart /></motion.div>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-white text-xl md:text-2xl leading-relaxed mb-4 text-center">"{data.quote}"</motion.p>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} style={{ color: 'var(--accent)' }} className="text-sm font-medium text-center mb-6">{data.attribution}</motion.p>
-            <AnimatePresence>
-              {showActions && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-2 pt-4 border-t border-neutral-700">
-                  {data.actions.map((action, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }} className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full" style={{ background: 'var(--accent)' }} />
-                      <p className="text-neutral-300 text-sm">{action}</p>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // 11. WishlistPowerSlide - Tool integration slide
-    const WishlistPowerSlide = ({ data }) => {
-      const [activeFeature, setActiveFeature] = useState(0);
-      useEffect(() => {
-        const timer = setInterval(() => setActiveFeature(prev => (prev + 1) % data.features.length), 3000);
-        return () => clearInterval(timer);
-      }, [data.features.length]);
-
-      const featureIcons = { heart: Icons.Heart, mail: Icons.Mail, chart: Icons.BarChart };
-
-      return (
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(236, 72, 153, 0.1)', color: 'var(--accent)' }}>Implementation</span>
-            <h2 className="slide-title text-3xl md:text-4xl text-black mb-2">{data.title}</h2>
-            <p className="text-neutral-500 italic">{data.subtitle}</p>
-          </motion.div>
-
-          {/* Tool Badge */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-3 mb-6">
-            <img src={data.tool.logo} alt={data.tool.name} className="w-10 h-10 rounded-xl shadow-lg" />
-            <span className="font-bold text-neutral-700">{data.tool.name}</span>
-            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700">40+ Apps in 1</span>
-          </motion.div>
-
-          {/* Feature Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            {data.features.map((feature, i) => {
-              const FeatureIcon = featureIcons[feature.icon];
-              const isActive = i === activeFeature;
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0, scale: isActive ? 1.03 : 1 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                  style={{
-                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
-                    borderRadius: '16px',
-                    padding: '20px',
-                    border: isActive ? '2px solid var(--accent)' : '2px solid transparent',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}
-                >
-                  {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${isActive ? 'text-white' : 'text-neutral-400'}`} style={{ background: isActive ? 'rgba(236, 72, 153, 0.2)' : '#e5e5e5' }}>
-                    {FeatureIcon && <FeatureIcon />}
-                  </div>
-                  <h4 className={`font-bold text-sm mb-1 ${isActive ? 'text-white' : 'text-neutral-700'}`}>{feature.title}</h4>
-                  <p className={`text-xs ${isActive ? 'text-neutral-400' : 'text-neutral-500'}`}>{feature.desc}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Insight + CTA */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-xl" style={{ background: 'rgba(236, 72, 153, 0.08)', border: '1px solid rgba(236, 72, 153, 0.2)' }}>
-            <p className="text-sm" style={{ color: 'var(--accent)' }}>{data.insight}</p>
-            <motion.a
-              href={data.tool.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-white font-semibold text-sm whitespace-nowrap"
-              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 4px 15px rgba(236, 72, 153, 0.3)' }}
-            >
-              <span>Get Vitals</span>
-              <Icons.ExternalLink />
-            </motion.a>
-          </motion.div>
-        </div>
-      );
-    };
-
-    // 12. AddWishlistToolSlide - Tool recommendation
-    const AddWishlistToolSlide = ({ data }) => {
-      return (
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(236, 72, 153, 0.1)', color: 'var(--accent)' }}>How To Do It</span>
-            <h2 className="slide-title text-3xl md:text-4xl text-black">{data.title}</h2>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Manual Method - Grayed out */}
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-xl p-6 border border-neutral-200 opacity-60">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-neutral-300 flex items-center justify-center text-neutral-500">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-                </div>
-                <span className="font-bold text-neutral-500">{data.manual.title}</span>
-              </div>
-              <ul className="space-y-2">
-                {data.manual.items.map((item, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.05 }} className="flex items-start gap-2">
-                    <span className="text-neutral-400 mt-0.5"><Icons.X /></span>
-                    <span className="text-neutral-500 text-sm">{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-            {/* App Method - Highlighted */}
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-6 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
-              <div style={{ position: 'absolute', top: '-2px', left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />
-              <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5, type: 'spring' }} className="absolute -top-3 -right-3 px-3 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)', boxShadow: '0 4px 12px rgba(236, 72, 153, 0.4)' }}>RECOMMENDED</motion.div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Heart /></div>
-                <span className="font-bold text-white">{data.app.title}</span>
-              </div>
-              <ul className="space-y-2 mb-5">
-                {data.app.items.map((item, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.05 }} className="flex items-start gap-2">
-                    <span className="text-green-400 mt-0.5"><Icons.Check /></span>
-                    <span className="text-neutral-300 text-sm">{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-              <motion.a href={data.app.url} target="_blank" rel="noopener noreferrer" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="block w-full py-3 rounded-lg text-center text-white font-semibold text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 4px 15px rgba(236, 72, 153, 0.3)' }}>{data.app.cta}</motion.a>
-            </motion.div>
-          </div>
-        </div>
-      );
-    };
-
-    // Standard slides
-    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
-
-      return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-2 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
-              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">In this lesson</p>
-              <ul className="space-y-1.5">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-sm">{goal}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Let's Go</motion.button>
-          </div>
-        </div>
-      );
-    };
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.4)' }}>
+          <Icons.Lightbulb />
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-xl md:text-2xl text-neutral-700 leading-relaxed mb-4 italic">"{data.quote}"</motion.p>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="text-sm font-medium" style={{ color: 'var(--accent)' }}>{data.attribution}</motion.p>
+      </div>
+    );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -682,41 +514,241 @@
       );
     };
 
-    const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(236, 72, 153, 0.35)' }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md">You now understand the Endowment Effect and why wishlists convert better than carts. Give visitors a way to claim items without commitment.</motion.p>
+    // ============================================
+    // SLIDE COMPONENTS - PART 2: PRACTICAL
+    // ============================================
 
-        {/* Vitals CTA Card */}
-        <motion.a
-          href="https://apps.shopify.com/vitals"
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          whileHover={{ scale: 1.02 }}
-          className="max-w-md w-full mb-4 p-4 rounded-xl relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid var(--accent)' }}
-        >
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ec4899, transparent)' }} />
-          <div className="flex items-center gap-4">
-            <img src="https://cdn.shopify.com/app-store/listing_images/9cd1bfe106c4fd0bc76f23f2c08e97f0/icon/CP2H0I7H8fYCEAE=.png" alt="Vitals" className="w-12 h-12 rounded-xl shadow-lg" />
-            <div className="flex-1 text-left">
-              <p className="text-white font-bold text-sm mb-0.5">Add Wishlist Today</p>
-              <p className="text-neutral-400 text-xs">Vitals includes wishlists + 40 more conversion tools</p>
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">4 steps to implement the Wishlist Effect</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3, 4].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 4 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Step 1: Add Wishlist Functionality
+    const StepAddWishlistSlide = ({ data }) => {
+      const features = [
+        { icon: Icons.Heart, label: 'Heart icon', desc: 'On every product page' },
+        { icon: Icons.BarChart, label: 'Saved list', desc: 'Persistent across sessions' },
+        { icon: Icons.Target, label: 'Guest support', desc: 'No account required' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Add Wishlist Functionality</h2>
+              </div>
             </div>
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
-              <Icons.ExternalLink />
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-3 mb-6">
+            {features.map((feature, i) => {
+              const Icon = feature.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-sm mb-1">{feature.label}</div>
+                  <div className="text-neutral-400 text-xs">{feature.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Install Vitals and enable the wishlist feature. Place the heart icon prominently on product pages.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 2: Set Up Email Triggers
+    const StepEmailTriggersSlide = ({ data }) => {
+      const triggers = [
+        { time: 'Day 1', message: 'Items are waiting in your wishlist', icon: Icons.Mail },
+        { time: 'Day 3', message: 'Your wishlist items are popular - selling fast', icon: Icons.Bell },
+        { time: 'Day 7', message: 'Special offer: 10% off your wishlist items', icon: Icons.Zap }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up Email Triggers</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="space-y-3 mb-6">
+            {triggers.map((trigger, i) => {
+              const Icon = trigger.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="w-16 text-center">
+                    <div className="text-white font-bold text-sm">{trigger.time}</div>
+                  </div>
+                  <div className="w-px h-10 bg-neutral-700" />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icon />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-neutral-300 text-sm italic">"{trigger.message}"</div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Create a 3-email sequence. Vitals can automatically trigger these based on wishlist activity.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Create Urgency Alerts
+    const StepUrgencyAlertsSlide = ({ data }) => {
+      const alerts = [
+        { type: 'Low Stock', message: 'Only 3 left in stock', color: '#f59e0b' },
+        { type: 'Price Drop', message: 'Price dropped $15 on your item', color: '#10b981' },
+        { type: 'Back in Stock', message: 'Your wishlist item is available again', color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Create Urgency Alerts</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-3 mb-6">
+            {alerts.map((alert, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 w-full mb-3 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${alert.color}, transparent)` }} />
+                <div className="flex items-center gap-2 mb-2">
+                  <Icons.AlertTriangle style={{ color: alert.color }} />
+                  <span className="font-bold text-sm" style={{ color: alert.color }}>{alert.type}</span>
+                </div>
+                <p className="text-neutral-400 text-xs italic">"{alert.message}"</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Enable low stock and price drop notifications. These leverage loss aversion to drive immediate action.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 4: Results Slide
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '10-15%', label: 'CVR Increase', desc: 'Wishlist users vs non-users', icon: Icons.TrendingUp, color: '#ec4899' },
+        { metric: '+25%', label: 'AOV Boost', desc: 'Multiple items saved', icon: Icons.BarChart, color: '#8b5cf6' },
+        { metric: '3x', label: 'Return Rate', desc: 'Come back to purchase', icon: Icons.Target, color: '#10b981' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">2-4 weeks</span> of implementation</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }}
+          className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(var(--accent-rgb), 0.35)' }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">
+          You now understand the Wishlist Effect. Let visitors claim items mentally - they'll come back as buyers, not browsers.
+        </motion.p>
+
+        {/* Key Takeaways */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Wishlists create psychological ownership without purchase pressure</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Email triggers and urgency alerts activate loss aversion</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Wishlist users convert at 10-15% higher rates with 25% higher AOV</span>
             </div>
           </div>
-        </motion.a>
+        </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full border border-neutral-200">
-          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-neutral-800 font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
+          <p className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
@@ -725,7 +757,7 @@
     // MAIN APP
     // ============================================
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(0);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
@@ -736,6 +768,10 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      useEffect(() => {
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
+      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -765,6 +801,7 @@
       const renderSlide = (slide) => {
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
           case 'endowment-effect': return <EndowmentEffectSlide data={slide} />;
           case 'cart-abandonment-stats': return <CartAbandonmentStatsSlide data={slide} />;
           case 'wishlist-vs-cart': return <WishlistVsCartSlide data={slide} />;
@@ -773,11 +810,14 @@
           case 'loss-aversion': return <LossAversionSlide data={slide} />;
           case 'wishlist-journey': return <WishlistJourneySlide data={slide} />;
           case 'impact-metrics': return <ImpactMetricsSlide data={slide} />;
-          case 'wishlist-power': return <WishlistPowerSlide data={slide} />;
-          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
-          case 'add-wishlist-tool': return <AddWishlistToolSlide data={slide} />;
           case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          // Part 2: Practical
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-add-wishlist': return <StepAddWishlistSlide data={slide} />;
+          case 'step-email-triggers': return <StepEmailTriggersSlide data={slide} />;
+          case 'step-urgency-alerts': return <StepUrgencyAlertsSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }
@@ -792,6 +832,7 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

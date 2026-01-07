@@ -46,66 +46,32 @@
       nextLesson: { id: 'meta-capi-pixel-setup', title: 'CAPI + Pixel Setup', teaser: 'Why running pixel-only tracking in 2025 is like driving with half your dashboard broken.' }
     };
 
+    // Tool config for Part 2
+    const TOOL_CONFIG = {
+      name: 'Triple Whale',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png',
+      link: 'https://apps.shopify.com/triple-whale',
+      tagline: 'First-party attribution & analytics'
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
             <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
@@ -118,8 +84,6 @@
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -137,7 +101,9 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // ========== SLIDES DATA ==========
     const slides = [
+      // ========== PART 1: THE STRATEGY (Theory) ==========
       { type: 'welcome', learningGoals: ['Why Andromeda needs 20-50 meaningfully different creatives', 'What "meaningfully different" actually means', 'The systematic framework for building creative volume'] },
       { type: 'hook', headline: 'Each creative is a key. More keys unlock more doors.', subtext: 'Think of Andromeda like a massive lock warehouse. Each user is a different lock. Your creatives are keys. One key might open 100 locks. But a different key opens 100 OTHER locks. With only 5 keys, you\'re leaving thousands of locks unopened. 20-50 keys? Now you\'re unlocking the full warehouse.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo_(cropped).svg.png', brandName: 'Meta' },
       { type: 'content', title: 'Why Volume Matters Now More Than Ever', body: 'In the Andromeda era, creative IS targeting. Each meaningfully different creative attracts a different buyer segment. With 5 creatives, you\'re reaching 5 buyer profiles. With 50 creatives, you\'re reaching 50 profiles. More creative variety = more audience discovery. The advertisers scaling to $100K+/day aren\'t running 3 winning ads. They\'re running 30-50 diverse creatives that collectively reach everyone who might buy.' },
@@ -146,12 +112,12 @@
         { count: 20, label: '20 Creatives', doors: '2,000 potential buyers', color: '#F59E0B' },
         { count: 50, label: '50 Creatives', doors: '5,000+ potential buyers', color: '#10B981' }
       ], insight: 'Each creative unlocks a different segment. More keys = more doors = more customers.' }},
-      { type: 'content', title: 'What "Meaningfully Different" Actually Means', body: 'Changing the CTA button color isn\'t meaningfully different. Swapping one word in the headline isn\'t meaningfully different. Meaningfully different means:\n\n• Different opening hook/first 3 seconds\n• Different primary message angle\n• Different visual format (static vs video vs carousel)\n• Different tone (UGC vs polished vs meme)\n• Different audience pain point addressed\n\nThe AI should classify them as reaching DIFFERENT people.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_weighing_options_scales_in_hands_100_pure_whit_8cbe7780-615e-48f5-aafe-2184114c1b33_2.mp4', characterPosition: 'left'},
+      { type: 'content', title: 'What "Meaningfully Different" Actually Means', body: 'Changing the CTA button color isn\'t meaningfully different. Swapping one word in the headline isn\'t meaningfully different. Meaningfully different means:\n\n- Different opening hook/first 3 seconds\n- Different primary message angle\n- Different visual format (static vs video vs carousel)\n- Different tone (UGC vs polished vs meme)\n- Different audience pain point addressed\n\nThe AI should classify them as reaching DIFFERENT people.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_weighing_options_scales_in_hands_100_pure_whit_8cbe7780-615e-48f5-aafe-2184114c1b33_2.mp4', characterPosition: 'left'},
       { type: 'example-grid', title: 'Meaningfully Different vs Minor Variations', examples: [
         { type: 'wrong', label: 'NOT Meaningfully Different', items: ['Same video, different thumbnail', 'Same hook, different CTA', 'Same UGC, trimmed shorter', 'Same message, different font'] },
-        { type: 'right', label: 'MEANINGFULLY Different', items: ['UGC testimonial vs product demo', 'Problem-first hook vs benefit-first hook', 'Static image vs video', 'Social proof angle vs how-to angle'] , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_weighing_options_scales_in_hands_100_pure_whit_8cbe7780-615e-48f5-aafe-2184114c1b33_2.mp4', characterPosition: 'left'}
+        { type: 'right', label: 'MEANINGFULLY Different', items: ['UGC testimonial vs product demo', 'Problem-first hook vs benefit-first hook', 'Static image vs video', 'Social proof angle vs how-to angle'] }
       ]},
-      { type: 'creative-matrix', title: 'The Creative Ecosystem Matrix', axes: { formats: ['Static', 'Video', 'Carousel', 'Stories'], angles: ['Problem Agitation', 'Social Proof', 'How-To/Demo', 'Transformation', 'Urgency/FOMO'] }, insight: 'Cross format × angle = 20 meaningfully different concepts before even changing hooks or visuals.' },
+      { type: 'creative-matrix', title: 'The Creative Ecosystem Matrix', axes: { formats: ['Static', 'Video', 'Carousel', 'Stories'], angles: ['Problem Agitation', 'Social Proof', 'How-To/Demo', 'Transformation', 'Urgency/FOMO'] }, insight: 'Cross format x angle = 20 meaningfully different concepts before even changing hooks or visuals.' },
       { type: 'creative-library-mockup', title: 'Your Creative Library (Organized)', data: {
         folders: [
           { name: 'Problem Agitation', count: 12, formats: { static: 3, video: 5, carousel: 2, story: 2 }, status: 'healthy', color: '#ef4444' },
@@ -172,20 +138,20 @@
         { week: 'Week 2', task: 'Produce', description: 'Film UGC. Design statics. Create variations. Aim for 10+ ready-to-launch.' },
         { week: 'Week 3', task: 'Launch & Test', description: 'Deploy new creatives. Monitor early signals. Kill obvious losers fast.' },
         { week: 'Week 4', task: 'Analyze & Iterate', description: 'Identify patterns. What angles work? What formats? Feed insights into next cycle.' }
-      ], bottomLine: 'Continuous creative production isn\'t optional. It\'s the new table stakes.', toolMention: { name: 'Triple Whale', text: 'See true ROAS by creative', logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png', link: 'https://apps.shopify.com/triple-whale' } },
-      { type: 'content', title: 'The 80/20 of Creative Production', body: '80% of your results will come from 20% of your creatives. That\'s normal. But here\'s what most advertisers miss: you can\'t predict which 20% will win. You need to produce the volume to discover the winners. The advertisers with 5 creatives are hoping their 5 are winners. The advertisers with 50 are FINDING their winners. Volume isn\'t about quantity - it\'s about discovery.', toolMention: { name: 'Triple Whale', text: 'Track which 20% actually converts', logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png', link: 'https://apps.shopify.com/triple-whale' } },
+      ], bottomLine: 'Continuous creative production isn\'t optional. It\'s the new table stakes.' },
+      { type: 'content', title: 'The 80/20 of Creative Production', body: '80% of your results will come from 20% of your creatives. That\'s normal. But here\'s what most advertisers miss: you can\'t predict which 20% will win. You need to produce the volume to discover the winners. The advertisers with 5 creatives are hoping their 5 are winners. The advertisers with 50 are FINDING their winners. Volume isn\'t about quantity - it\'s about discovery.' },
+      { type: 'elite-insight', title: 'The Discovery Paradox' },
       { type: 'quiz', question: 'You have 1 winning creative style (UGC testimonial). How do you scale creative volume meaningfully?', options: ['Create 20 more UGC testimonials with different people', 'Create variations across formats: static testimonial quotes, video compilations, carousel testimonials, AND explore new angles', 'Run the winning creative longer before making new ones', 'Slightly edit the winning creative 20 times with small changes'], correctIndex: 1, feedback: { correct: 'Perfect! Scaling meaningfully means: 1) Take the winning ANGLE (social proof/testimonial) and adapt it across formats. 2) Also explore NEW angles (problem-focused, demo, transformation) that reach different buyers. Just filming 20 similar UGC videos creates redundancy, not diversity.', incorrect: 'The key is meaningful diversity. 20 similar UGC videos aren\'t meaningfully different - Meta sees them as variations of the same ad. Instead: adapt the winning angle across formats (static, carousel, compilation) AND explore entirely new angles (problem-first, demo, etc.) to unlock new audience segments.' }},
-      { type: 'action-checklist', title: 'Build Your Creative Ecosystem', items: [
-        { task: 'Audit current creatives - how many are meaningfully different?', done: false },
-        { task: 'List 5 core angles: problem, solution, social proof, transformation, urgency', done: false },
-        { task: 'Create format variations for each angle (static, video, carousel, story)', done: false },
-        { task: 'Add 2-3 hook variations for each format × angle combination', done: false },
-        { task: 'Establish monthly creative production cadence (10+ new per month)', done: false }
-      ], bottomNote: 'The goal: always have 20-50 meaningfully different creatives running. This is how you scale.' },
-      { type: 'creative-performance-tracking', title: 'Know Which Creatives Actually Convert', subtitle: 'Meta reports clicks. You need to track what actually drives purchases.' },
-      { type: 'completion', sources: [] }
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-audit-library' },
+      { type: 'step-build-matrix' },
+      { type: 'step-track-performance' },
+      { type: 'step-results' },
+      { type: 'completion' }
     ];
 
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -193,21 +159,22 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      // Creative ecosystem icons
       Key: ({ size = 32, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>,
       Image: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>,
       Video: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg>,
       Layers: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
       Grid: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>,
-      Play: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill={color} stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
       Folder: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h16Z"/></svg>,
-      Users: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
       TrendingUp: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
       AlertCircle: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>,
       Filter: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
       Search: ({ size = 16, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      BarChart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/></svg>,
     };
 
+    // ============ SLIDE COMPONENTS ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -245,15 +212,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -263,37 +221,13 @@
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
+      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.div>
-
-        {data.toolMention && (
-          <motion.a
-            href={data.toolMention.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25 }}
-            className="mt-6 flex items-center gap-3 p-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 hover:border-blue-300 transition-all group cursor-pointer"
-          >
-            <img src={data.toolMention.logo} alt={data.toolMention.name} className="w-10 h-10 rounded-lg object-cover" />
-            <div className="flex-1">
-              <span className="text-xs text-blue-600 font-semibold">{data.toolMention.name}</span>
-              <p className="text-sm text-neutral-700">{data.toolMention.text}</p>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" className="opacity-50 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </motion.a>
-        )}
-
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line relative z-10">{data.body}</motion.div>
         {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
+            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
             style={{ height: '35%', maxHeight: '280px' }}>
             <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
               <source src={data.characterVideo} type="video/mp4" />
@@ -382,7 +316,6 @@
 
     const CreativeLibraryMockupSlide = ({ data }) => {
       const [selectedFolder, setSelectedFolder] = useState(null);
-
       const getStatusBadge = (status) => {
         switch(status) {
           case 'healthy': return { bg: '#dcfce7', color: '#16a34a', label: 'Healthy' };
@@ -398,10 +331,7 @@
             <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: '#e7f3ff', color: '#1877f2' }}>Creative Library View</span>
             <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
           </motion.div>
-
-          {/* Meta-style Creative Library UI */}
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="rounded-xl border border-neutral-200 overflow-hidden shadow-lg" style={{ background: '#f0f2f5' }}>
-            {/* Header bar */}
             <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-neutral-200">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
@@ -417,13 +347,8 @@
                   <Icons.Search size={14} color="#6b7280" />
                   <span className="text-xs text-neutral-500">Search creatives...</span>
                 </div>
-                <div className="flex items-center gap-1 px-2 py-1.5 bg-neutral-100 rounded-lg">
-                  <Icons.Filter size={14} color="#6b7280" />
-                </div>
               </div>
             </div>
-
-            {/* Summary bar */}
             <div className="flex items-center justify-between px-4 py-2 bg-blue-50 border-b border-blue-100">
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
@@ -431,52 +356,27 @@
                   <span className="text-xs font-semibold text-blue-700">{data.data.summary.total} / {data.data.summary.target} Creatives</span>
                 </div>
                 <div className="w-32 h-2 bg-blue-200 rounded-full overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(data.data.summary.total / data.data.summary.target) * 100}%` }}
-                    transition={{ delay: 0.5, duration: 0.8 }}
-                    className="h-full bg-blue-500 rounded-full"
-                  />
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${(data.data.summary.total / data.data.summary.target) * 100}%` }} transition={{ delay: 0.5, duration: 0.8 }} className="h-full bg-blue-500 rounded-full" />
                 </div>
               </div>
               <span className="text-xs text-blue-600">Target: 20-50 meaningfully different</span>
             </div>
-
-            {/* Folder Grid */}
             <div className="p-4 bg-white">
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
                 {data.data.folders.map((folder, i) => {
                   const statusStyle = getStatusBadge(folder.status);
                   return (
-                    <motion.div
-                      key={folder.name}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 + i * 0.08 }}
+                    <motion.div key={folder.name} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.08 }}
                       onClick={() => setSelectedFolder(selectedFolder === folder.name ? null : folder.name)}
-                      className={`p-3 rounded-xl border-2 cursor-pointer transition-all ${selectedFolder === folder.name ? 'border-blue-400 bg-blue-50' : 'border-neutral-200 hover:border-neutral-300 bg-white'}`}
-                    >
-                      {/* Folder icon with color */}
+                      className={`p-3 rounded-xl border-2 cursor-pointer transition-all ${selectedFolder === folder.name ? 'border-blue-400 bg-blue-50' : 'border-neutral-200 hover:border-neutral-300 bg-white'}`}>
                       <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-2" style={{ backgroundColor: `${folder.color}15` }}>
                         <Icons.Folder size={20} color={folder.color} />
                       </div>
-
-                      {/* Folder name & count */}
                       <div className="text-sm font-semibold text-neutral-800 mb-1">{folder.name}</div>
                       <div className="text-xs text-neutral-500 mb-2">{folder.count} creatives</div>
-
-                      {/* Status badge */}
-                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{ background: statusStyle.bg, color: statusStyle.color }}>
-                        {statusStyle.label}
-                      </span>
-
-                      {/* Format breakdown (on hover/select) */}
+                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold" style={{ background: statusStyle.bg, color: statusStyle.color }}>{statusStyle.label}</span>
                       {selectedFolder === folder.name && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          className="mt-3 pt-2 border-t border-neutral-100"
-                        >
+                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-3 pt-2 border-t border-neutral-100">
                           <div className="grid grid-cols-2 gap-1 text-[10px]">
                             <div className="flex items-center gap-1"><Icons.Image size={10} color="#6b7280" /><span className="text-neutral-600">{folder.formats.static} Static</span></div>
                             <div className="flex items-center gap-1"><Icons.Video size={10} color="#6b7280" /><span className="text-neutral-600">{folder.formats.video} Video</span></div>
@@ -490,20 +390,16 @@
                 })}
               </div>
             </div>
-
-            {/* Gaps Alert */}
             <div className="px-4 py-3 bg-amber-50 border-t border-amber-200">
               <div className="flex items-start gap-2">
                 <Icons.AlertCircle size={16} color="#f59e0b" />
                 <div>
                   <span className="text-xs font-semibold text-amber-800">Gaps Identified: </span>
-                  <span className="text-xs text-amber-700">{data.data.summary.gaps.join(' • ')}</span>
+                  <span className="text-xs text-amber-700">{data.data.summary.gaps.join(' | ')}</span>
                 </div>
               </div>
             </div>
           </motion.div>
-
-          {/* Tip */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mt-4 text-center">
             <p className="text-xs text-neutral-500">Click a folder to see format breakdown</p>
           </motion.div>
@@ -524,412 +420,6 @@
         </div>
       </div>
     );
-    const StatCountdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.stats && data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color || 'var(--accent)' }}>{stat.value}{stat.suffix}</div>
-              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-              <div className="text-xs text-neutral-400">{stat.subtext}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BeforeAfterSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">Before</span></div>
-            <ul className="space-y-2">{data.before && data.before.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className="text-red-400 mt-0.5">•</span>{item}</li>)}</ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">After</span></div>
-            <ul className="space-y-2">{data.after && data.after.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className="text-green-500 mt-0.5">•</span>{item}</li>)}</ul>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const HighlightBoxSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed mb-6">{data.body}</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-5">
-          <p className="text-white text-sm md:text-base font-medium"><Icons.Zap className="inline mr-2" style={{ color: 'var(--accent)' }} />{data.highlight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const StrategyStepsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: step.color || 'var(--accent)' }}>{step.number || i + 1}</span>
-              <div><h3 className="font-bold text-neutral-900 mb-1">{step.title}</h3><p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p></div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ComparisonCardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className={`rounded-xl p-5 ${data.left && data.left.color === 'red' ? 'bg-red-50 border-2 border-red-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.left && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.left.color === 'red' ? 'text-red-500' : 'text-neutral-500'}`}>{data.left.label}</span>
-              {data.left.value && <h3 className={`text-2xl font-bold ${data.left.color === 'red' ? 'text-red-600' : 'text-neutral-900'}`}>{data.left.value}</h3>}
-              {data.left.subtext && <p className="text-xs text-neutral-500">{data.left.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.left.items && data.left.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.left.color === 'red' ? 'text-red-400' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className={`rounded-xl p-5 ${data.right && data.right.color === 'green' ? 'bg-green-50 border-2 border-green-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.right && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.right.color === 'green' ? 'text-green-500' : 'text-neutral-500'}`}>{data.right.label}</span>
-              {data.right.value && <h3 className={`text-2xl font-bold ${data.right.color === 'green' ? 'text-green-600' : 'text-neutral-900'}`}>{data.right.value}</h3>}
-              {data.right.subtext && <p className="text-xs text-neutral-500">{data.right.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.right.items && data.right.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.right.color === 'green' ? 'text-green-500' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const DoomLoopSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="relative">
-          <div className="flex flex-wrap justify-center gap-3">
-            {data.steps && data.steps.map((step, i) => (
-              <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="relative">
-                <div className="bg-white border-2 rounded-xl p-4 w-40" style={{ borderColor: step.color }}>
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold mb-2" style={{ background: step.color }}>{i + 1}</div>
-                  <h3 className="font-bold text-sm mb-1" style={{ color: step.color }}>{step.label}</h3>
-                  <p className="text-neutral-500 text-xs">{step.description}</p>
-                </div>
-                {i < data.steps.length - 1 && <div className="absolute top-1/2 -right-3 text-neutral-300 text-xl">→</div>}
-              </motion.div>
-            ))}
-          </div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="text-center mt-4">
-            <span className="text-xs text-neutral-400">↺ The cycle repeats...</span>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const EscapePlanSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: step.color || 'var(--accent)' }}>{step.number || i + 1}</span>
-              <div><h3 className="font-bold text-neutral-900 mb-1">{step.title}</h3><p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p></div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BigStatementSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl text-neutral-600 mb-2">{data.statement}</motion.p>
-        <motion.h2 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-4xl md:text-5xl lg:text-6xl mb-6" style={{ color: 'var(--accent)' }}>{data.emphasis}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg text-neutral-500 max-w-2xl">{data.footer}</motion.p>
-      </div>
-    );
-
-    const ActionSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.actions && data.actions.map((action, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-center gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-green-300 transition-colors">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
-              <span className="text-neutral-700 text-sm md:text-base">{action}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const TrapVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-4xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-32 h-32 rounded-full bg-red-100 flex items-center justify-center mb-6">
-          <span className="text-6xl">🪤</span>
-        </motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-3xl md:text-4xl lg:text-5xl text-black mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg text-neutral-500">{data.subtitle}</motion.p>
-      </div>
-    );
-
-    const MathBreakdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-4 mb-4">
-          {data.scenarios && data.scenarios.map((scenario, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-white border-2 rounded-xl p-5" style={{ borderColor: scenario.color }}>
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">{scenario.icon === 'smile' ? '😊' : '😟'}</span>
-                <span className="font-bold" style={{ color: scenario.color }}>{scenario.label}</span>
-              </div>
-              <div className="grid md:grid-cols-3 gap-4 text-sm">
-                <div><span className="text-neutral-500">Cost:</span> <span className="font-medium">{scenario.cost}</span></div>
-                <div><span className="text-neutral-500">Result:</span> <span className="font-medium">{scenario.result}</span></div>
-                <div><span className="font-bold" style={{ color: scenario.color }}>{scenario.profit}</span></div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>}
-      </div>
-    );
-
-    const RatioVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-4 gap-3">
-          {data.ratios && data.ratios.map((ratio, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 rounded-xl p-4 text-center" style={{ borderColor: ratio.color }}>
-              <div className="text-2xl font-bold mb-1" style={{ color: ratio.color }}>{ratio.value}</div>
-              <div className="text-xs font-semibold text-neutral-900 mb-1">{ratio.label}</div>
-              <div className="text-xs text-neutral-500">{ratio.description}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ToolIntegrationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Recommended Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-          {data.subtitle && <p className="text-neutral-500 text-sm mt-1">{data.subtitle}</p>}
-        </motion.div>
-        {data.tool && <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.tool.image} alt={data.tool.name} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <h3 className="font-bold text-lg mb-2">{data.tool.name}</h3>
-            <p className="text-neutral-600 text-sm leading-relaxed mb-4">{data.tool.description}</p>
-            {data.tool.features && <ul className="space-y-1.5 mb-4">
-              {data.tool.features.map((f, i) => <li key={i} className="flex items-center gap-2 text-sm text-neutral-700"><Icons.Check className="text-green-500 w-4 h-4" />{f}</li>)}
-            </ul>}
-            {data.tool.link && <a href={data.tool.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-              <span>Try {data.tool.name}</span><Icons.ExternalLink />
-            </a>}
-          </motion.div>
-        </div>}
-      </div>
-    );
-
-    const QuoteSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-6xl mb-6" style={{ color: 'var(--accent)' }}>"</motion.div>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl font-medium text-neutral-800 mb-6 leading-relaxed">{data.quote}</motion.blockquote>
-        {data.author && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500">— {data.author}{data.context && <span className="block text-sm mt-1">{data.context}</span>}</motion.p>}
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 bg-neutral-100 rounded-xl p-4 max-w-xl"><p className="text-sm text-neutral-600">{data.insight}</p></motion.div>}
-      </div>
-    );
-
-    const FlywheelVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="flex flex-wrap justify-center gap-4">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, rotate: -10 }} animate={{ opacity: 1, rotate: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative">
-              <div className="w-32 h-32 rounded-full border-4 flex items-center justify-center text-center p-4" style={{ borderColor: step.color || 'var(--accent)', background: 'white' }}>
-                <div>
-                  <div className="text-2xl mb-1">{step.icon || '⚡'}</div>
-                  <div className="text-xs font-bold" style={{ color: step.color }}>{step.label}</div>
-                </div>
-              </div>
-              {i < (data.steps.length - 1) && <div className="absolute top-1/2 -right-4 text-2xl" style={{ color: 'var(--accent)' }}>→</div>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const MathVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 text-center">
-          {data.equation && <div className="text-3xl md:text-4xl font-bold text-white mb-4 font-mono">{data.equation}</div>}
-          {data.explanation && <p className="text-neutral-400 text-sm">{data.explanation}</p>}
-        </motion.div>
-        {data.examples && <div className="grid md:grid-cols-3 gap-3 mt-4">
-          {data.examples.map((ex, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
-              <div className="text-lg font-bold" style={{ color: ex.color || 'var(--accent)' }}>{ex.value}</div>
-              <div className="text-xs text-neutral-500">{ex.label}</div>
-            </motion.div>
-          ))}
-        </div>}
-      </div>
-    );
-
-    const RequirementsVisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.requirements && data.requirements.map((req, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-center gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white flex-shrink-0" style={{ background: req.met ? '#10b981' : '#ef4444' }}>
-                {req.met ? <Icons.Check /> : <Icons.X />}
-              </div>
-              <span className="text-neutral-700 text-sm md:text-base">{req.text || req}</span>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const FounderSpotlightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        {data.image && <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-24 h-24 rounded-full overflow-hidden mb-4 border-4 border-white shadow-lg">
-          <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
-        </motion.div>}
-        <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xl font-bold text-black mb-1">{data.name}</motion.h3>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-sm text-neutral-500 mb-4">{data.title}</motion.p>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-neutral-700 italic leading-relaxed">"{data.quote}"</motion.blockquote>
-      </div>
-    );
-
-    const VelocityMetricSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="bg-neutral-900 rounded-2xl p-8 text-center mb-4">
-          <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{data.value}</div>
-          <div className="text-white text-lg font-medium">{data.label}</div>
-          {data.subtext && <div className="text-neutral-400 text-sm mt-2">{data.subtext}</div>}
-        </motion.div>
-        {data.breakdown && <div className="grid md:grid-cols-3 gap-3">
-          {data.breakdown.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 text-center">
-              <div className="text-lg font-bold" style={{ color: item.color }}>{item.value}</div>
-              <div className="text-xs text-neutral-500">{item.label}</div>
-            </motion.div>
-          ))}
-        </div>}
-      </div>
-    );
-
-    const MindsetFrameworkSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.principles && data.principles.map((principle, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-2xl">{principle.icon || '💡'}</span>
-                <h3 className="font-bold text-neutral-900">{principle.title}</h3>
-              </div>
-              <p className="text-neutral-600 text-sm">{principle.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const GenericListSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        {data.subtitle && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-6">{data.subtitle}</motion.p>}
-        <div className="space-y-3">
-          {(data.items || data.steps || data.points || []).map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-              <div>
-                {typeof item === 'string' ? <span className="text-neutral-700">{item}</span> : <>
-                  <h3 className="font-bold text-neutral-900 mb-1">{item.title || item.label}</h3>
-                  <p className="text-neutral-600 text-sm">{item.description || item.text}</p>
-                </>}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const AnglesSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-5">
-              <h3 className="font-bold text-lg mb-2" style={{ color: 'var(--accent)' }}>{item.title}</h3>
-              <p className="text-neutral-600 text-sm mb-3">{item.description}</p>
-              {item.example && <div className="bg-neutral-50 rounded-lg p-3"><p className="text-xs text-neutral-500 italic">{item.example}</p></div>}
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const FormatsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {data.items && data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 rounded-xl p-4" style={{ borderColor: item.color || 'var(--accent)' }}>
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white" style={{ background: item.color || 'var(--accent)' }}>📝</div>
-                <h3 className="font-bold text-sm">{item.title}</h3>
-              </div>
-              <p className="text-neutral-600 text-xs">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const MatrixVisualizationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="bg-neutral-900 rounded-2xl p-6">
-          <div className="grid grid-cols-6 gap-2 text-xs">
-            <div className="col-span-1"></div>
-            {(data.formats || ['F1', 'F2', 'F3', 'F4', 'F5']).slice(0, 5).map((f, i) => (
-              <div key={i} className="text-center text-neutral-400 font-medium truncate">{typeof f === 'string' ? f.replace('Format ', '').substring(0, 8) : f}</div>
-            ))}
-            {(data.angles || ['Angle 1', 'Angle 2', 'Angle 3']).map((angle, ai) => (
-              <React.Fragment key={ai}>
-                <div className="text-neutral-400 font-medium truncate pr-2">{typeof angle === 'string' ? angle.replace('Angle ', 'A').substring(0, 10) : angle}</div>
-                {[0, 1, 2, 3, 4].map((fi) => (
-                  <motion.div key={fi} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + (ai * 5 + fi) * 0.03 }} className="aspect-square rounded-lg flex items-center justify-center text-white font-bold" style={{ background: 'var(--accent)' }}>{ai * 5 + fi + 1}</motion.div>
-                ))}
-              </React.Fragment>
-            ))}
-          </div>
-          <div className="text-center mt-4 text-neutral-400 text-sm">3 Angles × 5 Formats = 15 Unique Ads</div>
-        </div>
-      </div>
-    );
-
-    const MatrixBuilderSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto text-center">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-4">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 mb-6">{data.description}</motion.p>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-neutral-100 rounded-xl p-8">
-          <div className="text-6xl mb-4">🎯</div>
-          <p className="text-neutral-600">Start building your creative matrix today</p>
-        </motion.div>
-      </div>
-    );
 
     const ProductionPipelineSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -943,55 +433,29 @@
             </motion.div>
           ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 text-center mb-4">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 text-center">
           <p className="text-white text-sm font-medium">{data.bottomLine}</p>
         </motion.div>
-        {data.toolMention && (
-          <motion.a
-            href={data.toolMention.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="flex items-center justify-center gap-3 p-3 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 hover:border-blue-300 transition-all group cursor-pointer"
-          >
-            <img src={data.toolMention.logo} alt={data.toolMention.name} className="w-8 h-8 rounded-lg object-cover" />
-            <div className="text-left">
-              <span className="text-xs text-blue-600 font-semibold">{data.toolMention.name}</span>
-              <p className="text-sm text-neutral-700">{data.toolMention.text}</p>
-            </div>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" className="opacity-50 group-hover:opacity-100 transition-all"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </motion.a>
-        )}
       </div>
     );
 
-    const ActionChecklistSlide = ({ data }) => {
-      const [checkedItems, setCheckedItems] = useState({});
-      const toggleItem = (index) => setCheckedItems(prev => ({ ...prev, [index]: !prev[index] }));
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="space-y-3 mb-6">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} onClick={() => toggleItem(i)} className={`bg-white border-2 rounded-xl p-4 cursor-pointer transition-all ${checkedItems[i] ? 'border-green-400 bg-green-50' : 'border-neutral-200 hover:border-neutral-300'}`}>
-                <div className="flex items-center gap-3">
-                  <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${checkedItems[i] ? 'bg-green-500 text-white' : 'bg-neutral-100'}`}>
-                    {checkedItems[i] && <Icons.Check />}
-                  </div>
-                  <span className={`text-sm ${checkedItems[i] ? 'text-green-700 line-through' : 'text-neutral-700'}`}>{item.task}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
-            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
-          </motion.div>
-        </div>
-      );
-    };
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.4)' }}>
+          <Icons.Lightbulb />
+        </motion.div>
+        <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-4">{data.title}</motion.h3>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-600 text-base md:text-lg leading-relaxed mb-6">
+          You can't predict which creatives will win. That's exactly why you need volume. The advertisers with 5 creatives are gambling. The advertisers with 50 are discovering. More creative diversity = more data = faster learning = better scaling.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+          className="flex items-center gap-3 px-6 py-3 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <Icons.Zap />
+          <span className="text-white font-medium">Volume isn't vanity - it's discovery.</span>
+        </motion.div>
+      </div>
+    );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -1036,247 +500,261 @@
       );
     };
 
-    const CreativePerformanceTrackingSlide = ({ data }) => {
-      const [activeMetric, setActiveMetric] = useState(0);
-      const metrics = [
-        { label: 'Hook Rate', value: '34%', change: '+12%', description: 'First 3-second retention by creative', color: '#10b981' },
-        { label: 'True ROAS', value: '3.2x', change: '+0.8x', description: 'Server-side tracked revenue', color: '#3b82f6' },
-        { label: 'CAC by Angle', value: '$28', change: '-$7', description: 'Customer acquisition cost by creative angle', color: '#8b5cf6' },
-        { label: 'Creative Fatigue', value: '12 days', change: '', description: 'Days until performance drops 20%', color: '#f59e0b' }
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to build your creative ecosystem</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Step 1: Audit Your Library
+    const StepAuditLibrarySlide = ({ data }) => {
+      const auditSteps = [
+        { label: 'Count meaningfully different creatives', desc: 'Not variations - truly different angles/formats' },
+        { label: 'Map to the matrix', desc: '5 angles x 4 formats = where are your gaps?' },
+        { label: 'Tag by performance', desc: 'Mark winners, learners, and losers' }
       ];
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: '#e7f3ff', color: '#1877f2' }}>Creative Performance Tracking</span>
-            <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
-            {data.subtitle && <p className="text-neutral-500 text-sm mt-1">{data.subtitle}</p>}
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Audit Your Creative Library</h2>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Dashboard mockup */}
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="rounded-2xl border border-neutral-200 overflow-hidden shadow-xl bg-white">
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-slate-900 to-slate-800 border-b border-slate-700">
-              <div className="flex items-center gap-3">
-                <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-8 h-8 rounded-lg" />
+          <div className="space-y-3 mb-6">
+            {auditSteps.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold flex-shrink-0" style={{ background: 'var(--accent)' }}>{i + 1}</div>
                 <div>
-                  <div className="text-white font-semibold text-sm">Triple Whale</div>
-                  <div className="text-slate-400 text-xs">Creative Analytics Dashboard</div>
+                  <div className="text-white font-bold text-sm">{step.label}</div>
+                  <div className="text-neutral-400 text-xs">{step.desc}</div>
                 </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-1 bg-green-500/20 text-green-400 text-[10px] font-bold rounded-full">LIVE</span>
-              </div>
-            </div>
+              </motion.div>
+            ))}
+          </div>
 
-            {/* Metrics Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-0 border-b border-neutral-100">
-              {metrics.map((metric, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + i * 0.1 }}
-                  onClick={() => setActiveMetric(i)}
-                  className={`p-4 cursor-pointer transition-all border-r border-neutral-100 last:border-r-0 ${activeMetric === i ? 'bg-blue-50' : 'hover:bg-neutral-50'}`}
-                >
-                  <div className="text-xs text-neutral-500 mb-1">{metric.label}</div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-bold text-neutral-900">{metric.value}</span>
-                    {metric.change && <span className="text-xs font-semibold" style={{ color: metric.color }}>{metric.change}</span>}
-                  </div>
-                  <div className="text-[10px] text-neutral-400 mt-1">{metric.description}</div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Creative Performance Table */}
-            <div className="p-4">
-              <div className="text-xs font-semibold text-neutral-500 mb-3 flex items-center gap-2">
-                <Icons.TrendingUp size={14} color="#3b82f6" />
-                Top Performing Creatives by Angle
-              </div>
-              <div className="space-y-2">
-                {[
-                  { angle: 'Problem Agitation', format: 'UGC Video', roas: '4.2x', spend: '$12,450', icon: '1' },
-                  { angle: 'Social Proof', format: 'Carousel', roas: '3.8x', spend: '$8,920', icon: '2' },
-                  { angle: 'How-To Demo', format: 'Static', roas: '3.1x', spend: '$6,340', icon: '3' }
-                ].map((row, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.5 + i * 0.1 }}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-neutral-50 hover:bg-neutral-100 transition-colors"
-                  >
-                    <span className="w-6 h-6 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center">{row.icon}</span>
-                    <div className="flex-1">
-                      <div className="text-sm font-medium text-neutral-900">{row.angle}</div>
-                      <div className="text-xs text-neutral-500">{row.format}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-green-600">{row.roas}</div>
-                      <div className="text-xs text-neutral-400">{row.spend}</div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* CTA */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="mt-4 flex flex-col items-center gap-3">
-            <a
-              href="https://apps.shopify.com/triple-whale"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg"
-              style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
-            >
-              <span>Track Your Creative Performance</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </a>
-            <p className="text-neutral-400 text-xs text-center">Know which angles and formats actually drive revenue</p>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Open your ad account. Count how many truly different creatives you have. Target: 20-50 meaningfully different.</p>
           </motion.div>
         </div>
       );
     };
 
-    const TrackCreativesSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">See Which Creatives Actually Convert</h2>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-2xl p-6 opacity-60">
+    // Step 2: Build Your Matrix
+    const StepBuildMatrixSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-neutral-300 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
-                </svg>
-              </div>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
               <div>
-                <h3 className="font-bold text-neutral-500 text-lg">Platform Reporting</h3>
-                <p className="text-neutral-400 text-xs">Meta Ads Manager</p>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Build Your Creative Matrix</h2>
               </div>
             </div>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-neutral-500 text-sm">
-                <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">-</span>
-                7-day click attribution only
-              </li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm">
-                <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">-</span>
-                iOS14+ data gaps everywhere
-              </li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm">
-                <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">-</span>
-                Can't see which creative drove purchase
-              </li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm">
-                <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">-</span>
-                Modeled conversions inflate ROAS
-              </li>
-            </ul>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-200 relative overflow-hidden">
-            <div className="absolute top-3 right-3">
-              <span className="px-2 py-1 bg-blue-500 text-white text-[10px] font-bold rounded-full uppercase">Recommended</span>
-            </div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                </svg>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="text-white font-bold text-lg mb-4">5 Core Angles</div>
+              <div className="space-y-2 text-sm text-neutral-300">
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500"></span> Problem Agitation</div>
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-amber-500"></span> Social Proof</div>
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-blue-500"></span> How-To / Demo</div>
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-green-500"></span> Transformation</div>
+                <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-purple-500"></span> Urgency / FOMO</div>
               </div>
-              <div>
-                <h3 className="font-bold text-neutral-900 text-lg">First-Party Attribution</h3>
-                <p className="text-blue-600 text-xs font-medium">Triple Whale</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">4 Formats Per Angle</div>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-center gap-2 p-2 rounded-lg bg-white border border-neutral-100">
+                  <Icons.Image size={16} color="#3b82f6" />
+                  <span className="text-sm text-neutral-700">Static</span>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-lg bg-white border border-neutral-100">
+                  <Icons.Video size={16} color="#3b82f6" />
+                  <span className="text-sm text-neutral-700">Video</span>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-lg bg-white border border-neutral-100">
+                  <Icons.Grid size={16} color="#3b82f6" />
+                  <span className="text-sm text-neutral-700">Carousel</span>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-lg bg-white border border-neutral-100">
+                  <Icons.Layers size={16} color="#3b82f6" />
+                  <span className="text-sm text-neutral-700">Story</span>
+                </div>
               </div>
-            </div>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Server-side tracking, iOS-proof
-              </li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                See which creatives actually convert
-              </li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                True ROAS by creative angle/format
-              </li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Know what to scale vs kill
-              </li>
-            </ul>
+              <div className="mt-4 p-3 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <div className="text-2xl font-bold text-center" style={{ color: 'var(--accent)' }}>5 x 4 = 20</div>
+                <div className="text-xs text-center text-neutral-600">Unique creative concepts</div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Create a spreadsheet. List 5 angles down the side, 4 formats across the top. Fill in what you have. Identify the gaps.</p>
           </motion.div>
         </div>
+      );
+    };
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center">
-          <a
-            href="https://apps.shopify.com/triple-whale"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg"
-            style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
-          >
-            <span>Try Triple Whale</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-          <p className="text-neutral-400 text-xs mt-3">Track which creatives actually drive revenue</p>
-        </motion.div>
-      </div>
-    );
+    // Step 3: Track Performance with Triple Whale
+    const StepTrackPerformanceSlide = ({ data }) => {
+      const metrics = [
+        { label: 'True ROAS by Creative', value: 'See which creatives actually drive purchases, not just clicks', color: '#10b981' },
+        { label: 'Creative Fatigue Alerts', value: 'Know when a winning creative is dying before it tanks', color: '#f59e0b' },
+        { label: 'Angle Performance', value: 'Discover which angles work best for your audience', color: '#3b82f6' }
+      ];
 
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Track What Actually Converts</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5 mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="flex items-center gap-4 mb-4">
+              <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-12 h-12 rounded-xl" />
+              <div>
+                <div className="text-white font-bold">{TOOL_CONFIG.name}</div>
+                <div className="text-neutral-400 text-sm">{TOOL_CONFIG.tagline}</div>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {metrics.map((metric, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-start gap-3 p-3 rounded-lg" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: metric.color }}>
+                    <Icons.Check />
+                  </div>
+                  <div>
+                    <div className="text-white font-medium text-sm">{metric.label}</div>
+                    <div className="text-neutral-400 text-xs">{metric.value}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Set up first-party attribution to see which creatives ACTUALLY drive purchases, not just what Meta reports.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '20-50', label: 'Meaningfully Different', desc: 'Creatives running at once', icon: Icons.Layers, color: '#3b82f6' },
+        { metric: '3-5x', label: 'More Discovery', desc: 'Audience segments reached', icon: Icons.Target, color: '#10b981' },
+        { metric: '+40%', label: 'Better Learning', desc: 'Faster winner identification', icon: Icons.TrendingUp, color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Building your creative ecosystem is a <span className="text-white font-bold">4-6 week</span> process. Start this week.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the creative ecosystem: 20-50 meaningfully different creatives, systematically produced across angles and formats. Each creative is a key that unlocks new customer segments. Volume isn't vanity - it's discovery.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the creative ecosystem: 20-50 meaningfully different creatives, systematically produced across angles and formats.</motion.p>
 
-        {/* Tool CTA Card */}
-        <motion.a
-          href="https://apps.shopify.com/triple-whale"
-          target="_blank"
-          rel="noopener noreferrer"
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 max-w-md w-full mb-4 hover:border-blue-300 hover:shadow-md transition-all group cursor-pointer"
-        >
-          <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-12 h-12 rounded-xl" />
-          <div className="flex-1 text-left">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-sm font-bold text-neutral-900">Triple Whale</span>
-              <span className="px-1.5 py-0.5 bg-blue-100 text-blue-600 text-[9px] font-bold rounded">RECOMMENDED</span>
+        {/* Key Takeaways */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Each creative is a key - more keys unlock more customers</span>
             </div>
-            <p className="text-xs text-neutral-600">Track which creatives actually convert with server-side attribution</p>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">5 angles x 4 formats = 20 meaningfully different concepts</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Track true performance to know what scales vs what dies</span>
+            </div>
           </div>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </motion.a>
+        </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
+          <p className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -1290,14 +768,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -1327,39 +799,6 @@
 
       const renderSlide = (slide) => {
         switch (slide.type) {
-          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
-          case 'before-after': return <BeforeAfterSlide data={slide} />;
-          case 'highlight-box': return <HighlightBoxSlide data={slide} />;
-          case 'strategy-steps': return <StrategyStepsSlide data={slide} />;
-          case 'comparison-cards': return <ComparisonCardsSlide data={slide} />;
-          case 'doom-loop': return <DoomLoopSlide data={slide} />;
-          case 'escape-plan': return <EscapePlanSlide data={slide} />;
-          case 'bigStatement': return <BigStatementSlide data={slide} />;
-          case 'actionSlide': return <ActionSlide data={slide} />;
-          case 'trap-visual': return <TrapVisualSlide data={slide} />;
-          case 'math-breakdown': return <MathBreakdownSlide data={slide} />;
-          case 'ratio-visual': return <RatioVisualSlide data={slide} />;
-          case 'tool-integration': return <ToolIntegrationSlide data={slide} />;
-          case 'quote': return <QuoteSlide data={slide} />;
-          case 'quote-slide': return <QuoteSlide data={slide} />;
-          case 'quote-spotlight': return <QuoteSlide data={slide} />;
-          case 'flywheel-visual': return <FlywheelVisualSlide data={slide} />;
-          case 'math-visual': return <MathVisualSlide data={slide} />;
-          case 'requirements-visual': return <RequirementsVisualSlide data={slide} />;
-          case 'founder-spotlight': return <FounderSpotlightSlide data={slide} />;
-          case 'velocity-metric': return <VelocityMetricSlide data={slide} />;
-          case 'mindset-framework': return <MindsetFrameworkSlide data={slide} />;
-          case 'angles': return <AnglesSlide data={slide} />;
-          case 'formats': return <FormatsSlide data={slide} />;
-          case 'matrixVisualization': return <MatrixVisualizationSlide data={slide} />;
-          case 'matrixBuilder': return <MatrixBuilderSlide data={slide} />;
-          case 'stats': return <StatCountdownSlide data={slide} />;
-          case 'roadmap': return <StrategyStepsSlide data={slide} />;
-          case 'triangle': return <GenericListSlide data={slide} />;
-          case 'flywheel': return <FlywheelVisualSlide data={slide} />;
-          case 'ratio-spectrum': return <RatioVisualSlide data={slide} />;
-          case 'math-comparison': return <MathBreakdownSlide data={slide} />;
-          case 'opportunity-cost': return <GenericListSlide data={slide} />;
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
@@ -1369,10 +808,14 @@
           case 'creative-library-mockup': return <CreativeLibraryMockupSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'production-pipeline': return <ProductionPipelineSlide data={slide} />;
-          case 'action-checklist': return <ActionChecklistSlide data={slide} />;
-          case 'track-creatives': return <TrackCreativesSlide />;
-          case 'creative-performance-tracking': return <CreativePerformanceTrackingSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-audit-library': return <StepAuditLibrarySlide data={slide} />;
+          case 'step-build-matrix': return <StepBuildMatrixSlide data={slide} />;
+          case 'step-track-performance': return <StepTrackPerformanceSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }

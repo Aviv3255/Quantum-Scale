@@ -12,9 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
@@ -46,82 +46,37 @@
       nextLesson: { id: 'geo-personalization', title: 'The Power of Personalization', teaser: 'How a simple GEO announcement bar doubles CVR by matching economic reality.' }
     };
 
+    // Tool Config for Part 2
+    const TOOL_CONFIG = {
+      name: 'Triple Whale',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png',
+      link: 'https://apps.shopify.com/triple-whale',
+      tagline: 'First-Party Attribution & Analytics'
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
           </svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -129,9 +84,7 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
@@ -139,12 +92,7 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
@@ -163,27 +111,11 @@
       return <span>{count}{suffix}</span>;
     };
 
-    const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
-      <div style={{ marginBottom: '16px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span style={{ fontSize: '14px', fontWeight: '500' }}>{label}</span>
-          <span style={{ fontSize: '14px', fontWeight: '600' }}>{percentage}%</span>
-        </div>
-        <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '6px', overflow: 'hidden' }}>
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${percentage}%` }}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
-            style={{ height: '100%', backgroundColor: color, borderRadius: '6px' }}
-          />
-        </div>
-      </div>
-    );
-
+    // ========== PART 1: THEORY SLIDES ==========
     const slides = [
       { type: 'welcome', learningGoals: ['Why CBO and ABO are not alternatives - they solve different problems', 'The exact testing structure that feeds Andromeda\'s prediction engine', 'The 6-adset scaling structure that works under Andromeda'] },
       { type: 'hook', headline: 'Most store owners treat CBO and ABO like choosing between coffee or tea.', subtext: 'That\'s like asking: "Should I use a hammer or a screwdriver?" Wrong question. They\'re different tools for different jobs. Trying to scale with ABO is like hammering with a screwdriver. And testing with CBO? That\'s screwing with a hammer. Both work terribly. Here\'s what actually works.' },
-      { type: 'content', title: 'The Truth About CBO vs ABO', body: 'These are not alternatives. They are phases. ABO = your testing lab. You test concepts, hooks, angles, formats. You learn what resonates. CBO = your scaling engine. You feed it winning creatives, high budgets, and let Andromeda\'s prediction AI do the heavy lifting. Mixing these roles is where you bleed cash.', toolMention: { name: 'Triple Whale', context: 'Track which phase performs better with accurate attribution' } },
+      { type: 'content', title: 'The Truth About CBO vs ABO', body: 'These are not alternatives. They are phases. ABO = your testing lab. You test concepts, hooks, angles, formats. You learn what resonates. CBO = your scaling engine. You feed it winning creatives, high budgets, and let Andromeda\'s prediction AI do the heavy lifting. Mixing these roles is where you bleed cash.' },
       { type: 'comparison-battle', title: 'ABO vs CBO: Different Jobs', left: { label: 'ABO', subtitle: 'Testing Lab', color: '#EF4444', features: ['Small budgets ($20-50/day)', 'Test one concept at a time', 'Controlled experiments', 'Learn what resonates', '40-50 creatives weekly'] }, right: { label: 'CBO', subtitle: 'Scaling Engine', color: '#10B981', features: ['High budgets ($500+/day)', 'Feed 12-30 winners', 'Dynamic optimization', 'Andromeda distributes spend', 'Let AI find buyers'] } },
       { type: 'testing-scaling-toggle', title: 'The Complete Campaign Structure' },
       { type: 'decision-tree', title: 'When to Use Which?', question: 'What stage are you at?', paths: [
@@ -191,10 +123,16 @@
         { condition: 'Have 5+ winning creatives', recommendation: 'Switch to CBO', explanation: 'Feed all winners into one campaign, let Andromeda optimize', color: '#10B981' },
         { condition: 'Campaign is profitable', recommendation: 'Never shut it off', explanation: 'Even if ROAS dips slightly, profit is profit', color: '#3B82F6' }
       ]},
-      { type: 'analytics-dashboard', title: 'The Attribution Problem', subtitle: 'Platform reporting lies. You need ground truth.', tool: { name: 'Triple Whale', logo: 'https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png', url: 'https://apps.shopify.com/triple-whale' } },
-      { type: 'content', title: 'Why This Works Under Andromeda', body: 'Andromeda is a prediction engine. It doesn\'t need you to tell it which audience to target. It needs creative diversity and accurate conversion data. When you feed CBO 12-30 diverse winning creatives and high-value audience signals, Andromeda finds the buyers. That\'s the entire system.', toolMention: { name: 'Triple Whale', context: 'Get accurate conversion data Andromeda needs' } },
+      { type: 'attribution-problem', title: 'The Attribution Problem', body: 'Here\'s the trap: Platform reporting lies. Meta shows your CBO at 2.1x ROAS. You panic, cut budget. But the reality? It was actually 3.2x. iOS14+ destroyed cookie tracking. You\'re making decisions on incomplete data. This is why so many stores kill their best campaigns - they can\'t see the truth.' },
+      { type: 'content', title: 'Why This Works Under Andromeda', body: 'Andromeda is a prediction engine. It doesn\'t need you to tell it which audience to target. It needs creative diversity and accurate conversion data. When you feed CBO 12-30 diverse winning creatives and high-value audience signals, Andromeda finds the buyers. That\'s the entire system.' },
       { type: 'quiz', question: 'You have 5 winning ad creatives from ABO testing. What should you do next?', options: ['Keep running them in separate ABO campaigns to maintain control', 'Feed all 5 into one CBO campaign and let Andromeda optimize distribution', 'Pick the best one and scale it alone in a new CBO', 'Turn them all off and test 5 new creatives'], correctIndex: 1, feedback: { correct: 'Exactly! Feed all diverse winners into CBO. Andromeda needs volume + diversity to predict who will buy. One creative = limited signal. Multiple winners = powerful scaling engine.', incorrect: 'Not quite. The winning move: Feed all 5 winners into one CBO campaign. Andromeda thrives on creative diversity. Give it multiple proven winners and let the prediction AI distribute spend to find buyers. That\'s how you scale profitably under Andromeda.' }},
-      { type: 'completion', sources: [] }
+      // ========== PART 2: PRACTICAL - HOW TO BUILD YOURS ==========
+      { type: 'section-divider' },
+      { type: 'step-setup-tracking' },
+      { type: 'step-build-abo' },
+      { type: 'step-scale-cbo' },
+      { type: 'step-results' },
+      { type: 'completion' }
     ];
 
     const Icons = {
@@ -205,7 +143,10 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      BarChart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Layers: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -245,61 +186,18 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
-
 
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-
-        {data.toolMention && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="mt-6 flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
-            <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-10 h-10 rounded-lg" />
-            <div className="flex-1">
-              <p className="text-xs text-neutral-500 mb-0.5">Pro Tip</p>
-              <p className="text-sm text-neutral-700 font-medium">{data.toolMention.context}</p>
-            </div>
-            <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-500 hover:bg-blue-600 transition-colors whitespace-nowrap">
-              Try Free
-            </a>
-          </motion.div>
-        )}
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
     const TestingScalingToggleSlide = ({ data }) => {
       const [activeMode, setActiveMode] = useState('testing');
-      const audienceToolUrl = 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva';
 
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
@@ -347,20 +245,15 @@
                   </div>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {[
-                      { name: 'Top 10% Spenders', hasButton: true },
-                      { name: 'Top 25% Spenders', hasButton: true },
-                      { name: 'RFM Segments', hasButton: true },
-                      { name: '5% Purchase LLA', hasButton: false },
-                      { name: '6-8 Interests', hasButton: false },
-                      { name: 'Open Targeting', hasButton: false }
+                      { name: 'Top 10% Spenders' },
+                      { name: 'Top 25% Spenders' },
+                      { name: 'RFM Segments' },
+                      { name: '5% Purchase LLA' },
+                      { name: '6-8 Interests' },
+                      { name: 'Open Targeting' }
                     ].map((adset, i) => (
                       <div key={i} className="bg-white border border-neutral-300 rounded-lg p-3">
                         <p className="text-neutral-700 text-xs font-medium mb-2 text-center">{adset.name}</p>
-                        {adset.hasButton && (
-                          <a href={audienceToolUrl} target="_blank" rel="noopener noreferrer" className="block w-full text-center px-2 py-1.5 rounded text-[10px] font-semibold text-white bg-green-500 hover:bg-green-600 transition-colors mb-2">
-                            Create Audience for free
-                          </a>
-                        )}
                         <div className="bg-neutral-50 border border-dashed border-neutral-300 rounded p-2 text-center">
                           <p className="text-neutral-600 text-[10px]">All Winning Creatives</p>
                         </div>
@@ -378,127 +271,104 @@
       );
     };
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+    const ComparisonBattleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="relative">
+            <div className="absolute -top-2 -left-2 w-full h-full rounded-2xl opacity-20" style={{ background: data.left.color }}></div>
+            <div className="relative bg-white border-4 rounded-2xl p-6" style={{ borderColor: data.left.color }}>
+              <div className="text-center mb-4">
+                <h3 className="text-3xl font-bold mb-1" style={{ color: data.left.color }}>{data.left.label}</h3>
+                <p className="text-sm text-neutral-600">{data.left.subtitle}</p>
+              </div>
+              <ul className="space-y-3">
+                {data.left.features.map((feature, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="flex items-start gap-2">
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: data.left.color }}>&#10003;</span>
+                    <span className="text-neutral-700 text-sm">{feature}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="relative">
+            <div className="absolute -top-2 -right-2 w-full h-full rounded-2xl opacity-20" style={{ background: data.right.color }}></div>
+            <div className="relative bg-white border-4 rounded-2xl p-6" style={{ borderColor: data.right.color }}>
+              <div className="text-center mb-4">
+                <h3 className="text-3xl font-bold mb-1" style={{ color: data.right.color }}>{data.right.label}</h3>
+                <p className="text-sm text-neutral-600">{data.right.subtitle}</p>
+              </div>
+              <ul className="space-y-3">
+                {data.right.features.map((feature, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2">
+                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: data.right.color }}>&#10003;</span>
+                    <span className="text-neutral-700 text-sm">{feature}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </div>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'image') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 shadow-lg">
-              <img src={data.imageUrl} alt={data.title} className="w-full h-auto" />
-            </motion.div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
+    const DecisionTreeSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-600 mb-8 text-lg">{data.question}</motion.p>
+        <div className="space-y-4">
+          {data.paths.map((path, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.1 }} className="bg-white border-2 rounded-xl p-5 hover:shadow-lg transition-shadow" style={{ borderColor: path.color }}>
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style={{ background: path.color }}>{i + 1}</div>
+                <div className="flex-1">
+                  <div className="text-sm text-neutral-500 mb-1">If: {path.condition}</div>
+                  <div className="text-lg font-bold mb-2" style={{ color: path.color }}>{path.recommendation}</div>
+                  <div className="text-sm text-neutral-600">{path.explanation}</div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Pro Tool</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+    const AttributionProblemSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Hidden Problem</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">Questions This Answers</p>
-              <ul className="space-y-1.5">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'var(--accent)' }}>{i + 1}</span>
-                    {q}
-                  </li>
-                ))}
-              </ul>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          className="rounded-xl p-6 mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="h-1 w-full rounded-full mb-5" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+          <p className="text-neutral-300 text-base md:text-lg leading-relaxed mb-6">{data.body}</p>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 rounded-xl" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.X />
+                <span className="text-red-400 font-bold text-sm">What Platform Shows</span>
+              </div>
+              <div className="text-3xl font-bold text-red-400 mb-1">2.1x ROAS</div>
+              <p className="text-neutral-500 text-xs">You panic. Cut budget.</p>
             </div>
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              <span>Connect Accurate Pixel</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-          <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+            <div className="p-4 rounded-xl" style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <Icons.Check />
+                <span className="text-emerald-400 font-bold text-sm">Actual Reality</span>
+              </div>
+              <div className="text-3xl font-bold text-emerald-400 mb-1">3.2x ROAS</div>
+              <p className="text-neutral-500 text-xs">You just killed your best campaign.</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="p-4 rounded-xl text-center" style={{ background: 'rgba(var(--accent-rgb), 0.1)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+          <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>The Solution:</strong> First-party attribution shows the truth. You'll learn how to set this up in Part 2.</p>
         </motion.div>
       </div>
     );
@@ -546,359 +416,251 @@
       );
     };
 
-    const ComparisonBattleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="relative">
-            <div className="absolute -top-2 -left-2 w-full h-full rounded-2xl opacity-20" style={{ background: data.left.color }}></div>
-            <div className="relative bg-white border-4 rounded-2xl p-6" style={{ borderColor: data.left.color }}>
-              <div className="text-center mb-4">
-                <h3 className="text-3xl font-bold mb-1" style={{ color: data.left.color }}>{data.left.label}</h3>
-                <p className="text-sm text-neutral-600">{data.left.subtitle}</p>
-              </div>
-              <ul className="space-y-3">
-                {data.left.features.map((feature, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.05 }} className="flex items-start gap-2">
-                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: data.left.color }}>✓</span>
-                    <span className="text-neutral-700 text-sm">{feature}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    const SectionDividerSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap />
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="relative">
-            <div className="absolute -top-2 -right-2 w-full h-full rounded-2xl opacity-20" style={{ background: data.right.color }}></div>
-            <div className="relative bg-white border-4 rounded-2xl p-6" style={{ borderColor: data.right.color }}>
-              <div className="text-center mb-4">
-                <h3 className="text-3xl font-bold mb-1" style={{ color: data.right.color }}>{data.right.label}</h3>
-                <p className="text-sm text-neutral-600">{data.right.subtitle}</p>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to master CBO vs ABO under Andromeda</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
               </div>
-              <ul className="space-y-3">
-                {data.right.features.map((feature, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2">
-                    <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5" style={{ background: data.right.color }}>✓</span>
-                    <span className="text-neutral-700 text-sm">{feature}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
+            ))}
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     );
 
-    const StatCountdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          {data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }} className="bg-neutral-900 rounded-2xl p-8 text-center">
-              <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: stat.color }}>
-                <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={2000} />
-              </div>
-              <div className="text-lg font-semibold text-white mb-2">{stat.label}</div>
-              <div className="text-sm text-neutral-400">{stat.subtext}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const DecisionTreeSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-600 mb-8 text-lg">{data.question}</motion.p>
-        <div className="space-y-4">
-          {data.paths.map((path, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.1 }} className="bg-white border-2 rounded-xl p-5 hover:shadow-lg transition-shadow" style={{ borderColor: path.color }}>
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0" style={{ background: path.color }}>{i + 1}</div>
-                <div className="flex-1">
-                  <div className="text-sm text-neutral-500 mb-1">If: {path.condition}</div>
-                  <div className="text-lg font-bold mb-2" style={{ color: path.color }}>{path.recommendation}</div>
-                  <div className="text-sm text-neutral-600">{path.explanation}</div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const AnalyticsDashboardSlide = ({ data }) => {
-      const metrics = [
-        { label: 'CBO Campaign', value: '$4,230', sublabel: 'Revenue', change: '+34%', isPositive: true, roas: '3.2x ROAS' },
-        { label: 'ABO Testing', value: '$890', sublabel: 'Revenue', change: '+12%', isPositive: true, roas: '1.8x ROAS' },
-        { label: 'Total Spend', value: '$1,598', sublabel: 'Today', change: '', isPositive: null, roas: 'Blended 3.2x' }
-      ];
-
-      const campaignData = [
-        { name: 'CBO - Scale Winners', spend: '$1,320', revenue: '$4,230', roas: '3.2x', status: 'active', type: 'CBO' },
-        { name: 'ABO - Creative Test Batch 12', spend: '$278', revenue: '$890', roas: '3.2x', status: 'learning', type: 'ABO' }
+    // Step 1: Set Up First-Party Tracking
+    const StepSetupTrackingSlide = () => {
+      const comparisons = [
+        { platform: 'Meta Ads Manager', data: '7-day click only', issue: 'Misses 40%+ conversions', color: '#ef4444' },
+        { platform: 'First-Party Tracking', data: 'Server-side, iOS-proof', issue: 'See true ROAS', color: '#10b981' }
       ];
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-10 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <img src={data.tool.logo} alt={data.tool.name} className="w-10 h-10 rounded-xl shadow-md" />
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">{data.tool.name} Dashboard</span>
-            </div>
-            <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black mb-1">{data.title}</h2>
-            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-5 mb-4 shadow-xl">
-            <div className="grid grid-cols-3 gap-4 mb-5">
-              {metrics.map((metric, i) => (
-                <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/50">
-                  <p className="text-slate-400 text-[10px] uppercase tracking-wider mb-1">{metric.label}</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-white text-xl md:text-2xl font-bold">{metric.value}</span>
-                    {metric.change && (
-                      <span className={`text-xs font-semibold ${metric.isPositive ? 'text-emerald-400' : 'text-red-400'}`}>{metric.change}</span>
-                    )}
-                  </div>
-                  <p className="text-slate-500 text-xs mt-1">{metric.roas}</p>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-[10px] text-slate-500 uppercase tracking-wider px-3 pb-2 border-b border-slate-700/50">
-                <span className="flex-1">Campaign</span>
-                <span className="w-20 text-right">Spend</span>
-                <span className="w-20 text-right">Revenue</span>
-                <span className="w-16 text-right">ROAS</span>
-                <span className="w-16 text-right">Status</span>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up First-Party Attribution</h2>
               </div>
-              {campaignData.map((campaign, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center justify-between bg-slate-800/30 rounded-lg px-3 py-2.5 text-sm">
-                  <div className="flex-1 flex items-center gap-2">
-                    <span className={`w-2 h-2 rounded-full ${campaign.type === 'CBO' ? 'bg-emerald-400' : 'bg-amber-400'}`}></span>
-                    <span className="text-white text-xs font-medium truncate">{campaign.name}</span>
-                  </div>
-                  <span className="w-20 text-right text-slate-300 text-xs">{campaign.spend}</span>
-                  <span className="w-20 text-right text-emerald-400 text-xs font-semibold">{campaign.revenue}</span>
-                  <span className="w-16 text-right text-blue-400 text-xs font-bold">{campaign.roas}</span>
-                  <span className="w-16 text-right">
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${campaign.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}`}>
-                      {campaign.status}
-                    </span>
-                  </span>
-                </motion.div>
-              ))}
             </div>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="grid md:grid-cols-2 gap-4 mb-4">
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center">
-                  <Icons.X />
-                </div>
-                <span className="font-semibold text-red-700 text-sm">Without Attribution</span>
-              </div>
-              <p className="text-neutral-600 text-xs leading-relaxed">Platform shows CBO at 2.1x ROAS. You cut budget. Reality: it was actually 3.2x. You just killed your best performer.</p>
-            </div>
-            <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
-                  <Icons.Check />
-                </div>
-                <span className="font-semibold text-green-700 text-sm">With Triple Whale</span>
-              </div>
-              <p className="text-neutral-600 text-xs leading-relaxed">First-party data shows true ROAS. CBO actually at 3.2x. You scale with confidence. No more guessing.</p>
-            </div>
-          </motion.div>
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            {comparisons.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `2px solid ${item.color}40` }}>
+                <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }} />
+                <div className="text-white font-bold text-sm mb-2">{item.platform}</div>
+                <div className="text-lg font-bold mb-2" style={{ color: item.color }}>{item.data}</div>
+                <div className="text-neutral-400 text-xs">{item.issue}</div>
+              </motion.div>
+            ))}
+          </div>
 
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-center">
-            <a href={data.tool.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg" style={{ background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }}>
-              <img src={data.tool.logo} alt="" className="w-5 h-5 rounded" />
-              <span>Get Accurate CBO vs ABO Data</span>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-10 h-10 rounded-lg" />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-neutral-800"><strong>{TOOL_CONFIG.name}</strong> gives you server-side tracking that shows true CBO vs ABO performance.</p>
+            </div>
+            <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg text-xs font-bold text-white flex items-center gap-1" style={{ background: 'var(--accent)' }}>
+              <span>Try Free</span>
               <Icons.ExternalLink />
             </a>
-            <p className="text-neutral-400 text-xs mt-2">See which campaign structure actually makes you money</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-4 p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Connect your store to first-party tracking. Without accurate data, you're flying blind.</p>
           </motion.div>
         </div>
       );
     };
 
-    const TimelineSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="relative">
-          <div className="absolute left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-500 via-purple-500 to-green-500 rounded-full"></div>
-          <div className="space-y-6">
-            {data.steps.map((step, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative pl-16">
-                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.15 + i * 0.1, type: 'spring' }} className="absolute left-0 w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{step.number}</motion.div>
-                <div className="bg-white border-2 border-neutral-200 rounded-xl p-5 hover:border-neutral-300 transition-colors">
-                  <h3 className="font-bold text-neutral-900 mb-2 text-base">{step.title}</h3>
-                  <p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p>
+    // Step 2: Build Your ABO Testing Lab
+    const StepBuildABOSlide = () => {
+      const settings = [
+        { setting: 'Budget', value: '$20-50/day per adset', note: 'Enough for learning, low risk' },
+        { setting: 'Targeting', value: 'Broad (same for all)', note: 'Isolate creative as variable' },
+        { setting: 'Creatives', value: '1 per adset', note: 'Test one concept at a time' },
+        { setting: 'Duration', value: '3-5 days', note: 'Get statistical significance' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Build Your ABO Testing Lab</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-3 mb-6">
+            {settings.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-neutral-400 text-xs uppercase tracking-wider">{item.setting}</span>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>ABO</span>
                 </div>
+                <div className="text-white font-bold text-sm mb-1">{item.value}</div>
+                <div className="text-neutral-500 text-xs">{item.note}</div>
               </motion.div>
             ))}
           </div>
-        </div>
-      </div>
-    );
 
-    const TrackBudgetSlide = () => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">Track CBO vs ABO Performance</h2>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-6 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-2xl p-6 opacity-60">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-neutral-300 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-bold text-neutral-500 text-lg">Platform Reporting</h3>
-                <p className="text-neutral-400 text-xs">Meta/Google Ads Manager</p>
-              </div>
-            </div>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-neutral-500 text-sm">
-                <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">-</span>
-                7-day click attribution only
-              </li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm">
-                <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">-</span>
-                iOS14+ data gaps everywhere
-              </li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm">
-                <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">-</span>
-                CBO vs ABO comparison unclear
-              </li>
-              <li className="flex items-start gap-2 text-neutral-500 text-sm">
-                <span className="w-5 h-5 rounded-full bg-neutral-300 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">-</span>
-                True ROAS hidden by modeled data
-              </li>
-            </ul>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border-2 border-blue-200 relative overflow-hidden">
-            <div className="absolute top-3 right-3">
-              <span className="px-2 py-1 bg-blue-500 text-white text-[10px] font-bold rounded-full uppercase">Recommended</span>
-            </div>
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-bold text-neutral-900 text-lg">First-Party Attribution</h3>
-                <p className="text-blue-600 text-xs font-medium">Triple Whale</p>
-              </div>
-            </div>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Server-side tracking, iOS-proof
-              </li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Compare CBO vs ABO true ROAS
-              </li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                See which ad spend scales profitably
-              </li>
-              <li className="flex items-start gap-2 text-neutral-700 text-sm">
-                <span className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">
-                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>
-                </span>
-                Real-time budget optimization signals
-              </li>
-            </ul>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Create 1 ABO campaign with 4 adsets. Same targeting, different creatives. Run for 3-5 days. Identify winners.</p>
           </motion.div>
         </div>
+      );
+    };
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center">
-          <a
-            href="https://apps.shopify.com/triple-whale"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg"
-            style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
-          >
-            <span>Try Triple Whale</span>
-            <Icons.ExternalLink />
-          </a>
-          <p className="text-neutral-400 text-xs mt-3">Track which budget strategy actually makes you money</p>
-        </motion.div>
-      </div>
-    );
+    // Step 3: Scale with CBO
+    const StepScaleCBOSlide = () => {
+      const adsets = [
+        { name: 'Top 10% Spenders', type: 'Value-Based' },
+        { name: 'Top 25% Spenders', type: 'Value-Based' },
+        { name: 'RFM Segments', type: 'Behavioral' },
+        { name: '5% Purchase LLA', type: 'Lookalike' },
+        { name: '6-8 Interests', type: 'Interest Stack' },
+        { name: 'Open Targeting', type: 'Broad' }
+      ];
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-14 h-14 rounded-xl flex items-center justify-center mb-3 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-2">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-4 max-w-md leading-relaxed">You now understand: ABO tests, CBO scales. Accurate data is non-negotiable. Feed CBO 12-30 diverse winners. Never shut off what makes money.</motion.p>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Scale Winners with CBO</h2>
+              </div>
+            </div>
+          </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-5 max-w-md w-full mb-4">
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <img src="https://cdn.shopify.com/app-store/listing_images/04ddbe00a69dcc39d8eb8d1ee4c09192/icon/CNSPn4a40_4CEAE=.png" alt="Triple Whale" className="w-12 h-12 rounded-xl shadow-md" />
-            <div className="text-left">
-              <p className="text-xs text-blue-600 font-bold uppercase tracking-wider">Recommended Tool</p>
-              <p className="text-lg font-bold text-neutral-900">Triple Whale</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            className="p-5 rounded-xl mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div className="text-center mb-4">
+              <span className="px-3 py-1 rounded-full text-xs font-bold text-white" style={{ background: '#10b981' }}>6-Adset CBO Structure</span>
             </div>
-          </div>
-          <p className="text-neutral-600 text-sm mb-4 leading-relaxed">Stop guessing which campaign structure performs better. Get first-party attribution data that shows your true CBO vs ABO ROAS.</p>
-          <div className="grid grid-cols-3 gap-2 mb-4">
-            <div className="bg-white rounded-lg p-2 text-center">
-              <p className="text-xs text-neutral-400">True ROAS</p>
-              <p className="text-sm font-bold text-emerald-600">Accurate</p>
-            </div>
-            <div className="bg-white rounded-lg p-2 text-center">
-              <p className="text-xs text-neutral-400">iOS-Proof</p>
-              <p className="text-sm font-bold text-blue-600">Server-Side</p>
-            </div>
-            <div className="bg-white rounded-lg p-2 text-center">
-              <p className="text-xs text-neutral-400">Compare</p>
-              <p className="text-sm font-bold text-purple-600">CBO vs ABO</p>
-            </div>
-          </div>
-          <a href="https://apps.shopify.com/triple-whale" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-5 py-3 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg" style={{ background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)' }}>
-            <span>Get Accurate Campaign Analytics</span>
-            <Icons.ExternalLink />
-          </a>
-          <p className="text-neutral-400 text-[10px] mt-2">See which budget strategy actually makes you money</p>
-        </motion.div>
-
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 max-w-md w-full mb-3">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-1">Up Next</p>
-          <h3 className="text-white font-bold text-base mb-0.5">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-3 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {adsets.map((adset, i) => (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.05 }}
+                  className="p-3 rounded-lg text-center" style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                  <div className="text-white text-xs font-bold mb-1">{adset.name}</div>
+                  <div className="text-neutral-500 text-[10px]">{adset.type}</div>
+                </motion.div>
               ))}
             </div>
+            <div className="mt-4 p-3 rounded-lg text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <span className="text-neutral-300 text-sm">Each adset gets <strong className="text-white">ALL winning creatives</strong> from ABO testing</span>
+            </div>
           </motion.div>
-        )}
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Take your 5+ winning creatives from ABO. Feed them ALL into a 6-adset CBO campaign. Budget: $500+/day. Let Andromeda optimize.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide
+    const StepResultsSlide = () => {
+      const results = [
+        { metric: '3-5x', label: 'True ROAS', desc: 'With accurate attribution', icon: Icons.TrendingUp, color: '#10b981' },
+        { metric: '40%', label: 'Less Waste', desc: 'Stop killing winners', icon: Icons.Target, color: '#3b82f6' },
+        { metric: '2x', label: 'Scale Speed', desc: 'Confident budget decisions', icon: Icons.BarChart, color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">2-4 weeks</span> of implementation</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide - Clean, no pushy CTA
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">
+          You now understand: ABO tests, CBO scales. They're phases, not alternatives. Accurate data is the foundation.
+        </motion.p>
+
+        {/* Key Takeaways - Clean summary */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">ABO = Testing lab. CBO = Scaling engine. Different jobs.</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Feed CBO 12-30 diverse winners from ABO testing</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">First-party attribution shows true ROAS - stop flying blind</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
+          <p className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
       </div>
     );
 
@@ -915,14 +677,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -957,17 +713,16 @@
           case 'content': return <ContentSlide data={slide} />;
           case 'testing-scaling-toggle': return <TestingScalingToggleSlide data={slide} />;
           case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
-          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
           case 'decision-tree': return <DecisionTreeSlide data={slide} />;
-          case 'analytics-dashboard': return <AnalyticsDashboardSlide data={slide} />;
-          case 'timeline': return <TimelineSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
-          case 'track-budget': return <TrackBudgetSlide />;
+          case 'attribution-problem': return <AttributionProblemSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide />;
+          case 'step-setup-tracking': return <StepSetupTrackingSlide />;
+          case 'step-build-abo': return <StepBuildABOSlide />;
+          case 'step-scale-cbo': return <StepScaleCBOSlide />;
+          case 'step-results': return <StepResultsSlide />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

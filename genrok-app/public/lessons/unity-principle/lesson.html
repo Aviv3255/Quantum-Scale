@@ -41,17 +41,31 @@
       return params.get('userName') || 'Builder';
     };
 
+    const getInitialSlide = () => {
+      const params = new URLSearchParams(window.location.search);
+      const slide = params.get('slide');
+      return slide ? parseInt(slide, 10) : 0;
+    };
+
     const LESSON_CONFIG = {
       id: 'unity-principle',
       title: 'The Unity Principle',
       description: 'One word change that turns critics into partners and silence into loyalty.',
       accentColor: '#8b5cf6',
-      duration: '5 min',
+      duration: '6 min',
       nextLesson: {
         id: 'damaging-admission',
         title: 'The Damaging Admission',
         teaser: 'Why admitting a flaw makes everything else you say more believable.'
       }
+    };
+
+    // Tool Config
+    const TOOL_CONFIG = {
+      name: 'Joy Loyalty',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/8b933d5f7554d2e3ebc19f34f9d5ef0e/icon/CICUsMrK8_oCEAE=.png',
+      link: 'https://apps.shopify.com/joy-loyalty?mref=lsbqcbva',
+      tagline: 'Turn customers into a loyal community'
     };
 
     // Admin Reporter System
@@ -78,7 +92,7 @@
           style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
           onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
           onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
-          <img src="/images/icons/bug-icon.svg" alt="Report" style={{ width: '16px', height: '16px', filter: 'brightness(0) invert(1)' }} />
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
@@ -129,9 +143,12 @@
       Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
       Home: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
       Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Gift: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
     };
 
     const slides = [
+      // ========== PART 1: THE THEORY ==========
       { type: 'welcome', learningGoals: [
         'The tribal brain - why "we" wins over "you"',
         'Advice vs Opinion - one word that changes everything',
@@ -147,9 +164,14 @@
       { type: 'language-toolkit' },
       { type: 'response-difference' },
       { type: 'unity-stats' },
-      { type: 'build-community' },
-      { type: 'quiz', question: 'Why does asking for "advice" get better responses than asking for "feedback"?', options: ['"Advice" is a shorter word', 'It triggers the togetherness effect - they become partners, not critics', 'People like giving advice more than feedback', 'It sounds more professional'], correctIndex: 1, feedback: { correct: 'Exactly. "Advice" activates the unity principle - it brings them to your side of the table. They\'re no longer judging from the outside; they\'re now invested in helping you succeed.', incorrect: 'Not quite. The power comes from the togetherness effect. "Advice" positions them as a partner working WITH you, while "feedback" positions them as an external judge evaluating you.' }},
       { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why does asking for "advice" get better responses than asking for "feedback"?', options: ['"Advice" is a shorter word', 'It triggers the togetherness effect - they become partners, not critics', 'People like giving advice more than feedback', 'It sounds more professional'], correctIndex: 1, feedback: { correct: 'Exactly. "Advice" activates the unity principle - it brings them to your side of the table. They\'re no longer judging from the outside; they\'re now invested in helping you succeed.', incorrect: 'Not quite. The power comes from the togetherness effect. "Advice" positions them as a partner working WITH you, while "feedback" positions them as an external judge evaluating you.' }},
+      // ========== PART 2: HOW TO BUILD YOURS ==========
+      { type: 'section-divider' },
+      { type: 'step-create-tiers' },
+      { type: 'step-unity-language' },
+      { type: 'step-referral-program' },
+      { type: 'step-results' },
       { type: 'completion' }
     ];
 
@@ -469,7 +491,7 @@
       );
     };
 
-    // LoyaltyUnitySlide - How loyalty programs create unity
+    // LoyaltyUnitySlide - How loyalty programs create unity (NO tool CTA)
     const LoyaltyUnitySlide = ({ data }) => {
       const [activeFeature, setActiveFeature] = useState(0);
       useEffect(() => {
@@ -495,7 +517,7 @@
           </motion.div>
 
           {/* Feature Cards */}
-          <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6">
+          <div className="grid grid-cols-2 gap-3 md:gap-4">
             {features.map((feature, i) => {
               const IconComponent = iconComponents[feature.icon];
               return (
@@ -514,25 +536,6 @@
               );
             })}
           </div>
-
-          {/* Joy Loyalty CTA */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '14px', padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <img src="https://cdn.shopify.com/app-store/listing_images/8b933d5f7554d2e3ebc19f34f9d5ef0e/icon/CICUsMrK8_oCEAE=.png" alt="Joy Loyalty" style={{ width: '40px', height: '40px', borderRadius: '10px' }} />
-              <div>
-                <div style={{ color: 'white', fontWeight: '600', fontSize: '14px' }}>Joy Loyalty & Rewards</div>
-                <div style={{ color: '#737373', fontSize: '12px' }}>Turn customers into a loyal community</div>
-              </div>
-            </div>
-            <a href="https://apps.shopify.com/joy-loyalty?mref=lsbqcbva" target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 16px', borderRadius: '8px', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', color: 'white', fontWeight: '600', fontSize: '13px', textDecoration: 'none', transition: 'transform 0.2s' }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              Build Your Tribe
-              <Icons.ArrowRight />
-            </a>
-          </motion.div>
         </div>
       );
     };
@@ -762,119 +765,230 @@
       );
     };
 
-    // BuildCommunitySlide - Customer journey with loyalty integration
-    const BuildCommunitySlide = ({ data }) => {
-      const [activeStep, setActiveStep] = useState(0);
-      useEffect(() => {
-        const timer = setInterval(() => setActiveStep(prev => (prev + 1) % 4), 2500);
-        return () => clearInterval(timer);
-      }, []);
+    // ========== PART 2: PRACTICAL SLIDES ==========
 
-      const journeySteps = [
-        { step: '1', title: 'First Purchase', before: 'Transaction complete', after: 'Welcome to the family! You earned 100 points', icon: 'User' },
-        { step: '2', title: 'Second Visit', before: 'Just another customer', after: 'Hey [Name], you\'re 50 points from Silver status!', icon: 'Eye' },
-        { step: '3', title: 'Reaching VIP', before: 'No recognition', after: 'Congrats! You\'re now a VIP Insider with exclusive perks', icon: 'Shield' },
-        { step: '4', title: 'Referral', before: 'No reason to share', after: 'Share with friends - you both get rewards!', icon: 'Users' }
+    // Section Divider Slide - Transition to practical
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to create your unity-powered loyalty system</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Step 1: Create Unity Tiers
+    const StepCreateTiersSlide = ({ data }) => {
+      const tiers = [
+        { name: 'Insider', points: '0-499', perks: 'Welcome to the family + Early access', color: '#94a3b8' },
+        { name: 'VIP', points: '500-999', perks: 'Exclusive offers + Birthday rewards', color: '#8b5cf6' },
+        { name: 'Elite', points: '1000+', perks: 'Priority support + Free shipping', color: '#f59e0b' }
       ];
 
-      const iconComponents = { User: Icons.User, Eye: Icons.Eye, Shield: Icons.Shield, Users: Icons.Users };
-
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Customer Journey</span>
-            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">From Transaction to Tribe</h2>
-            <p className="text-neutral-500 text-sm max-w-lg mx-auto">See how unity language transforms every touchpoint</p>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Create Unity Tiers</h2>
+              </div>
+            </div>
           </motion.div>
 
-          {/* Journey Timeline */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
-            {journeySteps.map((item, i) => {
-              const IconComponent = iconComponents[item.icon];
-              const isActive = i === activeStep;
-              return (
-                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
-                  onClick={() => setActiveStep(i)}
-                  style={{ display: 'flex', gap: '12px', alignItems: 'stretch', cursor: 'pointer' }}>
-                  {/* Step indicator */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '40px', flexShrink: 0 }}>
-                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: isActive ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : '#e5e5e5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isActive ? 'white' : '#737373', fontSize: '12px', fontWeight: '700', transition: 'all 0.3s' }}>
-                      {item.step}
-                    </div>
-                    {i < journeySteps.length - 1 && <div style={{ width: '2px', flex: 1, background: i < activeStep ? 'var(--accent)' : '#e5e5e5', marginTop: '4px', transition: 'background 0.3s' }} />}
-                  </div>
-                  {/* Content */}
-                  <div style={{ flex: 1, background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', borderRadius: '12px', padding: '14px 16px', position: 'relative', overflow: 'hidden', border: isActive ? '2px solid var(--accent)' : '2px solid transparent', transition: 'all 0.3s' }}>
-                    {isActive && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                      <div style={{ color: isActive ? 'var(--accent)' : '#737373' }}><IconComponent /></div>
-                      <span style={{ color: isActive ? 'white' : '#525252', fontWeight: '600', fontSize: '13px' }}>{item.title}</span>
-                    </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                      <div>
-                        <div style={{ color: '#ef4444', fontSize: '9px', fontWeight: '600', textTransform: 'uppercase', marginBottom: '3px' }}>Without Unity</div>
-                        <div style={{ color: isActive ? '#737373' : '#a3a3a3', fontSize: '11px', lineHeight: '1.4' }}>{item.before}</div>
-                      </div>
-                      <div>
-                        <div style={{ color: '#10b981', fontSize: '9px', fontWeight: '600', textTransform: 'uppercase', marginBottom: '3px' }}>With Joy Loyalty</div>
-                        <div style={{ color: isActive ? '#d4d4d4' : '#737373', fontSize: '11px', lineHeight: '1.4' }}>{item.after}</div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="grid md:grid-cols-3 gap-3 mb-6">
+            {tiers.map((tier, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-5 rounded-xl relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 absolute top-0 left-0 right-0" style={{ background: `linear-gradient(90deg, transparent, ${tier.color}, transparent)` }} />
+                <div className="text-lg font-bold mb-1" style={{ color: tier.color, fontFamily: 'Fraunces, serif' }}>{tier.name}</div>
+                <div className="text-neutral-500 text-xs mb-3">{tier.points} points</div>
+                <div className="text-neutral-300 text-sm leading-relaxed">{tier.perks}</div>
+              </motion.div>
+            ))}
           </div>
 
-          {/* Bottom CTA */}
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
-            style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', borderRadius: '12px', padding: '14px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <img src="https://cdn.shopify.com/app-store/listing_images/8b933d5f7554d2e3ebc19f34f9d5ef0e/icon/CICUsMrK8_oCEAE=.png" alt="Joy Loyalty" style={{ width: '36px', height: '36px', borderRadius: '8px' }} />
-              <span style={{ color: 'white', fontWeight: '600', fontSize: '14px' }}>Transform every touchpoint into a unity moment</span>
-            </div>
-            <a href="https://apps.shopify.com/joy-loyalty?mref=lsbqcbva" target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 16px', borderRadius: '8px', background: 'white', color: 'var(--accent)', fontWeight: '600', fontSize: '13px', textDecoration: 'none', transition: 'transform 0.2s' }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              Start Building
-              <Icons.ArrowRight />
-            </a>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Name your tiers with unity language. "Insider" and "Family" work better than "Bronze" and "Silver".</p>
           </motion.div>
         </div>
       );
     };
 
+    // Step 2: Apply Unity Language
+    const StepUnityLanguageSlide = ({ data }) => {
+      const examples = [
+        { before: '"Leave a review"', after: '"Share your advice with us"', type: 'Review request' },
+        { before: '"You earned points"', after: '"Welcome to the family! Here are your first 100 points"', type: 'Welcome email' },
+        { before: '"Use your discount"', after: '"As a VIP member, this is exclusively for you"', type: 'Promotion' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Apply Unity Language</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="space-y-3 mb-6">
+            {examples.map((ex, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="text-xs font-bold mb-2" style={{ color: 'var(--accent)' }}>{ex.type}</div>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                    <div className="text-red-400 text-[10px] uppercase mb-1">Before</div>
+                    <div className="text-neutral-400 text-sm">{ex.before}</div>
+                  </div>
+                  <div className="p-3 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.1)', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+                    <div className="text-[10px] uppercase mb-1" style={{ color: 'var(--accent)' }}>After</div>
+                    <div className="text-white text-sm">{ex.after}</div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Audit your emails. Replace transactional language with unity language throughout.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Set Up Referral Program
+    const StepReferralProgramSlide = ({ data }) => {
+      const elements = [
+        { icon: Icons.Gift, label: 'Give & Get', desc: '"Give $10, Get $10" - both sides win' },
+        { icon: Icons.Users, label: 'Community CTA', desc: '"Invite friends to join our family"' },
+        { icon: Icons.Heart, label: 'Recognition', desc: 'Thank referrers personally' },
+        { icon: Icons.Star, label: 'Bonus Points', desc: 'Award points for successful referrals' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up Referral Program</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {elements.map((el, i) => {
+              const Icon = el.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-xs mb-1">{el.label}</div>
+                  <div className="text-neutral-500 text-[10px]">{el.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Frame referrals as "inviting friends to join the family" - not just getting a discount.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide - What to expect
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '89%', label: 'Response Increase', desc: 'Advice vs feedback requests', icon: Icons.MessageCircle, color: '#10b981' },
+        { metric: '3x', label: 'More Loyalty', desc: 'Unity language in communications', icon: Icons.Heart, color: '#8b5cf6' },
+        { metric: '67%', label: 'More Reviews', desc: 'Using "we" framing', icon: Icons.Star, color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Language changes show results <span className="text-white font-bold">immediately</span>. Loyalty program impact grows over <span className="text-white font-bold">4-8 weeks</span>.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide - Clean Key Takeaways, no pushy CTA
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Users /></motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-4 max-w-md leading-relaxed">You now understand the unity principle. One word can change a critic into a partner. Use "we" language to build tribes, not transactions.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the unity principle. One word can change a critic into a partner. Use "we" language to build tribes, not transactions.</motion.p>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-violet-50 border border-violet-200 rounded-xl p-3 mb-4 max-w-md w-full">
-          <p className="text-violet-800 text-sm font-medium flex items-center gap-2"><Icons.Target className="flex-shrink-0" /><span>Action: Update your review request emails. Use "advice" instead of "feedback."</span></p>
-        </motion.div>
-
-        {/* Tool CTA */}
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '14px', padding: '16px', maxWidth: '28rem', width: '100%', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-            <img src="https://cdn.shopify.com/app-store/listing_images/8b933d5f7554d2e3ebc19f34f9d5ef0e/icon/CICUsMrK8_oCEAE=.png" alt="Joy Loyalty" style={{ width: '40px', height: '40px', borderRadius: '10px' }} />
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ color: 'white', fontWeight: '600', fontSize: '14px' }}>Build Your Tribe at Scale</div>
-              <div style={{ color: '#737373', fontSize: '12px' }}>Joy Loyalty turns transactions into belonging</div>
+        {/* Key Takeaways - Clean summary */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Replace "feedback" with "advice" - it brings them to your side</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Use "we" and "family" language in all customer communications</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Build a loyalty program that makes customers feel like members, not buyers</span>
             </div>
           </div>
-          <a href="https://apps.shopify.com/joy-loyalty?mref=lsbqcbva" target="_blank" rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '12px', borderRadius: '10px', background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', color: 'white', fontWeight: '600', fontSize: '14px', textDecoration: 'none', width: '100%', transition: 'transform 0.2s, box-shadow 0.2s' }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(139, 92, 246, 0.3)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
-            Start Joy Loyalty Free
-            <Icons.ArrowRight />
-          </a>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
           <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-neutral-900 font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
@@ -883,7 +997,7 @@
     );
 
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
@@ -942,9 +1056,14 @@
           case 'language-toolkit': return <LanguageToolkitSlide data={slide} />;
           case 'response-difference': return <ResponseDifferenceSlide data={slide} />;
           case 'unity-stats': return <UnityStatsSlide data={slide} />;
-          case 'build-community': return <BuildCommunitySlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'elite-insight': return <EliteInsightSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-create-tiers': return <StepCreateTiersSlide data={slide} />;
+          case 'step-unity-language': return <StepUnityLanguageSlide data={slide} />;
+          case 'step-referral-program': return <StepReferralProgramSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }
