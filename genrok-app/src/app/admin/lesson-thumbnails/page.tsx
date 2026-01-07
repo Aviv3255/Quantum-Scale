@@ -732,9 +732,10 @@ export default function AdminLessonThumbnailsPage() {
       ));
 
       setMessage({ type: 'success', text: `Thumbnail uploaded for "${lessonMeta[slug]?.title || slug}"` });
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Upload error:', error);
-      setMessage({ type: 'error', text: 'Failed to upload thumbnail. Please try again.' });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setMessage({ type: 'error', text: `Upload failed: ${errorMessage}` });
     } finally {
       setUploadingSlug(null);
     }
