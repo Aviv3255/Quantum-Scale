@@ -101,14 +101,50 @@ const imageAssets = {
 // ULTRA-PREMIUM THUMBNAIL PROMPT SYSTEM
 // ==============================================
 // Quality Level: $10,000/thumbnail - MrBeast, Hormozi, Apple
-// Format: 5:4 wide aspect ratio
-//
-// INSTRUCTIONS FOR CHATGPT:
-// - I upload style reference images - use them as your guide
-// - Focus on the CONCEPT and MOOD I describe
-// - Make it stop-the-scroll quality
-// - You have creative freedom within the concept
+// Format: 16:10 wide aspect ratio (1600x1000px)
 // ==============================================
+
+// THE 10 GOLDEN RULES FOR PREMIUM YOUTUBE THUMBNAILS
+// (Based on MrBeast, Hormozi, Iman Gadzhi reference analysis)
+const THUMBNAIL_RULES = `
+=== 10 GOLDEN RULES FOR $10,000 THUMBNAILS ===
+
+RULE 1 - BOLD TYPOGRAPHY:
+Text must be MASSIVE and readable in milliseconds. Use bold sans-serif fonts (Impact, Bebas Neue style). Maximum 2-5 words. Text should take up 30-50% of the frame.
+
+RULE 2 - CLEAN BACKGROUNDS:
+Use solid colors (black, white, red, orange, cream) or simple gradients. Light grid/graph paper texture is acceptable. NEVER busy or cluttered backgrounds.
+
+RULE 3 - 3D HYPER-REALISTIC OBJECTS:
+All objects must look like premium CGI renders - photorealistic with soft shadows, subsurface scattering, and professional studio lighting. Think Pixar quality.
+
+RULE 4 - SURREAL COMBINATIONS:
+Create unexpected pairings that make people STOP scrolling - brain with top cut off showing contents, face morphing into another, objects emerging from heads, impossible physics.
+
+RULE 5 - MAXIMUM CONTRAST:
+Dark text on light backgrounds OR light text on dark backgrounds. Colors must POP. Never muddy or low-contrast. High saturation where appropriate.
+
+RULE 6 - SINGLE FOCAL POINT:
+ONE main visual element dominates the frame. Eyes should know EXACTLY where to look within 0.5 seconds. Rule of thirds or center composition.
+
+RULE 7 - PROVOCATIVE TEXT:
+Use "QUOTES" around shocking statements. Short punchy claims. Questions that demand answers. Text that creates curiosity gap or controversy.
+
+RULE 8 - BRAND INTEGRATION:
+Logos must be clean, large, immediately recognizable. Float them with soft shadows. Use as visual anchors. Never distorted or too small.
+
+RULE 9 - MONEY/SUCCESS IMAGERY:
+When relevant: crisp $100 bills, gold coins, money piles, upward graphs. Make wealth TANGIBLE and visceral. Premium but not tacky.
+
+RULE 10 - HUMAN ELEMENTS:
+Faces create connection. Use expressions (shock, curiosity, intensity). Hands pointing or holding. Often with surreal additions (exposed brain, cables plugging in, crown on head).
+
+=== OUTPUT REQUIREMENTS ===
+- Aspect ratio: 16:10 (1600x1000 pixels)
+- Style: Premium YouTube thumbnail ($5,000-$10,000 quality)
+- Must stop the scroll instantly
+- Must make viewer NEED to click
+`;
 
 const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
 
@@ -117,62 +153,350 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'familiar-surprise-secret': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "IT WORKS." - The MAYA principle (Most Advanced Yet Acceptable). Show how Apple makes familiar things feel magical. Use the Apple logo and iPhone I'm uploading. Think MrBeast meets Apple keynote - clean, premium, makes you stop scrolling. Use my uploaded style references for the exact aesthetic. Be creative with composition and lighting.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "IT WORKS." - The MAYA principle (Most Advanced Yet Acceptable).
+Show how Apple makes familiar things feel magical. Use the Apple logo and iPhone I'm uploading.
+Clean white/light gray background with subtle grid texture.
+Bold black Impact font "IT WORKS." on left side.
+Floating iPhone and Apple logo on right with soft shadows.
+Apple keynote aesthetic - ultra-clean, minimal, premium.
+Professional studio lighting.
+
+Make it $10,000 quality. Stop-the-scroll. MrBeast meets Apple.`,
     images: [imageAssets.apple],
   },
 
   'red-button-effect': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "WHY YOU CLICK" - psychological reactance, the forbidden button effect. Create an irresistible "DO NOT PRESS" red button that makes viewers want to click. Dark/black background, dramatic lighting. Think MrBeast urgency meets premium design. Use my uploaded style references. Be creative - make that button impossible to ignore.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "WHY YOU CLICK" - Psychological reactance, the forbidden button effect.
+Pure black OLED background.
+MASSIVE hyper-realistic glossy RED button center frame.
+Chrome metal rim, glass dome catching dramatic spotlight from above.
+Text "DO NOT PRESS" embossed on button or floating nearby.
+Bold white text "WHY YOU CLICK" at top.
+Single dramatic spotlight creating god rays.
+Mysterious, irresistible, impossible to ignore.
+
+Make it $10,000 quality. Stop-the-scroll. Creates instant curiosity.`,
     images: [],
   },
 
   'fred-method': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "F.R.E.D." - a framework for audience psychology (4 hooks into the brain). Show a brain with 4 colored cables/connections - Red (F), Blue (R), Green (E), Yellow (D). Scientific but clickable, like a neuroscience diagram meets YouTube. Use my uploaded style references for quality level.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "F.R.E.D." - 4 psychological hooks into the brain.
+Clean white/light background with subtle medical grid.
+Hyper-realistic 3D brain floating center frame.
+4 colored cables plugged into the brain: Red (F), Blue (R), Green (E), Yellow (D).
+Each cable glowing at connection point.
+Bold text "F.R.E.D." below - each letter matching its cable color.
+Scientific diagram meets YouTube energy.
+Bright, clinical lighting.
+Premium 3D render quality.
+
+Make it $10,000 quality. Stop-the-scroll. Scientific but clickable.`,
     images: [],
   },
 
   'emotion-decides': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "EMOTION WINS" - the heart beats the brain in purchasing decisions. Show a massive heart dominating a smaller brain - emotion is king. I'm uploading Daniel Kahneman's image - include him subtly. Warm, visceral, makes you FEEL something. Use my style references. Be creative with how you show emotion winning.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "EMOTION WINS" - The heart beats the brain in purchasing decisions.
+Soft cream/warm gradient background.
+MASSIVE realistic 3D anatomical heart (red, glossy, detailed) on left - 3x larger than brain.
+Smaller realistic brain on right looking small/defeated.
+Golden crown sitting on top of the heart.
+Bold black text "EMOTION WINS." at bottom.
+Warm golden hour lighting.
+Visceral, emotional, premium CGI quality.
+
+Make it $10,000 quality. Stop-the-scroll. Makes you FEEL something.`,
     images: [imageAssets.danielKahneman],
   },
 
   'gatekeeper-method': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "4 DOORS" - bypassing the brain's attention filter. Show a brain with a mysterious golden door/gate with light streaming through. The secret is behind the door. Dark, mysterious, premium CGI quality. Use my uploaded style references and be creative with the execution.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "4 DOORS" - Bypassing the brain's attention filter.
+Deep charcoal/dark gray background.
+Massive hyper-realistic 3D brain with small ornate golden door in frontal lobe.
+Door slightly ajar with brilliant golden light streaming out (god rays).
+Brain looks organic/wet, door looks ancient and precious.
+Bold white text "4 DOORS." with dramatic shadow.
+Mysterious, exclusive feel.
+Movie poster lighting - premium CGI quality.
+
+Make it $10,000 quality. Stop-the-scroll. Secret knowledge revealed.`,
     images: [],
   },
 
   'three-second-rule': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "3 SECONDS" - you have 3 seconds to capture attention or lose them forever. URGENT. Use bold red background, giant "3", stopwatch imagery. MrBeast-style high contrast urgency. This thumbnail should create anxiety. Use my style references - make it impossible to ignore.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "3 SECONDS" - You have 3 seconds to capture attention or lose them forever.
+Solid URGENT RED background (#FF0000), pure and intense.
+GIANT white bold "3" dominating the frame - takes up 60% of space.
+Realistic silver stopwatch showing exactly 3 seconds.
+Text "SECONDS." below in white.
+Small "YOU HAVE" text above.
+MrBeast-style high contrast urgency.
+Creates anxiety, impossible to ignore.
+
+Make it $10,000 quality. Stop-the-scroll. Pure urgency.`,
     images: [],
   },
 
   'science-of-selling': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE FORMULA" - selling is a science, not an art. Show a laboratory beaker overflowing with money - the secret formula for sales. Scientific credibility meets wealth visualization. Clean white background, premium product photography. Use my uploaded style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE FORMULA" - Selling is a science, not an art.
+Clean white laboratory setting with faint grid.
+Tall glass Erlenmeyer flask OVERFLOWING with crisp $100 bills.
+Money spilling onto white surface.
+Chemical formula symbols floating ($ + Psychology = $$$).
+Bold black text "THE FORMULA."
+Bright, clinical, scientific lighting.
+Premium product photography quality.
+
+Make it $10,000 quality. Stop-the-scroll. Science of wealth.`,
     images: [],
   },
 
   'persuasion-blueprint': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "BLUEPRINT" - the master plan for persuasion. Show blueprint paper with brain/psychology diagrams. I'm uploading Robert Cialdini's image - the godfather of persuasion. Architectural, intellectual, exclusive access to the master plan. Use my style references for quality.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "BLUEPRINT" - The master plan for persuasion.
+Aged paper/architect desk texture background.
+Rolled blueprint paper partially unrolled showing brain diagram with neural connections.
+Classic blue/white blueprint aesthetic.
+Brass compass and pencil nearby.
+Bold black text "BLUEPRINT." stamped like official document.
+Warm desk lamp lighting.
+Intellectual, exclusive, premium.
+
+Make it $10,000 quality. Stop-the-scroll. Secret plans revealed.`,
     images: [imageAssets.robertCialdini],
   },
 
   'persuasion-stack': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE STACK" - layered persuasion techniques that build on each other. Show 5 colorful stacked layers, like building blocks or a deconstructed burger. Each layer matters. Clean, modern, strategic. Use my uploaded style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE STACK" - Layered persuasion techniques that build on each other.
+Soft gradient from light gray to white background.
+Vertical stack of 5 distinct colorful geometric layers/blocks.
+Colors: Red, Blue, Green, Yellow, Purple - with gaps between showing depth.
+3D perspective with shadows between layers.
+Bold black text "THE STACK." beside or below.
+Clean, modern, strategic tech company aesthetic.
+Premium 3D render quality.
+
+Make it $10,000 quality. Stop-the-scroll. Building blocks of influence.`,
     images: [],
   },
 
   'architecture-of-influence': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "ARCHITECT" - designing minds, building influence. Golden architectural wireframe that forms a human head/mind. Dark navy background, sophisticated. Like a Christopher Nolan movie poster about influence. Premium and intellectual. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "ARCHITECT" - Designing minds, building influence.
+Deep navy blue gradient background.
+Beautiful golden architectural wireframe forming human head profile.
+Golden lines creating both building structure AND neural pathways.
+Bold white text "ARCHITECT" with gold accent on the A.
+Golden accent lighting on wireframe edges.
+Christopher Nolan movie poster quality.
+Powerful, intellectual, sophisticated.
+
+Make it $10,000 quality. Stop-the-scroll. Master builder of minds.`,
     images: [],
   },
 
   'wiifm-principle': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "WHAT ABOUT ME?" - everyone only cares about themselves (WIIFM = What's In It For Me). Show someone pointing at themselves, selfish but relatable. Bold, provocative, uncomfortable truth. Use my uploaded style references. Be creative.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "WHAT ABOUT ME?" - Everyone only cares about themselves (WIIFM = What's In It For Me).
+Clean light background.
+Person pointing aggressively at themselves with both thumbs.
+Exaggerated confident/smug expression.
+Bold black text "WHAT ABOUT ME?" in quotes.
+Selfish but relatable energy.
+Provocative, uncomfortable truth visualization.
+Premium portrait photography style.
+
+Make it $10,000 quality. Stop-the-scroll. Uncomfortable truth.`,
     images: [],
   },
 
   'rule-of-one': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "JUST ONE" - one reader, one idea, one offer, one action. Massive gold "1" on black background - luxury, simplicity, power. I'm uploading Gary Halbert's image - include him subtly. Premium like a Rolex ad. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "JUST ONE" - One reader, one idea, one offer, one action.
+Pure black background.
+Massive gold metallic "1" dominating the frame - luxury 3D render.
+The 1 should look like a gold bar or Rolex-quality gold.
+Subtle gold particle effects around it.
+Bold white text "JUST ONE." below.
+Premium like a luxury watch advertisement.
+Simplicity equals power.
+
+Make it $10,000 quality. Stop-the-scroll. Luxury minimalism.`,
     images: [imageAssets.garyHalbert],
   },
 
@@ -181,42 +505,227 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'meta-three-second-hook': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "3 SECONDS" - Meta judges your creative in the first 3 seconds. Tech/digital aesthetic with Meta logo I'm uploading. Show a phone with video ad and countdown timer. Electric blue, neon, modern. MrBeast urgency meets Silicon Valley. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "3 SECONDS" - Meta judges your creative in the first 3 seconds.
+Tech/digital aesthetic with Meta logo I'm uploading.
+Show a phone screen with video ad and countdown timer at 00:03.
+Electric blue and neon purple color scheme.
+Bold white text "3 SECONDS" at top.
+Modern Silicon Valley meets MrBeast urgency.
+Premium tech product photography style.
+
+Make it $10,000 quality. Stop-the-scroll. Digital urgency.`,
     images: [imageAssets.meta],
   },
 
   'meta-70-20-10-rule': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "70/20/10" - the creative allocation rule (70% proven, 20% iteration, 10% wild). Show three money stacks of different heights with Meta logo I'm uploading. Data-driven wealth visualization. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "70/20/10" - The creative allocation rule (70% proven, 20% iteration, 10% wild).
+Three 3D money stacks of different heights: tallest (70%), medium (20%), small (10%).
+Meta logo floating above with soft shadow.
+Clean white/light background with subtle grid.
+Bold black text "70/20/10" prominently displayed.
+Data-driven wealth visualization.
+Professional infographic meets YouTube energy.
+
+Make it $10,000 quality. Stop-the-scroll. Strategy visualization.`,
     images: [imageAssets.meta],
   },
 
   'meta-creative-ecosystem': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "50 ADS" - you need 20-50 meaningfully different ads. Epic visualization of ads orbiting like planets around Meta logo. Cosmic, overwhelming scale, cinematic. I'm uploading Meta and Triple Whale logos. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "50 ADS" - You need 20-50 meaningfully different ads to win.
+Epic visualization: ad creatives orbiting like planets around glowing Meta logo.
+Deep space/cosmic dark blue background.
+Bold white text "50 ADS" dominating top.
+Overwhelming scale - showing the volume needed.
+Cinematic, sci-fi aesthetic.
+Include Meta and Triple Whale logos I'm uploading.
+
+Make it $10,000 quality. Stop-the-scroll. Cosmic scale of creative needed.`,
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
 
   'meta-capi-pixel-setup': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "CAPI + PIXEL" - dual tracking is mandatory. Two data streams (blue and purple) merging into power. Tech/developer aesthetic with Meta logo. Matrix-style but premium. I'm uploading logos. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "CAPI + PIXEL" - Dual tracking is mandatory for success.
+Two glowing data streams (blue and purple) merging into powerful light.
+Dark tech/developer aesthetic background.
+Meta logo prominent with soft shadow.
+Bold text "CAPI + PIXEL" in white.
+Matrix-style digital rain subtly in background.
+Premium tech visualization.
+Include logos I'm uploading.
+
+Make it $10,000 quality. Stop-the-scroll. Technical mastery.`,
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
 
   'cbo-vs-abo': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "CBO vs ABO" - the epic showdown. Split screen comparison, boxing match energy, "VS" dramatic center. Meta logo I'm uploading. Fight night for marketers. Use my style references. Make it feel like an event.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "CBO vs ABO" - The epic campaign structure showdown.
+Split screen dramatic comparison - boxing match energy.
+"CBO" on left side (blue), "ABO" on right side (red).
+Giant "VS" in dramatic metallic gold center.
+Fight night/championship event aesthetic.
+Meta logo at top center.
+Intense, competitive energy.
+
+Make it $10,000 quality. Stop-the-scroll. Fight night for marketers.`,
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
 
   'meta-andromeda': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "ANDROMEDA" - Meta's AI brain that controls everything. Cosmic, galaxy imagery, Meta logo transformed into AI neural network. Sci-fi, awe-inspiring, slightly intimidating. I'm uploading Meta logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "ANDROMEDA" - Meta's AI brain that controls everything.
+Cosmic deep space background with galaxy swirls.
+Meta logo transformed into glowing AI neural network/brain.
+Bold white text "ANDROMEDA" with cosmic glow.
+Sci-fi, awe-inspiring, slightly intimidating.
+Blue and purple nebula colors.
+Premium space/tech CGI quality.
+
+Make it $10,000 quality. Stop-the-scroll. The AI that controls ads.`,
     images: [imageAssets.meta],
   },
 
   'meta-1-1-x-structure': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "1-1-X" - the winning campaign structure (1 campaign, 1 ad set, X creatives). Clean diagram/flowchart that looks premium. Simplicity is power. Meta logo I'm uploading. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "1-1-X" - The winning campaign structure (1 campaign, 1 ad set, X creatives).
+Clean white background with subtle grid.
+Premium flowchart: 1 → 1 → X expanding outward.
+Bold black text "1-1-X" dominating frame.
+Meta logo floating with soft shadow.
+Simplicity equals power aesthetic.
+Minimal, strategic, Apple-keynote style.
+
+Make it $10,000 quality. Stop-the-scroll. The winning formula.`,
     images: [imageAssets.meta],
   },
 
   'creative-volume-2026': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "40-70 WEEKLY" - the insane creative volume needed in 2026. Flood/wave of ad creatives pouring out of a phone. Overwhelming but exciting. High energy, tech meets MrBeast. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "40-70 WEEKLY" - The insane creative volume needed in 2026.
+Flood/tsunami wave of ad creatives pouring out of a smartphone.
+Overwhelming but exciting energy.
+Bold text "40-70 WEEKLY" in white against colorful chaos.
+High energy, dynamic composition.
+Tech meets MrBeast overwhelming scale.
+Premium 3D render of creative explosion.
+
+Make it $10,000 quality. Stop-the-scroll. The volume required to win.`,
     images: [imageAssets.meta],
   },
 
@@ -225,27 +734,134 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'google-highest-cpa-wins': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "HIGHEST WINS" - counterintuitively, the highest CPA bid wins on Google. Gold trophy with "$50 CPA" beating smaller trophies. Challenges everything you thought you knew. Google logo I'm uploading. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "HIGHEST WINS" - Counterintuitively, the highest CPA bid wins on Google.
+Gold trophy with "$50 CPA" beating smaller silver/bronze trophies.
+Challenges everything you thought you knew about bidding.
+Google logo floating with soft shadow.
+Clean white background with subtle grid.
+Bold black text "HIGHEST WINS" at top.
+
+Make it $10,000 quality. Stop-the-scroll. Counterintuitive truth.`,
     images: [imageAssets.google],
   },
 
   'google-pmax-blueprint': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "PMax SETUP" - the Performance Max campaign architecture. Blueprint/technical diagram style, Google logo I'm uploading. For serious marketers. Technical mastery aesthetic. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "PMax SETUP" - The Performance Max campaign architecture.
+Blueprint/technical diagram aesthetic with blue and white.
+Google logo prominent.
+Bold text "PMax SETUP" in clean typography.
+Technical mastery aesthetic - for serious marketers.
+Professional architectural diagram feel.
+
+Make it $10,000 quality. Stop-the-scroll. Technical mastery.`,
     images: [imageAssets.google],
   },
 
   'google-product-feed-mastery': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "FEED = AD" - your product feed IS your ad. Show data/spreadsheet transforming into shopping ads. Magical transformation. Google and Shopify logos I'm uploading. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "FEED = AD" - Your product feed IS your ad.
+Data/spreadsheet visually transforming into beautiful shopping ads.
+Magical transformation visualization with sparkles.
+Google and Shopify logos I'm uploading.
+Bold text "FEED = AD" prominently displayed.
+
+Make it $10,000 quality. Stop-the-scroll. Magical transformation.`,
     images: [imageAssets.google, imageAssets.shopify],
   },
 
   'google-shopping-intent': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "ACTIVE INTENT" - Google Shopping captures people who WANT to buy. Search bar showing "buy [product]", target on shopper. High intent visualization. Google logo I'm uploading. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "ACTIVE INTENT" - Google Shopping captures people who WANT to buy.
+Search bar showing "buy [product]" with target/crosshairs on buyer.
+High intent visualization - money in hand ready to purchase.
+Google logo floating with soft shadow.
+Bold text "ACTIVE INTENT" at top.
+
+Make it $10,000 quality. Stop-the-scroll. Ready-to-buy audience.`,
     images: [imageAssets.google],
   },
 
   'google-brand-moat': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "BRAND MOAT" - brand is the fortress competitors can't breach. Castle/fortress with moat in Google colors. Medieval meets digital. Epic, metaphorical. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "BRAND MOAT" - Brand is the fortress competitors can't breach.
+Majestic castle/fortress surrounded by deep moat in Google colors.
+Medieval meets digital aesthetic.
+Epic, metaphorical visualization.
+Bold white text "BRAND MOAT" with dramatic shadow.
+
+Make it $10,000 quality. Stop-the-scroll. Unbreachable defense.`,
     images: [imageAssets.google],
   },
 
@@ -254,47 +870,245 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'biz-infinite-money-engine': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "INFINITE MONEY" - the flywheel that never stops. Money arranged in infinity loop, cash piling up. I'm uploading Alex Hormozi's image - he built this. Money green/gold aesthetic, wealth visualization. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "INFINITE MONEY" - The flywheel that never stops generating cash.
+Money arranged in glowing infinity loop symbol (∞).
+Cash piling up in background.
+I'm uploading Alex Hormozi's image - include him as authority figure.
+Money green and gold aesthetic.
+Bold text "INFINITE MONEY" at top.
+
+Make it $10,000 quality. Stop-the-scroll. Perpetual wealth machine.`,
     images: [imageAssets.alexHormozi],
   },
 
   'biz-3x-threshold': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "3X" - the LTV:CAC threshold that changes everything. MASSIVE "3X" dominating frame. Mathematical breakthrough energy. I'm uploading Alex Hormozi's image. Red and black, powerful. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "3X" - The LTV:CAC threshold that changes everything.
+MASSIVE metallic gold "3X" dominating the frame.
+Mathematical breakthrough energy.
+Red and black powerful color scheme.
+I'm uploading Alex Hormozi's image - include him.
+Bold, aggressive, game-changing feel.
+
+Make it $10,000 quality. Stop-the-scroll. The magic number.`,
     images: [imageAssets.alexHormozi],
   },
 
   'biz-operator-mindset': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "OPERATOR MODE" - running your business like a pilot runs a cockpit. Dashboard with business metrics as gauges. I'm uploading Ben Francis (Gymshark) image. Aviation meets business. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "OPERATOR MODE" - Running your business like a pilot runs a cockpit.
+Airplane cockpit dashboard with business metrics as gauges.
+Aviation meets business aesthetic.
+I'm uploading Ben Francis (Gymshark) and Gymshark logo.
+Bold text "OPERATOR MODE" at top.
+Professional, in-control energy.
+
+Make it $10,000 quality. Stop-the-scroll. Take the controls.`,
     images: [imageAssets.benFrancis, imageAssets.gymshark],
   },
 
   'biz-cash-conversion': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "NEGATIVE CASH" - get paid before you spend (negative cash conversion cycle). Money flowing backwards, "-30 DAYS" prominent. I'm uploading Davie Fogarty and The Oodie images. Mind-bending financial concept. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "NEGATIVE CASH" - Get paid before you spend (negative cash conversion).
+Money flowing BACKWARDS with reverse arrows.
+Bold "-30 DAYS" prominently displayed.
+I'm uploading Davie Fogarty and The Oodie images.
+Mind-bending financial concept visualization.
+Clean background with focus on impossible money flow.
+
+Make it $10,000 quality. Stop-the-scroll. Money before spending.`,
     images: [imageAssets.davieFogarty, imageAssets.theOodie],
   },
 
   'biz-closer-framework': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "6 STEPS" - the C.L.O.S.E.R. framework for closing sales. Checklist visualization with the acronym. I'm uploading Alex Hormozi's image. Professional sales training aesthetic. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "6 STEPS" - The C.L.O.S.E.R. framework for closing sales.
+Premium checklist/steps visualization with the letters C.L.O.S.E.R.
+Each letter glowing as a step.
+I'm uploading Alex Hormozi's image - the sales master.
+Professional sales training aesthetic.
+Bold text "6 STEPS" or "C.L.O.S.E.R." at top.
+
+Make it $10,000 quality. Stop-the-scroll. The closing formula.`,
     images: [imageAssets.alexHormozi],
   },
 
   'biz-hamster-wheel': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE TRAP" - are you building a business or a prison? Hamster wheel with business person running endlessly. Dark, confrontational, makes you think. Money flying off but never accumulating. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE TRAP" - Are you building a business or a prison?
+Business person in suit running endlessly in giant hamster wheel.
+Money flying off the wheel but never accumulating.
+Dark, confrontational, makes you think.
+Bold text "THE TRAP" with quotes for impact.
+Existential business crisis visualization.
+
+Make it $10,000 quality. Stop-the-scroll. Are you trapped?`,
     images: [],
   },
 
   'biz-leverage-equation': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "LEVERAGE" - work smarter, not harder. Lever/fulcrum with small effort lifting massive results. Physics of success visualization. Educational but premium. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "LEVERAGE" - Work smarter, not harder.
+Classic lever/fulcrum with small finger pushing down, lifting massive boulder.
+Physics of success visualization.
+Educational but premium, scientific aesthetic.
+Bold text "LEVERAGE" prominently displayed.
+Clean background with dramatic lighting.
+
+Make it $10,000 quality. Stop-the-scroll. Physics of wealth.`,
     images: [],
   },
 
   'starbucks-ltv': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "$14,099" - the lifetime value of one Starbucks customer. Coffee cup overflowing with money. Mind-blowing LTV revelation. I'm uploading Starbucks logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "$14,099" - The mind-blowing lifetime value of one Starbucks customer.
+Starbucks coffee cup OVERFLOWING with $100 bills.
+Money spilling out onto surface.
+Bold text "$14,099" in massive font - the shocking number.
+I'm uploading Starbucks logo - make it prominent.
+Mind-blowing LTV revelation.
+
+Make it $10,000 quality. Stop-the-scroll. One customer = fortune.`,
     images: [imageAssets.starbucks],
   },
 
   'million-dollar-roadmap': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE ROADMAP" - the exact path to $1M/month (33 customers per day). Golden path leading to mountain peak with money flag. Aspirational, clear, achievable. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE ROADMAP" - The exact path to $1M/month (33 customers per day).
+Golden path/road leading to mountain peak with "$1M" flag at top.
+Aspirational, clear, achievable journey visualization.
+Bold text "THE ROADMAP" or "$1M/MONTH" at top.
+Premium landscape/achievement aesthetic.
+Makes goal feel tangible and possible.
+
+Make it $10,000 quality. Stop-the-scroll. Your path to millions.`,
     images: [],
   },
 
@@ -303,37 +1117,191 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'borrowed-trust': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "BORROW IT" - transfer trust from authorities to yourself. Trust badges/energy transferring between figures. I'm uploading Robert Cialdini's image. Magical but professional. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "BORROW IT" - Transfer trust from authorities to yourself.
+Trust badges/golden energy visually transferring between two figures.
+I'm uploading Robert Cialdini's image - the persuasion master.
+Magical but professional energy transfer.
+Bold text "BORROW IT" at top.
+Warm, authoritative, trust visualization.
+
+Make it $10,000 quality. Stop-the-scroll. Steal their credibility.`,
     images: [imageAssets.robertCialdini],
   },
 
   'certainty-transfer': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "TRANSFER IT" - your conviction becomes their conviction. Energy/light beam from confident seller to uncertain buyer. Transformative visualization. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "TRANSFER IT" - Your conviction becomes their conviction.
+Bright energy/light beam transferring from confident seller to uncertain buyer.
+Seller: confident, glowing. Buyer: transforming from doubt to belief.
+Transformative visualization of belief transfer.
+Bold text "TRANSFER IT" at top.
+Clean background with dramatic light beam.
+
+Make it $10,000 quality. Stop-the-scroll. Give them your certainty.`,
     images: [],
   },
 
   'authority-over-hope': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "STOP HOPING" - hope is not a strategy, authority is. Split screen: crossed fingers (hoping) vs confident pointing (knowing). Brutal truth energy. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "STOP HOPING" - Hope is not a strategy, authority is.
+Split screen: LEFT = crossed fingers (hoping, weak) with X over it.
+RIGHT = confident pointing finger (knowing, powerful) with checkmark.
+Brutal truth energy - confrontational.
+Bold text "STOP HOPING" with quotes.
+Red and green color coding.
+
+Make it $10,000 quality. Stop-the-scroll. Brutal truth.`,
     images: [],
   },
 
   'dopamine-blueprint': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "ADDICTED" - the dopamine triggers that create addiction. Brain with notifications, likes, rewards attached. Dark, revealing, slightly uncomfortable neuroscience. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "ADDICTED" - The dopamine triggers that create purchase addiction.
+Hyper-realistic brain with notifications, likes, hearts, rewards plugged in.
+Cables and wires connecting social media icons to pleasure centers.
+Dark background, slightly uncomfortable neuroscience reveal.
+Bold text "ADDICTED" at top.
+Dark, revealing, uncomfortable but fascinating.
+
+Make it $10,000 quality. Stop-the-scroll. The addiction machine.`,
     images: [],
   },
 
   'unity-principle': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "WE > YOU" - shared identity wins over individual selling. Two figures merging into one with "WE" glowing. I'm uploading Robert Cialdini's image. Warm, connective. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "WE > YOU" - Shared identity wins over individual selling.
+Two silhouette figures merging/blending into ONE unified figure.
+Glowing "WE" text in the merged center.
+I'm uploading Robert Cialdini's image - include him.
+Warm, connective, tribal energy.
+Light background with warm golden tones.
+
+Make it $10,000 quality. Stop-the-scroll. Unity sells.`,
     images: [imageAssets.robertCialdini],
   },
 
   'pre-suasion-hack': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "WIN BEFORE" - the sale is won before you speak. Chess strategy, puppet master, "ALREADY WON" energy. I'm uploading Robert Cialdini's image. Strategic, intellectual. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "WIN BEFORE" - The sale is won before you even speak.
+Chess board with winning move already made, king toppled.
+Or puppet master hands controlling the scene from above.
+Bold text "ALREADY WON" or "WIN BEFORE" at top.
+I'm uploading Robert Cialdini's image - include him.
+Strategic, intellectual, masterful energy.
+
+Make it $10,000 quality. Stop-the-scroll. Pre-determined victory.`,
     images: [imageAssets.robertCialdini],
   },
 
   'herd-instinct': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE HERD" - social proof and following the crowd. Massive crowd moving in one direction, "SOLD OUT" signs. Everyone's buying, you should too. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE HERD" - Social proof and following the crowd.
+Massive crowd of people all moving in one direction, money in hands.
+"SOLD OUT" signs and "EVERYONE'S BUYING" energy.
+Bold text "THE HERD" at top.
+High energy, FOMO-inducing crowd psychology.
+Premium 3D crowd visualization.
+
+Make it $10,000 quality. Stop-the-scroll. Join the stampede.`,
     images: [],
   },
 
@@ -342,37 +1310,191 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'decoy-effect': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE DECOY" - the pricing trick that makes middle option irresistible (+43%). Three pricing cards, middle one glowing. Pricing psychology exposed. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE DECOY" - The pricing trick that makes middle option irresistible (+43%).
+Three pricing cards/options displayed.
+Middle one GLOWING with golden light - the winner.
+"+43%" floating near the middle card.
+Bold text "THE DECOY" at top.
+Clean white background, premium pricing visualization.
+
+Make it $10,000 quality. Stop-the-scroll. Pricing psychology exposed.`,
     images: [],
   },
 
   'paradox-of-choice': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "LESS = MORE" - fewer options = more sales (jam study). Split screen: 24 jars (chaos) vs 6 jars (clarity). I'm uploading Sheena Iyengar's image. Choice paralysis visualization. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "LESS = MORE" - Fewer options equals more sales (the jam study).
+Split screen: LEFT = 24 jam jars (chaos, overwhelm, X mark).
+RIGHT = 6 jam jars (clarity, organized, checkmark).
+I'm uploading Sheena Iyengar's image - include her.
+Bold text "LESS = MORE" at top.
+Choice paralysis visualization.
+
+Make it $10,000 quality. Stop-the-scroll. Simplify to sell.`,
     images: [imageAssets.sheenaIyengar],
   },
 
   'five-second-test': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "5 SECONDS" - if they don't get it instantly, they leave. Half blurred/half clear website, stopwatch showing 5. Clarity test visualization. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "5 SECONDS" - If they don't get it instantly, they leave.
+Website split: LEFT half = blurry/unclear, RIGHT half = crystal clear.
+Stopwatch showing exactly 5 seconds.
+Bold text "5 SECONDS" in urgent style.
+Clarity test visualization.
+Clean background with dramatic split effect.
+
+Make it $10,000 quality. Stop-the-scroll. Clarity or death.`,
     images: [],
   },
 
   'framing-effect-mastery': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "SAME THING" - context changes everything (framing effect). Same product in cheap vs luxury context. Mind-bending. I'm uploading Daniel Kahneman's image. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "SAME THING" - Context changes everything (framing effect).
+SAME product shown twice: LEFT = cheap context, RIGHT = luxury context.
+Mind-bending same item, wildly different perception.
+I'm uploading Daniel Kahneman's image - include him.
+Bold text "SAME THING" with quotes for impact.
+Split screen with dramatic contrast.
+
+Make it $10,000 quality. Stop-the-scroll. Context is everything.`,
     images: [imageAssets.danielKahneman],
   },
 
   'speed-equals-trust': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "0.1 SECOND" - Amazon's $1.7B lesson on speed. Loading bar stuck at 99%, money draining. I'm uploading Amazon logo. Terrifying cost of slowness. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "0.1 SECOND" - Amazon's $1.7B lesson on page speed.
+Loading bar stuck at 99% with money visibly draining/evaporating.
+Bold text "0.1 SECOND" or "$1.7 BILLION" prominently.
+I'm uploading Amazon logo - make it prominent.
+Terrifying cost of slowness visualization.
+Red/urgent color scheme.
+
+Make it $10,000 quality. Stop-the-scroll. Speed is money.`,
     images: [imageAssets.amazon],
   },
 
   'leaky-bucket-audit': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "$50K HOLE" - you're bleeding money and don't know it. Bucket with money leaking out through holes. Flashlight exposing the problem. Urgent, actionable. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "$50K HOLE" - You're bleeding money and don't know it.
+Large bucket with money (crisp $100 bills) visibly leaking through holes.
+Flashlight beam exposing one of the holes.
+Bold text "$50K HOLE" or "LEAKING" at top.
+Urgent, actionable, problem-exposing energy.
+Dark background with spotlight on bucket.
+
+Make it $10,000 quality. Stop-the-scroll. Find your leaks.`,
     images: [],
   },
 
   'von-restorff-effect': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "STAND OUT" - the different one gets remembered (isolation effect). Row of gray circles with ONE red/glowing circle. Simple but powerful psychology. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "STAND OUT" - The different one gets remembered (isolation effect).
+Row of identical gray circles/figures - all the same.
+ONE circle/figure in bright RED or GOLD - glowing, different.
+Bold text "STAND OUT" at top.
+Simple but powerful psychology visualization.
+Clean background, maximum contrast.
+
+Make it $10,000 quality. Stop-the-scroll. Be the anomaly.`,
     images: [],
   },
 
@@ -381,37 +1503,191 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'value-ladder': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "HIDDEN MENU" - the VIP level above what customers see. Velvet rope parting to reveal secret menu. Luxury exclusivity. I'm uploading Rolex logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "HIDDEN MENU" - The VIP level above what customers see.
+Red velvet rope dramatically parting to reveal secret/exclusive menu.
+Luxury exclusivity visualization.
+I'm uploading Rolex logo - premium brand reference.
+Bold text "HIDDEN MENU" at top.
+Dark, mysterious, exclusive club energy.
+
+Make it $10,000 quality. Stop-the-scroll. VIP access revealed.`,
     images: [imageAssets.rolex, imageAssets.reconvert],
   },
 
   'box-worth-300': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "$300 BOX" - Tiffany's box is worth more than what's inside. Empty Tiffany blue box as the star, "$300" price tag on packaging. Luxury psychology. I'm uploading Tiffany logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "$300 BOX" - Tiffany's box is worth more than what's inside.
+Empty iconic Tiffany blue box as the star - OPEN and EMPTY.
+"$300" price tag floating near the empty box.
+I'm uploading Tiffany logo - make it prominent.
+Luxury psychology exposed.
+Clean white background with soft shadows.
+
+Make it $10,000 quality. Stop-the-scroll. The packaging is the product.`,
     images: [imageAssets.tiffany],
   },
 
   'hermes-doctrine': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "PROTECT THE BIRKIN" - Hermès infinite game strategy. Birkin bag under glass like museum piece, "2 YEAR WAITLIST". Ultra-luxury, scarcity is strategy. I'm uploading Hermès logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "PROTECT THE BIRKIN" - Hermès infinite game strategy.
+Birkin bag displayed under glass dome like museum piece.
+"2 YEAR WAITLIST" floating text.
+Ultra-luxury, scarcity is strategy visualization.
+I'm uploading Hermès logo - make it elegant.
+Dark, prestigious museum gallery aesthetic.
+
+Make it $10,000 quality. Stop-the-scroll. Manufactured scarcity.`,
     images: [imageAssets.hermes],
   },
 
   'dior-pricing-secret': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "$57 → $3,500" - the 60x luxury markup customers happily pay. Same bag, two prices side by side. Luxury pricing exposed. I'm uploading Dior logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "$57 → $3,500" - The 60x luxury markup customers happily pay.
+SAME bag shown twice with dramatically different price tags.
+Left: "$57" with cheap look. Right: "$3,500" with luxury presentation.
+Bold text "$57 → $3,500" showing the transformation.
+I'm uploading Dior logo.
+Luxury pricing psychology exposed.
+
+Make it $10,000 quality. Stop-the-scroll. 60x markup revealed.`,
     images: [imageAssets.dior],
   },
 
   'gucci-short-termism': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "WHY GUCCI IS DYING" - trend chasing kills brands. Split: Gucci fading vs Hermès/Rolex still strong. Confrontational, newsworthy. I'm uploading logos. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "WHY GUCCI IS DYING" - Trend chasing kills brands.
+Split screen: LEFT = Gucci logo fading/crumbling.
+RIGHT = Hermès/Rolex still strong and shiny.
+Confrontational, newsworthy energy.
+Bold text "WHY GUCCI IS DYING" at top.
+I'm uploading logos for both brands.
+
+Make it $10,000 quality. Stop-the-scroll. Brand death analysis.`,
     images: [imageAssets.gucci, imageAssets.hermes],
   },
 
   'scarcity-calendar': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "ONE PER YEAR" - Le Creuset's scarcity engine (one color annually). Colorful Dutch ovens with "SOLD OUT" banner, calendar. Collector psychology. I'm uploading Le Creuset logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "ONE PER YEAR" - Le Creuset's scarcity engine (one color annually).
+Colorful Dutch ovens in rainbow arrangement.
+"SOLD OUT" banner dramatically across most of them.
+Calendar showing limited availability.
+I'm uploading Le Creuset logo.
+Collector psychology and FOMO visualization.
+
+Make it $10,000 quality. Stop-the-scroll. Manufactured scarcity.`,
     images: [imageAssets.leCreuset],
   },
 
   'anchor-moments': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "$20K makes $200 CHEAP" - Ralph Lauren's price anchoring. Expensive bag on pedestal making polo shirt look affordable. Luxury retail psychology. I'm uploading Ralph Lauren logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "$20K makes $200 CHEAP" - Ralph Lauren's price anchoring.
+Expensive $20K bag on pedestal (spotlight, premium).
+Polo shirt nearby looking like a bargain at $200.
+Bold text showing the price anchor psychology.
+I'm uploading Ralph Lauren logo.
+Luxury retail psychology exposed.
+
+Make it $10,000 quality. Stop-the-scroll. Anchoring in action.`,
     images: [imageAssets.ralphLauren],
   },
 
@@ -420,22 +1696,110 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'primal-stimuli': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "6 BUY BUTTONS" - the reptile brain triggers that work on everyone. Ancient brain with 6 glowing modern buttons. Prehistoric meets neuroscience. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "6 BUY BUTTONS" - The reptile brain triggers that work on everyone.
+Ancient/primitive style brain with 6 glowing modern buttons embedded.
+Prehistoric meets neuroscience visualization.
+Bold text "6 BUY BUTTONS" at top.
+Dark background with dramatic lighting on brain.
+Primal psychology exposed.
+
+Make it $10,000 quality. Stop-the-scroll. Hack the reptile brain.`,
     images: [],
   },
 
   'fly-in-the-urinal': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE FLY" - the Amsterdam airport nudge that changed behavior 80%. Urinal with fly etched near drain. Behavioral economics case study. Unexpected, fascinating. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE FLY" - Amsterdam airport nudge that changed behavior 80%.
+Target/bullseye with small fly in center.
+"80%" stat prominently displayed.
+Behavioral economics case study visualization.
+Bold text "THE FLY" at top.
+Unexpected, fascinating, clean design.
+
+Make it $10,000 quality. Stop-the-scroll. Tiny nudge, massive impact.`,
     images: [],
   },
 
   'forty-million-mistake': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "$40 MILLION MISTAKE" - New Coke disaster (data without emotion). Data/charts on fire, heart emerging from ashes. I'm uploading Coca-Cola logo subtly. Cautionary tale. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "$40 MILLION MISTAKE" - New Coke disaster (data without emotion).
+Data charts/graphs literally on FIRE, burning.
+Red heart emerging triumphant from the ashes.
+I'm uploading Coca-Cola logo - include subtly.
+Bold text "$40 MILLION MISTAKE" at top.
+Cautionary tale about ignoring emotion.
+
+Make it $10,000 quality. Stop-the-scroll. Data failed Coke.`,
     images: [imageAssets.cocaCola],
   },
 
   'precise-price-trick': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "$4,988 BEATS $5,000" - precise numbers feel researched. Two prices side by side, precise one winning. Counterintuitive pricing psychology. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "$4,988 BEATS $5,000" - Precise numbers feel researched.
+Two price tags side by side: "$5,000" (X over it) vs "$4,988" (checkmark).
+Precise price GLOWING as winner.
+Counterintuitive pricing psychology.
+Bold text showing both numbers.
+Clean white background with dramatic comparison.
+
+Make it $10,000 quality. Stop-the-scroll. Precision wins.`,
     images: [],
   },
 
@@ -444,17 +1808,83 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'product-page-anatomy': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "5 ELEMENTS" - the anatomy of pages that convert 8%+. Exploded product page diagram, each section labeled. Blueprint for success. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "5 ELEMENTS" - The anatomy of pages that convert 8%+.
+Exploded product page diagram - each section separated and labeled.
+Like an engineering blueprint but for websites.
+Bold text "5 ELEMENTS" at top.
+Clean white background with technical diagram aesthetic.
+Blueprint for conversion success.
+
+Make it $10,000 quality. Stop-the-scroll. Page anatomy exposed.`,
     images: [],
   },
 
   'jakobs-law': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "FAMILIAR WINS" - don't be unique in checkout (Jakob's Law). Split: confusing custom UI vs familiar Amazon-style checkout. UX principle visualization. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "FAMILIAR WINS" - Don't be unique in checkout (Jakob's Law).
+Split: LEFT = confusing custom UI with X mark.
+RIGHT = familiar Amazon-style checkout with checkmark.
+UX principle visualization.
+Bold text "FAMILIAR WINS" at top.
+Clean comparison layout.
+
+Make it $10,000 quality. Stop-the-scroll. Familiar beats creative.`,
     images: [],
   },
 
   'ikea-effect': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "DIY = +63%" - we value what we build (IKEA effect). Furniture with value badge, assembly tools visible. Participation psychology. I'm uploading IKEA logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "DIY = +63%" - We value what we build (IKEA effect).
+Assembled furniture with "+63% VALUE" badge glowing.
+Assembly tools (Allen key, screwdriver) visible nearby.
+I'm uploading IKEA logo - make it prominent.
+Bold text "DIY = +63%" at top.
+Participation psychology visualization.
+
+Make it $10,000 quality. Stop-the-scroll. Build it, value it.`,
     images: [imageAssets.ikea],
   },
 
@@ -463,32 +1893,164 @@ const lessonPromptData: Record<string, { prompt: string; images: string[] }> = {
   // ============================================
 
   'pet-rock-story': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "$30M FROM ROCKS" - Pet Rock sold meaning, not products. Rock on velvet cushion with crown, money raining down. Ultimate marketing story. Absurdist but true. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "$30M FROM ROCKS" - Pet Rock sold meaning, not products.
+Simple rock on red velvet cushion wearing tiny golden crown.
+Money ($100 bills) raining down around it.
+Bold text "$30M FROM ROCKS" at top.
+Absurdist but true - ultimate marketing story.
+Clean background with dramatic spotlight on rock.
+
+Make it $10,000 quality. Stop-the-scroll. Meaning beats product.`,
     images: [],
   },
 
   'gary-halbert-secret': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "STARVING CROWD" - find the hungry market first. Crowd reaching with money in hands, demanding something. I'm uploading Gary Halbert's image. Vintage direct response aesthetic. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "STARVING CROWD" - Find the hungry market first.
+Massive crowd reaching desperately with money in hands.
+Everyone demanding something urgently.
+I'm uploading Gary Halbert's image - include him as authority.
+Bold text "STARVING CROWD" at top.
+Vintage direct response aesthetic.
+
+Make it $10,000 quality. Stop-the-scroll. Find hungry buyers.`,
     images: [imageAssets.garyHalbert],
   },
 
   'formula-to-sell': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE FORMULA" - Dream + Likelihood + Time + Effort = Sale. Beautiful equation visualization with icons. Mathematical selling. I'm uploading Alex Hormozi's image. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE FORMULA" - Dream + Likelihood + Time + Effort = Sale.
+Beautiful equation visualization with icons for each element.
+Mathematical selling representation.
+I'm uploading Alex Hormozi's image - include him.
+Bold text "THE FORMULA" at top.
+Clean, scientific, premium.
+
+Make it $10,000 quality. Stop-the-scroll. The selling equation.`,
     images: [imageAssets.alexHormozi],
   },
 
   'no-one-cares': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "NO ONE CARES" - brutal truth that everyone only cares about themselves. Megaphone being ignored by phone-scrolling crowd. Confrontational wake-up call. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "NO ONE CARES" - Brutal truth that everyone only cares about themselves.
+Person with megaphone being completely ignored by phone-scrolling crowd.
+Everyone absorbed in their own world.
+Bold text "NO ONE CARES" in quotes for impact.
+Confrontational wake-up call energy.
+Clean composition showing isolation.
+
+Make it $10,000 quality. Stop-the-scroll. Brutal truth.`,
     images: [],
   },
 
   'imperceptible-nudge': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE $200M COLOR" - Amazon's button color change that made $200M. A/B test visualization, winning button glowing. Micro-optimization power. I'm uploading Amazon logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE $200M COLOR" - Amazon's button color change that made $200M.
+A/B test visualization with two buttons side by side.
+Winning orange button GLOWING with "$200M" floating above it.
+I'm uploading Amazon logo - make it prominent.
+Bold text "$200M COLOR" at top.
+Micro-optimization power revealed.
+
+Make it $10,000 quality. Stop-the-scroll. One color = $200M.`,
     images: [imageAssets.amazon],
   },
 
   'hero-mechanism': {
-    prompt: `$10,000/thumbnail quality. 5:4 wide format. Concept: "THE $4,225 QUESTION" - why Oura Ring costs $399 vs $12 knockoffs (32X premium). Split: cheap trackers vs Oura on pedestal. Premium positioning psychology. I'm uploading Oura logo. Use my style references.`,
+    prompt: `Create a premium YouTube thumbnail (16:10 aspect ratio, 1600x1000px).
+
+=== 10 GOLDEN RULES TO FOLLOW ===
+1. BOLD TYPOGRAPHY: Text must be MASSIVE, readable in milliseconds. Bold sans-serif fonts. Maximum 2-5 words. Text takes 30-50% of frame.
+2. CLEAN BACKGROUNDS: Solid colors (black, white, red, orange, cream) or simple gradients. Grid texture OK. NEVER cluttered.
+3. 3D HYPER-REALISTIC OBJECTS: Premium CGI quality - photorealistic with soft shadows, studio lighting. Pixar quality.
+4. SURREAL COMBINATIONS: Unexpected pairings that STOP scrolling - brain with top cut off, face morphing, objects emerging from heads.
+5. MAXIMUM CONTRAST: Dark on light OR light on dark. Colors must POP. High saturation.
+6. SINGLE FOCAL POINT: ONE main element dominates. Eyes know where to look in 0.5 seconds.
+7. PROVOCATIVE TEXT: Use "QUOTES" around shocking statements. Curiosity gap.
+8. BRAND INTEGRATION: Logos clean, large, recognizable. Float with soft shadows.
+9. MONEY/SUCCESS IMAGERY: Crisp $100 bills, gold coins, upward graphs when relevant.
+10. HUMAN ELEMENTS: Faces create connection. Expressions (shock, curiosity). Surreal additions (exposed brain, cables plugging in).
+
+=== SPECIFIC THUMBNAIL ===
+Concept: "THE $4,225 QUESTION" - Why Oura Ring costs $399 vs $12 knockoffs (32X).
+Split screen: LEFT = pile of cheap $12 trackers looking cheap.
+RIGHT = Oura Ring on pedestal, glowing, premium, "$399".
+I'm uploading Oura logo - make it prominent.
+Bold text showing the 32X premium.
+Premium positioning psychology exposed.
+
+Make it $10,000 quality. Stop-the-scroll. Why 32X more?`,
     images: [imageAssets.oura],
   },
 
@@ -884,11 +2446,21 @@ export default function AdminLessonThumbnailsPage() {
   const ADMIN_EMAILS = ['admin@quantum-scale.co', 'aviv32552@gmail.com'];
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
 
-  // Copy prompt to clipboard
+  // Copy prompt to clipboard (includes 10 golden rules + specific prompt)
   const copyPrompt = useCallback(async (slug: string) => {
     const promptData = lessonPromptData[slug];
     if (promptData) {
-      await navigator.clipboard.writeText(promptData.prompt);
+      // Combine the 10 golden rules with the specific lesson prompt
+      const fullPrompt = `${THUMBNAIL_RULES}
+
+=== SPECIFIC THUMBNAIL REQUEST ===
+
+${promptData.prompt}
+
+=== REMEMBER ===
+Follow ALL 10 rules above. Make it $10,000 quality. Stop-the-scroll.`;
+
+      await navigator.clipboard.writeText(fullPrompt);
       setCopiedSlug(slug);
       setTimeout(() => setCopiedSlug(null), 2000);
     }
