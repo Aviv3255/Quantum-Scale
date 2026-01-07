@@ -21,7 +21,7 @@ import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import LessonModal from '@/components/LessonModal';
 import { processedArticles as articles, Article } from '@/data/articles';
-import { getUserProfile } from '@/lib/supabase';
+import { getUserProfile, supabase } from '@/lib/supabase';
 
 // Lesson metadata for modal
 const lessonMeta: Record<string, { title: string; description: string }> = {
@@ -379,6 +379,31 @@ export default function LearnPage() {
   const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
   const [initialSlide, setInitialSlide] = useState<number | null>(null);
   const [userName, setUserName] = useState<string>('Builder');
+  const [customThumbnails, setCustomThumbnails] = useState<Record<string, string>>({});
+
+  // Fetch custom thumbnails from database
+  useEffect(() => {
+    async function fetchThumbnails() {
+      try {
+        const { data } = await (supabase
+          .from('lesson_thumbnails') as ReturnType<typeof supabase.from>)
+          .select('slug, thumbnail_url');
+
+        if (data && Array.isArray(data)) {
+          const thumbnailMap: Record<string, string> = {};
+          data.forEach((item: { slug: string; thumbnail_url: string | null }) => {
+            if (item.thumbnail_url) {
+              thumbnailMap[item.slug] = item.thumbnail_url;
+            }
+          });
+          setCustomThumbnails(thumbnailMap);
+        }
+      } catch (error) {
+        console.error('Failed to fetch custom thumbnails:', error);
+      }
+    }
+    fetchThumbnails();
+  }, []);
 
   // Callback for URL params handler
   const handleLessonFromUrl = useCallback((slug: string, slide: number | null) => {
@@ -528,7 +553,7 @@ export default function LearnPage() {
             >
               {featuredArticles.map((article) => (
                 <motion.div key={article.id} variants={itemVariants}>
-                  <ArticleCard article={article} featured onLessonClick={openLesson} />
+                  <ArticleCard article={article} featured onLessonClick={openLesson} customThumbnails={customThumbnails} />
                 </motion.div>
               ))}
             </motion.div>
@@ -556,7 +581,7 @@ export default function LearnPage() {
               >
                 {regularArticles.map((article) => (
                   <motion.div key={article.id} variants={itemVariants}>
-                    <ArticleCard article={article} onLessonClick={openLesson} />
+                    <ArticleCard article={article} onLessonClick={openLesson} customThumbnails={customThumbnails} />
                   </motion.div>
                 ))}
               </motion.div>
@@ -585,9 +610,10 @@ interface ArticleCardProps {
   article: Article;
   featured?: boolean;
   onLessonClick: (slug: string) => void;
+  customThumbnails?: Record<string, string>;
 }
 
-function ArticleCard({ article, featured, onLessonClick }: ArticleCardProps) {
+function ArticleCard({ article, featured, onLessonClick, customThumbnails }: ArticleCardProps) {
   // Check if this is a lesson (has directUrl like /learn/lessons/xxx)
   const isLesson = !!article.directUrl && article.directUrl.includes('/lessons/');
 
@@ -595,6 +621,9 @@ function ArticleCard({ article, featured, onLessonClick }: ArticleCardProps) {
   const lessonSlug = isLesson
     ? article.directUrl?.split('/lessons/')[1] || ''
     : '';
+
+  // Use custom thumbnail from database if available, otherwise use static thumbnail
+  const thumbnailSrc = (lessonSlug && customThumbnails?.[lessonSlug]) || article.thumbnail;
 
   // For lessons: open modal. For articles: navigate to page
   const handleClick = (e: React.MouseEvent) => {
@@ -612,7 +641,7 @@ function ArticleCard({ article, featured, onLessonClick }: ArticleCardProps) {
       {/* Thumbnail */}
       <div className="relative aspect-[16/10] overflow-hidden bg-[var(--bg-secondary)]">
         <Image
-          src={article.thumbnail}
+          src={thumbnailSrc}
           alt={article.title}
           fill
           loading="lazy"

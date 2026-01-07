@@ -1287,9 +1287,17 @@ export default function AdminLessonThumbnailsPage() {
                         {/* Feedback Input (shown when flagged or has feedback) */}
                         {(promptTasks[lesson.slug]?.needsNewPrompt || promptTasks[lesson.slug]?.feedback) && (
                           <div className="mt-2">
-                            <div className="flex items-center gap-1 text-xs text-[var(--text-muted)] mb-1">
-                              <MessageSquare size={12} />
-                              Feedback for Claude:
+                            <div className="flex items-center justify-between mb-1">
+                              <div className="flex items-center gap-1 text-xs text-[var(--text-muted)]">
+                                <MessageSquare size={12} />
+                                Feedback for Claude:
+                              </div>
+                              {promptTasks[lesson.slug]?.feedback && (
+                                <span className="flex items-center gap-1 text-xs text-green-600">
+                                  <Check size={12} />
+                                  Saved
+                                </span>
+                              )}
                             </div>
                             <textarea
                               value={promptTasks[lesson.slug]?.feedback || ''}
@@ -1298,6 +1306,9 @@ export default function AdminLessonThumbnailsPage() {
                               className="w-full px-3 py-2 text-sm border border-[var(--border-light)] rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-red-500"
                               rows={2}
                             />
+                            <p className="text-xs text-[var(--text-muted)] mt-1">
+                              Feedback auto-saves. Click the task counter above to review all flagged prompts.
+                            </p>
                           </div>
                         )}
                       </div>
