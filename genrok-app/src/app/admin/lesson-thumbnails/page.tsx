@@ -123,13 +123,20 @@ type TemplateType =
   | 'growth-curve'
   | 'versus'
   | 'single-object'
-  // NEW PREMIUM YOUTUBE STYLES
+  // PREVIOUS PREMIUM STYLES
   | 'product-table'      // Product on wooden table + big headline + grid bg
   | 'illustrated-char'   // Kurzgesagt-style character + money floating
   | 'money-product'      // Product sitting on $100 bills pile + mascot
   | 'brand-collage'      // Retro editorial collage with brands
   | 'tech-ui'            // Software interface mockup style
-  | 'arrow-callout';     // Big arrow pointing to element + logo
+  | 'arrow-callout'      // Big arrow pointing to element + logo
+  // WORLD-CLASS PREMIUM FORMULAS (from 18 reference images)
+  | 'product-surface'       // Real product on wooden table + money headline (like $2.3M, $100M thumbnails)
+  | '3d-mascot-dramatic'    // 3D rendered mascot with worn texture + flames/drama (like GAME OVER Reddit)
+  | 'split-brain-scan'      // Medical brain split before/after (like brain MRI thumbnails)
+  | 'person-with-curve'     // Person + growth curve red→green (like "You're Here" thumbnail)
+  | 'minimal-logos'         // Ultra clean white bg + lowercase text + logos (like "copy them." thumbnail)
+  | 'strikethrough-list';   // Dark bg + words with red strikethrough (like social media/dropshipping thumbnail)
 
 interface VisualTemplate {
   id: TemplateType;
@@ -268,6 +275,45 @@ const VISUAL_TEMPLATES: Record<TemplateType, VisualTemplate> = {
     description: 'Big arrow pointing to key element + logo',
     promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: "this is sticky" Figma style. BACKGROUND: Clean white or light gray. LAYOUT: Text left 40% (stacked, multi-line), visual right 60% with arrow. TEXT: Lowercase black serif or sans-serif, 2-3 lines stacked ("this is", "sticky"). VISUAL: Big bold black curved arrow pointing from text to key element (phone, UI, product), brand logo floating in corner (Figma, Shopify, etc). Minimal, editorial, design-forward.`,
   },
+  // ========================================
+  // WORLD-CLASS PREMIUM FORMULAS (from 18 reference images)
+  // ========================================
+  'product-surface': {
+    id: 'product-surface',
+    name: 'Product on Surface',
+    description: 'Real product on wooden table + money headline (like $2.3M, $100M thumbnails)',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Premium product photography like "$2.3M IN 90 DAYS" or "$100 MILLION" creatine thumbnails. BACKGROUND: Dark smoky atmosphere at TOP, transitioning to warm wooden table surface at BOTTOM. Product photography lighting. LAYOUT: Big money headline at top, product hero shot on wooden surface at bottom. TEXT: Yellow/gold ALL CAPS with thick black outline, money amounts prominent. VISUAL: Real product packaging sitting on natural wood surface, RED ARROW pointing to product, platform logo badge (TikTok, Shopify) in corner. Professional product photography aesthetic.`,
+  },
+  '3d-mascot-dramatic': {
+    id: '3d-mascot-dramatic',
+    name: '3D Mascot Dramatic',
+    description: '3D rendered mascot with worn texture + flames/drama (like GAME OVER Reddit)',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Like "GAME OVER" Reddit Snoo thumbnail. BACKGROUND: Dark, smoky, dramatic - black with orange/red glow from flames. Apocalyptic energy. LAYOUT: 3D mascot center, flames at bottom, text at top. TEXT: "GAME OVER" style - white ALL CAPS with quotes, thick black outline. VISUAL: 3D RENDERED brand mascot/product with WORN/WEATHERED TEXTURE (cracked, scratched, dented like concrete), flames/fire licking up from bottom, RED DOWNWARD ARROWS behind, percentage badge (-99%, +300%). Dramatic rim lighting from behind.`,
+  },
+  'split-brain-scan': {
+    id: 'split-brain-scan',
+    name: 'Split Brain Scan',
+    description: 'Medical brain split before/after (like brain MRI thumbnails)',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Like "BEFORE/AFTER" brain MRI scan thumbnails. BACKGROUND: Pure BLACK, nothing else. LAYOUT: Single brain centered, split down the middle. TEXT: "Before" and "After" labels with arrows, white italic font. VISUAL: Human BRAIN viewed from above, SPLIT perfectly down middle - LEFT HALF grayscale/gray (bad state), RIGHT HALF vibrant heat map colors (oranges, yellows, reds showing activity). Medical illustration aesthetic. Brain glows on colorful side.`,
+  },
+  'person-with-curve': {
+    id: 'person-with-curve',
+    name: 'Person with Curve',
+    description: 'Person + growth curve red→green (like "You\'re Here" thumbnail)',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Like "You're Here" Alex Hormozi thumbnail. BACKGROUND: Dark/BLACK with thin GRID LINES (graph paper on dark background). Tech visualization feel. LAYOUT: Person silhouette on left, growth curve chart on right. TEXT: "You're Here" or percentage in white, pointing to curve. VISUAL: Confident person figure (arms crossed) on LEFT, growth CURVE on RIGHT going up→down into valley→up dramatically, colors transition green→yellow→red→yellow→green, WHITE DOT on curve with arrow pointing to it. Curve glows slightly.`,
+  },
+  'minimal-logos': {
+    id: 'minimal-logos',
+    name: 'Minimal Logos',
+    description: 'Ultra clean white bg + lowercase text + logos (like "copy them." thumbnail)',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Like "copy them." or "genius" thumbnails - ultra minimal, editorial. BACKGROUND: Pure WHITE or light gray with subtle grid paper texture. LOTS of whitespace. LAYOUT: Lowercase text at top, graphic elements below with generous spacing. TEXT: 2-3 words max, lowercase black sans-serif (Inter/Helvetica), clean and clever. VISUAL: 2-4 brand logos or 3D mascots arranged horizontally, or product on pile of $100 bills. No dramatic effects. Minimal, premium, editorial feel.`,
+  },
+  'strikethrough-list': {
+    id: 'strikethrough-list',
+    name: 'Strikethrough List',
+    description: 'Dark bg + words with red strikethrough (like social media/dropshipping thumbnail)',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Like "social media / dropshipping / clothing brand" strikethrough thumbnail. BACKGROUND: Pure BLACK or dark charcoal, clean and dramatic. LAYOUT: Bold text on left, stacked crossed-out words on right. TEXT: Main word in massive white ALL CAPS on left ("STOP.", "NO."), faded white words with RED STRIKETHROUGH lines on right. VISUAL: Stack of 3+ words, each with bold red line through them, words slightly transparent/faded. Creates "what NOT to do" energy. High contrast, graphic style.`,
+  },
 };
 
 // Function to build full prompt from template + specific concept
@@ -289,11 +335,23 @@ const lessonConceptData: Record<string, { concept: string; images: string[]; tem
   // ============================================
 
   'familiar-surprise-secret': {
-    template: 'product-table',
-    concept: `TEXT: "$2.3 TRILLION" yellow bold ALL CAPS with black outline at top
-VISUAL: iPhone and Apple logo product shot on warm wooden table surface
-BACKGROUND: White with subtle grid texture at top
-EXTRA: Red arrow pointing to the Apple logo. Premium product photography style.`,
+    template: 'product-surface',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: Product-On-Surface
+
+COMPOSITION:
+- Real iPhone product (latest model) sitting on warm wooden table surface, angled slightly toward camera
+- Apple logo floating above the product, clean and minimal
+- Big RED ARROW pointing to the iPhone from the side
+
+BACKGROUND: Dark smoky atmosphere at the TOP third, transitioning to warm wooden table surface at BOTTOM two-thirds. Professional product photography lighting with soft rim light.
+
+TEXT: "$2.3 TRILLION" in BIG yellow/gold ALL CAPS with thick black outline, positioned at TOP of image. Font style: Impact or similar bold condensed font.
+
+LIGHTING: Professional product photography - soft key light from front-left, subtle rim light from behind to separate product from background, wooden surface warmly lit.
+
+REFERENCE STYLE: Like the "$2.3M IN 90 DAYS" Kind Patches thumbnail or "$100 MILLION" creatine thumbnail - product hero shot on wooden surface with money headline.`,
     images: [imageAssets.apple],
   },
 
@@ -599,11 +657,26 @@ EXTRA: Speed promise. Professional product photography style. Red arrow pointing
   },
 
   'stop-aliexpress': {
-    template: 'illustrated-char',
-    concept: `TEXT: "STOP." white bold ALL CAPS, huge, centered
-VISUAL: Illustrated character with hands up in stop gesture, AliExpress logo with red X through it, skull and crossbones subtle
-BACKGROUND: Dark red gradient to black
-EXTRA: Warning energy. Urgent. Prohibition signage feel.`,
+    template: 'strikethrough-list',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: Strikethrough-List
+
+COMPOSITION:
+- Stack of 3 words on the right side, each with a bold RED STRIKETHROUGH line through them:
+  "AliExpress" (strikethrough)
+  "slow shipping" (strikethrough)
+  "cheap quality" (strikethrough)
+- Words are slightly faded/transparent white text
+- AliExpress logo small in corner with red X over it
+
+BACKGROUND: Pure BLACK or very dark charcoal, clean and dramatic.
+
+TEXT: "STOP." in massive white ALL CAPS on the LEFT side. Bold, clean sans-serif font. Period included for emphasis.
+
+LIGHTING: No complex lighting needed - flat graphic style with high contrast between white text and black background.
+
+REFERENCE STYLE: Like the "social media / dropshipping / clothing brand" strikethrough thumbnail - clean dark background with stacked words that have red lines through them, creating "what NOT to do" energy.`,
     images: [],
   },
 
@@ -846,11 +919,24 @@ EXTRA: From rocks to riches. Sell meaning, not products. Absurdist genius.`,
   },
 
   'starbucks-ltv': {
-    template: 'money-product',
-    concept: `TEXT: "$14,099" yellow massive with black outline
-VISUAL: Starbucks cup overflowing with $100 bills and gold coins, Starbucks logo glowing, coffee beans scattered
-BACKGROUND: White with grid texture
-EXTRA: Mind-blowing LTV. One customer = $14,099. Premium.`,
+    template: 'product-surface',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: Product-On-Surface (with money pile variant)
+
+COMPOSITION:
+- Real Starbucks coffee cup (white cup with green Starbucks logo) sitting on a SCATTERED PILE of real US $100 bills
+- Bills spread naturally across wooden table surface, some slightly crumpled
+- Starbucks logo clearly visible on cup
+- Optional: few coffee beans scattered near the cup
+
+BACKGROUND: Clean WHITE at top with very subtle gray grid paper texture, warm wooden table surface at bottom third where the money pile sits.
+
+TEXT: "$14,099" in MASSIVE yellow/gold ALL CAPS with thick black outline, positioned at TOP of image. This is the shocking LTV number.
+
+LIGHTING: Bright, clean product photography lighting - evenly lit to show all the money clearly, cup well-lit with soft shadows.
+
+REFERENCE STYLE: Like the "genius" Stanley cup on money pile thumbnail - product sitting on scattered $100 bills with clean white/grid background above.`,
     images: [imageAssets.starbucks],
   },
 
@@ -913,20 +999,51 @@ EXTRA: Brutal truth. Self-interest drives all purchases. Minimal.`,
   // ============================================
 
   'autopilot-sale': {
-    template: 'illustrated-char',
-    concept: `TEXT: "autopilot." white lowercase elegant
-VISUAL: Illustrated brain character with gears and automation symbols inside, cruise control lever pulled, buying hand auto-clicking
-BACKGROUND: Dark blue gradient (Kurzgesagt style)
-EXTRA: Mental shortcuts make customers buy without thinking. Brain autopilot mode.`,
+    template: 'brain-cables',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: Brain-Cables
+
+COMPOSITION:
+- TOP HALF of a human HEAD visible (from eyebrows up), showing forehead and top of head cut off/opened
+- Eyes visible and looking slightly upward, realistic human eyes
+- EXPOSED PINK BRAIN with realistic wrinkled texture sitting on top of the open head
+- THREE CABLES/WIRES plugging INTO the brain from different angles:
+  * One cable from Shopify logo (green)
+  * One cable from a money bag icon ($) (gold)
+  * One cable from a "BUY NOW" button icon (orange)
+- Cables have a thick, industrial rope/wire look
+
+BACKGROUND: Clean WHITE with very subtle gray GRID PAPER texture (like graph paper). Minimal, editorial feel.
+
+TEXT: "autopilot." in lowercase black sans-serif font (Inter/Helvetica style), positioned at TOP center of image.
+
+LIGHTING: Soft, even, clean lighting like a medical illustration or product shot. Brain has subtle pink glow.
+
+REFERENCE STYLE: EXACTLY like the "Offers" thumbnail with exposed brain and cables plugging in from Shopify, Meta, and money bag logos.`,
     images: [],
   },
 
   'borrowed-trust': {
-    template: 'brand-collage',
-    concept: `TEXT: "borrow it." white lowercase elegant
-VISUAL: Retro editorial collage with trust badges transferring between figures, Cialdini portrait, authority symbols flowing
-BACKGROUND: White with subtle texture
-EXTRA: Authority and Liking principles. Bypass skepticism by borrowing trust.`,
+    template: 'face-morph',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: Face-Morph
+
+COMPOSITION:
+- Two versions of Robert Cialdini's face MORPHING/BLENDING together in the center
+- LEFT side: Cialdini looking skeptical/uncertain (representing the customer before)
+- RIGHT side: Cialdini looking confident/trusting (representing customer after borrowing trust)
+- The faces MERGE in the middle with a surreal, distorted transition zone
+- Subtle trust badges/checkmarks floating near the confident side
+
+BACKGROUND: Solid DEEP RED background (#CC0000 or similar) - dramatic, bold, attention-grabbing. No gradients, pure solid color.
+
+TEXT: "borrow it." in simple white lowercase sans-serif font, positioned at TOP of image. Clean, minimal.
+
+LIGHTING: High contrast black and white treatment on the faces, dramatic like a magazine editorial photo.
+
+REFERENCE STYLE: EXACTLY like the "IT WILL ALL CONNECT" Steve Jobs young/old face morph thumbnail - two versions of same face merging together on solid red background with simple white text at top.`,
     images: [imageAssets.robertCialdini],
   },
 
@@ -967,11 +1084,25 @@ EXTRA: Stop hoping they buy. Guide them with certainty.`,
   },
 
   'certainty-transfer': {
-    template: 'illustrated-char',
-    concept: `TEXT: "before → after" white elegant
-VISUAL: Illustrated character transformation - worried face on left morphing to confident face on right, conviction energy transferring
-BACKGROUND: Dark split gradient
-EXTRA: Master the art of transferring conviction. Transformation.`,
+    template: 'split-brain-scan',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: Split-Brain-Scan
+
+COMPOSITION:
+- Single human BRAIN viewed from above, SPLIT perfectly down the middle
+- LEFT HALF: Grayscale/gray tones, dull, inactive-looking (representing uncertainty/doubt)
+- RIGHT HALF: Vibrant HEAT MAP colors - oranges, yellows, reds showing brain activity (representing certainty/conviction)
+- The split is clean down the center, showing dramatic contrast
+- Small white arrows with labels pointing to each side
+
+BACKGROUND: Pure BLACK background. Nothing else. Let the brain be the focus.
+
+TEXT: "Before" label with arrow pointing to gray left side, "After" label with arrow pointing to colorful right side. White italic sans-serif font.
+
+LIGHTING: The brain appears to glow from within on the colorful side, while the gray side looks flat and dim.
+
+REFERENCE STYLE: EXACTLY like the "Before/After" brain MRI scan thumbnail - split brain with grayscale on one side and colorful heat map on other side, pure black background, simple before/after labels.`,
     images: [],
   },
 
@@ -1129,11 +1260,25 @@ EXTRA: Precise prices feel more calculated. Psychology in action.`,
   },
 
   'paradox-of-choice': {
-    template: 'product-table',
-    concept: `TEXT: "LESS = MORE" yellow bold ALL CAPS
-VISUAL: Two displays on wooden table - 24 jam jars (overwhelm) vs 6 jars (converting), Sheena Iyengar portrait floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Why fewer options = more sales. Choice paralysis.`,
+    template: 'minimal-logos',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: Minimal-Logos
+
+COMPOSITION:
+- On the LEFT: Stack of 24 tiny product icons/jars (overwhelm, chaos)
+- On the RIGHT: Just 6 clean product icons/jars (simple, clear)
+- Big GREEN CHECKMARK over the 6 jars
+- Big RED X over the 24 jars
+- Lots of WHITESPACE between elements
+
+BACKGROUND: Pure WHITE or very light gray with subtle GRID PAPER texture. Ultra clean, minimal, editorial.
+
+TEXT: "less is more." in lowercase black sans-serif font (Inter/Helvetica), positioned at TOP center. Clean, simple, clever.
+
+LIGHTING: Flat, even lighting like a clean infographic. No dramatic shadows.
+
+REFERENCE STYLE: Like the "copy them." thumbnail - ultra minimal white/gray background, simple lowercase text, clean graphic elements with lots of whitespace. Premium, editorial feel.`,
     images: [imageAssets.sheenaIyengar],
   },
 
@@ -1142,11 +1287,25 @@ EXTRA: Why fewer options = more sales. Choice paralysis.`,
   // ============================================
 
   'forty-million-mistake': {
-    template: 'money-product',
-    concept: `TEXT: "$40 MILLION MISTAKE" red bold ALL CAPS with black outline
-VISUAL: Coca-Cola bottle on fire, sitting on pile of burning money, ashes everywhere, Coca-Cola logo above
-BACKGROUND: Dark smoky dramatic gradient
-EXTRA: New Coke disaster. Data without emotion = catastrophe. Epic failure story.`,
+    template: '3d-mascot-dramatic',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: 3D-Mascot-Dramatic
+
+COMPOSITION:
+- 3D RENDERED Coca-Cola bottle/can as a CHARACTER - with a sad/distressed expression if possible, or appearing damaged/cracked
+- The bottle has WORN, WEATHERED TEXTURE - scratched, dented, cracked surface like distressed metal or concrete
+- FLAMES/FIRE at the bottom of the image licking upward
+- RED DOWNWARD ARROWS in the background indicating crash/failure
+- Small percentage badge showing "-99%" or "$-40M" in red
+
+BACKGROUND: Dark, smoky, dramatic - black with orange/red glow from flames. Motion blur on the arrows. Apocalyptic energy.
+
+TEXT: "GAME OVER" in massive white ALL CAPS with quotes around it, positioned at TOP. Thick black outline/shadow on text.
+
+LIGHTING: Dramatic rim lighting from behind (orange/red), main subject slightly backlit, flames creating ambient warm glow at bottom.
+
+REFERENCE STYLE: EXACTLY like the "GAME OVER" Reddit Snoo thumbnail - 3D rendered mascot with worn/cracked texture, dark dramatic background, fire at bottom, downward red arrows, percentage badge, "GAME OVER" text with quotes.`,
     images: [imageAssets.cocaCola],
   },
 
@@ -1411,11 +1570,26 @@ EXTRA: Admit you're marketing to win. The inside joke effect.`,
   },
 
   'hermes-doctrine': {
-    template: 'product-table',
-    concept: `TEXT: "2 YEAR WAITLIST" gold lowercase elegant
-VISUAL: Birkin bag under glass dome museum display on wooden table, velvet rope, Hermès logo floating
-BACKGROUND: Dark museum gradient, warm wood bottom
-EXTRA: Protect the Birkin, play forever. The Hermès infinite game.`,
+    template: '3d-mascot-dramatic',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: 3D-Mascot-Dramatic (Luxury Variant)
+
+COMPOSITION:
+- 3D RENDERED Hermès Birkin bag as the hero object - photorealistic, luxurious
+- The bag has PRISTINE, GLOWING texture - opposite of weathered, this is PRECIOUS and protected
+- Bag sits under a GLASS MUSEUM DOME/CASE with golden frame
+- VELVET ROPE barrier in front (red velvet, gold posts)
+- Soft golden sparkles/particles floating around the protected bag
+- Small Hermès "H" logo floating elegantly
+
+BACKGROUND: Dark, rich, museum-like - deep navy blue or black with subtle golden light emanating from the bag. Luxurious atmosphere.
+
+TEXT: "2 YEAR WAITLIST" in elegant gold lowercase serif font (like Times or Didot), positioned at TOP. Refined, not shouty.
+
+LIGHTING: Golden rim lighting on the bag making it glow like a treasure. Museum spotlight effect from above. Premium, luxurious feel.
+
+REFERENCE STYLE: Use the 3D dramatic style but for LUXURY instead of destruction - think museum exhibit for a priceless artifact. The bag is treated like the crown jewels.`,
     images: [imageAssets.hermes],
   },
 
@@ -2269,11 +2443,25 @@ EXTRA: Do 100 of everything first. The Rule of 100.`,
   },
 
   'biz-valley-protocol': {
-    template: 'growth-curve',
-    concept: `TEXT: "97% QUIT HERE" red bold with arrow pointing to valley
-VISUAL: Growth curve with deep valley, 97% quitting point marked, push through visualization
-BACKGROUND: White with grid overlay
-EXTRA: The valley where most quit. Push harder.`,
+    template: 'person-with-curve',
+    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+
+VISUAL FORMULA: Person-With-Curve
+
+COMPOSITION:
+- LEFT SIDE: Silhouette or confident entrepreneur figure (arms crossed or determined pose)
+- RIGHT SIDE: Growth CURVE chart that goes: UP (green start) → DOWN into valley (red) → UP dramatically (green again)
+- WHITE DOT on the curve at the bottom of the valley
+- White ARROW pointing to the dot with text "You're Here" or "97% quit"
+- The curve colors transition: green → yellow → red (valley) → yellow → green (recovery)
+
+BACKGROUND: Dark/BLACK background with thin GRID LINES (like graph paper on a dark background). Tech/data visualization feel.
+
+TEXT: "97% QUIT HERE" in red bold text near the valley point, or "You're Here" in white pointing to the lowest point.
+
+LIGHTING: The curve appears to glow slightly, especially the green sections. Person silhouette is slightly backlit.
+
+REFERENCE STYLE: EXACTLY like the "You're Here" Alex Hormozi thumbnail - person on left, growth curve on right transitioning from red to green, white dot and arrow pointing to current position, dark grid background.`,
     images: [],
   },
 
