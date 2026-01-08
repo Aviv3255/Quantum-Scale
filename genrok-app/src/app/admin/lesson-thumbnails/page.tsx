@@ -61,7 +61,7 @@ const imageAssets = {
   jensenHuang: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/NVIDIA-Jensen-Huang-removebg-preview.png',
 
   // Mascot
-  monkey: 'C:\\Projects\\Quantum-Scale\\Monkey images\\0_3.png',
+  monkey: '/reference-thumbnails/monkey-mascot.png',
 
   // Brands
   apple: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Apple_logo_black.svg.png',
@@ -3933,10 +3933,62 @@ export default function AdminLessonThumbnailsPage() {
                   {/* Prompt Section - White Container */}
                   {conceptData && (
                     <div className="border-t border-[var(--border-light)] bg-gray-50 p-4">
-                      {/* Reference Images Row */}
+                      {/* MAIN Reference Image - The Style Reference */}
+                      {conceptData.referenceImage && (
+                        <div className="mb-4">
+                          <p className="text-xs font-bold text-purple-600 mb-2 uppercase tracking-wide">📸 STYLE REFERENCE (upload this to ChatGPT first):</p>
+                          <button
+                            onClick={async () => {
+                              const imgUrl = `/reference-thumbnails/${conceptData.referenceImage}`;
+                              try {
+                                const response = await fetch(imgUrl);
+                                const blob = await response.blob();
+                                const pngBlob = blob.type === 'image/png' ? blob : await new Promise<Blob>((resolve) => {
+                                  const img = document.createElement('img');
+                                  img.onload = () => {
+                                    const canvas = document.createElement('canvas');
+                                    canvas.width = img.naturalWidth;
+                                    canvas.height = img.naturalHeight;
+                                    const ctx = canvas.getContext('2d');
+                                    ctx?.drawImage(img, 0, 0);
+                                    canvas.toBlob((b) => resolve(b || blob), 'image/png');
+                                  };
+                                  img.onerror = () => resolve(blob);
+                                  img.src = imgUrl;
+                                });
+                                await navigator.clipboard.write([
+                                  new ClipboardItem({ 'image/png': pngBlob })
+                                ]);
+                                setMessage({ type: 'success', text: 'Reference image copied!' });
+                              } catch (err) {
+                                console.error('Failed to copy image:', err);
+                                setMessage({ type: 'error', text: 'Failed to copy image - right-click and save instead' });
+                              }
+                            }}
+                            className="relative w-full h-48 rounded-lg overflow-hidden border-4 border-purple-500 hover:border-purple-600 transition-all group bg-white"
+                            title="Click to copy reference image"
+                          >
+                            <Image
+                              src={`/reference-thumbnails/${conceptData.referenceImage}`}
+                              alt="Style Reference"
+                              fill
+                              className="object-contain"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                              <div className="bg-purple-600 text-white px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 flex items-center gap-2">
+                                <Copy size={16} />
+                                Click to Copy Image
+                              </div>
+                            </div>
+                          </button>
+                          <p className="text-xs text-gray-500 mt-1 text-center">{conceptData.referenceImage}</p>
+                        </div>
+                      )}
+
+                      {/* Additional Images (Monkey, Entrepreneur photos, etc.) */}
                       {conceptData.images.length > 0 && (
                         <div className="mb-3">
-                          <p className="text-xs font-medium text-[var(--text-muted)] mb-2">Reference Images (click to copy image):</p>
+                          <p className="text-xs font-medium text-[var(--text-muted)] mb-2">🎭 Also attach these images (click to copy):</p>
                           <div className="flex gap-2 flex-wrap">
                             {conceptData.images.map((imgUrl, idx) => (
                               <button
