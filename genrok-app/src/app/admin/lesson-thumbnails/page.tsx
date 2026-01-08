@@ -404,12 +404,15 @@ Keep the red background, the dramatic style, the paper-cut effect.
   },
 
   'fred-method': {
-    template: 'illustrated-char',
-    concept: `TEXT: "THE F.R.E.D. METHOD" white bold at top
-VISUAL: Illustrated character (Kurzgesagt style) with brain visible, 4 colored cables (red, blue, green, yellow) plugging into brain sections
-BACKGROUND: Dark blue/teal gradient with grain
-EXTRA: $100 bills floating around. Simple geometric style.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint diagram to show "F.R.E.D." with 4 icons: Fear, Reason, Ego, Desire
+- Replace the person with our monkey mascot (attached) - he's holding a marker and pointing at the blueprint like a professor teaching
+- Keep the blue blueprint background exactly the same
+
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'emotion-decides': {
@@ -454,11 +457,14 @@ Keep the comparison layout, the arrows, the grid background.
   },
 
   'science-of-selling': {
-    template: 'tech-ui',
-    concept: `TEXT: Inside UI boxes: "Psychology" + "Copy" = "Sales"
-VISUAL: Software interface with equation: brain icon input → dollar icon output, connected by dotted line with arrow
-BACKGROUND: Dark charcoal gradient
-EXTRA: Floating formula elements. Clean tech aesthetic.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "OLD SCHOOL" with old-fashioned sales letter/typewriter
+- Right side: "SCIENCE" with modern brain scan + data visualization
+- Keep the split comparison layout exactly the same
+
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
@@ -477,21 +483,30 @@ Keep the money flying, the clean style, the professional look.
   },
 
   'persuasion-stack': {
-    template: 'illustrated-char',
-    concept: `TEXT: "STACK TO WIN" white bold at top
-VISUAL: Illustrated figure stacking 5 colorful blocks (like Jenga) - each block a different persuasion layer
-BACKGROUND: Dark blue gradient with grain
-EXTRA: $100 bills as foundation. Building momentum visual.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "STACK OR FAIL"
+- Instead of money pyramid, show 5 colorful building blocks stacked like a tower
+- Each block labeled: "PROOF", "STORY", "OFFER", "URGENCY", "TRUST"
+- Add our monkey mascot (attached) at the top of the stack, arms raised in victory
+
+Keep the money flying around, the dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'architecture-of-influence': {
-    template: 'tech-ui',
-    concept: `TEXT: "architect mode" in UI input field
-VISUAL: Dark software interface showing wireframe head blueprint on left, influence dashboard on right
-BACKGROUND: Dark charcoal
-EXTRA: Floating geometric lines connecting elements. Apple-level design.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint to show a "MIND ARCHITECTURE" diagram
+- Show brain blueprint with labeled sections: Logic, Emotion, Trust, Fear
+- Replace the person with Robert Cialdini (attached) pointing at the blueprint
+
+Keep the blue blueprint background, the professional teaching style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.robertCialdini],
   },
 
   'wiifm-principle': {
@@ -508,21 +523,30 @@ Keep the red background, the dramatic paper-cut style.
   },
 
   'three-canons-of-craft': {
-    template: 'product-table',
-    concept: `TEXT: "3 TESTS" yellow bold, "every sentence must pass." white below
-VISUAL: Three golden checkmarks/stamps on wooden table surface
-BACKGROUND: White grid at top, warm wood at bottom
-EXTRA: Premium craftsmanship aesthetic. Quality control vibe.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "3 TESTS YOUR COPY MUST PASS"
+- Show 3 boxes: First with red X (FAIL), Second with red X (FAIL), Third with green checkmark (PASS)
+- Labels under boxes: "Clear?", "Compelling?", "Credible?"
+
+Keep the dark background, the red vs green comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'cpppb-proof-loop': {
-    template: 'illustrated-char',
-    concept: `TEXT: "THE PROOF LOOP" white bold
-VISUAL: Illustrated circular diagram with 5 colored nodes (C.P.P.P.B.) connected by arrows in a loop, character pointing to it
-BACKGROUND: Dark teal gradient
-EXTRA: Each letter in different color. Infinite loop energy.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint to show a circular loop diagram with 5 nodes
+- Each node labeled: C → P → P → P → B (Claim, Proof, Proof, Proof, Benefit)
+- Arrows connecting them in an infinite loop
+- Replace the person with our monkey mascot (attached) - he's standing in the center of the loop, conducting it like an orchestra
+
+Keep the blue blueprint style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'damaging-admission': {
@@ -540,174 +564,254 @@ Keep the clean layout, the grid background, the modern style.
   },
 
   'emotional-precision': {
-    template: 'product-table',
-    concept: `TEXT: "HIT THE EXACT EMOTION" yellow bold
-VISUAL: Bullseye/target with glowing red heart in center, sitting on wooden table
-BACKGROUND: White grid top, wood bottom
-EXTRA: Dart or arrow stuck in heart. Precision targeting.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "Hit the EXACT emotion"
+- Replace the car/luxury item with a giant glowing red HEART with a bullseye target on it
+- Replace the person doing "shh" with our monkey mascot (attached) - he's holding a dart, about to throw it at the heart target, focused and precise
+- Add an arrow pointing to the heart saying "the secret"
+
+Keep the luxurious feel, the dramatic composition.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'blind-spot-effect': {
-    template: 'illustrated-char',
-    concept: `TEXT: "THEY CAN'T SEE THIS" white bold
-VISUAL: Illustrated face/head with one eye covered by hand, blind spot highlighted
-BACKGROUND: Dark blue gradient
-EXTRA: What they're missing floats in the blind spot area. Mystery.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "They can't see THIS"
+- Replace the person with our monkey mascot (attached) - he's covering one eye with his hand, other eye wide open looking mysterious
+- Add a glowing golden dollar sign floating in the "blind spot" area he can't see
+
+Keep the podcast/interview style, the teal background, the dramatic quote format.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'customer-voice-mining': {
-    template: 'money-product',
-    concept: `TEXT: "their words = gold" lowercase black
-VISUAL: Speech bubbles being funneled into a pile of gold bars/coins on money pile
-BACKGROUND: White with grid
-EXTRA: Mining/extraction metaphor. Words literally becoming gold.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "THEIR WORDS = GOLD"
+- Replace the banana with a golden speech bubble icon, shiny and premium
+- Keep the clean minimal style, white background
+
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'double-bind-of-fear': {
-    template: 'illustrated-char',
-    concept: `TEXT: "DAMNED IF YOU DO" white bold
-VISUAL: Illustrated character at fork in road, both paths leading to fire/danger
-BACKGROUND: Dark ominous gradient
-EXTRA: Either choice = risk. Tension visualization.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "ACT" with flames/fire visual (danger)
+- Right side: "DON'T ACT" with flames/fire visual (also danger)
+- Both sides look equally dangerous - that's the point
+- Add text "DAMNED EITHER WAY" at top
+
+Keep the split comparison layout.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'emotion-spectrum': {
-    template: 'tech-ui',
-    concept: `TEXT: "emotion spectrum" in UI header
-VISUAL: Software interface showing rainbow emotion slider/spectrum, different emotions mapped to colors
-BACKGROUND: Dark charcoal
-EXTRA: Tech dashboard for emotions. Precise control panel.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "THE EMOTION SPECTRUM"
+- Replace the brand logos on the brain with emotion icons: 😰 Fear, 😤 Anger, 😢 Sadness, 😊 Joy, 🤩 Desire
+- Each emotion in a different color forming a rainbow spectrum around the brain
+
+Keep the purple brain glow, the dramatic lighting.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'forty-forty-twenty-rule': {
-    template: 'product-table',
-    concept: `TEXT: "40/40/20" massive yellow numbers
-VISUAL: Three piles of different sizes (40%, 40%, 20%) made of cash on wooden table
-BACKGROUND: White grid top, wood surface bottom
-EXTRA: The winning formula visualized with money.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "THE 40/40/20 RULE"
+- Show 3 boxes with percentages: "40%" (green), "40%" (green), "20%" (red)
+- Labels under: "List", "Offer", "Copy"
+
+Keep the dark background, the comparison box style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'four-primal-needs': {
-    template: 'illustrated-char',
-    concept: `TEXT: "4 PRIMAL BUY BUTTONS" white bold
-VISUAL: Illustrated brain with 4 glowing red buttons embedded, cables connecting to $$ symbols
-BACKGROUND: Dark blue/black gradient
-EXTRA: Prehistoric + modern mashup. Reptile brain hacking.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "4 BUY BUTTONS"
+- Replace the brand logos on the brain with 4 glowing red "BUY" buttons
+- Add our monkey mascot (attached) reaching toward one of the buttons, looking like he's about to press it
+
+Keep the purple brain glow, the dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'ocpb-formula': {
-    template: 'product-table',
-    concept: `TEXT: "O.C.P.B." yellow bold, each letter different color
-VISUAL: 4 building blocks stacked like tower on wooden table, each labeled with a letter
-BACKGROUND: White grid top, wood bottom
-EXTRA: Stack = sales. Building the perfect offer.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the word to "O.C.P.B."
+- Replace the Spotify logo with 4 colored blocks: O (orange), C (blue), P (green), B (purple)
+- Each letter is a building block stacked together
+- Keep the cursor pointing at it
+
+Keep the minimal white background, the clean typography.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'sales-message-anatomy': {
-    template: 'tech-ui',
-    concept: `TEXT: "anatomy scan" in UI header
-VISUAL: Software interface showing sales letter with labeled callouts (headline, hook, proof, CTA)
-BACKGROUND: Dark charcoal
-EXTRA: X-ray/blueprint view of a sales page. Technical dissection.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint to show a "SALES PAGE ANATOMY" diagram
+- Show a sales page wireframe with labeled parts: HOOK, STORY, OFFER, PROOF, CTA
+- Arrows pointing to each section like an anatomy chart
+
+Keep the blue blueprint style, the professional look.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'self-persuasion-architecture': {
-    template: 'illustrated-char',
-    concept: `TEXT: "THEY CONVINCE THEMSELVES" white bold
-VISUAL: Illustrated person looking in mirror, mirror reflection is nodding and holding money
-BACKGROUND: Dark blue gradient
-EXTRA: The prospect sells themselves. Mirror magic.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "They SELL themselves"
+- Replace the person with our monkey mascot (attached) - he's looking smug and knowing, finger on chin
+- Add a mirror reflection showing the monkey holding money
+
+Keep the podcast quote style, the teal background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'structural-tension': {
-    template: 'arrow-callout',
-    concept: `TEXT: "tension" lowercase black, "that converts." below
-VISUAL: Stretched rubber band about to snap, arrow pointing to the tension point
-BACKGROUND: White clean
-EXTRA: The snap point = purchase moment. Building pressure.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "TENSION SELLS"
+- Replace the banana with a rubber band stretched to breaking point, about to snap
+- Add golden sparks where the tension is highest
+
+Keep the minimal clean style, white background.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'three-growth-levers': {
-    template: 'product-table',
-    concept: `TEXT: "3X YOUR REVENUE" yellow bold
-VISUAL: Three physical lever/switch controls on wooden table dashboard
-BACKGROUND: White grid top, wood bottom
-EXTRA: Each lever = customers, frequency, transaction size.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "3 LEVERS = 3X REVENUE"
+- Show 3 boxes with lever icons: "CUSTOMERS" (green up arrow), "FREQUENCY" (green up arrow), "AOV" (green up arrow)
+- Each box showing improvement
+
+Keep the dark background, the comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'three-levels-of-change': {
-    template: 'illustrated-char',
-    concept: `TEXT: "3 LEVELS OF CHANGE" white bold
-VISUAL: Illustrated pyramid with 3 tiers, character climbing from bottom to top
-BACKGROUND: Dark blue gradient
-EXTRA: Behavior → Belief → Identity. Ascension visual.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "3 LEVELS OF CHANGE"
+- Replace the money pyramid with a 3-tier pyramid: Bottom = "BEHAVIOR", Middle = "BELIEF", Top = "IDENTITY"
+- Add our monkey mascot (attached) climbing from bottom to top, reaching for the peak
+
+Keep the dramatic style, money flying around.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'trust-architecture': {
-    template: 'product-table',
-    concept: `TEXT: "$50M IN TRUST" yellow bold
-VISUAL: Greek temple/building with trust pillars, made of gold, on wooden surface
-BACKGROUND: White grid top, wood bottom
-EXTRA: Foundation = credibility. Premium architecture.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "The TRUST blueprint"
+- Replace the car with a golden Greek temple with pillars labeled: PROOF, AUTHORITY, SOCIAL, GUARANTEE
+- Replace the person doing "shh" gesture with Dan Kennedy (attached) pointing at the temple
+- Arrow pointing to temple saying "the secret"
+
+Keep the luxurious feel, dramatic composition.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.danKennedy],
   },
 
   'unique-mechanism': {
-    template: 'money-product',
-    concept: `TEXT: "the mechanism." lowercase black
-VISUAL: Glowing golden gear/cog sitting on pile of $100 bills
-BACKGROUND: White with grid
-EXTRA: The secret sauce. Proprietary feel.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the word to "mechanism"
+- Replace the Spotify logo with a glowing golden gear/cog icon
+- Keep the cursor pointing at it like discovering a secret
+
+Keep the minimal white background, clean typography.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'master-key-framework': {
-    template: 'product-table',
-    concept: `TEXT: "THE MASTER KEY" yellow bold
-VISUAL: Ornate golden skeleton key with gems, sitting on velvet on wooden table
-BACKGROUND: Dark smoky top, wood bottom
-EXTRA: Luxury key that unlocks everything. Premium.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "THE MASTER KEY"
+- Replace the car with a giant ornate golden key with gems, glowing
+- Replace the person with our monkey mascot (attached) - he's holding the key proudly, looking powerful
+- Arrow pointing to the key saying "unlocks everything"
+
+Keep the luxurious dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'rule-of-one': {
-    template: 'money-product',
-    concept: `TEXT: "just one." lowercase black
-VISUAL: Massive golden metallic "1" sitting on pile of $100 bills, Rolex-quality shine
-BACKGROUND: White with grid
-EXTRA: One reader, one idea, one offer. Simplicity = power.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the tweet text to "One reader. One idea. One offer. That's it."
+- Replace the person with Gary Halbert (attached) looking wise and confident
+- Keep the tweet card style
+
+Keep the dark green background, the tweet format.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.garyHalbert],
   },
 
   'architecture-of-belief': {
-    template: 'illustrated-char',
-    concept: `TEXT: "3 LEVELS OF MASTERY" white bold
-VISUAL: Illustrated brain cross-section showing 3 distinct layers, character pointing to each
-BACKGROUND: Dark blue gradient
-EXTRA: Deep psychology. Belief system visualization.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "BELIEF ARCHITECTURE"
+- Show the brain with 3 layers labeled: FACT → FEELING → IDENTITY
+- Arrows showing the progression from outer to inner brain
+
+Keep the purple brain glow, dramatic lighting.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'copywriters-codex': {
-    template: 'product-table',
-    concept: `TEXT: "THE CODEX" yellow bold, "secrets of the masters." white below
-VISUAL: Ancient leather-bound book with golden glow, sitting on wooden desk
-BACKGROUND: Dark smoky atmosphere, wood surface
-EXTRA: Sacred text energy. Premium mysterious.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185309.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "The CODEX"
+- Show images of famous copywriters: Gary Halbert, David Ogilvy, Eugene Schwartz
+- Ancient book/scroll aesthetic with their faces
+
+Keep the creative direction collage style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.garyHalbert, imageAssets.davidOgilvy, imageAssets.eugeneSchwartz],
   },
 
   // ============================================
@@ -715,59 +819,84 @@ EXTRA: Sacred text energy. Premium mysterious.`,
   // ============================================
 
   'best-private-agent': {
-    template: 'product-table',
-    concept: `TEXT: "5-7 DAYS SHIPPING" yellow bold ALL CAPS with black outline at top
-VISUAL: Premium eCommerce package boxes sitting on warm wooden table surface, with Chinese flag and airplane floating above
-BACKGROUND: White with subtle grid texture at top, warm wood surface at bottom
-EXTRA: Speed promise. Professional product photography style. Red arrow pointing to the package.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "SHIPPING SPEED TEST"
+- Left box (red): "AliExpress" with "30-60 DAYS" - bad
+- Right box (green): "Private Agent" with "5-7 DAYS" - good
+- Show package icons in each box
+
+Keep the dark background, comparison box style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'stop-aliexpress': {
-    template: 'minimal-dark',
-    concept: `YouTube thumbnail, 16:9 aspect ratio.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "STOP USING ALIEXPRESS."
+- Replace the person with a damaged AliExpress package with a big red X over it
+- Make it look dramatic and urgent
 
-A damaged/broken AliExpress delivery box with a large red X mark over it. The box looks cheap and battered. Next to it, a small "30-60 days" shipping label crossed out.
-
-Background: Pure black
-Text: "STOP." in white ALL CAPS at top
-Style: Clean, minimal, professional - like the strikethrough reference but simpler`,
+Keep the red background, the bold dramatic style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'ltv-cheat-code': {
-    template: 'money-product',
-    concept: `TEXT: "5% = 95%" yellow bold with black outline at top
-VISUAL: Small golden crown sitting on massive pile of $100 bills, tiny group of illustrated VIP customers
-BACKGROUND: White with grid texture
-EXTRA: The 5% of customers generating 95% of revenue. Premium. Pareto visualization.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "5% = 95% OF REVENUE"
+- Replace the money pyramid with a tiny group of VIP customers (5%) sitting on a massive pile of money (95%)
+- Crown on top of the money pile
+
+Keep the money flying, dramatic style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'million-dollar-roadmap': {
-    template: 'product-table',
-    concept: `TEXT: "$1,000,000" yellow massive ALL CAPS with black outline
-VISUAL: Treasure map scroll unrolled on wooden table, golden coins and dollar bills scattered, compass pointing to X marks the spot
-BACKGROUND: White grid top, warm wood table bottom
-EXTRA: Journey to 7-figures. Premium treasure hunt feel.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint to show a "ROADMAP TO $1M" path diagram
+- Show milestones: $0 → $10K → $100K → $1M with icons at each stage
+- X marks the spot at $1M with golden glow
+- Replace the person with our monkey mascot (attached) pointing at the $1M destination
+
+Keep the blue blueprint style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'geo-announcement-bar': {
-    template: 'tech-ui',
-    concept: `TEXT: "+67% CVR" green bold in tech badge
-VISUAL: Clean software mockup of announcement bar with location pin icon, browser window showing geo-personalized message
-BACKGROUND: Dark tech gradient with subtle grid
-EXTRA: Location personalization tech. Modern UI mockup style.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "GEO TARGETING"
+- Left box (red): "Generic" showing "Free Shipping" - boring
+- Right box (green): "Personalized" showing "Free Shipping to [YOUR CITY]" - "+67% CVR"
+- Location pin icon in the green box
+
+Keep the dark background, comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'wishlist-effect': {
-    template: 'arrow-callout',
-    concept: `TEXT: "+8% CVR" green bold badge in corner
-VISUAL: Big red arrow pointing to glowing heart/wishlist icon, product card with wishlist button highlighted
-BACKGROUND: White with subtle grid
-EXTRA: Endowment effect psychology. Arrow creates focus. Clean.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the word to "wishlist"
+- Replace the Spotify logo with a glowing red heart/wishlist icon
+- Add "+8% CVR" badge near it
+- Cursor pointing at the heart like clicking to add
+
+Keep the minimal white background, clean style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
