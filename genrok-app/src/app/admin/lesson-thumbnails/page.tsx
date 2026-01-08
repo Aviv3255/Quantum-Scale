@@ -1352,20 +1352,29 @@ Keep the luxurious dramatic style.
   },
 
   'micro-yes-mastery': {
-    template: 'illustrated-char',
-    concept: `TEXT: "yes. yes. YES." growing size white to gold
-VISUAL: Illustrated figure climbing golden stepping stones, each step labeled "yes", final platform is BIG PURCHASE
-BACKGROUND: White with grid texture
-EXTRA: Tiny commitments create inevitable conversions. Commitment ladder.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "YES. YES. YES."
+- Replace the money pyramid with golden stepping stones going UP - each stone says "yes" getting bigger
+- At the TOP: massive "BUY" button glowing
+- Add our monkey mascot (attached) climbing the steps victoriously, almost at the top
+
+Keep the dramatic money flying, epic scale.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'authority-over-hope': {
-    template: 'arrow-callout',
-    concept: `TEXT: "stop hoping." white bold
-VISUAL: Big arrow pointing from crossed fingers (hope) to confident pointing finger (authority), transformation visual
-BACKGROUND: Split - red (hope side) to green (authority side)
-EXTRA: Stop hoping they buy. Guide them with certainty.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "HOPE" with crossed fingers, weak energy, faded colors - LOSER
+- Right side: "AUTHORITY" with commanding pointed finger, golden glow - WINNER
+- Text at top: "STOP HOPING."
+
+Keep the split comparison, make authority side DRAMATICALLY more powerful.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
@@ -1384,167 +1393,261 @@ Keep the black background, the medical brain imagery, the scientific look.
   },
 
   'conviction-architecture': {
-    template: 'product-table',
-    concept: `TEXT: "3 LAYERS" yellow bold ALL CAPS
-VISUAL: Golden pyramid with 3 tiers sitting on wooden table, glowing from within, blueprint behind it
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: The 3-layer pyramid of influence. Conviction architecture.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint to show "CONVICTION ARCHITECTURE"
+- Show 3-tier pyramid blueprint: "LOGIC" base → "EMOTION" middle → "IDENTITY" top (glowing)
+- Replace the person with Robert Cialdini (attached) drawing the pyramid like an architect
+
+Keep the blue blueprint style, professional teaching vibe.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.robertCialdini],
   },
 
   'digital-pause-power': {
-    template: 'illustrated-char',
-    concept: `TEXT: "..." three massive dots, white
-VISUAL: Illustrated character in confident silence, empty speech bubble with just dots, time suspending
-BACKGROUND: White vast expanse
-EXTRA: Confident silence converts better than discounts. The power of the pause.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to just "..." (three dots)
+- Replace the person with our monkey mascot (attached) - arms crossed, confident SILENCE, intense eye contact
+- Speech bubble with just "..." floating near him
+- Add text below: "silence sells"
+
+Keep the podcast quote style, teal background. Make the silence feel POWERFUL.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'fomo-engineering': {
-    template: 'product-table',
-    concept: `TEXT: "SOLD OUT" red bold ALL CAPS
-VISUAL: Empty shelf/display case on wooden table, "SOLD OUT" tag hanging, last one visible in distance
-BACKGROUND: Dark gradient
-EXTRA: Turn passive interest into urgent action. Urgency creation.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "SOLD OUT."
+- Show an empty shelf with "SOLD OUT" red tag - last item being grabbed by a hand
+- Add our monkey mascot (attached) looking stressed, reaching for the last item, FOMO in his eyes
+
+Keep the red background, urgent dramatic energy. Make it feel like PANIC.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'framing-effect-mastery': {
-    template: 'brand-collage',
-    concept: `TEXT: "same thing." white lowercase elegant
-VISUAL: Retro editorial collage - same product shown in cheap context vs luxury context, Kahneman portrait, framing visual
-BACKGROUND: Split composition - cheap left, luxury right
-EXTRA: Same facts. Wildly different decisions. Context is everything.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: SAME watch on cheap plastic stand, fluorescent lighting - "$50"
+- Right side: SAME watch on velvet, golden lighting, luxury setting - "$5,000"
+- Text at top: "SAME WATCH."
+- Add Daniel Kahneman (attached) floating in corner looking wise
+
+Keep the split comparison. Make the contrast SHOCKING - identical product, wildly different perception.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.danielKahneman],
   },
 
   'identity-marketing': {
-    template: 'illustrated-char',
-    concept: `TEXT: "become." white lowercase massive
-VISUAL: Illustrated person morphing into their ideal self, identity transformation rays, superhero cape emerging
-BACKGROUND: Dark gradient (Kurzgesagt style)
-EXTRA: Sell to who they WANT to be. Identity purchase.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "BECOME."
+- Show transformation: weak silhouette → superhero silhouette with cape, golden glow
+- Replace the person with our monkey mascot (attached) mid-transformation, half normal half superhero, cape flowing
+- Arrow pointing to transformation saying "identity sells"
+
+Keep the luxurious dramatic style. Make it feel like EVOLUTION.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'marketers-delusion': {
-    template: 'illustrated-char',
-    concept: `TEXT: "the delusion." white lowercase
-VISUAL: Illustrated brain character wearing blindfold, walking off cliff edge, warning signs ignored
-BACKGROUND: Dark red gradient
-EXTRA: The fatal error killing conversions. Marketers see what they want.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "THE DELUSION."
+- Show a blindfolded figure walking toward a cliff edge, warning signs everywhere
+- Dramatic danger energy - they can't see the drop
+
+Keep the red background, make it feel like IMMINENT DISASTER.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'pain-escalation-ladder': {
-    template: 'illustrated-char',
-    concept: `TEXT: "escalate." red lowercase dramatic
-VISUAL: Illustrated pain meter/thermometer rising, character climbing ladder alongside, each rung = more pain awareness
-BACKGROUND: White with grid texture
-EXTRA: Ethically escalate pain to action. Pain escalation ladder.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "HURT THEM. HELP THEM."
+- Replace the money pyramid with a PAIN THERMOMETER - graduated red scale from "mild discomfort" to "AGONY" at top
+- Each level has money flying off - more pain = more money leaving
+- Add our monkey mascot (attached) at the TOP of the thermometer, pushing the mercury HIGHER, looking ruthless but strategic
+- Small text: "The ethical way"
+
+Keep the dramatic money flying, the epic scale.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'telescope-flip': {
-    template: 'arrow-callout',
-    concept: `TEXT: "backwards." white lowercase
-VISUAL: Big arrow pointing to telescope being held the WRONG way (backwards), 97% doing it wrong crossed out
-BACKGROUND: White clean
-EXTRA: 97% of marketers hold it backwards. Flip your perspective.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "97% DO THIS" with telescope pointed WRONG WAY (small end to eye, looking at tiny blurry world)
+- Right side: "FLIP IT" with telescope CORRECT (big end to eye, seeing clear giant opportunity)
+- Add our monkey mascot (attached) on the RIGHT side, looking through telescope correctly, one hand pointing at a pot of gold he can clearly see
+- Red X on left, Green checkmark on right
+
+Keep the comparison split layout, the dramatic effect.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'trust-blueprint': {
-    template: 'tech-ui',
-    concept: `TEXT: "instant trust." white lowercase elegant
-VISUAL: Software blueprint diagram showing trust elements connected, credibility formula visualization
-BACKGROUND: Dark tech gradient with grid
-EXTRA: Build instant credibility that converts. Trust architecture.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint to show "INSTANT TRUST" architecture
+- Blueprint shows: CREDIBILITY → AUTHORITY → LIKEABILITY → PROOF → TRUST (connected with lines/arrows)
+- Replace the person with Robert Cialdini (attached) - standing like an architect pointing at the blueprint
+- Add a glowing "TRUST" badge in the center of the blueprint, like a core processor
+
+Keep the blue blueprint background, the technical diagram style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.robertCialdini],
   },
 
   'value-perception-lever': {
-    template: 'illustrated-char',
-    concept: `TEXT: "perception." white lowercase elegant
-VISUAL: Illustrated lever being pulled, small effort lifting massive boulder labeled "VALUE", multiplier effect
-BACKGROUND: White with grid texture
-EXTRA: Make price irrelevant. The value perception lever.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "PRICE IS A LIE"
+- Add a visual of a small golden lever on the left, and a MASSIVE boulder labeled "$$$" being lifted on the right
+- Show the lever multiplying force: "1x" → "100x" visual
+- Add our monkey mascot (attached) casually pushing the tiny lever with one finger, looking smug while the massive value boulder rises
+
+Keep the podcast quote style, the professional look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'three-brains-wallet': {
-    template: 'illustrated-char',
-    concept: `TEXT: "3 brains." white lowercase elegant
-VISUAL: Illustrated brain split into 3 sections, each controlling strings attached to wallet, reptile/emotional/logical zones
-BACKGROUND: Dark blue gradient (Kurzgesagt style)
-EXTRA: Which brain controls the wallet? Neuroscience of buying.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172239.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Keep the brain comparison format but show 3 SECTIONS in the colorful brain:
+  - REPTILE BRAIN (bottom) in RED - labeled "SURVIVAL" - puppet strings going to a wallet
+  - EMOTIONAL BRAIN (middle) in ORANGE - labeled "FEEL" - puppet strings going to a wallet
+  - LOGICAL BRAIN (top) in BLUE - labeled "THINK" - thin strings, wallet barely moves
+- One big wallet at bottom with 3 sets of puppet strings controlling it
+- Text: "WHO CONTROLS THE WALLET?"
+- The reptile section has the THICKEST strings (it wins)
+
+Keep the brain MRI style, the scientific look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.danielKahneman],
   },
 
   'pre-suasion-hack': {
-    template: 'product-table',
-    concept: `TEXT: "ALREADY WON." yellow bold ALL CAPS
-VISUAL: Chess board on wooden table with king already toppled before game started, Cialdini portrait floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Win before the pitch. Pre-suasion psychology.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "WON BEFORE YOU STARTED"
+- Show a luxurious chess board with the OPPONENT'S KING already toppled - game over before it began
+- Replace any person with Robert Cialdini (attached) - sitting confidently behind the chess board, fingers steepled, knowing smile
+- Add subtle "pre-suasion" text at the bottom
+
+Keep the dark luxury style, the secretive elite feel.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.robertCialdini],
   },
 
   'pattern-interrupts': {
-    template: 'illustrated-char',
-    concept: `TEXT: "WAIT." white bold massive
-VISUAL: Illustrated character with stop hand gesture, red glowing palm, attention lines radiating outward
-BACKGROUND: Red dramatic gradient
-EXTRA: Hijack their attention. Pattern interrupt in action.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "STOP SCROLLING."
+- Replace the person with our monkey mascot (attached) - massive STOP HAND gesture, palm facing camera, urgent expression
+- His palm is GLOWING RED with energy radiating outward
+- Add attention lines/rays exploding from his hand
+- Everything else should feel frozen mid-scroll
+
+Keep the red dramatic background, the paper-cut effect.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'dopamine-blueprint': {
-    template: 'illustrated-char',
-    concept: `TEXT: "addicted." white lowercase elegant
-VISUAL: Illustrated brain character with pleasure cables plugged in, dopamine molecule icons, reward loop visual
-BACKGROUND: Dark purple gradient (Kurzgesagt style)
-EXTRA: Create addictive loops. The dopamine blueprint.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "ADDICTIVE BY DESIGN"
+- Replace the brand logos on the brain with DOPAMINE MOLECULES - small pink/purple molecular structures
+- Add pleasure/reward cables plugged INTO the brain - colorful wires leading to a "REWARD" button
+- Add our monkey mascot (attached) with a mischievous grin, finger hovering over a giant "DOPAMINE" button
+- Small text: "Create addictive loops"
+
+Keep the purple brain glow, the neuroscience style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'anti-sell-mastery': {
-    template: 'arrow-callout',
-    concept: `TEXT: "don't buy." white lowercase elegant
-VISUAL: Big arrow pointing AWAY from product, reverse psychology visual, magnet pulling customer IN despite the arrow
-BACKGROUND: White clean
-EXTRA: Pull, don't push. The anti-sell that sells.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the tweet text to: "I told them NOT to buy. They bought 3x more."
+- Make it look like a viral marketing insight tweet
+- Replace any avatar with Gary Halbert (attached) - looking clever, knowing something
+- Add small icons: ❌ "DON'T BUY" crossed out, ✓ "SOLD OUT" badge
+- Engagement metrics showing high virality
+
+Keep the tweet style, the social proof feel.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.garyHalbert],
   },
 
   'decoy-effect': {
-    template: 'tech-ui',
-    concept: `TEXT: "+43%" green bold badge
-VISUAL: Software mockup of three pricing cards, middle "decoy" option highlighted, arrows showing preference shift
-BACKGROUND: White with subtle grid
-EXTRA: Why a "useless" option boosts sales by 43%. Decoy pricing.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show THREE PRICING CARDS side by side:
+  - SMALL: $9 (basic) - gray, ignored
+  - MEDIUM: $14 (decoy) - labeled "THE DECOY" with arrow pointing to it, crossed out, "useless"
+  - LARGE: $15 (premium) - GLOWING GREEN, "+43% SALES" badge, winner
+- Add our monkey mascot (attached) behind the cards like a magician, pulling strings to make people choose the expensive one
+- Arrows showing customer attention flowing: Small → SKIP Decoy → Land on Premium
+
+Keep the metrics comparison box style, the data-driven look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'precise-price-trick': {
-    template: 'product-table',
-    concept: `TEXT: "$4,988 > $5,000" yellow bold
-VISUAL: Two price tags on wooden table - $4,988 glowing winner vs $5,000 crossed out
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Precise prices feel more calculated. Psychology in action.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "$5,000" in RED, crossed out, looks "round and suspicious"
+- Right side: "$4,988" in GREEN, glowing, looks "precise and calculated"
+- Arrow pointing from $5,000 → $4,988 with text "FEELS CHEAPER"
+- Small brain icon showing the psychology behind it
+- Text at top: "THE $12 THAT MAKES MILLIONS"
+
+Keep the minimal word + icon style, the clean impact.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'paradox-of-choice': {
-    template: 'minimal-logos',
-    concept: `YouTube thumbnail, 16:9 aspect ratio.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "24 OPTIONS" with 24 tiny jam jars crammed together chaotically, person looking OVERWHELMED, red X, "-90% SALES"
+- Right side: "6 OPTIONS" with 6 jam jars neatly spaced, person confidently choosing, green checkmark, "+340% SALES"
+- Add Sheena Iyengar (attached) in the middle, pointing at the research, looking like a professor
+- Text at top: "LESS = MORE"
 
-Split composition. Left side: 24 small jam jars crowded together chaotically with red X. Right side: 6 jam jars neatly spaced with green checkmark. Lots of whitespace.
-
-Background: Pure white with subtle grid texture
-Text: "less is more." in lowercase black at top center
-Style: Exactly like "copy them." minimal thumbnail - ultra clean, editorial`,
+Keep the OLD vs NEW comparison layout, the split screen drama.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.sheenaIyengar],
   },
 
