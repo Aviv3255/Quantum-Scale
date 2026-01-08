@@ -1276,7 +1276,7 @@ EXTRA: Isolation effect`,
 VISUAL: Custom checkout vs Amazon checkout
 BACKGROUND: Split
 EXTRA: UX principle`,
-    images: [],
+    images: [imageAssets.amazon],
   },
 
   'gaze-direction': {
