@@ -140,7 +140,8 @@ type TemplateType =
   // NEW SURREAL/ARTISTIC FORMULAS (ChatGPT excels at these)
   | 'surreal-transformation' // Object melting/morphing/transforming (like package disintegrating, person becoming treasure)
   | 'surreal-split'          // Split composition showing dramatic contrast (exploding head vs calm head)
-  | 'surreal-landscape';     // Epic 3D rendered landscape with symbolic elements (mountain with valley)
+  | 'surreal-landscape'     // Epic 3D rendered landscape with symbolic elements (mountain with valley)
+  | 'minimal-dark';          // Simple element on pure black background (ultra clean)
 
 interface VisualTemplate {
   id: TemplateType;
@@ -339,6 +340,12 @@ const VISUAL_TEMPLATES: Record<TemplateType, VisualTemplate> = {
     description: 'Epic 3D rendered symbolic landscape (mountain with valley, journey visualization)',
     promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Epic cinematic 3D landscape like movie poster. BACKGROUND: Dramatic sky gradient - stormy to golden. LAYOUT: Landscape with symbolic elements and tiny figures. TEXT: Simple impactful text at top or integrated into scene. VISUAL: 3D rendered symbolic landscape - mountains, valleys, paths with tiny human figures showing journey. Epic scale, dramatic lighting, god-rays, treasure/light at destination. Inspirational yet shows harsh reality.`,
   },
+  'minimal-dark': {
+    id: 'minimal-dark',
+    name: 'Minimal Dark',
+    description: 'Simple element on pure black background - ultra clean and professional',
+    promptStructure: `YouTube thumbnail, 16:9 aspect ratio. STYLE: Ultra minimal, professional. BACKGROUND: Pure black. LAYOUT: One or two simple elements centered. TEXT: Bold text at top (white or accent color). VISUAL: Single focal element, clean execution, lots of negative space. No clutter, no effects, just clean professional simplicity.`,
+  },
 };
 
 // Function to build full prompt from template + specific concept
@@ -361,27 +368,13 @@ const lessonConceptData: Record<string, { concept: string; images: string[]; tem
 
   'familiar-surprise-secret': {
     template: 'brain-cables',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    concept: `YouTube thumbnail, 16:9 aspect ratio.
 
-VISUAL FORMULA: Brain-Cables (Apple variant)
+Top half of a human head with eyes looking up, the skull opened like a lid revealing a pink brain. White Apple cables (like iPhone charger cables) plug into the brain from an iPhone, AirPods case, and Apple Watch floating nearby.
 
-COMPOSITION:
-- TOP HALF of a human HEAD visible (from eyebrows up), eyes looking forward with a sense of wonder/recognition
-- The top of the head is OPENED like a lid, revealing an EXPOSED PINK BRAIN with realistic wrinkled texture
-- THREE Apple products are connected via sleek WHITE CABLES directly INTO the brain:
-  * iPhone (from the left) - cable plugging into the brain's temporal lobe
-  * AirPods case (from the top right) - cable into the auditory area
-  * Apple Watch (from the bottom right) - cable into the motor cortex
-- The cables are Apple-style: clean, white, premium looking
-- Small glowing Apple logo floating subtly in background
-
-BACKGROUND: Clean WHITE with very subtle gray GRID PAPER texture (like graph paper). Minimal, editorial, Apple-store aesthetic.
-
-TEXT: "familiar." in lowercase black sans-serif font (San Francisco/Helvetica style), positioned at TOP center. Clean, Apple-minimal typography.
-
-LIGHTING: Soft, even, clean lighting like a medical illustration meets Apple product shot. Brain has subtle pink glow. Products are perfectly lit.
-
-STYLE: EXACTLY like the "Offers" brain-cables thumbnail but with Apple products. Shows how Apple creates products that feel FAMILIAR (they plug into existing mental models). Surreal but clean and premium.`,
+Background: Clean white with subtle grid paper texture
+Text: "familiar." in lowercase black sans-serif at top
+Style: Exactly like the "Offers" brain cables thumbnail but with Apple products`,
     images: [imageAssets.apple],
   },
 
@@ -687,25 +680,14 @@ EXTRA: Speed promise. Professional product photography style. Red arrow pointing
   },
 
   'stop-aliexpress': {
-    template: 'surreal-transformation',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'minimal-dark',
+    concept: `YouTube thumbnail, 16:9 aspect ratio.
 
-VISUAL FORMULA: Surreal Destruction/Transformation
+A damaged/broken AliExpress delivery box with a large red X mark over it. The box looks cheap and battered. Next to it, a small "30-60 days" shipping label crossed out.
 
-COMPOSITION:
-- CENTER: A dramatic AliExpress delivery package (brown cardboard box with AliExpress logo) that is MELTING and DISINTEGRATING like it's made of cheap wax/plastic
-- The box is half-melted, DRIPPING downward in thick globs
-- INSIDE the melting box: broken, defective products spilling out - cracked phone cases, cheap jewelry with green tarnish, clothes with loose threads
-- Rising from the destruction: SKULL-SHAPED SMOKE or toxic green vapor billowing upward
-- Small "30-60 DAYS" text melting/dripping alongside the box
-
-BACKGROUND: Dark dramatic gradient - deep red/orange GLOW at bottom (like fire/heat causing the melting), fading to dark smoky black at top.
-
-TEXT: "STOP." in massive white or red ALL CAPS at top. Bold, impactful. One word, maximum impact.
-
-LIGHTING: Dramatic underlighting from the red/orange glow below, creating ominous shadows. The melting package should look like it's being destroyed by heat/failure.
-
-STYLE: Hyper-realistic 3D render. Surreal, unsettling, visceral. Shows the "death" of dropshipping the wrong way. Think Salvador Dali meets product photography.`,
+Background: Pure black
+Text: "STOP." in white ALL CAPS at top
+Style: Clean, minimal, professional - like the strikethrough reference but simpler`,
     images: [],
   },
 
@@ -948,25 +930,14 @@ EXTRA: From rocks to riches. Sell meaning, not products. Absurdist genius.`,
   },
 
   'starbucks-ltv': {
-    template: 'surreal-transformation',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'minimal-logos',
+    concept: `YouTube thumbnail, 16:9 aspect ratio.
 
-VISUAL FORMULA: Surreal Transformation/Metamorphosis
+A white Starbucks coffee cup sitting on a messy pile of real US $100 bills. The Starbucks logo clearly visible on the cup. Simple, clean product shot.
 
-COMPOSITION:
-- LEFT SIDE: A single tiny human figure (customer silhouette, small, almost insignificant)
-- CENTER: The figure is mid-TRANSFORMATION - their body is morphing, dissolving into golden particles and $100 bills
-- RIGHT SIDE: The transformation completes into a MASSIVE golden treasure chest, lid open, OVERFLOWING with cascading $100 bills and gold coins
-- ABOVE: The Starbucks mermaid/siren logo floating like a goddess or deity, surrounded by a subtle golden halo/glow, watching over the transformation
-- Magical sparkles and golden energy particles flowing from the customer toward the treasure chest
-
-BACKGROUND: Deep rich green (Starbucks brand color) gradient, transitioning from dark at edges to lighter in center where the transformation happens.
-
-TEXT: "$14,099" in massive GOLD 3D text with shine/reflection, positioned at TOP. This is the lifetime value of one customer.
-
-LIGHTING: Ethereal, magical lighting. Golden light emanating from the treasure chest. The Starbucks siren glows softly. Dramatic rim lighting on the transforming figure.
-
-STYLE: Hyper-realistic 3D render with magical/fantasy elements. Shows how ONE customer transforms into massive lifetime value. Surreal, awe-inspiring, almost religious imagery.`,
+Background: Clean white with subtle gray grid paper texture
+Text: "$14,099" in yellow ALL CAPS with black outline at top
+Style: Exactly like the "genius" Stanley cup on money thumbnail`,
     images: [imageAssets.starbucks],
   },
 
@@ -1114,32 +1085,14 @@ EXTRA: Stop hoping they buy. Guide them with certainty.`,
   },
 
   'certainty-transfer': {
-    template: 'surreal-split',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'split-brain-scan',
+    concept: `YouTube thumbnail, 16:9 aspect ratio.
 
-VISUAL FORMULA: Surreal Split Brain - Chaos vs Crystal
+Two human brains side by side. Left brain is grayscale/gray (uncertain). Right brain is colorful with heat map colors - oranges, yellows, reds (certain). An arrow points from right to left showing "transfer."
 
-COMPOSITION:
-- Single human BRAIN viewed from above, dramatically SPLIT down the middle with a visible crack/divide
-- LEFT HALF (DOUBT): The brain tissue is CHAOTIC and turbulent
-  * Swirling storm clouds and fog INSIDE the brain matter
-  * Floating question marks (?) scattered throughout
-  * Gray/dark purple murky color palette
-  * Looks unstable, stormy, uncertain
-- RIGHT HALF (CERTAINTY): The brain tissue has CRYSTALLIZED into solid gold
-  * Clean, geometric crystal structures replacing brain wrinkles
-  * Glowing golden/amber light emanating from within
-  * Sharp, confident, solid
-  * Precious and valuable looking
-- CENTER: An ENERGY BEAM or lightning bolt transferring from the golden side INTO the chaotic side, showing the "transfer" of certainty
-
-BACKGROUND: Pure BLACK background with subtle particle effects around the brain.
-
-TEXT: "transfer." in lowercase white sans-serif font at TOP, clean and minimal.
-
-LIGHTING: The chaotic side is dimly lit with stormy internal glow. The crystallized side RADIATES golden light outward. The energy beam glows intensely.
-
-STYLE: Hyper-realistic 3D render. Surreal, dramatic. Shows the literal "transfer" of certainty from one mind to another. Premium, artistic, unforgettable.`,
+Background: Pure black
+Text: "Before" under left brain, "After" under right brain, white labels
+Style: Exactly like the brain MRI before/after reference thumbnails`,
     images: [],
   },
 
@@ -1297,37 +1250,14 @@ EXTRA: Precise prices feel more calculated. Psychology in action.`,
   },
 
   'paradox-of-choice': {
-    template: 'surreal-split',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'minimal-logos',
+    concept: `YouTube thumbnail, 16:9 aspect ratio.
 
-VISUAL FORMULA: Surreal Split - Exploding vs Calm Mind
+Split composition. Left side: 24 small jam jars crowded together chaotically with red X. Right side: 6 jam jars neatly spaced with green checkmark. Lots of whitespace.
 
-COMPOSITION:
-- SPLIT COMPOSITION with dramatic contrast between two sides:
-
-LEFT SIDE (OVERWHELM):
-- A human HEAD that is literally EXPLODING outward
-- 24+ different product options/jars/bottles FLYING OUT of the exploding head in all directions
-- The person's face shows STRESS, eyes wide, mouth open in overwhelm
-- Chaotic energy lines and fragments radiating outward
-- Red/orange explosion colors
-
-RIGHT SIDE (CLARITY):
-- A CALM, serene human HEAD, intact and peaceful
-- Only 6 simple product options floating in a neat ORBIT around the head
-- The person's face shows PEACE, slight smile, relaxed eyes
-- Clean blue/white aura surrounding the head
-- Zen-like simplicity
-
-- CENTER DIVIDE: Sharp contrast line between chaos and calm
-
-BACKGROUND: Split background - chaotic dark red/orange gradient on left, clean light blue/white gradient on right.
-
-TEXT: "24 vs 6" in bold text at TOP, showing the paradox visually.
-
-LIGHTING: Explosive dramatic lighting on left (reds, oranges). Soft, ethereal lighting on right (blues, whites).
-
-STYLE: Hyper-realistic 3D render. Surreal, dramatic. Shows the LITERAL mental explosion caused by too many choices vs the calm of fewer options. Visceral and memorable.`,
+Background: Pure white with subtle grid texture
+Text: "less is more." in lowercase black at top center
+Style: Exactly like "copy them." minimal thumbnail - ultra clean, editorial`,
     images: [imageAssets.sheenaIyengar],
   },
 
@@ -2492,31 +2422,14 @@ EXTRA: Do 100 of everything first. The Rule of 100.`,
   },
 
   'biz-valley-protocol': {
-    template: 'surreal-landscape',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'person-with-curve',
+    concept: `YouTube thumbnail, 16:9 aspect ratio.
 
-VISUAL FORMULA: Surreal 3D Landscape - The Mountain with Valley
+A simple growth curve line that goes up, dips down into a valley, then rises again. Colors transition: green start, red valley, green peak. A white dot on the valley with arrow saying "97% quit here."
 
-COMPOSITION:
-- EPIC 3D RENDERED MOUNTAIN landscape viewed from the side
-- The mountain has a dramatic VALLEY/DIP in the middle - goes UP, then DOWN into a deep dark valley, then UP again to a golden peak
-- ON THE MOUNTAIN PATH:
-  * 97% of tiny climber figures are FALLING, GIVING UP, or LYING DOWN in the valley (the dark lowest point)
-  * Their bodies tumble down the sides, some sliding backward
-  * They look defeated, exhausted, quitting
-- ONE SINGLE CLIMBER is pushing THROUGH the valley, climbing UP toward the peak
-  * This figure glows with determination
-  * Arms reaching upward, climbing rope in hand
-- THE PEAK: Radiates GOLDEN LIGHT with treasure/success symbols (gold coins, trophy, crown) visible at the top
-- THE VALLEY: Dark, foggy, ominous - with subtle skull shapes in the shadows
-
-BACKGROUND: Epic sky gradient - stormy dark clouds around the valley, golden sunrise light breaking through at the peak.
-
-TEXT: "97% QUIT" in red text near the valley, almost like a warning sign on the mountain.
-
-LIGHTING: Dramatic cinematic lighting - dark and ominous in the valley, golden god-rays at the peak. The single climber has rim lighting showing hope.
-
-STYLE: Hyper-realistic 3D render, epic scale like a movie poster. Shows the LITERAL journey through the valley of despair. Inspirational but also shows harsh reality.`,
+Background: Dark black with thin grid lines
+Text: "You're Here" style arrow pointing to the valley
+Style: Exactly like the Alex Hormozi "You're Here" growth curve thumbnail`,
     images: [],
   },
 
