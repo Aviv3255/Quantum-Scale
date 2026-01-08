@@ -122,7 +122,14 @@ type TemplateType =
   | 'dramatic-quote'
   | 'growth-curve'
   | 'versus'
-  | 'single-object';
+  | 'single-object'
+  // NEW PREMIUM YOUTUBE STYLES
+  | 'product-table'      // Product on wooden table + big headline + grid bg
+  | 'illustrated-char'   // Kurzgesagt-style character + money floating
+  | 'money-product'      // Product sitting on $100 bills pile + mascot
+  | 'brand-collage'      // Retro editorial collage with brands
+  | 'tech-ui'            // Software interface mockup style
+  | 'arrow-callout';     // Big arrow pointing to element + logo
 
 interface VisualTemplate {
   id: TemplateType;
@@ -222,6 +229,45 @@ const VISUAL_TEMPLATES: Record<TemplateType, VisualTemplate> = {
     description: 'One hero object, dramatic',
     promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Single Object like Porsche aesthetics. BACKGROUND: White/light. LAYOUT: Text 30%, object 70%. TEXT: "the [word]" one word italic. VISUAL: Beautiful single object hero-shot.`,
   },
+  // ========================================
+  // NEW PREMIUM YOUTUBE THUMBNAIL STYLES
+  // ========================================
+  'product-table': {
+    id: 'product-table',
+    name: 'Product Table',
+    description: 'Product on wooden table + big money headline',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Premium product showcase like "$100 MILLION" thumbnails. BACKGROUND: White with subtle grid paper texture at top, warm wooden table/surface at bottom third. LAYOUT: BIG bold headline top 40%, product hero shot on wooden surface bottom 60%. TEXT: Yellow or white ALL CAPS impact font with black outline/shadow, money amounts ($X MILLION, $X IN Y DAYS). VISUAL: Real product packaging/bottle/bag sitting on natural wood surface, crisp product photography look. Optional: floating brand logo, red arrow pointing to product.`,
+  },
+  'illustrated-char': {
+    id: 'illustrated-char',
+    name: 'Illustrated Character',
+    description: 'Kurzgesagt-style character + money floating',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Kurzgesagt/animated explainer style. BACKGROUND: Dark blue/teal gradient with subtle texture/grain. LAYOUT: Text top 35%, illustrated character center-right 65%. TEXT: White bold sans-serif "HOW TO MAKE $X" style, money amounts prominent. VISUAL: Flat-design illustrated person/character in hoodie or business casual, simple geometric shapes, $100 bills floating around, small brand icon in corner. Modern, premium animation studio aesthetic.`,
+  },
+  'money-product': {
+    id: 'money-product',
+    name: 'Money Product',
+    description: 'Product on $100 bills pile + 3D mascot',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: "Genius" Stanley cup style. BACKGROUND: White with grid paper texture. LAYOUT: Lowercase text top-left 25%, product on money center 50%, mascot right 25%. TEXT: One word lowercase black sans-serif ("genius", "works", "viral"). VISUAL: Product (cup, bottle, gadget) sitting on messy pile of crisp $100 bills, 3D mascot character (owl, figure) on right side looking at product. Fun, playful, money-focused.`,
+  },
+  'brand-collage': {
+    id: 'brand-collage',
+    name: 'Brand Collage',
+    description: 'Retro editorial collage with brands',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Fashion editorial collage like 70s/80s magazine. BACKGROUND: Collage of overlapping brand imagery, vintage ads, magazine covers. LAYOUT: Central figure/face 60%, surrounding brand elements 40%. TEXT: Minimal or none, let visuals speak. VISUAL: Fashion model or iconic face in center wearing helmet/glasses, surrounded by luxury brand logos (Ferrari, Chanel, etc), vintage magazine cutouts, retro color palette (red, cream, gold). High fashion meets nostalgia.`,
+  },
+  'tech-ui': {
+    id: 'tech-ui',
+    name: 'Tech UI',
+    description: 'Software interface mockup style',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: Framer/Figma software demo style. BACKGROUND: Dark charcoal/black with subtle gradient. LAYOUT: UI element left 40%, result/output right 60%, connected by dotted line. TEXT: Inside UI input fields, clean sans-serif. VISUAL: Software interface mockup showing input field on left, arrow/dotted line connecting to result on right (phone screen, dashboard, etc). Tech product demo aesthetic, floating app logos, glassmorphism effects.`,
+  },
+  'arrow-callout': {
+    id: 'arrow-callout',
+    name: 'Arrow Callout',
+    description: 'Big arrow pointing to key element + logo',
+    promptStructure: `YouTube thumbnail, 16:10 (1600x1000px). STYLE: "this is sticky" Figma style. BACKGROUND: Clean white or light gray. LAYOUT: Text left 40% (stacked, multi-line), visual right 60% with arrow. TEXT: Lowercase black serif or sans-serif, 2-3 lines stacked ("this is", "sticky"). VISUAL: Big bold black curved arrow pointing from text to key element (phone, UI, product), brand logo floating in corner (Figma, Shopify, etc). Minimal, editorial, design-forward.`,
+  },
 };
 
 // Function to build full prompt from template + specific concept
@@ -243,299 +289,299 @@ const lessonConceptData: Record<string, { concept: string; images: string[]; tem
   // ============================================
 
   'familiar-surprise-secret': {
-    template: 'logo-mashup',
-    concept: `TEXT: "it works." lowercase black
-VISUAL: Apple logo + iPhone floating with shadow
-BACKGROUND: White minimal
-EXTRA: Apple keynote aesthetic`,
+    template: 'product-table',
+    concept: `TEXT: "$2.3 TRILLION" yellow bold ALL CAPS with black outline at top
+VISUAL: iPhone and Apple logo product shot on warm wooden table surface
+BACKGROUND: White with subtle grid texture at top
+EXTRA: Red arrow pointing to the Apple logo. Premium product photography style.`,
     images: [imageAssets.apple],
   },
 
   'red-button-effect': {
-    template: 'single-object',
-    concept: `TEXT: "don't press." lowercase white
-VISUAL: Giant glossy red 3D button, arcade style
-BACKGROUND: Pure black
-EXTRA: Tempting, forbidden feel`,
+    template: 'arrow-callout',
+    concept: `TEXT: "don't press this" lowercase black serif, stacked on left
+VISUAL: Giant glossy red 3D arcade button on right, big curved arrow pointing to it
+BACKGROUND: Clean white
+EXTRA: Tempting, forbidden. The arrow makes it irresistible.`,
     images: [],
   },
 
   'fred-method': {
-    template: 'brain-cables',
-    concept: `TEXT: "F.R.E.D." each letter different color
-VISUAL: Brain exposed, 4 colored cables plugging in
-BACKGROUND: White with grid
-EXTRA: Scientific diagram style`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THE F.R.E.D. METHOD" white bold at top
+VISUAL: Illustrated character (Kurzgesagt style) with brain visible, 4 colored cables (red, blue, green, yellow) plugging into brain sections
+BACKGROUND: Dark blue/teal gradient with grain
+EXTRA: $100 bills floating around. Simple geometric style.`,
     images: [],
   },
 
   'emotion-decides': {
-    template: 'versus',
-    concept: `TEXT: None
-VISUAL: Giant red heart wearing crown VS tiny gray brain
-BACKGROUND: Cream white
-EXTRA: Heart wins - dramatic size contrast`,
+    template: 'money-product',
+    concept: `TEXT: "emotion wins." lowercase black at top
+VISUAL: Giant red 3D heart wearing golden crown sitting on pile of $100 bills, tiny gray brain pushed to side
+BACKGROUND: White with grid paper texture
+EXTRA: The heart is the hero. Playful but powerful.`,
     images: [imageAssets.danielKahneman],
   },
 
   'gatekeeper-method': {
-    template: 'brain-cables',
-    concept: `TEXT: "4 doors." lowercase white
-VISUAL: Brain with 4 small doors, one open with light
-BACKGROUND: Dark charcoal
-EXTRA: Mysterious, intriguing`,
+    template: 'illustrated-char',
+    concept: `TEXT: "4 DOORS TO THE BRAIN" white bold
+VISUAL: Illustrated head cross-section with 4 small doors on brain, one open with golden light streaming out
+BACKGROUND: Dark charcoal with subtle grain
+EXTRA: Keys floating near doors. Mystery and intrigue.`,
     images: [],
   },
 
   'three-second-rule': {
-    template: 'dramatic-quote',
-    concept: `TEXT: Giant "3" white, "seconds." below
-VISUAL: Stopwatch icon
-BACKGROUND: Solid red
-EXTRA: Urgent warning sign energy`,
+    template: 'product-table',
+    concept: `TEXT: "3 SECONDS" massive yellow with black outline, "or they leave." white below
+VISUAL: Stopwatch/timer showing 00:03 sitting on wooden table
+BACKGROUND: Dramatic dark/smoky at top, wooden surface at bottom
+EXTRA: Red lightning bolt or urgency icon. High stakes energy.`,
     images: [],
   },
 
   'science-of-selling': {
-    template: 'diagram',
-    concept: `TEXT: "the formula." lowercase black
-VISUAL: Brain + $ = $$$ equation
-BACKGROUND: White with grid
-EXTRA: Whiteboard diagram style`,
+    template: 'tech-ui',
+    concept: `TEXT: Inside UI boxes: "Psychology" + "Copy" = "Sales"
+VISUAL: Software interface with equation: brain icon input → dollar icon output, connected by dotted line with arrow
+BACKGROUND: Dark charcoal gradient
+EXTRA: Floating formula elements. Clean tech aesthetic.`,
     images: [],
   },
 
   'persuasion-blueprint': {
-    template: 'single-object',
-    concept: `TEXT: "the blueprint." italic
-VISUAL: Rolled blueprint paper unrolling
-BACKGROUND: White clean
-EXTRA: Architect document reveal`,
+    template: 'arrow-callout',
+    concept: `TEXT: "the persuasion blueprint" lowercase black serif stacked
+VISUAL: Blueprint paper partially unrolled showing diagram, big curved arrow pointing to the reveal
+BACKGROUND: Clean white
+EXTRA: Cialdini photo floating in corner if provided.`,
     images: [imageAssets.robertCialdini],
   },
 
   'persuasion-stack': {
-    template: 'diagram',
-    concept: `TEXT: "the stack." lowercase
-VISUAL: 5 horizontal colored bars stacked
-BACKGROUND: White
-EXTRA: Progress bar visualization`,
+    template: 'illustrated-char',
+    concept: `TEXT: "STACK TO WIN" white bold at top
+VISUAL: Illustrated figure stacking 5 colorful blocks (like Jenga) - each block a different persuasion layer
+BACKGROUND: Dark blue gradient with grain
+EXTRA: $100 bills as foundation. Building momentum visual.`,
     images: [],
   },
 
   'architecture-of-influence': {
-    template: 'diagram',
-    concept: `TEXT: "architect." lowercase white
-VISUAL: Wireframe head outline, geometric
-BACKGROUND: Dark navy
-EXTRA: Apple meets architecture`,
+    template: 'tech-ui',
+    concept: `TEXT: "architect mode" in UI input field
+VISUAL: Dark software interface showing wireframe head blueprint on left, influence dashboard on right
+BACKGROUND: Dark charcoal
+EXTRA: Floating geometric lines connecting elements. Apple-level design.`,
     images: [],
   },
 
   'wiifm-principle': {
-    template: 'person-metric',
-    concept: `TEXT: "what about me?" lowercase
-VISUAL: Hand pointing at viewer (Uncle Sam style)
-BACKGROUND: Light gray
-EXTRA: Direct, confrontational`,
+    template: 'arrow-callout',
+    concept: `TEXT: "what's in it for ME?" lowercase black, "ME" in yellow
+VISUAL: Hand pointing directly at viewer (Uncle Sam style), big arrow pointing to the hand
+BACKGROUND: Clean white/light gray
+EXTRA: Direct, confrontational. The viewer IS the target.`,
     images: [],
   },
 
   'three-canons-of-craft': {
-    template: 'diagram',
-    concept: `TEXT: "3 tests." lowercase black
-VISUAL: Three checkboxes in a row, all checked
-BACKGROUND: White with grid
-EXTRA: Checklist simplicity`,
+    template: 'product-table',
+    concept: `TEXT: "3 TESTS" yellow bold, "every sentence must pass." white below
+VISUAL: Three golden checkmarks/stamps on wooden table surface
+BACKGROUND: White grid at top, warm wood at bottom
+EXTRA: Premium craftsmanship aesthetic. Quality control vibe.`,
     images: [],
   },
 
   'cpppb-proof-loop': {
-    template: 'diagram',
-    concept: `TEXT: "C.P.P.P.B." each letter different color
-VISUAL: 5 elements in circular loop with arrows
-BACKGROUND: White clean
-EXTRA: Framework wheel`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THE PROOF LOOP" white bold
+VISUAL: Illustrated circular diagram with 5 colored nodes (C.P.P.P.B.) connected by arrows in a loop, character pointing to it
+BACKGROUND: Dark teal gradient
+EXTRA: Each letter in different color. Infinite loop energy.`,
     images: [],
   },
 
   'damaging-admission': {
-    template: 'minimal-text',
-    concept: `TEXT: "I was wrong." lowercase white
-VISUAL: Small crack/break visual
-BACKGROUND: Dark gray
-EXTRA: Vulnerability power`,
+    template: 'arrow-callout',
+    concept: `TEXT: "I was wrong." lowercase black serif, "and that's why you should trust me." smaller below
+VISUAL: Cracked mirror or broken glass with golden light shining through crack
+BACKGROUND: Clean white
+EXTRA: Vulnerability as strength. Arrow pointing to the crack.`,
     images: [],
   },
 
   'emotional-precision': {
-    template: 'diagram',
-    concept: `TEXT: "precision." lowercase
-VISUAL: Bullseye/target with heart in center
-BACKGROUND: White
-EXTRA: Emotional targeting`,
+    template: 'product-table',
+    concept: `TEXT: "HIT THE EXACT EMOTION" yellow bold
+VISUAL: Bullseye/target with glowing red heart in center, sitting on wooden table
+BACKGROUND: White grid top, wood bottom
+EXTRA: Dart or arrow stuck in heart. Precision targeting.`,
     images: [],
   },
 
   'blind-spot-effect': {
-    template: 'face-morph',
-    concept: `TEXT: "they can't see." white
-VISUAL: Face with one eye covered/blind
-BACKGROUND: Dark blue
-EXTRA: Mysterious blindspot`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THEY CAN'T SEE THIS" white bold
+VISUAL: Illustrated face/head with one eye covered by hand, blind spot highlighted
+BACKGROUND: Dark blue gradient
+EXTRA: What they're missing floats in the blind spot area. Mystery.`,
     images: [],
   },
 
   'customer-voice-mining': {
-    template: 'diagram',
-    concept: `TEXT: "their words." lowercase
-VISUAL: Speech bubbles being collected into gold
+    template: 'money-product',
+    concept: `TEXT: "their words = gold" lowercase black
+VISUAL: Speech bubbles being funneled into a pile of gold bars/coins on money pile
 BACKGROUND: White with grid
-EXTRA: Mining/extraction visual`,
+EXTRA: Mining/extraction metaphor. Words literally becoming gold.`,
     images: [],
   },
 
   'double-bind-of-fear': {
-    template: 'split-screen',
-    concept: `TEXT: "damned if you do." white
-VISUAL: Two paths both leading to fire
-BACKGROUND: Half dark, half darker
-EXTRA: No-win dilemma`,
+    template: 'illustrated-char',
+    concept: `TEXT: "DAMNED IF YOU DO" white bold
+VISUAL: Illustrated character at fork in road, both paths leading to fire/danger
+BACKGROUND: Dark ominous gradient
+EXTRA: Either choice = risk. Tension visualization.`,
     images: [],
   },
 
   'emotion-spectrum': {
-    template: 'diagram',
-    concept: `TEXT: "the spectrum." lowercase
-VISUAL: Rainbow gradient bar with emotion icons
-BACKGROUND: White
-EXTRA: Color emotion mapping`,
+    template: 'tech-ui',
+    concept: `TEXT: "emotion spectrum" in UI header
+VISUAL: Software interface showing rainbow emotion slider/spectrum, different emotions mapped to colors
+BACKGROUND: Dark charcoal
+EXTRA: Tech dashboard for emotions. Precise control panel.`,
     images: [],
   },
 
   'forty-forty-twenty-rule': {
-    template: 'diagram',
-    concept: `TEXT: "40/40/20" bold black
-VISUAL: Three pie chart segments
-BACKGROUND: White with grid
-EXTRA: The formula breakdown`,
+    template: 'product-table',
+    concept: `TEXT: "40/40/20" massive yellow numbers
+VISUAL: Three piles of different sizes (40%, 40%, 20%) made of cash on wooden table
+BACKGROUND: White grid top, wood surface bottom
+EXTRA: The winning formula visualized with money.`,
     images: [],
   },
 
   'four-primal-needs': {
-    template: 'brain-cables',
-    concept: `TEXT: "4 needs." lowercase white
-VISUAL: Brain with 4 glowing spots
-BACKGROUND: Dark
-EXTRA: Primal brain visualization`,
+    template: 'illustrated-char',
+    concept: `TEXT: "4 PRIMAL BUY BUTTONS" white bold
+VISUAL: Illustrated brain with 4 glowing red buttons embedded, cables connecting to $$ symbols
+BACKGROUND: Dark blue/black gradient
+EXTRA: Prehistoric + modern mashup. Reptile brain hacking.`,
     images: [],
   },
 
   'ocpb-formula': {
-    template: 'diagram',
-    concept: `TEXT: "O.C.P.B." in gold
-VISUAL: 4 stacking blocks tower
-BACKGROUND: White
-EXTRA: Building blocks of sales`,
+    template: 'product-table',
+    concept: `TEXT: "O.C.P.B." yellow bold, each letter different color
+VISUAL: 4 building blocks stacked like tower on wooden table, each labeled with a letter
+BACKGROUND: White grid top, wood bottom
+EXTRA: Stack = sales. Building the perfect offer.`,
     images: [],
   },
 
   'sales-message-anatomy': {
-    template: 'diagram',
-    concept: `TEXT: "anatomy." lowercase
-VISUAL: Sales letter with labeled parts
-BACKGROUND: White with grid
-EXTRA: Blueprint dissection`,
+    template: 'tech-ui',
+    concept: `TEXT: "anatomy scan" in UI header
+VISUAL: Software interface showing sales letter with labeled callouts (headline, hook, proof, CTA)
+BACKGROUND: Dark charcoal
+EXTRA: X-ray/blueprint view of a sales page. Technical dissection.`,
     images: [],
   },
 
   'self-persuasion-architecture': {
-    template: 'diagram',
-    concept: `TEXT: "convince yourself." lowercase
-VISUAL: Person looking in mirror, nodding
-BACKGROUND: White
-EXTRA: Self-selling visual`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THEY CONVINCE THEMSELVES" white bold
+VISUAL: Illustrated person looking in mirror, mirror reflection is nodding and holding money
+BACKGROUND: Dark blue gradient
+EXTRA: The prospect sells themselves. Mirror magic.`,
     images: [],
   },
 
   'structural-tension': {
-    template: 'growth-curve',
-    concept: `TEXT: "tension." lowercase white
-VISUAL: Stretched rubber band about to snap
-BACKGROUND: Dark
-EXTRA: Building tension energy`,
+    template: 'arrow-callout',
+    concept: `TEXT: "tension" lowercase black, "that converts." below
+VISUAL: Stretched rubber band about to snap, arrow pointing to the tension point
+BACKGROUND: White clean
+EXTRA: The snap point = purchase moment. Building pressure.`,
     images: [],
   },
 
   'three-growth-levers': {
-    template: 'diagram',
-    concept: `TEXT: "3 levers." lowercase
-VISUAL: Three physical levers side by side
-BACKGROUND: White with grid
-EXTRA: Mechanical control`,
+    template: 'product-table',
+    concept: `TEXT: "3X YOUR REVENUE" yellow bold
+VISUAL: Three physical lever/switch controls on wooden table dashboard
+BACKGROUND: White grid top, wood bottom
+EXTRA: Each lever = customers, frequency, transaction size.`,
     images: [],
   },
 
   'three-levels-of-change': {
-    template: 'diagram',
-    concept: `TEXT: "3 levels." lowercase
-VISUAL: Pyramid with 3 tiers labeled
-BACKGROUND: White
-EXTRA: Hierarchy visualization`,
+    template: 'illustrated-char',
+    concept: `TEXT: "3 LEVELS OF CHANGE" white bold
+VISUAL: Illustrated pyramid with 3 tiers, character climbing from bottom to top
+BACKGROUND: Dark blue gradient
+EXTRA: Behavior → Belief → Identity. Ascension visual.`,
     images: [],
   },
 
   'trust-architecture': {
-    template: 'diagram',
-    concept: `TEXT: "trust." lowercase gold
-VISUAL: Building/temple with trust pillars
-BACKGROUND: White
-EXTRA: Foundation metaphor`,
+    template: 'product-table',
+    concept: `TEXT: "$50M IN TRUST" yellow bold
+VISUAL: Greek temple/building with trust pillars, made of gold, on wooden surface
+BACKGROUND: White grid top, wood bottom
+EXTRA: Foundation = credibility. Premium architecture.`,
     images: [],
   },
 
   'unique-mechanism': {
-    template: 'single-object',
-    concept: `TEXT: "the mechanism." italic
-VISUAL: Glowing gear/cog machine part
-BACKGROUND: Dark
-EXTRA: Proprietary secret feel`,
+    template: 'money-product',
+    concept: `TEXT: "the mechanism." lowercase black
+VISUAL: Glowing golden gear/cog sitting on pile of $100 bills
+BACKGROUND: White with grid
+EXTRA: The secret sauce. Proprietary feel.`,
     images: [],
   },
 
   'master-key-framework': {
-    template: 'single-object',
-    concept: `TEXT: "master key." lowercase gold
-VISUAL: Ornate golden skeleton key
-BACKGROUND: Black
-EXTRA: Unlocking secrets`,
+    template: 'product-table',
+    concept: `TEXT: "THE MASTER KEY" yellow bold
+VISUAL: Ornate golden skeleton key with gems, sitting on velvet on wooden table
+BACKGROUND: Dark smoky top, wood bottom
+EXTRA: Luxury key that unlocks everything. Premium.`,
     images: [],
   },
 
   'rule-of-one': {
-    template: 'single-object',
-    concept: `TEXT: "just one." white lowercase
-VISUAL: Massive gold metallic "1"
-BACKGROUND: Pure black
-EXTRA: Rolex-quality aesthetic`,
+    template: 'money-product',
+    concept: `TEXT: "just one." lowercase black
+VISUAL: Massive golden metallic "1" sitting on pile of $100 bills, Rolex-quality shine
+BACKGROUND: White with grid
+EXTRA: One reader, one idea, one offer. Simplicity = power.`,
     images: [imageAssets.garyHalbert],
   },
 
   'architecture-of-belief': {
-    template: 'diagram',
-    concept: `TEXT: "3 levels." lowercase
-VISUAL: Brain cross-section with 3 layers
-BACKGROUND: White with grid
-EXTRA: Belief architecture`,
+    template: 'illustrated-char',
+    concept: `TEXT: "3 LEVELS OF MASTERY" white bold
+VISUAL: Illustrated brain cross-section showing 3 distinct layers, character pointing to each
+BACKGROUND: Dark blue gradient
+EXTRA: Deep psychology. Belief system visualization.`,
     images: [],
   },
 
   'copywriters-codex': {
-    template: 'single-object',
-    concept: `TEXT: "the codex." italic gold
-VISUAL: Ancient leather-bound book glowing
-BACKGROUND: Dark
-EXTRA: Sacred text energy`,
+    template: 'product-table',
+    concept: `TEXT: "THE CODEX" yellow bold, "secrets of the masters." white below
+VISUAL: Ancient leather-bound book with golden glow, sitting on wooden desk
+BACKGROUND: Dark smoky atmosphere, wood surface
+EXTRA: Sacred text energy. Premium mysterious.`,
     images: [],
   },
 
@@ -544,137 +590,137 @@ EXTRA: Sacred text energy`,
   // ============================================
 
   'best-private-agent': {
-    template: 'person-metric',
-    concept: `TEXT: "5-7 days." lowercase
-VISUAL: Package with fast delivery icon
-BACKGROUND: White
-EXTRA: Speed promise`,
+    template: 'product-table',
+    concept: `TEXT: "5-7 DAYS SHIPPING" yellow bold ALL CAPS with black outline at top
+VISUAL: Premium eCommerce package boxes sitting on warm wooden table surface, with Chinese flag and airplane floating above
+BACKGROUND: White with subtle grid texture at top, warm wood surface at bottom
+EXTRA: Speed promise. Professional product photography style. Red arrow pointing to the package.`,
     images: [],
   },
 
   'stop-aliexpress': {
-    template: 'dramatic-quote',
-    concept: `TEXT: "STOP." white ALL CAPS
-VISUAL: AliExpress logo with red X over it
-BACKGROUND: Dark red
-EXTRA: Warning/prohibition`,
+    template: 'illustrated-char',
+    concept: `TEXT: "STOP." white bold ALL CAPS, huge, centered
+VISUAL: Illustrated character with hands up in stop gesture, AliExpress logo with red X through it, skull and crossbones subtle
+BACKGROUND: Dark red gradient to black
+EXTRA: Warning energy. Urgent. Prohibition signage feel.`,
     images: [],
   },
 
   'ltv-cheat-code': {
-    template: 'money-stack',
-    concept: `TEXT: "5% = 95%" white bold
-VISUAL: Small group of figures on pile of cash
-BACKGROUND: Dark
-EXTRA: Pareto visualization`,
+    template: 'money-product',
+    concept: `TEXT: "5% = 95%" yellow bold with black outline at top
+VISUAL: Small golden crown sitting on massive pile of $100 bills, tiny group of illustrated VIP customers
+BACKGROUND: White with grid texture
+EXTRA: The 5% of customers generating 95% of revenue. Premium. Pareto visualization.`,
     images: [],
   },
 
   'million-dollar-roadmap': {
-    template: 'growth-curve',
-    concept: `TEXT: "$1M" large, "roadmap." below
-VISUAL: Dotted path with milestones to flag
-BACKGROUND: White with grid
-EXTRA: Journey map`,
+    template: 'product-table',
+    concept: `TEXT: "$1,000,000" yellow massive ALL CAPS with black outline
+VISUAL: Treasure map scroll unrolled on wooden table, golden coins and dollar bills scattered, compass pointing to X marks the spot
+BACKGROUND: White grid top, warm wood table bottom
+EXTRA: Journey to 7-figures. Premium treasure hunt feel.`,
     images: [],
   },
 
   'geo-announcement-bar': {
-    template: 'phone-mockup',
-    concept: `TEXT: "+67% CVR" green
-VISUAL: Phone with announcement bar at top
-BACKGROUND: White
-EXTRA: Location pin icon`,
+    template: 'tech-ui',
+    concept: `TEXT: "+67% CVR" green bold in tech badge
+VISUAL: Clean software mockup of announcement bar with location pin icon, browser window showing geo-personalized message
+BACKGROUND: Dark tech gradient with subtle grid
+EXTRA: Location personalization tech. Modern UI mockup style.`,
     images: [],
   },
 
   'wishlist-effect': {
-    template: 'diagram',
-    concept: `TEXT: "+8% CVR" green badge
-VISUAL: Heart/wishlist icon glowing
-BACKGROUND: White
-EXTRA: Endowment effect`,
+    template: 'arrow-callout',
+    concept: `TEXT: "+8% CVR" green bold badge in corner
+VISUAL: Big red arrow pointing to glowing heart/wishlist icon, product card with wishlist button highlighted
+BACKGROUND: White with subtle grid
+EXTRA: Endowment effect psychology. Arrow creates focus. Clean.`,
     images: [],
   },
 
   'email-vs-sms': {
-    template: 'versus',
-    concept: `TEXT: "EMAIL" vs "SMS"
-VISUAL: Email icon vs phone icon facing off
-BACKGROUND: Dark
-EXTRA: Battle energy`,
+    template: 'illustrated-char',
+    concept: `TEXT: "EMAIL vs SMS" white bold, boxing match style
+VISUAL: Two illustrated characters boxing - email envelope with gloves vs phone with SMS bubble, Klaviyo logo floating
+BACKGROUND: Dark arena gradient with spotlights
+EXTRA: Epic showdown energy. Which one wins?`,
     images: [imageAssets.klaviyo],
   },
 
   'abandoned-cart-recovery': {
-    template: 'diagram',
-    concept: `TEXT: "85% vs 60%" bold
-VISUAL: Shopping cart with recovery arrow
-BACKGROUND: White with grid
-EXTRA: AI SMS winning`,
+    template: 'tech-ui',
+    concept: `TEXT: "85% vs 60%" yellow bold comparison
+VISUAL: Software dashboard showing AI SMS recovery flow beating email, shopping cart icons, recovery arrows
+BACKGROUND: Dark tech gradient
+EXTRA: AI SMS crushing traditional email. Modern tech dashboard style.`,
     images: [],
   },
 
   'pareto-law-ecommerce': {
-    template: 'diagram',
-    concept: `TEXT: "5% = 95%" bold black
-VISUAL: Pie chart showing dramatic split
-BACKGROUND: White
-EXTRA: Pareto principle`,
+    template: 'money-product',
+    concept: `TEXT: "5% = 95%" massive yellow with black outline
+VISUAL: Tiny group of illustrated customers sitting on enormous pile of $100 bills, crown on the pile
+BACKGROUND: White with grid texture
+EXTRA: Mind-blowing Pareto visual. Premium. The math that changes everything.`,
     images: [],
   },
 
   'whatsapp-support': {
-    template: 'versus',
-    concept: `TEXT: "NO." bold red
-VISUAL: WhatsApp logo with question mark
-BACKGROUND: White
-EXTRA: Counterintuitive answer`,
+    template: 'arrow-callout',
+    concept: `TEXT: "NO." red bold massive
+VISUAL: WhatsApp logo with big red X over it, red arrow pointing to the X
+BACKGROUND: White clean
+EXTRA: Counterintuitive answer. Bold statement. Trust the data.`,
     images: [],
   },
 
   'meta-attribution-test': {
-    template: 'diagram',
-    concept: `TEXT: "67%" large red
-VISUAL: Meta logo with missing piece
-BACKGROUND: White with grid
-EXTRA: Attribution gap`,
+    template: 'tech-ui',
+    concept: `TEXT: "67% MISSING" red bold warning
+VISUAL: Meta logo with chunk missing, Triple Whale logo showing the gap, data dashboard with missing puzzle piece
+BACKGROUND: Dark tech gradient with grid
+EXTRA: Attribution gap exposed. Meta only tracks 67%. Modern tech style.`,
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
 
   'post-purchase-surveys': {
-    template: 'diagram',
-    concept: `TEXT: "ask them." lowercase
-VISUAL: Survey form with checkboxes
-BACKGROUND: White
-EXTRA: Data collection`,
+    template: 'tech-ui',
+    concept: `TEXT: "ask them." lowercase white elegant
+VISUAL: Clean survey UI mockup with checkboxes, data flowing from responses to insights chart
+BACKGROUND: Dark tech gradient
+EXTRA: Know your customers. Data collection made beautiful.`,
     images: [],
   },
 
   'fonts-psychology': {
-    template: 'split-screen',
-    concept: `TEXT: "Aa" in serif vs sans-serif
-VISUAL: Same text, different fonts
-BACKGROUND: Half white, half black
-EXTRA: Typography contrast`,
+    template: 'brand-collage',
+    concept: `TEXT: "Aa" shown in two dramatically different fonts - elegant serif vs modern sans-serif
+VISUAL: Retro editorial collage style with typography specimens, letterpress blocks, Apple and Rolex logos showing font choices
+BACKGROUND: Split composition - cream vintage left, modern white right
+EXTRA: Typography contrast. Editorial magazine feel. Fonts change perception.`,
     images: [],
   },
 
   'brand-search-campaign': {
-    template: 'person-metric',
-    concept: `TEXT: "18x ROAS" green bold
-VISUAL: Google search bar with brand name
-BACKGROUND: White
-EXTRA: Google logo floating`,
+    template: 'product-table',
+    concept: `TEXT: "18X ROAS" yellow massive with black outline
+VISUAL: Google search bar sitting on wooden table, brand name typed in, Google logo floating above, golden trophy
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Insane ROAS from brand search. Premium photography style.`,
     images: [imageAssets.google],
   },
 
   'swatch-variants': {
-    template: 'phone-mockup',
-    concept: `TEXT: "+3.4% CVR" green
-VISUAL: Phone showing color swatches
-BACKGROUND: White
-EXTRA: A/B test visual`,
+    template: 'arrow-callout',
+    concept: `TEXT: "+3.4% CVR" green bold badge
+VISUAL: Big arrow pointing to product color swatches (image swatches vs text), phone mockup showing the difference
+BACKGROUND: White with subtle grid
+EXTRA: A/B test winner. Arrow creates focus. Clean conversion optimization.`,
     images: [],
   },
 
@@ -683,182 +729,182 @@ EXTRA: A/B test visual`,
   // ============================================
 
   'buy-now-button': {
-    template: 'split-screen',
-    concept: `TEXT: "+15.9%" green
-VISUAL: Product page with vs without button
-BACKGROUND: Half and half
-EXTRA: Removal test`,
+    template: 'tech-ui',
+    concept: `TEXT: "+15.9% REV" green bold
+VISUAL: Split screen software mockup - product page WITH button vs WITHOUT button, revenue chart going up on the removal side
+BACKGROUND: Dark tech gradient
+EXTRA: Counterintuitive. Removing the button INCREASED revenue. A/B test proof.`,
     images: [],
   },
 
   'rounded-button': {
-    template: 'single-object',
-    concept: `TEXT: "28px" in white
-VISUAL: Perfectly rounded button glowing
-BACKGROUND: Dark
-EXTRA: CTA optimization`,
+    template: 'arrow-callout',
+    concept: `TEXT: "28px" white bold in tech style
+VISUAL: Big arrow pointing to perfectly rounded CTA button glowing, comparison of button radius options
+BACKGROUND: Dark gradient
+EXTRA: The magic border-radius. 28px wins. Clean CTA optimization.`,
     images: [],
   },
 
   'best-shopify-theme': {
-    template: 'versus',
-    concept: `TEXT: "34.9%" green badge
-VISUAL: Two theme previews facing off
-BACKGROUND: Dark
-EXTRA: Winner highlighted`,
+    template: 'product-table',
+    concept: `TEXT: "34.9% CVR" yellow bold ALL CAPS
+VISUAL: Theme preview cards sitting on wooden table, winner trophy next to the best one, Shopify logo floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Shrine vs Impulse showdown. The clear winner revealed.`,
     images: [imageAssets.shopify],
   },
 
   'coupon-leaking': {
-    template: 'diagram',
-    concept: `TEXT: "leaking." lowercase red
-VISUAL: Coupon code with holes/leaks
-BACKGROUND: White
-EXTRA: Money draining visual`,
+    template: 'illustrated-char',
+    concept: `TEXT: "LEAKING." red lowercase dramatic
+VISUAL: Illustrated bucket with money leaking out through holes, coupon codes floating away, Honey logo as the villain
+BACKGROUND: Dark red gradient
+EXTRA: Your profit is draining. Stop the leak. Urgent.`,
     images: [],
   },
 
   'gillette-model': {
-    template: 'diagram',
-    concept: `TEXT: "cheap razor." lowercase
-VISUAL: Razor handle cheap, blade expensive
-BACKGROUND: White with grid
-EXTRA: Business model visual`,
+    template: 'product-table',
+    concept: `TEXT: "$2 RAZOR" + "$40 BLADES" yellow split text
+VISUAL: Cheap razor handle on left side of wooden table, expensive blade refills on right, money pile under the blades
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: The Gillette business model. Cheap entry, expensive consumables.`,
     images: [],
   },
 
   'best-niches-2026': {
-    template: 'growth-curve',
-    concept: `TEXT: "2026" bold
-VISUAL: Multiple rising trend lines
-BACKGROUND: Dark with grid
-EXTRA: Future opportunity`,
+    template: 'illustrated-char',
+    concept: `TEXT: "2026" white bold massive, "best niches." below
+VISUAL: Illustrated character with telescope looking at rising stars/trends, multiple golden opportunity arrows going up
+BACKGROUND: Dark blue gradient with stars (Kurzgesagt style)
+EXTRA: Future opportunity. Discover niches with long customer journeys.`,
     images: [],
   },
 
   'two-meta-rules': {
-    template: 'diagram',
-    concept: `TEXT: "2 rules." lowercase
-VISUAL: Two golden rules on stone tablets
-BACKGROUND: White
-EXTRA: Commandment style`,
+    template: 'product-table',
+    concept: `TEXT: "2 RULES" yellow bold ALL CAPS
+VISUAL: Two golden tablets/commandments sitting on wooden table, Meta logo floating above like a deity
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: The two Meta product rules. Sacred commandments style.`,
     images: [imageAssets.meta],
   },
 
   'pinned-comment-cac': {
-    template: 'phone-mockup',
-    concept: `TEXT: "pinned." lowercase
-VISUAL: Phone showing pinned comment
-BACKGROUND: White
-EXTRA: CAC reduction trick`,
+    template: 'arrow-callout',
+    concept: `TEXT: "pinned." white lowercase elegant
+VISUAL: Big arrow pointing to pinned comment on social media post mockup, CAC number dropping
+BACKGROUND: White with subtle grid
+EXTRA: The pinned comment hack. Reduce CAC with objection-handling.`,
     images: [],
   },
 
   'mastercard-psychology': {
-    template: 'logo-mashup',
-    concept: `TEXT: "trust." lowercase
-VISUAL: Mastercard logo with trust badge
-BACKGROUND: White
-EXTRA: Payment psychology`,
+    template: 'brand-collage',
+    concept: `TEXT: "trust." lowercase white elegant
+VISUAL: Retro editorial collage with Mastercard, Visa, Amex logos arranged artistically, trust badges, secure checkout icons
+BACKGROUND: White with subtle texture
+EXTRA: Payment logos increase willingness to pay. Trust psychology.`,
     images: [imageAssets.mastercard],
   },
 
   'formula-to-sell': {
-    template: 'diagram',
-    concept: `TEXT: "THE FORMULA" gold
-VISUAL: Dream + Likelihood + Time + Effort equation
-BACKGROUND: White with grid
-EXTRA: Hormozi equation`,
+    template: 'product-table',
+    concept: `TEXT: "THE FORMULA" yellow bold ALL CAPS
+VISUAL: Mathematical equation on vintage chalkboard sitting on wooden table: Dream × Likelihood ÷ (Time × Effort), Hormozi photo floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Alex Hormozi's value equation. The formula to sell anything.`,
     images: [imageAssets.alexHormozi],
   },
 
   'choose-products': {
-    template: 'diagram',
-    concept: `TEXT: "2 rules." lowercase
-VISUAL: Two checkmarks, product icons
-BACKGROUND: White
-EXTRA: Selection criteria`,
+    template: 'arrow-callout',
+    concept: `TEXT: "2 rules." white lowercase elegant
+VISUAL: Big arrows pointing to two golden checkmarks, product icons being filtered through a selection funnel
+BACKGROUND: White with subtle grid
+EXTRA: Product selection criteria. Two rules for winning products.`,
     images: [],
   },
 
   'gary-halbert-secret': {
-    template: 'person-metric',
-    concept: `TEXT: "starving crowd." lowercase
-VISUAL: Crowd reaching with money
-BACKGROUND: Vintage sepia
-EXTRA: Direct response legend`,
+    template: 'money-product',
+    concept: `TEXT: "STARVING CROWD" yellow bold with black outline
+VISUAL: Illustrated crowd reaching with money in hands toward a product, Gary Halbert portrait floating above like a legend
+BACKGROUND: Vintage sepia/cream gradient
+EXTRA: The direct response legend's secret. Sell what they already want.`,
     images: [imageAssets.garyHalbert],
   },
 
   'pet-rock-story': {
-    template: 'money-stack',
-    concept: `TEXT: "$30M" gold
-VISUAL: Rock on velvet with crown
-BACKGROUND: White
-EXTRA: Absurdist success`,
+    template: 'money-product',
+    concept: `TEXT: "$30 MILLION" yellow massive with black outline
+VISUAL: Simple gray rock wearing a tiny crown, sitting on enormous pile of $100 bills, gift box nearby
+BACKGROUND: White with grid texture
+EXTRA: From rocks to riches. Sell meaning, not products. Absurdist genius.`,
     images: [],
   },
 
   'starbucks-ltv': {
-    template: 'money-stack',
-    concept: `TEXT: "$14,099" massive
-VISUAL: Starbucks cup overflowing with cash
-BACKGROUND: White
-EXTRA: Mind-blowing LTV`,
+    template: 'money-product',
+    concept: `TEXT: "$14,099" yellow massive with black outline
+VISUAL: Starbucks cup overflowing with $100 bills and gold coins, Starbucks logo glowing, coffee beans scattered
+BACKGROUND: White with grid texture
+EXTRA: Mind-blowing LTV. One customer = $14,099. Premium.`,
     images: [imageAssets.starbucks],
   },
 
   'killer-headlines': {
-    template: 'dramatic-quote',
-    concept: `TEXT: "80%" huge white
-VISUAL: Newspaper headline emphasized
-BACKGROUND: Dark
-EXTRA: Headline power`,
+    template: 'product-table',
+    concept: `TEXT: "80%" yellow massive with black outline
+VISUAL: Vintage newspaper with bold headline sitting on wooden table, magnifying glass emphasizing the headline
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: 80% of success is in the headline. Headline power.`,
     images: [],
   },
 
   'two-dirty-tricks': {
-    template: 'diagram',
-    concept: `TEXT: "2 tricks." lowercase
-VISUAL: Magic wand with sparkles
-BACKGROUND: Dark
-EXTRA: Persuasion secrets`,
+    template: 'illustrated-char',
+    concept: `TEXT: "2 tricks." white lowercase elegant
+VISUAL: Illustrated magician character with top hat, magic wand casting two golden sparkle effects, mystery energy
+BACKGROUND: Dark purple gradient (Kurzgesagt style)
+EXTRA: Two persuasion secrets. Dream Outcome + Social Proof.`,
     images: [],
   },
 
   'golden-lookalike': {
-    template: 'person-metric',
-    concept: `TEXT: "$8-10 CAC" green
-VISUAL: Golden audience icon
-BACKGROUND: White
-EXTRA: Meta targeting`,
+    template: 'product-table',
+    concept: `TEXT: "$8-10 CAC" green bold
+VISUAL: Golden crown sitting on glowing audience icon, sitting on wooden table, Meta logo floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: LLA on top 5% spenders. The golden lookalike audience.`,
     images: [imageAssets.meta],
   },
 
   'cbo-vs-abo': {
-    template: 'versus',
-    concept: `TEXT: "CBO" vs "ABO" in gold
-VISUAL: Two boxing gloves
-BACKGROUND: Dark dramatic
-EXTRA: Meta fight night`,
+    template: 'illustrated-char',
+    concept: `TEXT: "CBO vs ABO" white bold boxing match style
+VISUAL: Two illustrated characters boxing - CBO vs ABO as fighters, Meta logo as referee, boxing ring
+BACKGROUND: Dark arena gradient with dramatic lighting
+EXTRA: Meta fight night. ABO for testing, CBO for scaling.`,
     images: [imageAssets.meta],
   },
 
   'geo-personalization': {
-    template: 'phone-mockup',
-    concept: `TEXT: "hello, [city]." lowercase
-VISUAL: Phone with location pin
-BACKGROUND: White
-EXTRA: Personalization power`,
+    template: 'tech-ui',
+    concept: `TEXT: "hello, [city]." white lowercase elegant
+VISUAL: Software mockup showing personalized message with location pin, browser window with geo-targeting UI
+BACKGROUND: Dark tech gradient
+EXTRA: Location-based offers increase CVR. Personalization power.`,
     images: [],
   },
 
   'no-one-cares': {
-    template: 'minimal-text',
-    concept: `TEXT: "no one cares." lowercase
-VISUAL: Tiny ignored figure
-BACKGROUND: White vast
-EXTRA: Brutal truth`,
+    template: 'illustrated-char',
+    concept: `TEXT: "no one cares." white lowercase, massive
+VISUAL: Tiny illustrated figure standing alone in vast empty space, spotlight only on them, everyone else walking away
+BACKGROUND: White vast expanse
+EXTRA: Brutal truth. Self-interest drives all purchases. Minimal.`,
     images: [],
   },
 
@@ -867,227 +913,227 @@ EXTRA: Brutal truth`,
   // ============================================
 
   'autopilot-sale': {
-    template: 'brain-cables',
-    concept: `TEXT: "autopilot." lowercase white
-VISUAL: Brain with automation gears
-BACKGROUND: Dark
-EXTRA: Mental shortcuts`,
+    template: 'illustrated-char',
+    concept: `TEXT: "autopilot." white lowercase elegant
+VISUAL: Illustrated brain character with gears and automation symbols inside, cruise control lever pulled, buying hand auto-clicking
+BACKGROUND: Dark blue gradient (Kurzgesagt style)
+EXTRA: Mental shortcuts make customers buy without thinking. Brain autopilot mode.`,
     images: [],
   },
 
   'borrowed-trust': {
-    template: 'person-metric',
-    concept: `TEXT: "borrow it." lowercase
-VISUAL: Trust badge transferring between figures
-BACKGROUND: White
-EXTRA: Authority transfer`,
+    template: 'brand-collage',
+    concept: `TEXT: "borrow it." white lowercase elegant
+VISUAL: Retro editorial collage with trust badges transferring between figures, Cialdini portrait, authority symbols flowing
+BACKGROUND: White with subtle texture
+EXTRA: Authority and Liking principles. Bypass skepticism by borrowing trust.`,
     images: [imageAssets.robertCialdini],
   },
 
   'herd-instinct': {
-    template: 'diagram',
-    concept: `TEXT: "the herd." lowercase
-VISUAL: Crowd moving in one direction
-BACKGROUND: White
-EXTRA: FOMO visualization`,
+    template: 'illustrated-char',
+    concept: `TEXT: "the herd." white lowercase elegant
+VISUAL: Illustrated crowd of characters all moving in one direction, one golden leader at front, FOMO arrows
+BACKGROUND: White with subtle gradient
+EXTRA: Social proof creates buying pressure. Follow the herd.`,
     images: [],
   },
 
   'gift-that-sells': {
-    template: 'single-object',
-    concept: `TEXT: "free." lowercase
-VISUAL: Gift box with golden glow
-BACKGROUND: White
-EXTRA: Reciprocity power`,
+    template: 'product-table',
+    concept: `TEXT: "FREE" yellow bold massive with black outline
+VISUAL: Gift box with golden glow sitting on wooden table, ribbons untied, sparkles around it
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Reciprocity power. Give to get. The gift that sells.`,
     images: [],
   },
 
   'micro-yes-mastery': {
-    template: 'diagram',
-    concept: `TEXT: "yes. yes. YES." growing size
-VISUAL: Stepping stones leading up
-BACKGROUND: White with grid
-EXTRA: Commitment ladder`,
+    template: 'illustrated-char',
+    concept: `TEXT: "yes. yes. YES." growing size white to gold
+VISUAL: Illustrated figure climbing golden stepping stones, each step labeled "yes", final platform is BIG PURCHASE
+BACKGROUND: White with grid texture
+EXTRA: Tiny commitments create inevitable conversions. Commitment ladder.`,
     images: [],
   },
 
   'authority-over-hope': {
-    template: 'split-screen',
-    concept: `TEXT: "stop hoping." white
-VISUAL: Crossed fingers vs pointing finger
-BACKGROUND: Half red, half green
-EXTRA: Certainty wins`,
+    template: 'arrow-callout',
+    concept: `TEXT: "stop hoping." white bold
+VISUAL: Big arrow pointing from crossed fingers (hope) to confident pointing finger (authority), transformation visual
+BACKGROUND: Split - red (hope side) to green (authority side)
+EXTRA: Stop hoping they buy. Guide them with certainty.`,
     images: [],
   },
 
   'certainty-transfer': {
-    template: 'before-after',
-    concept: `TEXT: "before" / "after" white
-VISUAL: Worried face to confident face
-BACKGROUND: Dark split
-EXTRA: Transformation`,
+    template: 'illustrated-char',
+    concept: `TEXT: "before → after" white elegant
+VISUAL: Illustrated character transformation - worried face on left morphing to confident face on right, conviction energy transferring
+BACKGROUND: Dark split gradient
+EXTRA: Master the art of transferring conviction. Transformation.`,
     images: [],
   },
 
   'conviction-architecture': {
-    template: 'diagram',
-    concept: `TEXT: "3 layers." lowercase
-VISUAL: Pyramid with 3 tiers
-BACKGROUND: White
-EXTRA: Conviction pyramid`,
+    template: 'product-table',
+    concept: `TEXT: "3 LAYERS" yellow bold ALL CAPS
+VISUAL: Golden pyramid with 3 tiers sitting on wooden table, glowing from within, blueprint behind it
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: The 3-layer pyramid of influence. Conviction architecture.`,
     images: [],
   },
 
   'digital-pause-power': {
-    template: 'minimal-text',
-    concept: `TEXT: "..." three dots
-VISUAL: Empty space, powerful pause
-BACKGROUND: White vast
-EXTRA: Silence sells`,
+    template: 'illustrated-char',
+    concept: `TEXT: "..." three massive dots, white
+VISUAL: Illustrated character in confident silence, empty speech bubble with just dots, time suspending
+BACKGROUND: White vast expanse
+EXTRA: Confident silence converts better than discounts. The power of the pause.`,
     images: [],
   },
 
   'fomo-engineering': {
-    template: 'dramatic-quote',
-    concept: `TEXT: "SOLD OUT" red
-VISUAL: Empty shelf/spot
-BACKGROUND: Dark
-EXTRA: Urgency creation`,
+    template: 'product-table',
+    concept: `TEXT: "SOLD OUT" red bold ALL CAPS
+VISUAL: Empty shelf/display case on wooden table, "SOLD OUT" tag hanging, last one visible in distance
+BACKGROUND: Dark gradient
+EXTRA: Turn passive interest into urgent action. Urgency creation.`,
     images: [],
   },
 
   'framing-effect-mastery': {
-    template: 'split-screen',
-    concept: `TEXT: "same thing." lowercase
-VISUAL: Same product, different contexts
-BACKGROUND: Half cheap, half luxury
-EXTRA: Context is everything`,
+    template: 'brand-collage',
+    concept: `TEXT: "same thing." white lowercase elegant
+VISUAL: Retro editorial collage - same product shown in cheap context vs luxury context, Kahneman portrait, framing visual
+BACKGROUND: Split composition - cheap left, luxury right
+EXTRA: Same facts. Wildly different decisions. Context is everything.`,
     images: [imageAssets.danielKahneman],
   },
 
   'identity-marketing': {
-    template: 'face-morph',
-    concept: `TEXT: "become." lowercase white
-VISUAL: Person morphing into ideal self
-BACKGROUND: Dark gradient
-EXTRA: Identity purchase`,
+    template: 'illustrated-char',
+    concept: `TEXT: "become." white lowercase massive
+VISUAL: Illustrated person morphing into their ideal self, identity transformation rays, superhero cape emerging
+BACKGROUND: Dark gradient (Kurzgesagt style)
+EXTRA: Sell to who they WANT to be. Identity purchase.`,
     images: [],
   },
 
   'marketers-delusion': {
-    template: 'brain-cables',
-    concept: `TEXT: "the delusion." lowercase
-VISUAL: Brain with blindfold
-BACKGROUND: Dark
-EXTRA: Fatal error exposed`,
+    template: 'illustrated-char',
+    concept: `TEXT: "the delusion." white lowercase
+VISUAL: Illustrated brain character wearing blindfold, walking off cliff edge, warning signs ignored
+BACKGROUND: Dark red gradient
+EXTRA: The fatal error killing conversions. Marketers see what they want.`,
     images: [],
   },
 
   'pain-escalation-ladder': {
-    template: 'growth-curve',
-    concept: `TEXT: "escalate." lowercase red
-VISUAL: Pain meter rising
-BACKGROUND: White with grid
-EXTRA: Ethical pain ladder`,
+    template: 'illustrated-char',
+    concept: `TEXT: "escalate." red lowercase dramatic
+VISUAL: Illustrated pain meter/thermometer rising, character climbing ladder alongside, each rung = more pain awareness
+BACKGROUND: White with grid texture
+EXTRA: Ethically escalate pain to action. Pain escalation ladder.`,
     images: [],
   },
 
   'telescope-flip': {
-    template: 'single-object',
-    concept: `TEXT: "backwards." lowercase
-VISUAL: Telescope held wrong way
-BACKGROUND: White
-EXTRA: 97% get it wrong`,
+    template: 'arrow-callout',
+    concept: `TEXT: "backwards." white lowercase
+VISUAL: Big arrow pointing to telescope being held the WRONG way (backwards), 97% doing it wrong crossed out
+BACKGROUND: White clean
+EXTRA: 97% of marketers hold it backwards. Flip your perspective.`,
     images: [],
   },
 
   'trust-blueprint': {
-    template: 'diagram',
-    concept: `TEXT: "instant trust." lowercase
-VISUAL: Blueprint with trust elements
-BACKGROUND: White with grid
-EXTRA: Credibility formula`,
+    template: 'tech-ui',
+    concept: `TEXT: "instant trust." white lowercase elegant
+VISUAL: Software blueprint diagram showing trust elements connected, credibility formula visualization
+BACKGROUND: Dark tech gradient with grid
+EXTRA: Build instant credibility that converts. Trust architecture.`,
     images: [],
   },
 
   'value-perception-lever': {
-    template: 'diagram',
-    concept: `TEXT: "perception." lowercase
-VISUAL: Lever multiplying value
-BACKGROUND: White
-EXTRA: Price becomes irrelevant`,
+    template: 'illustrated-char',
+    concept: `TEXT: "perception." white lowercase elegant
+VISUAL: Illustrated lever being pulled, small effort lifting massive boulder labeled "VALUE", multiplier effect
+BACKGROUND: White with grid texture
+EXTRA: Make price irrelevant. The value perception lever.`,
     images: [],
   },
 
   'three-brains-wallet': {
-    template: 'brain-cables',
-    concept: `TEXT: "3 brains." lowercase
-VISUAL: Three brain sections controlling wallet
-BACKGROUND: Dark
-EXTRA: Neuroscience of buying`,
+    template: 'illustrated-char',
+    concept: `TEXT: "3 brains." white lowercase elegant
+VISUAL: Illustrated brain split into 3 sections, each controlling strings attached to wallet, reptile/emotional/logical zones
+BACKGROUND: Dark blue gradient (Kurzgesagt style)
+EXTRA: Which brain controls the wallet? Neuroscience of buying.`,
     images: [],
   },
 
   'pre-suasion-hack': {
-    template: 'diagram',
-    concept: `TEXT: "already won." lowercase
-VISUAL: Chess board, king already toppled
-BACKGROUND: White
-EXTRA: Win before the pitch`,
+    template: 'product-table',
+    concept: `TEXT: "ALREADY WON." yellow bold ALL CAPS
+VISUAL: Chess board on wooden table with king already toppled before game started, Cialdini portrait floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Win before the pitch. Pre-suasion psychology.`,
     images: [imageAssets.robertCialdini],
   },
 
   'pattern-interrupts': {
-    template: 'dramatic-quote',
-    concept: `TEXT: "WAIT." white bold
-VISUAL: Stop hand gesture
-BACKGROUND: Red
-EXTRA: Attention hijack`,
+    template: 'illustrated-char',
+    concept: `TEXT: "WAIT." white bold massive
+VISUAL: Illustrated character with stop hand gesture, red glowing palm, attention lines radiating outward
+BACKGROUND: Red dramatic gradient
+EXTRA: Hijack their attention. Pattern interrupt in action.`,
     images: [],
   },
 
   'dopamine-blueprint': {
-    template: 'brain-cables',
-    concept: `TEXT: "addicted." lowercase white
-VISUAL: Brain with pleasure cables plugged in
-BACKGROUND: Dark
-EXTRA: Dopamine triggers`,
+    template: 'illustrated-char',
+    concept: `TEXT: "addicted." white lowercase elegant
+VISUAL: Illustrated brain character with pleasure cables plugged in, dopamine molecule icons, reward loop visual
+BACKGROUND: Dark purple gradient (Kurzgesagt style)
+EXTRA: Create addictive loops. The dopamine blueprint.`,
     images: [],
   },
 
   'anti-sell-mastery': {
-    template: 'minimal-text',
-    concept: `TEXT: "don't buy." lowercase
-VISUAL: Reverse psychology arrow
-BACKGROUND: White
-EXTRA: Pull not push`,
+    template: 'arrow-callout',
+    concept: `TEXT: "don't buy." white lowercase elegant
+VISUAL: Big arrow pointing AWAY from product, reverse psychology visual, magnet pulling customer IN despite the arrow
+BACKGROUND: White clean
+EXTRA: Pull, don't push. The anti-sell that sells.`,
     images: [],
   },
 
   'decoy-effect': {
-    template: 'diagram',
-    concept: `TEXT: "+43%" green badge
-VISUAL: Three pricing cards, middle glowing
-BACKGROUND: White
-EXTRA: Decoy pricing`,
+    template: 'tech-ui',
+    concept: `TEXT: "+43%" green bold badge
+VISUAL: Software mockup of three pricing cards, middle "decoy" option highlighted, arrows showing preference shift
+BACKGROUND: White with subtle grid
+EXTRA: Why a "useless" option boosts sales by 43%. Decoy pricing.`,
     images: [],
   },
 
   'precise-price-trick': {
-    template: 'split-screen',
-    concept: `TEXT: "$4,988" vs "$5,000"
-VISUAL: Precise price wins
-BACKGROUND: Half and half
-EXTRA: Precision psychology`,
+    template: 'product-table',
+    concept: `TEXT: "$4,988 > $5,000" yellow bold
+VISUAL: Two price tags on wooden table - $4,988 glowing winner vs $5,000 crossed out
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Precise prices feel more calculated. Psychology in action.`,
     images: [],
   },
 
   'paradox-of-choice': {
-    template: 'split-screen',
-    concept: `TEXT: "less = more." lowercase
-VISUAL: 24 jars vs 6 jars
-BACKGROUND: Split
-EXTRA: Choice paralysis`,
+    template: 'product-table',
+    concept: `TEXT: "LESS = MORE" yellow bold ALL CAPS
+VISUAL: Two displays on wooden table - 24 jam jars (overwhelm) vs 6 jars (converting), Sheena Iyengar portrait floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Why fewer options = more sales. Choice paralysis.`,
     images: [imageAssets.sheenaIyengar],
   },
 
@@ -1096,92 +1142,92 @@ EXTRA: Choice paralysis`,
   // ============================================
 
   'forty-million-mistake': {
-    template: 'dramatic-quote',
-    concept: `TEXT: "$40 MILLION" red
-VISUAL: Data on fire, heart rising from ashes
-BACKGROUND: Dark
-EXTRA: New Coke disaster`,
+    template: 'money-product',
+    concept: `TEXT: "$40 MILLION MISTAKE" red bold ALL CAPS with black outline
+VISUAL: Coca-Cola bottle on fire, sitting on pile of burning money, ashes everywhere, Coca-Cola logo above
+BACKGROUND: Dark smoky dramatic gradient
+EXTRA: New Coke disaster. Data without emotion = catastrophe. Epic failure story.`,
     images: [imageAssets.cocaCola],
   },
 
   'fly-in-the-urinal': {
-    template: 'single-object',
-    concept: `TEXT: "80%" green badge
-VISUAL: Target with tiny fly in center
-BACKGROUND: White
-EXTRA: Nudge psychology`,
+    template: 'arrow-callout',
+    concept: `TEXT: "80%" green bold massive
+VISUAL: Big red arrow pointing to tiny fly icon in center of a target, behavioral nudge visual
+BACKGROUND: White clean with subtle grid
+EXTRA: Nudge psychology in action. Small design change = massive behavior shift.`,
     images: [],
   },
 
   'thirty-two-violinist': {
     template: 'split-screen',
-    concept: `TEXT: "$32" vs "$1M"
-VISUAL: Same violinist, subway vs concert hall
-BACKGROUND: Split contrast
-EXTRA: Context is value`,
+    concept: `TEXT: "$32" vs "$1,000,000" dramatic size difference
+VISUAL: Split screen - same violinist playing in dirty subway (left) vs grand concert hall with golden lights (right)
+BACKGROUND: Grungy concrete left, luxurious gold right
+EXTRA: Context dictates perceived value. Exact same performance, wildly different perception.`,
     images: [],
   },
 
   'invisible-influence': {
-    template: 'diagram',
-    concept: `TEXT: "invisible." lowercase
-VISUAL: Background image affecting choice
-BACKGROUND: White with subtle pattern
-EXTRA: Priming power`,
+    template: 'illustrated-char',
+    concept: `TEXT: "invisible." white lowercase elegant
+VISUAL: Illustrated character making a choice, subtle background pattern influencing their decision without them knowing
+BACKGROUND: White with ghostly pattern overlay
+EXTRA: How backgrounds prime buying decisions. Priming power you can't see.`,
     images: [],
   },
 
   'price-format-code': {
-    template: 'split-screen',
-    concept: `TEXT: "$99" vs "$99.00"
-VISUAL: Same price, different formats
-BACKGROUND: Half and half
-EXTRA: Format psychology`,
+    template: 'product-table',
+    concept: `TEXT: "$99 vs $99.00" yellow bold
+VISUAL: Two price tags sitting on wooden table - clean $99 glowing vs cluttered $99.00 faded
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: How formatting changes price perception. Psychology in the decimals.`,
     images: [],
   },
 
   'cost-of-standing-still': {
     template: 'growth-curve',
-    concept: `TEXT: "the cost." lowercase red
-VISUAL: Declining curve for inaction
-BACKGROUND: Dark with grid
-EXTRA: Sell not buying`,
+    concept: `TEXT: "THE COST" red bold dramatic
+VISUAL: Declining red curve showing loss over time for inaction, clock ticking, money draining
+BACKGROUND: Dark with grid overlay
+EXTRA: Sell the cost of NOT buying. Inaction has a price.`,
     images: [],
   },
 
   'unity-principle': {
-    template: 'diagram',
-    concept: `TEXT: "we." lowercase gold
-VISUAL: Two figures merging into one
-BACKGROUND: White warm
-EXTRA: Shared identity`,
+    template: 'brand-collage',
+    concept: `TEXT: "we." gold lowercase elegant, massive
+VISUAL: Retro editorial collage - two figures merging into one, shared identity symbols, Cialdini portrait subtle
+BACKGROUND: Warm cream with texture
+EXTRA: One word turns customers into partners. Shared identity principle.`,
     images: [imageAssets.robertCialdini],
   },
 
   'visual-priming': {
     template: 'phone-mockup',
-    concept: `TEXT: "background." lowercase
-VISUAL: Phone showing product on different backgrounds
-BACKGROUND: White
-EXTRA: Invisible influencer`,
+    concept: `TEXT: "background." white lowercase elegant
+VISUAL: Phone showing same product on two different backgrounds - cheap feeling vs premium feeling
+BACKGROUND: White clean
+EXTRA: How background images decide what customers buy. Invisible influencer.`,
     images: [],
   },
 
   'objection-inversion': {
-    template: 'diagram',
-    concept: `TEXT: "judo." lowercase
-VISUAL: Objection arrow being redirected
-BACKGROUND: White
-EXTRA: Turn objections around`,
+    template: 'illustrated-char',
+    concept: `TEXT: "judo." white lowercase elegant
+VISUAL: Illustrated character performing judo flip, objection arrow being redirected back as a buying reason
+BACKGROUND: White with subtle gradient
+EXTRA: Turn objections into reasons to buy. Verbal judo mastery.`,
     images: [],
   },
 
   'primal-stimuli': {
     template: 'brain-cables',
-    concept: `TEXT: "6 buttons." lowercase
-VISUAL: Reptile brain with 6 glowing buttons
-BACKGROUND: Dark
-EXTRA: Primal triggers`,
+    concept: `TEXT: "6 BUTTONS" yellow bold ALL CAPS
+VISUAL: Reptile brain diagram with 6 glowing red buttons, cables connecting to buying behavior
+BACKGROUND: Dark blue gradient
+EXTRA: The only 6 triggers that get the reptile brain to say YES. Primal buy buttons.`,
     images: [],
   },
 
@@ -1190,137 +1236,137 @@ EXTRA: Primal triggers`,
   // ============================================
 
   'leaky-bucket-audit': {
-    template: 'diagram',
-    concept: `TEXT: "$50K hole." lowercase
-VISUAL: Bucket leaking money, flashlight beam
-BACKGROUND: Dark
-EXTRA: Find the leak`,
+    template: 'money-product',
+    concept: `TEXT: "$50,000 HOLE" red bold with black outline
+VISUAL: Metal bucket on pile of money with visible holes, cash leaking out, flashlight beam exposing the leak
+BACKGROUND: Dark dramatic gradient
+EXTRA: Find where you're bleeding money. PPV metric reveals the leak.`,
     images: [],
   },
 
   'price-chunking-yesloop': {
-    template: 'diagram',
-    concept: `TEXT: "3X AOV" green
-VISUAL: Big price broken into small yeses
-BACKGROUND: White with grid
-EXTRA: Yes-loop`,
+    template: 'product-table',
+    concept: `TEXT: "3X AOV" green bold massive
+VISUAL: Big price being broken into small golden "yes" coins on wooden table, stepping stone visual
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Break big prices into irresistible small yeses. The yes-loop.`,
     images: [],
   },
 
   'objection-destroyer': {
     template: 'minimal-text',
-    concept: `TEXT: "at first I thought..." lowercase
-VISUAL: Objection dissolving
-BACKGROUND: White
-EXTRA: One sentence fix`,
+    concept: `TEXT: "at first I thought..." white lowercase elegant, incomplete sentence
+VISUAL: Minimal - just the text with subtle dissolving objection in background
+BACKGROUND: White vast expanse
+EXTRA: Turn objections into conversions with one sentence. The framework.`,
     images: [],
   },
 
   'product-page-anatomy': {
-    template: 'diagram',
-    concept: `TEXT: "5 elements." lowercase
-VISUAL: Product page exploded diagram
-BACKGROUND: White with grid
-EXTRA: Conversion blueprint`,
+    template: 'tech-ui',
+    concept: `TEXT: "5 ELEMENTS" white bold
+VISUAL: Product page exploded diagram showing 5 key conversion elements labeled, wireframe style
+BACKGROUND: Dark tech gradient with grid
+EXTRA: The exact anatomy of pages that convert at 8%+. Conversion blueprint.`,
     images: [],
   },
 
   'post-purchase-goldmine': {
-    template: 'money-stack',
-    concept: `TEXT: "$40 → $120" green
-VISUAL: Order confirmation with upsell
-BACKGROUND: White
-EXTRA: Hidden revenue`,
+    template: 'money-product',
+    concept: `TEXT: "$40 → $120" green bold with arrow
+VISUAL: Order confirmation receipt sitting on pile of $100 bills, upsell popup glowing gold
+BACKGROUND: White with grid texture
+EXTRA: Turn $40 customers into $120 instantly. Hidden revenue goldmine.`,
     images: [],
   },
 
   'bottom-up-brand': {
-    template: 'diagram',
-    concept: `TEXT: "movement." lowercase
-VISUAL: Grassroots community building
-BACKGROUND: White
-EXTRA: Movement vs marketing`,
+    template: 'illustrated-char',
+    concept: `TEXT: "movement." white lowercase elegant
+VISUAL: Illustrated crowd of characters building something together from ground up, grassroots energy, flags waving
+BACKGROUND: White with warm gradient
+EXTRA: Build a brand like a movement, not a corporation. Movements beat marketing.`,
     images: [],
   },
 
   'halo-serial-position': {
-    template: 'diagram',
-    concept: `TEXT: "0.05 seconds." lowercase
-VISUAL: First impression flash
-BACKGROUND: White
-EXTRA: Primacy effect`,
+    template: 'arrow-callout',
+    concept: `TEXT: "0.05 SECONDS" yellow bold
+VISUAL: Big arrow pointing to first impression moment, flash/lightning bolt visual, timer showing 0.05
+BACKGROUND: White with subtle grid
+EXTRA: First & last impression hack. Primacy effect decides trust instantly.`,
     images: [],
   },
 
   'ikea-effect': {
-    template: 'diagram',
-    concept: `TEXT: "+63%" green badge
-VISUAL: DIY furniture with value glow
-BACKGROUND: White
-EXTRA: Build = value`,
+    template: 'product-table',
+    concept: `TEXT: "+63%" green bold massive
+VISUAL: DIY furniture pieces on wooden table with assembly instructions, glowing with perceived value aura, IKEA logo floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Why DIY = 63% higher perceived value. Build = value.`,
     images: [imageAssets.ikea],
   },
 
   'von-restorff-effect': {
-    template: 'diagram',
-    concept: `TEXT: "stand out." lowercase
-VISUAL: Row of gray circles, one gold
-BACKGROUND: White
-EXTRA: Isolation effect`,
+    template: 'arrow-callout',
+    concept: `TEXT: "stand out." white lowercase elegant
+VISUAL: Row of gray circles with big arrow pointing to ONE gold circle in the middle, isolation effect
+BACKGROUND: White clean
+EXTRA: Make your CTA impossible to miss. The isolation effect.`,
     images: [],
   },
 
   'jakobs-law': {
     template: 'split-screen',
-    concept: `TEXT: "familiar wins." lowercase
-VISUAL: Custom checkout vs Amazon checkout
-BACKGROUND: Split
-EXTRA: UX principle`,
+    concept: `TEXT: "familiar wins." white lowercase elegant
+VISUAL: Split - weird custom checkout (confusing) vs Amazon-style checkout (familiar), Amazon logo on winning side
+BACKGROUND: Red/confusing left, green/clear right
+EXTRA: Why "unique" checkout flows kill conversions. Use familiar patterns.`,
     images: [imageAssets.amazon],
   },
 
   'gaze-direction': {
-    template: 'diagram',
-    concept: `TEXT: "look here." lowercase
-VISUAL: Eyes pointing to CTA
-BACKGROUND: White
-EXTRA: Gaze follows gaze`,
+    template: 'arrow-callout',
+    concept: `TEXT: "look here." white lowercase elegant
+VISUAL: Pair of eyes with gaze lines, big arrow following the gaze direction to CTA button
+BACKGROUND: White clean
+EXTRA: Where they look is where they click. Gaze follows gaze.`,
     images: [],
   },
 
   'five-second-test': {
     template: 'split-screen',
-    concept: `TEXT: "5 seconds." lowercase
-VISUAL: Blurry vs clear website
-BACKGROUND: Split
-EXTRA: Clarity wins`,
+    concept: `TEXT: "5 SECONDS" white bold
+VISUAL: Split - blurry confusing website (left) vs crystal clear website (right), timer showing 5 seconds
+BACKGROUND: Blurry/chaotic left, clean/clear right
+EXTRA: Why clarity crushes cleverness. The 5-second test.`,
     images: [],
   },
 
   'speed-equals-trust': {
-    template: 'diagram',
-    concept: `TEXT: "$1.7 BILLION" red
-VISUAL: Loading bar stuck, money draining
-BACKGROUND: White
-EXTRA: Amazon speed lesson`,
+    template: 'product-table',
+    concept: `TEXT: "$1.7 BILLION" red bold massive
+VISUAL: Stuck loading bar on screen sitting on wooden table, money draining below, Amazon logo floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: 0.1 second delay = 1% less sales. Amazon speed lesson.`,
     images: [imageAssets.amazon],
   },
 
   'imperceptible-nudge': {
-    template: 'single-object',
-    concept: `TEXT: "$200M" gold
-VISUAL: Orange button glowing
-BACKGROUND: White
-EXTRA: Amazon button color`,
+    template: 'product-table',
+    concept: `TEXT: "$200 MILLION" yellow bold ALL CAPS
+VISUAL: Orange "Add to Cart" button glowing on wooden table, Amazon logo, color psychology chart subtle
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: The $200 million color. Invisible nudges that drive millions.`,
     images: [imageAssets.amazon],
   },
 
   'cognitive-load-trap': {
     template: 'brain-cables',
-    concept: `TEXT: "easy wins." lowercase
-VISUAL: Brain with simplified pathways
-BACKGROUND: White
-EXTRA: Reduce friction`,
+    concept: `TEXT: "easy wins." white lowercase elegant
+VISUAL: Brain with simplified smooth pathways vs tangled complicated ones, easy path glowing green
+BACKGROUND: White clean
+EXTRA: Reduce friction, increase trust. The easy brain wins.`,
     images: [],
   },
 
@@ -1330,226 +1376,226 @@ EXTRA: Reduce friction`,
 
   'placebo-product': {
     template: 'single-object',
-    concept: `TEXT: "placebo." lowercase white
-VISUAL: Pill/product glowing mysteriously
-BACKGROUND: Dark
-EXTRA: Perception is reality`,
+    concept: `TEXT: "placebo." white lowercase elegant
+VISUAL: Premium pill/product floating with mysterious glow, reality-bending effect around it
+BACKGROUND: Dark gradient
+EXTRA: Your product IS a placebo. Perception literally alters reality.`,
     images: [],
   },
 
   'information-asymmetry': {
-    template: 'single-object',
-    concept: `TEXT: "mystery." lowercase gold
-VISUAL: Prada bag partially hidden
-BACKGROUND: Dark
-EXTRA: Hide to elevate`,
+    template: 'brand-collage',
+    concept: `TEXT: "mystery." gold lowercase elegant
+VISUAL: Retro editorial collage - Prada bag partially hidden behind velvet, mystery shadow, luxury texture
+BACKGROUND: Dark museum aesthetic
+EXTRA: Hide information to elevate status. The Prada mystery play.`,
     images: [imageAssets.prada],
   },
 
   'visual-shorthand': {
-    template: 'diagram',
-    concept: `TEXT: "stripes." lowercase
-VISUAL: Toothpaste with colored stripes
-BACKGROUND: White
-EXTRA: Visual = quality`,
+    template: 'arrow-callout',
+    concept: `TEXT: "stripes." white lowercase elegant
+VISUAL: Big arrow pointing to toothpaste with colored stripes, quality perception visual
+BACKGROUND: White clean
+EXTRA: Visual cues shortcut to quality. Stripes = premium in your brain.`,
     images: [],
   },
 
   'radical-honesty-play': {
     template: 'minimal-text',
-    concept: `TEXT: "yes, it's marketing." lowercase
-VISUAL: Wink emoji subtly
-BACKGROUND: White
-EXTRA: Inside joke effect`,
+    concept: `TEXT: "yes, it's marketing." white lowercase elegant with subtle wink
+VISUAL: Minimal - just the text, tiny wink icon, inside joke energy
+BACKGROUND: White vast expanse
+EXTRA: Admit you're marketing to win. The inside joke effect.`,
     images: [],
   },
 
   'hermes-doctrine': {
-    template: 'single-object',
-    concept: `TEXT: "2 year waitlist." lowercase gold
-VISUAL: Birkin under glass dome
-BACKGROUND: Dark museum
-EXTRA: Protect the Birkin`,
+    template: 'product-table',
+    concept: `TEXT: "2 YEAR WAITLIST" gold lowercase elegant
+VISUAL: Birkin bag under glass dome museum display on wooden table, velvet rope, Hermès logo floating
+BACKGROUND: Dark museum gradient, warm wood bottom
+EXTRA: Protect the Birkin, play forever. The Hermès infinite game.`,
     images: [imageAssets.hermes],
   },
 
   'hero-mechanism': {
     template: 'split-screen',
-    concept: `TEXT: "$12" vs "$399"
-VISUAL: Cheap tracker vs Oura ring
-BACKGROUND: Split cheap/premium
-EXTRA: 32X premium`,
+    concept: `TEXT: "$12 vs $399" white bold dramatic
+VISUAL: Split - cheap generic fitness tracker (left) vs premium Oura ring on velvet (right), Oura logo
+BACKGROUND: Cheap plastic left, luxury dark right
+EXTRA: Why Oura Ring costs $399 vs $12 knockoff. The $4,225 question.`,
     images: [imageAssets.oura],
   },
 
   'scammer-playbook-good': {
-    template: 'diagram',
-    concept: `TEXT: "7 levers." lowercase
-VISUAL: Control panel with ethical switches
-BACKGROUND: White
-EXTRA: Persuasion for good`,
+    template: 'tech-ui',
+    concept: `TEXT: "7 LEVERS" white bold
+VISUAL: Control panel interface with 7 ethical switches/sliders, all positioned for good, dashboard style
+BACKGROUND: Dark tech gradient
+EXTRA: The Scammer's Playbook (used for good). 7 ethical persuasion levers.`,
     images: [],
   },
 
   'us-vs-them': {
     template: 'versus',
-    concept: `TEXT: "david" vs "goliath"
-VISUAL: Small figure vs giant
-BACKGROUND: Dark dramatic
-EXTRA: Tribal identity`,
+    concept: `TEXT: "DAVID vs GOLIATH" white bold dramatic
+VISUAL: Tiny figure with slingshot facing massive giant, underdog energy, tribal war paint
+BACKGROUND: Dark dramatic arena lighting
+EXTRA: Create tribal identity through enemies. The David vs Goliath play.`,
     images: [],
   },
 
   'brand-universe': {
-    template: 'single-object',
-    concept: `TEXT: "the universe." italic
-VISUAL: Snow globe with entire world inside
-BACKGROUND: Dark space
-EXTRA: Build a world`,
+    template: 'illustrated-char',
+    concept: `TEXT: "the universe." white italic elegant
+VISUAL: Illustrated snow globe containing entire world/universe, brand world-building visual
+BACKGROUND: Dark space with stars
+EXTRA: Create universes, not products. Build a world, not just a store.`,
     images: [],
   },
 
   'product-to-identity': {
     template: 'face-morph',
-    concept: `TEXT: "become." lowercase
-VISUAL: Product morphing into person
-BACKGROUND: White
-EXTRA: Identity purchase`,
+    concept: `TEXT: "become." white lowercase massive
+VISUAL: Product package morphing/transforming into a person's silhouette, identity transformation
+BACKGROUND: White with subtle gradient
+EXTRA: Transform commodities to identity purchases. You become what you buy.`,
     images: [],
   },
 
   'commodity-escape': {
-    template: 'diagram',
-    concept: `TEXT: "$0.50 → $6" green
-VISUAL: Coffee beans transforming to Starbucks cup
-BACKGROUND: White
-EXTRA: Commodity escape`,
+    template: 'product-table',
+    concept: `TEXT: "$0.50 → $6" green bold with arrow
+VISUAL: Coffee beans on left transforming into premium Starbucks cup on right, both on wooden table, Starbucks logo floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: How Starbucks charges $6 for $0.50 coffee. The commodity escape.`,
     images: [imageAssets.starbucks],
   },
 
   'myth-and-urgency': {
     template: 'dramatic-quote',
-    concept: `TEXT: "NOW." white bold
-VISUAL: Hourglass with story swirling
-BACKGROUND: Dark
-EXTRA: Scarcity + story`,
+    concept: `TEXT: "NOW." white bold massive
+VISUAL: Hourglass with sand running out, mythical story elements swirling around it
+BACKGROUND: Dark dramatic gradient
+EXTRA: Scarcity + story creates irresistible desire. Manufacturing urgency.`,
     images: [],
   },
 
   'value-ladder': {
-    template: 'diagram',
-    concept: `TEXT: "hidden menu." lowercase gold
-VISUAL: Velvet rope parting to reveal secret tier
-BACKGROUND: Dark
-EXTRA: VIP exclusivity`,
+    template: 'product-table',
+    concept: `TEXT: "HIDDEN MENU" gold lowercase elegant
+VISUAL: Velvet rope parting to reveal secret VIP tier, golden ladder ascending, Rolex logo floating
+BACKGROUND: Dark luxurious gradient, warm wood bottom
+EXTRA: Secret tiers that create aspiration. VIP exclusivity.`,
     images: [imageAssets.rolex],
   },
 
   'box-worth-300': {
-    template: 'single-object',
-    concept: `TEXT: "$300" gold
-VISUAL: Empty Tiffany blue box open
-BACKGROUND: White
-EXTRA: Box > contents`,
+    template: 'product-table',
+    concept: `TEXT: "$300" gold bold
+VISUAL: Empty Tiffany blue box open on wooden table, nothing inside, box glowing with value
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Tiffany's packaging IS the product. Box worth more than contents.`,
     images: [imageAssets.tiffany],
   },
 
   'story-taste-experiment': {
-    template: 'diagram',
-    concept: `TEXT: "story changes taste." lowercase
-VISUAL: Same wine, different labels
-BACKGROUND: White
-EXTRA: Narrative power`,
+    template: 'brand-collage',
+    concept: `TEXT: "story changes taste." white lowercase elegant
+VISUAL: Retro editorial collage - same wine bottle with different story labels, taste perception visual
+BACKGROUND: White with texture
+EXTRA: Your story literally alters how products taste. Narrative power.`,
     images: [],
   },
 
   'scarcity-calendar': {
-    template: 'diagram',
-    concept: `TEXT: "1 per year." lowercase
-VISUAL: Rainbow Dutch ovens, most sold out
-BACKGROUND: White
-EXTRA: Le Creuset scarcity`,
+    template: 'product-table',
+    concept: `TEXT: "1 PER YEAR" yellow bold
+VISUAL: Rainbow Le Creuset Dutch ovens on wooden table, most with "SOLD OUT" tags, one color available
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Limited colors create collectors. Le Creuset scarcity engine.`,
     images: [imageAssets.leCreuset],
   },
 
   'anchor-moments': {
-    template: 'diagram',
-    concept: `TEXT: "$20K → $200" green
-VISUAL: Expensive bag makes polo cheap
-BACKGROUND: White
-EXTRA: Price anchoring`,
+    template: 'product-table',
+    concept: `TEXT: "$20K → $200" green bold with arrow
+VISUAL: Expensive bag ($20K tag) next to polo shirt ($200 tag) on wooden table, polo looks cheap in comparison, Ralph Lauren logo
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: $20K bag makes $200 polo feel cheap. Anchor moments psychology.`,
     images: [imageAssets.ralphLauren],
   },
 
   'irrational-loyalty': {
     template: 'brain-cables',
-    concept: `TEXT: "logic dies." lowercase
-VISUAL: Brain with heart overtaking
-BACKGROUND: Dark
-EXTRA: Identity > reason`,
+    concept: `TEXT: "logic dies." white lowercase elegant
+VISUAL: Brain with heart overtaking the logical section, cables disconnecting from reason, emotional override
+BACKGROUND: Dark gradient
+EXTRA: Once identity forms, logic dies. The Pizza Test & Sock Test.`,
     images: [],
   },
 
   'reciprocity-engine': {
-    template: 'diagram',
-    concept: `TEXT: "+42%" green
-VISUAL: Gift icon creating sales loop
-BACKGROUND: White
-EXTRA: Give to get`,
+    template: 'illustrated-char',
+    concept: `TEXT: "+42%" green bold
+VISUAL: Illustrated character giving gift, receiving money back in a loop, reciprocity flywheel visual
+BACKGROUND: White with grid texture
+EXTRA: Why giving away free samples increased sales 42%. Give to get.`,
     images: [],
   },
 
   'gucci-short-termism': {
     template: 'versus',
-    concept: `TEXT: "dying." lowercase red
-VISUAL: Gucci fading vs Hermès strong
-BACKGROUND: Split
-EXTRA: Trends kill brands`,
+    concept: `TEXT: "DYING" red vs "FOREVER" gold
+VISUAL: Gucci logo fading/dying on left vs Hermès logo strong and timeless on right
+BACKGROUND: Split - dark decaying left, golden eternal right
+EXTRA: Fashion chases trends. Luxury chases timelessness. Why Gucci is dying.`,
     images: [imageAssets.gucci, imageAssets.hermes],
   },
 
   'ethical-persuasion-compass': {
-    template: 'diagram',
-    concept: `TEXT: "the line." lowercase
-VISUAL: Compass with ethics needle
-BACKGROUND: White
-EXTRA: Magic show test`,
+    template: 'single-object',
+    concept: `TEXT: "the line." white lowercase elegant
+VISUAL: Golden compass with ethics needle pointing to the right direction, moral boundary visual
+BACKGROUND: White clean
+EXTRA: The ethical line between persuasion and manipulation. Magic show test.`,
     images: [],
   },
 
   'two-worlds-mastery': {
     template: 'split-screen',
-    concept: `TEXT: "two worlds." lowercase
-VISUAL: Performance vs Brand split
-BACKGROUND: Half analytical, half creative
-EXTRA: Master both`,
+    concept: `TEXT: "TWO WORLDS" white bold
+VISUAL: Split - analytical performance marketing dashboard (left) vs creative brand storytelling (right)
+BACKGROUND: Blue analytical left, warm creative right
+EXTRA: Performance marketing vs brand building. Master both worlds.`,
     images: [],
   },
 
   'race-to-bottom-escape': {
     template: 'growth-curve',
-    concept: `TEXT: "killing you." lowercase red
-VISUAL: ROAS going up, profit going down
-BACKGROUND: White with grid
-EXTRA: Winning battles, losing war`,
+    concept: `TEXT: "KILLING YOU" red bold dramatic
+VISUAL: ROAS line going UP while profit line going DOWN, scissors cutting the profit line
+BACKGROUND: White with grid overlay
+EXTRA: You're winning every battle and losing the war. ROAS is killing your business.`,
     images: [],
   },
 
   'founder-operating-system': {
-    template: 'diagram',
-    concept: `TEXT: "4 traits." lowercase gold
-VISUAL: Crown with 4 points
-BACKGROUND: Dark
-EXTRA: Legendary founders`,
+    template: 'product-table',
+    concept: `TEXT: "4 TRAITS" gold bold
+VISUAL: Golden crown with 4 distinct points on wooden table, each point representing a trait, legendary aura
+BACKGROUND: Dark gradient, warm wood bottom
+EXTRA: What separates iconic founders from the rest. The 4 traits.`,
     images: [],
   },
 
   '13800-percent-effect': {
     template: 'growth-curve',
-    concept: `TEXT: "13,800%" huge green
-VISUAL: Exponential compound curve
-BACKGROUND: White with grid
-EXTRA: 10% better compounds`,
+    concept: `TEXT: "13,800%" green massive bold
+VISUAL: Exponential compound curve shooting upward, small 10% improvements stacking into massive gains
+BACKGROUND: White with grid overlay
+EXTRA: Small improvements compound into massive advantages. 10% better = 13,800% better.`,
     images: [],
   },
 
@@ -1559,136 +1605,136 @@ EXTRA: 10% better compounds`,
 
   'meta-three-second-hook': {
     template: 'phone-mockup',
-    concept: `TEXT: "3 seconds." lowercase
-VISUAL: iPhone with "00:03" timer
-BACKGROUND: White
-EXTRA: Meta logo floating`,
+    concept: `TEXT: "3 SECONDS" yellow bold ALL CAPS
+VISUAL: iPhone with dramatic "00:03" timer on screen, Meta logo floating above, attention lines
+BACKGROUND: White clean
+EXTRA: Meta judges your creative in the first 3 seconds. The 3-second hook rule.`,
     images: [imageAssets.meta],
   },
 
   'meta-70-20-10-rule': {
-    template: 'diagram',
-    concept: `TEXT: "70/20/10" bold
-VISUAL: Three bars descending
-BACKGROUND: White with grid
-EXTRA: Creative rule`,
+    template: 'tech-ui',
+    concept: `TEXT: "70/20/10" white bold
+VISUAL: Dashboard with three bars - 70% proven (green), 20% iteration (yellow), 10% wild (red), pie chart
+BACKGROUND: Dark tech gradient with grid
+EXTRA: 70% proven, 20% iteration, 10% wild experiments. The creative rule.`,
     images: [imageAssets.meta],
   },
 
   'meta-ga4-integration': {
-    template: 'diagram',
-    concept: `TEXT: "GA4 + META" white
-VISUAL: Two data streams merging
-BACKGROUND: Dark tech
-EXTRA: Signal quality`,
+    template: 'tech-ui',
+    concept: `TEXT: "GA4 + META" white bold
+VISUAL: Two data streams (GA4 and Meta) merging into one powerful signal, tech pipeline visual
+BACKGROUND: Dark tech gradient
+EXTRA: Feed Meta high-quality signals via GA4. Signal quality matters.`,
     images: [imageAssets.meta, imageAssets.google],
   },
 
   'meta-1-1-x-structure': {
-    template: 'minimal-text',
-    concept: `TEXT: "1-1-X" bold black
-VISUAL: Flowchart 1 → 1 → X expanding
-BACKGROUND: White with grid
-EXTRA: Structure simplicity`,
+    template: 'tech-ui',
+    concept: `TEXT: "1-1-X" white bold massive
+VISUAL: Flowchart diagram: 1 Campaign → 1 Ad Set → X Creatives (expanding), clean architecture visual
+BACKGROUND: White with subtle grid
+EXTRA: 1 campaign, 1 ad set, X creatives. Structure simplicity wins.`,
     images: [imageAssets.meta],
   },
 
   'meta-auction-formula': {
-    template: 'diagram',
-    concept: `TEXT: "Bid × EAR × Quality" white
-VISUAL: Formula equation visual
-BACKGROUND: Dark
-EXTRA: Meta auction`,
+    template: 'product-table',
+    concept: `TEXT: "Bid × EAR × Quality" yellow bold equation
+VISUAL: Mathematical formula written on vintage chalkboard sitting on wooden table, Meta logo floating
+BACKGROUND: Dark gradient, warm wood bottom
+EXTRA: Total Value = Bid × Estimated Action Rate × Quality. The Meta auction formula.`,
     images: [imageAssets.meta],
   },
 
   'meta-controls-vs-suggestions': {
     template: 'versus',
-    concept: `TEXT: "hard" vs "soft"
-VISUAL: Brick wall vs soft pillow
-BACKGROUND: Split
-EXTRA: Targeting modes`,
+    concept: `TEXT: "HARD vs SOFT" white bold
+VISUAL: Brick wall (controls/hard boundaries) vs soft pillow (suggestions/soft signals), Meta logo in center
+BACKGROUND: Split - solid left, soft right
+EXTRA: Hard boundaries vs soft signals in targeting. Controls vs Suggestions.`,
     images: [imageAssets.meta],
   },
 
   'meta-creative-ecosystem': {
-    template: 'dramatic-quote',
-    concept: `TEXT: "50 ADS" white
-VISUAL: Grid of ad thumbnails
-BACKGROUND: Dark gradient
-EXTRA: Volume needed`,
+    template: 'illustrated-char',
+    concept: `TEXT: "50 ADS" white bold massive
+VISUAL: Illustrated phone exploding with grid of 50 ad thumbnails, creative variety visual, Meta logo
+BACKGROUND: Dark gradient (Kurzgesagt style)
+EXTRA: Build 20-50 meaningfully different ads. The creative ecosystem.`,
     images: [imageAssets.meta],
   },
 
   'meta-capi-pixel-setup': {
-    template: 'diagram',
-    concept: `TEXT: "CAPI + PIXEL" white
-VISUAL: Two streams merging
-BACKGROUND: Dark tech
-EXTRA: Dual tracking`,
+    template: 'tech-ui',
+    concept: `TEXT: "CAPI + PIXEL" white bold
+VISUAL: Two tracking streams (browser Pixel + server CAPI) merging, dual signal visual, tech diagram
+BACKGROUND: Dark tech gradient
+EXTRA: Dual tracking is now mandatory. CAPI + Pixel setup.`,
     images: [imageAssets.meta],
   },
 
   'meta-andromeda': {
-    template: 'single-object',
-    concept: `TEXT: "andromeda." lowercase white
-VISUAL: Meta logo as AI brain, cosmic
-BACKGROUND: Deep space purple
-EXTRA: New AI era`,
+    template: 'illustrated-char',
+    concept: `TEXT: "andromeda." white lowercase elegant
+VISUAL: Meta logo transforming into cosmic AI brain, galaxy/andromeda imagery, neural network visualization
+BACKGROUND: Deep space purple gradient with stars
+EXTRA: How to operate under Meta's new AI era. The Andromeda brain.`,
     images: [imageAssets.meta],
   },
 
   'creative-volume-2026': {
-    template: 'product-hero',
-    concept: `TEXT: "40-70 WEEKLY" bold
-VISUAL: Phone exploding with creatives
-BACKGROUND: Dark
-EXTRA: Volume scale`,
+    template: 'money-product',
+    concept: `TEXT: "40-70 WEEKLY" yellow bold ALL CAPS
+VISUAL: Phone sitting on pile of creative thumbnails/money, explosion of ad content, Meta logo floating
+BACKGROUND: Dark dramatic gradient
+EXTRA: 40-70 creatives weekly for Andromeda. Volume at scale.`,
     images: [imageAssets.meta],
   },
 
   'product-reviews-test': {
     template: 'split-screen',
-    concept: `TEXT: "reviews?" lowercase
-VISUAL: Product with vs without reviews
-BACKGROUND: Split
-EXTRA: A/B test`,
+    concept: `TEXT: "REVIEWS?" white bold
+VISUAL: Split - product page WITHOUT reviews (left) vs WITH reviews and stars (right), A/B test visual
+BACKGROUND: Split - bare left, rich right
+EXTRA: Do reviews actually increase conversions? The A/B test.`,
     images: [],
   },
 
   'ascension-ladder': {
-    template: 'growth-curve',
-    concept: `TEXT: "ascend." lowercase gold
-VISUAL: Customer climbing value ladder
-BACKGROUND: White
-EXTRA: Move them up`,
+    template: 'illustrated-char',
+    concept: `TEXT: "ascend." gold lowercase elegant
+VISUAL: Illustrated customer climbing golden value ladder, each rung = higher ticket, money floating around top
+BACKGROUND: White with gradient
+EXTRA: Move customers up the value chain. The ascension ladder.`,
     images: [],
   },
 
   'brain-friendly-ux': {
     template: 'brain-cables',
-    concept: `TEXT: "brain first." lowercase
-VISUAL: Brain with smooth pathways
-BACKGROUND: White
-EXTRA: Cognitive design`,
+    concept: `TEXT: "brain first." white lowercase elegant
+VISUAL: Brain with smooth, easy pathways highlighted in green, complex paths blocked in red
+BACKGROUND: White clean
+EXTRA: Design for how the brain actually works. Cognitive design.`,
     images: [],
   },
 
   'brand-moat': {
-    template: 'single-object',
-    concept: `TEXT: "the moat." lowercase
-VISUAL: Castle surrounded by water
-BACKGROUND: Dark
-EXTRA: Defensible brand`,
+    template: 'product-table',
+    concept: `TEXT: "THE MOAT" gold bold
+VISUAL: Castle surrounded by water/moat on wooden table, brand shield on castle, defensive walls
+BACKGROUND: Dark gradient, warm wood bottom
+EXTRA: Build defensible competitive advantages. The brand moat.`,
     images: [],
   },
 
   'brand-promise-code': {
     template: 'minimal-text',
-    concept: `TEXT: "promise." lowercase gold
-VISUAL: Handshake icon subtle
-BACKGROUND: White
-EXTRA: Craft promises`,
+    concept: `TEXT: "promise." gold lowercase elegant, massive
+VISUAL: Minimal - just the word with subtle handshake icon behind it, trust energy
+BACKGROUND: White vast expanse
+EXTRA: Craft promises that convert. The brand promise code.`,
     images: [],
   },
 
@@ -1697,173 +1743,173 @@ EXTRA: Craft promises`,
   // ============================================
 
   'google-highest-cpa-wins': {
-    template: 'diagram',
-    concept: `TEXT: "highest wins." lowercase
-VISUAL: Gold trophy "$50 CPA"
-BACKGROUND: White with grid
-EXTRA: Counterintuitive truth`,
+    template: 'product-table',
+    concept: `TEXT: "HIGHEST WINS" yellow bold ALL CAPS
+VISUAL: Gold trophy with "$50 CPA" engraved sitting on wooden table, Google logo floating, winner podium
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Counterintuitive truth. The highest CPA wins in Google Ads.`,
     images: [imageAssets.google],
   },
 
   'google-pmax-blueprint': {
-    template: 'diagram',
-    concept: `TEXT: "PMax." lowercase
-VISUAL: Blueprint diagram
-BACKGROUND: White with grid
-EXTRA: Campaign architecture`,
+    template: 'tech-ui',
+    concept: `TEXT: "PMax" white bold
+VISUAL: Blueprint/architecture diagram showing PMax campaign structure, Google logo, technical schematic
+BACKGROUND: Dark tech gradient with grid
+EXTRA: The PMax blueprint. Campaign architecture for 2026.`,
     images: [imageAssets.google],
   },
 
   'google-product-feed-mastery': {
-    template: 'diagram',
-    concept: `TEXT: "feed = ad." lowercase
-VISUAL: Spreadsheet transforming to ad
-BACKGROUND: White
-EXTRA: Feed is the ad`,
+    template: 'tech-ui',
+    concept: `TEXT: "FEED = AD" white bold
+VISUAL: Spreadsheet transforming into polished ad creative, data flowing, Google + Shopify logos
+BACKGROUND: Dark tech gradient
+EXTRA: Your feed IS your ad. Feed mastery = ad mastery.`,
     images: [imageAssets.google, imageAssets.shopify],
   },
 
   'google-shopping-intent': {
-    template: 'person-metric',
-    concept: `TEXT: "active intent." lowercase
-VISUAL: Buyer with money ready
-BACKGROUND: White
-EXTRA: High intent`,
+    template: 'illustrated-char',
+    concept: `TEXT: "ACTIVE INTENT" green bold
+VISUAL: Illustrated buyer character with money ready in hand, actively searching, Google logo above
+BACKGROUND: White with subtle gradient
+EXTRA: Google Shopping captures high-intent buyers. Active intent gold.`,
     images: [imageAssets.google],
   },
 
   'google-brand-moat': {
-    template: 'single-object',
-    concept: `TEXT: "brand moat." lowercase
-VISUAL: Castle with Google colors
-BACKGROUND: Dark
-EXTRA: Unbeatable defense`,
+    template: 'product-table',
+    concept: `TEXT: "BRAND MOAT" white bold
+VISUAL: Castle with Google colors surrounded by protective moat on wooden table, defensive fortress
+BACKGROUND: Dark gradient, warm wood bottom
+EXTRA: Unbeatable defense. Your brand search moat.`,
     images: [imageAssets.google],
   },
 
   'google-data-quality-edge': {
-    template: 'diagram',
-    concept: `TEXT: "data in, AI out." lowercase
-VISUAL: Data funnel to AI brain
-BACKGROUND: White with grid
-EXTRA: Quality edge`,
+    template: 'tech-ui',
+    concept: `TEXT: "DATA IN → AI OUT" white bold with arrow
+VISUAL: Data quality funnel feeding into AI brain, garbage in/garbage out visual, Google logo
+BACKGROUND: Dark tech gradient with grid
+EXTRA: Better data = better AI performance. The data quality edge.`,
     images: [imageAssets.google],
   },
 
   'google-competitor-conquest': {
     template: 'versus',
-    concept: `TEXT: "conquest." lowercase gold
-VISUAL: Flag planting on competitor territory
-BACKGROUND: Dark
-EXTRA: Legal market share steal`,
+    concept: `TEXT: "CONQUEST" gold bold
+VISUAL: Flag being planted on competitor territory, victory visual, Google logo as the conquering force
+BACKGROUND: Dark dramatic gradient
+EXTRA: Legal market share steal. Competitor conquest campaigns.`,
     images: [imageAssets.google],
   },
 
   'google-store-trust-checklist': {
-    template: 'diagram',
-    concept: `TEXT: "trust first." lowercase
-VISUAL: Checklist with checkmarks
-BACKGROUND: White
-EXTRA: Avoid suspension`,
+    template: 'arrow-callout',
+    concept: `TEXT: "TRUST FIRST" white bold
+VISUAL: Big arrow pointing to checklist with green checkmarks, trust badges, Google Merchant Center logo
+BACKGROUND: White with subtle grid
+EXTRA: Avoid suspension. The store trust checklist.`,
     images: [imageAssets.google],
   },
 
   'google-hero-product-funnel': {
-    template: 'diagram',
-    concept: `TEXT: "hero products." lowercase
-VISUAL: Funnel with products filtering
-BACKGROUND: White with grid
-EXTRA: Find winners`,
+    template: 'illustrated-char',
+    concept: `TEXT: "HERO PRODUCTS" yellow bold
+VISUAL: Illustrated funnel with products being filtered, winners emerging at bottom glowing, Google logo
+BACKGROUND: White with grid texture
+EXTRA: Find your winners. The hero product funnel.`,
     images: [imageAssets.google],
   },
 
   'google-click-fraud-shield': {
     template: 'single-object',
-    concept: `TEXT: "shield." lowercase white
-VISUAL: Shield blocking red bots
-BACKGROUND: Dark
-EXTRA: Fraud protection`,
+    concept: `TEXT: "SHIELD" white bold
+VISUAL: Golden shield blocking red evil bot icons, protection force field, Google logo embedded in shield
+BACKGROUND: Dark gradient
+EXTRA: Protect your budget from click fraud. The fraud shield.`,
     images: [imageAssets.google],
   },
 
   'google-ai-max-decision': {
     template: 'split-screen',
-    concept: `TEXT: "power vs control"
-VISUAL: AI brain vs human hand
-BACKGROUND: Split
-EXTRA: AI Max choice`,
+    concept: `TEXT: "POWER vs CONTROL" white bold
+VISUAL: Split - powerful AI brain (left) vs human hand with control (right), balance visual, Google logo
+BACKGROUND: Split - AI blue left, human warm right
+EXTRA: When to use AI Max. The power vs control decision.`,
     images: [imageAssets.google],
   },
 
   'google-negative-keyword-colander': {
-    template: 'diagram',
-    concept: `TEXT: "filter." lowercase
-VISUAL: Colander filtering bad keywords
-BACKGROUND: White
-EXTRA: Only good clicks`,
+    template: 'arrow-callout',
+    concept: `TEXT: "FILTER" white bold
+VISUAL: Big arrow pointing to colander/filter with bad keywords draining out, only good clicks staying
+BACKGROUND: White with subtle grid
+EXTRA: Only good clicks pass through. Negative keyword mastery.`,
     images: [imageAssets.google],
   },
 
   'google-optimization-cadence': {
-    template: 'diagram',
-    concept: `TEXT: "rhythm." lowercase
-VISUAL: Calendar with optimization schedule
-BACKGROUND: White with grid
-EXTRA: Disciplined cadence`,
+    template: 'tech-ui',
+    concept: `TEXT: "RHYTHM" white bold
+VISUAL: Calendar dashboard showing optimization schedule, weekly/monthly cadence, Google logo
+BACKGROUND: Dark tech gradient with grid
+EXTRA: Disciplined optimization cadence. The rhythm of winning.`,
     images: [imageAssets.google],
   },
 
   'google-ad-assets-arsenal': {
-    template: 'diagram',
-    concept: `TEXT: "free real estate." lowercase
-VISUAL: Expanded ad with all assets
-BACKGROUND: White
-EXTRA: Bigger ads free`,
+    template: 'tech-ui',
+    concept: `TEXT: "FREE REAL ESTATE" yellow bold
+VISUAL: Expanded Google ad showing all assets utilized, bigger ad taking more screen space
+BACKGROUND: White with subtle grid
+EXTRA: Bigger ads for free. Your ad assets arsenal.`,
     images: [imageAssets.google],
   },
 
   'google-landing-page-bridge': {
-    template: 'diagram',
-    concept: `TEXT: "after the click." lowercase
-VISUAL: Click arrow to landing page
-BACKGROUND: White with grid
-EXTRA: Half the battle`,
+    template: 'arrow-callout',
+    concept: `TEXT: "AFTER THE CLICK" white bold
+VISUAL: Big arrow showing journey from ad click to landing page, bridge visual, conversion path
+BACKGROUND: White with subtle grid
+EXTRA: Half the battle happens after the click. The landing page bridge.`,
     images: [imageAssets.google],
   },
 
   'google-ai-overviews-opportunity': {
     template: 'phone-mockup',
-    concept: `TEXT: "AI overviews." lowercase
-VISUAL: Phone showing Google AI results
-BACKGROUND: White
-EXTRA: New opportunity`,
+    concept: `TEXT: "AI OVERVIEWS" white bold
+VISUAL: Phone showing Google AI overview results page, new search format, opportunity highlight
+BACKGROUND: White clean
+EXTRA: The new opportunity in Google Search. AI overviews.`,
     images: [imageAssets.google],
   },
 
   'google-budget-reallocation': {
     template: 'growth-curve',
-    concept: `TEXT: "2.8x → 5.1x" green
-VISUAL: Money flowing to winner
-BACKGROUND: White with grid
-EXTRA: Feed winners`,
+    concept: `TEXT: "2.8x → 5.1x" green bold with arrow
+VISUAL: Money flowing from losing campaigns to winner, ROAS curve going up, Google logo
+BACKGROUND: White with grid overlay
+EXTRA: Feed winners, starve losers. Budget reallocation mastery.`,
     images: [imageAssets.google],
   },
 
   'google-focus-firepower': {
-    template: 'diagram',
-    concept: `TEXT: "focus." lowercase white
-VISUAL: Laser beam on single target
-BACKGROUND: Dark
-EXTRA: Consolidate budget`,
+    template: 'arrow-callout',
+    concept: `TEXT: "FOCUS" white bold massive
+VISUAL: Laser beam concentrating on single target, scattered vs focused comparison, Google logo
+BACKGROUND: Dark gradient
+EXTRA: Consolidate your budget. Focus your firepower.`,
     images: [imageAssets.google],
   },
 
   'google-influencer-creative': {
-    template: 'person-metric',
-    concept: `TEXT: "outsource." lowercase
-VISUAL: Influencer with content flowing
-BACKGROUND: White
-EXTRA: Creative scaling hack`,
+    template: 'illustrated-char',
+    concept: `TEXT: "OUTSOURCE" white bold
+VISUAL: Illustrated influencer character creating content, content flowing to Google ads, creative factory
+BACKGROUND: White with gradient
+EXTRA: Outsource creative production. The influencer creative hack.`,
     images: [imageAssets.google],
   },
 
@@ -1872,524 +1918,524 @@ EXTRA: Creative scaling hack`,
   // ============================================
 
   'biz-infinite-money-engine': {
-    template: 'diagram',
-    concept: `TEXT: "∞ money." lowercase gold
-VISUAL: Infinity loop made of money
-BACKGROUND: White
-EXTRA: The flywheel`,
+    template: 'money-product',
+    concept: `TEXT: "∞ MONEY" yellow bold with infinity symbol
+VISUAL: Infinity loop made of $100 bills sitting on pile of cash, flywheel motion visual, Hormozi portrait floating
+BACKGROUND: White with grid texture
+EXTRA: The infinite money engine. Alex Hormozi's flywheel.`,
     images: [imageAssets.alexHormozi],
   },
 
   'biz-rat-brain-hijack': {
     template: 'brain-cables',
-    concept: `TEXT: "hijack." lowercase white
-VISUAL: Rat brain with attention cables
-BACKGROUND: Dark
-EXTRA: Subconscious trigger`,
+    concept: `TEXT: "HIJACK" white bold dramatic
+VISUAL: Rat brain with attention cables being plugged in, subconscious trigger visualization
+BACKGROUND: Dark blue gradient
+EXTRA: Hijack their subconscious. Rat brain marketing.`,
     images: [],
   },
 
   'biz-velocity-advantage': {
-    template: 'growth-curve',
-    concept: `TEXT: "speed." lowercase
-VISUAL: Rocket accelerating
-BACKGROUND: White with grid
-EXTRA: Unfair advantage`,
+    template: 'illustrated-char',
+    concept: `TEXT: "SPEED" white bold massive
+VISUAL: Illustrated rocket character accelerating past competitors, velocity trails, unfair advantage visual
+BACKGROUND: White with grid texture
+EXTRA: Speed is your unfair advantage. Move faster than everyone.`,
     images: [],
   },
 
   'biz-remarkable-product': {
     template: 'single-object',
-    concept: `TEXT: "remarkable." italic gold
-VISUAL: Product with purple cow glow
-BACKGROUND: White
-EXTRA: Stand out or die`,
+    concept: `TEXT: "remarkable." gold italic elegant
+VISUAL: Product floating with purple cow glow aura, standing out dramatically from gray background
+BACKGROUND: White with gray products faded behind
+EXTRA: Stand out or die. Be remarkable or invisible.`,
     images: [],
   },
 
   'biz-asset-not-job': {
     template: 'split-screen',
-    concept: `TEXT: "asset vs job"
-VISUAL: Building vs hamster wheel
-BACKGROUND: Split
-EXTRA: $3M difference`,
+    concept: `TEXT: "ASSET vs JOB" white bold
+VISUAL: Split - building/asset growing (left) vs person trapped in hamster wheel (right)
+BACKGROUND: Green wealth left, red exhaustion right
+EXTRA: $3M difference. Build an asset, not a job.`,
     images: [],
   },
 
   'biz-leverage-equation': {
-    template: 'diagram',
-    concept: `TEXT: "leverage." lowercase
-VISUAL: Fulcrum lever lifting boulder
-BACKGROUND: White
-EXTRA: Work smarter`,
+    template: 'illustrated-char',
+    concept: `TEXT: "LEVERAGE" white bold
+VISUAL: Illustrated character using fulcrum lever to lift massive boulder with tiny effort
+BACKGROUND: White with subtle gradient
+EXTRA: Work smarter, not harder. The leverage equation.`,
     images: [],
   },
 
   'biz-counter-position': {
     template: 'versus',
-    concept: `TEXT: "new battlefield." lowercase
-VISUAL: Small player on advantaged terrain
-BACKGROUND: Dark
-EXTRA: Giants money worthless`,
+    concept: `TEXT: "NEW BATTLEFIELD" white bold
+VISUAL: Small player on advantaged high ground vs giants stuck in valley, terrain advantage visual
+BACKGROUND: Dark dramatic gradient
+EXTRA: Giants' money is worthless here. Counter-positioning.`,
     images: [],
   },
 
   'biz-awareness-sweet-spot': {
-    template: 'diagram',
-    concept: `TEXT: "sweet spot." lowercase gold
-VISUAL: Venn diagram with golden center
-BACKGROUND: White
-EXTRA: Pain + no solution`,
+    template: 'arrow-callout',
+    concept: `TEXT: "SWEET SPOT" gold bold
+VISUAL: Big arrow pointing to golden center of Venn diagram - pain + no solution intersection
+BACKGROUND: White clean
+EXTRA: They know the pain, don't know the solution. The sweet spot.`,
     images: [],
   },
 
   'biz-barbell-strategy': {
-    template: 'diagram',
-    concept: `TEXT: "5% + 95%" bold
-VISUAL: Barbell shape visualization
-BACKGROUND: White with grid
-EXTRA: Avoid the middle`,
+    template: 'product-table',
+    concept: `TEXT: "5% + 95%" white bold
+VISUAL: Barbell sitting on wooden table - heavy weights on each end, nothing in middle, Taleb portrait floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Avoid the middle. Nassim Taleb's barbell strategy.`,
     images: [imageAssets.nassimTaleb],
   },
 
   'biz-one-pager-blueprint': {
     template: 'single-object',
-    concept: `TEXT: "one page." lowercase
-VISUAL: Single document glowing
-BACKGROUND: White
-EXTRA: Kill shiny objects`,
+    concept: `TEXT: "ONE PAGE" white bold
+VISUAL: Single glowing document floating, surrounded by crossed-out shiny objects
+BACKGROUND: White clean
+EXTRA: Kill shiny object syndrome. One page blueprint.`,
     images: [],
   },
 
   'biz-infinite-money-loop': {
-    template: 'diagram',
-    concept: `TEXT: "6 steps." lowercase
-VISUAL: Circular flywheel with 6 parts
-BACKGROUND: White with grid
-EXTRA: Infinite profit`,
+    template: 'illustrated-char',
+    concept: `TEXT: "6 STEPS" yellow bold
+VISUAL: Illustrated circular flywheel with 6 parts, each part glowing, infinite loop energy
+BACKGROUND: White with grid texture
+EXTRA: The 6 steps to infinite profit. The money loop.`,
     images: [],
   },
 
   'biz-marketing-company': {
     template: 'minimal-text',
-    concept: `TEXT: "you're not a brand." lowercase
-VISUAL: Mirror reflection
-BACKGROUND: White vast
-EXTRA: Identity shift`,
+    concept: `TEXT: "you're not a brand." white lowercase, massive
+VISUAL: Minimal - mirror reflection showing marketing company instead of brand
+BACKGROUND: White vast expanse
+EXTRA: Identity shift. You're a marketing company that sells products.`,
     images: [],
   },
 
   'biz-product-expansion': {
-    template: 'diagram',
-    concept: `TEXT: "ridge." lowercase
-VISUAL: Wallet expanding to product line
-BACKGROUND: White
-EXTRA: LTV solution`,
+    template: 'product-table',
+    concept: `TEXT: "RIDGE" white bold
+VISUAL: Ridge Wallet on wooden table expanding into full product line - bags, accessories, gear
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Single product to empire. The Ridge Wallet expansion.`,
     images: [imageAssets.ridgeWallet],
   },
 
   'biz-zero-cac-engine': {
-    template: 'diagram',
-    concept: `TEXT: "$0 CAC" green
-VISUAL: Customers flowing without ad spend
-BACKGROUND: White with grid
-EXTRA: Free customers first`,
+    template: 'money-product',
+    concept: `TEXT: "$0 CAC" green bold massive
+VISUAL: Customers flowing in without ad spend, organic flywheel visual, zero cost acquisition
+BACKGROUND: White with grid texture
+EXTRA: Free customers first, paid second. Zero CAC engine.`,
     images: [],
   },
 
   'biz-creative-targeting': {
-    template: 'diagram',
-    concept: `TEXT: "creative = targeting." lowercase
-VISUAL: Creative ad with target overlay
-BACKGROUND: White
-EXTRA: New targeting`,
+    template: 'tech-ui',
+    concept: `TEXT: "CREATIVE = TARGETING" white bold
+VISUAL: Creative ad with target overlay merging together, Meta logo, new era visualization
+BACKGROUND: Dark tech gradient
+EXTRA: Your creative IS your targeting now. Meta's new reality.`,
     images: [imageAssets.meta],
   },
 
   'biz-3x-threshold': {
-    template: 'single-object',
-    concept: `TEXT: "3X" massive gold metallic
-VISUAL: Glowing threshold number
-BACKGROUND: Black
-EXTRA: LTV:CAC magic`,
+    template: 'money-product',
+    concept: `TEXT: "3X" gold metallic massive
+VISUAL: Giant 3X number sitting on pile of $100 bills, glowing threshold energy, Hormozi portrait
+BACKGROUND: Black dramatic
+EXTRA: LTV must be 3X CAC. The magic threshold.`,
     images: [imageAssets.alexHormozi],
   },
 
   'biz-asymmetric-monopoly': {
-    template: 'diagram',
-    concept: `TEXT: "1400:1" bold
-VISUAL: Massive vs tiny comparison
-BACKGROUND: White
-EXTRA: Legal monopoly`,
+    template: 'arrow-callout',
+    concept: `TEXT: "1400:1" white bold massive
+VISUAL: Big arrow pointing to massive advantage ratio, David vs Goliath scale visual
+BACKGROUND: White with subtle grid
+EXTRA: Legal monopoly through asymmetric advantage. 1400:1 ratio.`,
     images: [],
   },
 
   'biz-authenticity-anchor': {
-    template: 'logo-mashup',
-    concept: `TEXT: "40 years." lowercase
-VISUAL: Nike logo staying consistent
-BACKGROUND: White
-EXTRA: Stay cool forever`,
+    template: 'brand-collage',
+    concept: `TEXT: "40 YEARS" white bold
+VISUAL: Retro editorial collage - Nike logo staying consistent through decades, evolution timeline
+BACKGROUND: White with texture
+EXTRA: Stay cool forever. Nike's 40-year authenticity anchor.`,
     images: [imageAssets.nike],
   },
 
   'biz-brand-ltv-engine': {
-    template: 'diagram',
-    concept: `TEXT: "return reasons." lowercase
-VISUAL: Multiple arrows pointing back to store
-BACKGROUND: White with grid
-EXTRA: Engineer returns`,
+    template: 'illustrated-char',
+    concept: `TEXT: "RETURN REASONS" white bold
+VISUAL: Illustrated arrows pointing back to store from multiple directions, Le Creuset + LEGO logos floating
+BACKGROUND: White with grid texture
+EXTRA: Engineer reasons for them to return. Brand LTV engine.`,
     images: [imageAssets.leCreuset, imageAssets.lego],
   },
 
   'biz-brand-temple': {
-    template: 'diagram',
-    concept: `TEXT: "the temple." lowercase gold
-VISUAL: Greek temple with brand pillars
-BACKGROUND: White
-EXTRA: Build loyalty`,
+    template: 'product-table',
+    concept: `TEXT: "THE TEMPLE" gold bold
+VISUAL: Greek temple with brand pillars sitting on wooden table, each pillar labeled, Ralph Lauren logo
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Build loyalty like a temple. The brand temple.`,
     images: [imageAssets.ralphLauren],
   },
 
   'biz-cash-conversion': {
-    template: 'diagram',
-    concept: `TEXT: "-30 DAYS" bold green
-VISUAL: Money flowing backwards
-BACKGROUND: White with grid
-EXTRA: Get paid first`,
+    template: 'money-product',
+    concept: `TEXT: "-30 DAYS" green bold
+VISUAL: Money flowing backwards in time, getting paid before delivery, Oodie product + Davie Fogarty
+BACKGROUND: White with grid texture
+EXTRA: Get paid before you ship. Negative cash conversion cycle.`,
     images: [imageAssets.davieFogarty, imageAssets.theOodie],
   },
 
   'biz-closer-framework': {
-    template: 'diagram',
-    concept: `TEXT: "C.L.O.S.E.R." gold
-VISUAL: 6 steps descending
-BACKGROUND: White
-EXTRA: Hormozi sales system`,
+    template: 'product-table',
+    concept: `TEXT: "C.L.O.S.E.R." gold bold
+VISUAL: 6 steps descending like staircase on wooden table, each letter as a step, Hormozi portrait floating
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Alex Hormozi's sales system. The CLOSER framework.`,
     images: [imageAssets.alexHormozi],
   },
 
   'biz-courage-variable': {
     template: 'growth-curve',
-    concept: `TEXT: "7,000 failures." lowercase
-VISUAL: Failures leading to success peak
-BACKGROUND: Dark with grid
-EXTRA: Bet it all`,
+    concept: `TEXT: "7,000 FAILURES" white bold
+VISUAL: 7,000 small failures on bottom building up to massive success peak, mountain of attempts
+BACKGROUND: Dark with grid overlay
+EXTRA: Bet it all. 7,000 failures before success.`,
     images: [],
   },
 
   'biz-empathy-engine': {
-    template: 'diagram',
-    concept: `TEXT: "feel them." lowercase
-VISUAL: Heart connecting to customer
-BACKGROUND: White
-EXTRA: Lifelong service`,
+    template: 'illustrated-char',
+    concept: `TEXT: "FEEL THEM" white lowercase elegant
+VISUAL: Illustrated heart connecting to customer via empathy beams, understanding energy
+BACKGROUND: White warm gradient
+EXTRA: Lifelong customer service through empathy. Feel what they feel.`,
     images: [],
   },
 
   'biz-four-pillars': {
-    template: 'diagram',
-    concept: `TEXT: "4 pillars." lowercase
-VISUAL: Four pillars holding up roof
-BACKGROUND: White
-EXTRA: Complete framework`,
+    template: 'product-table',
+    concept: `TEXT: "4 PILLARS" white bold
+VISUAL: Four pillars holding up roof structure on wooden table, each pillar labeled with fundamentals
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: The complete framework. Four pillars of business.`,
     images: [],
   },
 
   'biz-hamster-wheel': {
-    template: 'single-object',
-    concept: `TEXT: "the trap." lowercase white
-VISUAL: Person running in giant wheel
-BACKGROUND: Dark
-EXTRA: Prison or business`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THE TRAP" white bold
+VISUAL: Illustrated person trapped running in giant hamster wheel, exhaustion, prison bars around wheel
+BACKGROUND: Dark gradient
+EXTRA: Prison or business? Are you trapped in the hamster wheel?`,
     images: [],
   },
 
   'biz-infinite-flywheel': {
-    template: 'diagram',
-    concept: `TEXT: "$100 → $∞" green
-VISUAL: Money multiplying in flywheel
-BACKGROUND: White with grid
-EXTRA: Predictable machine`,
+    template: 'illustrated-char',
+    concept: `TEXT: "$100 → ∞" green bold
+VISUAL: Illustrated flywheel with money multiplying each rotation, $100 in, infinite out
+BACKGROUND: White with grid texture
+EXTRA: Predictable money machine. The infinite flywheel.`,
     images: [],
   },
 
   'biz-leaders-burden': {
     template: 'single-object',
-    concept: `TEXT: "your fault." lowercase white
-VISUAL: Weight on shoulders
-BACKGROUND: Dark
-EXTRA: Ultimate accountability`,
+    concept: `TEXT: "YOUR FAULT" white bold
+VISUAL: Heavy weight/burden on shoulders silhouette, responsibility visualization
+BACKGROUND: Dark gradient
+EXTRA: Ultimate accountability. Everything is your fault.`,
     images: [],
   },
 
   'biz-lifetime-gross-profit': {
-    template: 'diagram',
-    concept: `TEXT: "wrong." lowercase red
-VISUAL: Calculator with red X
-BACKGROUND: White
-EXTRA: Common mistake`,
+    template: 'arrow-callout',
+    concept: `TEXT: "WRONG" red bold massive
+VISUAL: Big arrow pointing to calculator showing wrong LTV calculation, red X, common mistake exposed
+BACKGROUND: White clean
+EXTRA: You're calculating LTV wrong. Lifetime gross profit.`,
     images: [],
   },
 
   'biz-logic-trap': {
     template: 'brain-cables',
-    concept: `TEXT: "logic fails." lowercase
-VISUAL: Brain being fooled
-BACKGROUND: Dark
-EXTRA: Smart decision kills`,
+    concept: `TEXT: "LOGIC FAILS" white bold
+VISUAL: Brain being fooled, logical decision leading to trap, smart choice = disaster
+BACKGROUND: Dark gradient
+EXTRA: Smart decisions that kill you. The logic trap.`,
     images: [],
   },
 
   'biz-ltv-cac-dashboard': {
-    template: 'diagram',
-    concept: `TEXT: "the dashboard." lowercase
-VISUAL: Cockpit with LTV:CAC gauges
-BACKGROUND: Dark tech
-EXTRA: Operator view`,
+    template: 'tech-ui',
+    concept: `TEXT: "THE DASHBOARD" white bold
+VISUAL: Cockpit dashboard with LTV:CAC gauges, speedometers, operator metrics, tech interface
+BACKGROUND: Dark tech gradient
+EXTRA: Fly your business like a pilot. The operator dashboard.`,
     images: [],
   },
 
   'biz-ltv-levers': {
-    template: 'diagram',
-    concept: `TEXT: "7 levers." lowercase
-VISUAL: Control panel with 7 sliders
-BACKGROUND: White with grid
-EXTRA: LTV control`,
+    template: 'tech-ui',
+    concept: `TEXT: "7 LEVERS" yellow bold
+VISUAL: Control panel dashboard with 7 sliders/levers, each controlling LTV component
+BACKGROUND: White with subtle grid
+EXTRA: Control your LTV. 7 levers to pull.`,
     images: [],
   },
 
   'biz-model-vs-method': {
     template: 'versus',
-    concept: `TEXT: "model" vs "method"
-VISUAL: Blueprint vs toolbox
-BACKGROUND: Split
-EXTRA: Model wins`,
+    concept: `TEXT: "MODEL vs METHOD" white bold
+VISUAL: Blueprint/model (left) vs toolbox/method (right), model clearly winning
+BACKGROUND: Split - strategic left, tactical right
+EXTRA: Model wins every time. Model vs method.`,
     images: [],
   },
 
   'biz-objection-dance': {
-    template: 'diagram',
-    concept: `TEXT: "dance." lowercase
-VISUAL: Two figures dancing, not fighting
-BACKGROUND: White
-EXTRA: 4 techniques`,
+    template: 'illustrated-char',
+    concept: `TEXT: "DANCE" white lowercase elegant
+VISUAL: Two illustrated figures dancing together gracefully, not fighting, objection transformed
+BACKGROUND: White with warm gradient
+EXTRA: Dance with objections, don't fight them. 4 techniques.`,
     images: [],
   },
 
   'biz-operator-mindset': {
-    template: 'diagram',
-    concept: `TEXT: "operator." lowercase
-VISUAL: Cockpit dashboard
-BACKGROUND: Dark tech
-EXTRA: Gymshark mindset`,
+    template: 'tech-ui',
+    concept: `TEXT: "OPERATOR" white bold
+VISUAL: Cockpit dashboard interface, operator metrics, Ben Francis portrait + Gymshark logo
+BACKGROUND: Dark tech gradient
+EXTRA: Think like an operator, not a marketer. Gymshark mindset.`,
     images: [imageAssets.benFrancis, imageAssets.gymshark],
   },
 
   'biz-purchase-cycle-engine': {
-    template: 'diagram',
-    concept: `TEXT: "10 years → 1 year" green
-VISUAL: Compressed purchase cycle
-BACKGROUND: White with grid
-EXTRA: Le Creuset genius`,
+    template: 'product-table',
+    concept: `TEXT: "10 YEARS → 1 YEAR" green bold with arrow
+VISUAL: Compressed purchase cycle visual on wooden table, Le Creuset products, time compression
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Shrink the purchase cycle. Le Creuset's genius.`,
     images: [imageAssets.leCreuset],
   },
 
   'biz-replication-protocol': {
-    template: 'diagram',
-    concept: `TEXT: "simple scales." lowercase
-VISUAL: Copy machine duplicating success
-BACKGROUND: White
-EXTRA: Systems > talent`,
+    template: 'illustrated-char',
+    concept: `TEXT: "SIMPLE SCALES" white bold
+VISUAL: Illustrated copy machine duplicating success repeatedly, systems beating talent
+BACKGROUND: White with grid texture
+EXTRA: Systems > talent. Hormozi's replication protocol.`,
     images: [imageAssets.alexHormozi],
   },
 
   'biz-rfm-secret': {
-    template: 'diagram',
-    concept: `TEXT: "R.F.M." gold
-VISUAL: Three axes chart
-BACKGROUND: White with grid
-EXTRA: Best customer ID`,
+    template: 'tech-ui',
+    concept: `TEXT: "R.F.M." gold bold
+VISUAL: Three-axis chart showing Recency, Frequency, Monetary value, best customer quadrant highlighted
+BACKGROUND: White with subtle grid
+EXTRA: Identify your best customers. The RFM secret.`,
     images: [],
   },
 
   'biz-rule-of-100': {
-    template: 'single-object',
-    concept: `TEXT: "100" massive gold
-VISUAL: The number 100 in bold
-BACKGROUND: Black
-EXTRA: Volume strategy`,
+    template: 'money-product',
+    concept: `TEXT: "100" gold metallic massive
+VISUAL: The number 100 in bold sitting on pile of money, volume strategy visualization
+BACKGROUND: Black dramatic
+EXTRA: Do 100 of everything first. The Rule of 100.`,
     images: [],
   },
 
   'biz-valley-protocol': {
     template: 'growth-curve',
-    concept: `TEXT: "97% quit here." red
-VISUAL: Valley on growth curve
-BACKGROUND: White with grid
-EXTRA: Push harder`,
+    concept: `TEXT: "97% QUIT HERE" red bold with arrow pointing to valley
+VISUAL: Growth curve with deep valley, 97% quitting point marked, push through visualization
+BACKGROUND: White with grid overlay
+EXTRA: The valley where most quit. Push harder.`,
     images: [],
   },
 
   'biz-high-margin-fortress': {
-    template: 'single-object',
-    concept: `TEXT: "fortress." lowercase gold
-VISUAL: Castle made of margins
-BACKGROUND: Dark
-EXTRA: Margin moat`,
+    template: 'product-table',
+    concept: `TEXT: "FORTRESS" gold bold
+VISUAL: Castle/fortress made of stacked margins on wooden table, impenetrable walls
+BACKGROUND: Dark gradient, warm wood bottom
+EXTRA: Build a fortress of margins. High margin moat.`,
     images: [],
   },
 
   'biz-ridge-wallet-protocol': {
-    template: 'diagram',
-    concept: `TEXT: "ridge." lowercase
-VISUAL: Single product expanding
-BACKGROUND: White
-EXTRA: Infinite LTV`,
+    template: 'product-table',
+    concept: `TEXT: "RIDGE" white bold
+VISUAL: Single Ridge Wallet on wooden table expanding into infinite product variants
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Single product, infinite LTV. The Ridge Wallet protocol.`,
     images: [imageAssets.ridgeWallet],
   },
 
   'biz-20-domination': {
-    template: 'diagram',
-    concept: `TEXT: "20% = 80%" bold
-VISUAL: Small group generating most revenue
-BACKGROUND: White
-EXTRA: Pareto rule`,
+    template: 'money-product',
+    concept: `TEXT: "20% = 80%" yellow bold
+VISUAL: Small group of VIP customers generating massive pile of money, Pareto visualization
+BACKGROUND: White with grid texture
+EXTRA: 20% of customers = 80% of revenue. Dominate your 20%.`,
     images: [],
   },
 
   'biz-channel-mix-formula': {
-    template: 'diagram',
-    concept: `TEXT: "the mix." lowercase
-VISUAL: Pie chart of channels
-BACKGROUND: White with grid
-EXTRA: Optimal allocation`,
+    template: 'tech-ui',
+    concept: `TEXT: "THE MIX" white bold
+VISUAL: Pie chart dashboard showing optimal channel allocation, percentages labeled
+BACKGROUND: Dark tech gradient with grid
+EXTRA: Optimal channel allocation. The mix formula.`,
     images: [],
   },
 
   'biz-next-best-dollar': {
-    template: 'diagram',
-    concept: `TEXT: "next dollar." lowercase
-VISUAL: Dollar with arrow pointing to best spot
-BACKGROUND: White
-EXTRA: Capital allocator`,
+    template: 'arrow-callout',
+    concept: `TEXT: "NEXT DOLLAR" white bold
+VISUAL: Big arrow pointing from dollar to best investment spot, capital allocation visual
+BACKGROUND: White with subtle grid
+EXTRA: Where should your next dollar go? Capital allocator mindset.`,
     images: [],
   },
 
   'biz-authenticity-engine': {
     template: 'single-object',
-    concept: `TEXT: "can't copy." lowercase gold
-VISUAL: Fingerprint unique pattern
-BACKGROUND: White
-EXTRA: Impossible to replicate`,
+    concept: `TEXT: "CAN'T COPY" gold bold
+VISUAL: Fingerprint with unique pattern glowing, impossible to replicate visual
+BACKGROUND: White clean
+EXTRA: Impossible to replicate. Your authenticity engine.`,
     images: [],
   },
 
   'biz-creator-army': {
-    template: 'diagram',
-    concept: `TEXT: "500+ creators." lowercase
-VISUAL: Army of content creators
-BACKGROUND: White
-EXTRA: Vs expensive agency`,
+    template: 'illustrated-char',
+    concept: `TEXT: "500+ CREATORS" white bold
+VISUAL: Illustrated army of content creators marching, vs single expensive agency crossed out
+BACKGROUND: White with gradient
+EXTRA: 500+ creators vs expensive agency. Build an army.`,
     images: [],
   },
 
   'biz-mission-driven-brand': {
     template: 'single-object',
-    concept: `TEXT: "the cause." lowercase
-VISUAL: Flag with mission symbol
-BACKGROUND: White
-EXTRA: Cause outperforms`,
+    concept: `TEXT: "THE CAUSE" white bold
+VISUAL: Flag with mission symbol waving heroically, cause-driven energy
+BACKGROUND: White with warm gradient
+EXTRA: Cause outperforms features. Mission-driven brand.`,
     images: [],
   },
 
   'biz-savage-mentality': {
     template: 'dramatic-quote',
-    concept: `TEXT: "SAVAGE" white bold
-VISUAL: Lion/predator eyes
-BACKGROUND: Dark
-EXTRA: Relentless execution`,
+    concept: `TEXT: "SAVAGE" white bold massive
+VISUAL: Lion/predator eyes in darkness, relentless execution energy
+BACKGROUND: Dark dramatic gradient
+EXTRA: Relentless execution. The savage mentality.`,
     images: [],
   },
 
   'biz-systems-architect': {
-    template: 'diagram',
-    concept: `TEXT: "architect." lowercase
-VISUAL: Blueprint with systems
-BACKGROUND: White with grid
-EXTRA: $10M+ transition`,
+    template: 'tech-ui',
+    concept: `TEXT: "ARCHITECT" white bold
+VISUAL: Blueprint dashboard with interconnected systems, $10M+ business architecture
+BACKGROUND: Dark tech gradient with grid
+EXTRA: Build systems, not tactics. The $10M+ transition.`,
     images: [],
   },
 
   'biz-90-percent-trap': {
-    template: 'diagram',
-    concept: `TEXT: "90%" red
-VISUAL: Dice/gambling visual
-BACKGROUND: White
-EXTRA: Guess vs math`,
+    template: 'arrow-callout',
+    concept: `TEXT: "90%" red bold massive
+VISUAL: Big arrow pointing to dice/gambling, guessing vs math, trap visualization
+BACKGROUND: White clean
+EXTRA: 90% are guessing, not calculating. The trap.`,
     images: [],
   },
 
   'biz-animal-mindset': {
-    template: 'person-metric',
-    concept: `TEXT: "$500M" gold
-VISUAL: Davie Fogarty intense
-BACKGROUND: Dark
-EXTRA: Relentless action`,
+    template: 'money-product',
+    concept: `TEXT: "$500M" gold bold massive
+VISUAL: Davie Fogarty portrait on pile of money, intense relentless expression, Oodie in background
+BACKGROUND: Dark dramatic gradient
+EXTRA: Relentless action. The $500M animal mindset.`,
     images: [imageAssets.davieFogarty],
   },
 
   'biz-channel-cac-decoder': {
-    template: 'diagram',
-    concept: `TEXT: "blended lies." lowercase red
-VISUAL: Hidden CAC revealed
-BACKGROUND: White with grid
-EXTRA: True channel cost`,
+    template: 'tech-ui',
+    concept: `TEXT: "BLENDED LIES" red bold
+VISUAL: Dashboard revealing hidden true CAC behind blended number, exposed truth
+BACKGROUND: White with subtle grid
+EXTRA: Blended CAC lies to you. Decode true channel cost.`,
     images: [],
   },
 
   'biz-6-to-1-problem': {
-    template: 'diagram',
-    concept: `TEXT: "6:1" red
-VISUAL: Amazing ratio killing growth
-BACKGROUND: White
-EXTRA: Too good is bad`,
+    template: 'arrow-callout',
+    concept: `TEXT: "6:1" red bold massive
+VISUAL: Big arrow pointing to amazing ratio that's actually killing growth, warning visual
+BACKGROUND: White clean
+EXTRA: Too good is actually bad. The 6:1 problem.`,
     images: [],
   },
 
   'biz-survival-cycle': {
-    template: 'diagram',
-    concept: `TEXT: "doom loop." lowercase red
-VISUAL: Downward spiral cycle
-BACKGROUND: Dark
-EXTRA: 97% death trap`,
+    template: 'illustrated-char',
+    concept: `TEXT: "DOOM LOOP" red bold
+VISUAL: Illustrated downward spiral cycle, characters trapped in survival mode, 97% death trap
+BACKGROUND: Dark gradient
+EXTRA: 97% are trapped here. The survival doom loop.`,
     images: [],
   },
 
   'biz-infinite-money-glitch': {
-    template: 'diagram',
-    concept: `TEXT: "the glitch." lowercase gold
-VISUAL: Flywheel with infinity symbol
-BACKGROUND: White
-EXTRA: Self-fueling growth`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THE GLITCH" gold bold
+VISUAL: Illustrated flywheel with infinity symbol, money multiplying like video game glitch
+BACKGROUND: White with grid texture
+EXTRA: Self-fueling growth. The infinite money glitch.`,
     images: [],
   },
 
   'biz-price-anchoring': {
     template: 'split-screen',
-    concept: `TEXT: "$47" vs "$297"
-VISUAL: Small price next to anchor
-BACKGROUND: Split
-EXTRA: Looks cheap`,
+    concept: `TEXT: "$47 vs $297" white bold
+VISUAL: Split - small price next to massive anchor price, $47 looks tiny next to $297
+BACKGROUND: Split - small left, massive right
+EXTRA: Makes your price look cheap. Price anchoring.`,
     images: [],
   },
 
   'biz-look-back-window': {
-    template: 'diagram',
-    concept: `TEXT: "30 days lies." lowercase red
-VISUAL: Calendar with blindspot
-BACKGROUND: White with grid
-EXTRA: Wrong window`,
+    template: 'arrow-callout',
+    concept: `TEXT: "30 DAYS LIES" red bold
+VISUAL: Big arrow pointing to calendar with blindspot, wrong attribution window exposed
+BACKGROUND: White with subtle grid
+EXTRA: Your lookback window is lying to you. Wrong attribution.`,
     images: [],
   },
 
@@ -2398,182 +2444,182 @@ EXTRA: Wrong window`,
   // ============================================
 
   'checkout-line-effect': {
-    template: 'diagram',
-    concept: `TEXT: "impulse." lowercase
-VISUAL: Checkout lane with candy
-BACKGROUND: White
-EXTRA: Last-minute add`,
+    template: 'arrow-callout',
+    concept: `TEXT: "IMPULSE" yellow bold
+VISUAL: Big arrow pointing to checkout lane candy/small items, last-minute add visualization
+BACKGROUND: White with subtle grid
+EXTRA: The checkout line effect. Last-minute impulse psychology.`,
     images: [],
   },
 
   'compound-testing-effect': {
     template: 'growth-curve',
-    concept: `TEXT: "1% + 1% + 1%..." lowercase
-VISUAL: Small wins stacking exponentially
-BACKGROUND: White with grid
-EXTRA: Compound gains`,
+    concept: `TEXT: "1% + 1% + 1%..." white bold
+VISUAL: Small 1% wins stacking into exponential curve, compound effect visualization
+BACKGROUND: White with grid overlay
+EXTRA: How small wins stack into massive gains. Compound testing.`,
     images: [],
   },
 
   'emotional-gap': {
-    template: 'diagram',
-    concept: `TEXT: "the gap." lowercase
-VISUAL: Bridge connecting desire to action
-BACKGROUND: White
-EXTRA: Bridge it`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THE GAP" white bold
+VISUAL: Illustrated bridge connecting desire (left) to action (right), gap visualization
+BACKGROUND: White with gradient
+EXTRA: Bridge the gap between desire and action. Close the emotional gap.`,
     images: [],
   },
 
   'emotional-problem': {
-    template: 'diagram',
-    concept: `TEXT: "the real problem." lowercase
-VISUAL: Surface problem hiding deeper one
-BACKGROUND: Dark
-EXTRA: Dig deeper`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THE REAL PROBLEM" white bold
+VISUAL: Surface problem iceberg tip, massive deeper emotional problem underwater
+BACKGROUND: Dark blue gradient
+EXTRA: Dig deeper. Find the real problem behind the problem.`,
     images: [],
   },
 
   'five-value-heuristics': {
-    template: 'diagram',
-    concept: `TEXT: "5 shortcuts." lowercase
-VISUAL: Brain with 5 fast paths
-BACKGROUND: White
-EXTRA: Mental shortcuts`,
+    template: 'brain-cables',
+    concept: `TEXT: "5 SHORTCUTS" yellow bold
+VISUAL: Brain with 5 fast neural pathways highlighted, mental shortcut visualization
+BACKGROUND: White clean
+EXTRA: The 5 value heuristics. Mental shortcuts for perceived value.`,
     images: [],
   },
 
   'ice-prioritization': {
-    template: 'diagram',
-    concept: `TEXT: "I.C.E." gold
-VISUAL: Three columns scored
-BACKGROUND: White with grid
-EXTRA: Impact, Confidence, Ease`,
+    template: 'tech-ui',
+    concept: `TEXT: "I.C.E." gold bold
+VISUAL: Dashboard with three columns - Impact, Confidence, Ease - scored and ranked
+BACKGROUND: White with subtle grid
+EXTRA: Impact × Confidence × Ease. ICE prioritization framework.`,
     images: [],
   },
 
   'identity-shift-effect': {
     template: 'face-morph',
-    concept: `TEXT: "become." lowercase
-VISUAL: Before/after identity shift
-BACKGROUND: Split
-EXTRA: Buying = becoming`,
+    concept: `TEXT: "BECOME" white bold massive
+VISUAL: Person transforming/morphing from before state to after state, identity shift
+BACKGROUND: Split transformation visual
+EXTRA: When buying becomes becoming. The identity shift effect.`,
     images: [],
   },
 
   'le-creuset-scarcity-engine': {
-    template: 'diagram',
-    concept: `TEXT: "1 color." lowercase
-VISUAL: Rainbow with one available
-BACKGROUND: White
-EXTRA: Collector FOMO`,
+    template: 'product-table',
+    concept: `TEXT: "1 COLOR" yellow bold
+VISUAL: Rainbow of Le Creuset Dutch ovens on wooden table, all sold out except one color available
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Collector FOMO. Limited colors create collectors.`,
     images: [imageAssets.leCreuset],
   },
 
   'local-holiday-legitimacy': {
-    template: 'diagram',
-    concept: `TEXT: "local wins." lowercase
-VISUAL: Calendar with cultural events
-BACKGROUND: White
-EXTRA: Cultural moments`,
+    template: 'illustrated-char',
+    concept: `TEXT: "LOCAL WINS" white bold
+VISUAL: Illustrated calendar with cultural holidays/events highlighted, globe with regions
+BACKGROUND: White with warm gradient
+EXTRA: Cultural moments that drive sales. Local holiday legitimacy.`,
     images: [],
   },
 
   'logo-is-worthless': {
     template: 'minimal-text',
-    concept: `TEXT: "worthless." lowercase
-VISUAL: Logo crossed out subtly
-BACKGROUND: White vast
-EXTRA: Symbol ≠ equity`,
+    concept: `TEXT: "worthless." white lowercase massive
+VISUAL: Minimal - logo symbol faded/crossed out in background, truth revealed
+BACKGROUND: White vast expanse
+EXTRA: Your logo is worthless. Brand equity isn't in the symbol.`,
     images: [],
   },
 
   'micro-yes-engine': {
-    template: 'diagram',
-    concept: `TEXT: "yes, yes, YES." growing
-VISUAL: Steps ascending
-BACKGROUND: White
-EXTRA: Momentum builder`,
+    template: 'illustrated-char',
+    concept: `TEXT: "yes, yes, YES!" white growing size
+VISUAL: Illustrated steps ascending with "yes" on each step, momentum building to final big YES
+BACKGROUND: White with grid texture
+EXTRA: Build momentum through tiny commitments. The micro-yes engine.`,
     images: [],
   },
 
   'missing-piece-effect': {
-    template: 'diagram',
-    concept: `TEXT: "almost complete." lowercase
-VISUAL: Puzzle with one piece missing
-BACKGROUND: White
-EXTRA: Completion urge`,
+    template: 'arrow-callout',
+    concept: `TEXT: "ALMOST COMPLETE" white bold
+VISUAL: Big arrow pointing to puzzle with one piece missing, completion urge visualization
+BACKGROUND: White clean
+EXTRA: Incomplete sets drive completion urge. The missing piece effect.`,
     images: [],
   },
 
   'nine-trust-levers': {
-    template: 'diagram',
-    concept: `TEXT: "9 levers." lowercase
-VISUAL: Trust control panel
-BACKGROUND: White with grid
-EXTRA: All credibility elements`,
+    template: 'tech-ui',
+    concept: `TEXT: "9 LEVERS" yellow bold
+VISUAL: Trust control panel dashboard with 9 sliders/levers, all credibility elements labeled
+BACKGROUND: White with subtle grid
+EXTRA: Every element that builds credibility. The 9 trust levers.`,
     images: [],
   },
 
   'ninety-seven-percent-leak': {
-    template: 'diagram',
-    concept: `TEXT: "97%" huge red
-VISUAL: Visitors leaving funnel
-BACKGROUND: White
-EXTRA: Most leave`,
+    template: 'money-product',
+    concept: `TEXT: "97%" red bold massive
+VISUAL: Funnel with 97% of visitors/money leaking out, dramatic loss visualization
+BACKGROUND: White with grid texture
+EXTRA: 97% of visitors leave without buying. The massive leak.`,
     images: [],
   },
 
   'offer-is-everything': {
-    template: 'minimal-text',
-    concept: `TEXT: "the offer." lowercase gold
-VISUAL: Offer box glowing
-BACKGROUND: White vast
-EXTRA: Offer > copy`,
+    template: 'product-table',
+    concept: `TEXT: "THE OFFER" gold bold massive
+VISUAL: Glowing offer box sitting on wooden table, outshining copy/design elements, Hormozi portrait
+BACKGROUND: White vast with wood bottom
+EXTRA: Your offer matters more than your copy. Offer is everything.`,
     images: [imageAssets.alexHormozi],
   },
 
   'owned-audience-effect': {
-    template: 'diagram',
-    concept: `TEXT: "own it." lowercase
-VISUAL: Audience in your pocket
-BACKGROUND: White
-EXTRA: Build assets`,
+    template: 'illustrated-char',
+    concept: `TEXT: "OWN IT" white bold
+VISUAL: Illustrated audience/customers in your pocket/controlled, platform-independent asset
+BACKGROUND: White with gradient
+EXTRA: Build assets you control. The owned audience effect.`,
     images: [],
   },
 
   'pain-dream-bridge': {
-    template: 'diagram',
-    concept: `TEXT: "bridge." lowercase
-VISUAL: Pain on left, dream on right, bridge
-BACKGROUND: White
-EXTRA: Connect them`,
+    template: 'illustrated-char',
+    concept: `TEXT: "BRIDGE" white bold
+VISUAL: Illustrated pain (dark left) connected via bridge to dream future (golden right)
+BACKGROUND: Split - dark pain left, golden dream right
+EXTRA: Connect current pain to desired future. The pain-dream bridge.`,
     images: [],
   },
 
   'performance-engine': {
-    template: 'diagram',
-    concept: `TEXT: "the engine." lowercase
-VISUAL: Well-oiled machine visual
-BACKGROUND: White with grid
-EXTRA: Scalable systems`,
+    template: 'tech-ui',
+    concept: `TEXT: "THE ENGINE" white bold
+VISUAL: Well-oiled machine/engine diagram, all parts working together, scalable systems
+BACKGROUND: Dark tech gradient with grid
+EXTRA: Systems that scale profitably. The performance engine.`,
     images: [],
   },
 
   'poppy-disruptor-blueprint': {
     template: 'single-object',
-    concept: `TEXT: "disrupt." lowercase gold
-VISUAL: Poppy flower breaking through
-BACKGROUND: White
-EXTRA: Break conventions`,
+    concept: `TEXT: "DISRUPT" gold bold
+VISUAL: Poppy flower breaking through concrete, disruption energy, convention-breaking visual
+BACKGROUND: White clean
+EXTRA: Break category conventions. The Poppy disruptor blueprint.`,
     images: [],
   },
 
   'post-purchase-momentum': {
     template: 'growth-curve',
-    concept: `TEXT: "after the sale." lowercase
-VISUAL: Growth continuing post-purchase
-BACKGROUND: White with grid
-EXTRA: Repeat buyers`,
+    concept: `TEXT: "AFTER THE SALE" white bold
+VISUAL: Growth curve continuing upward after purchase point, repeat buyer acceleration
+BACKGROUND: White with grid overlay
+EXTRA: Turn buyers into repeat customers. Post-purchase momentum.`,
     images: [],
   },
 
@@ -2582,173 +2628,173 @@ EXTRA: Repeat buyers`,
   // ============================================
 
   'premium-flywheel': {
-    template: 'diagram',
-    concept: `TEXT: "premium." lowercase gold
-VISUAL: Flywheel with luxury elements
-BACKGROUND: Dark
-EXTRA: Compound positioning`,
+    template: 'illustrated-char',
+    concept: `TEXT: "PREMIUM" gold bold
+VISUAL: Illustrated flywheel with luxury elements - velvet, gold, crystals, compound motion
+BACKGROUND: Dark gradient
+EXTRA: Compound premium positioning. The premium flywheel.`,
     images: [],
   },
 
   'price-creates-value': {
-    template: 'diagram',
-    concept: `TEXT: "price = value." lowercase
-VISUAL: Higher price creating more glow
-BACKGROUND: White
-EXTRA: High price signals`,
+    template: 'arrow-callout',
+    concept: `TEXT: "PRICE = VALUE" white bold
+VISUAL: Big arrow pointing to higher price creating more glow/perceived value, price as signal
+BACKGROUND: White clean
+EXTRA: Higher prices increase perception. Price creates value.`,
     images: [],
   },
 
   'psychological-moat': {
     template: 'brain-cables',
-    concept: `TEXT: "mental moat." lowercase
-VISUAL: Brain protected by barriers
-BACKGROUND: Dark
-EXTRA: Mental defense`,
+    concept: `TEXT: "MENTAL MOAT" white bold
+VISUAL: Brain protected by defensive barriers/moat, mental defense visualization
+BACKGROUND: Dark gradient
+EXTRA: Mental barriers that protect your brand. The psychological moat.`,
     images: [],
   },
 
   'self-selection-principle': {
-    template: 'diagram',
-    concept: `TEXT: "they choose." lowercase
-VISUAL: Customers self-sorting
-BACKGROUND: White
-EXTRA: Qualify themselves`,
+    template: 'illustrated-char',
+    concept: `TEXT: "THEY CHOOSE" white bold
+VISUAL: Illustrated customers self-sorting into different tiers, qualification happening naturally
+BACKGROUND: White with gradient
+EXTRA: Let customers qualify themselves. Self-selection principle.`,
     images: [],
   },
 
   'sell-the-identity': {
     template: 'face-morph',
-    concept: `TEXT: "sell who they become." lowercase
-VISUAL: Person transforming
-BACKGROUND: White
-EXTRA: Identity purchase`,
+    concept: `TEXT: "SELL WHO THEY BECOME" white bold
+VISUAL: Person silhouette transforming into their ideal self, identity transformation
+BACKGROUND: White with gradient
+EXTRA: Products are identity purchases. Sell the identity.`,
     images: [],
   },
 
   'shape-psychology': {
-    template: 'diagram',
-    concept: `TEXT: "shapes matter." lowercase
-VISUAL: Circle, square, triangle meanings
-BACKGROUND: White
-EXTRA: Shape perception`,
+    template: 'arrow-callout',
+    concept: `TEXT: "SHAPES MATTER" white bold
+VISUAL: Big arrows pointing to circle (friendly), square (stability), triangle (power) with meanings
+BACKGROUND: White clean
+EXTRA: How shapes affect perception. Shape psychology.`,
     images: [],
   },
 
   'smallest-viable-market': {
-    template: 'diagram',
-    concept: `TEXT: "tiny." lowercase
-VISUAL: Small circle dominating before expanding
-BACKGROUND: White
-EXTRA: Niche first`,
+    template: 'product-table',
+    concept: `TEXT: "TINY" white bold
+VISUAL: Small circle dominating its space on wooden table before expanding outward, Seth Godin portrait
+BACKGROUND: White grid top, warm wood bottom
+EXTRA: Dominate a niche before expanding. Smallest viable market.`,
     images: [imageAssets.sethGodin],
   },
 
   'sms-open-rate-secret': {
-    template: 'diagram',
-    concept: `TEXT: "98%" green
-VISUAL: SMS notification badge
-BACKGROUND: White
-EXTRA: SMS beats email`,
+    template: 'tech-ui',
+    concept: `TEXT: "98%" green bold massive
+VISUAL: SMS notification badge with 98% open rate, crushing email's rate, dashboard comparison
+BACKGROUND: White with subtle grid
+EXTRA: Why SMS beats email for engagement. 98% open rate.`,
     images: [],
   },
 
   'story-changes-taste': {
-    template: 'diagram',
-    concept: `TEXT: "story = taste." lowercase
-VISUAL: Same wine, different stories
-BACKGROUND: White
-EXTRA: Narrative power`,
+    template: 'brand-collage',
+    concept: `TEXT: "STORY = TASTE" white bold
+VISUAL: Retro editorial collage - same wine/product with different story labels, taste perception visual
+BACKGROUND: White with texture
+EXTRA: Narrative literally alters perception. Story changes taste.`,
     images: [],
   },
 
   'thirty-five-thousand-decisions': {
     template: 'brain-cables',
-    concept: `TEXT: "35,000" white
-VISUAL: Overwhelmed brain
-BACKGROUND: Dark
-EXTRA: Decision fatigue`,
+    concept: `TEXT: "35,000" white bold massive
+VISUAL: Overwhelmed brain with 35,000 decision pathways, decision fatigue visualization
+BACKGROUND: Dark gradient
+EXTRA: Reduce decision fatigue to convert. 35,000 daily decisions.`,
     images: [],
   },
 
   'whale-customer-paradox': {
-    template: 'diagram',
-    concept: `TEXT: "the whales." lowercase gold
-VISUAL: Small group of big spenders
-BACKGROUND: White
-EXTRA: Different behavior`,
+    template: 'money-product',
+    concept: `TEXT: "THE WHALES" gold bold
+VISUAL: Small group of VIP whale customers on pile of money, different behavior than average
+BACKGROUND: White with grid texture
+EXTRA: Your best customers behave differently. The whale paradox.`,
     images: [],
   },
 
   'dior-pricing-secret': {
     template: 'split-screen',
-    concept: `TEXT: "$57 → $3,500"
-VISUAL: Same bag, 60x markup
-BACKGROUND: Split cheap/luxury
-EXTRA: Luxury pricing`,
+    concept: `TEXT: "$57 → $3,500" white bold
+VISUAL: Split - same bag at $57 (left) vs $3,500 (right), 60x markup, Dior logo
+BACKGROUND: Cheap production left, luxury retail right
+EXTRA: What Dior and Rolex know about pricing. The $57 bag that sells for $3,500.`,
     images: [imageAssets.dior],
   },
 
   'consumption-conversion': {
-    template: 'diagram',
-    concept: `TEXT: "the gap." lowercase red
-VISUAL: Consumption vs conversion disconnect
-BACKGROUND: White
-EXTRA: Why pages fail`,
+    template: 'arrow-callout',
+    concept: `TEXT: "THE GAP" red bold
+VISUAL: Big arrow pointing to gap between consumption (reading) and conversion (buying)
+BACKGROUND: White clean
+EXTRA: Why your product page isn't converting. The consumption gap.`,
     images: [],
   },
 
   'luxury-mindset-shift': {
-    template: 'diagram',
-    concept: `TEXT: "4 shifts." lowercase gold
-VISUAL: Mind transforming
-BACKGROUND: Dark
-EXTRA: Commodity to luxury`,
+    template: 'illustrated-char',
+    concept: `TEXT: "4 SHIFTS" gold bold
+VISUAL: Illustrated mind transforming through 4 stages, commodity to luxury mindset progression
+BACKGROUND: Dark gradient
+EXTRA: Transform your thinking from commodity to luxury. 4 mindset shifts.`,
     images: [],
   },
 
   'three-cro-tests': {
-    template: 'diagram',
-    concept: `TEXT: "3 tests." lowercase
-VISUAL: Three test tubes with results
-BACKGROUND: White with grid
-EXTRA: Revenue impact`,
+    template: 'tech-ui',
+    concept: `TEXT: "3 TESTS" yellow bold
+VISUAL: Dashboard showing 3 test tubes with results, revenue impact metrics, only 3 that matter
+BACKGROUND: White with subtle grid
+EXTRA: Focus on tests that impact the bottom line. The 3 CRO tests.`,
     images: [],
   },
 
   'digital-velvet-rope': {
-    template: 'single-object',
-    concept: `TEXT: "velvet rope." lowercase gold
-VISUAL: Red velvet rope online
-BACKGROUND: Dark
-EXTRA: Digital exclusivity`,
+    template: 'product-table',
+    concept: `TEXT: "VELVET ROPE" gold bold
+VISUAL: Red velvet rope on wooden table, digital exclusivity visualization, VIP access
+BACKGROUND: Dark gradient, warm wood bottom
+EXTRA: Create exclusive experiences that elevate perception. Digital velvet rope.`,
     images: [],
   },
 
   'hidden-menu-psychology': {
-    template: 'diagram',
-    concept: `TEXT: "secret menu." lowercase
-VISUAL: Hidden menu revealed
-BACKGROUND: Dark
-EXTRA: Status belonging`,
+    template: 'illustrated-char',
+    concept: `TEXT: "SECRET MENU" white bold
+VISUAL: Illustrated hidden menu being revealed, secret options, status and belonging visual
+BACKGROUND: Dark gradient
+EXTRA: Secret options that create status and belonging. Hidden menu psychology.`,
     images: [],
   },
 
   'celebrity-gifting-flywheel': {
-    template: 'diagram',
-    concept: `TEXT: "free → millions." lowercase
-VISUAL: Gift turning into influence
-BACKGROUND: White
-EXTRA: Gifting ROI`,
+    template: 'illustrated-char',
+    concept: `TEXT: "FREE → MILLIONS" green bold with arrow
+VISUAL: Illustrated gift transforming into influence/money, celebrity amplification flywheel
+BACKGROUND: White with gradient
+EXTRA: Turn free products into millions in influence. Celebrity gifting flywheel.`,
     images: [],
   },
 
   'forbidden-coffee-hook': {
     template: 'single-object',
-    concept: `TEXT: "forbidden." lowercase white
-VISUAL: Coffee cup with mystery aura
-BACKGROUND: Dark
-EXTRA: Exclusivity story`,
+    concept: `TEXT: "FORBIDDEN" white bold
+VISUAL: Coffee cup with mysterious dark aura, forbidden fruit energy, exclusivity story
+BACKGROUND: Dark dramatic gradient
+EXTRA: Mystery and exclusivity wrapped in a story. The forbidden coffee hook.`,
     images: [],
   },
 };
