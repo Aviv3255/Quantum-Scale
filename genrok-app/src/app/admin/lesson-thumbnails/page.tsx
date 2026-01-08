@@ -901,83 +901,122 @@ Keep the minimal white background, clean style.
   },
 
   'email-vs-sms': {
-    template: 'illustrated-char',
-    concept: `TEXT: "EMAIL vs SMS" white bold, boxing match style
-VISUAL: Two illustrated characters boxing - email envelope with gloves vs phone with SMS bubble, Klaviyo logo floating
-BACKGROUND: Dark arena gradient with spotlights
-EXTRA: Epic showdown energy. Which one wins?`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "EMAIL" with envelope icon and open rate "21%"
+- Right side: "SMS" with phone icon and open rate "98%" (winner)
+- Make SMS side glow green as the winner
+
+Keep the split comparison layout.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.klaviyo],
   },
 
   'abandoned-cart-recovery': {
-    template: 'tech-ui',
-    concept: `TEXT: "85% vs 60%" yellow bold comparison
-VISUAL: Software dashboard showing AI SMS recovery flow beating email, shopping cart icons, recovery arrows
-BACKGROUND: Dark tech gradient
-EXTRA: AI SMS crushing traditional email. Modern tech dashboard style.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "CART RECOVERY"
+- Left box (red): "Email" showing "60% recovery"
+- Right box (green): "AI SMS" showing "85% recovery"
+- Shopping cart icon in both
+
+Keep the dark background, comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'pareto-law-ecommerce': {
-    template: 'money-product',
-    concept: `TEXT: "5% = 95%" massive yellow with black outline
-VISUAL: Tiny group of illustrated customers sitting on enormous pile of $100 bills, crown on the pile
-BACKGROUND: White with grid texture
-EXTRA: Mind-blowing Pareto visual. Premium. The math that changes everything.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "THE PARETO SECRET"
+- Show money pyramid with "5%" tiny group of VIP customers at top
+- "95%" of the money pile below them
+- Add our monkey mascot (attached) as one of the VIP customers at the top, wearing a crown
+
+Keep the money flying, dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'whatsapp-support': {
-    template: 'arrow-callout',
-    concept: `TEXT: "NO." red bold massive
-VISUAL: WhatsApp logo with big red X over it, red arrow pointing to the X
-BACKGROUND: White clean
-EXTRA: Counterintuitive answer. Bold statement. Trust the data.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "DON'T USE WHATSAPP."
+- Show WhatsApp logo with a big red X over it
+- Add our monkey mascot (attached) doing a "stop" hand gesture, serious face
+
+Keep the red background, dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'meta-attribution-test': {
-    template: 'tech-ui',
-    concept: `TEXT: "67% MISSING" red bold warning
-VISUAL: Meta logo with chunk missing, Triple Whale logo showing the gap, data dashboard with missing puzzle piece
-BACKGROUND: Dark tech gradient with grid
-EXTRA: Attribution gap exposed. Meta only tracks 67%. Modern tech style.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "META IS LYING"
+- Left box (red): "Meta Says" with "33% ROAS"
+- Right box (green): "Reality" with "100% ROAS" - showing the hidden 67%
+- Meta logo in the red box
+
+Keep the dark background, comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.meta, imageAssets.tripleWhale],
   },
 
   'post-purchase-surveys': {
-    template: 'tech-ui',
-    concept: `TEXT: "ask them." lowercase white elegant
-VISUAL: Clean survey UI mockup with checkboxes, data flowing from responses to insights chart
-BACKGROUND: Dark tech gradient
-EXTRA: Know your customers. Data collection made beautiful.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "Just ASK them."
+- Replace the person with our monkey mascot (attached) - he's holding a clipboard with survey checkboxes, looking smart
+- Add floating question marks and checkboxes around him
+
+Keep the podcast quote style, teal background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'fonts-psychology': {
-    template: 'brand-collage',
-    concept: `TEXT: "Aa" shown in two dramatically different fonts - elegant serif vs modern sans-serif
-VISUAL: Retro editorial collage style with typography specimens, letterpress blocks, Apple and Rolex logos showing font choices
-BACKGROUND: Split composition - cream vintage left, modern white right
-EXTRA: Typography contrast. Editorial magazine feel. Fonts change perception.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "CHEAP" in ugly Comic Sans font - looks amateur
+- Right side: "PREMIUM" in elegant serif font - looks expensive
+- Same product shown on both sides, different font makes it look different price
+
+Keep the split comparison layout.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'brand-search-campaign': {
-    template: 'product-table',
-    concept: `TEXT: "18X ROAS" yellow massive with black outline
-VISUAL: Google search bar sitting on wooden table, brand name typed in, Google logo floating above, golden trophy
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Insane ROAS from brand search. Premium photography style.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the tweet to "Brand search campaigns = 18X ROAS. Why isn't everyone doing this?"
+- Replace the person with our monkey mascot (attached) looking confident and knowing
+- Add Google logo somewhere visible
+
+Keep the tweet card style, dark green background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'swatch-variants': {
-    template: 'arrow-callout',
-    concept: `TEXT: "+3.4% CVR" green bold badge
-VISUAL: Big arrow pointing to product color swatches (image swatches vs text), phone mockup showing the difference
-BACKGROUND: White with subtle grid
-EXTRA: A/B test winner. Arrow creates focus. Clean conversion optimization.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "SWATCH TEST"
+- Left box (red): "Text Only" showing color names written out
+- Right box (green): "Image Swatches" showing actual color dots/images "+3.4% CVR"
+
+Keep the dark background, comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
@@ -986,186 +1025,272 @@ EXTRA: A/B test winner. Arrow creates focus. Clean conversion optimization.`,
   // ============================================
 
   'buy-now-button': {
-    template: 'tech-ui',
-    concept: `TEXT: "+15.9% REV" green bold
-VISUAL: Split screen software mockup - product page WITH button vs WITHOUT button, revenue chart going up on the removal side
-BACKGROUND: Dark tech gradient
-EXTRA: Counterintuitive. Removing the button INCREASED revenue. A/B test proof.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "REMOVE THIS BUTTON"
+- Left box (red): "With Buy Now" showing the button
+- Right box (green): "Without" showing "+15.9% REVENUE"
+- Counterintuitive result - removing increased sales
+
+Keep the dark background, comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'rounded-button': {
-    template: 'arrow-callout',
-    concept: `TEXT: "28px" white bold in tech style
-VISUAL: Big arrow pointing to perfectly rounded CTA button glowing, comparison of button radius options
-BACKGROUND: Dark gradient
-EXTRA: The magic border-radius. 28px wins. Clean CTA optimization.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the word to "28px"
+- Replace the Spotify logo with a perfectly rounded CTA button glowing
+- Cursor pointing at the button corner showing the border-radius
+
+Keep the minimal white background, clean style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'best-shopify-theme': {
-    template: 'product-table',
-    concept: `TEXT: "34.9% CVR" yellow bold ALL CAPS
-VISUAL: Theme preview cards sitting on wooden table, winner trophy next to the best one, Shopify logo floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Shrine vs Impulse showdown. The clear winner revealed.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "BEST SHOPIFY THEME"
+- Left box (red): "Other Themes" showing "2-3% CVR"
+- Right box (green): "The Winner" showing "34.9% CVR" with golden trophy icon
+- Shopify logo visible
+
+Keep the dark background, comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.shopify],
   },
 
   'coupon-leaking': {
-    template: 'illustrated-char',
-    concept: `TEXT: "LEAKING." red lowercase dramatic
-VISUAL: Illustrated bucket with money leaking out through holes, coupon codes floating away, Honey logo as the villain
-BACKGROUND: Dark red gradient
-EXTRA: Your profit is draining. Stop the leak. Urgent.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "YOUR PROFIT IS LEAKING."
+- Show a bucket with money/coins falling out through holes
+- Honey browser extension logo floating nearby as the villain
+- Add our monkey mascot (attached) trying to plug the holes, looking stressed
+
+Keep the red background, dramatic urgent style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'gillette-model': {
-    template: 'product-table',
-    concept: `TEXT: "$2 RAZOR" + "$40 BLADES" yellow split text
-VISUAL: Cheap razor handle on left side of wooden table, expensive blade refills on right, money pile under the blades
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: The Gillette business model. Cheap entry, expensive consumables.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "$2 RAZOR" showing cheap razor handle
+- Right side: "$40 BLADES" showing expensive blade refills with money pile
+- Arrow showing the real profit is on the right side
+
+Keep the split comparison layout.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'best-niches-2026': {
-    template: 'illustrated-char',
-    concept: `TEXT: "2026" white bold massive, "best niches." below
-VISUAL: Illustrated character with telescope looking at rising stars/trends, multiple golden opportunity arrows going up
-BACKGROUND: Dark blue gradient with stars (Kurzgesagt style)
-EXTRA: Future opportunity. Discover niches with long customer journeys.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "2026 BEST NICHES"
+- Replace the car with a treasure chest overflowing with golden niche icons (pet, beauty, fitness)
+- Replace the person with our monkey mascot (attached) - he's looking through a telescope at the treasure, doing "shh" gesture
+- Arrow pointing to chest saying "the gold"
+
+Keep the luxurious dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'two-meta-rules': {
-    template: 'product-table',
-    concept: `TEXT: "2 RULES" yellow bold ALL CAPS
-VISUAL: Two golden tablets/commandments sitting on wooden table, Meta logo floating above like a deity
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: The two Meta product rules. Sacred commandments style.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint to show "2 META RULES" diagram
+- Show two golden commandment tablets with "RULE 1" and "RULE 2"
+- Meta logo at the top
+- Replace the person with our monkey mascot (attached) holding the tablets like Moses
+
+Keep the blue blueprint style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.meta, imageAssets.monkey],
   },
 
   'pinned-comment-cac': {
-    template: 'arrow-callout',
-    concept: `TEXT: "pinned." white lowercase elegant
-VISUAL: Big arrow pointing to pinned comment on social media post mockup, CAC number dropping
-BACKGROUND: White with subtle grid
-EXTRA: The pinned comment hack. Reduce CAC with objection-handling.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the tweet to "Pinned comments dropped my CAC by 23%. Here's the exact template..."
+- Replace the person with our monkey mascot (attached) looking clever and secretive
+- Add a pin 📌 icon near the tweet
+
+Keep the tweet card style, dark green background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'mastercard-psychology': {
-    template: 'brand-collage',
-    concept: `TEXT: "trust." lowercase white elegant
-VISUAL: Retro editorial collage with Mastercard, Visa, Amex logos arranged artistically, trust badges, secure checkout icons
-BACKGROUND: White with subtle texture
-EXTRA: Payment logos increase willingness to pay. Trust psychology.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185309.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "TRUST BADGES"
+- Show collage of payment logos: Visa, Mastercard, Amex, PayPal
+- Add secure checkout icons and trust badges
+- Premium editorial style
+
+Keep the creative direction collage layout.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.mastercard],
   },
 
   'formula-to-sell': {
-    template: 'product-table',
-    concept: `TEXT: "THE FORMULA" yellow bold ALL CAPS
-VISUAL: Mathematical equation on vintage chalkboard sitting on wooden table: Dream × Likelihood ÷ (Time × Effort), Hormozi photo floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Alex Hormozi's value equation. The formula to sell anything.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the tweet to "Value = (Dream × Likelihood) ÷ (Time × Effort). That's it. That's the formula."
+- Replace the person with Alex Hormozi (attached) looking intense
+- Add equation symbols floating around
+
+Keep the tweet card style, dark green background.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.alexHormozi],
   },
 
   'choose-products': {
-    template: 'arrow-callout',
-    concept: `TEXT: "2 rules." white lowercase elegant
-VISUAL: Big arrows pointing to two golden checkmarks, product icons being filtered through a selection funnel
-BACKGROUND: White with subtle grid
-EXTRA: Product selection criteria. Two rules for winning products.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the blueprint to show "2 PRODUCT RULES" checklist
+- Show funnel diagram: Many products → Filter → 2 checkmarks → Winners
+- Add golden checkmark icons
+
+Keep the blue blueprint style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'gary-halbert-secret': {
-    template: 'money-product',
-    concept: `TEXT: "STARVING CROWD" yellow bold with black outline
-VISUAL: Illustrated crowd reaching with money in hands toward a product, Gary Halbert portrait floating above like a legend
-BACKGROUND: Vintage sepia/cream gradient
-EXTRA: The direct response legend's secret. Sell what they already want.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "Find a STARVING crowd"
+- Replace the person with Gary Halbert (attached) looking wise and legendary
+- Add hungry crowd silhouettes reaching with money in the background
+
+Keep the podcast quote style, teal background.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.garyHalbert],
   },
 
   'pet-rock-story': {
-    template: 'money-product',
-    concept: `TEXT: "$30 MILLION" yellow massive with black outline
-VISUAL: Simple gray rock wearing a tiny crown, sitting on enormous pile of $100 bills, gift box nearby
-BACKGROUND: White with grid texture
-EXTRA: From rocks to riches. Sell meaning, not products. Absurdist genius.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "$30 MILLION FROM ROCKS"
+- Replace the money pyramid with a simple gray rock wearing a tiny crown, sitting on pile of money
+- Add our monkey mascot (attached) next to the rock looking amazed and confused
+
+Keep the money flying, dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'starbucks-ltv': {
-    template: 'minimal-logos',
-    concept: `YouTube thumbnail, 16:9 aspect ratio.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "$14,099 PER CUSTOMER"
+- Replace the money pyramid with a Starbucks cup sitting on pile of $100 bills
+- Starbucks logo clearly visible
 
-A white Starbucks coffee cup sitting on a messy pile of real US $100 bills. The Starbucks logo clearly visible on the cup. Simple, clean product shot.
-
-Background: Clean white with subtle gray grid paper texture
-Text: "$14,099" in yellow ALL CAPS with black outline at top
-Style: Exactly like the "genius" Stanley cup on money thumbnail`,
+Keep the money flying, dramatic style.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.starbucks],
   },
 
   'killer-headlines': {
-    template: 'product-table',
-    concept: `TEXT: "80%" yellow massive with black outline
-VISUAL: Vintage newspaper with bold headline sitting on wooden table, magnifying glass emphasizing the headline
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: 80% of success is in the headline. Headline power.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "80% is the HEADLINE"
+- Replace the person with Dan Kennedy (attached) looking wise and authoritative
+- Add floating newspaper headline snippets in background
+
+Keep the podcast quote style, teal background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.danKennedy],
   },
 
   'two-dirty-tricks': {
-    template: 'illustrated-char',
-    concept: `TEXT: "2 tricks." white lowercase elegant
-VISUAL: Illustrated magician character with top hat, magic wand casting two golden sparkle effects, mystery energy
-BACKGROUND: Dark purple gradient (Kurzgesagt style)
-EXTRA: Two persuasion secrets. Dream Outcome + Social Proof.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "2 DIRTY TRICKS"
+- Replace the car with a magician's top hat with golden sparkles coming out
+- Replace the person with our monkey mascot (attached) - he's doing a "shh" gesture wearing a magician cape
+- Arrow pointing to the hat saying "the secrets"
+
+Keep the luxurious dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'golden-lookalike': {
-    template: 'product-table',
-    concept: `TEXT: "$8-10 CAC" green bold
-VISUAL: Golden crown sitting on glowing audience icon, sitting on wooden table, Meta logo floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: LLA on top 5% spenders. The golden lookalike audience.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "GOLDEN LOOKALIKE"
+- Left box (red): "Normal LLA" showing "$30+ CAC"
+- Right box (green): "5% Spenders LLA" showing "$8-10 CAC" with golden crown
+- Meta logo visible
+
+Keep the dark background, comparison style.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.meta],
   },
 
   'cbo-vs-abo': {
-    template: 'illustrated-char',
-    concept: `TEXT: "CBO vs ABO" white bold boxing match style
-VISUAL: Two illustrated characters boxing - CBO vs ABO as fighters, Meta logo as referee, boxing ring
-BACKGROUND: Dark arena gradient with dramatic lighting
-EXTRA: Meta fight night. ABO for testing, CBO for scaling.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "CBO" with graph showing consistent budget distribution
+- Right side: "ABO" with graph showing manual control
+- Both have Meta logo
+- Add "WHICH ONE?" text at top
+
+Keep the split comparison layout.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.meta],
   },
 
   'geo-personalization': {
-    template: 'tech-ui',
-    concept: `TEXT: "hello, [city]." white lowercase elegant
-VISUAL: Software mockup showing personalized message with location pin, browser window with geo-targeting UI
-BACKGROUND: Dark tech gradient
-EXTRA: Location-based offers increase CVR. Personalization power.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the tweet to "Hello [YOUR CITY]. This one change increased CVR by 67%."
+- Replace the person with our monkey mascot (attached) looking clever
+- Add location pin icon near the tweet
+
+Keep the tweet card style, dark green background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'no-one-cares': {
-    template: 'illustrated-char',
-    concept: `TEXT: "no one cares." white lowercase, massive
-VISUAL: Tiny illustrated figure standing alone in vast empty space, spotlight only on them, everyone else walking away
-BACKGROUND: White vast expanse
-EXTRA: Brutal truth. Self-interest drives all purchases. Minimal.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "No one CARES about you."
+- Replace the person with our monkey mascot (attached) - looking brutally honest, arms crossed
+- Spotlight only on him, everything else dark
+
+Keep the podcast quote style, teal background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   // ============================================
@@ -1173,28 +1298,15 @@ EXTRA: Brutal truth. Self-interest drives all purchases. Minimal.`,
   // ============================================
 
   'autopilot-sale': {
-    template: 'brain-cables',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "AUTOPILOT MODE"
+- Replace the brand logos with: Shopify logo, money bag icon, "BUY NOW" button
+- Keep the brain visual with cables plugging in
 
-VISUAL FORMULA: Brain-Cables
-
-COMPOSITION:
-- TOP HALF of a human HEAD visible (from eyebrows up), showing forehead and top of head cut off/opened
-- Eyes visible and looking slightly upward, realistic human eyes
-- EXPOSED PINK BRAIN with realistic wrinkled texture sitting on top of the open head
-- THREE CABLES/WIRES plugging INTO the brain from different angles:
-  * One cable from Shopify logo (green)
-  * One cable from a money bag icon ($) (gold)
-  * One cable from a "BUY NOW" button icon (orange)
-- Cables have a thick, industrial rope/wire look
-
-BACKGROUND: Clean WHITE with very subtle gray GRID PAPER texture (like graph paper). Minimal, editorial feel.
-
-TEXT: "autopilot." in lowercase black sans-serif font (Inter/Helvetica style), positioned at TOP center of image.
-
-LIGHTING: Soft, even, clean lighting like a medical illustration or product shot. Brain has subtle pink glow.
-
-REFERENCE STYLE: EXACTLY like the "Offers" thumbnail with exposed brain and cables plugging in from Shopify, Meta, and money bag logos.`,
+Keep the purple brain glow, dramatic lighting.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
@@ -1213,21 +1325,30 @@ Keep the professional podcast interview style.
   },
 
   'herd-instinct': {
-    template: 'illustrated-char',
-    concept: `TEXT: "the herd." white lowercase elegant
-VISUAL: Illustrated crowd of characters all moving in one direction, one golden leader at front, FOMO arrows
-BACKGROUND: White with subtle gradient
-EXTRA: Social proof creates buying pressure. Follow the herd.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "Follow the HERD"
+- Replace the person with Rory Sutherland (attached) looking knowing
+- Add silhouettes of crowd following arrows in the background
+
+Keep the podcast quote style, teal background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.rorySutherland],
   },
 
   'gift-that-sells': {
-    template: 'product-table',
-    concept: `TEXT: "FREE" yellow bold massive with black outline
-VISUAL: Gift box with golden glow sitting on wooden table, ribbons untied, sparkles around it
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Reciprocity power. Give to get. The gift that sells.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "THE FREE GIFT TRICK"
+- Replace the car with a golden gift box with ribbons and sparkles
+- Replace the person with our monkey mascot (attached) offering the gift, looking generous
+- Arrow pointing to gift saying "reciprocity"
+
+Keep the luxurious dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'micro-yes-mastery': {
