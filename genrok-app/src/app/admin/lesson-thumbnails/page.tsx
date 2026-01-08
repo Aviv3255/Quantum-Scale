@@ -1656,107 +1656,150 @@ Keep the OLD vs NEW comparison layout, the split screen drama.
   // ============================================
 
   'forty-million-mistake': {
-    template: '3d-mascot-dramatic',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "$40 MILLION MISTAKE"
+- Replace the person with a CRACKED, DAMAGED Coca-Cola bottle (attached) - looking destroyed, weathered, crumbling
+- Add flames/fire at the bottom licking upward
+- Add a big red "-$40M" badge
+- Red downward crash arrows in background
 
-VISUAL FORMULA: 3D-Mascot-Dramatic
-
-COMPOSITION:
-- 3D RENDERED Coca-Cola bottle/can as a CHARACTER - with a sad/distressed expression if possible, or appearing damaged/cracked
-- The bottle has WORN, WEATHERED TEXTURE - scratched, dented, cracked surface like distressed metal or concrete
-- FLAMES/FIRE at the bottom of the image licking upward
-- RED DOWNWARD ARROWS in the background indicating crash/failure
-- Small percentage badge showing "-99%" or "$-40M" in red
-
-BACKGROUND: Dark, smoky, dramatic - black with orange/red glow from flames. Motion blur on the arrows. Apocalyptic energy.
-
-TEXT: "GAME OVER" in massive white ALL CAPS with quotes around it, positioned at TOP. Thick black outline/shadow on text.
-
-LIGHTING: Dramatic rim lighting from behind (orange/red), main subject slightly backlit, flames creating ambient warm glow at bottom.
-
-REFERENCE STYLE: EXACTLY like the "GAME OVER" Reddit Snoo thumbnail - 3D rendered mascot with worn/cracked texture, dark dramatic background, fire at bottom, downward red arrows, percentage badge, "GAME OVER" text with quotes.`,
+Keep the red dramatic background, the apocalyptic feel.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.cocaCola],
   },
 
   'fly-in-the-urinal': {
-    template: 'arrow-callout',
-    concept: `TEXT: "80%" green bold massive
-VISUAL: Big red arrow pointing to tiny fly icon in center of a target, behavioral nudge visual
-BACKGROUND: White clean with subtle grid
-EXTRA: Nudge psychology in action. Small design change = massive behavior shift.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show a urinal with a TINY FLY etched in the center (the famous Amsterdam airport design)
+- Left box: "BEFORE" - splashing, mess, -80% accuracy
+- Right box: "AFTER" - clean, targeted, "+80% ACCURACY"
+- Add our monkey mascot (attached) pointing at the tiny fly with a magnifying glass, looking amazed
+- Text at top: "THE $1 FIX"
+
+Keep the metrics comparison box style, the data-driven look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'thirty-two-violinist': {
-    template: 'split-screen',
-    concept: `TEXT: "$32" vs "$1,000,000" dramatic size difference
-VISUAL: Split screen - same violinist playing in dirty subway (left) vs grand concert hall with golden lights (right)
-BACKGROUND: Grungy concrete left, luxurious gold right
-EXTRA: Context dictates perceived value. Exact same performance, wildly different perception.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "SUBWAY" - violinist playing in dirty tunnel, people walking past ignoring, "$32" earnings, RED
+- Right side: "CONCERT HALL" - SAME violinist on grand stage, golden lights, standing ovation, "$1,000,000" ticket sales, GREEN
+- Text at top: "SAME PERSON. SAME MUSIC."
+- Show it's the IDENTICAL performer - context changes everything
+
+Keep the OLD vs NEW comparison layout, the split screen drama.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'invisible-influence': {
-    template: 'illustrated-char',
-    concept: `TEXT: "invisible." white lowercase elegant
-VISUAL: Illustrated character making a choice, subtle background pattern influencing their decision without them knowing
-BACKGROUND: White with ghostly pattern overlay
-EXTRA: How backgrounds prime buying decisions. Priming power you can't see.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "YOU CAN'T SEE IT"
+- Replace the brand logos on the brain with GHOSTLY SHAPES - subtle patterns, colors, background elements floating INTO the brain
+- The brain doesn't know it's being influenced - add question marks around it
+- Add our monkey mascot (attached) behind the brain, secretly placing the influences, finger to lips "shhh" gesture
+
+Keep the purple brain glow, the neuroscience style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'price-format-code': {
-    template: 'product-table',
-    concept: `TEXT: "$99 vs $99.00" yellow bold
-VISUAL: Two price tags sitting on wooden table - clean $99 glowing vs cluttered $99.00 faded
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: How formatting changes price perception. Psychology in the decimals.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "$99.00" looking HEAVY, cluttered, the decimals weighing it down like anchors
+- Right side: "$99" looking LIGHT, clean, floating, glowing green
+- Arrow pointing from cluttered to clean: "FEELS 23% CHEAPER"
+- Text at top: "KILL THE DECIMALS"
+
+Keep the minimal word + icon style, the clean impact.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'cost-of-standing-still': {
-    template: 'growth-curve',
-    concept: `TEXT: "THE COST" red bold dramatic
-VISUAL: Declining red curve showing loss over time for inaction, clock ticking, money draining
-BACKGROUND: Dark with grid overlay
-EXTRA: Sell the cost of NOT buying. Inaction has a price.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "THE COST OF DOING NOTHING"
+- Replace the money pyramid with money DRAINING DOWNWARD - inverted pyramid of cash flowing away
+- Add a person standing still, frozen, while money flies AWAY from them
+- Big red countdown timer: "EVERY DAY YOU WAIT: -$847"
+- Add our monkey mascot (attached) trying to grab the flying money, looking panicked
+
+Keep the dramatic money visual, but it's LEAVING not coming.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'unity-principle': {
-    template: 'brand-collage',
-    concept: `TEXT: "we." gold lowercase elegant, massive
-VISUAL: Retro editorial collage - two figures merging into one, shared identity symbols, Cialdini portrait subtle
-BACKGROUND: Warm cream with texture
-EXTRA: One word turns customers into partners. Shared identity principle.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to "ONE WORD CHANGES EVERYTHING"
+- Show two people on opposite sides MERGING into one unified figure in the center
+- The word "WE" massive and golden between them, acting like a magnet pulling them together
+- Replace any person with Robert Cialdini (attached) on one side
+- Small text: "7th principle of persuasion"
+
+Keep the podcast quote style, the professional look.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.robertCialdini],
   },
 
   'visual-priming': {
-    template: 'phone-mockup',
-    concept: `TEXT: "background." white lowercase elegant
-VISUAL: Phone showing same product on two different backgrounds - cheap feeling vs premium feeling
-BACKGROUND: White clean
-EXTRA: How background images decide what customers buy. Invisible influencer.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: Same product on CHEAP background (white plastic, fluorescent lighting) - looks like $20
+- Right side: SAME product on PREMIUM background (marble, soft lighting, velvet) - looks like $200
+- Text at top: "SAME PRODUCT. 10X PRICE."
+- Add price tags: "$20" on left (red), "$200" on right (green)
+- The product is IDENTICAL - only the background changed
+
+Keep the OLD vs NEW comparison layout, the split screen drama.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'objection-inversion': {
-    template: 'illustrated-char',
-    concept: `TEXT: "judo." white lowercase elegant
-VISUAL: Illustrated character performing judo flip, objection arrow being redirected back as a buying reason
-BACKGROUND: White with subtle gradient
-EXTRA: Turn objections into reasons to buy. Verbal judo mastery.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the tweet to: "They said 'too expensive.' I said 'exactly.' They bought 2."
+- Make it look like a viral sales wisdom tweet
+- Add our monkey mascot (attached) as the avatar - wearing a black belt, looking wise
+- Show an objection arrow coming IN, then being FLIPPED and redirected out as a "SOLD" arrow
+- Engagement showing viral reach
+
+Keep the tweet style, the social proof feel.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'primal-stimuli': {
-    template: 'brain-cables',
-    concept: `TEXT: "6 BUTTONS" yellow bold ALL CAPS
-VISUAL: Reptile brain diagram with 6 glowing red buttons, cables connecting to buying behavior
-BACKGROUND: Dark blue gradient
-EXTRA: The only 6 triggers that get the reptile brain to say YES. Primal buy buttons.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "6 BUY BUTTONS"
+- Replace the brand logos with 6 GLOWING RED BUTTONS on the brain - each labeled: SELF, CONTRAST, TANGIBLE, BEGINNING/END, VISUAL, EMOTION
+- The brain is the REPTILE brain (primitive, rough texture)
+- One button is being PRESSED and glowing bright - showing activation
+- Add our monkey mascot (attached) with his finger hovering over one button, ready to press
+
+Keep the purple brain glow, the neuroscience style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   // ============================================
@@ -1764,137 +1807,228 @@ EXTRA: The only 6 triggers that get the reptile brain to say YES. Primal buy but
   // ============================================
 
   'leaky-bucket-audit': {
-    template: 'money-product',
-    concept: `TEXT: "$50,000 HOLE" red bold with black outline
-VISUAL: Metal bucket on pile of money with visible holes, cash leaking out, flashlight beam exposing the leak
-BACKGROUND: Dark dramatic gradient
-EXTRA: Find where you're bleeding money. PPV metric reveals the leak.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "THE $50,000 HOLE"
+- Replace the money pyramid with a METAL BUCKET with VISIBLE HOLES - money pouring out through the holes
+- Flashlight beam exposing one of the holes dramatically
+- Money bills falling/leaking through each hole
+- Add our monkey mascot (attached) with a flashlight, discovering the holes, shocked expression
+
+Keep the dramatic money visual, the urgent feel.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'price-chunking-yesloop': {
-    template: 'product-table',
-    concept: `TEXT: "3X AOV" green bold massive
-VISUAL: Big price being broken into small golden "yes" coins on wooden table, stepping stone visual
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Break big prices into irresistible small yeses. The yes-loop.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "YES. YES. YES. = 3X AOV"
+- Show a BIG scary price "$597" being BROKEN into golden stepping stones: "$1.99/day"
+- Each stepping stone has "YES" written on it, leading up like stairs
+- At the top of the stairs: "SOLD!" in green
+- Customer walking up the yes-stairs easily
+
+Keep the dramatic money flying, the epic scale.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'objection-destroyer': {
-    template: 'minimal-text',
-    concept: `TEXT: "at first I thought..." white lowercase elegant, incomplete sentence
-VISUAL: Minimal - just the text with subtle dissolving objection in background
-BACKGROUND: White vast expanse
-EXTRA: Turn objections into conversions with one sentence. The framework.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to: "At first I thought it was too expensive... then I realized what I was REALLY paying for."
+- Show an objection word "TOO EXPENSIVE" dissolving/transforming into "WORTH EVERY PENNY"
+- The transformation happening in real-time visual
+- Text at bottom: "The 7-word objection killer"
+
+Keep the podcast quote style, the professional look.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'product-page-anatomy': {
-    template: 'tech-ui',
-    concept: `TEXT: "5 ELEMENTS" white bold
-VISUAL: Product page exploded diagram showing 5 key conversion elements labeled, wireframe style
-BACKGROUND: Dark tech gradient with grid
-EXTRA: The exact anatomy of pages that convert at 8%+. Conversion blueprint.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change to a product page BLUEPRINT showing 5 labeled sections:
+  1. HERO IMAGE (top) - glowing
+  2. HEADLINE (trust hook)
+  3. SOCIAL PROOF (reviews)
+  4. BENEFITS (not features)
+  5. CTA (buy button)
+- Each element has an arrow pointing to it with conversion % impact
+- Text at top: "THE 8% CONVERSION PAGE"
+- Badge: "5 ELEMENTS"
+
+Keep the blue blueprint background, the technical diagram style.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'post-purchase-goldmine': {
-    template: 'money-product',
-    concept: `TEXT: "$40 → $120" green bold with arrow
-VISUAL: Order confirmation receipt sitting on pile of $100 bills, upsell popup glowing gold
-BACKGROUND: White with grid texture
-EXTRA: Turn $40 customers into $120 instantly. Hidden revenue goldmine.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "$40 → $120 (INSTANTLY)"
+- Show an order confirmation page with a GLOWING "Thank You" that transforms into a golden upsell popup
+- Money multiplying: $40 bill transforming into three $40 bills = $120
+- The post-purchase moment is the GOLDMINE - show gold radiating from it
+- Add our monkey mascot (attached) behind the popup, pulling a lever, looking mischievous
+
+Keep the dramatic money flying, the multiplication visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'bottom-up-brand': {
-    template: 'illustrated-char',
-    concept: `TEXT: "movement." white lowercase elegant
-VISUAL: Illustrated crowd of characters building something together from ground up, grassroots energy, flags waving
-BACKGROUND: White with warm gradient
-EXTRA: Build a brand like a movement, not a corporation. Movements beat marketing.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "CORPORATION" - sterile logo, top-down pyramid, customers at bottom being pushed DOWN, gray/cold
+- Right side: "MOVEMENT" - community raising flags together, building UP from grassroots, warm/energetic
+- Text at top: "BRANDS DIE. MOVEMENTS LIVE."
+- The movement side has more people, more energy, more passion
+
+Keep the OLD vs NEW comparison layout, the split screen drama.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'halo-serial-position': {
-    template: 'arrow-callout',
-    concept: `TEXT: "0.05 SECONDS" yellow bold
-VISUAL: Big arrow pointing to first impression moment, flash/lightning bolt visual, timer showing 0.05
-BACKGROUND: White with subtle grid
-EXTRA: First & last impression hack. Primacy effect decides trust instantly.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show a STOPWATCH frozen at "0.05" seconds - this is all the time you have
+- Lightning bolt striking at that moment - FLASH of first impression
+- Split visual: One side shows "TRUST" forming instantly (green), other shows "DISTRUST" (red)
+- Text at top: "YOU HAVE 0.05 SECONDS"
+- Small brain icon showing the instant judgment
+
+Keep the minimal word + icon style, the clean impact.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'ikea-effect': {
-    template: 'product-table',
-    concept: `TEXT: "+63%" green bold massive
-VISUAL: DIY furniture pieces on wooden table with assembly instructions, glowing with perceived value aura, IKEA logo floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Why DIY = 63% higher perceived value. Build = value.`,
-    images: [imageAssets.ikea],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left box: "PRE-BUILT" - assembled furniture, price tag "$100", looks ordinary
+- Right box: "YOU BUILT IT" - same furniture but with DIY assembly visual, price tag "$163" BUT customer LOVES IT, glowing with pride
+- IKEA logo (attached) floating
+- Text at top: "WHY DIY = +63% VALUE"
+- Add our monkey mascot (attached) proudly holding an Allen key next to his built furniture
+
+Keep the metrics comparison box style, the data-driven look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.ikea, imageAssets.monkey],
   },
 
   'von-restorff-effect': {
-    template: 'arrow-callout',
-    concept: `TEXT: "stand out." white lowercase elegant
-VISUAL: Row of gray circles with big arrow pointing to ONE gold circle in the middle, isolation effect
-BACKGROUND: White clean
-EXTRA: Make your CTA impossible to miss. The isolation effect.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show a ROW of 7 identical gray circles
+- ONE circle in the middle is BRIGHT GOLD and larger - impossible to ignore
+- Big arrow pointing to the gold one: "THIS ONE"
+- Text at top: "THE ISOLATION EFFECT"
+- Everyone's attention (eye icons) focused on the gold one
+
+Keep the minimal word + icon style, the clean impact.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'jakobs-law': {
-    template: 'split-screen',
-    concept: `TEXT: "familiar wins." white lowercase elegant
-VISUAL: Split - weird custom checkout (confusing) vs Amazon-style checkout (familiar), Amazon logo on winning side
-BACKGROUND: Red/confusing left, green/clear right
-EXTRA: Why "unique" checkout flows kill conversions. Use familiar patterns.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "UNIQUE" checkout - confusing layout, weird buttons, customer looking frustrated, RED X, "-67% conversions"
+- Right side: "FAMILIAR" checkout - Amazon-style (attached) layout, customer breezing through, GREEN check, "+67% conversions"
+- Text at top: "STOP BEING CREATIVE"
+- Amazon logo on the winning side
+
+Keep the OLD vs NEW comparison layout, the split screen drama.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.amazon],
   },
 
   'gaze-direction': {
-    template: 'arrow-callout',
-    concept: `TEXT: "look here." white lowercase elegant
-VISUAL: Pair of eyes with gaze lines, big arrow following the gaze direction to CTA button
-BACKGROUND: White clean
-EXTRA: Where they look is where they click. Gaze follows gaze.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the quote to: "Their eyes follow YOUR eyes"
+- Show a face on one side LOOKING at a "BUY NOW" button
+- GAZE LINES drawn from the face's eyes to the button
+- The viewer's eyes naturally follow the same path
+- Text at bottom: "The gaze hack"
+- Add our monkey mascot (attached) at the button, eyes making contact with the viewer
+
+Keep the podcast quote style, the professional look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'five-second-test': {
-    template: 'split-screen',
-    concept: `TEXT: "5 SECONDS" white bold
-VISUAL: Split - blurry confusing website (left) vs crystal clear website (right), timer showing 5 seconds
-BACKGROUND: Blurry/chaotic left, clean/clear right
-EXTRA: Why clarity crushes cleverness. The 5-second test.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left side: "FAIL" - blurry, chaotic website, visitor looks confused, "What is this??" thought bubble, RED
+- Right side: "PASS" - crystal clear website, visitor instantly gets it, "I want this!" thought bubble, GREEN
+- Big timer in the middle: "5 SEC"
+- Text at top: "5 SECONDS TO WIN OR LOSE"
+
+Keep the OLD vs NEW comparison layout, the split screen drama.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'speed-equals-trust': {
-    template: 'product-table',
-    concept: `TEXT: "$1.7 BILLION" red bold massive
-VISUAL: Stuck loading bar on screen sitting on wooden table, money draining below, Amazon logo floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: 0.1 second delay = 1% less sales. Amazon speed lesson.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "-$1.7 BILLION (0.1 SEC)"
+- Show a LOADING SPINNER/BAR stuck at 99% - frozen, not moving
+- Money DRAINING out from underneath the loading bar
+- Amazon logo (attached) - this is their data
+- Text: "0.1 second delay = -1% sales"
+- The loading bar is HEMORRHAGING money
+
+Keep the dramatic money visual, but money is LEAVING.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.amazon],
   },
 
   'imperceptible-nudge': {
-    template: 'product-table',
-    concept: `TEXT: "$200 MILLION" yellow bold ALL CAPS
-VISUAL: Orange "Add to Cart" button glowing on wooden table, Amazon logo, color psychology chart subtle
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: The $200 million color. Invisible nudges that drive millions.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show Amazon's ORANGE "Add to Cart" button GLOWING with power
+- Text at top: "THE $200 MILLION COLOR"
+- Color psychology spectrum showing orange = urgency + action
+- Amazon logo (attached)
+- The button looks like it's RADIATING money/conversions
+
+Keep the minimal word + icon style, the clean impact.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.amazon],
   },
 
   'cognitive-load-trap': {
-    template: 'brain-cables',
-    concept: `TEXT: "easy wins." white lowercase elegant
-VISUAL: Brain with simplified smooth pathways vs tangled complicated ones, easy path glowing green
-BACKGROUND: White clean
-EXTRA: Reduce friction, increase trust. The easy brain wins.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172239.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Left brain: TANGLED, complex pathways - red, stressed, overloaded, "TOO HARD" label
+- Right brain: SMOOTH, simple pathways - green, calm, flowing, "EASY" label
+- Arrow showing customers choosing the EASY path every time
+- Text at top: "COMPLEXITY KILLS CONVERSIONS"
+
+Keep the brain MRI style, the scientific look.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
@@ -1903,62 +2037,78 @@ EXTRA: Reduce friction, increase trust. The easy brain wins.`,
   // ============================================
 
   'placebo-product': {
-    template: 'single-object',
-    concept: `TEXT: "placebo." white lowercase elegant
-VISUAL: Premium pill/product floating with mysterious glow, reality-bending effect around it
-BACKGROUND: Dark gradient
-EXTRA: Your product IS a placebo. Perception literally alters reality.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "YOUR PRODUCT IS A PLACEBO"
+- Show a premium golden PILL floating in a spotlight
+- Reality-bending visual around it - the pill is CHANGING perception
+- Text: "Perception becomes reality"
+- The pill is glowing with belief/expectation energy
+
+Keep the dark luxury style, the secretive elite feel.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'information-asymmetry': {
-    template: 'brand-collage',
-    concept: `TEXT: "mystery." gold lowercase elegant
-VISUAL: Retro editorial collage - Prada bag partially hidden behind velvet, mystery shadow, luxury texture
-BACKGROUND: Dark museum aesthetic
-EXTRA: Hide information to elevate status. The Prada mystery play.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "HIDE TO SELL MORE"
+- Show a Prada bag (attached) partially hidden behind velvet curtain - only a glimpse visible
+- The mystery makes it MORE desirable
+- Shadow and intrigue around the hidden product
+- Text: "Information asymmetry = status"
+
+Keep the dark luxury style, the secretive elite feel.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.prada],
   },
 
   'visual-shorthand': {
-    template: 'arrow-callout',
-    concept: `TEXT: "stripes." white lowercase elegant
-VISUAL: Big arrow pointing to toothpaste with colored stripes, quality perception visual
-BACKGROUND: White clean
-EXTRA: Visual cues shortcut to quality. Stripes = premium in your brain.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show toothpaste tube with colorful STRIPES coming out
+- Arrow pointing to the stripes: "THIS = PREMIUM"
+- Text at top: "WHY STRIPES SELL"
+- Brain icon showing the shortcut: stripes → quality → trust → buy
+- The stripes are the visual shorthand for premium
+
+Keep the minimal word + icon style, the clean impact.
+16:10 ratio. Don't put the time block.`,
     images: [],
   },
 
   'radical-honesty-play': {
-    template: 'minimal-text',
-    concept: `TEXT: "yes, it's marketing." white lowercase elegant with subtle wink
-VISUAL: Minimal - just the text, tiny wink icon, inside joke energy
-BACKGROUND: White vast expanse
-EXTRA: Admit you're marketing to win. The inside joke effect.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the tweet to: "Yes, this is marketing. Yes, I want your money. Yes, you'll love it anyway."
+- Add a WINK emoji - inside joke energy
+- The honesty is DISARMING
+- Engagement showing massive virality - people respect the honesty
+- Add our monkey mascot (attached) as the avatar - winking, confident smirk
+
+Keep the tweet style, the social proof feel.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'hermes-doctrine': {
-    template: '3d-mascot-dramatic',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "2 YEAR WAITLIST"
+- Show Hermès Birkin bag (attached) under a GLASS MUSEUM DOME - protected like crown jewels
+- Velvet rope barrier in front - you can't just BUY it
+- The bag is GLOWING with golden light like a sacred artifact
+- Text: "Why rejection creates desire"
+- Hermès logo floating elegantly
 
-VISUAL FORMULA: 3D-Mascot-Dramatic (Luxury Variant)
-
-COMPOSITION:
-- 3D RENDERED Hermès Birkin bag as the hero object - photorealistic, luxurious
-- The bag has PRISTINE, GLOWING texture - opposite of weathered, this is PRECIOUS and protected
-- Bag sits under a GLASS MUSEUM DOME/CASE with golden frame
-- VELVET ROPE barrier in front (red velvet, gold posts)
-- Soft golden sparkles/particles floating around the protected bag
-- Small Hermès "H" logo floating elegantly
-
-BACKGROUND: Dark, rich, museum-like - deep navy blue or black with subtle golden light emanating from the bag. Luxurious atmosphere.
-
-TEXT: "2 YEAR WAITLIST" in elegant gold lowercase serif font (like Times or Didot), positioned at TOP. Refined, not shouty.
-
-LIGHTING: Golden rim lighting on the bag making it glow like a treasure. Museum spotlight effect from above. Premium, luxurious feel.
-
-REFERENCE STYLE: Use the 3D dramatic style but for LUXURY instead of destruction - think museum exhibit for a priceless artifact. The bag is treated like the crown jewels.`,
+Keep the dark luxury style, the secretive elite feel.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.hermes],
   },
 
