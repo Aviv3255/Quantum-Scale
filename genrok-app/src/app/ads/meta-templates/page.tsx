@@ -175,22 +175,32 @@ const TemplateCard = memo(function TemplateCard({ template }: { template: MetaAd
   );
 });
 
+// Category tabs configuration
+const categories = [
+  { id: 'all', label: 'All', filter: () => true },
+  { id: 'bfcm', label: 'BFCM/Sales', filter: (t: MetaAdTemplate) => t.category === 'bfcm' },
+  { id: 'digital', label: 'Digital Products/Service/SaaS', filter: (t: MetaAdTemplate) => t.category === 'digital' },
+];
+
 export default function MetaTemplatesPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('all');
 
-  // Filter templates based on search
-  const filteredTemplates = searchQuery
-    ? metaAdTemplates.filter((template) =>
-        template.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : metaAdTemplates;
+  // Filter templates based on category and search
+  const filteredTemplates = metaAdTemplates
+    .filter(categories.find(c => c.id === activeCategory)?.filter || (() => true))
+    .filter((template) =>
+      searchQuery
+        ? template.name.toLowerCase().includes(searchQuery.toLowerCase())
+        : true
+    );
 
   return (
     <DashboardLayout>
       <div className="min-h-screen" style={{ background: '#FFFFFF', margin: '-40px -48px', padding: '48px' }}>
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-10">
+          <div className="text-center mb-6">
             <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-3">
               Meta Ad Templates
             </h1>
@@ -199,8 +209,32 @@ export default function MetaTemplatesPage() {
             </p>
           </div>
 
+          {/* Category Tabs */}
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex bg-[#f5f5f5] rounded-xl p-1 gap-1">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                    activeCategory === cat.id
+                      ? 'bg-white text-[#7435E6] shadow-sm'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                  }`}
+                >
+                  {cat.label}
+                  <span className="ml-2 text-xs opacity-60">
+                    ({cat.id === 'all'
+                      ? metaAdTemplates.length
+                      : metaAdTemplates.filter(cat.filter).length})
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Search Bar */}
-          <div className="mb-10 flex justify-center">
+          <div className="mb-8 flex justify-center">
             <div className="relative w-full max-w-md">
               <Search
                 size={20}
@@ -215,6 +249,11 @@ export default function MetaTemplatesPage() {
               />
             </div>
           </div>
+
+          {/* Results count */}
+          <p className="text-center text-sm text-[var(--text-muted)] mb-6">
+            Showing {filteredTemplates.length} templates
+          </p>
 
           {/* Templates Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
