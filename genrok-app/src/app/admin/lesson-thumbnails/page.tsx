@@ -60,6 +60,9 @@ const imageAssets = {
   sheenaIyengar: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/SheenaIyengar_2011S-embed-removebg-preview.png',
   jensenHuang: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/NVIDIA-Jensen-Huang-removebg-preview.png',
 
+  // Mascot
+  monkey: 'C:\\Projects\\Quantum-Scale\\Monkey images\\0_3.png',
+
   // Brands
   apple: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Apple_logo_black.svg.png',
   nike: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Nike-Logo.png',
@@ -141,7 +144,8 @@ type TemplateType =
   | 'surreal-transformation' // Object melting/morphing/transforming (like package disintegrating, person becoming treasure)
   | 'surreal-split'          // Split composition showing dramatic contrast (exploding head vs calm head)
   | 'surreal-landscape'     // Epic 3D rendered landscape with symbolic elements (mountain with valley)
-  | 'minimal-dark';          // Simple element on pure black background (ultra clean)
+  | 'minimal-dark'           // Simple element on pure black background (ultra clean)
+  | 'reference-based';       // Copy reference image with modifications
 
 interface VisualTemplate {
   id: TemplateType;
@@ -346,6 +350,12 @@ const VISUAL_TEMPLATES: Record<TemplateType, VisualTemplate> = {
     description: 'Simple element on pure black background - ultra clean and professional',
     promptStructure: `YouTube thumbnail, 16:9 aspect ratio. STYLE: Ultra minimal, professional. BACKGROUND: Pure black. LAYOUT: One or two simple elements centered. TEXT: Bold text at top (white or accent color). VISUAL: Single focal element, clean execution, lots of negative space. No clutter, no effects, just clean professional simplicity.`,
   },
+  'reference-based': {
+    id: 'reference-based',
+    name: 'Reference-Based',
+    description: 'Copy reference image exactly with specific modifications',
+    promptStructure: `Copy the reference image EXACTLY with the specified modifications. Keep everything else the same - style, layout, colors, effects. 16:10 ratio. Don't put the time block.`,
+  },
 };
 
 // Function to build full prompt from template + specific concept
@@ -360,31 +370,37 @@ IMPORTANT: Keep it SIMPLE. Maximum 3 main elements. Lots of whitespace. One clea
 };
 
 // Store concept + recommended template for each lesson
-const lessonConceptData: Record<string, { concept: string; images: string[]; template: TemplateType }> = {
+// referenceImage is for 'reference-based' template - the screenshot from Lessons-covers-refferance folder
+const lessonConceptData: Record<string, { concept: string; images: string[]; template: TemplateType; referenceImage?: string }> = {
 
   // ============================================
   // PSYCHOLOGY & COPYWRITING CORE (32 lessons)
   // ============================================
 
   'familiar-surprise-secret': {
-    template: 'brain-cables',
-    concept: `YouTube thumbnail, 16:9 aspect ratio.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "THE FAMILIAR SURPRISE"
+- Replace the brand logos on the brain with: Apple logo, iPhone icon, AirPods icon
+- Replace any person with our monkey mascot (attached) - he's wearing an Apple Store employee blue shirt, looking clever and knowing
 
-Top half of a human head with eyes looking up, the skull opened like a lid revealing a pink brain. White Apple cables (like iPhone charger cables) plug into the brain from an iPhone, AirPods case, and Apple Watch floating nearby.
-
-Background: Clean white with subtle grid paper texture
-Text: "familiar." in lowercase black sans-serif at top
-Style: Exactly like the "Offers" brain cables thumbnail but with Apple products`,
-    images: [imageAssets.apple],
+Keep EVERYTHING else exactly the same - the brain visual, the purple glow, the style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey, imageAssets.apple],
   },
 
   'red-button-effect': {
-    template: 'arrow-callout',
-    concept: `TEXT: "don't press this" lowercase black serif, stacked on left
-VISUAL: Giant glossy red 3D arcade button on right, big curved arrow pointing to it
-BACKGROUND: Clean white
-EXTRA: Tempting, forbidden. The arrow makes it irresistible.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "DON'T PRESS THIS."
+- Replace the person with our monkey mascot (attached) - he's reaching toward a big red button with a mischievous grin, can't resist
+- Add a giant glossy red arcade button in the scene
+
+Keep the red background, the dramatic style, the paper-cut effect.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'fred-method': {
@@ -397,30 +413,44 @@ EXTRA: $100 bills floating around. Simple geometric style.`,
   },
 
   'emotion-decides': {
-    template: 'money-product',
-    concept: `TEXT: "emotion wins." lowercase black at top
-VISUAL: Giant red 3D heart wearing golden crown sitting on pile of $100 bills, tiny gray brain pushed to side
-BACKGROUND: White with grid paper texture
-EXTRA: The heart is the hero. Playful but powerful.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181654.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "EMOTION WINS." in bold
+- Replace both people with Daniel Kahneman (attached) on one side looking wise
+- Replace the hoodie product with a giant red 3D HEART wearing a golden crown
+- Add small gray brain being pushed aside by the heart
+
+Keep the podcast/interview style layout, the professional look.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.danielKahneman],
   },
 
   'gatekeeper-method': {
-    template: 'illustrated-char',
-    concept: `TEXT: "4 DOORS TO THE BRAIN" white bold
-VISUAL: Illustrated head cross-section with 4 small doors on brain, one open with golden light streaming out
-BACKGROUND: Dark charcoal with subtle grain
-EXTRA: Keys floating near doors. Mystery and intrigue.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "4 DOORS TO THE BRAIN"
+- On the brain, add 4 small golden doors instead of brand logos - one door is OPEN with light streaming out
+- Add our monkey mascot (attached) holding a golden key, looking like he knows the secret
+
+Keep the purple brain glow, the dramatic lighting, the premium feel.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'three-second-rule': {
-    template: 'product-table',
-    concept: `TEXT: "3 SECONDS" massive yellow with black outline, "or they leave." white below
-VISUAL: Stopwatch/timer showing 00:03 sitting on wooden table
-BACKGROUND: Dramatic dark/smoky at top, wooden surface at bottom
-EXTRA: Red lightning bolt or urgency icon. High stakes energy.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change "OLD" to "SLOW" with red X
+- Change "NEW" to "3 SEC" with green checkmark
+- Replace the tech logos with: Left side = hourglass/slow clock, Right side = lightning bolt stopwatch showing "00:03"
+- Add our monkey mascot (attached) pointing urgently at the 3 seconds side, looking stressed about time
+
+Keep the comparison layout, the arrows, the grid background.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'science-of-selling': {
@@ -433,11 +463,16 @@ EXTRA: Floating formula elements. Clean tech aesthetic.`,
   },
 
   'persuasion-blueprint': {
-    template: 'arrow-callout',
-    concept: `TEXT: "the persuasion blueprint" lowercase black serif stacked
-VISUAL: Blueprint paper partially unrolled showing diagram, big curved arrow pointing to the reveal
-BACKGROUND: Clean white
-EXTRA: Cialdini photo floating in corner if provided.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "THE PERSUASION BLUEPRINT"
+- Keep the money pyramid but add "6 PRINCIPLES" text on it
+- Replace the hand/figures at top with Robert Cialdini (attached) standing confidently at the peak
+- Add floating icons around: heart, clock, star, handshake, lock, crowd
+
+Keep the money flying, the clean style, the professional look.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.robertCialdini],
   },
 
@@ -460,12 +495,16 @@ EXTRA: Floating geometric lines connecting elements. Apple-level design.`,
   },
 
   'wiifm-principle': {
-    template: 'arrow-callout',
-    concept: `TEXT: "what's in it for ME?" lowercase black, "ME" in yellow
-VISUAL: Hand pointing directly at viewer (Uncle Sam style), big arrow pointing to the hand
-BACKGROUND: Clean white/light gray
-EXTRA: Direct, confrontational. The viewer IS the target.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the text to "WHAT'S IN IT FOR ME?"
+- Replace the person with our monkey mascot (attached) - he's pointing DIRECTLY at the viewer like Uncle Sam, intense eye contact, demanding
+- Make the pointing more aggressive, like "I'm talking to YOU"
+
+Keep the red background, the dramatic paper-cut style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'three-canons-of-craft': {
@@ -487,12 +526,17 @@ EXTRA: Each letter in different color. Infinite loop energy.`,
   },
 
   'damaging-admission': {
-    template: 'arrow-callout',
-    concept: `TEXT: "I was wrong." lowercase black serif, "and that's why you should trust me." smaller below
-VISUAL: Cracked mirror or broken glass with golden light shining through crack
-BACKGROUND: Clean white
-EXTRA: Vulnerability as strength. Arrow pointing to the crack.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "I WAS WRONG." with a cracked effect
+- Replace the banana with a CRACKED MIRROR showing golden light through the crack
+- Add our monkey mascot (attached) looking humble and sincere, hand on heart, admitting a mistake
+- Add small text: "and that's why you should trust me"
+
+Keep the clean layout, the grid background, the modern style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'emotional-precision': {
@@ -1026,26 +1070,17 @@ REFERENCE STYLE: EXACTLY like the "Offers" thumbnail with exposed brain and cabl
   },
 
   'borrowed-trust': {
-    template: 'face-morph',
-    concept: `YouTube thumbnail, 16:10 ratio, 1600x1000px.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181654.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Change the headline to "BORROWED TRUST" in bold white
+- Replace the people with Robert Cialdini (attached) on one side
+- On the other side, add our monkey mascot (attached) in a doctor's white coat with stethoscope, looking trustworthy and authoritative
+- Between them, floating badges: "PhD", "Expert", "Authority"
 
-VISUAL FORMULA: Face-Morph
-
-COMPOSITION:
-- Two versions of Robert Cialdini's face MORPHING/BLENDING together in the center
-- LEFT side: Cialdini looking skeptical/uncertain (representing the customer before)
-- RIGHT side: Cialdini looking confident/trusting (representing customer after borrowing trust)
-- The faces MERGE in the middle with a surreal, distorted transition zone
-- Subtle trust badges/checkmarks floating near the confident side
-
-BACKGROUND: Solid DEEP RED background (#CC0000 or similar) - dramatic, bold, attention-grabbing. No gradients, pure solid color.
-
-TEXT: "borrow it." in simple white lowercase sans-serif font, positioned at TOP of image. Clean, minimal.
-
-LIGHTING: High contrast black and white treatment on the faces, dramatic like a magazine editorial photo.
-
-REFERENCE STYLE: EXACTLY like the "IT WILL ALL CONNECT" Steve Jobs young/old face morph thumbnail - two versions of same face merging together on solid red background with simple white text at top.`,
-    images: [imageAssets.robertCialdini],
+Keep the professional podcast interview style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.robertCialdini, imageAssets.monkey],
   },
 
   'herd-instinct': {
@@ -1085,15 +1120,17 @@ EXTRA: Stop hoping they buy. Guide them with certainty.`,
   },
 
   'certainty-transfer': {
-    template: 'split-brain-scan',
-    concept: `YouTube thumbnail, 16:9 aspect ratio.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172239.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Keep the two brain comparison exactly the same (gray vs colorful)
+- Change labels to "DOUBT" (left, gray) and "CERTAIN" (right, colorful)
+- Add our monkey mascot (attached) between the brains, transferring energy from right to left with his hands glowing
+- Add "CERTAINTY TRANSFER" text at top
 
-Two human brains side by side. Left brain is grayscale/gray (uncertain). Right brain is colorful with heat map colors - oranges, yellows, reds (certain). An arrow points from right to left showing "transfer."
-
-Background: Pure black
-Text: "Before" under left brain, "After" under right brain, white labels
-Style: Exactly like the brain MRI before/after reference thumbnails`,
-    images: [],
+Keep the black background, the medical brain imagery, the scientific look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'conviction-architecture': {
