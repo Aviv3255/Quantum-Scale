@@ -392,13 +392,15 @@ Keep EVERYTHING else exactly the same - the brain visual, the purple glow, the s
 
   'red-button-effect': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    referenceImage: 'Screenshot 2026-01-08 191722.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the text to "DON'T PRESS THIS."
-- Replace the person with our monkey mascot (attached) - he's reaching toward a big red button with a mischievous grin, can't resist
-- Add a giant glossy red arcade button in the scene
+- Make the central object a MASSIVE glossy red arcade button - glowing, pulsing with forbidden energy
+- Text: "DON'T." in huge letters above the button
+- Our monkey mascot (attached) with his finger HOVERING over the button, sweating, can't resist the urge
+- Dark dramatic background with red glow emanating from the button
+- Small text: "You're going to press it anyway"
 
-Keep the red background, the dramatic style, the paper-cut effect.
+Make it feel like the button is CALLING to you. Premium, cinematic, irresistible.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
@@ -524,15 +526,18 @@ Keep the red background, the dramatic paper-cut style.
 
   'three-canons-of-craft': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-17 171322.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "3 TESTS YOUR COPY MUST PASS"
-- Show 3 boxes: First with red X (FAIL), Second with red X (FAIL), Third with green checkmark (PASS)
-- Labels under boxes: "Clear?", "Compelling?", "Credible?"
+- Show 3 GOLDEN GATES/DOORS in a row - copy must pass through all three
+- Gate 1: "CLEAR?" with magnifying glass icon
+- Gate 2: "COMPELLING?" with magnet icon
+- Gate 3: "CREDIBLE?" with badge/seal icon
+- Text at top: "3 GATES YOUR COPY MUST PASS"
+- Our monkey mascot (attached) standing at the entrance, clipboard in hand, judging
 
-Keep the dark background, the red vs green comparison style.
+Premium gold and black aesthetic. Make it feel like elite quality control.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'cpppb-proof-loop': {
@@ -874,16 +879,18 @@ Keep the blue blueprint style.
 
   'geo-announcement-bar': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-18 190218.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "GEO TARGETING"
-- Left box (red): "Generic" showing "Free Shipping" - boring
-- Right box (green): "Personalized" showing "Free Shipping to [YOUR CITY]" - "+67% CVR"
-- Location pin icon in the green box
+- Show TWO ANNOUNCEMENT BARS side by side:
+- Left bar (BORING): "Free Shipping Available" - gray, generic, nobody cares
+- Right bar (MAGIC): "FREE SHIPPING TO NEW YORK! 🗽" - personalized, glowing gold, "+67% CVR" badge
+- A location PIN icon transforming the left into the right
+- Our monkey mascot (attached) pointing at the personalized bar, excited
+- Text: "ONE WORD = +67%"
 
-Keep the dark background, comparison style.
+Make it feel like you're revealing a SECRET one-word change.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'wishlist-effect': {
@@ -915,28 +922,34 @@ Keep the split comparison layout.
 
   'abandoned-cart-recovery': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-18 190255.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "CART RECOVERY"
-- Left box (red): "Email" showing "60% recovery"
-- Right box (green): "AI SMS" showing "85% recovery"
-- Shopping cart icon in both
+- Show an ABANDONED SHOPPING CART in the center, items falling out, looking sad
+- TWO ARMS reaching to save it:
+- Left arm: "EMAIL" - slow, 60% recovery rate, weaker grip
+- Right arm: "AI SMS" - fast, 85% recovery rate, GOLDEN strong grip, WINNER
+- The SMS arm is clearly WINNING, pulling the cart back
+- Text: "SAVE YOUR CARTS"
+- Our monkey mascot (attached) driving the AI SMS arm like a rescue mission
 
-Keep the dark background, comparison style.
+Make it feel like a RESCUE OPERATION. SMS wins.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'pareto-law-ecommerce': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    referenceImage: 'Screenshot 2026-01-08 191745.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "THE PARETO SECRET"
-- Show money pyramid with "5%" tiny group of VIP customers at top
-- "95%" of the money pile below them
-- Add our monkey mascot (attached) as one of the VIP customers at the top, wearing a crown
+- DARK, dramatic, premium aesthetic
+- Our monkey mascot (attached) in a POWERFUL pose above, like a puppet master
+- He's controlling MONEY BAGS below with GOLDEN PUPPET STRINGS attached to his fingers
+- The money bags represent customers - 5 small ones (95%) and 1 GIANT glowing one (5%)
+- Text: "5% CONTROL 95%"
+- The giant money bag is the whale customer, glowing gold
+- Dark cinematic background with spotlight on the puppet master monkey
 
-Keep the money flying, dramatic style.
+Make it feel like a dark revelation. Premium, powerful, controlling.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
@@ -956,16 +969,18 @@ Keep the red background, dramatic style.
 
   'meta-attribution-test': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-18 190436.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "META IS LYING"
-- Left box (red): "Meta Says" with "33% ROAS"
-- Right box (green): "Reality" with "100% ROAS" - showing the hidden 67%
-- Meta logo in the red box
+- Show Meta logo wearing a PINOCCHIO NOSE - the nose is growing!
+- Left side: "META SAYS: 33% ROAS" with suspicious eyes emoji
+- Right side: "REALITY: 100% ROAS" - revealing the HIDDEN 67%
+- Triple Whale logo (attached) as the truth-detector revealing the lie
+- Text: "IS META LYING?"
+- Our monkey mascot (attached) holding a magnifying glass, investigating
 
-Keep the dark background, comparison style.
+Make it feel like you're EXPOSING a secret. Meta isn't telling the full story.
 16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.meta, imageAssets.tripleWhale],
+    images: [imageAssets.meta, imageAssets.tripleWhale, imageAssets.monkey],
   },
 
   'post-purchase-surveys': {
@@ -1009,13 +1024,16 @@ Keep the tweet card style, dark green background.
 
   'swatch-variants': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-17 171356.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "SWATCH TEST"
-- Left box (red): "Text Only" showing color names written out
-- Right box (green): "Image Swatches" showing actual color dots/images "+3.4% CVR"
+- Show a PREMIUM product configurator - sleek phone or watch on display
+- One side shows boring text labels: "Red, Blue, Black" in plain text
+- Other side shows BEAUTIFUL color swatches - glossy circles of actual colors
+- Big badge: "+3.4% CVR" in green
+- Text: "WORDS VS VISUALS"
+- Make the visual swatches look irresistibly clickable
 
-Keep the dark background, comparison style.
+Premium product photography style. Clean, modern, Apple-esque.
 16:10 ratio. Don't put the time block.`,
     images: [],
   },
@@ -1026,16 +1044,17 @@ Keep the dark background, comparison style.
 
   'buy-now-button': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-17 171439.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "REMOVE THIS BUTTON"
-- Left box (red): "With Buy Now" showing the button
-- Right box (green): "Without" showing "+15.9% REVENUE"
-- Counterintuitive result - removing increased sales
+- Show a "BUY NOW" button being DELETED - trash can icon, red X through it
+- Our monkey mascot (attached) aggressively removing the button with a crowbar
+- Money EXPLODING out from where the button was removed: "+15.9% REVENUE"
+- Text: "DELETE THIS BUTTON"
+- Counterintuitive visual - removing something = more money
 
-Keep the dark background, comparison style.
+Dark dramatic background. Make it feel rebellious and smart.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'rounded-button': {
@@ -1053,16 +1072,18 @@ Keep the minimal white background, clean style.
 
   'best-shopify-theme': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-17 171528.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "BEST SHOPIFY THEME"
-- Left box (red): "Other Themes" showing "2-3% CVR"
-- Right box (green): "The Winner" showing "34.9% CVR" with golden trophy icon
+- Change the headline to "THE 34.9% THEME"
+- Show a ROYAL CROWN sitting on top of a Shopify store mockup - the winning theme
+- Left side: pile of rejected themes (gray, crossed out, "2-3% CVR")
+- Right side: THE WINNER theme glowing gold, wearing the crown, "34.9% CVR"
+- Our monkey mascot (attached) placing the crown on the winner, looking like a judge
 - Shopify logo visible
 
-Keep the dark background, comparison style.
+Make it feel like a CORONATION. The best theme being crowned.
 16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.shopify],
+    images: [imageAssets.shopify, imageAssets.monkey],
   },
 
   'coupon-leaking': {
@@ -1081,15 +1102,17 @@ Keep the red background, dramatic urgent style.
 
   'gillette-model': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2025-12-17 171654.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "$2 RAZOR" showing cheap razor handle
-- Right side: "$40 BLADES" showing expensive blade refills with money pile
-- Arrow showing the real profit is on the right side
+- Show a TRAP - beautiful shiny razor handle in the center looking cheap ($2)
+- MONEY STRINGS attached to the razor, leading to EXPENSIVE blade refills stacked like gold bars
+- Our monkey mascot (attached) as the mastermind behind the trap, rubbing hands together, evil genius grin
+- Text: "THE $2 TRAP"
+- Small pile of razor blades = mountain of money
 
-Keep the split comparison layout.
+Make it feel like you're revealing the GENIUS behind the business model.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'best-niches-2026': {
@@ -1108,14 +1131,16 @@ Keep the luxurious dramatic style.
 
   'two-meta-rules': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    referenceImage: 'Screenshot 2025-12-17 171741.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the blueprint to show "2 META RULES" diagram
-- Show two golden commandment tablets with "RULE 1" and "RULE 2"
-- Meta logo at the top
-- Replace the person with our monkey mascot (attached) holding the tablets like Moses
+- Show TWO MASSIVE GOLDEN GATES - the only path to Meta success
+- Gate 1: "SPECIAL ENOUGH" with sparkle icon
+- Gate 2: "NOT TOO SPECIFIC" with target icon
+- Products trying to pass through - some getting REJECTED (red X), some PASSING (green check)
+- Meta logo glowing at the end of the path
+- Our monkey mascot (attached) as the gatekeeper, arms crossed, deciding who passes
 
-Keep the blue blueprint style.
+Make it feel EXCLUSIVE. These are the 2 rules that decide if you win or lose.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.meta, imageAssets.monkey],
   },
@@ -1188,28 +1213,34 @@ Keep the podcast quote style, teal background.
 
   'pet-rock-story': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    referenceImage: 'Screenshot 2025-12-17 171901.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "$30 MILLION FROM ROCKS"
-- Replace the money pyramid with a simple gray rock wearing a tiny crown, sitting on pile of money
-- Add our monkey mascot (attached) next to the rock looking amazed and confused
+- Show a STUPID GRAY ROCK in the center - literally just a rock
+- The rock is wearing a tiny GOLDEN CROWN and sitting on a THRONE made of $100 bills
+- Money raining down around it like confetti
+- Text: "$30,000,000" with arrow pointing to the rock
+- Small text: "from a rock."
+- Our monkey mascot (attached) bowing down to the rock, looking completely baffled
 
-Keep the money flying, dramatic style.
+Make it ABSURD. The contrast between worthless rock and massive money is the joke.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
 
   'starbucks-ltv': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    referenceImage: 'Screenshot 2025-12-17 171938.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "$14,099 PER CUSTOMER"
-- Replace the money pyramid with a Starbucks cup sitting on pile of $100 bills
-- Starbucks logo clearly visible
+- Show a SINGLE Starbucks coffee cup in the center, GLOWING like it's made of gold
+- Above the cup: "$14,099" in massive bold letters
+- The cup has golden aura/rays emanating from it
+- Show a timeline below: "1 coffee → 2 coffees → 1000 coffees → $14,099"
+- Starbucks logo (attached) prominently displayed
+- Our monkey mascot (attached) holding the cup, looking at it like it's a magic money printer
 
-Keep the money flying, dramatic style.
+Make the viewer understand: ONE customer = $14,099 lifetime value.
 16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.starbucks],
+    images: [imageAssets.starbucks, imageAssets.monkey],
   },
 
   'killer-headlines': {
@@ -1241,41 +1272,48 @@ Keep the luxurious dramatic style.
 
   'golden-lookalike': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-17 172004.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "GOLDEN LOOKALIKE"
-- Left box (red): "Normal LLA" showing "$30+ CAC"
-- Right box (green): "5% Spenders LLA" showing "$8-10 CAC" with golden crown
-- Meta logo visible
+- Show a GOLDEN TARGET/BULLSEYE in the center - this is the golden audience
+- Around the target: scattered gray/regular audience dots (messy, expensive)
+- In the center gold zone: concentrated golden dots (your whales, cheap to acquire)
+- Text: "THE 5% GOLDMINE"
+- Meta logo (attached) floating
+- Numbers contrast: "$30 CAC" on the outside gray zone, "$8 CAC" in the golden center
+- Our monkey mascot (attached) with a golden bow and arrow, aiming at the bullseye
 
-Keep the dark background, comparison style.
+Make it feel like you're revealing a SECRET targeting hack.
 16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.meta],
+    images: [imageAssets.meta, imageAssets.monkey],
   },
 
   'cbo-vs-abo': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2025-12-17 172030.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "CBO" with graph showing consistent budget distribution
-- Right side: "ABO" with graph showing manual control
-- Both have Meta logo
-- Add "WHICH ONE?" text at top
+- Show TWO BOXING GLOVES in an epic face-off
+- Left glove (BLUE): "CBO" - automated, AI-controlled, "SCALING" written on it
+- Right glove (RED): "ABO" - manual control, precision, "TESTING" written on it
+- Meta logo in the center between them
+- Text at top: "THE FIGHT YOU'RE GETTING WRONG"
+- Our monkey mascot (attached) as the referee, whistle in mouth, ready to call the winner
 
-Keep the split comparison layout.
+Make it feel like an EPIC BATTLE. Two strategies going head to head.
 16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.meta],
+    images: [imageAssets.meta, imageAssets.monkey],
   },
 
   'geo-personalization': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    referenceImage: 'Screenshot 2025-12-17 172100.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the tweet to "Hello [YOUR CITY]. This one change increased CVR by 67%."
-- Replace the person with our monkey mascot (attached) looking clever
-- Add location pin icon near the tweet
+- Show a WORLD MAP with glowing location pins dropping onto it
+- Each pin has a personalized message: "Free Shipping to NEW YORK", "Hey LONDON!", "SYDNEY Special"
+- The pins are GOLDEN and landing with impact sparkles
+- Text: "+67% CVR" in massive letters
+- Our monkey mascot (attached) dropping the pins from above like a targeting god, looking strategic
 
-Keep the tweet card style, dark green background.
+Make it feel like PRECISION TARGETING. Location = conversions.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
@@ -1353,29 +1391,33 @@ Keep the luxurious dramatic style.
 
   'micro-yes-mastery': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    referenceImage: 'Screenshot 2025-12-17 172150.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "YES. YES. YES."
-- Replace the money pyramid with golden stepping stones going UP - each stone says "yes" getting bigger
-- At the TOP: massive "BUY" button glowing
-- Add our monkey mascot (attached) climbing the steps victoriously, almost at the top
+- Show a DOMINO CHAIN reaction - small "yes" dominos knocking over increasingly LARGER ones
+- First domino: tiny "yes" (newsletter signup)
+- Middle dominos: growing "YES" (add to cart, enter email)
+- Final MASSIVE domino: "BUY NOW" crashing down into a pile of money
+- Text: "THE YES LADDER"
+- Our monkey mascot (attached) at the beginning, flicking the first tiny domino with one finger, smirking
 
-Keep the dramatic money flying, epic scale.
+Make it feel INEVITABLE. Small yeses lead to the BIG yes.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
 
   'authority-over-hope': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2025-12-17 172357.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "HOPE" with crossed fingers, weak energy, faded colors - LOSER
-- Right side: "AUTHORITY" with commanding pointed finger, golden glow - WINNER
-- Text at top: "STOP HOPING."
+- Left side: WEAK figure with crossed fingers, praying gesture, "please buy..." energy, GRAY and pathetic
+- Right side: POWERFUL figure standing like a general, commanding presence, pointing finger saying "BUY.", GOLDEN glow
+- The authority side has money flowing toward it, the hope side is empty
+- Text: "LEADERS DON'T BEG"
+- Our monkey mascot (attached) on the authority side, wearing a crown, looking commanding
 
-Keep the split comparison, make authority side DRAMATICALLY more powerful.
+Make the contrast BRUTAL. Hope = weakness. Authority = power.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'certainty-transfer': {
@@ -1407,14 +1449,16 @@ Keep the blue blueprint style, professional teaching vibe.
 
   'digital-pause-power': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    referenceImage: 'Screenshot 2025-12-18 190626.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the quote to just "..." (three dots)
-- Replace the person with our monkey mascot (attached) - arms crossed, confident SILENCE, intense eye contact
-- Speech bubble with just "..." floating near him
-- Add text below: "silence sells"
+- Show our monkey mascot (attached) with arms crossed, intense confident stare at the camera
+- MASSIVE speech bubble with just "..." (three dots) - nothing else
+- The silence is DEAFENING - visual tension in the air
+- Text below: "SILENCE SELLS"
+- Dark dramatic background, spotlight on the monkey
+- The vibe is: I said nothing, and they bought everything
 
-Keep the podcast quote style, teal background. Make the silence feel POWERFUL.
+Make the PAUSE feel POWERFUL. The silence is the strategy.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
@@ -1434,14 +1478,16 @@ Keep the red background, urgent dramatic energy. Make it feel like PANIC.
 
   'framing-effect-mastery': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2025-12-17 172423.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: SAME watch on cheap plastic stand, fluorescent lighting - "$50"
-- Right side: SAME watch on velvet, golden lighting, luxury setting - "$5,000"
-- Text at top: "SAME WATCH."
-- Add Daniel Kahneman (attached) floating in corner looking wise
+- Show IDENTICAL DIAMOND in two different settings:
+- Left: Diamond on newspaper, harsh lighting, "$50" price tag, looks like costume jewelry
+- Right: SAME diamond on black velvet, spotlight, "$50,000" price tag, looks priceless
+- The diamonds are LITERALLY the same size - but perception is everything
+- Text: "PERCEPTION IS PRICE"
+- Daniel Kahneman (attached) in the corner with knowing expression
 
-Keep the split comparison. Make the contrast SHOCKING - identical product, wildly different perception.
+Make viewer realize: THE FRAME changes EVERYTHING. Same thing, 1000x price.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.danielKahneman],
   },
@@ -1475,43 +1521,51 @@ Keep the red background, make it feel like IMMINENT DISASTER.
 
   'pain-escalation-ladder': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    referenceImage: 'Screenshot 2025-12-17 172512.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "HURT THEM. HELP THEM."
-- Replace the money pyramid with a PAIN THERMOMETER - graduated red scale from "mild discomfort" to "AGONY" at top
-- Each level has money flying off - more pain = more money leaving
-- Add our monkey mascot (attached) at the TOP of the thermometer, pushing the mercury HIGHER, looking ruthless but strategic
-- Small text: "The ethical way"
+- Show a STAIRCASE made of PAIN LEVELS going upward:
+- Step 1 (bottom): "Mild annoyance" - small flame
+- Step 2: "Frustration" - medium flame
+- Step 3: "Burning problem" - large flame
+- Step 4 (top): "URGENT PAIN" - EXPLOSION of fire
+- At the top of the stairs: a door labeled "SOLUTION" with golden light behind it
+- Money flows MORE as pain increases - pain = purchase urgency
+- Our monkey mascot (attached) guiding someone UP the stairs with a torch
 
-Keep the dramatic money flying, the epic scale.
+Make it feel STRATEGIC. Escalate pain, provide relief.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
 
   'telescope-flip': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2025-12-17 173654.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "97% DO THIS" with telescope pointed WRONG WAY (small end to eye, looking at tiny blurry world)
-- Right side: "FLIP IT" with telescope CORRECT (big end to eye, seeing clear giant opportunity)
-- Add our monkey mascot (attached) on the RIGHT side, looking through telescope correctly, one hand pointing at a pot of gold he can clearly see
-- Red X on left, Green checkmark on right
+- Show a TELESCOPE being FLIPPED/ROTATED in the center - dramatic rotation motion
+- Left: "WRONG WAY" - person looking through small end, sees TINY blurry world, looks confused
+- Right: "RIGHT WAY" - our monkey mascot (attached) looking through big end, sees MASSIVE opportunity/treasure
+- Arrow showing the 180° flip
+- Text: "97% HOLD IT WRONG"
+- The correct side shows GOLD and opportunity, the wrong side shows confusion
 
-Keep the comparison split layout, the dramatic effect.
+Make it feel like a REVELATION. The simple flip changes everything.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
 
   'trust-blueprint': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    referenceImage: 'Screenshot 2025-12-18 185133.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the blueprint to show "INSTANT TRUST" architecture
-- Blueprint shows: CREDIBILITY → AUTHORITY → LIKEABILITY → PROOF → TRUST (connected with lines/arrows)
-- Replace the person with Robert Cialdini (attached) - standing like an architect pointing at the blueprint
-- Add a glowing "TRUST" badge in the center of the blueprint, like a core processor
+- Show a SHIELD being BUILT in layers:
+- Layer 1 (foundation): "CREDIBILITY" - solid base
+- Layer 2: "AUTHORITY" - badge icon
+- Layer 3: "PROOF" - star reviews
+- Layer 4 (top): "TRUST" glowing golden crown
+- Robert Cialdini (attached) standing next to the completed shield like an architect presenting his masterpiece
+- Text: "BUILD INSTANT TRUST"
 
-Keep the blue blueprint background, the technical diagram style.
+Make it feel like you're learning the SECRET architecture of trust.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.robertCialdini],
   },
@@ -1608,16 +1662,17 @@ Keep the tweet style, the social proof feel.
 
   'decoy-effect': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-18 185328.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Show THREE PRICING CARDS side by side:
-  - SMALL: $9 (basic) - gray, ignored
-  - MEDIUM: $14 (decoy) - labeled "THE DECOY" with arrow pointing to it, crossed out, "useless"
-  - LARGE: $15 (premium) - GLOWING GREEN, "+43% SALES" badge, winner
-- Add our monkey mascot (attached) behind the cards like a magician, pulling strings to make people choose the expensive one
-- Arrows showing customer attention flowing: Small → SKIP Decoy → Land on Premium
+- Show THREE POPCORN BUCKETS (movie theater classic):
+- SMALL: $3 - tiny, pathetic
+- MEDIUM: $6.50 - awkward size, "THE TRAP" written above with arrow, crossed out
+- LARGE: $7 - MASSIVE, glowing gold, "+43% SALES" badge
+- Customer eyes drawn to the LARGE because the medium makes it look like a deal
+- Our monkey mascot (attached) as the movie theater vendor, pointing at the large with a wink
+- Text: "THE USELESS OPTION"
 
-Keep the metrics comparison box style, the data-driven look.
+Make it feel like you're revealing the psychology TRICK behind pricing.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
@@ -1639,16 +1694,18 @@ Keep the minimal word + icon style, the clean impact.
 
   'paradox-of-choice': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2025-12-18 185553.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "24 OPTIONS" with 24 tiny jam jars crammed together chaotically, person looking OVERWHELMED, red X, "-90% SALES"
-- Right side: "6 OPTIONS" with 6 jam jars neatly spaced, person confidently choosing, green checkmark, "+340% SALES"
-- Add Sheena Iyengar (attached) in the middle, pointing at the research, looking like a professor
-- Text at top: "LESS = MORE"
+- Show TWO TABLES with JAM JARS:
+- Left table: 24 jars CRAMMED together chaotically, person standing frozen, brain exploding, "0% BOUGHT"
+- Right table: 6 jars neatly displayed, person confidently grabbing one, "$$$" flying, "+340% SALES"
+- Sheena Iyengar (attached) in lab coat presenting the experiment results
+- Text: "THE JAM EXPERIMENT"
+- Our monkey mascot (attached) at the 6-jar table happily shopping
 
-Keep the OLD vs NEW comparison layout, the split screen drama.
+Make it feel like a SCIENTIFIC BREAKTHROUGH. Fewer options = more sales.
 16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.sheenaIyengar],
+    images: [imageAssets.sheenaIyengar, imageAssets.monkey],
   },
 
   // ============================================
@@ -1672,31 +1729,33 @@ Keep the red dramatic background, the apocalyptic feel.
 
   'fly-in-the-urinal': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2025-12-18 185720.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Show a urinal with a TINY FLY etched in the center (the famous Amsterdam airport design)
-- Left box: "BEFORE" - splashing, mess, -80% accuracy
-- Right box: "AFTER" - clean, targeted, "+80% ACCURACY"
-- Add our monkey mascot (attached) pointing at the tiny fly with a magnifying glass, looking amazed
-- Text at top: "THE $1 FIX"
+- Show a MAGNIFYING GLASS zooming in on a TINY FLY STICKER
+- The fly is small but POWERFUL - arrows showing all attention focused on it
+- Before/After split: "BEFORE" side messy, "AFTER" side perfectly clean
+- "+80% ACCURACY" badge glowing
+- Text: "THE $1 NUDGE"
+- Our monkey mascot (attached) holding the magnifying glass, looking AMAZED at how something so small works so well
 
-Keep the metrics comparison box style, the data-driven look.
+Make it feel like discovering a TINY detail with MASSIVE impact.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
 
   'thirty-two-violinist': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2025-12-18 185921.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "SUBWAY" - violinist playing in dirty tunnel, people walking past ignoring, "$32" earnings, RED
-- Right side: "CONCERT HALL" - SAME violinist on grand stage, golden lights, standing ovation, "$1,000,000" ticket sales, GREEN
-- Text at top: "SAME PERSON. SAME MUSIC."
-- Show it's the IDENTICAL performer - context changes everything
+- Left: DIRTY SUBWAY - violinist in shadows, people rushing past ignoring, tip jar with "$32"
+- Right: GRAND CONCERT HALL - SAME violinist in spotlight, standing ovation, orchestra, "$1,000,000 TICKETS SOLD"
+- A DOTTED LINE connecting the two showing it's the SAME PERSON
+- Text: "SAME VIOLIN. SAME MUSIC."
+- Our monkey mascot (attached) in the audience of the concert hall, clapping
 
-Keep the OLD vs NEW comparison layout, the split screen drama.
+Make viewer realize: CONTEXT IS EVERYTHING. Same talent, wildly different results.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'invisible-influence': {
@@ -1729,30 +1788,31 @@ Keep the minimal word + icon style, the clean impact.
 
   'cost-of-standing-still': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    referenceImage: 'Screenshot 2025-12-18 190055.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "THE COST OF DOING NOTHING"
-- Replace the money pyramid with money DRAINING DOWNWARD - inverted pyramid of cash flowing away
-- Add a person standing still, frozen, while money flies AWAY from them
-- Big red countdown timer: "EVERY DAY YOU WAIT: -$847"
-- Add our monkey mascot (attached) trying to grab the flying money, looking panicked
+- Show a person FROZEN like a statue, covered in cobwebs and dust
+- Money is FLYING AWAY from them in all directions - $100 bills escaping
+- A red timer/clock above showing time passing: "DAY 1... DAY 30... DAY 365..."
+- Text: "-$30,000/YEAR OF WAITING"
+- Our monkey mascot (attached) desperately trying to catch the flying money, reaching out
 
-Keep the dramatic money visual, but it's LEAVING not coming.
+Make it feel URGENT. Every second you wait = money lost.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.monkey],
   },
 
   'unity-principle': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    referenceImage: 'Screenshot 2025-12-18 190144.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the quote to "ONE WORD CHANGES EVERYTHING"
-- Show two people on opposite sides MERGING into one unified figure in the center
-- The word "WE" massive and golden between them, acting like a magnet pulling them together
-- Replace any person with Robert Cialdini (attached) on one side
-- Small text: "7th principle of persuasion"
+- Show TWO FIGURES far apart on opposite sides
+- In the CENTER: the word "WE" in MASSIVE golden letters, glowing like a sun
+- Golden lines/beams connecting the figures THROUGH the word "WE"
+- The figures are being PULLED together by the word
+- Robert Cialdini (attached) presenting this as his "7th principle"
+- Text: "THE SECRET 7TH PRINCIPLE"
 
-Keep the podcast quote style, the professional look.
+Make it feel like discovering the FINAL piece of the persuasion puzzle.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.robertCialdini],
   },
@@ -1823,17 +1883,18 @@ Keep the dramatic money visual, the urgent feel.
 
   'price-chunking-yesloop': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    referenceImage: 'Screenshot 2025-12-18 190731.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "YES. YES. YES. = 3X AOV"
-- Show a BIG scary price "$597" being BROKEN into golden stepping stones: "$1.99/day"
-- Each stepping stone has "YES" written on it, leading up like stairs
-- At the top of the stairs: "SOLD!" in green
-- Customer walking up the yes-stairs easily
+- Show a SCARY PRICE "$597" as a massive mountain/wall blocking the path
+- Then show it CRUMBLING into small chunks: "$1.99/day" stepping stones
+- Customer walking easily across the small chunks toward "SOLD!"
+- Our monkey mascot (attached) with a hammer, breaking the big price into chunks
+- Text: "CHUNK IT = 3X AOV"
+- Each chunk has "YES" written on it
 
-Keep the dramatic money flying, the epic scale.
+Make the BIG price feel scary, but the chunks feel EASY.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'objection-destroyer': {
@@ -1886,16 +1947,17 @@ Keep the dramatic money flying, the multiplication visual.
 
   'bottom-up-brand': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2026-01-08 181805.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "CORPORATION" - sterile logo, top-down pyramid, customers at bottom being pushed DOWN, gray/cold
-- Right side: "MOVEMENT" - community raising flags together, building UP from grassroots, warm/energetic
-- Text at top: "BRANDS DIE. MOVEMENTS LIVE."
-- The movement side has more people, more energy, more passion
+- Left: CORPORATE PYRAMID - cold, gray, executives at top, customers at bottom being CRUSHED
+- Right: MOVEMENT - people holding flags, building UPWARD together, fire and passion, golden glow
+- The movement side has 10x more people, energy, LIFE
+- Text: "BUILD A MOVEMENT"
+- Our monkey mascot (attached) leading the movement side, flag in hand, rallying the troops
 
-Keep the OLD vs NEW comparison layout, the split screen drama.
+Make the contrast BRUTAL. Corporations die. Movements live forever.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'halo-serial-position': {
@@ -1915,15 +1977,16 @@ Keep the minimal word + icon style, the clean impact.
 
   'ikea-effect': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    referenceImage: 'Screenshot 2026-01-08 181840.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left box: "PRE-BUILT" - assembled furniture, price tag "$100", looks ordinary
-- Right box: "YOU BUILT IT" - same furniture but with DIY assembly visual, price tag "$163" BUT customer LOVES IT, glowing with pride
+- Show an IKEA bookshelf being assembled - Allen key, screws, instructions visible
+- The ASSEMBLED version is GLOWING with pride and love hearts around it
+- Our monkey mascot (attached) proudly standing next to HIS creation, sweaty but triumphant, Allen key in hand
+- Text: "I BUILT THIS = +63% VALUE"
 - IKEA logo (attached) floating
-- Text at top: "WHY DIY = +63% VALUE"
-- Add our monkey mascot (attached) proudly holding an Allen key next to his built furniture
+- Price comparison: Pre-made "$100" vs Self-built "PRICELESS (to them)"
 
-Keep the metrics comparison box style, the data-driven look.
+Make it feel like the JOY of creating something yourself.
 16:10 ratio. Don't put the time block.`,
     images: [imageAssets.ikea, imageAssets.monkey],
   },
@@ -1945,16 +2008,17 @@ Keep the minimal word + icon style, the clean impact.
 
   'jakobs-law': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2026-01-08 181904.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "UNIQUE" checkout - confusing layout, weird buttons, customer looking frustrated, RED X, "-67% conversions"
-- Right side: "FAMILIAR" checkout - Amazon-style (attached) layout, customer breezing through, GREEN check, "+67% conversions"
-- Text at top: "STOP BEING CREATIVE"
-- Amazon logo on the winning side
+- Left: "CREATIVE" checkout page - confusing, unique, weird layout - person with question marks, looking LOST
+- Right: "AMAZON STYLE" checkout - familiar, simple, Amazon-like - person breezing through, dollar signs flying
+- Text: "STOP BEING UNIQUE"
+- Amazon logo (attached) on the winning side as the template to copy
+- Our monkey mascot (attached) dragging people from the confusing side to the familiar side
 
-Keep the OLD vs NEW comparison layout, the split screen drama.
+Make it feel COUNTERINTUITIVE. Creativity kills conversions.
 16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.amazon],
+    images: [imageAssets.amazon, imageAssets.monkey],
   },
 
   'gaze-direction': {
@@ -1975,32 +2039,33 @@ Keep the podcast quote style, the professional look.
 
   'five-second-test': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183115.png',
+    referenceImage: 'Screenshot 2026-01-08 181933.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left side: "FAIL" - blurry, chaotic website, visitor looks confused, "What is this??" thought bubble, RED
-- Right side: "PASS" - crystal clear website, visitor instantly gets it, "I want this!" thought bubble, GREEN
-- Big timer in the middle: "5 SEC"
-- Text at top: "5 SECONDS TO WIN OR LOSE"
+- Show a STOPWATCH frozen at "5" in the center - dramatic, ticking
+- Left: "CONFUSING" site - visitor with "???" thought bubble, bouncing away, RED X
+- Right: "CLEAR" site - visitor with "I NEED THIS!" thought bubble, clicking buy, GREEN check
+- Text: "5 SECONDS. WIN OR LOSE."
+- Our monkey mascot (attached) holding the stopwatch like a referee, ready to make the call
 
-Keep the OLD vs NEW comparison layout, the split screen drama.
+Make it feel like a RACE. You have 5 seconds to make them understand.
 16:10 ratio. Don't put the time block.`,
-    images: [],
+    images: [imageAssets.monkey],
   },
 
   'speed-equals-trust': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    referenceImage: 'Screenshot 2026-01-08 182129.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "-$1.7 BILLION (0.1 SEC)"
-- Show a LOADING SPINNER/BAR stuck at 99% - frozen, not moving
-- Money DRAINING out from underneath the loading bar
-- Amazon logo (attached) - this is their data
-- Text: "0.1 second delay = -1% sales"
-- The loading bar is HEMORRHAGING money
+- Show a LOADING BAR stuck at 99% - frozen, buffering, spinning wheel of death
+- Money is POURING OUT underneath the loading bar like a broken pipe
+- "-$1.7 BILLION" in red, dramatic letters
+- Small text: "every 0.1 second = -1% sales"
+- Amazon logo (attached) as the source of this data
+- Our monkey mascot (attached) trying to plug the leak, money escaping through his fingers
 
-Keep the dramatic money visual, but money is LEAVING.
+Make it feel like EVERY MILLISECOND COSTS YOU MONEY.
 16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.amazon],
+    images: [imageAssets.amazon, imageAssets.monkey],
   },
 
   'imperceptible-nudge': {
@@ -2113,12 +2178,20 @@ Keep the dark luxury style, the secretive elite feel.
   },
 
   'hero-mechanism': {
-    template: 'split-screen',
-    concept: `TEXT: "$12 vs $399" white bold dramatic
-VISUAL: Split - cheap generic fitness tracker (left) vs premium Oura ring on velvet (right), Oura logo
-BACKGROUND: Cheap plastic left, luxury dark right
-EXTRA: Why Oura Ring costs $399 vs $12 knockoff. The $4,225 question.`,
-    images: [imageAssets.oura],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182152.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show TWO RINGS side by side in DRAMATIC contrast:
+- Left: CHEAP $12 knockoff fitness ring on cheap plastic, harsh fluorescent lighting, looks like junk
+- Right: PREMIUM Oura Ring on black velvet, golden spotlight, looks like jewelry worth $1000
+- Both track the same things - but one is WORTHLESS, one is DESIRED
+- Text: "$12 vs $399"
+- Oura logo (attached) on the premium side glowing
+- Our monkey mascot (attached) looking confused at why people pay 30x more
+
+Make it feel like a REVELATION. Same function, wildly different value.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.oura, imageAssets.monkey],
   },
 
   'scammer-playbook-good': {
@@ -2369,21 +2442,35 @@ EXTRA: Dual tracking is now mandatory. CAPI + Pixel setup.`,
   },
 
   'meta-andromeda': {
-    template: 'illustrated-char',
-    concept: `TEXT: "andromeda." white lowercase elegant
-VISUAL: Meta logo transforming into cosmic AI brain, galaxy/andromeda imagery, neural network visualization
-BACKGROUND: Deep space purple gradient with stars
-EXTRA: How to operate under Meta's new AI era. The Andromeda brain.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182304.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show META LOGO in the center TRANSFORMING into a COSMIC AI BRAIN
+- Andromeda galaxy swirling around it - purple, cosmic, powerful
+- Neural network lines flowing from the brain like tentacles
+- Text: "THE ANDROMEDA ERA"
+- Meta logo (attached) morphing into something larger, more intelligent
+- Our monkey mascot (attached) looking up at the cosmic brain in awe, realizing the game has changed
+
+Make it feel COSMIC. Meta's AI is becoming something bigger.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.meta, imageAssets.monkey],
   },
 
   'creative-volume-2026': {
-    template: 'money-product',
-    concept: `TEXT: "40-70 WEEKLY" yellow bold ALL CAPS
-VISUAL: Phone sitting on pile of creative thumbnails/money, explosion of ad content, Meta logo floating
-BACKGROUND: Dark dramatic gradient
-EXTRA: 40-70 creatives weekly for Andromeda. Volume at scale.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182542.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
+- Show a FACTORY/CONVEYOR BELT producing AD CREATIVES at HIGH SPEED
+- Creatives are flying off the belt: 40, 50, 60, 70 per week
+- Stack of creatives piling up like money
+- Text: "40-70 CREATIVES/WEEK"
+- Meta logo (attached) as the machine that needs to be FED
+- Our monkey mascot (attached) operating the machine, pressing buttons, working hard
+
+Make it feel like a PRODUCTION LINE. Volume is the new game.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.meta, imageAssets.monkey],
   },
 
   'product-reviews-test': {
