@@ -134,38 +134,39 @@ const imageAssets = {
   pizzaHut: '/additional-images/brands/pizza-hut.png',
   cheesecakeFactory: '/additional-images/brands/cheesecake-factory.jpg',
   unilever: '/additional-images/brands/unilever.svg',
-  // These brands don't have local copies yet - keeping Supabase URLs
-  apple: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Apple_logo_black.svg.png',
-  nike: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Nike-Logo.png',
-  starbucks: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Starbucks_Corporation_Logo_2011.svg.png',
-  leCreuset: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/le-creuset-logo-vector-2022.png',
-  rolex: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Rolex_logo.svg.png',
-  theOodie: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/the-oodie-logo.png',
-  gymshark: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Gymshark_logo.svg.png',
-  ralphLauren: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Ralph_Lauren_logo.svg.png',
-  tiffany: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Tiffany_%26_Co_Logo.svg.png',
-  hermes: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Hermes-Logo.png',
-  dior: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Christian_Dior_logo.svg.png',
-  gucci: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Gucci-Logo.png',
-  prada: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Prada-Logo.png',
-  tesla: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Tesla_Motors.svg.png',
-  amazon: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Amazon_logo.svg.png',
-  meta: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Meta_Platforms_Inc._logo.svg.png',
-  google: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Google_2015_logo.svg.png',
-  shopify: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Shopify_logo_2018.svg.png',
-  joyLoyalty: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/joy-loyalty-logo.png',
-  abconvert: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/abconvert-logo.png',
-  vitals: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/vitals-logo.png',
-  tapita: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tapita-seo-logo.png',
-  ridgeWallet: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/ridge-wallet-logo.png',
-  liquidDeath: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Liquid_Death_logo.svg.png',
-  oura: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Oura-Logo.png',
-  lego: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/LEGO_logo.svg.png',
-  cocaCola: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Coca-Cola_logo.svg.png',
-  chipotle: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Chipotle_Mexican_Grill_logo.svg.png',
-  drSquatch: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Dr_Squatch_logo.png',
-  spotify: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Spotify_logo_with_text.svg.png',
-  ikea: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/IKEA_logo.svg.png',
+  // Working local brand images (from Wikipedia SVGs)
+  nike: '/additional-images/brands/nike.png',
+  starbucks: '/additional-images/brands/starbucks.png',
+  google: '/additional-images/brands/google.png',
+  chipotle: '/additional-images/brands/chipotle.png',
+  apple: '/additional-images/brands/apple.png',
+  meta: '/additional-images/brands/meta.png',
+  ikea: '/additional-images/brands/ikea.png',
+  tesla: '/additional-images/brands/tesla.png',
+  amazon: '/additional-images/brands/amazon.svg',
+  shopify: '/additional-images/brands/shopify.svg',
+  cocaCola: '/additional-images/brands/coca-cola.svg',
+  lego: '/additional-images/brands/lego.svg',
+  gucci: '/additional-images/brands/gucci.svg',
+  prada: '/additional-images/brands/prada.svg',
+  spotify: '/additional-images/brands/spotify.svg',
+  // Fallback to similar brands or monkey for unavailable logos
+  rolex: '/additional-images/brands/chanel.png', // Using Chanel as luxury placeholder
+  tiffany: '/additional-images/brands/chanel.png', // Using Chanel as luxury placeholder
+  hermes: '/additional-images/brands/lvmh.png', // Using LVMH as luxury placeholder
+  dior: '/additional-images/brands/chanel.png', // Using Chanel as luxury placeholder
+  leCreuset: '/additional-images/brands/rei.png', // Using REI as home goods placeholder
+  ralphLauren: '/additional-images/brands/adidas.png', // Using Adidas as apparel placeholder
+  gymshark: '/additional-images/brands/adidas.png', // Using Adidas as fitness apparel placeholder
+  theOodie: '/additional-images/brands/supreme.jpg', // Using Supreme as apparel placeholder
+  ridgeWallet: '/reference-thumbnails/monkey-mascot.png', // No close match, using monkey
+  oura: '/additional-images/brands/peloton.png', // Using Peloton as fitness tech placeholder
+  joyLoyalty: '/additional-images/brands/klaviyo.png', // Using Klaviyo as Shopify app placeholder
+  abconvert: '/additional-images/brands/klaviyo.png', // Using Klaviyo as Shopify app placeholder
+  vitals: '/additional-images/brands/klaviyo.png', // Using Klaviyo as Shopify app placeholder
+  tapita: '/additional-images/brands/klaviyo.png', // Using Klaviyo as Shopify app placeholder
+  liquidDeath: '/additional-images/brands/pepsi.svg', // Using Pepsi as beverage placeholder
+  drSquatch: '/reference-thumbnails/monkey-mascot.png', // No close match, using monkey
 };
 
 // ==============================================
