@@ -526,7 +526,7 @@ Keep the red background, the dramatic paper-cut style.
 
   'three-canons-of-craft': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 171322.png',
+    referenceImage: 'Screenshot 2026-01-08 183952.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show 3 GOLDEN GATES/DOORS in a row - copy must pass through all three
 - Gate 1: "CLEAR?" with magnifying glass icon
@@ -879,7 +879,7 @@ Keep the blue blueprint style.
 
   'geo-announcement-bar': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 190218.png',
+    referenceImage: 'Screenshot 2026-01-08 185613.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show TWO ANNOUNCEMENT BARS side by side:
 - Left bar (BORING): "Free Shipping Available" - gray, generic, nobody cares
@@ -922,7 +922,7 @@ Keep the split comparison layout.
 
   'abandoned-cart-recovery': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 190255.png',
+    referenceImage: 'Screenshot 2026-01-08 185632.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show an ABANDONED SHOPPING CART in the center, items falling out, looking sad
 - TWO ARMS reaching to save it:
@@ -969,7 +969,7 @@ Keep the red background, dramatic style.
 
   'meta-attribution-test': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 190436.png',
+    referenceImage: 'Screenshot 2026-01-08 185649.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show Meta logo wearing a PINOCCHIO NOSE - the nose is growing!
 - Left side: "META SAYS: 33% ROAS" with suspicious eyes emoji
@@ -1024,7 +1024,7 @@ Keep the tweet card style, dark green background.
 
   'swatch-variants': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 171356.png',
+    referenceImage: 'Screenshot 2026-01-08 184057.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a PREMIUM product configurator - sleek phone or watch on display
 - One side shows boring text labels: "Red, Blue, Black" in plain text
@@ -1044,7 +1044,7 @@ Premium product photography style. Clean, modern, Apple-esque.
 
   'buy-now-button': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 171439.png',
+    referenceImage: 'Screenshot 2026-01-08 184815.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a "BUY NOW" button being DELETED - trash can icon, red X through it
 - Our monkey mascot (attached) aggressively removing the button with a crowbar
@@ -1072,7 +1072,7 @@ Keep the minimal white background, clean style.
 
   'best-shopify-theme': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 171528.png',
+    referenceImage: 'Screenshot 2026-01-08 182608.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Change the headline to "THE 34.9% THEME"
 - Show a ROYAL CROWN sitting on top of a Shopify store mockup - the winning theme
@@ -1102,7 +1102,7 @@ Keep the red background, dramatic urgent style.
 
   'gillette-model': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 171654.png',
+    referenceImage: 'Screenshot 2026-01-08 182640.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a TRAP - beautiful shiny razor handle in the center looking cheap ($2)
 - MONEY STRINGS attached to the razor, leading to EXPENSIVE blade refills stacked like gold bars
@@ -1131,7 +1131,7 @@ Keep the luxurious dramatic style.
 
   'two-meta-rules': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 171741.png',
+    referenceImage: 'Screenshot 2026-01-08 182718.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show TWO MASSIVE GOLDEN GATES - the only path to Meta success
 - Gate 1: "SPECIAL ENOUGH" with sparkle icon
@@ -1213,7 +1213,7 @@ Keep the podcast quote style, teal background.
 
   'pet-rock-story': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 171901.png',
+    referenceImage: 'Screenshot 2026-01-08 182823.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a STUPID GRAY ROCK in the center - literally just a rock
 - The rock is wearing a tiny GOLDEN CROWN and sitting on a THRONE made of $100 bills
@@ -1229,7 +1229,7 @@ Make it ABSURD. The contrast between worthless rock and massive money is the jok
 
   'starbucks-ltv': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 171938.png',
+    referenceImage: 'Screenshot 2026-01-08 182912.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a SINGLE Starbucks coffee cup in the center, GLOWING like it's made of gold
 - Above the cup: "$14,099" in massive bold letters
@@ -1272,7 +1272,7 @@ Keep the luxurious dramatic style.
 
   'golden-lookalike': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172004.png',
+    referenceImage: 'Screenshot 2026-01-08 183014.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a GOLDEN TARGET/BULLSEYE in the center - this is the golden audience
 - Around the target: scattered gray/regular audience dots (messy, expensive)
@@ -1289,7 +1289,7 @@ Make it feel like you're revealing a SECRET targeting hack.
 
   'cbo-vs-abo': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172030.png',
+    referenceImage: 'Screenshot 2026-01-08 183047.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show TWO BOXING GLOVES in an epic face-off
 - Left glove (BLUE): "CBO" - automated, AI-controlled, "SCALING" written on it
@@ -1305,7 +1305,7 @@ Make it feel like an EPIC BATTLE. Two strategies going head to head.
 
   'geo-personalization': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172100.png',
+    referenceImage: 'Screenshot 2026-01-08 183157.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a WORLD MAP with glowing location pins dropping onto it
 - Each pin has a personalized message: "Free Shipping to NEW YORK", "Hey LONDON!", "SYDNEY Special"
@@ -1391,7 +1391,7 @@ Keep the luxurious dramatic style.
 
   'micro-yes-mastery': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172150.png',
+    referenceImage: 'Screenshot 2026-01-08 183235.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a DOMINO CHAIN reaction - small "yes" dominos knocking over increasingly LARGER ones
 - First domino: tiny "yes" (newsletter signup)
@@ -1407,7 +1407,7 @@ Make it feel INEVITABLE. Small yeses lead to the BIG yes.
 
   'authority-over-hope': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172357.png',
+    referenceImage: 'Screenshot 2026-01-08 183322.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Left side: WEAK figure with crossed fingers, praying gesture, "please buy..." energy, GRAY and pathetic
 - Right side: POWERFUL figure standing like a general, commanding presence, pointing finger saying "BUY.", GOLDEN glow
@@ -1422,7 +1422,7 @@ Make the contrast BRUTAL. Hope = weakness. Authority = power.
 
   'certainty-transfer': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172239.png',
+    referenceImage: 'Screenshot 2026-01-08 183933.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Keep the two brain comparison exactly the same (gray vs colorful)
 - Change labels to "DOUBT" (left, gray) and "CERTAIN" (right, colorful)
@@ -1449,7 +1449,7 @@ Keep the blue blueprint style, professional teaching vibe.
 
   'digital-pause-power': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 190626.png',
+    referenceImage: 'Screenshot 2026-01-08 185933.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show our monkey mascot (attached) with arms crossed, intense confident stare at the camera
 - MASSIVE speech bubble with just "..." (three dots) - nothing else
@@ -1478,7 +1478,7 @@ Keep the red background, urgent dramatic energy. Make it feel like PANIC.
 
   'framing-effect-mastery': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172423.png',
+    referenceImage: 'Screenshot 2026-01-08 183420.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show IDENTICAL DIAMOND in two different settings:
 - Left: Diamond on newspaper, harsh lighting, "$50" price tag, looks like costume jewelry
@@ -1521,7 +1521,7 @@ Keep the red background, make it feel like IMMINENT DISASTER.
 
   'pain-escalation-ladder': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172512.png',
+    referenceImage: 'Screenshot 2026-01-08 183640.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a STAIRCASE made of PAIN LEVELS going upward:
 - Step 1 (bottom): "Mild annoyance" - small flame
@@ -1539,7 +1539,7 @@ Make it feel STRATEGIC. Escalate pain, provide relief.
 
   'telescope-flip': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 173654.png',
+    referenceImage: 'Screenshot 2026-01-08 183707.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a TELESCOPE being FLIPPED/ROTATED in the center - dramatic rotation motion
 - Left: "WRONG WAY" - person looking through small end, sees TINY blurry world, looks confused
@@ -1555,7 +1555,7 @@ Make it feel like a REVELATION. The simple flip changes everything.
 
   'trust-blueprint': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 185133.png',
+    referenceImage: 'Screenshot 2026-01-08 184924.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a SHIELD being BUILT in layers:
 - Layer 1 (foundation): "CREDIBILITY" - solid base
@@ -1586,7 +1586,7 @@ Keep the podcast quote style, the professional look.
 
   'three-brains-wallet': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172239.png',
+    referenceImage: 'Screenshot 2026-01-08 183933.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Keep the brain comparison format but show 3 SECTIONS in the colorful brain:
   - REPTILE BRAIN (bottom) in RED - labeled "SURVIVAL" - puppet strings going to a wallet
@@ -1662,7 +1662,7 @@ Keep the tweet style, the social proof feel.
 
   'decoy-effect': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 185328.png',
+    referenceImage: 'Screenshot 2026-01-08 184957.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show THREE POPCORN BUCKETS (movie theater classic):
 - SMALL: $3 - tiny, pathetic
@@ -1694,7 +1694,7 @@ Keep the minimal word + icon style, the clean impact.
 
   'paradox-of-choice': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 185553.png',
+    referenceImage: 'Screenshot 2026-01-08 185241.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show TWO TABLES with JAM JARS:
 - Left table: 24 jars CRAMMED together chaotically, person standing frozen, brain exploding, "0% BOUGHT"
@@ -1729,7 +1729,7 @@ Keep the red dramatic background, the apocalyptic feel.
 
   'fly-in-the-urinal': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 185720.png',
+    referenceImage: 'Screenshot 2026-01-08 185358.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a MAGNIFYING GLASS zooming in on a TINY FLY STICKER
 - The fly is small but POWERFUL - arrows showing all attention focused on it
@@ -1745,7 +1745,7 @@ Make it feel like discovering a TINY detail with MASSIVE impact.
 
   'thirty-two-violinist': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 185921.png',
+    referenceImage: 'Screenshot 2026-01-08 185420.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Left: DIRTY SUBWAY - violinist in shadows, people rushing past ignoring, tip jar with "$32"
 - Right: GRAND CONCERT HALL - SAME violinist in spotlight, standing ovation, orchestra, "$1,000,000 TICKETS SOLD"
@@ -1788,7 +1788,7 @@ Keep the minimal word + icon style, the clean impact.
 
   'cost-of-standing-still': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 190055.png',
+    referenceImage: 'Screenshot 2026-01-08 185507.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a person FROZEN like a statue, covered in cobwebs and dust
 - Money is FLYING AWAY from them in all directions - $100 bills escaping
@@ -1803,7 +1803,7 @@ Make it feel URGENT. Every second you wait = money lost.
 
   'unity-principle': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 190144.png',
+    referenceImage: 'Screenshot 2026-01-08 185549.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show TWO FIGURES far apart on opposite sides
 - In the CENTER: the word "WE" in MASSIVE golden letters, glowing like a sun
@@ -1883,7 +1883,7 @@ Keep the dramatic money visual, the urgent feel.
 
   'price-chunking-yesloop': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-18 190731.png',
+    referenceImage: 'Screenshot 2026-01-08 190004.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Show a SCARY PRICE "$597" as a massive mountain/wall blocking the path
 - Then show it CRUMBLING into small chunks: "$1.99/day" stepping stones
@@ -2085,7 +2085,7 @@ Keep the minimal word + icon style, the clean impact.
 
   'cognitive-load-trap': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2025-12-17 172239.png',
+    referenceImage: 'Screenshot 2026-01-08 183933.png',
     concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
 - Left brain: TANGLED, complex pathways - red, stressed, overloaded, "TOO HARD" label
 - Right brain: SMOOTH, simple pathways - green, calm, flowing, "EASY" label
