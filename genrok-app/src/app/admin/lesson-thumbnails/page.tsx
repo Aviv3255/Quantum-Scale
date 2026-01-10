@@ -4084,7 +4084,7 @@ export default function AdminLessonThumbnailsPage() {
     }
   }, [getEffectiveTemplate]);
 
-  // Load lessons and their thumbnails
+  // Load lessons and their thumbnails (only once per session)
   useEffect(() => {
     async function loadLessons() {
       setIsLoading(true);
@@ -4116,10 +4116,11 @@ export default function AdminLessonThumbnailsPage() {
       setIsLoading(false);
     }
 
-    if (user) {
+    // Only load if user is present and we haven't loaded lessons yet
+    if (user && lessons.length === 0) {
       loadLessons();
     }
-  }, [user]);
+  }, [user, lessons.length]);
 
   // Filter lessons based on search and filter
   useEffect(() => {
@@ -4227,7 +4228,9 @@ export default function AdminLessonThumbnailsPage() {
   const withThumbnails = lessons.filter(l => l.thumbnail_url).length;
   const withoutThumbnails = lessons.length - withThumbnails;
 
-  if (authLoading || !user) {
+  // Only show loading spinner on initial load
+  // If lessons are already loaded, keep showing content even during auth refresh
+  if ((authLoading || !user) && lessons.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
         <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
@@ -4235,7 +4238,9 @@ export default function AdminLessonThumbnailsPage() {
     );
   }
 
-  if (!isAdmin) {
+  // Only show access denied if we haven't loaded content yet
+  // (prevents flash of "Access Denied" during auth refresh)
+  if (!isAdmin && lessons.length === 0) {
     return (
       <DashboardLayout>
         <div className="page-wrapper">
