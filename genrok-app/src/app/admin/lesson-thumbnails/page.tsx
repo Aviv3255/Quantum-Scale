@@ -2261,174 +2261,269 @@ Make it feel like a REVELATION. Same function, wildly different value.
   },
 
   'scammer-playbook-good': {
-    template: 'tech-ui',
-    concept: `TEXT: "7 LEVERS" white bold
-VISUAL: Control panel interface with 7 ethical switches/sliders, all positioned for good, dashboard style
-BACKGROUND: Dark tech gradient
-EXTRA: The Scammer's Playbook (used for good). 7 ethical persuasion levers.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182152.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "7 LEVERS"
+- Show a CONTROL PANEL with 7 ethical switches/sliders
+- All positioned for good - green lights on each lever
+- Our monkey mascot (attached) operating the control panel ethically
+
+Keep the same tech/dashboard energy, the professional look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'us-vs-them': {
-    template: 'versus',
-    concept: `TEXT: "DAVID vs GOLIATH" white bold dramatic
-VISUAL: Tiny figure with slingshot facing massive giant, underdog energy, tribal war paint
-BACKGROUND: Dark dramatic arena lighting
-EXTRA: Create tribal identity through enemies. The David vs Goliath play.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "DAVID vs GOLIATH"
+- LEFT side: Tiny underdog figure with slingshot (small but fierce)
+- RIGHT side: Massive giant figure (intimidating but vulnerable)
+- Our monkey mascot (attached) as David, ready to fight
+
+Keep the same comparison/versus energy, the dramatic contrast.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'brand-universe': {
-    template: 'illustrated-char',
-    concept: `TEXT: "the universe." white italic elegant
-VISUAL: Illustrated snow globe containing entire world/universe, brand world-building visual
-BACKGROUND: Dark space with stars
-EXTRA: Create universes, not products. Build a world, not just a store.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "THE UNIVERSE"
+- Show a SNOW GLOBE containing an entire world/universe inside
+- Brand world-building visual - stars, planets, your own cosmos
+- Our monkey mascot (attached) holding the snow globe, creating worlds
+
+Keep the same brain/cosmos energy, the premium look.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'product-to-identity': {
-    template: 'face-morph',
-    concept: `TEXT: "become." white lowercase massive
-VISUAL: Product package morphing/transforming into a person's silhouette, identity transformation
-BACKGROUND: White with subtle gradient
-EXTRA: Transform commodities to identity purchases. You become what you buy.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182023.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "BECOME."
+- Show a PRODUCT morphing into a person's silhouette
+- Identity transformation visual - you become what you buy
+- Our monkey mascot (attached) transforming alongside
+
+Keep the same transformation energy, the identity shift visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'commodity-escape': {
-    template: 'product-table',
-    concept: `TEXT: "$0.50 → $6" green bold with arrow
-VISUAL: Coffee beans on left transforming into premium Starbucks cup on right, both on wooden table, Starbucks logo floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: How Starbucks charges $6 for $0.50 coffee. The commodity escape.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "$0.50 → $6"
+- Show coffee beans (left) transforming into premium Starbucks cup (right)
+- Massive value transformation visualization
+- Add Starbucks logo (attached) subtly
+
+Keep the same wealth/success energy, the transformation visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.starbucks],
   },
 
   'myth-and-urgency': {
-    template: 'dramatic-quote',
-    concept: `TEXT: "NOW." white bold massive
-VISUAL: Hourglass with sand running out, mythical story elements swirling around it
-BACKGROUND: Dark dramatic gradient
-EXTRA: Scarcity + story creates irresistible desire. Manufacturing urgency.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "NOW."
+- Show an HOURGLASS with sand running out dramatically
+- Mythical story elements swirling around - urgency energy
+- Our monkey mascot (attached) racing against time
+
+Keep the same dramatic energy, the urgency visualization.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'value-ladder': {
-    template: 'product-table',
-    concept: `TEXT: "HIDDEN MENU" gold lowercase elegant
-VISUAL: Velvet rope parting to reveal secret VIP tier, golden ladder ascending, Rolex logo floating
-BACKGROUND: Dark luxurious gradient, warm wood bottom
-EXTRA: Secret tiers that create aspiration. VIP exclusivity.`,
-    images: [imageAssets.rolex],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "HIDDEN MENU"
+- Show a VELVET ROPE parting to reveal secret VIP tier
+- Golden ladder ascending to exclusive levels
+- Our monkey mascot (attached) as VIP bouncer revealing secrets
+
+Keep the same premium energy, the exclusivity visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'box-worth-300': {
-    template: 'product-table',
-    concept: `TEXT: "$300" gold bold
-VISUAL: Empty Tiffany blue box open on wooden table, nothing inside, box glowing with value
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Tiffany's packaging IS the product. Box worth more than contents.`,
-    images: [imageAssets.tiffany],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "$300 BOX"
+- Show an EMPTY Tiffany blue box, nothing inside, box glowing with value
+- The packaging IS the product visualization
+- Our monkey mascot (attached) marveling at the empty but valuable box
+
+Keep the same premium reveal energy, the value perception visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'story-taste-experiment': {
-    template: 'brand-collage',
-    concept: `TEXT: "story changes taste." white lowercase elegant
-VISUAL: Retro editorial collage - same wine bottle with different story labels, taste perception visual
-BACKGROUND: White with texture
-EXTRA: Your story literally alters how products taste. Narrative power.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183541.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "STORY = TASTE"
+- Show the SAME WINE with different story labels
+- One tastes cheap, one tastes premium - same wine
+- Our monkey mascot (attached) as sommelier revealing the secret
+
+Keep the same editorial energy, the perception-changing visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'scarcity-calendar': {
-    template: 'product-table',
-    concept: `TEXT: "1 PER YEAR" yellow bold
-VISUAL: Rainbow Le Creuset Dutch ovens on wooden table, most with "SOLD OUT" tags, one color available
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Limited colors create collectors. Le Creuset scarcity engine.`,
-    images: [imageAssets.leCreuset],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191421.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "1 PER YEAR"
+- Show colorful Dutch ovens with most having "SOLD OUT" tags
+- Only ONE color available - scarcity creates collectors
+- Our monkey mascot (attached) desperately wanting the sold out ones
+
+Keep the same strategic energy, the scarcity visualization.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'anchor-moments': {
-    template: 'product-table',
-    concept: `TEXT: "$20K → $200" green bold with arrow
-VISUAL: Expensive bag ($20K tag) next to polo shirt ($200 tag) on wooden table, polo looks cheap in comparison, Ralph Lauren logo
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: $20K bag makes $200 polo feel cheap. Anchor moments psychology.`,
-    images: [imageAssets.ralphLauren],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "$20K → $200"
+- LEFT: $20K expensive bag, RIGHT: $200 polo shirt
+- Polo looks CHEAP in comparison - anchor pricing psychology
+- Our monkey mascot (attached) shocked at the price perception
+
+Keep the same comparison energy, the price anchoring visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'irrational-loyalty': {
-    template: 'brain-cables',
-    concept: `TEXT: "logic dies." white lowercase elegant
-VISUAL: Brain with heart overtaking the logical section, cables disconnecting from reason, emotional override
-BACKGROUND: Dark gradient
-EXTRA: Once identity forms, logic dies. The Pizza Test & Sock Test.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "LOGIC DIES."
+- Show a BRAIN with HEART overtaking the logical section
+- Cables disconnecting from reason - emotional override
+- Our monkey mascot (attached) controlled by heart not brain
+
+Keep the same brain visual energy, the emotional takeover visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'reciprocity-engine': {
-    template: 'illustrated-char',
-    concept: `TEXT: "+42%" green bold
-VISUAL: Illustrated character giving gift, receiving money back in a loop, reciprocity flywheel visual
-BACKGROUND: White with grid texture
-EXTRA: Why giving away free samples increased sales 42%. Give to get.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "+42%"
+- Show a GIFT being given, money coming back in a loop
+- Reciprocity flywheel - give to get visualization
+- Our monkey mascot (attached) giving gifts and receiving money
+
+Keep the same growth energy, the flywheel visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'gucci-short-termism': {
-    template: 'versus',
-    concept: `TEXT: "DYING" red vs "FOREVER" gold
-VISUAL: Gucci logo fading/dying on left vs Hermès logo strong and timeless on right
-BACKGROUND: Split - dark decaying left, golden eternal right
-EXTRA: Fashion chases trends. Luxury chases timelessness. Why Gucci is dying.`,
-    images: [imageAssets.gucci, imageAssets.hermes],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "DYING vs FOREVER"
+- LEFT: Gucci logo fading/dying (red X)
+- RIGHT: Luxury brand logo strong and timeless (green check)
+- Fashion chases trends, luxury chases timelessness
+
+Keep the same comparison energy, the contrast visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.gucci],
   },
 
   'ethical-persuasion-compass': {
-    template: 'single-object',
-    concept: `TEXT: "the line." white lowercase elegant
-VISUAL: Golden compass with ethics needle pointing to the right direction, moral boundary visual
-BACKGROUND: White clean
-EXTRA: The ethical line between persuasion and manipulation. Magic show test.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "THE LINE."
+- Show a GOLDEN COMPASS with ethics needle
+- Pointing to the right direction - moral boundary visual
+- Our monkey mascot (attached) holding compass, making ethical choices
+
+Keep the same clean reveal energy, the moral clarity visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'two-worlds-mastery': {
-    template: 'split-screen',
-    concept: `TEXT: "TWO WORLDS" white bold
-VISUAL: Split - analytical performance marketing dashboard (left) vs creative brand storytelling (right)
-BACKGROUND: Blue analytical left, warm creative right
-EXTRA: Performance marketing vs brand building. Master both worlds.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "TWO WORLDS"
+- LEFT: Analytical dashboard (blue, data)
+- RIGHT: Creative storytelling (warm, artistic)
+- Our monkey mascot (attached) standing in the middle, mastering both
+
+Keep the same split comparison energy, the duality visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'race-to-bottom-escape': {
-    template: 'growth-curve',
-    concept: `TEXT: "KILLING YOU" red bold dramatic
-VISUAL: ROAS line going UP while profit line going DOWN, scissors cutting the profit line
-BACKGROUND: White with grid overlay
-EXTRA: You're winning every battle and losing the war. ROAS is killing your business.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "KILLING YOU"
+- Show ROAS line going UP while profit line going DOWN
+- Scissors cutting the profit line - winning battles losing war
+- Our monkey mascot (attached) alarmed at the trend
+
+Keep the same chart/growth energy, the warning visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'founder-operating-system': {
-    template: 'product-table',
-    concept: `TEXT: "4 TRAITS" gold bold
-VISUAL: Golden crown with 4 distinct points on wooden table, each point representing a trait, legendary aura
-BACKGROUND: Dark gradient, warm wood bottom
-EXTRA: What separates iconic founders from the rest. The 4 traits.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "4 TRAITS"
+- Show a GOLDEN CROWN with 4 distinct points
+- Each point representing a legendary founder trait
+- Our monkey mascot (attached) wearing the crown
+
+Keep the same wealth/success energy, the leadership visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   '13800-percent-effect': {
-    template: 'growth-curve',
-    concept: `TEXT: "13,800%" green massive bold
-VISUAL: Exponential compound curve shooting upward, small 10% improvements stacking into massive gains
-BACKGROUND: White with grid overlay
-EXTRA: Small improvements compound into massive advantages. 10% better = 13,800% better.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "13,800%"
+- Show an EXPONENTIAL curve shooting upward dramatically
+- Small 10% improvements stacking into massive gains
+- Our monkey mascot (attached) riding the exponential curve
+
+Keep the same growth energy, the compound effect visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   // ============================================
@@ -2436,74 +2531,114 @@ EXTRA: Small improvements compound into massive advantages. 10% better = 13,800%
   // ============================================
 
   'meta-three-second-hook': {
-    template: 'phone-mockup',
-    concept: `TEXT: "3 SECONDS" yellow bold ALL CAPS
-VISUAL: iPhone with dramatic "00:03" timer on screen, Meta logo floating above, attention lines
-BACKGROUND: White clean
-EXTRA: Meta judges your creative in the first 3 seconds. The 3-second hook rule.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182304.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "3 SECONDS"
+- Show an iPhone with dramatic "00:03" timer on screen
+- Meta logo floating above - attention urgency
+- Our monkey mascot (attached) racing against the 3 second clock
+
+Keep the same tech energy, the urgency visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey, imageAssets.meta],
   },
 
   'meta-70-20-10-rule': {
-    template: 'tech-ui',
-    concept: `TEXT: "70/20/10" white bold
-VISUAL: Dashboard with three bars - 70% proven (green), 20% iteration (yellow), 10% wild (red), pie chart
-BACKGROUND: Dark tech gradient with grid
-EXTRA: 70% proven, 20% iteration, 10% wild experiments. The creative rule.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182152.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "70/20/10"
+- Show a dashboard with three bars: 70% proven (green), 20% iteration (yellow), 10% wild (red)
+- Creative testing rule visualization
+- Our monkey mascot (attached) balancing the ratios
+
+Keep the same tech/dashboard energy, the allocation visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey, imageAssets.meta],
   },
 
   'meta-ga4-integration': {
-    template: 'tech-ui',
-    concept: `TEXT: "GA4 + META" white bold
-VISUAL: Two data streams (GA4 and Meta) merging into one powerful signal, tech pipeline visual
-BACKGROUND: Dark tech gradient
-EXTRA: Feed Meta high-quality signals via GA4. Signal quality matters.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182542.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "GA4 + META"
+- Show two data streams merging into one powerful signal
+- Tech pipeline visual - signal quality matters
+- Add Google and Meta logos (attached)
+
+Keep the same tech/systems energy, the integration visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.meta, imageAssets.google],
   },
 
   'meta-1-1-x-structure': {
-    template: 'tech-ui',
-    concept: `TEXT: "1-1-X" white bold massive
-VISUAL: Flowchart diagram: 1 Campaign → 1 Ad Set → X Creatives (expanding), clean architecture visual
-BACKGROUND: White with subtle grid
-EXTRA: 1 campaign, 1 ad set, X creatives. Structure simplicity wins.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182152.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "1-1-X"
+- Show a FLOWCHART: 1 Campaign → 1 Ad Set → X Creatives expanding
+- Simple architecture visualization
+- Add Meta logo (attached)
+
+Keep the same tech/dashboard energy, the structure visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.meta, imageAssets.monkey],
   },
 
   'meta-auction-formula': {
-    template: 'product-table',
-    concept: `TEXT: "Bid × EAR × Quality" yellow bold equation
-VISUAL: Mathematical formula written on vintage chalkboard sitting on wooden table, Meta logo floating
-BACKGROUND: Dark gradient, warm wood bottom
-EXTRA: Total Value = Bid × Estimated Action Rate × Quality. The Meta auction formula.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "THE FORMULA"
+- Show equation: Bid × EAR × Quality on a chalkboard/blueprint
+- Mathematical formula visualization
+- Add Meta logo (attached)
+
+Keep the same blueprint energy, the formula visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.meta, imageAssets.monkey],
   },
 
   'meta-controls-vs-suggestions': {
-    template: 'versus',
-    concept: `TEXT: "HARD vs SOFT" white bold
-VISUAL: Brick wall (controls/hard boundaries) vs soft pillow (suggestions/soft signals), Meta logo in center
-BACKGROUND: Split - solid left, soft right
-EXTRA: Hard boundaries vs soft signals in targeting. Controls vs Suggestions.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "HARD vs SOFT"
+- LEFT: Brick wall (hard controls/boundaries)
+- RIGHT: Soft pillow (suggestions/soft signals)
+- Add Meta logo (attached) in the center
+
+Keep the same comparison energy, the contrast visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.meta],
   },
 
   'meta-creative-ecosystem': {
-    template: 'illustrated-char',
-    concept: `TEXT: "50 ADS" white bold massive
-VISUAL: Illustrated phone exploding with grid of 50 ad thumbnails, creative variety visual, Meta logo
-BACKGROUND: Dark gradient (Kurzgesagt style)
-EXTRA: Build 20-50 meaningfully different ads. The creative ecosystem.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182542.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "50 ADS"
+- Show a PHONE exploding with grid of 50 ad thumbnails
+- Creative variety visualization
+- Add Meta logo (attached)
+
+Keep the same tech/systems energy, the volume visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.meta, imageAssets.monkey],
   },
 
   'meta-capi-pixel-setup': {
-    template: 'tech-ui',
-    concept: `TEXT: "CAPI + PIXEL" white bold
-VISUAL: Two tracking streams (browser Pixel + server CAPI) merging, dual signal visual, tech diagram
-BACKGROUND: Dark tech gradient
-EXTRA: Dual tracking is now mandatory. CAPI + Pixel setup.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182542.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "CAPI + PIXEL"
+- Show two tracking streams merging into one powerful signal
+- Dual tracking visualization - browser + server
+- Add Meta logo (attached)
+
+Keep the same tech/systems energy, the integration visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.meta],
   },
 
@@ -2540,48 +2675,73 @@ Make it feel like a PRODUCTION LINE. Volume is the new game.
   },
 
   'product-reviews-test': {
-    template: 'split-screen',
-    concept: `TEXT: "REVIEWS?" white bold
-VISUAL: Split - product page WITHOUT reviews (left) vs WITH reviews and stars (right), A/B test visual
-BACKGROUND: Split - bare left, rich right
-EXTRA: Do reviews actually increase conversions? The A/B test.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "REVIEWS?"
+- LEFT: Product page WITHOUT reviews (bare)
+- RIGHT: Product page WITH reviews and stars (rich)
+- A/B test visualization
+
+Keep the same comparison energy, the test visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'ascension-ladder': {
-    template: 'illustrated-char',
-    concept: `TEXT: "ascend." gold lowercase elegant
-VISUAL: Illustrated customer climbing golden value ladder, each rung = higher ticket, money floating around top
-BACKGROUND: White with gradient
-EXTRA: Move customers up the value chain. The ascension ladder.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "ASCEND."
+- Show customer climbing GOLDEN VALUE LADDER
+- Each rung = higher ticket purchase, money floating around top
+- Our monkey mascot (attached) at the top celebrating
+
+Keep the same growth energy, the ladder visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'brain-friendly-ux': {
-    template: 'brain-cables',
-    concept: `TEXT: "brain first." white lowercase elegant
-VISUAL: Brain with smooth, easy pathways highlighted in green, complex paths blocked in red
-BACKGROUND: White clean
-EXTRA: Design for how the brain actually works. Cognitive design.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "BRAIN FIRST."
+- Show BRAIN with smooth easy pathways in GREEN
+- Complex paths blocked in RED
+- Our monkey mascot (attached) designing the easy path
+
+Keep the same brain visual energy, the UX simplicity visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'brand-moat': {
-    template: 'product-table',
-    concept: `TEXT: "THE MOAT" gold bold
-VISUAL: Castle surrounded by water/moat on wooden table, brand shield on castle, defensive walls
-BACKGROUND: Dark gradient, warm wood bottom
-EXTRA: Build defensible competitive advantages. The brand moat.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "THE MOAT"
+- Show CASTLE surrounded by water/moat
+- Brand shield on castle, defensive walls
+- Our monkey mascot (attached) defending the castle
+
+Keep the same wealth/success energy, the protection visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'brand-promise-code': {
-    template: 'minimal-text',
-    concept: `TEXT: "promise." gold lowercase elegant, massive
-VISUAL: Minimal - just the word with subtle handshake icon behind it, trust energy
-BACKGROUND: White vast expanse
-EXTRA: Craft promises that convert. The brand promise code.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "PROMISE."
+- Show a HANDSHAKE icon with trust energy
+- Minimal, elegant, powerful
+- Our monkey mascot (attached) making a promise
+
+Keep the same clean reveal energy, the trust visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   // ============================================
@@ -2589,174 +2749,269 @@ EXTRA: Craft promises that convert. The brand promise code.`,
   // ============================================
 
   'google-highest-cpa-wins': {
-    template: 'product-table',
-    concept: `TEXT: "HIGHEST WINS" yellow bold ALL CAPS
-VISUAL: Gold trophy with "$50 CPA" engraved sitting on wooden table, Google logo floating, winner podium
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Counterintuitive truth. The highest CPA wins in Google Ads.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "HIGHEST WINS"
+- Show GOLD TROPHY with "$50 CPA" engraved
+- Winner podium, victory visual
+- Add Google logo (attached)
+
+Keep the same wealth/success energy, the winning visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-pmax-blueprint': {
-    template: 'tech-ui',
-    concept: `TEXT: "PMax" white bold
-VISUAL: Blueprint/architecture diagram showing PMax campaign structure, Google logo, technical schematic
-BACKGROUND: Dark tech gradient with grid
-EXTRA: The PMax blueprint. Campaign architecture for 2026.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "PMax BLUEPRINT"
+- Show BLUEPRINT diagram of PMax campaign structure
+- Technical schematic visualization
+- Add Google logo (attached)
+
+Keep the same blueprint energy, the architecture visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-product-feed-mastery': {
-    template: 'tech-ui',
-    concept: `TEXT: "FEED = AD" white bold
-VISUAL: Spreadsheet transforming into polished ad creative, data flowing, Google + Shopify logos
-BACKGROUND: Dark tech gradient
-EXTRA: Your feed IS your ad. Feed mastery = ad mastery.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182542.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "FEED = AD"
+- Show SPREADSHEET transforming into polished ad creative
+- Data flowing visualization
+- Add Google and Shopify logos (attached)
+
+Keep the same tech/systems energy, the transformation visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.google, imageAssets.shopify],
   },
 
   'google-shopping-intent': {
-    template: 'illustrated-char',
-    concept: `TEXT: "ACTIVE INTENT" green bold
-VISUAL: Illustrated buyer character with money ready in hand, actively searching, Google logo above
-BACKGROUND: White with subtle gradient
-EXTRA: Google Shopping captures high-intent buyers. Active intent gold.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "ACTIVE INTENT"
+- Show BUYER with money ready in hand, actively searching
+- High-intent visualization
+- Add Google logo (attached)
+
+Keep the same growth energy, the buyer intent visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-brand-moat': {
-    template: 'product-table',
-    concept: `TEXT: "BRAND MOAT" white bold
-VISUAL: Castle with Google colors surrounded by protective moat on wooden table, defensive fortress
-BACKGROUND: Dark gradient, warm wood bottom
-EXTRA: Unbeatable defense. Your brand search moat.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "BRAND MOAT"
+- Show CASTLE with Google colors surrounded by protective moat
+- Defensive fortress visualization
+- Add Google logo (attached)
+
+Keep the same wealth/success energy, the defense visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-data-quality-edge': {
-    template: 'tech-ui',
-    concept: `TEXT: "DATA IN → AI OUT" white bold with arrow
-VISUAL: Data quality funnel feeding into AI brain, garbage in/garbage out visual, Google logo
-BACKGROUND: Dark tech gradient with grid
-EXTRA: Better data = better AI performance. The data quality edge.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182542.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "DATA IN → AI OUT"
+- Show DATA QUALITY FUNNEL feeding into AI brain
+- Garbage in/garbage out visualization
+- Add Google logo (attached)
+
+Keep the same tech/systems energy, the data quality visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.google],
   },
 
   'google-competitor-conquest': {
-    template: 'versus',
-    concept: `TEXT: "CONQUEST" gold bold
-VISUAL: Flag being planted on competitor territory, victory visual, Google logo as the conquering force
-BACKGROUND: Dark dramatic gradient
-EXTRA: Legal market share steal. Competitor conquest campaigns.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "CONQUEST"
+- Show FLAG being planted on competitor territory
+- Victory visualization
+- Add Google logo (attached)
+
+Keep the same comparison energy, the conquest visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-store-trust-checklist': {
-    template: 'arrow-callout',
-    concept: `TEXT: "TRUST FIRST" white bold
-VISUAL: Big arrow pointing to checklist with green checkmarks, trust badges, Google Merchant Center logo
-BACKGROUND: White with subtle grid
-EXTRA: Avoid suspension. The store trust checklist.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182152.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "TRUST FIRST"
+- Show CHECKLIST with green checkmarks
+- Trust badges visualization
+- Add Google logo (attached)
+
+Keep the same tech/dashboard energy, the checklist visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.google],
   },
 
   'google-hero-product-funnel': {
-    template: 'illustrated-char',
-    concept: `TEXT: "HERO PRODUCTS" yellow bold
-VISUAL: Illustrated funnel with products being filtered, winners emerging at bottom glowing, Google logo
-BACKGROUND: White with grid texture
-EXTRA: Find your winners. The hero product funnel.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "HERO PRODUCTS"
+- Show FUNNEL with products being filtered
+- Winners emerging at bottom glowing
+- Add Google logo (attached)
+
+Keep the same growth energy, the funnel visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-click-fraud-shield': {
-    template: 'single-object',
-    concept: `TEXT: "SHIELD" white bold
-VISUAL: Golden shield blocking red evil bot icons, protection force field, Google logo embedded in shield
-BACKGROUND: Dark gradient
-EXTRA: Protect your budget from click fraud. The fraud shield.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "SHIELD"
+- Show GOLDEN SHIELD blocking red evil bot icons
+- Protection force field visualization
+- Add Google logo (attached)
+
+Keep the same brain/protection energy, the shield visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-ai-max-decision': {
-    template: 'split-screen',
-    concept: `TEXT: "POWER vs CONTROL" white bold
-VISUAL: Split - powerful AI brain (left) vs human hand with control (right), balance visual, Google logo
-BACKGROUND: Split - AI blue left, human warm right
-EXTRA: When to use AI Max. The power vs control decision.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "POWER vs CONTROL"
+- LEFT: Powerful AI brain
+- RIGHT: Human hand with control
+- Add Google logo (attached)
+
+Keep the same comparison energy, the balance visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.google],
   },
 
   'google-negative-keyword-colander': {
-    template: 'arrow-callout',
-    concept: `TEXT: "FILTER" white bold
-VISUAL: Big arrow pointing to colander/filter with bad keywords draining out, only good clicks staying
-BACKGROUND: White with subtle grid
-EXTRA: Only good clicks pass through. Negative keyword mastery.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182152.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "FILTER"
+- Show COLANDER/FILTER with bad keywords draining out
+- Only good clicks staying visualization
+- Add Google logo (attached)
+
+Keep the same tech/dashboard energy, the filter visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-optimization-cadence': {
-    template: 'tech-ui',
-    concept: `TEXT: "RHYTHM" white bold
-VISUAL: Calendar dashboard showing optimization schedule, weekly/monthly cadence, Google logo
-BACKGROUND: Dark tech gradient with grid
-EXTRA: Disciplined optimization cadence. The rhythm of winning.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182152.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "RHYTHM"
+- Show CALENDAR DASHBOARD with optimization schedule
+- Weekly/monthly cadence visualization
+- Add Google logo (attached)
+
+Keep the same tech/dashboard energy, the cadence visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.google],
   },
 
   'google-ad-assets-arsenal': {
-    template: 'tech-ui',
-    concept: `TEXT: "FREE REAL ESTATE" yellow bold
-VISUAL: Expanded Google ad showing all assets utilized, bigger ad taking more screen space
-BACKGROUND: White with subtle grid
-EXTRA: Bigger ads for free. Your ad assets arsenal.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182304.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "FREE REAL ESTATE"
+- Show EXPANDED Google ad with all assets utilized
+- Bigger ad taking more screen space
+- Add Google logo (attached)
+
+Keep the same tech energy, the expanded visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.google],
   },
 
   'google-landing-page-bridge': {
-    template: 'arrow-callout',
-    concept: `TEXT: "AFTER THE CLICK" white bold
-VISUAL: Big arrow showing journey from ad click to landing page, bridge visual, conversion path
-BACKGROUND: White with subtle grid
-EXTRA: Half the battle happens after the click. The landing page bridge.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182152.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "AFTER THE CLICK"
+- Show arrow journey from ad click to landing page
+- Bridge visualization - conversion path
+- Add Google logo (attached)
+
+Keep the same tech/dashboard energy, the journey visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-ai-overviews-opportunity': {
-    template: 'phone-mockup',
-    concept: `TEXT: "AI OVERVIEWS" white bold
-VISUAL: Phone showing Google AI overview results page, new search format, opportunity highlight
-BACKGROUND: White clean
-EXTRA: The new opportunity in Google Search. AI overviews.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182304.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "AI OVERVIEWS"
+- Show PHONE with Google AI overview results page
+- New search format, opportunity highlight
+- Add Google logo (attached)
+
+Keep the same tech energy, the opportunity visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-budget-reallocation': {
-    template: 'growth-curve',
-    concept: `TEXT: "2.8x → 5.1x" green bold with arrow
-VISUAL: Money flowing from losing campaigns to winner, ROAS curve going up, Google logo
-BACKGROUND: White with grid overlay
-EXTRA: Feed winners, starve losers. Budget reallocation mastery.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "2.8x → 5.1x"
+- Show MONEY flowing from losing campaigns to winners
+- ROAS curve going up
+- Add Google logo (attached)
+
+Keep the same growth energy, the reallocation visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-focus-firepower': {
-    template: 'arrow-callout',
-    concept: `TEXT: "FOCUS" white bold massive
-VISUAL: Laser beam concentrating on single target, scattered vs focused comparison, Google logo
-BACKGROUND: Dark gradient
-EXTRA: Consolidate your budget. Focus your firepower.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 190557.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "FOCUS"
+- Show LASER BEAM concentrating on single target
+- Scattered vs focused comparison
+- Add Google logo (attached)
+
+Keep the same dramatic energy, the focus visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   'google-influencer-creative': {
-    template: 'illustrated-char',
-    concept: `TEXT: "OUTSOURCE" white bold
-VISUAL: Illustrated influencer character creating content, content flowing to Google ads, creative factory
-BACKGROUND: White with gradient
-EXTRA: Outsource creative production. The influencer creative hack.`,
-    images: [imageAssets.google],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182542.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "OUTSOURCE"
+- Show INFLUENCER creating content flowing to Google ads
+- Creative factory visualization
+- Add Google logo (attached)
+
+Keep the same tech/systems energy, the production visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.google, imageAssets.monkey],
   },
 
   // ============================================
@@ -2764,39 +3019,59 @@ EXTRA: Outsource creative production. The influencer creative hack.`,
   // ============================================
 
   'biz-infinite-money-engine': {
-    template: 'money-product',
-    concept: `TEXT: "∞ MONEY" yellow bold with infinity symbol
-VISUAL: Infinity loop made of $100 bills sitting on pile of cash, flywheel motion visual, Hormozi portrait floating
-BACKGROUND: White with grid texture
-EXTRA: The infinite money engine. Alex Hormozi's flywheel.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "∞ MONEY"
+- Show INFINITY LOOP made of $100 bills
+- Flywheel motion visualization
+- Add Alex Hormozi (attached)
+
+Keep the same wealth/success energy, the infinite loop visual.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.alexHormozi],
   },
 
   'biz-rat-brain-hijack': {
-    template: 'brain-cables',
-    concept: `TEXT: "HIJACK" white bold dramatic
-VISUAL: Rat brain with attention cables being plugged in, subconscious trigger visualization
-BACKGROUND: Dark blue gradient
-EXTRA: Hijack their subconscious. Rat brain marketing.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 185217.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "HIJACK"
+- Show RAT BRAIN with attention cables being plugged in
+- Subconscious trigger visualization
+- Our monkey mascot (attached) pulling the strings
+
+Keep the same brain visual energy, the control visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-velocity-advantage': {
-    template: 'illustrated-char',
-    concept: `TEXT: "SPEED" white bold massive
-VISUAL: Illustrated rocket character accelerating past competitors, velocity trails, unfair advantage visual
-BACKGROUND: White with grid texture
-EXTRA: Speed is your unfair advantage. Move faster than everyone.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191148.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "SPEED"
+- Show ROCKET accelerating past competitors
+- Velocity trails, unfair advantage visual
+- Our monkey mascot (attached) riding the rocket
+
+Keep the same growth energy, the speed visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-remarkable-product': {
-    template: 'single-object',
-    concept: `TEXT: "remarkable." gold italic elegant
-VISUAL: Product floating with purple cow glow aura, standing out dramatically from gray background
-BACKGROUND: White with gray products faded behind
-EXTRA: Stand out or die. Be remarkable or invisible.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "REMARKABLE."
+- Show PRODUCT floating with purple cow glow aura
+- Standing out dramatically from gray background
+- Our monkey mascot (attached) presenting the remarkable product
+
+Keep the same clean reveal energy, the standout visual.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-asset-not-job': {
@@ -2860,12 +3135,18 @@ Keep the same clean diagram style, the strategic clarity.
   },
 
   'biz-barbell-strategy': {
-    template: 'product-table',
-    concept: `TEXT: "5% + 95%" white bold
-VISUAL: Barbell sitting on wooden table - heavy weights on each end, nothing in middle, Taleb portrait floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Avoid the middle. Nassim Taleb's barbell strategy.`,
-    images: [imageAssets.nassimTaleb],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "5% + 95%"
+- Show a BARBELL with heavy weights on each end - NOTHING in the middle (empty bar)
+- Left side: "SAFE 95%" (bonds, cash) - Right side: "WILD 5%" (moonshots)
+- The MIDDLE is crossed out - avoid mediocrity
+- Our monkey mascot (attached) holding the barbell perfectly balanced
+
+Keep the same blueprint/strategic diagram style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-one-pager-blueprint': {
@@ -2914,12 +3195,18 @@ Keep the same minimal aesthetic, the profound simplicity.
   },
 
   'biz-product-expansion': {
-    template: 'product-table',
-    concept: `TEXT: "RIDGE" white bold
-VISUAL: Ridge Wallet on wooden table expanding into full product line - bags, accessories, gear
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Single product to empire. The Ridge Wallet expansion.`,
-    images: [imageAssets.ridgeWallet],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172423.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "1 → 100"
+- Show a SINGLE WALLET in center exploding outward into infinite products
+- Arrows radiating out to: bags, cases, accessories, rings, straps
+- The expansion tree visual - one hero product becoming an empire
+- Ridge Wallet brand aesthetic - minimalist, premium, metal
+
+Keep the same expansion/multiplication visual energy.
+16:10 ratio. Don't put the time block.`,
+    images: [],
   },
 
   'biz-zero-cac-engine': {
@@ -2938,20 +3225,33 @@ Keep the same visual energy, the money flow aesthetic.
   },
 
   'biz-creative-targeting': {
-    template: 'tech-ui',
-    concept: `TEXT: "CREATIVE = TARGETING" white bold
-VISUAL: Creative ad with target overlay merging together, Meta logo, new era visualization
-BACKGROUND: Dark tech gradient
-EXTRA: Your creative IS your targeting now. Meta's new reality.`,
-    images: [imageAssets.meta],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182304.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "CREATIVE = TARGETING"
+- Show a creative ad image MERGING with a target/bullseye into ONE thing
+- The two becoming ONE - creative IS targeting now
+- Meta logo floating, representing the new AI era
+- Equals sign glowing between creative and targeting
+- Our monkey mascot (attached) holding both creative and target, combining them
+
+Keep the same dark tech dashboard aesthetic.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey, imageAssets.meta],
   },
 
   'biz-3x-threshold': {
-    template: 'money-product',
-    concept: `TEXT: "3X" gold metallic massive
-VISUAL: Giant 3X number sitting on pile of $100 bills, glowing threshold energy, Hormozi portrait
-BACKGROUND: Black dramatic
-EXTRA: LTV must be 3X CAC. The magic threshold.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to massive "3X" in gold metallic
+- Show the 3X as a THRESHOLD barrier - below it is danger zone (red), above it is success (green)
+- LTV:CAC ratio visualization - 3X is the magic number
+- Money piles growing once you cross the 3X line
+- Alex Hormozi (attached) at the 3X mark, pointing at it as the rule
+
+Keep the same money pyramid dramatic style.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.alexHormozi],
   },
 
@@ -2971,47 +3271,80 @@ Keep the same dramatic scale contrast, the dominance visual.
   },
 
   'biz-authenticity-anchor': {
-    template: 'brand-collage',
-    concept: `TEXT: "40 YEARS" white bold
-VISUAL: Retro editorial collage - Nike logo staying consistent through decades, evolution timeline
-BACKGROUND: White with texture
-EXTRA: Stay cool forever. Nike's 40-year authenticity anchor.`,
-    images: [imageAssets.nike],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-18 185720.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "40 YEARS"
+- Show a TIMELINE of Nike logo through the decades - 1984 to 2024
+- The swoosh NEVER changes - consistent, authentic, anchored
+- Trends and fads fading around it, but Nike stays the same
+- "Still cool" badge glowing
+
+Keep the same evolution/timeline visual, the longevity energy.
+16:10 ratio. Don't put the time block.`,
+    images: [],
   },
 
   'biz-brand-ltv-engine': {
-    template: 'illustrated-char',
-    concept: `TEXT: "RETURN REASONS" white bold
-VISUAL: Illustrated arrows pointing back to store from multiple directions, Le Creuset + LEGO logos floating
-BACKGROUND: White with grid texture
-EXTRA: Engineer reasons for them to return. Brand LTV engine.`,
-    images: [imageAssets.leCreuset, imageAssets.lego],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172357.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "RETURN REASONS"
+- Show a STORE in center with multiple ARROWS pointing BACK to it from customers
+- Each arrow labeled: "New Color", "Collector", "Gift", "Upgrade"
+- Customers returning again and again - the loop
+- Le Creuset and LEGO logos as examples
+- Our monkey mascot (attached) at the store entrance, welcoming returning customers
+
+Keep the same multiplication/return visual energy.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-brand-temple': {
-    template: 'product-table',
-    concept: `TEXT: "THE TEMPLE" gold bold
-VISUAL: Greek temple with brand pillars sitting on wooden table, each pillar labeled, Ralph Lauren logo
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Build loyalty like a temple. The brand temple.`,
-    images: [imageAssets.ralphLauren],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172512.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "THE TEMPLE"
+- Show a GREEK TEMPLE structure with brand pillars
+- Each pillar labeled: "QUALITY", "STORY", "STATUS", "HERITAGE"
+- Golden light emanating from within the temple
+- Ralph Lauren polo horse logo floating above as the deity
+- Our monkey mascot (attached) as temple guardian at the entrance
+
+Keep the same architectural/structural visual energy.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-cash-conversion': {
-    template: 'money-product',
-    concept: `TEXT: "-30 DAYS" green bold
-VISUAL: Money flowing backwards in time, getting paid before delivery, Oodie product + Davie Fogarty
-BACKGROUND: White with grid texture
-EXTRA: Get paid before you ship. Negative cash conversion cycle.`,
-    images: [imageAssets.davieFogarty, imageAssets.theOodie],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 183359.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "-30 DAYS"
+- Show a REVERSE CLOCK or timeline - money arriving BEFORE the product ships
+- Green arrow going backwards in time
+- Cash flowing in, product going out later
+- The negative cash conversion cycle visual
+- Our monkey mascot (attached) collecting money while holding "SHIPS LATER" sign
+
+Keep the same clean money visual style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-closer-framework': {
-    template: 'product-table',
-    concept: `TEXT: "C.L.O.S.E.R." gold bold
-VISUAL: 6 steps descending like staircase on wooden table, each letter as a step, Hormozi portrait floating
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Alex Hormozi's sales system. The CLOSER framework.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 181735.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "C.L.O.S.E.R."
+- Show a 6-STEP STAIRCASE descending - each step is one letter
+- C = Clarify, L = Label, O = Overview, S = Sell, E = Explain, R = Reinforce
+- Golden glow on the final "R" step at the bottom
+- Alex Hormozi (attached) standing confidently at the bottom, having closed the deal
+
+Keep the same blueprint/framework diagram style.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.alexHormozi],
   },
 
@@ -3196,105 +3529,176 @@ Keep the same elegant movement visual, the graceful persuasion energy.
   },
 
   'biz-operator-mindset': {
-    template: 'tech-ui',
-    concept: `TEXT: "OPERATOR" white bold
-VISUAL: Cockpit dashboard interface, operator metrics, Ben Francis portrait + Gymshark logo
-BACKGROUND: Dark tech gradient
-EXTRA: Think like an operator, not a marketer. Gymshark mindset.`,
-    images: [imageAssets.benFrancis, imageAssets.gymshark],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182304.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "OPERATOR"
+- Show a COCKPIT DASHBOARD with business metrics on screens
+- Control panels showing: CAC, LTV, ROAS, Margins, Inventory
+- The pilot's seat perspective - you're in control
+- Our monkey mascot (attached) in pilot gear, hands on controls, focused and operational
+- Gymshark logo subtle in corner as case study
+
+Keep the same dark tech dashboard aesthetic.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey, imageAssets.gymshark],
   },
 
   'biz-purchase-cycle-engine': {
-    template: 'product-table',
-    concept: `TEXT: "10 YEARS → 1 YEAR" green bold with arrow
-VISUAL: Compressed purchase cycle visual on wooden table, Le Creuset products, time compression
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Shrink the purchase cycle. Le Creuset's genius.`,
-    images: [imageAssets.leCreuset],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 184733.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Left side: "10 YEARS" with red X (old slow purchase cycle)
+- Right side: "1 YEAR" with green checkmark (compressed cycle)
+- Visual: Long timeline being SQUEEZED into short one
+- Le Creuset Dutch ovens as the product example
+- Compression arrows showing 10x faster repurchase
+
+Keep the same comparison/before-after layout style.
+16:10 ratio. Don't put the time block.`,
+    images: [],
   },
 
   'biz-replication-protocol': {
-    template: 'illustrated-char',
-    concept: `TEXT: "SIMPLE SCALES" white bold
-VISUAL: Illustrated copy machine duplicating success repeatedly, systems beating talent
-BACKGROUND: White with grid texture
-EXTRA: Systems > talent. Hormozi's replication protocol.`,
-    images: [imageAssets.alexHormozi],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172357.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "COPY MACHINE"
+- Show a XEROX MACHINE duplicating success - one winning ad going in, 100 copies coming out
+- The replication visual - systems beating talent
+- Assembly line of identical winning creatives
+- Our monkey mascot (attached) operating the copy machine, mass-producing winners
+
+Keep the same multiplication/scaling visual energy.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-rfm-secret': {
-    template: 'tech-ui',
-    concept: `TEXT: "R.F.M." gold bold
-VISUAL: Three-axis chart showing Recency, Frequency, Monetary value, best customer quadrant highlighted
-BACKGROUND: White with subtle grid
-EXTRA: Identify your best customers. The RFM secret.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182304.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "R.F.M."
+- Show a 3D CUBE chart with three axes: Recency, Frequency, Monetary
+- One golden quadrant highlighted - "BEST CUSTOMERS" with crown
+- Other quadrants grayed out
+- Data visualization aesthetic - clean, analytical
+- Our monkey mascot (attached) pointing at the golden quadrant with magnifying glass
+
+Keep the same dark tech/data dashboard aesthetic.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-rule-of-100': {
-    template: 'money-product',
-    concept: `TEXT: "100" gold metallic massive
-VISUAL: The number 100 in bold sitting on pile of money, volume strategy visualization
-BACKGROUND: Black dramatic
-EXTRA: Do 100 of everything first. The Rule of 100.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to massive "100" in gold metallic
+- Show the number 100 as a MONUMENT - huge, unavoidable, powerful
+- Small icons around it: 100 ads, 100 calls, 100 emails, 100 products
+- Volume before optimization - do 100 first
+- Our monkey mascot (attached) at the base of the 100 monument, looking up in awe
+
+Keep the same money/success pyramid dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-valley-protocol': {
-    template: 'person-with-curve',
-    concept: `YouTube thumbnail, 16:9 aspect ratio.
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182542.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Keep the growth curve concept - UP, DOWN (valley), UP again
+- Colors: Green start → Red valley → Green peak
+- Arrow pointing to the valley: "97% QUIT HERE"
+- The valley is the danger zone, the dip that kills most businesses
+- Our monkey mascot (attached) climbing OUT of the valley toward the second peak
+- Text: "YOU'RE HERE" with arrow pointing to wherever viewer is
 
-A simple growth curve line that goes up, dips down into a valley, then rises again. Colors transition: green start, red valley, green peak. A white dot on the valley with arrow saying "97% quit here."
-
-Background: Dark black with thin grid lines
-Text: "You're Here" style arrow pointing to the valley
-Style: Exactly like the Alex Hormozi "You're Here" growth curve thumbnail`,
-    images: [],
+Keep the same curve/journey visual, the Hormozi growth curve energy.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-high-margin-fortress': {
-    template: 'product-table',
-    concept: `TEXT: "FORTRESS" gold bold
-VISUAL: Castle/fortress made of stacked margins on wooden table, impenetrable walls
-BACKGROUND: Dark gradient, warm wood bottom
-EXTRA: Build a fortress of margins. High margin moat.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172512.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "FORTRESS"
+- Show a CASTLE/FORTRESS built from stacked margin blocks (60%, 70%, 80%)
+- Impenetrable walls - competitors can't break through
+- Golden light emanating from within - treasure protected
+- Moat around the fortress filled with money
+- Our monkey mascot (attached) as the fortress king on top
+
+Keep the same architectural/structure visual energy.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-ridge-wallet-protocol': {
-    template: 'product-table',
-    concept: `TEXT: "RIDGE" white bold
-VISUAL: Single Ridge Wallet on wooden table expanding into infinite product variants
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Single product, infinite LTV. The Ridge Wallet protocol.`,
-    images: [imageAssets.ridgeWallet],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172150.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "∞ LTV"
+- Show a SINGLE Ridge Wallet in center with infinite symbol above it
+- Customer journey: Buy wallet → Buy case → Buy bag → Buy ring → Forever
+- The infinite LTV loop visualization
+- Arrows showing customers never leaving the ecosystem
+- Minimalist, premium metal aesthetic
+
+Keep the same product-focused showcase style.
+16:10 ratio. Don't put the time block.`,
+    images: [],
   },
 
   'biz-20-domination': {
-    template: 'money-product',
-    concept: `TEXT: "20% = 80%" yellow bold
-VISUAL: Small group of VIP customers generating massive pile of money, Pareto visualization
-BACKGROUND: White with grid texture
-EXTRA: 20% of customers = 80% of revenue. Dominate your 20%.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "20% = 80%"
+- Show a SMALL VIP GROUP (20%) connected to MASSIVE money pile (80%)
+- Pareto visualization - few customers, most revenue
+- Crown on the 20% group - they're the royalty
+- Golden connection line between small group and big pile
+- Our monkey mascot (attached) standing with the VIP 20%, arms crossed
+
+Keep the same money pyramid dramatic style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-channel-mix-formula': {
-    template: 'tech-ui',
-    concept: `TEXT: "THE MIX" white bold
-VISUAL: Pie chart dashboard showing optimal channel allocation, percentages labeled
-BACKGROUND: Dark tech gradient with grid
-EXTRA: Optimal channel allocation. The mix formula.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182304.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "THE MIX"
+- Show a PIE CHART dashboard with optimal channel allocation
+- Slices labeled: Meta 40%, Google 30%, TikTok 20%, Other 10%
+- Each slice with its platform icon and color
+- The perfect balance visualization
+- Our monkey mascot (attached) as the DJ mixing the channels like a soundboard
+
+Keep the same dark tech dashboard aesthetic.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey, imageAssets.meta],
   },
 
   'biz-next-best-dollar': {
-    template: 'arrow-callout',
-    concept: `TEXT: "NEXT DOLLAR" white bold
-VISUAL: Big arrow pointing from dollar to best investment spot, capital allocation visual
-BACKGROUND: White with subtle grid
-EXTRA: Where should your next dollar go? Capital allocator mindset.`,
-    images: [],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 182129.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "NEXT DOLLAR"
+- Show a SINGLE DOLLAR with multiple arrows pointing to different investments
+- One arrow glowing brighter than the rest - the BEST next dollar spot
+- Options: More ads, New product, Hire, Inventory, Save
+- Capital allocator decision visualization
+- Our monkey mascot (attached) holding the dollar, pointing at the glowing best option
+
+Keep the same decision/arrow visual, the strategic allocation energy.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'biz-authenticity-engine': {
@@ -3388,11 +3792,17 @@ Keep the same trap revelation visual, the math vs luck energy.
   },
 
   'biz-animal-mindset': {
-    template: 'money-product',
-    concept: `TEXT: "$500M" gold bold massive
-VISUAL: Davie Fogarty portrait on pile of money, intense relentless expression, Oodie in background
-BACKGROUND: Dark dramatic gradient
-EXTRA: Relentless action. The $500M animal mindset.`,
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2026-01-08 191052.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to massive "$500M" in gold
+- Show Davie Fogarty (attached) at the top of a money mountain with INTENSE expression
+- Animal energy - relentless, unstoppable, savage
+- The Oodie product subtly in background as the $500M machine
+- Fire/energy radiating from the intensity
+
+Keep the same money pyramid dramatic style.
+16:10 ratio. Don't put the time block.`,
     images: [imageAssets.davieFogarty],
   },
 
@@ -3596,12 +4006,19 @@ Keep the same transformation visual, the identity shift energy.
   },
 
   'le-creuset-scarcity-engine': {
-    template: 'product-table',
-    concept: `TEXT: "1 COLOR" yellow bold
-VISUAL: Rainbow of Le Creuset Dutch ovens on wooden table, all sold out except one color available
-BACKGROUND: White grid top, warm wood bottom
-EXTRA: Collector FOMO. Limited colors create collectors.`,
-    images: [imageAssets.leCreuset],
+    template: 'reference-based',
+    referenceImage: 'Screenshot 2025-12-17 172423.png',
+    concept: `Hey! Create me this EXACT same YouTube thumbnail style, but with these changes:
+- Change the text to "1 COLOR LEFT"
+- Show a RAINBOW of Le Creuset Dutch ovens - all faded/sold out except ONE vibrant color
+- "SOLD OUT" stamps on most colors
+- The one available color GLOWING with scarcity energy
+- Collector FOMO visualization - limited colors create collectors
+- Our monkey mascot (attached) holding the last available color like a trophy
+
+Keep the same product showcase multiplication style.
+16:10 ratio. Don't put the time block.`,
+    images: [imageAssets.monkey],
   },
 
   'local-holiday-legitimacy': {
