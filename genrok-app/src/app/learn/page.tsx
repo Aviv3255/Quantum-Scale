@@ -46,6 +46,8 @@ import { getUserProfile, supabase } from '@/lib/supabase';
 const lessonMeta: Record<string, { title: string; description: string; categories: LessonCategory[] }> = {
   'familiar-surprise-secret': { title: 'The Familiar Surprise Secret', description: 'Master the MAYA principle', categories: ['copywriting'] },
   'familiar-surprise-secret-v2': { title: 'The Familiar Surprise Secret (V2)', description: 'Premium redesign - MAYA principle', categories: ['copywriting'] },
+  'familiar-surprise-secret-v3': { title: 'The Familiar Surprise Secret (V3)', description: 'Linear-style professional design', categories: ['copywriting'] },
+  'familiar-surprise-secret-v4': { title: 'The Familiar Surprise Secret (V4)', description: 'Premium dark accent design', categories: ['copywriting'] },
   'red-button-effect': { title: 'The Red Button Effect', description: 'Understanding psychological reactance', categories: ['copywriting', 'psychology'] },
   'fred-method': { title: 'The F.R.E.D. Method', description: 'A framework for audience psychology', categories: ['copywriting'] },
   'emotion-decides': { title: 'Emotion Decides, Logic Justifies', description: 'How emotions drive purchases', categories: ['copywriting', 'psychology'] },

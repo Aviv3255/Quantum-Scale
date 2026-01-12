@@ -3013,6 +3013,54 @@ Premium redesigned version of the MAYA principle lesson with:
       ]
     },
     {
+      id: 1002,
+      thumbnail: '/images/lessons/familiar-surprise-secret.png',
+      title: 'The Familiar Surprise Secret (V3)',
+      intro: 'Linear/Notion-style professional design - clean, minimal, trustworthy.',
+      directUrl: '/learn/lessons/familiar-surprise-secret-v3',
+      specialFeatures: [
+        { value: 'V3', label: 'Linear Style' },
+        { value: 'Pro', label: 'Professional SaaS' }
+      ],
+      content: `## The Familiar Surprise Secret (V3)
+
+Linear/Notion-inspired professional design:
+- Modern indigo accent color
+- Clean typography hierarchy
+- Subtle borders and shadows
+- Professional SaaS aesthetic
+- No emojis - icons only
+
+**Linear/Notion style for professional feel.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/familiar-surprise-secret-v3/lesson.html' }
+      ]
+    },
+    {
+      id: 1003,
+      thumbnail: '/images/lessons/familiar-surprise-secret.png',
+      title: 'The Familiar Surprise Secret (V4)',
+      intro: 'Premium dark accent design - sophisticated, luxurious, trustworthy.',
+      directUrl: '/learn/lessons/familiar-surprise-secret-v4',
+      specialFeatures: [
+        { value: 'V4', label: 'Premium Dark' },
+        { value: 'Lux', label: 'Sophisticated' }
+      ],
+      content: `## The Familiar Surprise Secret (V4)
+
+Premium dark accent design:
+- White backgrounds with dark accent blocks
+- Rich amber/gold highlights
+- High contrast for visual interest
+- Sophisticated, luxurious feel
+- Premium SaaS aesthetic
+
+**Stripe-inspired premium sophistication.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/familiar-surprise-secret-v4/lesson.html' }
+      ]
+    },
+    {
       id: 102,
       thumbnail: '/images/lessons/red-button-effect.png',
       title: 'The Red Button Effect',
