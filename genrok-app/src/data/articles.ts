@@ -2989,6 +2989,30 @@ People want NEW things... but wrapped in FAMILIAR packages. This is the secret t
       ]
     },
     {
+      id: 1001,
+      thumbnail: '/images/lessons/familiar-surprise-secret.png',
+      title: 'The Familiar Surprise Secret (V2)',
+      intro: 'Premium redesign - The MAYA principle with award-winning design.',
+      directUrl: '/learn/lessons/familiar-surprise-secret-v2',
+      specialFeatures: [
+        { value: 'V2', label: 'Premium Redesign' },
+        { value: 'MAYA', label: 'Most Advanced Yet Acceptable' }
+      ],
+      content: `## The Familiar Surprise Secret (V2)
+
+Premium redesigned version of the MAYA principle lesson with:
+- Warm, inviting color palette
+- Interactive MAYA spectrum visualization
+- Animated statistics
+- Premium typography and spacing
+- Award-winning design quality
+
+**Compare this with the original to see the difference.**`,
+      buttons: [
+        { text: 'Open Interactive Lesson', url: '/lessons/familiar-surprise-secret-v2/lesson.html' }
+      ]
+    },
+    {
       id: 102,
       thumbnail: '/images/lessons/red-button-effect.png',
       title: 'The Red Button Effect',
