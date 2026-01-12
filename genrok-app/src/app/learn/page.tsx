@@ -20,6 +20,7 @@ import {
   Brain,
   Palette,
   Briefcase,
+  RatioIcon,
 } from 'lucide-react';
 
 // Lesson category types
@@ -35,6 +36,14 @@ const lessonCategories = [
   { id: 'google-ads', name: 'Google Ads', icon: Search },
   { id: 'business', name: 'Business', icon: Briefcase },
 ] as const;
+
+// Aspect ratio options for thumbnails
+const aspectRatioOptions = [
+  { id: '3:2', label: '3:2', value: 'aspect-[3/2]' },
+  { id: '16:10', label: '16:10', value: 'aspect-[16/10]' },
+  { id: '4:3', label: '4:3', value: 'aspect-[4/3]' },
+] as const;
+
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import LessonModal from '@/components/LessonModal';
@@ -398,6 +407,7 @@ export default function LearnPage() {
   const [initialSlide, setInitialSlide] = useState<number | null>(null);
   const [userName, setUserName] = useState<string>('Builder');
   const [activeLessonCategory, setActiveLessonCategory] = useState<string>('all');
+  const [aspectRatio, setAspectRatio] = useState<string>('aspect-[3/2]');
   const [customThumbnails, setCustomThumbnails] = useState<Record<string, string>>({});
 
   // Fetch custom thumbnails from database
@@ -571,31 +581,55 @@ export default function LearnPage() {
           </div>
 
           {/* Glass Toggle Category Filter */}
-          <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
-            {lessonCategories.map((cat) => {
-              const Icon = cat.icon;
-              const isActive = activeLessonCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveLessonCategory(cat.id)}
-                  className={`
-                    flex items-center gap-2 px-4 py-2.5 rounded-xl
-                    backdrop-blur-md border transition-all whitespace-nowrap
-                    ${isActive
-                      ? 'bg-black/85 border-black/90 text-white shadow-lg'
-                      : 'bg-white/10 border-white/20 text-gray-600 hover:bg-white/20 hover:border-black/10'
-                    }
-                  `}
-                >
-                  <Icon size={16} strokeWidth={1.5} />
-                  <span className="font-medium text-sm">{cat.name}</span>
-                  <span className={`text-xs ${isActive ? 'opacity-70' : 'opacity-60'}`}>
-                    ({lessonCategoryCounts[cat.id]})
-                  </span>
-                </button>
-              );
-            })}
+          <div className="flex items-center justify-between gap-4 pb-4">
+            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+              {lessonCategories.map((cat) => {
+                const Icon = cat.icon;
+                const isActive = activeLessonCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveLessonCategory(cat.id)}
+                    className={`
+                      flex items-center gap-2 px-4 py-2.5 rounded-xl
+                      backdrop-blur-md border transition-all whitespace-nowrap
+                      ${isActive
+                        ? 'bg-black/85 border-black/90 text-white shadow-lg'
+                        : 'bg-white/10 border-white/20 text-gray-600 hover:bg-white/20 hover:border-black/10'
+                      }
+                    `}
+                  >
+                    <Icon size={16} strokeWidth={1.5} />
+                    <span className="font-medium text-sm">{cat.name}</span>
+                    <span className={`text-xs ${isActive ? 'opacity-70' : 'opacity-60'}`}>
+                      ({lessonCategoryCounts[cat.id]})
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Aspect Ratio Toggle */}
+            <div className="flex items-center gap-2 shrink-0">
+              <RatioIcon size={16} className="text-[var(--text-muted)]" strokeWidth={1.5} />
+              <div className="flex gap-1 bg-[var(--bg-secondary)] rounded-lg p-1">
+                {aspectRatioOptions.map((option) => (
+                  <button
+                    key={option.id}
+                    onClick={() => setAspectRatio(option.value)}
+                    className={`
+                      px-3 py-1.5 rounded-md text-xs font-medium transition-all
+                      ${aspectRatio === option.value
+                        ? 'bg-white text-black shadow-sm'
+                        : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
+                      }
+                    `}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Lessons Grid */}
@@ -617,6 +651,7 @@ export default function LearnPage() {
                       categories={meta.categories}
                       onLessonClick={openLesson}
                       customThumbnail={customThumbnails[slug]}
+                      aspectRatio={aspectRatio}
                     />
                   </motion.div>
                 ))}
@@ -786,11 +821,6 @@ function ArticleCard({ article, featured, onLessonClick, customThumbnails }: Art
             Featured
           </div>
         )}
-        {isLesson && (
-          <div className="absolute top-4 right-4 badge" style={{ backgroundColor: '#7c3aed', color: 'white' }}>
-            Interactive Lesson
-          </div>
-        )}
         <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 backdrop-blur-md rounded-full bg-white/90 border border-white/50">
           <Clock size={14} className="text-[var(--text-muted)]" strokeWidth={1.5} />
           <span className="text-xs font-medium text-[var(--text-secondary)]">{article.readTime} min read</span>
@@ -865,9 +895,10 @@ interface LessonCardProps {
   categories: LessonCategory[];
   onLessonClick: (slug: string) => void;
   customThumbnail?: string;
+  aspectRatio?: string;
 }
 
-function LessonCard({ slug, title, description, categories, onLessonClick, customThumbnail }: LessonCardProps) {
+function LessonCard({ slug, title, description, categories, onLessonClick, customThumbnail, aspectRatio = 'aspect-[3/2]' }: LessonCardProps) {
   // Default thumbnail path based on slug
   const defaultThumbnail = `/images/lessons/${slug}.png`;
   const thumbnailSrc = customThumbnail || defaultThumbnail;
@@ -889,7 +920,7 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
       style={{ padding: 0 }}
     >
       {/* Thumbnail */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-[var(--bg-secondary)]">
+      <div className={`relative ${aspectRatio} overflow-hidden bg-[var(--bg-secondary)]`}>
         <Image
           src={thumbnailSrc}
           alt={title}
@@ -902,26 +933,25 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
             target.style.display = 'none';
           }}
         />
-        <div className="absolute top-4 right-4 badge" style={{ backgroundColor: '#7c3aed', color: 'white' }}>
-          Interactive Lesson
-        </div>
-        <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 backdrop-blur-md rounded-full bg-white/90 border border-white/50">
-          <Clock size={14} className="text-[var(--text-muted)]" strokeWidth={1.5} />
-          <span className="text-xs font-medium text-[var(--text-secondary)]">3 min</span>
-        </div>
       </div>
 
       {/* Content */}
       <div className="p-6">
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          {categories.slice(0, 2).map((cat) => (
-            <span key={cat} className="badge badge-gold">
-              {categoryLabels[cat]}
-            </span>
-          ))}
-          {categories.length > 2 && (
-            <span className="text-xs text-[var(--text-muted)]">+{categories.length - 2}</span>
-          )}
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <div className="flex flex-wrap items-center gap-2">
+            {categories.slice(0, 2).map((cat) => (
+              <span key={cat} className="badge badge-gold">
+                {categoryLabels[cat]}
+              </span>
+            ))}
+            {categories.length > 2 && (
+              <span className="text-xs text-[var(--text-muted)]">+{categories.length - 2}</span>
+            )}
+          </div>
+          <div className="flex items-center gap-1.5 text-[var(--text-muted)]">
+            <Clock size={14} strokeWidth={1.5} />
+            <span className="text-xs font-medium">3 min</span>
+          </div>
         </div>
 
         <h3 className="text-base font-semibold text-[var(--text-primary)] mb-2 line-clamp-2 group-hover:opacity-70 transition-opacity">
