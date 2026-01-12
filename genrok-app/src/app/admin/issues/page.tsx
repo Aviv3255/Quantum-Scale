@@ -16,12 +16,32 @@ import {
   ArrowLeft,
   MessageSquare,
   Send,
+  Zap,
+  Plus,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 import Link from 'next/link';
 import { getIssues, getIssueCounts, updateIssueStatus, deleteIssue, updateIssueFeedback } from '@/lib/adminIssues';
 import type { AdminIssue } from '@/types/admin';
 
 type StatusFilter = 'all' | 'pending' | 'fixed' | 'validated';
+
+interface BugTemplate {
+  id: string;
+  title: string;
+  description: string;
+}
+
+// Default bug templates
+const defaultTemplates: BugTemplate[] = [
+  { id: '1', title: 'Add running numbers', description: 'Add numbered list formatting to improve readability' },
+  { id: '2', title: 'Improve paragraph readability', description: 'Paragraph is in boring layout and barely readable. Add bold words, line breakers, better formatting' },
+  { id: '3', title: 'Slide shows white/blank', description: 'Slide is shown as white blank. Fix the rendering issue' },
+  { id: '4', title: 'Image not loading', description: 'Image is broken or not displaying correctly' },
+  { id: '5', title: 'Text overflow/cut off', description: 'Text is getting cut off or overflowing its container' },
+  { id: '6', title: 'Mobile layout broken', description: 'Layout is broken on mobile devices, needs responsive fix' },
+];
 
 export default function AdminIssuesPage() {
   const [issues, setIssues] = useState<AdminIssue[]>([]);
@@ -32,6 +52,55 @@ export default function AdminIssuesPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [expandedFeedback, setExpandedFeedback] = useState<string | null>(null);
   const [feedbackText, setFeedbackText] = useState('');
+
+  // Bug templates state
+  const [showTemplates, setShowTemplates] = useState(false);
+  const [templates, setTemplates] = useState<BugTemplate[]>(defaultTemplates);
+  const [newTemplateTitle, setNewTemplateTitle] = useState('');
+  const [newTemplateDesc, setNewTemplateDesc] = useState('');
+
+  // Load custom templates from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('bugTemplates');
+    if (saved) {
+      try {
+        setTemplates(JSON.parse(saved));
+      } catch {
+        // Keep defaults if parse fails
+      }
+    }
+  }, []);
+
+  // Save templates to localStorage
+  const saveTemplates = (newTemplates: BugTemplate[]) => {
+    setTemplates(newTemplates);
+    localStorage.setItem('bugTemplates', JSON.stringify(newTemplates));
+  };
+
+  // Add new template
+  const addTemplate = () => {
+    if (!newTemplateTitle.trim()) return;
+    const newTemplate: BugTemplate = {
+      id: Date.now().toString(),
+      title: newTemplateTitle.trim(),
+      description: newTemplateDesc.trim(),
+    };
+    saveTemplates([...templates, newTemplate]);
+    setNewTemplateTitle('');
+    setNewTemplateDesc('');
+  };
+
+  // Remove template
+  const removeTemplate = (id: string) => {
+    saveTemplates(templates.filter((t) => t.id !== id));
+  };
+
+  // Reset to defaults
+  const resetTemplates = () => {
+    if (confirm('Reset all templates to defaults?')) {
+      saveTemplates(defaultTemplates);
+    }
+  };
 
   // Fetch issues and counts
   const fetchData = async () => {
@@ -163,24 +232,111 @@ export default function AdminIssuesPage() {
           </div>
 
           {/* Status Tabs */}
-          <div className="flex gap-2">
-            {(['all', 'pending', 'fixed', 'validated'] as const).map((status) => (
-              <button
-                key={status}
-                onClick={() => setStatusFilter(status)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  statusFilter === status
-                    ? 'bg-neutral-900 text-white'
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-              >
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-                <span className="ml-2 px-1.5 py-0.5 rounded-md bg-white/20 text-xs">
-                  {counts[status]}
-                </span>
-              </button>
-            ))}
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2">
+              {(['all', 'pending', 'fixed', 'validated'] as const).map((status) => (
+                <button
+                  key={status}
+                  onClick={() => setStatusFilter(status)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                    statusFilter === status
+                      ? 'bg-neutral-900 text-white'
+                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                  }`}
+                >
+                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                  <span className="ml-2 px-1.5 py-0.5 rounded-md bg-white/20 text-xs">
+                    {counts[status]}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* Templates Toggle Button */}
+            <button
+              onClick={() => setShowTemplates(!showTemplates)}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-100 text-amber-700 hover:bg-amber-200 text-sm font-medium transition-colors"
+            >
+              <Zap className="w-4 h-4" />
+              Bug Templates
+              {showTemplates ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            </button>
           </div>
+
+          {/* Templates Management Panel */}
+          <AnimatePresence>
+            {showTemplates && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-4 p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-sm font-semibold text-neutral-700">Quick Report Templates</h3>
+                    <button
+                      onClick={resetTemplates}
+                      className="text-xs text-neutral-500 hover:text-neutral-700 flex items-center gap-1"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      Reset to defaults
+                    </button>
+                  </div>
+
+                  {/* Existing Templates */}
+                  <div className="space-y-2 mb-4">
+                    {templates.map((template) => (
+                      <div
+                        key={template.id}
+                        className="flex items-center justify-between p-3 bg-white rounded-lg border border-neutral-100"
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium text-neutral-900">{template.title}</div>
+                          <div className="text-xs text-neutral-500 truncate">{template.description}</div>
+                        </div>
+                        <button
+                          onClick={() => removeTemplate(template.id)}
+                          className="p-1.5 rounded-lg hover:bg-red-50 text-neutral-400 hover:text-red-500 transition-colors ml-2"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Add New Template */}
+                  <div className="pt-4 border-t border-neutral-200">
+                    <h4 className="text-xs font-medium text-neutral-500 mb-2">Add New Template</h4>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newTemplateTitle}
+                        onChange={(e) => setNewTemplateTitle(e.target.value)}
+                        placeholder="Template title..."
+                        className="flex-1 px-3 py-2 rounded-lg border border-neutral-200 text-sm focus:border-neutral-400 focus:ring-0 outline-none"
+                      />
+                      <input
+                        type="text"
+                        value={newTemplateDesc}
+                        onChange={(e) => setNewTemplateDesc(e.target.value)}
+                        placeholder="Description..."
+                        className="flex-1 px-3 py-2 rounded-lg border border-neutral-200 text-sm focus:border-neutral-400 focus:ring-0 outline-none"
+                      />
+                      <button
+                        onClick={addTemplate}
+                        disabled={!newTemplateTitle.trim()}
+                        className="px-4 py-2 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-neutral-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                      >
+                        <Plus className="w-4 h-4" />
+                        Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 

@@ -1,10 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Bug, MapPin, AlertTriangle, CheckSquare } from 'lucide-react';
+import { X, Bug, MapPin, AlertTriangle, CheckSquare, Zap } from 'lucide-react';
 import { createIssue, generateDirectLink, detectPageType } from '@/lib/adminIssues';
 import type { LessonSlideContext } from '@/types/admin';
+
+interface BugTemplate {
+  id: string;
+  title: string;
+  description: string;
+}
+
+// Default bug report templates
+const defaultBugTemplates: BugTemplate[] = [
+  { id: '1', title: 'Add running numbers', description: 'Add numbered list formatting to improve readability' },
+  { id: '2', title: 'Improve paragraph readability', description: 'Paragraph is in boring layout and barely readable. Add bold words, line breakers, better formatting' },
+  { id: '3', title: 'Slide shows white/blank', description: 'Slide is shown as white blank. Fix the rendering issue' },
+  { id: '4', title: 'Image not loading', description: 'Image is broken or not displaying correctly' },
+  { id: '5', title: 'Text overflow/cut off', description: 'Text is getting cut off or overflowing its container' },
+  { id: '6', title: 'Mobile layout broken', description: 'Layout is broken on mobile devices, needs responsive fix' },
+];
 
 interface AdminReportModalProps {
   isOpen: boolean;
@@ -21,6 +37,36 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [usePlaywright, setUsePlaywright] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [bugTemplates, setBugTemplates] = useState<BugTemplate[]>(defaultBugTemplates);
+
+  // Load templates from localStorage (synced with admin page)
+  useEffect(() => {
+    const saved = localStorage.getItem('bugTemplates');
+    if (saved) {
+      try {
+        setBugTemplates(JSON.parse(saved));
+      } catch {
+        // Keep defaults if parse fails
+      }
+    }
+  }, [isOpen]); // Reload when modal opens
+
+  // Filter templates based on input
+  const filteredTemplates = useMemo(() => {
+    if (!title.trim()) return [];
+    const query = title.toLowerCase();
+    return bugTemplates.filter(
+      (t) => t.title.toLowerCase().includes(query) || t.description.toLowerCase().includes(query)
+    );
+  }, [title, bugTemplates]);
+
+  // Handle template selection
+  const selectTemplate = (template: BugTemplate) => {
+    setTitle(template.title);
+    setDescription(template.description);
+    setShowSuggestions(false);
+  };
 
   const pageUrl = typeof window !== 'undefined' ? window.location.pathname : '';
   // Override pageType to 'lesson' when we have lesson context (iframe reports)
@@ -124,19 +170,61 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              {/* Title */}
+              {/* Quick Templates */}
               <div>
+                <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 mb-2">
+                  <Zap className="w-4 h-4 text-amber-500" />
+                  Quick Report
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {bugTemplates.slice(0, 4).map((template) => (
+                    <button
+                      key={template.id}
+                      type="button"
+                      onClick={() => selectTemplate(template)}
+                      className="px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-xs font-medium text-neutral-600 transition-colors"
+                    >
+                      {template.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Title with auto-suggest */}
+              <div className="relative">
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">
                   Issue Title
                 </label>
                 <input
                   type="text"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                   placeholder="e.g., Text overlapping image on mobile"
                   className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 focus:border-neutral-400 focus:ring-0 outline-none transition-colors text-sm"
                   autoFocus
                 />
+
+                {/* Auto-suggest dropdown */}
+                {showSuggestions && filteredTemplates.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-xl shadow-lg z-10 overflow-hidden">
+                    {filteredTemplates.map((template) => (
+                      <button
+                        key={template.id}
+                        type="button"
+                        onMouseDown={() => selectTemplate(template)}
+                        className="w-full px-4 py-2.5 text-left hover:bg-neutral-50 transition-colors border-b border-neutral-100 last:border-0"
+                      >
+                        <div className="text-sm font-medium text-neutral-900">{template.title}</div>
+                        <div className="text-xs text-neutral-500 truncate">{template.description}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Description */}
