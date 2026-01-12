@@ -20,7 +20,6 @@ import {
   Brain,
   Palette,
   Briefcase,
-  RatioIcon,
 } from 'lucide-react';
 
 // Lesson category types
@@ -35,13 +34,6 @@ const lessonCategories = [
   { id: 'meta-ads', name: 'Meta Ads', icon: Target },
   { id: 'google-ads', name: 'Google Ads', icon: Search },
   { id: 'business', name: 'Business', icon: Briefcase },
-] as const;
-
-// Aspect ratio options for thumbnails
-const aspectRatioOptions = [
-  { id: '3:2', label: '3:2', value: 'aspect-[3/2]' },
-  { id: '16:10', label: '16:10', value: 'aspect-[16/10]' },
-  { id: '4:3', label: '4:3', value: 'aspect-[4/3]' },
 ] as const;
 
 import { useAuthStore } from '@/store/auth';
@@ -407,7 +399,6 @@ export default function LearnPage() {
   const [initialSlide, setInitialSlide] = useState<number | null>(null);
   const [userName, setUserName] = useState<string>('Builder');
   const [activeLessonCategory, setActiveLessonCategory] = useState<string>('all');
-  const [aspectRatio, setAspectRatio] = useState<string>('aspect-[3/2]');
   const [customThumbnails, setCustomThumbnails] = useState<Record<string, string>>({});
 
   // Fetch custom thumbnails from database
@@ -581,55 +572,31 @@ export default function LearnPage() {
           </div>
 
           {/* Glass Toggle Category Filter */}
-          <div className="flex items-center justify-between gap-4 pb-4">
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-              {lessonCategories.map((cat) => {
-                const Icon = cat.icon;
-                const isActive = activeLessonCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setActiveLessonCategory(cat.id)}
-                    className={`
-                      flex items-center gap-2 px-4 py-2.5 rounded-xl
-                      backdrop-blur-md border transition-all whitespace-nowrap
-                      ${isActive
-                        ? 'bg-black/85 border-black/90 text-white shadow-lg'
-                        : 'bg-white/10 border-white/20 text-gray-600 hover:bg-white/20 hover:border-black/10'
-                      }
-                    `}
-                  >
-                    <Icon size={16} strokeWidth={1.5} />
-                    <span className="font-medium text-sm">{cat.name}</span>
-                    <span className={`text-xs ${isActive ? 'opacity-70' : 'opacity-60'}`}>
-                      ({lessonCategoryCounts[cat.id]})
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Aspect Ratio Toggle */}
-            <div className="flex items-center gap-2 shrink-0">
-              <RatioIcon size={16} className="text-[var(--text-muted)]" strokeWidth={1.5} />
-              <div className="flex gap-1 bg-[var(--bg-secondary)] rounded-lg p-1">
-                {aspectRatioOptions.map((option) => (
-                  <button
-                    key={option.id}
-                    onClick={() => setAspectRatio(option.value)}
-                    className={`
-                      px-3 py-1.5 rounded-md text-xs font-medium transition-all
-                      ${aspectRatio === option.value
-                        ? 'bg-white text-black shadow-sm'
-                        : 'text-[var(--text-muted)] hover:text-[var(--text-secondary)]'
-                      }
-                    `}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-            </div>
+          <div className="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+            {lessonCategories.map((cat) => {
+              const Icon = cat.icon;
+              const isActive = activeLessonCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveLessonCategory(cat.id)}
+                  className={`
+                    flex items-center gap-2 px-4 py-2.5 rounded-xl
+                    backdrop-blur-md border transition-all whitespace-nowrap
+                    ${isActive
+                      ? 'bg-black/85 border-black/90 text-white shadow-lg'
+                      : 'bg-white/10 border-white/20 text-gray-600 hover:bg-white/20 hover:border-black/10'
+                    }
+                  `}
+                >
+                  <Icon size={16} strokeWidth={1.5} />
+                  <span className="font-medium text-sm">{cat.name}</span>
+                  <span className={`text-xs ${isActive ? 'opacity-70' : 'opacity-60'}`}>
+                    ({lessonCategoryCounts[cat.id]})
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Lessons Grid */}
@@ -651,7 +618,6 @@ export default function LearnPage() {
                       categories={meta.categories}
                       onLessonClick={openLesson}
                       customThumbnail={customThumbnails[slug]}
-                      aspectRatio={aspectRatio}
                     />
                   </motion.div>
                 ))}
@@ -895,10 +861,9 @@ interface LessonCardProps {
   categories: LessonCategory[];
   onLessonClick: (slug: string) => void;
   customThumbnail?: string;
-  aspectRatio?: string;
 }
 
-function LessonCard({ slug, title, description, categories, onLessonClick, customThumbnail, aspectRatio = 'aspect-[3/2]' }: LessonCardProps) {
+function LessonCard({ slug, title, description, categories, onLessonClick, customThumbnail }: LessonCardProps) {
   // Default thumbnail path based on slug
   const defaultThumbnail = `/images/lessons/${slug}.png`;
   const thumbnailSrc = customThumbnail || defaultThumbnail;
@@ -920,7 +885,7 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
       style={{ padding: 0 }}
     >
       {/* Thumbnail */}
-      <div className={`relative ${aspectRatio} overflow-hidden bg-[var(--bg-secondary)]`}>
+      <div className="relative aspect-[3/2] overflow-hidden bg-[var(--bg-secondary)]">
         <Image
           src={thumbnailSrc}
           alt={title}
