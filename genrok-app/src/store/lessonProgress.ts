@@ -53,6 +53,10 @@ export const useLessonProgressStore = create<LessonProgressState>()(
             ? existing.completedSlides
             : [...existing.completedSlides, currentSlide];
 
+          // Check if lesson is now complete (all slides visited)
+          const isCompleted = completedSlides.length >= totalSlides;
+          const wasAlreadyCompleted = existing.isCompleted;
+
           return {
             progress: {
               ...state.progress,
@@ -61,7 +65,12 @@ export const useLessonProgressStore = create<LessonProgressState>()(
                 currentSlide,
                 totalSlides,
                 completedSlides,
+                isCompleted,
                 lastAccessedAt: new Date().toISOString(),
+                // Set completedAt only when transitioning to completed state
+                completedAt: isCompleted && !wasAlreadyCompleted
+                  ? new Date().toISOString()
+                  : existing.completedAt,
               },
             },
           };
