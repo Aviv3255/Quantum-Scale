@@ -413,17 +413,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <Settings size={14} />
                   <span>Settings</span>
                 </Link>
-                <button onClick={handleSignOut} className="profile-logout-btn" title="Sign out">
-                  <LogOut size={14} />
-                </button>
               </div>
             </div>
           ) : (
             <div className="profile-collapsed">
               <div className="profile-avatar-sm" title={userName}>{userInitials}</div>
-              <button onClick={handleSignOut} className="profile-logout-btn-sm" title="Sign out">
-                <LogOut size={16} />
-              </button>
+              <Link href="/settings" className="profile-settings-btn-sm" title="Settings">
+                <Settings size={16} />
+              </Link>
             </div>
           )}
         </div>
