@@ -287,7 +287,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem)
                           ? 'text-black bg-[var(--primary)] font-medium'
-                          : 'text-white/60 hover:bg-white/10 hover:text-white'
+                          : 'text-white/80 hover:bg-white/10 hover:text-white'
                       }`}
                       onClick={() => isMobile && setSidebarOpen(false)}
                     >
@@ -406,9 +406,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
               </div>
               <div className="profile-actions">
-                <Link href="/bookmarks" className="profile-settings-btn">
+                <Link href="/bookmarks" className="profile-settings-btn" title="Bookmarks">
                   <Bookmark size={14} />
-                  <span>Bookmarks</span>
                 </Link>
                 <Link href="/settings" className="profile-settings-btn">
                   <Settings size={14} />

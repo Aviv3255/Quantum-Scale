@@ -1,8 +1,11 @@
 'use client';
 
-import { useEffect, useCallback } from 'react';
-import { X } from 'lucide-react';
-import { BookmarkButton } from '@/components/BookmarkButton';
+import { useEffect, useCallback, useState } from 'react';
+import { X, Bookmark, BookmarkCheck } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useAuthStore } from '@/store/auth';
+import { useBookmarksStore } from '@/store/bookmarks';
+import type { BookmarkInput } from '@/types/bookmarks';
 
 interface LessonModalProps {
   slug: string;
@@ -94,14 +97,12 @@ export default function LessonModal({
             <p className="text-neutral-400 text-xs">{description}</p>
           </div>
           <div className="flex items-center gap-2">
-            {/* Bookmark current slide */}
-            <BookmarkButton
-              itemType="lesson_slide"
-              itemId={`${slug}:${initialSlide || 0}`}
-              title={`${title} - Slide ${(initialSlide || 0) + 1}`}
-              sourceUrl={`/learn?lesson=${slug}${initialSlide ? `&slide=${initialSlide}` : ''}`}
+            {/* Bookmark current slide - with text label */}
+            <SlideBookmarkButton
+              slug={slug}
+              title={title}
               description={description}
-              size="md"
+              currentSlide={initialSlide ?? 0}
             />
             <button
               onClick={onClose}
@@ -124,5 +125,88 @@ export default function LessonModal({
         </div>
       </div>
     </div>
+  );
+}
+
+// Slide Bookmark Button with text label
+interface SlideBookmarkButtonProps {
+  slug: string;
+  title: string;
+  description: string;
+  currentSlide: number;
+}
+
+function SlideBookmarkButton({ slug, title, description, currentSlide }: SlideBookmarkButtonProps) {
+  const { user } = useAuthStore();
+  const { isBookmarked, toggleBookmark } = useBookmarksStore();
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const itemId = `${slug}:${currentSlide}`;
+  const bookmarked = isBookmarked('lesson_slide', itemId);
+
+  const handleClick = useCallback(
+    async (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!user?.id || isAnimating) return;
+
+      setIsAnimating(true);
+
+      const input: BookmarkInput = {
+        item_type: 'lesson_slide',
+        item_id: itemId,
+        title: `${title} - Slide ${currentSlide + 1}`,
+        source_url: `/learn?lesson=${slug}&slide=${currentSlide}`,
+        description,
+      };
+
+      await toggleBookmark(user.id, input);
+      setTimeout(() => setIsAnimating(false), 300);
+    },
+    [user?.id, isAnimating, itemId, title, currentSlide, slug, description, toggleBookmark]
+  );
+
+  if (!user) return null;
+
+  return (
+    <motion.button
+      onClick={handleClick}
+      className={`
+        flex items-center gap-2 px-3 py-2 rounded-xl
+        transition-all duration-200 text-sm font-medium
+        ${bookmarked
+          ? 'bg-[var(--primary)] text-black'
+          : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+        }
+      `}
+      whileTap={{ scale: 0.95 }}
+      aria-label={bookmarked ? 'Remove slide bookmark' : 'Bookmark this slide'}
+    >
+      <AnimatePresence mode="wait">
+        {bookmarked ? (
+          <motion.div
+            key="bookmarked"
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.5, opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            <BookmarkCheck size={16} strokeWidth={2} />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="not-bookmarked"
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.5, opacity: 0 }}
+            transition={{ duration: 0.15 }}
+          >
+            <Bookmark size={16} strokeWidth={1.5} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <span>{bookmarked ? 'Slide saved' : 'Bookmark slide'}</span>
+    </motion.button>
   );
 }
