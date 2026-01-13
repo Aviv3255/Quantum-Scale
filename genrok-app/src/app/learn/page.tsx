@@ -612,7 +612,7 @@ export default function LearnPage() {
                 animate="visible"
                 className="grid-3 mt-6"
               >
-                {filteredLessons.map(([slug, meta]) => (
+                {filteredLessons.map(([slug, meta], index) => (
                   <motion.div key={slug} variants={itemVariants}>
                     <LessonCard
                       slug={slug}
@@ -621,6 +621,7 @@ export default function LearnPage() {
                       categories={meta.categories}
                       onLessonClick={openLesson}
                       customThumbnail={customThumbnails[slug]}
+                      showPremiumButton={index < 6}
                     />
                   </motion.div>
                 ))}
@@ -864,9 +865,10 @@ interface LessonCardProps {
   categories: LessonCategory[];
   onLessonClick: (slug: string) => void;
   customThumbnail?: string;
+  showPremiumButton?: boolean;
 }
 
-function LessonCard({ slug, title, description, categories, onLessonClick, customThumbnail }: LessonCardProps) {
+function LessonCard({ slug, title, description, categories, onLessonClick, customThumbnail, showPremiumButton = false }: LessonCardProps) {
   // Default thumbnail path based on slug
   const defaultThumbnail = `/images/lessons/${slug}.png`;
   const thumbnailSrc = customThumbnail || defaultThumbnail;
@@ -930,10 +932,17 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
           {description}
         </p>
 
-        <div className="flex items-center gap-1 font-medium text-sm text-[var(--text-primary)] group-hover:gap-2 transition-all">
-          Start lesson
-          <ChevronRight size={16} strokeWidth={1.5} />
-        </div>
+        {showPremiumButton ? (
+          <div className="btn-3d-premium-sm w-full justify-center">
+            Start Lesson
+            <ChevronRight size={14} strokeWidth={2} />
+          </div>
+        ) : (
+          <div className="flex items-center gap-1 font-medium text-sm text-[var(--text-primary)] group-hover:gap-2 transition-all">
+            Start lesson
+            <ChevronRight size={16} strokeWidth={1.5} />
+          </div>
+        )}
       </div>
     </button>
   );

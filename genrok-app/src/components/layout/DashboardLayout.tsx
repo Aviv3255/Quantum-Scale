@@ -441,12 +441,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
           <div className="topbar-right">
             {/* Notifications */}
-            <button className="btn-icon relative">
+            <button className="topbar-notification-btn">
               <Bell size={20} strokeWidth={1.5} />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--primary)] text-black text-[10px] font-bold rounded-full flex items-center justify-center">
-                3
-              </span>
+              <span className="notification-badge">3</span>
             </button>
+
+            {/* User Profile */}
+            <div className="topbar-user">
+              <div className="topbar-user-avatar">
+                {userInitials}
+              </div>
+              <div className="topbar-user-info">
+                <span className="topbar-user-name">{userName}</span>
+                <span className="topbar-user-email">{userEmail}</span>
+              </div>
+            </div>
           </div>
         </header>
 
