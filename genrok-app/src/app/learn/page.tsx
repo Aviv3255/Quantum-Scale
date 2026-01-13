@@ -536,8 +536,8 @@ export default function LearnPage() {
         <header className="page-header">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1>Learning Center</h1>
-              <p>274 interactive lessons + 38 in-depth articles on scaling strategies</p>
+              <h1>The Billionaire&apos;s Netflix</h1>
+              <p>{userName}, 274 lessons that built empires. No fluff. All profit.</p>
             </div>
 
             {/* Search */}

@@ -29,28 +29,28 @@ function getTimeBasedGreeting(userName: string) {
     return {
       greeting: `Good morning, ${firstName}`,
       icon: Sun,
-      message: "Fresh start, fresh opportunities. Let's make today count.",
+      message: "The empire awaits. Your competitors are sleeping - you're not.",
       mood: 'morning',
     };
   } else if (hour >= 12 && hour < 17) {
     return {
       greeting: `Good afternoon, ${firstName}`,
       icon: Rocket,
-      message: "You're in the zone. Keep that momentum going.",
+      message: "Peak hours. Every action now compounds into future millions.",
       mood: 'afternoon',
     };
   } else if (hour >= 17 && hour < 21) {
     return {
       greeting: `Good evening, ${firstName}`,
       icon: Sparkles,
-      message: "Wrapping up? Take a moment to celebrate your wins today.",
+      message: "The grind doesn't stop. Neither do winners.",
       mood: 'evening',
     };
   } else {
     return {
       greeting: `Working late, ${firstName}?`,
       icon: Moon,
-      message: "Night owls build empires. But don't forget to rest.",
+      message: "Night owls build empires. This is where legends are made.",
       mood: 'night',
     };
   }

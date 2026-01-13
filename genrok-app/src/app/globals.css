@@ -6,47 +6,60 @@
 
 :root {
   /* ===== BACKGROUNDS ===== */
-  --bg-primary: #FAFAFA;              /* Soft off-white - main background */
-  --bg-secondary: #F5F5F7;            /* Apple-style light gray */
+  --bg-primary: #FFFFFF;              /* Pure white - main background */
+  --bg-secondary: #F8F8F8;            /* Very light gray for subtle contrast */
   --bg-card: #FFFFFF;                 /* Pure white cards */
-  --bg-sidebar: #FFFFFF;              /* Sidebar background */
-  --bg-hover: rgba(0, 0, 0, 0.03);    /* Subtle hover */
-  --bg-active: rgba(0, 0, 0, 0.06);   /* Active state - black tint */
+  --bg-sidebar: #000000;              /* Solid black sidebar */
+  --bg-hover: rgba(136, 218, 28, 0.08);    /* Green tint hover */
+  --bg-active: rgba(136, 218, 28, 0.15);   /* Green tint active */
+  --bg-black-block: #000000;          /* Black background blocks */
 
   /* Glass morphism backgrounds */
   --bg-glass: rgba(255, 255, 255, 0.7);
   --bg-glass-dark: rgba(255, 255, 255, 0.85);
-  --bg-glass-sidebar: rgba(255, 255, 255, 0.92);
+  --bg-glass-sidebar: #000000;        /* Solid black for sidebar */
 
   /* ===== TEXT ===== */
   --text-primary: #000000;            /* Pure black - headlines */
-  --text-secondary: #1D1D1F;          /* Apple dark gray */
-  --text-tertiary: #424245;           /* Medium gray */
-  --text-muted: #86868B;              /* Light gray - captions */
+  --text-secondary: #1A1A1A;          /* Near black - body */
+  --text-tertiary: #333333;           /* Dark gray */
+  --text-muted: #666666;              /* Medium gray - captions */
   --text-white: #FFFFFF;              /* White text on dark */
+  --text-sidebar: #FFFFFF;            /* White text for sidebar */
 
-  /* ===== PRIMARY COLOR - BLACK WITH SHINE ===== */
-  --primary: #000000;
-  --primary-hover: #1a1a1a;
-  --primary-light: rgba(0, 0, 0, 0.06);
+  /* ===== PRIMARY COLOR - GREEN ACCENT ===== */
+  --primary: #88da1c;                 /* Bright green accent */
+  --primary-hover: #0f2f2c;           /* Dark teal hover */
+  --primary-light: rgba(136, 218, 28, 0.1);
 
-  /* ===== ACCENT COLORS - MINIMAL GOLD ===== */
-  --accent-gold: #B8860B;             /* Dark gold - sparse accent only */
-  --accent-gold-hover: #996F0A;       /* Darker gold - hover */
-  --accent-gold-light: rgba(184, 134, 11, 0.06);
-  --accent-gold-bg: rgba(184, 134, 11, 0.05);
+  /* ===== ACCENT COLORS - GREEN GRADIENT STOPS ===== */
+  --accent-green: #88da1c;            /* Main green accent */
+  --accent-teal: #0f2f2c;             /* Dark teal for hovers */
+  --gradient-1: #7ec636;
+  --gradient-2: #e3f697;
+  --gradient-3: #78c327;
+  --gradient-4: #bbe620;
+  --gradient-5: #69ab16;
+  --gradient-6: #125e0c;
+
+  /* Legacy gold variables (keeping for compatibility, mapped to green) */
+  --accent-gold: #88da1c;
+  --accent-gold-hover: #0f2f2c;
+  --accent-gold-light: rgba(136, 218, 28, 0.1);
+  --accent-gold-bg: rgba(136, 218, 28, 0.05);
 
   /* ===== FUNCTIONAL COLORS ===== */
-  --success: #34C759;                 /* Apple green */
-  --warning: #FF9500;                 /* Apple orange */
-  --error: #FF3B30;                   /* Apple red */
-  --info: #007AFF;                    /* Apple blue */
+  --success: #88da1c;                 /* Using our green */
+  --warning: #FF9500;                 /* Orange */
+  --error: #FF3B30;                   /* Red */
+  --info: #007AFF;                    /* Blue */
 
   /* ===== BORDERS - THIN 1PX ===== */
   --border-light: rgba(0, 0, 0, 0.06);
   --border-medium: rgba(0, 0, 0, 0.08);
   --border-strong: rgba(0, 0, 0, 0.12);
-  --border-gold: rgba(184, 134, 11, 0.2);
+  --border-green: rgba(136, 218, 28, 0.3);
+  --border-gold: rgba(136, 218, 28, 0.2);
 
   /* ===== PREMIUM SHADOWS ===== */
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -59,6 +72,8 @@
   --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.1);
   --shadow-button: 0 4px 14px rgba(0, 0, 0, 0.12);
   --shadow-button-hover: 0 6px 20px rgba(0, 0, 0, 0.18);
+  --shadow-3d: 0 4px 0 #125e0c, 0 6px 12px rgba(18, 94, 12, 0.3);
+  --shadow-3d-hover: 0 6px 0 #125e0c, 0 10px 20px rgba(18, 94, 12, 0.35);
 
   /* ===== SPACING ===== */
   --space-1: 4px;
@@ -82,9 +97,9 @@
   --radius-2xl: 24px;
   --radius-full: 9999px;
 
-  /* ===== FONTS - PREMIUM TYPOGRAPHY ===== */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  /* ===== FONTS - GENERAL SANS ===== */
+  --font-sans: 'General Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+  --font-heading: 'General Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
 }
 
 @theme inline {
@@ -249,13 +264,13 @@ h4, .text-h4 {
 
 /* ===== SELECTION ===== */
 ::selection {
-  background: var(--accent-gold);
-  color: white;
+  background: var(--primary);
+  color: #000000;
 }
 
 /* ===== FOCUS STYLES ===== */
 :focus-visible {
-  outline: 2px solid var(--accent-gold);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
@@ -388,6 +403,150 @@ h4, .text-h4 {
   color: var(--text-primary);
   border-color: var(--border-medium);
   box-shadow: var(--shadow-sm);
+}
+
+/* ===== 3D GRADIENT BUTTONS ===== */
+
+/* Primary 3D Button - Premium Green Gradient */
+.btn-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 28px;
+  border: none;
+  border-radius: 12px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #000000;
+  cursor: pointer;
+  text-decoration: none;
+  overflow: hidden;
+
+  /* Multi-stop gradient at 135 degrees */
+  background: linear-gradient(
+    135deg,
+    var(--gradient-1) 0%,
+    var(--gradient-2) 15%,
+    var(--gradient-3) 30%,
+    var(--gradient-4) 50%,
+    var(--gradient-5) 70%,
+    var(--gradient-6) 100%
+  );
+
+  /* 3D depth with shadows */
+  box-shadow:
+    0 4px 0 var(--gradient-6),
+    0 6px 12px rgba(18, 94, 12, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+
+  /* Text shadow for depth */
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  transition: all 0.15s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Glossy overlay for 3D effect */
+.btn-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  border-radius: 12px 12px 0 0;
+  pointer-events: none;
+}
+
+.btn-3d:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 0 var(--gradient-6),
+    0 10px 20px rgba(18, 94, 12, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btn-3d:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 2px 0 var(--gradient-6),
+    0 3px 6px rgba(18, 94, 12, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Large 3D Button */
+.btn-3d-lg {
+  height: 56px;
+  padding: 0 36px;
+  font-size: 16px;
+  border-radius: 14px;
+}
+
+.btn-3d-lg::before {
+  border-radius: 14px 14px 0 0;
+}
+
+/* Small 3D Button */
+.btn-3d-sm {
+  height: 40px;
+  padding: 0 20px;
+  font-size: 14px;
+  border-radius: 10px;
+}
+
+.btn-3d-sm::before {
+  border-radius: 10px 10px 0 0;
+}
+
+/* Full Width 3D Button */
+.btn-3d-full {
+  width: 100%;
+}
+
+/* Secondary Black 3D Button (for contrast with green) */
+.btn-3d-black {
+  background: linear-gradient(
+    135deg,
+    #1a1a1a 0%,
+    #333333 30%,
+    #1a1a1a 50%,
+    #0a0a0a 100%
+  );
+  color: #FFFFFF;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 4px 0 #000000,
+    0 6px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn-3d-black::before {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+}
+
+.btn-3d-black:hover {
+  box-shadow:
+    0 6px 0 #000000,
+    0 10px 20px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* ===== CARDS ===== */
@@ -683,17 +842,15 @@ h4, .text-h4 {
   background-color: var(--bg-primary);
 }
 
-/* Sidebar - Premium Glass Effect */
+/* Sidebar - Premium Solid Black */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
   width: 250px;
-  background: var(--bg-glass-sidebar);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid var(--border-light);
+  background: #000000;
+  border-right: 1px solid rgba(136, 218, 28, 0.1);
   display: flex;
   flex-direction: column;
   z-index: 100;
@@ -717,7 +874,7 @@ h4, .text-h4 {
 .sidebar-logo span {
   font-size: 17px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #FFFFFF;
   letter-spacing: -0.02em;
 }
 
@@ -738,7 +895,7 @@ h4, .text-h4 {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.4);
   padding: 0 12px;
   margin-bottom: 6px;
 }
@@ -746,7 +903,7 @@ h4, .text-h4 {
 .sidebar-user {
   padding-top: 16px;
   margin-top: 16px;
-  border-top: 1px solid var(--border-light);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -762,7 +919,7 @@ h4, .text-h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: #000000;
   font-weight: 600;
   font-size: 13px;
 }
@@ -775,7 +932,7 @@ h4, .text-h4 {
 .sidebar-user-name {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-primary);
+  color: #FFFFFF;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -783,20 +940,20 @@ h4, .text-h4 {
 
 .sidebar-user-email {
   font-size: 11px;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.5);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* Navigation Item - Clean Black Accent */
+/* Navigation Item - Green Accent on Black */
 .nav-item {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 9px 12px;
   border-radius: var(--radius-md);
-  color: var(--text-tertiary);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
   font-weight: 450;
   text-decoration: none;
@@ -805,17 +962,17 @@ h4, .text-h4 {
 }
 
 .nav-item:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
+  background: rgba(136, 218, 28, 0.1);
+  color: #FFFFFF;
 }
 
 .nav-item.active {
   background: var(--primary);
-  color: #FFFFFF;
+  color: #000000;
 }
 
 .nav-item.active svg {
-  color: #FFFFFF !important;
+  color: #000000 !important;
 }
 
 .nav-item-icon {
@@ -827,7 +984,7 @@ h4, .text-h4 {
 .nav-item-badge {
   margin-left: auto;
   background: var(--primary);
-  color: white;
+  color: #000000;
   font-size: 10px;
   font-weight: 600;
   padding: 2px 8px;
@@ -2219,6 +2376,101 @@ h4, .text-h4 {
 }
 
 /* ===== UTILITIES ===== */
+
+/* ===== BLACK BACKGROUND BLOCKS ===== */
+
+/* Strategic black section for contrast */
+.block-black {
+  background: #000000;
+  color: #FFFFFF;
+  padding: 48px;
+  border-radius: var(--radius-xl);
+  margin: 32px 0;
+}
+
+.block-black h1,
+.block-black h2,
+.block-black h3,
+.block-black h4 {
+  color: #FFFFFF;
+}
+
+.block-black p {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Green accent text in black blocks */
+.block-black .accent {
+  color: var(--primary);
+}
+
+/* Hero-style black section */
+.hero-black {
+  background: #000000;
+  color: #FFFFFF;
+  padding: 64px 48px;
+  border-radius: var(--radius-2xl);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle green glow on black backgrounds */
+.hero-black::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 60%;
+  height: 120%;
+  background: radial-gradient(ellipse, rgba(136, 218, 28, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-black h1,
+.hero-black h2,
+.hero-black h3 {
+  color: #FFFFFF;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-black p {
+  color: rgba(255, 255, 255, 0.8);
+  position: relative;
+  z-index: 1;
+}
+
+/* Card on black background */
+.card-on-black {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.card-on-black:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(136, 218, 28, 0.3);
+}
+
+/* Full-width black section (no border radius) */
+.section-black {
+  background: #000000;
+  color: #FFFFFF;
+  padding: 80px 48px;
+  margin: 48px -48px;
+  width: calc(100% + 96px);
+}
+
+.section-black h1,
+.section-black h2,
+.section-black h3 {
+  color: #FFFFFF;
+}
+
+.section-black p {
+  color: rgba(255, 255, 255, 0.8);
+}
 
 .sr-only {
   position: absolute;

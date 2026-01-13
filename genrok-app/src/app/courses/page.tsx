@@ -758,8 +758,8 @@ export default function CoursesPage() {
         <div className="w-full px-6 lg:px-10 pt-8 pb-6">
           <div className="flex items-start justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-[#111111] mb-2">Courses</h1>
-              <p className="text-[#666666]">Premium frameworks to scale your eCommerce business</p>
+              <h1 className="text-3xl font-bold text-[#111111] mb-2">The Vault</h1>
+              <p className="text-[#666666]">Frameworks that built 7-figure stores. Your unfair advantage.</p>
             </div>
             {/* Cart Button */}
             <CartHeaderButton />
