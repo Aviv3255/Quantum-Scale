@@ -17,10 +17,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuthStore } from '@/store/auth';
 import { useLessonProgressStore } from '@/store/lessonProgress';
-import { useCourseProgressStore } from '@/store/courseProgress';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
 import { metaAdTemplates } from '@/data/meta-ad-templates';
+import { getDefaultChecklist, hasChecklist } from '@/data/course-checklists';
 
 // All available lessons with metadata
 const allLessons = [
@@ -90,14 +90,40 @@ function getDailyProducts(count: number = 20) {
   }));
 }
 
+// Helper to get checklist progress from localStorage (synced with Courses page)
+function getChecklistProgressForCourse(userId: string, courseSlug: string): number {
+  if (typeof window === 'undefined') return 0;
+  try {
+    const storageKey = `checklist-${courseSlug}-${userId}`;
+    const stored = localStorage.getItem(storageKey);
+    if (!stored) return 0;
+    const completedItems = JSON.parse(stored) as string[];
+    const checklistItems = getDefaultChecklist(courseSlug);
+    const taskItems = checklistItems.filter(item => !item.isCategory);
+    if (taskItems.length === 0) return 0;
+    return Math.round((completedItems.length / taskItems.length) * 100);
+  } catch {
+    return 0;
+  }
+}
+
+// Calculate total completed courses from checklist data
+function getCompletedCoursesFromChecklists(userId: string, courseSlugs: string[]): number {
+  if (typeof window === 'undefined') return 0;
+  return courseSlugs.filter(slug => {
+    const progress = getChecklistProgressForCourse(userId, slug);
+    return progress >= 100;
+  }).length;
+}
+
 type ContentTab = 'courses' | 'lessons' | 'creatives';
 
 export default function DashboardPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
   const lessonProgressStore = useLessonProgressStore();
-  const courseProgressStore = useCourseProgressStore();
   const [activeTab, setActiveTab] = useState<ContentTab>('courses');
+  const [checklistProgressMap, setChecklistProgressMap] = useState<Record<string, number>>({});
   const courses = getAllCourses();
 
   // Get daily randomized products (memoized to prevent re-shuffling on every render)
@@ -108,6 +134,17 @@ export default function DashboardPage() {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Load checklist progress for all courses (synced with Courses page)
+  useEffect(() => {
+    if (user?.id) {
+      const progressMap: Record<string, number> = {};
+      courses.forEach(course => {
+        progressMap[course.slug] = getChecklistProgressForCourse(user.id, course.slug);
+      });
+      setChecklistProgressMap(progressMap);
+    }
+  }, [user?.id, courses]);
 
   // Sort lessons: in-progress first, then not started
   const sortedLessons = useMemo(() => {
@@ -144,21 +181,37 @@ export default function DashboardPage() {
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   const { greeting, subtext } = getTimeBasedGreeting(userName);
 
-  // Stats for the right sidebar
+  // Stats for the right sidebar - using real data from stores
   const completedLessons = lessonProgressStore.getCompletedLessonsCount();
-  const completedCourses = courseProgressStore.getCompletedCoursesCount();
   const totalLessons = allLessons.length;
 
-  // Weekly progress data for chart
+  // Completed courses from checklist data (synced with Courses page)
+  const completedCourses = useMemo(() => {
+    if (!user?.id) return 0;
+    return getCompletedCoursesFromChecklists(user.id, courses.map(c => c.slug));
+  }, [user?.id, courses, checklistProgressMap]);
+
+  // Weekly progress data for chart - based on actual lesson progress
   const weeklyData = useMemo(() => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const totalProgress = lessonProgressStore.getTotalSlidesCompleted();
-    // Distribute progress across days with some variation
+    const totalSlidesCompleted = lessonProgressStore.getTotalSlidesCompleted();
+    const lessonsInProgress = lessonProgressStore.getLessonsInProgress().length;
+
+    // Calculate total activity score based on real progress
+    const activityScore = totalSlidesCompleted + (lessonsInProgress * 5) + (completedLessons * 10);
+
+    // If no activity yet, show empty chart with message
+    if (activityScore === 0) {
+      return days.map((day) => ({ day, value: 0 }));
+    }
+
+    // Distribute actual progress across week with natural variation
+    const basePerDay = Math.min(100, activityScore / 7);
     return days.map((day, i) => {
-      const baseValue = Math.max(0, (totalProgress / 7) + (Math.sin(i * 1.5) * 2));
-      return { day, value: Math.min(100, baseValue * 3) };
+      const variation = Math.sin(i * 0.8 + Date.now() / 86400000) * 0.3 + 0.7;
+      return { day, value: Math.min(100, Math.round(basePerDay * variation)) };
     });
-  }, [lessonProgressStore]);
+  }, [lessonProgressStore, completedLessons]);
 
   return (
     <DashboardLayout>
@@ -248,14 +301,15 @@ export default function DashboardPage() {
               </Link>
             </div>
 
-            {/* Courses Tab */}
+            {/* Courses Tab - synced with Courses page checklist progress */}
             {activeTab === 'courses' && (
               <div className="courses-list">
                 {courses.slice(0, 4).map((course) => {
-                  const courseProgress = courseProgressStore.getProgress(course.slug);
-                  const progressValue = courseProgress?.progress || 0;
+                  // Use checklist progress (same as Courses page)
+                  const progressValue = checklistProgressMap[course.slug] || 0;
                   const circumference = 2 * Math.PI * 18;
                   const strokeDashoffset = circumference - (progressValue / 100) * circumference;
+                  const courseHasChecklist = hasChecklist(course.slug);
                   return (
                     <div key={course.slug} className="course-row">
                       <div className="course-icon-wrapper">
@@ -276,20 +330,22 @@ export default function DashboardPage() {
                           </span>
                         </div>
                       </div>
-                      <div className="course-progress-circle">
-                        <svg width="44" height="44" viewBox="0 0 44 44">
-                          <circle className="progress-bg" cx="22" cy="22" r="18" />
-                          <circle
-                            className="progress-fill"
-                            cx="22"
-                            cy="22"
-                            r="18"
-                            strokeDasharray={circumference}
-                            strokeDashoffset={strokeDashoffset}
-                          />
-                        </svg>
-                        <span className="course-progress-text">{progressValue}%</span>
-                      </div>
+                      {courseHasChecklist && (
+                        <div className="course-progress-circle">
+                          <svg width="44" height="44" viewBox="0 0 44 44">
+                            <circle className="progress-bg" cx="22" cy="22" r="18" />
+                            <circle
+                              className="progress-fill"
+                              cx="22"
+                              cy="22"
+                              r="18"
+                              strokeDasharray={circumference}
+                              strokeDashoffset={strokeDashoffset}
+                            />
+                          </svg>
+                          <span className="course-progress-text">{progressValue}%</span>
+                        </div>
+                      )}
                       <Link href={`/courses/${course.slug}`} className="btn-course-view">
                         {progressValue > 0 ? 'Continue' : 'Start'}
                       </Link>

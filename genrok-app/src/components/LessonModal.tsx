@@ -5,6 +5,7 @@ import { X, Bookmark, BookmarkCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import { useBookmarksStore } from '@/store/bookmarks';
+import { useLessonProgressStore } from '@/store/lessonProgress';
 import type { BookmarkInput } from '@/types/bookmarks';
 
 interface LessonModalProps {
@@ -26,7 +27,11 @@ export default function LessonModal({
 }: LessonModalProps) {
   // Track the current slide from iframe postMessage
   const [currentSlide, setCurrentSlide] = useState(initialSlide ?? 0);
+  const [totalSlides, setTotalSlides] = useState(10); // Default, updated from iframe
   const currentSlideRef = useRef(initialSlide ?? 0);
+
+  // Get progress store update function
+  const updateProgress = useLessonProgressStore((s) => s.updateProgress);
 
   // ESC key to close
   const handleKeyDown = useCallback(
@@ -41,16 +46,26 @@ export default function LessonModal({
   // Listen for slide changes from the iframe
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.data?.type === 'SLIDE_CHANGED' && typeof event.data.slideIndex === 'number') {
+      // Listen for LESSON_SLIDE_UPDATE (correct message type from lesson HTML)
+      if (event.data?.type === 'LESSON_SLIDE_UPDATE' && typeof event.data.slideIndex === 'number') {
         const newSlide = event.data.slideIndex;
+        const slidesCount = event.data.totalSlides || totalSlides;
+
         currentSlideRef.current = newSlide;
         setCurrentSlide(newSlide);
+
+        if (event.data.totalSlides) {
+          setTotalSlides(event.data.totalSlides);
+        }
+
+        // Update the progress store to track lesson progress
+        updateProgress(slug, newSlide, slidesCount);
       }
     };
 
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, []);
+  }, [slug, totalSlides, updateProgress]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);

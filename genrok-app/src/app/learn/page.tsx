@@ -20,7 +20,9 @@ import {
   Brain,
   Palette,
   Briefcase,
+  CheckCircle2,
 } from 'lucide-react';
+import { useLessonProgressStore } from '@/store/lessonProgress';
 
 // Lesson category types
 type LessonCategory = 'copywriting' | 'psychology' | 'branding' | 'meta-ads' | 'google-ads' | 'business';
@@ -874,6 +876,13 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
   const defaultThumbnail = `/images/lessons/${slug}.png`;
   const thumbnailSrc = customThumbnail || defaultThumbnail;
 
+  // Get progress from store
+  const getProgressPercentage = useLessonProgressStore((s) => s.getProgressPercentage);
+  const isLessonCompleted = useLessonProgressStore((s) => s.isLessonCompleted);
+
+  const progress = getProgressPercentage(slug);
+  const isCompleted = isLessonCompleted(slug);
+
   // Category label mapping for display
   const categoryLabels: Record<LessonCategory, string> = {
     'copywriting': 'Copywriting',
@@ -918,6 +927,31 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
               target.style.display = 'none';
             }}
           />
+
+          {/* Progress indicators */}
+          {progress > 0 && (
+            <>
+              {/* Progress bar at bottom of thumbnail */}
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/20">
+                <div
+                  className="h-full bg-[var(--accent-primary)] transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+
+              {/* Progress badge */}
+              {isCompleted ? (
+                <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500 text-white text-xs font-semibold shadow-lg">
+                  <CheckCircle2 size={12} />
+                  Done
+                </div>
+              ) : (
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[var(--accent-primary)] text-black text-xs font-semibold shadow-lg">
+                  {progress}%
+                </div>
+              )}
+            </>
+          )}
         </div>
 
       {/* Content */}
