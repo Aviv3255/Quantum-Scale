@@ -133,3 +133,271 @@ export const updateUserProfile = async (
     .single();
   return { data: data as UserProfile | null, error };
 };
+
+// Poll vote types
+export type PollVote = {
+  id: string;
+  poll_id: number;
+  option_index: number;
+  user_id: string;
+  user_email: string | null;
+  user_name: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// Poll vote helpers
+export const submitPollVote = async (
+  pollId: number,
+  optionIndex: number,
+  userId: string,
+  userEmail?: string,
+  userName?: string
+): Promise<{ data: PollVote | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_votes' as const)
+    .upsert({
+      poll_id: pollId,
+      option_index: optionIndex,
+      user_id: userId,
+      user_email: userEmail || null,
+      user_name: userName || null,
+      updated_at: new Date().toISOString(),
+    } as never, {
+      onConflict: 'poll_id,user_id'
+    })
+    .select()
+    .single();
+  return { data: data as PollVote | null, error };
+};
+
+export const getUserPollVotes = async (userId: string): Promise<{ data: { poll_id: number; option_index: number }[] | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_votes' as const)
+    .select('poll_id, option_index')
+    .eq('user_id', userId);
+  return { data: data as { poll_id: number; option_index: number }[] | null, error };
+};
+
+export const getAllPollVotes = async (): Promise<{ data: { poll_id: number; option_index: number }[] | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_votes' as const)
+    .select('poll_id, option_index');
+  return { data: data as { poll_id: number; option_index: number }[] | null, error };
+};
+
+// Poll request types
+export type PollRequest = {
+  id: string;
+  question: string;
+  options: { text: string }[];
+  buttons: { text: string; url: string }[] | null;
+  status: 'pending' | 'approved' | 'rejected';
+  submitted_by: string;
+  submitted_by_email: string | null;
+  submitted_by_name: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  admin_notes: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// Poll request helpers
+export const submitPollRequest = async (
+  question: string,
+  options: { text: string }[],
+  userId: string,
+  userEmail?: string,
+  userName?: string
+): Promise<{ data: PollRequest | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_requests' as const)
+    .insert({
+      question,
+      options: JSON.stringify(options),
+      submitted_by: userId,
+      submitted_by_email: userEmail || null,
+      submitted_by_name: userName || null,
+    } as never)
+    .select()
+    .single();
+  return { data: data as PollRequest | null, error };
+};
+
+export const getPendingPollRequests = async (): Promise<{ data: PollRequest[] | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_requests' as const)
+    .select('*')
+    .eq('status', 'pending')
+    .order('created_at', { ascending: false });
+  return { data: data as PollRequest[] | null, error };
+};
+
+export const getAllPollRequests = async (): Promise<{ data: PollRequest[] | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('poll_requests' as const)
+    .select('*')
+    .order('created_at', { ascending: false });
+  return { data: data as PollRequest[] | null, error };
+};
+
+export const updatePollRequest = async (
+  requestId: string,
+  updates: {
+    question?: string;
+    options?: { text: string }[];
+    buttons?: { text: string; url: string }[];
+    status?: 'pending' | 'approved' | 'rejected';
+    admin_notes?: string;
+    reviewed_by?: string;
+    reviewed_at?: string;
+  }
+): Promise<{ data: PollRequest | null; error: { code?: string; message: string } | null }> => {
+  const updateData: Record<string, unknown> = {
+    ...updates,
+    updated_at: new Date().toISOString(),
+  };
+  if (updates.options) {
+    updateData.options = JSON.stringify(updates.options);
+  }
+  if (updates.buttons) {
+    updateData.buttons = JSON.stringify(updates.buttons);
+  }
+
+  const { data, error } = await supabase
+    .from('poll_requests' as const)
+    .update(updateData as never)
+    .eq('id', requestId)
+    .select()
+    .single();
+  return { data: data as PollRequest | null, error };
+};
+
+export const deletePollRequest = async (
+  requestId: string
+): Promise<{ error: { code?: string; message: string } | null }> => {
+  const { error } = await supabase
+    .from('poll_requests' as const)
+    .delete()
+    .eq('id', requestId);
+  return { error };
+};
+
+
+// Referral system types
+export type Referral = {
+  id: string;
+  referrer_id: string;
+  referred_user_id: string;
+  referred_email: string;
+  referred_ip: string;
+  referral_code: string;
+  is_valid: boolean;
+  created_at: string;
+};
+
+// Referral system helpers
+export const createReferral = async (
+  referrerId: string,
+  referredUserId: string,
+  referredEmail: string,
+  referredIp: string,
+  referralCode: string
+): Promise<{ data: Referral | null; error: { code?: string; message: string } | null }> => {
+  // Check if this IP or email has already been used for this referrer
+  // Referrals from same IP OR same email are rejected to prevent gaming
+  const { data: existing } = await supabase
+    .from('referrals' as const)
+    .select('id')
+    .eq('referrer_id', referrerId)
+    .or(`referred_ip.eq.${referredIp},referred_email.eq.${referredEmail}`);
+
+  if (existing && (existing as unknown[]).length > 0) {
+    return { data: null, error: { message: 'This IP or email has already been used for a referral' } };
+  }
+
+  const { data, error } = await supabase
+    .from('referrals' as const)
+    .insert({
+      referrer_id: referrerId,
+      referred_user_id: referredUserId,
+      referred_email: referredEmail,
+      referred_ip: referredIp,
+      referral_code: referralCode,
+      is_valid: true,
+    } as never)
+    .select()
+    .single();
+  return { data: data as Referral | null, error };
+};
+
+export const getReferralCount = async (userId: string): Promise<{ count: number; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('referrals' as const)
+    .select('id')
+    .eq('referrer_id', userId)
+    .eq('is_valid', true);
+
+  return { count: data ? (data as unknown[]).length : 0, error };
+};
+
+export const getReferrerByCode = async (referralCode: string): Promise<{ referrerId: string | null; error: { code?: string; message: string } | null }> => {
+  const { data, error } = await supabase
+    .from('user_profiles' as const)
+    .select('user_id')
+    .eq('referral_code', referralCode)
+    .single();
+
+  return { referrerId: data ? (data as { user_id: string }).user_id : null, error };
+};
+
+// Feature Request functions
+export interface FeatureRequestInput {
+  user_id: string | null;
+  user_email: string;
+  title: string;
+  description: string | null;
+  category: string;
+}
+
+export const submitFeatureRequest = async (request: FeatureRequestInput) => {
+  const { data, error } = await supabase
+    .from('feature_requests' as const)
+    .insert({
+      user_id: request.user_id,
+      user_email: request.user_email,
+      title: request.title,
+      description: request.description,
+      category: request.category,
+      status: 'pending',
+      created_at: new Date().toISOString(),
+    } as never)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const getFeatureRequests = async () => {
+  const { data, error } = await supabase
+    .from('feature_requests' as const)
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+};
+
+export const updateFeatureRequestStatus = async (id: string, status: string) => {
+  const { data, error } = await supabase
+    .from('feature_requests' as const)
+    .update({ status } as never)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};

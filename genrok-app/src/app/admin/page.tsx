@@ -1,168 +1,92 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
-  ImageIcon,
-  GraduationCap,
-  FileText,
-  AlertCircle,
+  MessageSquare,
+  BookOpen,
   CheckSquare,
-  ArrowLeft,
-  ArrowRight,
+  Code,
+  AlertCircle,
+  ArrowRight
 } from 'lucide-react';
-import { useAuthStore } from '@/store/auth';
-import DashboardLayout from '@/components/layout/DashboardLayout';
 
 const adminSections = [
   {
-    title: 'Lesson Thumbnails',
-    description: 'Upload and manage thumbnails for interactive lessons',
-    href: '/admin/lesson-thumbnails',
-    icon: ImageIcon,
-    color: '#8b5cf6',
-    badge: 'NEW',
+    title: 'Feature Requests',
+    description: 'View and manage user feature requests',
+    href: '/admin/feature-requests',
+    icon: MessageSquare,
   },
   {
-    title: 'Course Management',
-    description: 'Upload and manage course PDF files',
+    title: 'Courses',
+    description: 'Manage course content and settings',
     href: '/admin/courses',
-    icon: GraduationCap,
-    color: '#3b82f6',
-  },
-  {
-    title: 'HTML Blocks',
-    description: 'Manage reusable HTML content blocks',
-    href: '/admin/html-blocks',
-    icon: FileText,
-    color: '#10b981',
-  },
-  {
-    title: 'Issue Tracker',
-    description: 'View and manage reported issues',
-    href: '/admin/issues',
-    icon: AlertCircle,
-    color: '#ef4444',
+    icon: BookOpen,
   },
   {
     title: 'Checklists',
-    description: 'Manage checklist templates',
+    description: 'Manage checklist items',
     href: '/admin/checklists',
     icon: CheckSquare,
-    color: '#f59e0b',
+  },
+  {
+    title: 'HTML Blocks',
+    description: 'Edit HTML content blocks',
+    href: '/admin/html-blocks',
+    icon: Code,
+  },
+  {
+    title: 'Issues',
+    description: 'View reported issues',
+    href: '/admin/issues',
+    icon: AlertCircle,
   },
 ];
 
 export default function AdminPage() {
-  const { user, isLoading: authLoading } = useAuthStore();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Admin email check
-  const ADMIN_EMAILS = ['admin@quantum-scale.co', 'aviv32552@gmail.com'];
-  const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email);
-
-  if (!mounted || authLoading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <DashboardLayout>
-        <div className="page-wrapper">
-          <div className="card text-center py-16">
-            <div className="w-20 h-20 rounded-2xl bg-red-100 flex items-center justify-center mx-auto mb-6">
-              <AlertCircle size={40} className="text-red-500" />
-            </div>
-            <h2 className="text-xl font-semibold text-[var(--text-primary)] mb-2">Access Denied</h2>
-            <p className="text-[var(--text-muted)]">
-              You don&apos;t have permission to access this page.
-            </p>
-          </div>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
   return (
-    <DashboardLayout>
-      <div className="page-wrapper">
+    <div className="min-h-screen bg-[#FAFAFA]">
+      <div className="max-w-4xl mx-auto px-6 py-12">
         {/* Header */}
-        <motion.header
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="page-header"
-        >
-          <div className="flex items-center gap-4">
-            <Link
-              href="/dashboard"
-              className="p-2 rounded-lg hover:bg-[var(--bg-secondary)] transition-colors"
-            >
-              <ArrowLeft size={20} />
-            </Link>
-            <div>
-              <h1>Admin Dashboard</h1>
-              <p className="mt-1">Manage content, courses, and system settings</p>
-            </div>
-          </div>
-        </motion.header>
+        <div className="mb-10">
+          <h1 className="text-3xl font-bold text-[#1D1D1F] mb-2">Admin Dashboard</h1>
+          <p className="text-[#86868B]">Manage your platform settings and content</p>
+        </div>
 
         {/* Admin Sections Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {adminSections.map((section, index) => (
-            <motion.div
+        <div className="grid gap-4">
+          {adminSections.map((section) => (
+            <Link
               key={section.href}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 + index * 0.05 }}
+              href={section.href}
+              className="group flex items-center justify-between p-6 bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-sm transition-all"
             >
-              <Link
-                href={section.href}
-                className="card card-hover group block relative overflow-hidden"
-              >
-                {section.badge && (
-                  <span className="absolute top-4 right-4 px-2 py-1 text-xs font-bold rounded-full bg-[var(--primary)] text-white">
-                    {section.badge}
-                  </span>
-                )}
-
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
-                  style={{ backgroundColor: `${section.color}15` }}
-                >
-                  <section.icon size={28} style={{ color: section.color }} />
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center group-hover:bg-neutral-200 transition-colors">
+                  <section.icon className="w-6 h-6 text-neutral-600" />
                 </div>
-
-                <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2 group-hover:text-[var(--primary)] transition-colors">
-                  {section.title}
-                </h3>
-
-                <p className="text-sm text-[var(--text-muted)] mb-4">
-                  {section.description}
-                </p>
-
-                <div className="flex items-center gap-1 text-sm font-medium text-[var(--primary)] group-hover:gap-2 transition-all">
-                  Open
-                  <ArrowRight size={16} />
+                <div>
+                  <h2 className="text-lg font-semibold text-[#1D1D1F] group-hover:text-black">
+                    {section.title}
+                  </h2>
+                  <p className="text-sm text-[#86868B]">{section.description}</p>
                 </div>
-              </Link>
-            </motion.div>
+              </div>
+              <ArrowRight className="w-5 h-5 text-neutral-400 group-hover:text-neutral-600 group-hover:translate-x-1 transition-all" />
+            </Link>
           ))}
-        </motion.div>
+        </div>
+
+        {/* Back to Dashboard */}
+        <div className="mt-10 pt-6 border-t border-neutral-200">
+          <Link
+            href="/dashboard"
+            className="text-sm text-[#86868B] hover:text-[#1D1D1F] transition-colors"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
       </div>
-    </DashboardLayout>
+    </div>
   );
 }

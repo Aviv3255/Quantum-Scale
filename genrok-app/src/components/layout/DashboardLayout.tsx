@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { signOut } from '@/lib/supabase';
+import { UserDropdown } from './UserDropdown';
 
 interface SubNavItem {
   title: string;
@@ -61,7 +62,7 @@ const navigationItems: NavItem[] = [
     icon: Server,
     isCategory: true,
     subItems: [
-      { title: "Dream Team", href: "/backend/dream-team" },
+      { title: "The Dream Team", href: "/backend/dream-team" },
       { title: "Secret Apps", href: "/apps/secret" },
       { title: "Discounted Shopify Apps", href: "/apps/shopify" },
       { title: "Private Agent", href: "/products/private-agent" }
@@ -83,8 +84,12 @@ const navigationItems: NavItem[] = [
     isCategory: true,
     subItems: [
       { title: "$6,000 TikTok Ads Credit", href: "/tiktok-credits" },
+      { title: "1,000 Meta Ad Templates", href: "/ads/meta-templates" },
+      { title: "Meta Ads Structure", href: "/ads/meta-structure" },
       { title: "AI Image Ads", href: "/ads/ai-image" },
-      { title: "AI Video Ads", href: "/ads/ai-video" }
+      { title: "AI Video Ads", href: "/ads/ai-video" },
+      { title: "Ad Copy Templates", href: "/ads/ad-copy-templates" },
+      { title: "Google Negative Keywords", href: "/ads/google-negative-keywords" }
     ]
   },
   {
@@ -429,6 +434,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 3
               </span>
             </button>
+
+            {/* User Dropdown */}
+            <UserDropdown />
           </div>
         </header>
 
