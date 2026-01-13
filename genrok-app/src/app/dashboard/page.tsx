@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import {
@@ -11,15 +11,18 @@ import {
   CheckSquare,
   BookOpen,
   TrendingUp,
-  Target,
   ArrowRight,
-  Flame,
-  Trophy,
-  Zap,
+  Clock,
+  Play,
+  ExternalLink,
+  Info,
+  ChevronRight,
 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { getAllCourses } from '@/data/courses';
 
 function getTimeBasedGreeting(userName: string) {
   const hour = new Date().getHours();
@@ -27,129 +30,79 @@ function getTimeBasedGreeting(userName: string) {
 
   if (hour >= 5 && hour < 12) {
     return {
-      greeting: `Good morning, ${firstName}`,
-      icon: Sun,
-      message: "The empire awaits. Your competitors are sleeping - you're not.",
-      mood: 'morning',
+      greeting: `Good morning, ${firstName}!`,
+      subtext: "The empire awaits. Your competitors are sleeping - you're not.",
     };
   } else if (hour >= 12 && hour < 17) {
     return {
-      greeting: `Good afternoon, ${firstName}`,
-      icon: Rocket,
-      message: "Peak hours. Every action now compounds into future millions.",
-      mood: 'afternoon',
+      greeting: `Good afternoon, ${firstName}!`,
+      subtext: "Peak hours. Every action now compounds into future millions.",
     };
   } else if (hour >= 17 && hour < 21) {
     return {
-      greeting: `Good evening, ${firstName}`,
-      icon: Sparkles,
-      message: "The grind doesn't stop. Neither do winners.",
-      mood: 'evening',
+      greeting: `Good evening, ${firstName}!`,
+      subtext: "The grind doesn't stop. Neither do winners.",
     };
   } else {
     return {
       greeting: `Working late, ${firstName}?`,
-      icon: Moon,
-      message: "Night owls build empires. This is where legends are made.",
-      mood: 'night',
+      subtext: "Night owls build empires. This is where legends are made.",
     };
   }
 }
 
-const stats = [
-  {
-    label: 'Checklist Progress',
-    value: '12',
-    total: '250',
-    unit: 'steps',
-    change: '+3 this week',
-    positive: true,
-    icon: CheckSquare,
-  },
-  {
-    label: 'Articles Read',
-    value: '5',
-    total: '38',
-    unit: 'articles',
-    change: '+2 this week',
-    positive: true,
-    icon: BookOpen,
-  },
-  {
-    label: 'Current Streak',
-    value: '7',
-    unit: 'days',
-    change: 'Keep it going!',
-    positive: true,
-    icon: Flame,
-  },
-  {
-    label: 'Tools Used',
-    value: '3',
-    unit: 'tools',
-    change: 'Try more',
-    positive: true,
-    icon: Zap,
-  },
-];
-
-const quickActions = [
-  {
-    title: 'Continue Checklist',
-    description: 'Pick up where you left off',
-    href: '/checklist',
-    icon: CheckSquare,
-    color: 'bg-[var(--primary)]',
-    iconColor: 'text-white',
-  },
-  {
-    title: 'Read Articles',
-    description: '38+ in-depth guides',
-    href: '/learn',
-    icon: BookOpen,
-    color: 'bg-[var(--bg-secondary)]',
-    iconColor: 'text-[var(--text-primary)]',
-  },
-  {
-    title: 'Use Calculators',
-    description: 'Profit & KPI tools',
-    href: '/calculators',
-    icon: TrendingUp,
-    color: 'bg-[var(--bg-secondary)]',
-    iconColor: 'text-[var(--text-primary)]',
-  },
-  {
-    title: 'Browse Apps',
-    description: 'Curated app directory',
-    href: '/apps/shopify',
-    icon: Target,
-    color: 'bg-[var(--bg-secondary)]',
-    iconColor: 'text-[var(--text-primary)]',
-  },
-];
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
+// Sample products for "New Products to Test" based on niche
+const sampleProducts: Record<string, Array<{
+  id: string;
+  name: string;
+  image: string;
+  aliexpressUrl: string;
+  cheaperOn: 'mate' | 'hypersku';
+  cheaperUrl: string;
+}>> = {
+  "men's fashion": [
+    { id: '1', name: 'Premium Leather Wallet', image: 'https://ae01.alicdn.com/kf/S1234567890.jpg', aliexpressUrl: 'https://aliexpress.com/item/1', cheaperOn: 'mate', cheaperUrl: 'https://mate.com' },
+    { id: '2', name: 'Minimalist Watch', image: 'https://ae01.alicdn.com/kf/S1234567891.jpg', aliexpressUrl: 'https://aliexpress.com/item/2', cheaperOn: 'hypersku', cheaperUrl: 'https://hypersku.com' },
+    { id: '3', name: 'Casual Sneakers', image: 'https://ae01.alicdn.com/kf/S1234567892.jpg', aliexpressUrl: 'https://aliexpress.com/item/3', cheaperOn: 'mate', cheaperUrl: 'https://mate.com' },
+    { id: '4', name: 'Slim Fit Jeans', image: 'https://ae01.alicdn.com/kf/S1234567893.jpg', aliexpressUrl: 'https://aliexpress.com/item/4', cheaperOn: 'hypersku', cheaperUrl: 'https://hypersku.com' },
+    { id: '5', name: 'Cotton T-Shirt Pack', image: 'https://ae01.alicdn.com/kf/S1234567894.jpg', aliexpressUrl: 'https://aliexpress.com/item/5', cheaperOn: 'mate', cheaperUrl: 'https://mate.com' },
+    { id: '6', name: 'Sunglasses', image: 'https://ae01.alicdn.com/kf/S1234567895.jpg', aliexpressUrl: 'https://aliexpress.com/item/6', cheaperOn: 'hypersku', cheaperUrl: 'https://hypersku.com' },
+  ],
+  "default": [
+    { id: '1', name: 'Trending Product 1', image: '/placeholder.jpg', aliexpressUrl: 'https://aliexpress.com/item/1', cheaperOn: 'mate', cheaperUrl: 'https://mate.com' },
+    { id: '2', name: 'Trending Product 2', image: '/placeholder.jpg', aliexpressUrl: 'https://aliexpress.com/item/2', cheaperOn: 'hypersku', cheaperUrl: 'https://hypersku.com' },
+    { id: '3', name: 'Trending Product 3', image: '/placeholder.jpg', aliexpressUrl: 'https://aliexpress.com/item/3', cheaperOn: 'mate', cheaperUrl: 'https://mate.com' },
+    { id: '4', name: 'Trending Product 4', image: '/placeholder.jpg', aliexpressUrl: 'https://aliexpress.com/item/4', cheaperOn: 'hypersku', cheaperUrl: 'https://hypersku.com' },
+    { id: '5', name: 'Trending Product 5', image: '/placeholder.jpg', aliexpressUrl: 'https://aliexpress.com/item/5', cheaperOn: 'mate', cheaperUrl: 'https://mate.com' },
+    { id: '6', name: 'Trending Product 6', image: '/placeholder.jpg', aliexpressUrl: 'https://aliexpress.com/item/6', cheaperOn: 'hypersku', cheaperUrl: 'https://hypersku.com' },
+  ]
 };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 },
-};
+// Sample course progress data
+const courseProgressData = [
+  { slug: 'tiktok-shop-mastery', progress: 45, hoursSpent: 3.5 },
+  { slug: 'ai-automation-systems', progress: 20, hoursSpent: 1.2 },
+  { slug: 'facebook-ads-accelerator', progress: 0, hoursSpent: 0 },
+];
 
 export default function DashboardPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
+  const [userNiche, setUserNiche] = useState<string>("men's fashion");
+  const courses = getAllCourses();
 
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Get user's niche from metadata (would come from onboarding)
+  useEffect(() => {
+    if (user?.user_metadata?.niche) {
+      setUserNiche(user.user_metadata.niche.toLowerCase());
+    }
+  }, [user]);
 
   if (isLoading || !user) {
     return (
@@ -160,193 +113,241 @@ export default function DashboardPage() {
   }
 
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
-  const { greeting, icon: GreetingIcon, message } = getTimeBasedGreeting(userName);
+  const { greeting, subtext } = getTimeBasedGreeting(userName);
+  const products = sampleProducts[userNiche] || sampleProducts['default'];
+
+  // Stats for the right sidebar
+  const completedCourses = courseProgressData.filter(c => c.progress === 100).length;
+  const inProgressCourses = courseProgressData.filter(c => c.progress > 0 && c.progress < 100).length;
 
   return (
     <DashboardLayout>
-      <div className="page-wrapper">
-        {/* Page Header with Greeting */}
-        <motion.header
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="page-header"
-        >
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="flex items-center gap-3">
-                {greeting}
-                <GreetingIcon size={28} className="text-[var(--text-tertiary)]" strokeWidth={1.5} />
-              </h1>
-              <p className="mt-2">{message}</p>
+      <div className="dashboard-layout">
+        {/* Main Content */}
+        <div className="dashboard-main">
+          {/* Hero Greeting Block */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="greeting-hero"
+          >
+            <div className="greeting-content">
+              <h1 className="greeting-title">{greeting}</h1>
+              <p className="greeting-subtext">{subtext}</p>
             </div>
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--primary)]" style={{ color: '#FFFFFF' }}>
-              <Flame size={16} style={{ color: '#FFFFFF' }} />
-              <span className="text-sm font-medium">Day 7 Streak</span>
-            </div>
-          </div>
-        </motion.header>
-
-        {/* Stats Grid */}
-        <motion.section
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="stats-grid"
-        >
-          {stats.map((stat) => (
-            <motion.div key={stat.label} variants={itemVariants} className="stat-card">
-              <div className="stat-icon">
-                <stat.icon size={22} strokeWidth={1.5} />
-              </div>
-              <div>
-                <span className="stat-label">{stat.label}</span>
-                <span className="stat-value">
-                  {stat.value}
-                  {stat.total && (
-                    <span className="text-base font-normal text-[var(--text-muted)]">
-                      /{stat.total}
-                    </span>
-                  )}
-                </span>
-                <div className="stat-change positive">{stat.change}</div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.section>
-
-        {/* Quick Actions */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="section"
-        >
-          <div className="section-header">
-            <Target size={20} className="section-icon" />
-            <h2 className="section-title">Quick Actions</h2>
-          </div>
-          <div className="grid-4">
-            {quickActions.map((action) => (
-              <Link
-                key={action.title}
-                href={action.href}
-                className="card card-hover group"
+            <div className="greeting-illustration">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-32 h-32 object-contain"
               >
-                <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center mb-4`}>
-                  <action.icon size={22} className={action.iconColor} strokeWidth={1.5} />
-                </div>
-                <h3 className="text-base font-semibold text-[var(--text-primary)] mb-1">
-                  {action.title}
-                </h3>
-                <p className="text-sm text-[var(--text-muted)] mb-4">
-                  {action.description}
-                </p>
-                <div className="flex items-center gap-1 text-sm font-medium text-[var(--text-primary)] group-hover:gap-2 transition-all">
-                  Get Started
-                  <ArrowRight size={14} strokeWidth={1.5} />
-                </div>
-              </Link>
-            ))}
-          </div>
-        </motion.section>
+                <source src="https://cdn.shopify.com/videos/c/o/v/19d3c39f4e5e4d57bc9bbdc8db9d1639.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </motion.div>
 
-        {/* Journey Progress */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="section"
-        >
-          <div className="section-header">
-            <Trophy size={20} className="section-icon" />
-            <h2 className="section-title">Your Journey</h2>
-          </div>
-          <div className="card">
-            <div className="flex flex-col md:flex-row md:items-center gap-6">
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
-                  250-Step Success Checklist
-                </h3>
-                <p className="text-[var(--text-muted)] mb-4">
-                  You&apos;re making progress. Every step brings you closer to building a successful eCommerce brand.
-                </p>
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex-1">
-                    <div className="progress-bar">
-                      <div
-                        className="progress-bar-fill"
-                        style={{ width: '4.8%' }}
-                      />
-                    </div>
+          {/* Checklist Progress Block */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="checklist-block"
+          >
+            <div className="checklist-info">
+              <h3 className="checklist-title">The Launch Protocol</h3>
+              <p className="checklist-desc">250 steps between you and your first million.</p>
+              <div className="checklist-progress-row">
+                <div className="progress-bar-wrapper">
+                  <div className="progress-bar">
+                    <div className="progress-bar-fill" style={{ width: '4.8%' }} />
                   </div>
-                  <span className="text-sm font-semibold text-[var(--text-primary)]">
-                    12/250
-                  </span>
                 </div>
-                <Link
-                  href="/checklist"
-                  className="btn btn-primary"
-                >
-                  Continue Checklist
-                  <ArrowRight size={16} strokeWidth={1.5} />
-                </Link>
-              </div>
-              <div className="w-full md:w-48 h-32 rounded-2xl bg-[var(--bg-secondary)] flex items-center justify-center">
-                {/* Monkey illustration placeholder */}
-                <svg width="100" height="100" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="90" cy="70" r="35" fill="#555"/>
-                  <ellipse cx="90" cy="78" rx="24" ry="20" fill="#888"/>
-                  <circle cx="78" cy="68" r="6" fill="white"/>
-                  <circle cx="102" cy="68" r="6" fill="white"/>
-                  <circle cx="79" cy="69" r="3" fill="#1a1a1a"/>
-                  <circle cx="103" cy="69" r="3" fill="#1a1a1a"/>
-                  <ellipse cx="90" cy="80" rx="5" ry="3" fill="#444"/>
-                  <path d="M82 86 Q90 92 98 86" stroke="#444" strokeWidth="2" fill="none" strokeLinecap="round"/>
-                  <circle cx="57" cy="65" r="12" fill="#555"/>
-                  <circle cx="57" cy="65" r="7" fill="#888"/>
-                  <circle cx="123" cy="65" r="12" fill="#555"/>
-                  <circle cx="123" cy="65" r="7" fill="#888"/>
-                  {/* Thumbs up hand */}
-                  <path d="M60 110 L65 100 L75 100 L75 130 L55 130 L55 115 Z" fill="#555"/>
-                  <ellipse cx="70" cy="95" rx="8" ry="6" fill="#555"/>
-                </svg>
+                <span className="progress-text">12/250</span>
               </div>
             </div>
-          </div>
-        </motion.section>
+            <Link href="/checklist" className="btn-3d">
+              Continue
+              <ArrowRight size={16} />
+            </Link>
+          </motion.div>
 
-        {/* Recent Activity */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <div className="section-header">
-            <Sparkles size={20} className="section-icon" />
-            <h2 className="section-title">Keep the Momentum</h2>
-          </div>
-          <div className="grid-2">
-            <div className="card">
-              <h4 className="font-semibold text-[var(--text-primary)] mb-2">Recommended Article</h4>
-              <p className="text-sm text-[var(--text-muted)] mb-4">
-                Based on your progress, we recommend reading about customer lifetime value optimization.
-              </p>
-              <Link href="/learn" className="text-sm font-medium text-[var(--text-primary)] hover:opacity-70 inline-flex items-center gap-1">
-                Read Now <ArrowRight size={14} />
+          {/* Courses Block */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="courses-section"
+          >
+            <div className="section-header-row">
+              <h2 className="section-title-left">Your Courses</h2>
+              <Link href="/courses" className="see-all-link">
+                See all <ChevronRight size={14} />
               </Link>
             </div>
-            <div className="card">
-              <h4 className="font-semibold text-[var(--text-primary)] mb-2">Today&apos;s Focus</h4>
-              <p className="text-sm text-[var(--text-muted)] mb-4">
-                Complete 3 more checklist items to maintain your streak and unlock your next milestone.
-              </p>
-              <Link href="/checklist" className="text-sm font-medium text-[var(--text-primary)] hover:opacity-70 inline-flex items-center gap-1">
-                View Checklist <ArrowRight size={14} />
+            <div className="courses-list">
+              {courses.slice(0, 4).map((course, index) => {
+                const progress = courseProgressData.find(p => p.slug === course.slug);
+                return (
+                  <div key={course.slug} className="course-row">
+                    <div className="course-icon-wrapper">
+                      {course.image ? (
+                        <Image src={course.image} alt={course.title} width={48} height={48} className="rounded-lg object-cover" />
+                      ) : (
+                        <div className="course-icon-placeholder">
+                          <BookOpen size={20} />
+                        </div>
+                      )}
+                    </div>
+                    <div className="course-info">
+                      <h4 className="course-name">{course.title}</h4>
+                      <div className="course-meta">
+                        <span className="course-duration">
+                          <Clock size={12} />
+                          {course.stats?.find(s => s.label === 'hours')?.value || '2'}h
+                        </span>
+                        <span className="course-progress-indicator">
+                          {progress?.progress || 0}% complete
+                        </span>
+                      </div>
+                    </div>
+                    <Link href={`/courses/${course.slug}`} className="btn-course-view">
+                      {progress && progress.progress > 0 ? 'Continue' : 'Start'}
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.section>
+
+          {/* New Products to Test Block */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="products-section"
+          >
+            <div className="section-header-row">
+              <div>
+                <h2 className="section-title-left">New Products to Test</h2>
+                <p className="section-subtitle">The product is the core. Here are some winners, based on your niche.</p>
+              </div>
+              <Link href="/products/sell-these" className="see-all-link">
+                See all <ChevronRight size={14} />
               </Link>
             </div>
+            <div className="products-scroll-container">
+              <div className="products-scroll">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </div>
+          </motion.section>
+        </div>
+
+        {/* Right Sidebar - Statistics */}
+        <div className="dashboard-sidebar">
+          {/* Course Stats */}
+          <div className="stats-card">
+            <div className="stats-row">
+              <div className="stat-item">
+                <span className="stat-number">{completedCourses}</span>
+                <span className="stat-label-small">Courses<br/>completed</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">{inProgressCourses}</span>
+                <span className="stat-label-small">Courses<br/>in progress</span>
+              </div>
+            </div>
           </div>
-        </motion.section>
+
+          {/* Learning Hours Chart */}
+          <div className="chart-card">
+            <div className="chart-header">
+              <h3>Your Statistics</h3>
+              <div className="chart-tabs">
+                <button className="chart-tab active">Learning Hours</button>
+                <button className="chart-tab">My Courses</button>
+              </div>
+            </div>
+            <div className="chart-placeholder">
+              <div className="mini-chart">
+                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => (
+                  <div key={day} className="chart-bar-wrapper">
+                    <div
+                      className="chart-bar"
+                      style={{ height: `${[30, 45, 60, 40, 80, 50, 35][i]}%` }}
+                    />
+                    <span className="chart-label">{day.toLowerCase()}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="chart-peak">
+                <span className="peak-value">2.5h</span>
+                <span className="peak-label">Peak on Friday</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Action Card */}
+          <div className="promo-card">
+            <div className="promo-icon">
+              <Sparkles size={24} />
+            </div>
+            <h4>Unlock Premium</h4>
+            <p>Get access to all courses and exclusive tools.</p>
+            <Link href="/courses" className="btn-promo">
+              Go Premium
+            </Link>
+          </div>
+        </div>
       </div>
     </DashboardLayout>
+  );
+}
+
+// Product Card Component
+function ProductCard({ product }: { product: { id: string; name: string; image: string; aliexpressUrl: string; cheaperOn: 'mate' | 'hypersku'; cheaperUrl: string } }) {
+  const [showBadge, setShowBadge] = useState(false);
+
+  return (
+    <div className="product-card">
+      <a
+        href={product.aliexpressUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="product-image-wrapper"
+      >
+        <div className="product-image-placeholder">
+          <ExternalLink size={20} className="text-[var(--text-muted)]" />
+        </div>
+        <button
+          className="product-info-btn"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowBadge(!showBadge);
+          }}
+          onMouseEnter={() => setShowBadge(true)}
+          onMouseLeave={() => setShowBadge(false)}
+        >
+          <Info size={14} />
+        </button>
+        {showBadge && (
+          <a
+            href={product.cheaperUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`product-badge ${product.cheaperOn === 'mate' ? 'badge-mate' : 'badge-hypersku'}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            Cheaper on {product.cheaperOn === 'mate' ? 'Mate' : 'HyperSKU'}
+            <ExternalLink size={10} />
+          </a>
+        )}
+      </a>
+      <p className="product-name">{product.name}</p>
+    </div>
   );
 }

@@ -31,6 +31,9 @@ import {
   Podcast,
   Layers,
   Database,
+  Settings,
+  User,
+  Tag,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -344,9 +347,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Logo */}
         <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '12px 0' }}>
           <img
-            src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
+            src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Quantum%20Scale%20logo%20(16).png"
             alt="Quantum Scale"
-            className={sidebarCollapsed ? "w-10 h-10 rounded-xl object-cover" : "w-20 h-20 rounded-xl object-cover"}
+            className={sidebarCollapsed ? "w-10 h-10 object-contain" : "w-16 h-16 object-contain"}
           />
         </div>
 
@@ -371,26 +374,41 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </nav>
 
-        {/* User Section */}
-        <div className="sidebar-user">
+        {/* Profile Settings Block */}
+        <div className="sidebar-profile-block">
           {!sidebarCollapsed ? (
-            <>
-              <div className="sidebar-user-avatar">{userInitials}</div>
-              <div className="sidebar-user-info">
-                <div className="sidebar-user-name">{userName}</div>
-                <div className="sidebar-user-email">{userEmail}</div>
+            <div className="profile-card">
+              <div className="profile-header">
+                <div className="profile-avatar">{userInitials}</div>
+                <div className="profile-info">
+                  <div className="profile-name">{userName}</div>
+                  <div className="profile-email">{userEmail}</div>
+                </div>
               </div>
-            </>
+              <div className="profile-meta">
+                <div className="profile-niche">
+                  <Tag size={12} className="text-[var(--primary)]" />
+                  <span>Men&apos;s Fashion</span>
+                </div>
+              </div>
+              <div className="profile-actions">
+                <Link href="/settings" className="profile-settings-btn">
+                  <Settings size={14} />
+                  <span>Settings</span>
+                </Link>
+                <button onClick={handleSignOut} className="profile-logout-btn" title="Sign out">
+                  <LogOut size={14} />
+                </button>
+              </div>
+            </div>
           ) : (
-            <div className="sidebar-user-avatar mx-auto" title={userName}>{userInitials}</div>
+            <div className="profile-collapsed">
+              <div className="profile-avatar-sm" title={userName}>{userInitials}</div>
+              <button onClick={handleSignOut} className="profile-logout-btn-sm" title="Sign out">
+                <LogOut size={16} />
+              </button>
+            </div>
           )}
-          <button
-            onClick={handleSignOut}
-            className="btn-icon"
-            title="Sign out"
-          >
-            <LogOut size={18} strokeWidth={1.5} />
-          </button>
         </div>
       </aside>
 
