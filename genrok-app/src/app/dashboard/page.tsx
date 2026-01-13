@@ -127,12 +127,23 @@ const courseProgressData = [
 ];
 
 type ContentTab = 'courses' | 'lessons' | 'creatives';
+type AccentColor = 'green' | 'gold' | 'blue' | 'purple' | 'coral' | 'teal';
+
+const accentColors: { id: AccentColor; name: string }[] = [
+  { id: 'green', name: 'Emerald' },
+  { id: 'gold', name: 'Gold' },
+  { id: 'blue', name: 'Ocean' },
+  { id: 'purple', name: 'Royal' },
+  { id: 'coral', name: 'Sunset' },
+  { id: 'teal', name: 'Teal' },
+];
 
 export default function DashboardPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
   const [userNiche, setUserNiche] = useState<string>("men's fashion");
   const [activeTab, setActiveTab] = useState<ContentTab>('courses');
+  const [accentColor, setAccentColor] = useState<AccentColor>('green');
   const courses = getAllCourses();
 
   useEffect(() => {
@@ -140,6 +151,22 @@ export default function DashboardPage() {
       router.push('/login');
     }
   }, [user, isLoading, router]);
+
+  // Load accent color from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('accent-color') as AccentColor | null;
+    if (saved && accentColors.some(c => c.id === saved)) {
+      setAccentColor(saved);
+      document.documentElement.setAttribute('data-accent', saved);
+    }
+  }, []);
+
+  // Handle accent color change
+  const handleAccentChange = (color: AccentColor) => {
+    setAccentColor(color);
+    document.documentElement.setAttribute('data-accent', color);
+    localStorage.setItem('accent-color', color);
+  };
 
   // Get user's niche from metadata (would come from onboarding)
   useEffect(() => {
@@ -439,6 +466,27 @@ export default function DashboardPage() {
                 <span className="peak-value">2.5h</span>
                 <span className="peak-label">Peak on Friday</span>
               </div>
+            </div>
+          </div>
+
+          {/* Accent Color Picker */}
+          <div className="accent-picker">
+            <span className="accent-picker-label">Accent Color</span>
+            <div className="accent-picker-grid">
+              {accentColors.map((color) => (
+                <button
+                  key={color.id}
+                  className={`accent-swatch ${accentColor === color.id ? 'active' : ''}`}
+                  data-color={color.id}
+                  onClick={() => handleAccentChange(color.id)}
+                  title={color.name}
+                />
+              ))}
+            </div>
+            <div className="accent-picker-names">
+              {accentColors.map((color) => (
+                <span key={color.id} className="accent-name">{color.name}</span>
+              ))}
             </div>
           </div>
 

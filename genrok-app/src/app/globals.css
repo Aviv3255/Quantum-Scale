@@ -27,14 +27,13 @@
   --text-white: #FFFFFF;              /* White text on dark */
   --text-sidebar: #FFFFFF;            /* White text for sidebar */
 
-  /* ===== PRIMARY COLOR - GREEN ACCENT ===== */
-  --primary: #88da1c;                 /* Bright green accent */
-  --primary-hover: #0f2f2c;           /* Dark teal hover */
+  /* ===== PRIMARY COLOR - ACCENT (Dynamic via data-accent) ===== */
+  --primary: #88da1c;
+  --primary-hover: #0f2f2c;
   --primary-light: rgba(136, 218, 28, 0.1);
+  --primary-glow: rgba(136, 218, 28, 0.3);
 
-  /* ===== ACCENT COLORS - GREEN GRADIENT STOPS ===== */
-  --accent-green: #88da1c;            /* Main green accent */
-  --accent-teal: #0f2f2c;             /* Dark teal for hovers */
+  /* ===== ACCENT GRADIENT STOPS (Dynamic) ===== */
   --gradient-1: #7ec636;
   --gradient-2: #e3f697;
   --gradient-3: #78c327;
@@ -42,11 +41,13 @@
   --gradient-5: #69ab16;
   --gradient-6: #125e0c;
 
-  /* Legacy gold variables (keeping for compatibility, mapped to green) */
-  --accent-gold: #88da1c;
-  --accent-gold-hover: #0f2f2c;
-  --accent-gold-light: rgba(136, 218, 28, 0.1);
+  /* Legacy compatibility */
+  --accent-gold: var(--primary);
+  --accent-gold-hover: var(--primary-hover);
+  --accent-gold-light: var(--primary-light);
   --accent-gold-bg: rgba(136, 218, 28, 0.05);
+  --accent-green: var(--primary);
+  --accent-teal: var(--primary-hover);
 
   /* ===== FUNCTIONAL COLORS ===== */
   --success: #88da1c;                 /* Using our green */
@@ -100,6 +101,213 @@
   /* ===== FONTS - GENERAL SANS ===== */
   --font-sans: 'General Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
   --font-heading: 'General Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+
+/* ===== ACCENT COLOR SCHEMES ===== */
+
+/* 1. Emerald Green (Default) */
+[data-accent="green"], :root {
+  --primary: #88da1c;
+  --primary-hover: #0f2f2c;
+  --primary-light: rgba(136, 218, 28, 0.1);
+  --primary-glow: rgba(136, 218, 28, 0.3);
+  --gradient-1: #7ec636;
+  --gradient-2: #e3f697;
+  --gradient-3: #78c327;
+  --gradient-4: #bbe620;
+  --gradient-5: #69ab16;
+  --gradient-6: #125e0c;
+}
+
+/* 2. Royal Gold */
+[data-accent="gold"] {
+  --primary: #F5A623;
+  --primary-hover: #8B5A00;
+  --primary-light: rgba(245, 166, 35, 0.1);
+  --primary-glow: rgba(245, 166, 35, 0.3);
+  --gradient-1: #E8A830;
+  --gradient-2: #FFE5A0;
+  --gradient-3: #D4942D;
+  --gradient-4: #FFD700;
+  --gradient-5: #B8860B;
+  --gradient-6: #6B4800;
+}
+
+/* 3. Ocean Blue */
+[data-accent="blue"] {
+  --primary: #3B82F6;
+  --primary-hover: #1E3A5F;
+  --primary-light: rgba(59, 130, 246, 0.1);
+  --primary-glow: rgba(59, 130, 246, 0.3);
+  --gradient-1: #4A90E2;
+  --gradient-2: #A5D6FF;
+  --gradient-3: #3B82F6;
+  --gradient-4: #60A5FA;
+  --gradient-5: #2563EB;
+  --gradient-6: #1E40AF;
+}
+
+/* 4. Royal Purple */
+[data-accent="purple"] {
+  --primary: #8B5CF6;
+  --primary-hover: #3B1E5F;
+  --primary-light: rgba(139, 92, 246, 0.1);
+  --primary-glow: rgba(139, 92, 246, 0.3);
+  --gradient-1: #9F7AEA;
+  --gradient-2: #DDD6FE;
+  --gradient-3: #8B5CF6;
+  --gradient-4: #A78BFA;
+  --gradient-5: #7C3AED;
+  --gradient-6: #4C1D95;
+}
+
+/* 5. Sunset Coral */
+[data-accent="coral"] {
+  --primary: #F97316;
+  --primary-hover: #7C2D12;
+  --primary-light: rgba(249, 115, 22, 0.1);
+  --primary-glow: rgba(249, 115, 22, 0.3);
+  --gradient-1: #FB923C;
+  --gradient-2: #FFEDD5;
+  --gradient-3: #F97316;
+  --gradient-4: #FDBA74;
+  --gradient-5: #EA580C;
+  --gradient-6: #9A3412;
+}
+
+/* 6. Ocean Teal */
+[data-accent="teal"] {
+  --primary: #14B8A6;
+  --primary-hover: #134E4A;
+  --primary-light: rgba(20, 184, 166, 0.1);
+  --primary-glow: rgba(20, 184, 166, 0.3);
+  --gradient-1: #2DD4BF;
+  --gradient-2: #99F6E4;
+  --gradient-3: #14B8A6;
+  --gradient-4: #5EEAD4;
+  --gradient-5: #0D9488;
+  --gradient-6: #115E59;
+}
+
+/* ===== ACCENT COLOR PICKER ===== */
+.accent-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+}
+
+.accent-picker-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.accent-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+}
+
+.accent-swatch {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.accent-swatch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.accent-swatch:hover {
+  transform: scale(1.08);
+}
+
+.accent-swatch.active {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--text-primary);
+}
+
+.accent-swatch.active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Individual swatch colors with 3D gradient effect */
+.accent-swatch[data-color="green"] {
+  background: linear-gradient(135deg, #7ec636 0%, #e3f697 20%, #78c327 40%, #bbe620 60%, #69ab16 80%, #125e0c 100%);
+  box-shadow: 0 3px 0 #125e0c, 0 4px 8px rgba(18, 94, 12, 0.3);
+}
+
+.accent-swatch[data-color="gold"] {
+  background: linear-gradient(135deg, #E8A830 0%, #FFE5A0 20%, #D4942D 40%, #FFD700 60%, #B8860B 80%, #6B4800 100%);
+  box-shadow: 0 3px 0 #6B4800, 0 4px 8px rgba(107, 72, 0, 0.3);
+}
+
+.accent-swatch[data-color="blue"] {
+  background: linear-gradient(135deg, #4A90E2 0%, #A5D6FF 20%, #3B82F6 40%, #60A5FA 60%, #2563EB 80%, #1E40AF 100%);
+  box-shadow: 0 3px 0 #1E40AF, 0 4px 8px rgba(30, 64, 175, 0.3);
+}
+
+.accent-swatch[data-color="purple"] {
+  background: linear-gradient(135deg, #9F7AEA 0%, #DDD6FE 20%, #8B5CF6 40%, #A78BFA 60%, #7C3AED 80%, #4C1D95 100%);
+  box-shadow: 0 3px 0 #4C1D95, 0 4px 8px rgba(76, 29, 149, 0.3);
+}
+
+.accent-swatch[data-color="coral"] {
+  background: linear-gradient(135deg, #FB923C 0%, #FFEDD5 20%, #F97316 40%, #FDBA74 60%, #EA580C 80%, #9A3412 100%);
+  box-shadow: 0 3px 0 #9A3412, 0 4px 8px rgba(154, 52, 18, 0.3);
+}
+
+.accent-swatch[data-color="teal"] {
+  background: linear-gradient(135deg, #2DD4BF 0%, #99F6E4 20%, #14B8A6 40%, #5EEAD4 60%, #0D9488 80%, #115E59 100%);
+  box-shadow: 0 3px 0 #115E59, 0 4px 8px rgba(17, 94, 89, 0.3);
+}
+
+.accent-swatch:hover {
+  transform: translateY(-2px);
+}
+
+.accent-swatch:active {
+  transform: translateY(1px);
+}
+
+/* Color names below swatches */
+.accent-picker-names {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: -4px;
+}
+
+.accent-name {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 @theme inline {

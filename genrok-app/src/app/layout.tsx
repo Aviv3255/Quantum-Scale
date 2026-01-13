@@ -43,6 +43,22 @@ export default function RootLayout({
           href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"
           rel="stylesheet"
         />
+
+        {/* Load accent color before paint to prevent flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var accent = localStorage.getItem('accent-color');
+                  if (accent && ['green', 'gold', 'blue', 'purple', 'coral', 'teal'].includes(accent)) {
+                    document.documentElement.setAttribute('data-accent', accent);
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="font-sans antialiased bg-white text-[var(--text-secondary)]">
         <RootProviders>
