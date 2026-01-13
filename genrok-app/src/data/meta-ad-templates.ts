@@ -7,11 +7,10 @@ export interface MetaAdTemplate {
   id: number;
   name: string;
   canvaLink: string;
-  designId?: string;
-  shareToken?: string;
+  designId: string;
+  shareToken: string;
   coverImage: string | null;
   hoverImage: string | null;
-  category?: string;
 }
 
 export const metaAdTemplates: MetaAdTemplate[] = [

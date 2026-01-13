@@ -1,117 +1,10 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { ExternalLink, Search, Palette } from 'lucide-react';
+import { useState } from 'react';
+import { ExternalLink, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { metaAdTemplates, MetaAdTemplate } from '@/data/meta-ad-templates';
-import { BookmarkButton } from '@/components/BookmarkButton';
-
-// Template Card with image error handling
-function TemplateCard({ template }: { template: MetaAdTemplate }) {
-  const [imageError, setImageError] = useState(false);
-  const [hoverImageError, setHoverImageError] = useState(false);
-
-  const handleImageError = useCallback(() => {
-    setImageError(true);
-  }, []);
-
-  const handleHoverImageError = useCallback(() => {
-    setHoverImageError(true);
-  }, []);
-
-  // Generate a consistent color based on template ID
-  const gradientColors = [
-    ['#7435E6', '#9B59B6'],
-    ['#3498DB', '#2980B9'],
-    ['#E74C3C', '#C0392B'],
-    ['#27AE60', '#229954'],
-    ['#F39C12', '#E67E22'],
-    ['#1ABC9C', '#16A085'],
-    ['#9B59B6', '#8E44AD'],
-    ['#34495E', '#2C3E50'],
-  ];
-  const colorPair = gradientColors[template.id % gradientColors.length];
-
-  const showPlaceholder = imageError || !template.coverImage;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      className="group relative"
-    >
-      {/* Bookmark Button */}
-      <div className="absolute top-2 right-2 z-20">
-        <BookmarkButton
-          itemType="creative"
-          itemId={String(template.id)}
-          title={template.name}
-          sourceUrl={template.canvaLink}
-          description="Meta Ad Template - Click to edit in Canva"
-          size="sm"
-        />
-      </div>
-
-      <a
-        href={template.canvaLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-all duration-300 hover:shadow-xl hover:border-[#7435E6]"
-      >
-        {/* Cover Image or Placeholder */}
-        {showPlaceholder ? (
-          <div
-            className="w-full h-full flex items-center justify-center"
-            style={{
-              background: `linear-gradient(135deg, ${colorPair[0]}15 0%, ${colorPair[1]}25 100%)`,
-            }}
-          >
-            <div className="text-center p-4">
-              <div
-                className="w-14 h-14 mx-auto mb-3 rounded-xl flex items-center justify-center"
-                style={{ backgroundColor: `${colorPair[0]}20` }}
-              >
-                <Palette size={28} style={{ color: colorPair[0] }} />
-              </div>
-              <span className="text-sm font-medium text-[var(--text-secondary)] block mb-1">
-                Template #{template.id}
-              </span>
-              <span className="text-xs text-[var(--text-muted)]">{template.name}</span>
-            </div>
-          </div>
-        ) : (
-          <img
-            src={template.coverImage!}
-            alt={template.name}
-            onError={handleImageError}
-            className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-          />
-        )}
-
-        {/* Hover Image (editable version - slide 2) */}
-        {template.hoverImage && !hoverImageError && !showPlaceholder && (
-          <img
-            src={template.hoverImage}
-            alt={`${template.name} - Editable`}
-            onError={handleHoverImageError}
-            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          />
-        )}
-
-        {/* Always visible button - bottom right */}
-        <div
-          className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-semibold transition-transform duration-200 group-hover:scale-105 z-10"
-          style={{ backgroundColor: '#7435E6' }}
-        >
-          <ExternalLink size={12} />
-          Edit in Canva
-        </div>
-      </a>
-    </motion.div>
-  );
-}
+import { metaAdTemplates } from '@/data/meta-ad-templates';
 
 export default function MetaTemplatesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -169,7 +62,58 @@ export default function MetaTemplatesPage() {
             className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
           >
             {filteredTemplates.map((template) => (
-              <TemplateCard key={template.id} template={template} />
+              <motion.div
+                key={template.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                className="group relative"
+              >
+                <a
+                  href={template.canvaLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-all duration-300 hover:shadow-xl hover:border-[#7435E6]"
+                >
+                  {/* Cover Image (default) */}
+                  {template.coverImage ? (
+                    <img
+                      src={template.coverImage}
+                      alt={template.name}
+                      className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
+                      <div className="text-center p-4">
+                        <div className="w-10 h-10 mx-auto mb-2 rounded-lg bg-[#7435E6]/10 flex items-center justify-center">
+                          <ExternalLink size={20} className="text-[#7435E6]" />
+                        </div>
+                        <span className="text-xs text-[var(--text-muted)]">
+                          {template.name}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Hover Image (editable version - slide 2) */}
+                  {template.hoverImage && (
+                    <img
+                      src={template.hoverImage}
+                      alt={`${template.name} - Editable`}
+                      className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                    />
+                  )}
+
+                  {/* Always visible button - bottom right */}
+                  <div
+                    className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-semibold transition-transform duration-200 group-hover:scale-105 z-10"
+                    style={{ backgroundColor: '#7435E6' }}
+                  >
+                    <ExternalLink size={12} />
+                    Edit in Canva
+                  </div>
+                </a>
+              </motion.div>
             ))}
           </motion.div>
 
