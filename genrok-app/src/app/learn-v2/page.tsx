@@ -243,29 +243,39 @@ export default function LearnV2Page() {
         <LessonParamsHandler onLessonOpen={handleLessonFromUrl} />
       </Suspense>
 
-      {/* Main Content with FAFAFA background - full width edge to edge */}
-      <div className="min-h-screen" style={{ background: '#FAFAFA', marginLeft: '-48px', marginRight: '-48px', marginTop: '-40px', padding: '0' }}>
+      {/* Main Content with FAFAFA background */}
+      <div
+        className="min-h-screen overflow-x-hidden"
+        style={{
+          background: '#FAFAFA',
+          marginTop: '-40px'
+        }}
+      >
 
-        {/* Hero Section */}
+        {/* Hero Section - extends to left edge */}
         <AnimatePresence mode="wait">
           {expandedLesson && expandedLessonInfo ? (
-            // Expanded Lesson Hero - 75% viewport height
+            // Expanded Lesson Hero - 75% viewport height, full width
             <motion.div
               key="expanded-hero"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="relative w-full overflow-hidden"
-              style={{ height: '75vh' }}
+              className="relative overflow-hidden"
+              style={{
+                height: '75vh',
+                marginLeft: '-48px',
+                width: 'calc(100% + 48px)'
+              }}
             >
-              {/* Background Image - centered with minimal cut */}
+              {/* Background Image - show full top, minimal cut */}
               <div className="absolute inset-0">
                 <Image
                   src={customThumbnails[expandedLesson] || `/images/lessons/${expandedLesson}.png`}
                   alt={expandedLessonInfo.title}
                   fill
                   className="object-cover"
-                  style={{ objectPosition: 'center 40%' }}
+                  style={{ objectPosition: 'center top' }}
                   sizes="100vw"
                   quality={95}
                   priority
@@ -274,7 +284,7 @@ export default function LearnV2Page() {
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: 'linear-gradient(to top, #FAFAFA 0%, rgba(250, 250, 250, 0.8) 8%, rgba(250, 250, 250, 0.3) 15%, transparent 25%)'
+                    background: 'linear-gradient(to top, #FAFAFA 0%, rgba(250, 250, 250, 0.9) 5%, rgba(250, 250, 250, 0.4) 12%, transparent 20%)'
                   }}
                 />
               </div>
@@ -353,14 +363,19 @@ export default function LearnV2Page() {
               </div>
             </motion.div>
           ) : (
-            // Default Hero - The Billionaire's Theater
+            // Default Hero - The Billionaire's Theater, extends to left edge
             <motion.div
               key="default-hero"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="relative w-full overflow-hidden"
-              style={{ height: '420px', backgroundColor: heroBackgroundColor }}
+              className="relative overflow-hidden"
+              style={{
+                height: '420px',
+                backgroundColor: heroBackgroundColor,
+                marginLeft: '-48px',
+                width: 'calc(100% + 48px)'
+              }}
             >
               {/* Theme Toggle - Top Right */}
               <div className="absolute top-4 right-6 z-20 flex items-center gap-2">
