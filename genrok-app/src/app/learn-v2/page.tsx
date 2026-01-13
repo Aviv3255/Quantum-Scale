@@ -243,8 +243,8 @@ export default function LearnV2Page() {
         <LessonParamsHandler onLessonOpen={handleLessonFromUrl} />
       </Suspense>
 
-      {/* Main Content with FAFAFA background - full width from top */}
-      <div className="min-h-screen" style={{ background: '#FAFAFA', margin: '0 -48px', padding: '0' }}>
+      {/* Main Content with FAFAFA background - full width edge to edge */}
+      <div className="min-h-screen" style={{ background: '#FAFAFA', marginLeft: '-48px', marginRight: '-48px', marginTop: '-40px', padding: '0' }}>
 
         {/* Hero Section */}
         <AnimatePresence mode="wait">
@@ -258,23 +258,23 @@ export default function LearnV2Page() {
               className="relative w-full overflow-hidden"
               style={{ height: '75vh' }}
             >
-              {/* Background Image - 8% from top, 17% from bottom */}
+              {/* Background Image - centered with minimal cut */}
               <div className="absolute inset-0">
                 <Image
                   src={customThumbnails[expandedLesson] || `/images/lessons/${expandedLesson}.png`}
                   alt={expandedLessonInfo.title}
                   fill
                   className="object-cover"
-                  style={{ objectPosition: 'center 35%' }}
+                  style={{ objectPosition: 'center 40%' }}
                   sizes="100vw"
-                  quality={90}
+                  quality={95}
                   priority
                 />
-                {/* White gradient overlay at bottom - fades bottom 17% */}
+                {/* Subtle gradient overlay at bottom only */}
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: 'linear-gradient(to top, #FAFAFA 0%, rgba(250, 250, 250, 0.95) 12%, rgba(250, 250, 250, 0.5) 17%, transparent 30%)'
+                    background: 'linear-gradient(to top, #FAFAFA 0%, rgba(250, 250, 250, 0.8) 8%, rgba(250, 250, 250, 0.3) 15%, transparent 25%)'
                   }}
                 />
               </div>
@@ -360,10 +360,10 @@ export default function LearnV2Page() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="relative w-full overflow-hidden"
-              style={{ height: '400px', backgroundColor: heroBackgroundColor }}
+              style={{ height: '420px', backgroundColor: heroBackgroundColor }}
             >
               {/* Theme Toggle - Top Right */}
-              <div className="absolute top-6 right-6 z-20 flex items-center gap-2">
+              <div className="absolute top-4 right-6 z-20 flex items-center gap-2">
                 <span className="text-white/60 text-sm">Theme:</span>
                 <button
                   onClick={() => setDarkHeroTheme(darkHeroTheme === 'teal' ? 'black' : 'teal')}
@@ -379,7 +379,7 @@ export default function LearnV2Page() {
               </div>
 
               {/* Character GIF - Right Side (bigger and more centered) */}
-              <div className="absolute right-[10%] bottom-0 h-[90%] aspect-square">
+              <div className="absolute right-[8%] bottom-0 h-[95%] aspect-square">
                 <video
                   src={heroGifUrl}
                   autoPlay
@@ -392,28 +392,29 @@ export default function LearnV2Page() {
 
               {/* Content - Left Side */}
               <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-center pl-12 pr-4 max-w-2xl">
-                {/* Heading with fancy font - bigger and white */}
+                {/* Heading with fancy font - BIGGER and WHITE */}
                 <h1
-                  className="text-6xl font-bold text-white mb-4"
+                  className="text-7xl font-bold mb-5"
                   style={{
                     fontFamily: "'Playfair Display', 'Georgia', serif",
                     letterSpacing: '-0.02em',
-                    textShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                    textShadow: '0 2px 8px rgba(0,0,0,0.4)',
+                    color: '#FFFFFF'
                   }}
                 >
                   The Billionaire&apos;s Theater
                 </h1>
 
                 {/* Subheading */}
-                <p className="text-xl text-white/80 mb-8">
+                <p className="text-xl mb-8" style={{ color: 'rgba(255,255,255,0.85)' }}>
                   {userName}, unlock the secrets that built empires.
                 </p>
 
                 {/* Progress Bar */}
                 <div className="w-full max-w-md">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-white/60 text-sm font-medium">Your Progress</span>
-                    <span className="text-white font-semibold">
+                    <span style={{ color: 'rgba(255,255,255,0.6)' }} className="text-sm font-medium">Your Progress</span>
+                    <span style={{ color: '#FFFFFF' }} className="font-semibold">
                       {completedLessons}/{totalLessons} Lessons
                     </span>
                   </div>
