@@ -87,7 +87,8 @@ const navigationItems: NavItem[] = [
     subItems: [
       { title: "$6,000 TikTok Ads Credit", href: "/tiktok-credits" },
       { title: "AI Image Ads", href: "/ads/ai-image" },
-      { title: "AI Video Ads", href: "/ads/ai-video" }
+      { title: "AI Video Ads", href: "/ads/ai-video" },
+      { title: "Meta Ad Templates", href: "/ads/meta-templates" }
     ]
   },
   {

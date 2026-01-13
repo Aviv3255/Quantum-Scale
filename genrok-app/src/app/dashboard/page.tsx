@@ -127,10 +127,19 @@ const courseProgressData = [
 ];
 
 type ContentTab = 'courses' | 'lessons' | 'creatives';
-type AccentColor = 'green' | 'gold' | 'blue' | 'purple' | 'coral' | 'teal';
+type AccentColor = 'lime' | 'mint' | 'forest' | 'sage' | 'neon' | 'gold' | 'blue' | 'purple' | 'coral' | 'teal';
 
-const accentColors: { id: AccentColor; name: string }[] = [
-  { id: 'green', name: 'Emerald' },
+// Green variants (row 1)
+const greenVariants: { id: AccentColor; name: string }[] = [
+  { id: 'lime', name: 'Lime' },
+  { id: 'mint', name: 'Mint' },
+  { id: 'forest', name: 'Forest' },
+  { id: 'sage', name: 'Sage' },
+  { id: 'neon', name: 'Neon' },
+];
+
+// Other accent colors (row 2)
+const otherColors: { id: AccentColor; name: string }[] = [
   { id: 'gold', name: 'Gold' },
   { id: 'blue', name: 'Ocean' },
   { id: 'purple', name: 'Royal' },
@@ -138,12 +147,14 @@ const accentColors: { id: AccentColor; name: string }[] = [
   { id: 'teal', name: 'Teal' },
 ];
 
+const allColors = [...greenVariants, ...otherColors];
+
 export default function DashboardPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
   const [userNiche, setUserNiche] = useState<string>("men's fashion");
   const [activeTab, setActiveTab] = useState<ContentTab>('courses');
-  const [accentColor, setAccentColor] = useState<AccentColor>('green');
+  const [accentColor, setAccentColor] = useState<AccentColor>('lime');
   const courses = getAllCourses();
 
   useEffect(() => {
@@ -155,7 +166,7 @@ export default function DashboardPage() {
   // Load accent color from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem('accent-color') as AccentColor | null;
-    if (saved && accentColors.some(c => c.id === saved)) {
+    if (saved && allColors.some(c => c.id === saved)) {
       setAccentColor(saved);
       document.documentElement.setAttribute('data-accent', saved);
     }
@@ -340,16 +351,9 @@ export default function DashboardPage() {
                     className="lesson-card-mini"
                   >
                     <div className="lesson-card-thumbnail">
-                      <Image
-                        src={`/images/lessons/${lesson.slug}.png`}
-                        alt={lesson.title}
-                        fill
-                        className="object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
+                      <div className="lesson-thumb-icon">
+                        <BookOpen size={24} />
+                      </div>
                     </div>
                     <div className="lesson-card-content">
                       <span className="lesson-card-category">{lesson.category}</span>
@@ -373,18 +377,9 @@ export default function DashboardPage() {
                     className="creative-card"
                   >
                     <div className="creative-card-image">
-                      {template.coverImage ? (
-                        <Image
-                          src={template.coverImage}
-                          alt={template.name}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="creative-placeholder">
-                          <ExternalLink size={24} />
-                        </div>
-                      )}
+                      <div className="creative-placeholder">
+                        <Play size={24} />
+                      </div>
                       <div className="creative-overlay">
                         <span className="creative-btn">
                           <ExternalLink size={14} />
@@ -472,8 +467,11 @@ export default function DashboardPage() {
           {/* Accent Color Picker */}
           <div className="accent-picker">
             <span className="accent-picker-label">Accent Color</span>
+
+            {/* Green Variants Row */}
+            <span className="accent-row-label">Greens</span>
             <div className="accent-picker-grid">
-              {accentColors.map((color) => (
+              {greenVariants.map((color) => (
                 <button
                   key={color.id}
                   className={`accent-swatch ${accentColor === color.id ? 'active' : ''}`}
@@ -484,7 +482,26 @@ export default function DashboardPage() {
               ))}
             </div>
             <div className="accent-picker-names">
-              {accentColors.map((color) => (
+              {greenVariants.map((color) => (
+                <span key={color.id} className="accent-name">{color.name}</span>
+              ))}
+            </div>
+
+            {/* Other Colors Row */}
+            <span className="accent-row-label" style={{ marginTop: '12px' }}>Others</span>
+            <div className="accent-picker-grid">
+              {otherColors.map((color) => (
+                <button
+                  key={color.id}
+                  className={`accent-swatch ${accentColor === color.id ? 'active' : ''}`}
+                  data-color={color.id}
+                  onClick={() => handleAccentChange(color.id)}
+                  title={color.name}
+                />
+              ))}
+            </div>
+            <div className="accent-picker-names">
+              {otherColors.map((color) => (
                 <span key={color.id} className="accent-name">{color.name}</span>
               ))}
             </div>
@@ -513,29 +530,35 @@ function ProductCard({ product }: { product: { id: string; name: string; image: 
           alt={product.name}
           className="product-image"
         />
-        <button
-          className="product-info-btn"
-          onClick={(e) => {
-            e.preventDefault();
-            setShowBadge(!showBadge);
-          }}
+        {/* Info button and badge container */}
+        <div
+          className="product-info-container"
           onMouseEnter={() => setShowBadge(true)}
           onMouseLeave={() => setShowBadge(false)}
         >
-          <Info size={14} />
-        </button>
-        {showBadge && (
-          <a
-            href={product.cheaperUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`product-badge ${product.cheaperOn === 'mate' ? 'badge-mate' : 'badge-hypersku'}`}
-            onClick={(e) => e.stopPropagation()}
+          <button
+            className="product-info-btn"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setShowBadge(!showBadge);
+            }}
           >
-            Cheaper on {product.cheaperOn === 'mate' ? 'Mate' : 'HyperSKU'}
-            <ExternalLink size={10} />
-          </a>
-        )}
+            <Info size={14} />
+          </button>
+          {showBadge && (
+            <a
+              href={product.cheaperUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`product-badge ${product.cheaperOn === 'mate' ? 'badge-mate' : 'badge-hypersku'}`}
+              onClick={(e) => e.stopPropagation()}
+            >
+              Cheaper on {product.cheaperOn === 'mate' ? 'Mate' : 'HyperSKU'}
+              <ExternalLink size={10} />
+            </a>
+          )}
+        </div>
       </a>
       <p className="product-name">{product.name}</p>
     </div>

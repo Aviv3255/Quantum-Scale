@@ -51,7 +51,7 @@ export default function RootLayout({
               (function() {
                 try {
                   var accent = localStorage.getItem('accent-color');
-                  if (accent && ['green', 'gold', 'blue', 'purple', 'coral', 'teal'].includes(accent)) {
+                  if (accent && ['lime', 'mint', 'forest', 'sage', 'neon', 'gold', 'blue', 'purple', 'coral', 'teal'].includes(accent)) {
                     document.documentElement.setAttribute('data-accent', accent);
                   }
                 } catch (e) {}
