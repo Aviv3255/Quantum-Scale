@@ -33,7 +33,7 @@ interface AffiliateProduct {
   image_url: string;
   affiliate_link: string;
   category: string;
-  partner: 'hypersku' | 'hypersku' | 'aliexpress';
+  partner: 'mate' | 'hypersku' | 'aliexpress';
 }
 
 // Home decor products data - 69 products with correct images
