@@ -3649,8 +3649,8 @@ h4, .text-h4 {
   background: #FFFFFF;
   border-radius: 24px;
   box-shadow: var(--shadow-card);
-  overflow: visible;
-  min-height: 140px;
+  overflow: hidden;
+  min-height: 200px;
 }
 
 .greeting-content {
@@ -3676,19 +3676,19 @@ h4, .text-h4 {
   position: absolute;
   right: 40px;
   bottom: 0;
+  top: 0;
   z-index: 2;
   pointer-events: none;
-  /* Position relative to bottom of greeting-hero block */
+  display: flex;
+  align-items: flex-end;
 }
 
 .greeting-illustration video {
-  width: 180px;
-  height: 260px;
+  height: 100%;
+  width: auto;
+  max-height: 100%;
   object-fit: contain;
   object-position: bottom center;
-  /* Monkey stands at bottom panel, extends upward above the block */
-  transform: translateY(0);
-  margin-bottom: 0;
 }
 
 /* Checklist Block - $100M Checklist */
@@ -4479,6 +4479,151 @@ h4, .text-h4 {
   box-shadow: 0 4px 12px rgba(136, 218, 28, 0.3);
 }
 
+/* Monkey Assistant */
+.monkey-assistant {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  margin-top: 16px;
+}
+
+.monkey-assistant-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.monkey-assistant-close:hover {
+  background: var(--text-muted);
+  color: white;
+}
+
+.monkey-video-wrapper {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.monkey-video {
+  width: 150%;
+  height: 150%;
+  object-fit: cover;
+  object-position: center 30%;
+  mix-blend-mode: multiply;
+}
+
+.monkey-speech-bubble {
+  position: relative;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 16px;
+  width: 100%;
+  text-align: center;
+}
+
+.monkey-speech-bubble::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid var(--bg-secondary);
+}
+
+.monkey-message {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.monkey-message.success {
+  color: var(--accent-primary);
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.monkey-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.monkey-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.monkey-btn-primary {
+  background: var(--accent-primary);
+  color: #000000;
+}
+
+.monkey-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(136, 218, 28, 0.3);
+}
+
+.monkey-btn-secondary {
+  background: white;
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.monkey-btn-secondary:hover {
+  background: var(--bg-secondary);
+}
+
+.monkey-btn-text {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.monkey-btn-text:hover {
+  color: var(--text-primary);
+}
+
 /* Dashboard Responsive */
 @media (max-width: 1200px) {
   .dashboard-layout {
@@ -4498,6 +4643,8 @@ h4, .text-h4 {
     text-align: center;
     padding: 24px;
     gap: 20px;
+    min-height: auto;
+    overflow: visible;
   }
 
   .greeting-content {
@@ -4508,11 +4655,14 @@ h4, .text-h4 {
     position: relative;
     right: auto;
     bottom: auto;
+    top: auto;
     order: 1;
+    height: 160px;
   }
 
   .greeting-illustration video {
-    height: 180px;
+    height: 160px;
+    width: auto;
   }
 
   .greeting-title {
@@ -4521,6 +4671,24 @@ h4, .text-h4 {
 
   .greeting-subtext {
     max-width: 100%;
+  }
+
+  .monkey-assistant {
+    padding: 16px;
+  }
+
+  .monkey-video-wrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .monkey-message {
+    font-size: 13px;
+  }
+
+  .monkey-btn {
+    font-size: 12px;
+    padding: 8px 12px;
   }
 
   .checklist-block {

@@ -16,6 +16,7 @@ import {
   ExternalLink,
   Info,
   ChevronRight,
+  X,
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -507,6 +508,9 @@ export default function DashboardPage() {
             </div>
           </div>
 
+          {/* Monkey Assistant */}
+          <MonkeyAssistant userName={userName?.split(' ')[0] || 'there'} />
+
         </div>
       </div>
     </DashboardLayout>
@@ -562,5 +566,106 @@ function ProductCard({ product }: { product: { id: string; name: string; image: 
       </a>
       <p className="product-name">{product.name}</p>
     </div>
+  );
+}
+
+// Monkey Assistant Component
+function MonkeyAssistant({ userName }: { userName: string }) {
+  const [isDismissed, setIsDismissed] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+
+  // Check localStorage for dismissed/connected state
+  useEffect(() => {
+    const dismissed = localStorage.getItem('monkey-assistant-dismissed');
+    const connected = localStorage.getItem('private-agent-connected');
+    if (dismissed === 'true') setIsDismissed(true);
+    if (connected === 'true') setIsConnected(true);
+  }, []);
+
+  const handleDismiss = () => {
+    setIsDismissed(true);
+    localStorage.setItem('monkey-assistant-dismissed', 'true');
+  };
+
+  const handleConnected = () => {
+    setIsConnected(true);
+    localStorage.setItem('private-agent-connected', 'true');
+    // Show a brief success message, then dismiss
+    setTimeout(() => {
+      setIsDismissed(true);
+      localStorage.setItem('monkey-assistant-dismissed', 'true');
+    }, 2000);
+  };
+
+  if (isDismissed) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 20, scale: 0.9 }}
+      className="monkey-assistant"
+    >
+      {/* Close button */}
+      <button
+        className="monkey-assistant-close"
+        onClick={handleDismiss}
+        aria-label="Dismiss assistant"
+      >
+        <X size={14} />
+      </button>
+
+      {/* Monkey Video */}
+      <div className="monkey-video-wrapper">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="monkey-video"
+        >
+          <source src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runs2s9JHgJNwU_Hes_Waving._Transparnt_back_d371cb21-5266-4407-a7d3-bfe409098498_2.mp4" type="video/mp4" />
+        </video>
+      </div>
+
+      {/* Speech Bubble */}
+      <div className="monkey-speech-bubble">
+        {isConnected ? (
+          <p className="monkey-message success">
+            Awesome! You&apos;re all set up!
+          </p>
+        ) : (
+          <>
+            <p className="monkey-message">
+              Hey <strong>{userName}</strong>! Have you connected a Private Agent yet?
+            </p>
+            <div className="monkey-buttons">
+              <a
+                href="https://erp.matedropshipping.com/login?invite_id=915"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="monkey-btn monkey-btn-primary"
+              >
+                Connect main Agent
+              </a>
+              <a
+                href="https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="monkey-btn monkey-btn-secondary"
+              >
+                Connect backup agent
+              </a>
+              <button
+                onClick={handleConnected}
+                className="monkey-btn-text"
+              >
+                I&apos;ve already connected
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </motion.div>
   );
 }
