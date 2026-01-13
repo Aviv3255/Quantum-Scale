@@ -22,6 +22,54 @@ import { getAllCourses } from '@/data/courses';
 import { metaAdTemplates } from '@/data/meta-ad-templates';
 import { getDefaultChecklist, hasChecklist } from '@/data/course-checklists';
 
+// Timezone-based GIFs - randomly selected from each time period
+const timeBasedGifs = {
+  // Morning (5:00am - 11:59am)
+  morning: [
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', // Coffee
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-stretch.mp4', // Stretch
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-power-pose.mp4', // Power Pose
+  ],
+  // Afternoon (12:00pm - 4:59pm)
+  afternoon: [
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-focus.mp4', // Focus
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-nod.mp4', // Nod
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-point.mp4', // Point
+  ],
+  // Evening (5:00pm - 8:59pm)
+  evening: [
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-lean-back.mp4', // Lean Back
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-glasses-adjust.mp4', // Glasses Adjust
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-slow-clap.mp4', // Slow Clap
+  ],
+  // Night (9:00pm - 4:59am)
+  night: [
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-fist-pump.mp4', // Fist Pump
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-typing.mp4', // Typing
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-salute.mp4', // Salute
+  ],
+};
+
+// Get random GIF based on current time
+function getTimeBasedGif(): string {
+  const hour = new Date().getHours();
+  let gifs: string[];
+
+  if (hour >= 5 && hour < 12) {
+    gifs = timeBasedGifs.morning;
+  } else if (hour >= 12 && hour < 17) {
+    gifs = timeBasedGifs.afternoon;
+  } else if (hour >= 17 && hour < 21) {
+    gifs = timeBasedGifs.evening;
+  } else {
+    gifs = timeBasedGifs.night;
+  }
+
+  // Random selection from the time period's GIFs
+  const randomIndex = Math.floor(Math.random() * gifs.length);
+  return gifs[randomIndex];
+}
+
 // All available lessons with metadata
 const allLessons = [
   { slug: 'familiar-surprise-secret', title: 'The Familiar Surprise Secret', description: 'Master the MAYA principle', category: 'Copywriting', totalSlides: 12 },
@@ -124,10 +172,16 @@ export default function DashboardPage() {
   const lessonProgressStore = useLessonProgressStore();
   const [activeTab, setActiveTab] = useState<ContentTab>('courses');
   const [checklistProgressMap, setChecklistProgressMap] = useState<Record<string, number>>({});
+  const [currentGif, setCurrentGif] = useState<string>('');
   const courses = getAllCourses();
 
   // Get daily randomized products (memoized to prevent re-shuffling on every render)
   const dailyProducts = useMemo(() => getDailyProducts(20), []);
+
+  // Set timezone-based GIF on mount (random selection from time period)
+  useEffect(() => {
+    setCurrentGif(getTimeBasedGif());
+  }, []);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -229,14 +283,17 @@ export default function DashboardPage() {
               <p className="greeting-subtext">{subtext}</p>
             </div>
             <div className="greeting-illustration">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-              >
-                <source src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4" type="video/mp4" />
-              </video>
+              {currentGif && (
+                <video
+                  key={currentGif}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                >
+                  <source src={currentGif} type="video/mp4" />
+                </video>
+              )}
             </div>
           </motion.div>
 
