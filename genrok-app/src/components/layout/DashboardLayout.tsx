@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -34,10 +34,13 @@ import {
   Settings,
   User,
   Tag,
+  Bookmark,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
+import { useBookmarksStore } from '@/store/bookmarks';
 import { signOut } from '@/lib/supabase';
+import { BookmarkModal } from '@/components/BookmarkModal';
 
 interface SubNavItem {
   title: string;
@@ -143,10 +146,20 @@ const navigationItems: NavItem[] = [
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { user } = useAuthStore();
+  const { counts, initialize, isInitialized } = useBookmarksStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false);
+  const bookmarkButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Initialize bookmarks when user is available
+  useEffect(() => {
+    if (user?.id && !isInitialized) {
+      initialize(user.id);
+    }
+  }, [user?.id, initialize, isInitialized]);
 
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   const userEmail = user?.email || '';
@@ -393,6 +406,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </div>
               </div>
               <div className="profile-actions">
+                <Link href="/bookmarks" className="profile-settings-btn">
+                  <Bookmark size={14} />
+                  <span>Bookmarks</span>
+                </Link>
                 <Link href="/settings" className="profile-settings-btn">
                   <Settings size={14} />
                   <span>Settings</span>
@@ -441,6 +458,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
 
           <div className="topbar-right">
+            {/* Bookmarks */}
+            <div className="relative">
+              <button
+                ref={bookmarkButtonRef}
+                onClick={() => setBookmarkModalOpen(!bookmarkModalOpen)}
+                className="topbar-notification-btn"
+                data-testid="topbar-bookmark-btn"
+                aria-label="Open bookmarks"
+              >
+                <Bookmark size={20} strokeWidth={1.5} />
+                {(counts.all || 0) > 0 && (
+                  <span className="notification-badge">{counts.all > 99 ? '99+' : counts.all}</span>
+                )}
+              </button>
+              <BookmarkModal
+                isOpen={bookmarkModalOpen}
+                onClose={() => setBookmarkModalOpen(false)}
+                anchorRef={bookmarkButtonRef}
+              />
+            </div>
+
             {/* Notifications */}
             <button className="topbar-notification-btn">
               <Bell size={20} strokeWidth={1.5} />

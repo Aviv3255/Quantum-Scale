@@ -41,6 +41,7 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import LessonModal from '@/components/LessonModal';
 import { processedArticles as articles, Article } from '@/data/articles';
 import { getUserProfile, supabase } from '@/lib/supabase';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 // Lesson metadata for modal with categories
 const lessonMeta: Record<string, { title: string; description: string; categories: LessonCategory[] }> = {
@@ -884,26 +885,40 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
   };
 
   return (
-    <button
-      onClick={() => onLessonClick(slug)}
-      className="card card-hover group block overflow-hidden text-left w-full"
-      style={{ padding: 0 }}
-    >
-      {/* Thumbnail */}
-      <div className="relative aspect-[3/2] overflow-hidden bg-[var(--bg-secondary)]">
-        <Image
-          src={thumbnailSrc}
-          alt={title}
-          fill
-          loading="lazy"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.style.display = 'none';
-          }}
+    <div className="relative">
+      {/* Bookmark Button */}
+      <div className="absolute top-3 right-3 z-20">
+        <BookmarkButton
+          itemType="lesson"
+          itemId={slug}
+          title={title}
+          sourceUrl={`/learn?lesson=${slug}`}
+          description={description}
+          thumbnailUrl={thumbnailSrc}
+          size="sm"
         />
       </div>
+
+      <button
+        onClick={() => onLessonClick(slug)}
+        className="card card-hover group block overflow-hidden text-left w-full"
+        style={{ padding: 0 }}
+      >
+        {/* Thumbnail */}
+        <div className="relative aspect-[3/2] overflow-hidden bg-[var(--bg-secondary)]">
+          <Image
+            src={thumbnailSrc}
+            alt={title}
+            fill
+            loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+            }}
+          />
+        </div>
 
       {/* Content */}
       <div className="p-6">
@@ -945,5 +960,6 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
         )}
       </div>
     </button>
+    </div>
   );
 }

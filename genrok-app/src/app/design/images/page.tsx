@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ExternalLink, Sparkles, Copy, Check, AlertTriangle } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 const niches = [
   { id: 'fashion', name: 'Fashion', emoji: '👗' },
@@ -314,21 +315,34 @@ export default function ImageInspirationPage() {
               {/* Hover Overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
 
-              {/* Copy Button */}
-              <button
-                onClick={() => handleCopyImage(imageUrl)}
-                className="absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100"
-                style={{
-                  background: copiedId === imageUrl ? '#DCFCE7' : '#FFFFFF',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
-                }}
-              >
-                {copiedId === imageUrl ? (
-                  <Check className="w-5 h-5" style={{ color: '#16A34A' }} />
-                ) : (
-                  <Copy className="w-5 h-5" style={{ color: '#3B82F6' }} />
-                )}
-              </button>
+              {/* Buttons Container */}
+              <div className="absolute top-3 right-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                {/* Bookmark Button */}
+                <BookmarkButton
+                  itemType="image"
+                  itemId={btoa(imageUrl).slice(0, 50)}
+                  title={`${niches.find(n => n.id === activeNiche)?.name || 'Image'} Inspiration #${idx + 1}`}
+                  sourceUrl={imageUrl}
+                  description={`Inspiration image from ${niches.find(n => n.id === activeNiche)?.name || ''} collection`}
+                  thumbnailUrl={imageUrl}
+                  size="sm"
+                />
+                {/* Copy Button */}
+                <button
+                  onClick={() => handleCopyImage(imageUrl)}
+                  className="w-7 h-7 rounded-full flex items-center justify-center transition-all"
+                  style={{
+                    background: copiedId === imageUrl ? '#DCFCE7' : '#FFFFFF',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)'
+                  }}
+                >
+                  {copiedId === imageUrl ? (
+                    <Check className="w-4 h-4" style={{ color: '#16A34A' }} />
+                  ) : (
+                    <Copy className="w-4 h-4" style={{ color: '#3B82F6' }} />
+                  )}
+                </button>
+              </div>
             </div>
           ))}
         </div>

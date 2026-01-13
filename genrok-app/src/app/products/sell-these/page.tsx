@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ExternalLink, Search, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { metaAdTemplates } from '@/data/meta-ad-templates';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 export default function MetaAdTemplatesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -70,6 +71,19 @@ export default function MetaAdTemplatesPage() {
               transition={{ delay: index * 0.02, duration: 0.3 }}
               className="group relative"
             >
+              {/* Bookmark Button */}
+              <div className="absolute top-2 right-2 z-20">
+                <BookmarkButton
+                  itemType="product"
+                  itemId={String(template.id)}
+                  title={template.name}
+                  sourceUrl={template.canvaLink}
+                  description="Product Template - Click to edit in Canva"
+                  thumbnailUrl={template.coverImage || undefined}
+                  size="sm"
+                />
+              </div>
+
               {/* Card */}
               <div className="relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-all duration-300 group-hover:shadow-xl group-hover:border-[#007DFF]">
                 {/* Cover Image (Slide 1) */}

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 const apps = [
   {
@@ -168,7 +169,20 @@ export default function SecretAppsPage() {
         >
           {apps.map((app) => (
             <motion.div key={app.id} variants={itemVariants}>
-              <div className="card card-hover h-full flex flex-col overflow-hidden" style={{ padding: 0 }}>
+              <div className="card card-hover h-full flex flex-col overflow-hidden relative" style={{ padding: 0 }}>
+                {/* Bookmark Button */}
+                <div className="absolute top-3 right-3 z-10">
+                  <BookmarkButton
+                    itemType="secret_app"
+                    itemId={String(app.id)}
+                    title={app.name}
+                    sourceUrl={app.url}
+                    description={app.shortDesc}
+                    thumbnailUrl={app.logo}
+                    size="sm"
+                  />
+                </div>
+
                 {/* Header with Logo */}
                 <div className="p-6 pb-4">
                   <div className="flex items-start gap-4">
@@ -181,7 +195,7 @@ export default function SecretAppsPage() {
                         unoptimized
                       />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 pr-8">
                       <h3 className="font-semibold text-lg text-[var(--text-primary)] truncate">
                         {app.name}
                       </h3>

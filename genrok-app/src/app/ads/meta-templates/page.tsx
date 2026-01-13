@@ -5,6 +5,7 @@ import { ExternalLink, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { metaAdTemplates } from '@/data/meta-ad-templates';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 export default function MetaTemplatesPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -69,6 +70,19 @@ export default function MetaTemplatesPage() {
                 transition={{ duration: 0.3 }}
                 className="group relative"
               >
+                {/* Bookmark Button */}
+                <div className="absolute top-2 right-2 z-20">
+                  <BookmarkButton
+                    itemType="creative"
+                    itemId={String(template.id)}
+                    title={template.name}
+                    sourceUrl={template.canvaLink}
+                    description="Meta Ad Template - Click to edit in Canva"
+                    thumbnailUrl={template.coverImage || undefined}
+                    size="sm"
+                  />
+                </div>
+
                 <a
                   href={template.canvaLink}
                   target="_blank"

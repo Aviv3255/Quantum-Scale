@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback } from 'react';
 import { X } from 'lucide-react';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 interface LessonModalProps {
   slug: string;
@@ -92,13 +93,24 @@ export default function LessonModal({
             <p className="text-neutral-900 font-bold text-base">{title}</p>
             <p className="text-neutral-400 text-xs">{description}</p>
           </div>
-          <button
-            onClick={onClose}
-            className="w-9 h-9 rounded-xl flex items-center justify-center text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 transition-all"
-            aria-label="Close lesson"
-          >
-            <X size={20} />
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Bookmark current slide */}
+            <BookmarkButton
+              itemType="lesson_slide"
+              itemId={`${slug}:${initialSlide || 0}`}
+              title={`${title} - Slide ${(initialSlide || 0) + 1}`}
+              sourceUrl={`/learn?lesson=${slug}${initialSlide ? `&slide=${initialSlide}` : ''}`}
+              description={description}
+              size="md"
+            />
+            <button
+              onClick={onClose}
+              className="w-9 h-9 rounded-xl flex items-center justify-center text-neutral-400 hover:text-neutral-600 hover:bg-neutral-100 transition-all"
+              aria-label="Close lesson"
+            >
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Iframe - lesson content */}
