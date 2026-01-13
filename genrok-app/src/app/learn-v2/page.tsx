@@ -72,9 +72,6 @@ export default function LearnV2Page() {
   const [hoveredLesson, setHoveredLesson] = useState<string | null>(null);
   const [expandedLesson, setExpandedLesson] = useState<string | null>(null);
 
-  // Theme toggle for hero background testing
-  const [darkHeroTheme, setDarkHeroTheme] = useState<'teal' | 'black'>('teal');
-
   // Progress tracking
   const getProgressPercentage = useLessonProgressStore((s) => s.getProgressPercentage);
   const isLessonCompleted = useLessonProgressStore((s) => s.isLessonCompleted);
@@ -230,12 +227,9 @@ export default function LearnV2Page() {
     );
   }
 
-  // GIF URLs based on theme
-  const heroGifUrl = darkHeroTheme === 'teal'
-    ? 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runo_qvuMBi9F8_Hes_Sitting_in_an_armchair__f7ab94d4-3768-4020-8cf1-cf9f8a0b3f97_3.mp4'
-    : 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.rune5QZBsAMPH0_Hes_Sitting_in_an_armchair__88cd26df-2e06-4ccd-9444-4fc742120d5f_3.mp4';
-
-  const heroBackgroundColor = darkHeroTheme === 'teal' ? '#0f2f2c' : '#000000';
+  // Hero GIF and background - black theme only
+  const heroGifUrl = 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.rune5QZBsAMPH0_Hes_Sitting_in_an_armchair__88cd26df-2e06-4ccd-9444-4fc742120d5f_3.mp4';
+  const heroBackgroundColor = '#000000';
 
   return (
     <DashboardLayout hideHeader>
@@ -243,19 +237,20 @@ export default function LearnV2Page() {
         <LessonParamsHandler onLessonOpen={handleLessonFromUrl} />
       </Suspense>
 
-      {/* Main Content with FAFAFA background */}
+      {/* Main Content with FAFAFA background - no horizontal scroll */}
       <div
-        className="min-h-screen overflow-x-hidden"
+        className="min-h-screen"
         style={{
           background: '#FAFAFA',
-          marginTop: '-40px'
+          marginTop: '-40px',
+          overflowX: 'clip'
         }}
       >
 
         {/* Hero Section - extends to left edge */}
         <AnimatePresence mode="wait">
           {expandedLesson && expandedLessonInfo ? (
-            // Expanded Lesson Hero - 75% viewport height, full width
+            // Expanded Lesson Hero - 75% viewport height, flush with sidebar
             <motion.div
               key="expanded-hero"
               initial={{ opacity: 0 }}
@@ -265,7 +260,8 @@ export default function LearnV2Page() {
               style={{
                 height: '75vh',
                 marginLeft: '-48px',
-                width: 'calc(100% + 48px)'
+                marginRight: '-48px',
+                width: 'calc(100% + 96px)'
               }}
             >
               {/* Background Image - show full top, minimal cut */}
@@ -363,7 +359,7 @@ export default function LearnV2Page() {
               </div>
             </motion.div>
           ) : (
-            // Default Hero - The Billionaire's Theater, extends to left edge
+            // Default Hero - The Billionaire's Theater, black background, flush with sidebar
             <motion.div
               key="default-hero"
               initial={{ opacity: 0 }}
@@ -372,27 +368,12 @@ export default function LearnV2Page() {
               className="relative overflow-hidden"
               style={{
                 height: '420px',
-                backgroundColor: heroBackgroundColor,
+                backgroundColor: '#000000',
                 marginLeft: '-48px',
-                width: 'calc(100% + 48px)'
+                marginRight: '-48px',
+                width: 'calc(100% + 96px)'
               }}
             >
-              {/* Theme Toggle - Top Right */}
-              <div className="absolute top-4 right-6 z-20 flex items-center gap-2">
-                <span className="text-white/60 text-sm">Theme:</span>
-                <button
-                  onClick={() => setDarkHeroTheme(darkHeroTheme === 'teal' ? 'black' : 'teal')}
-                  className="px-3 py-1.5 rounded-full text-xs font-semibold transition-all"
-                  style={{
-                    backgroundColor: darkHeroTheme === 'teal' ? '#0f2f2c' : '#000',
-                    color: 'var(--accent-primary)',
-                    border: '1px solid var(--accent-primary)'
-                  }}
-                >
-                  {darkHeroTheme === 'teal' ? 'Teal' : 'Black'}
-                </button>
-              </div>
-
               {/* Character GIF - Right Side (bigger and more centered) */}
               <div className="absolute right-[8%] bottom-0 h-[95%] aspect-square">
                 <video
