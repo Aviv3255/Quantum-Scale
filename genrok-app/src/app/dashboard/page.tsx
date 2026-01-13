@@ -235,28 +235,15 @@ export default function DashboardPage() {
     return getCompletedCoursesFromChecklists(user.id, courses.map(c => c.slug));
   }, [user?.id, courses, checklistProgressMap]);
 
-  // Weekly progress data for chart - based on actual lesson progress
+  // Weekly progress data for chart - shows cumulative lessons completed over past 7 days
   // MUST be called before early return to maintain consistent hook order
   const weeklyData = useMemo(() => {
-    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    const totalSlidesCompleted = lessonProgressStore.getTotalSlidesCompleted();
-    const lessonsInProgress = lessonProgressStore.getLessonsInProgress().length;
-
-    // Calculate total activity score based on real progress
-    const activityScore = totalSlidesCompleted + (lessonsInProgress * 5) + (completedLessons * 10);
-
-    // If no activity yet, show empty chart with message
-    if (activityScore === 0) {
-      return days.map((day) => ({ day, value: 0 }));
-    }
-
-    // Distribute actual progress across week with natural variation
-    const basePerDay = Math.min(100, activityScore / 7);
-    return days.map((day, i) => {
-      const variation = Math.sin(i * 0.8 + Date.now() / 86400000) * 0.3 + 0.7;
-      return { day, value: Math.min(100, Math.round(basePerDay * variation)) };
-    });
-  }, [lessonProgressStore, completedLessons]);
+    const dailyProgress = lessonProgressStore.getLessonsCompletedByDay(7);
+    return dailyProgress.map((d) => ({
+      day: d.day,
+      value: d.cumulative, // Cumulative total lessons completed up to this day
+    }));
+  }, [lessonProgressStore]);
 
   // Early return for loading state - AFTER all hooks
   if (isLoading || !user) {

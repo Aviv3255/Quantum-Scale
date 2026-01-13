@@ -13,6 +13,7 @@ export interface LessonProgress {
   completedSlides: number[];
   isCompleted: boolean;
   lastAccessedAt: string;
+  completedAt?: string; // Timestamp when lesson was marked as completed
 }
 
 interface LessonProgressState {
@@ -28,6 +29,7 @@ interface LessonProgressState {
   getLessonsInProgress: () => LessonProgress[];
   getCompletedLessonsCount: () => number;
   getTotalSlidesCompleted: () => number;
+  getLessonsCompletedByDay: (days: number) => { date: string; day: string; count: number; cumulative: number }[];
 }
 
 export const useLessonProgressStore = create<LessonProgressState>()(
@@ -76,6 +78,7 @@ export const useLessonProgressStore = create<LessonProgressState>()(
             : [...existing.completedSlides, slideIndex];
 
           const isCompleted = completedSlides.length >= existing.totalSlides;
+          const wasAlreadyCompleted = existing.isCompleted;
 
           return {
             progress: {
@@ -84,6 +87,10 @@ export const useLessonProgressStore = create<LessonProgressState>()(
                 ...existing,
                 completedSlides,
                 isCompleted,
+                // Set completedAt only when transitioning to completed state
+                completedAt: isCompleted && !wasAlreadyCompleted
+                  ? new Date().toISOString()
+                  : existing.completedAt,
               },
             },
           };
@@ -95,6 +102,8 @@ export const useLessonProgressStore = create<LessonProgressState>()(
           const existing = state.progress[slug];
           if (!existing) return state;
 
+          const wasAlreadyCompleted = existing.isCompleted;
+
           return {
             progress: {
               ...state.progress,
@@ -102,6 +111,8 @@ export const useLessonProgressStore = create<LessonProgressState>()(
                 ...existing,
                 isCompleted: true,
                 completedSlides: Array.from({ length: existing.totalSlides }, (_, i) => i),
+                // Set completedAt only if not already completed
+                completedAt: wasAlreadyCompleted ? existing.completedAt : new Date().toISOString(),
               },
             },
           };
@@ -137,6 +148,60 @@ export const useLessonProgressStore = create<LessonProgressState>()(
       getTotalSlidesCompleted: () => {
         const { progress } = get();
         return Object.values(progress).reduce((total, p) => total + p.completedSlides.length, 0);
+      },
+
+      getLessonsCompletedByDay: (days: number) => {
+        const { progress } = get();
+        const completedLessons = Object.values(progress).filter((p) => p.isCompleted && p.completedAt);
+
+        // Generate array of past N days
+        const result: { date: string; day: string; count: number; cumulative: number }[] = [];
+        const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        // Count completions per day
+        const completionsByDate: Record<string, number> = {};
+        completedLessons.forEach((lesson) => {
+          if (lesson.completedAt) {
+            const dateKey = lesson.completedAt.split('T')[0]; // YYYY-MM-DD
+            completionsByDate[dateKey] = (completionsByDate[dateKey] || 0) + 1;
+          }
+        });
+
+        // Build result for past N days
+        let cumulative = 0;
+
+        // First, count all completions BEFORE the window (for cumulative baseline)
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - (days - 1));
+        startDate.setHours(0, 0, 0, 0);
+
+        completedLessons.forEach((lesson) => {
+          if (lesson.completedAt) {
+            const completedDate = new Date(lesson.completedAt);
+            if (completedDate < startDate) {
+              cumulative++;
+            }
+          }
+        });
+
+        // Now build daily data
+        for (let i = days - 1; i >= 0; i--) {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          const dateKey = date.toISOString().split('T')[0];
+          const dayName = dayNames[date.getDay()];
+          const count = completionsByDate[dateKey] || 0;
+          cumulative += count;
+
+          result.push({
+            date: dateKey,
+            day: dayName,
+            count,
+            cumulative,
+          });
+        }
+
+        return result;
       },
     }),
     {
