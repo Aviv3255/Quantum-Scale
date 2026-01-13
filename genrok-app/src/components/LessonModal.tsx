@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { X, Bookmark, BookmarkCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
@@ -24,6 +24,10 @@ export default function LessonModal({
   onClose,
   initialSlide,
 }: LessonModalProps) {
+  // Track the current slide from iframe postMessage
+  const [currentSlide, setCurrentSlide] = useState(initialSlide ?? 0);
+  const currentSlideRef = useRef(initialSlide ?? 0);
+
   // ESC key to close
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -33,6 +37,20 @@ export default function LessonModal({
     },
     [onClose]
   );
+
+  // Listen for slide changes from the iframe
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'SLIDE_CHANGED' && typeof event.data.slideIndex === 'number') {
+        const newSlide = event.data.slideIndex;
+        currentSlideRef.current = newSlide;
+        setCurrentSlide(newSlide);
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -102,7 +120,7 @@ export default function LessonModal({
               slug={slug}
               title={title}
               description={description}
-              currentSlide={initialSlide ?? 0}
+              currentSlide={currentSlide}
             />
             <button
               onClick={onClose}
