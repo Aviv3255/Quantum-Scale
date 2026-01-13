@@ -123,6 +123,7 @@ const navigationItems: NavItem[] = [
     isCategory: true,
     subItems: [
       { title: "Lessons", href: "/learn" },
+      { title: "Lessons V2", href: "/learn-v2" },
       { title: "The Quantum Podcast", href: "/podcast" },
       { title: "Learning Cards", href: "/learning-cards" }
     ]
