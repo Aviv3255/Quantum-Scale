@@ -25,9 +25,7 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import LessonModal from '@/components/LessonModal';
 import { getUserProfile, supabase } from '@/lib/supabase';
 import { BookmarkButton } from '@/components/BookmarkButton';
-
-// Lesson category types
-type LessonCategory = 'copywriting' | 'psychology' | 'branding' | 'meta-ads' | 'google-ads' | 'business';
+import { lessonMeta, LessonCategory, LessonMeta, getLessonCategoryCounts as getSharedLessonCategoryCounts } from '@/data/lessons';
 
 // Lesson categories for tabs
 const lessonCategories = [
@@ -39,49 +37,6 @@ const lessonCategories = [
   { id: 'google-ads', name: 'Google Ads', icon: Search },
   { id: 'business', name: 'Business', icon: Briefcase },
 ] as const;
-
-// Import lesson metadata (simplified version - same data structure as learn page)
-const lessonMeta: Record<string, { title: string; description: string; categories: LessonCategory[]; duration?: string }> = {
-  'familiar-surprise-secret': { title: 'The Familiar Surprise Secret', description: 'Master the MAYA principle - the key to creating products that feel both fresh and familiar.', categories: ['copywriting'], duration: '8 min' },
-  'red-button-effect': { title: 'The Red Button Effect', description: 'Understanding psychological reactance and how to use restriction to increase desire.', categories: ['copywriting', 'psychology'], duration: '6 min' },
-  'fred-method': { title: 'The F.R.E.D. Method', description: 'A powerful framework for understanding your audience psychology and what truly motivates them.', categories: ['copywriting'], duration: '10 min' },
-  'emotion-decides': { title: 'Emotion Decides, Logic Justifies', description: 'Discover how emotions drive every purchase decision and logic merely justifies it afterward.', categories: ['copywriting', 'psychology'], duration: '7 min' },
-  'gatekeeper-method': { title: 'The Gatekeeper Method', description: 'Learn to bypass the brain\'s attention filter and get your message through.', categories: ['copywriting'], duration: '9 min' },
-  'three-second-rule': { title: 'The 3-Second Rule', description: 'The critical window to capture attention before your prospect scrolls away forever.', categories: ['copywriting'], duration: '5 min' },
-  'science-of-selling': { title: 'The Science of Selling', description: 'A systematic approach to conversion that removes guesswork from your sales process.', categories: ['copywriting'], duration: '12 min' },
-  'persuasion-blueprint': { title: 'The Persuasion Blueprint', description: 'The master plan for creating influential copy that moves people to action.', categories: ['copywriting'], duration: '11 min' },
-  'persuasion-stack': { title: 'The Persuasion Stack', description: 'Layer persuasion techniques for maximum impact on your audience.', categories: ['copywriting'], duration: '8 min' },
-  'architecture-of-influence': { title: 'Architecture of Influence', description: 'Build a framework of persuasive communication that consistently converts.', categories: ['copywriting'], duration: '10 min' },
-  'autopilot-sale': { title: 'The Autopilot Sale', description: 'How mental shortcuts make customers buy without thinking - and how to trigger them.', categories: ['psychology'], duration: '7 min' },
-  'borrowed-trust': { title: 'Borrowed Trust', description: 'Authority and Liking principles that bypass skepticism and build instant credibility.', categories: ['psychology'], duration: '6 min' },
-  'herd-instinct': { title: 'The Herd Instinct', description: 'Social proof and similar others create irresistible buying pressure.', categories: ['psychology'], duration: '8 min' },
-  'gift-that-sells': { title: 'The Gift That Sells', description: 'Reciprocity loops that drive sales and create loyal customers.', categories: ['psychology'], duration: '5 min' },
-  'micro-yes-mastery': { title: 'Micro-Yes Mastery', description: 'Tiny commitments that lead to inevitable conversions.', categories: ['psychology'], duration: '9 min' },
-  'authority-over-hope': { title: 'Authority Over Hope', description: 'Stop hoping they buy. Guide them with certainty and confidence.', categories: ['psychology'], duration: '7 min' },
-  'certainty-transfer': { title: 'Certainty Transfer', description: 'Master the art of transferring your conviction to your prospects.', categories: ['psychology'], duration: '6 min' },
-  'fomo-engineering': { title: 'FOMO Engineering', description: 'Turn passive interest into urgent action with strategic scarcity.', categories: ['psychology'], duration: '8 min' },
-  'framing-effect-mastery': { title: 'The Framing Effect', description: 'Same facts, wildly different decisions. Control the frame, control the sale.', categories: ['psychology'], duration: '10 min' },
-  'identity-marketing': { title: 'Identity Marketing', description: 'Sell to who they WANT to be, not who they are today.', categories: ['psychology', 'branding'], duration: '9 min' },
-  'hero-mechanism': { title: 'The $4,225 Question', description: 'Why Oura Ring costs $399 vs $12 knockoff - and how to apply this to your brand.', categories: ['branding'], duration: '8 min' },
-  'us-vs-them': { title: 'The David vs Goliath Play', description: 'Create tribal identity through enemies and build a movement.', categories: ['branding'], duration: '7 min' },
-  'brand-universe': { title: 'Build a World, Not Just a Store', description: 'Create universes that customers want to belong to.', categories: ['branding'], duration: '11 min' },
-  'product-to-identity': { title: 'From Product to Identity Purchase', description: 'Transform commodities into identity purchases.', categories: ['branding'], duration: '9 min' },
-  'commodity-escape': { title: 'The Commodity Trap', description: 'How Starbucks charges $6 for $0.50 coffee - escape the commodity trap.', categories: ['branding'], duration: '10 min' },
-  'meta-andromeda': { title: 'Meta\'s Andromeda Brain', description: 'How to operate under Meta\'s new AI algorithm for maximum results.', categories: ['meta-ads'], duration: '12 min' },
-  'meta-three-second-hook': { title: 'The 3-Second Hook Rule', description: 'Meta judges your creative in the first 3 seconds - make them count.', categories: ['meta-ads'], duration: '6 min' },
-  'meta-70-20-10-rule': { title: 'The 70/20/10 Creative Rule', description: '70% proven, 20% iteration, 10% wild experiments for optimal results.', categories: ['meta-ads'], duration: '8 min' },
-  'meta-auction-formula': { title: 'The Meta Auction Formula', description: 'Total Value = Bid × EAR × Quality - master the algorithm.', categories: ['meta-ads'], duration: '10 min' },
-  'golden-lookalike': { title: 'Golden Lookalike Audience', description: 'LLA on top 5% spenders = $8-10 CAC consistently.', categories: ['meta-ads'], duration: '7 min' },
-  'google-highest-cpa-wins': { title: 'Why The Highest CPA Wins', description: 'The counterintuitive truth about Google Ads dominance.', categories: ['google-ads'], duration: '9 min' },
-  'google-product-feed-mastery': { title: 'Your Product Feed IS Your Ad', description: 'The hidden weapon for Shopping & PMax success.', categories: ['google-ads'], duration: '11 min' },
-  'google-pmax-blueprint': { title: 'The PMax Asset Group Blueprint', description: 'Stop forcing Google AI to guess - give it what it needs.', categories: ['google-ads'], duration: '10 min' },
-  'google-brand-moat': { title: 'Brand is the Ultimate Moat', description: 'The barrier competitors can\'t copy with a bigger budget.', categories: ['google-ads', 'branding'], duration: '8 min' },
-  'biz-infinite-money-engine': { title: 'The Infinite Money Engine', description: 'The single equation that transforms eCommerce into a video game with unlimited money.', categories: ['business'], duration: '15 min' },
-  'biz-leverage-equation': { title: 'The Leverage Equation', description: 'Stop working harder. Start working smarter with the equation that changes everything.', categories: ['business'], duration: '10 min' },
-  'biz-3x-threshold': { title: 'The 3x Threshold', description: 'The single equation that separates struggling stores from money-printing machines.', categories: ['business'], duration: '8 min' },
-  'biz-hamster-wheel': { title: 'The Hamster Wheel Trap', description: 'The Matrix-level prison keeping 99% of eCommerce stores broke—and how to escape.', categories: ['business'], duration: '12 min' },
-  'biz-rfm-secret': { title: 'The RFM Secret', description: 'How to identify your best customers and make more money from fewer people.', categories: ['business'], duration: '9 min' },
-};
 
 // Component to handle URL search params
 function LessonParamsHandler({
@@ -283,40 +238,43 @@ export default function LearnV2Page() {
   const heroBackgroundColor = darkHeroTheme === 'teal' ? '#0f2f2c' : '#000000';
 
   return (
-    <DashboardLayout>
+    <DashboardLayout hideHeader>
       <Suspense fallback={null}>
         <LessonParamsHandler onLessonOpen={handleLessonFromUrl} />
       </Suspense>
 
-      {/* Main Content with FAFAFA background */}
-      <div className="min-h-screen" style={{ background: '#FAFAFA', margin: '-40px -48px', padding: '0' }}>
+      {/* Main Content with FAFAFA background - full width from top */}
+      <div className="min-h-screen" style={{ background: '#FAFAFA', margin: '0 -48px', padding: '0' }}>
 
         {/* Hero Section */}
         <AnimatePresence mode="wait">
           {expandedLesson && expandedLessonInfo ? (
-            // Expanded Lesson Hero
+            // Expanded Lesson Hero - 75% viewport height
             <motion.div
               key="expanded-hero"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="relative w-full overflow-hidden"
-              style={{ height: '480px' }}
+              style={{ height: '75vh' }}
             >
-              {/* Background Image */}
+              {/* Background Image - 8% from top, 17% from bottom */}
               <div className="absolute inset-0">
                 <Image
                   src={customThumbnails[expandedLesson] || `/images/lessons/${expandedLesson}.png`}
                   alt={expandedLessonInfo.title}
                   fill
                   className="object-cover"
+                  style={{ objectPosition: 'center 35%' }}
+                  sizes="100vw"
+                  quality={90}
                   priority
                 />
-                {/* White gradient overlay at bottom */}
+                {/* White gradient overlay at bottom - fades bottom 17% */}
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: 'linear-gradient(to top, #FAFAFA 0%, rgba(250, 250, 250, 0.9) 20%, rgba(250, 250, 250, 0.4) 50%, transparent 100%)'
+                    background: 'linear-gradient(to top, #FAFAFA 0%, rgba(250, 250, 250, 0.95) 12%, rgba(250, 250, 250, 0.5) 17%, transparent 30%)'
                   }}
                 />
               </div>
@@ -420,8 +378,8 @@ export default function LearnV2Page() {
                 </button>
               </div>
 
-              {/* Character GIF - Right Side */}
-              <div className="absolute right-0 bottom-0 h-[80%] aspect-square">
+              {/* Character GIF - Right Side (bigger and more centered) */}
+              <div className="absolute right-[10%] bottom-0 h-[90%] aspect-square">
                 <video
                   src={heroGifUrl}
                   autoPlay
@@ -434,12 +392,13 @@ export default function LearnV2Page() {
 
               {/* Content - Left Side */}
               <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-center pl-12 pr-4 max-w-2xl">
-                {/* Heading with fancy font */}
+                {/* Heading with fancy font - bigger and white */}
                 <h1
-                  className="text-5xl font-bold text-white mb-4"
+                  className="text-6xl font-bold text-white mb-4"
                   style={{
                     fontFamily: "'Playfair Display', 'Georgia', serif",
-                    letterSpacing: '-0.02em'
+                    letterSpacing: '-0.02em',
+                    textShadow: '0 2px 4px rgba(0,0,0,0.3)'
                   }}
                 >
                   The Billionaire&apos;s Theater
@@ -506,10 +465,10 @@ export default function LearnV2Page() {
                     transition-all whitespace-nowrap font-medium
                     ${isActive
                       ? 'bg-black shadow-lg'
-                      : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                      : 'bg-white border border-gray-200 hover:bg-gray-50'
                     }
                   `}
-                  style={isActive ? { color: 'var(--accent-primary)' } : undefined}
+                  style={{ color: isActive ? '#88da1c' : '#6b7280' }}
                 >
                   <Icon size={18} strokeWidth={1.5} />
                   <span>{cat.name}</span>
@@ -543,8 +502,8 @@ export default function LearnV2Page() {
                       </h2>
                     )}
 
-                    {/* Lessons Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+                    {/* Lessons Grid - 4 per row max */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                       {lessons.map(([slug, meta]) => (
                         <LessonCard
                           key={slug}
@@ -657,13 +616,15 @@ function LessonCard({
         className="rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
         style={{ backgroundColor: '#FFFFFF' }}
       >
-        {/* Thumbnail */}
+        {/* Thumbnail - high quality */}
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
             src={thumbnailSrc}
             alt={title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            quality={85}
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.style.display = 'none';

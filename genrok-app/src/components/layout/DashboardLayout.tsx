@@ -144,7 +144,12 @@ const navigationItems: NavItem[] = [
   },
 ];
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+interface DashboardLayoutProps {
+  children: React.ReactNode;
+  hideHeader?: boolean;
+}
+
+export default function DashboardLayout({ children, hideHeader = false }: DashboardLayoutProps) {
   const pathname = usePathname();
   const { user } = useAuthStore();
   const { counts, initialize, isInitialized } = useBookmarksStore();
@@ -429,74 +434,76 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Main Area */}
       <div className={`main-area ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-        {/* Top Bar */}
-        <header className="topbar">
-          <div className="topbar-left">
-            {/* Mobile Menu Button */}
-            <button
-              className="btn-icon md:hidden"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-
-            {/* Search */}
-            <div className="search-input hidden md:block">
-              <Search className="search-input-icon" size={18} strokeWidth={1.5} />
-              <input
-                type="text"
-                placeholder="Search anything..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="input w-64"
-                style={{ paddingLeft: '44px', height: '40px' }}
-              />
-            </div>
-          </div>
-
-          <div className="topbar-right">
-            {/* Bookmarks */}
-            <div className="relative">
+        {/* Top Bar - conditionally rendered */}
+        {!hideHeader && (
+          <header className="topbar">
+            <div className="topbar-left">
+              {/* Mobile Menu Button */}
               <button
-                ref={bookmarkButtonRef}
-                onClick={() => setBookmarkModalOpen(!bookmarkModalOpen)}
-                className="topbar-notification-btn"
-                data-testid="topbar-bookmark-btn"
-                aria-label="Open bookmarks"
+                className="btn-icon md:hidden"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
               >
-                <Bookmark size={20} strokeWidth={1.5} />
-                {(counts.all || 0) > 0 && (
-                  <span className="notification-badge">{counts.all > 99 ? '99+' : counts.all}</span>
-                )}
+                {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
-              <BookmarkModal
-                isOpen={bookmarkModalOpen}
-                onClose={() => setBookmarkModalOpen(false)}
-                anchorRef={bookmarkButtonRef}
-              />
-            </div>
 
-            {/* Notifications */}
-            <button className="topbar-notification-btn">
-              <Bell size={20} strokeWidth={1.5} />
-              <span className="notification-badge">3</span>
-            </button>
-
-            {/* User Profile */}
-            <div className="topbar-user">
-              <div className="topbar-user-avatar">
-                {userInitials}
-              </div>
-              <div className="topbar-user-info">
-                <span className="topbar-user-name">{userName}</span>
-                <span className="topbar-user-email">{userEmail}</span>
+              {/* Search */}
+              <div className="search-input hidden md:block">
+                <Search className="search-input-icon" size={18} strokeWidth={1.5} />
+                <input
+                  type="text"
+                  placeholder="Search anything..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="input w-64"
+                  style={{ paddingLeft: '44px', height: '40px' }}
+                />
               </div>
             </div>
-          </div>
-        </header>
+
+            <div className="topbar-right">
+              {/* Bookmarks */}
+              <div className="relative">
+                <button
+                  ref={bookmarkButtonRef}
+                  onClick={() => setBookmarkModalOpen(!bookmarkModalOpen)}
+                  className="topbar-notification-btn"
+                  data-testid="topbar-bookmark-btn"
+                  aria-label="Open bookmarks"
+                >
+                  <Bookmark size={20} strokeWidth={1.5} />
+                  {(counts.all || 0) > 0 && (
+                    <span className="notification-badge">{counts.all > 99 ? '99+' : counts.all}</span>
+                  )}
+                </button>
+                <BookmarkModal
+                  isOpen={bookmarkModalOpen}
+                  onClose={() => setBookmarkModalOpen(false)}
+                  anchorRef={bookmarkButtonRef}
+                />
+              </div>
+
+              {/* Notifications */}
+              <button className="topbar-notification-btn">
+                <Bell size={20} strokeWidth={1.5} />
+                <span className="notification-badge">3</span>
+              </button>
+
+              {/* User Profile */}
+              <div className="topbar-user">
+                <div className="topbar-user-avatar">
+                  {userInitials}
+                </div>
+                <div className="topbar-user-info">
+                  <span className="topbar-user-name">{userName}</span>
+                  <span className="topbar-user-email">{userEmail}</span>
+                </div>
+              </div>
+            </div>
+          </header>
+        )}
 
         {/* Main Content */}
-        <main className="main-content">
+        <main className={`main-content ${hideHeader ? 'no-header' : ''}`}>
           {children}
         </main>
       </div>
