@@ -27,26 +27,26 @@ const timeBasedGifs = {
   // Morning (5:00am - 11:59am)
   morning: [
     'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Holding_coffee_mug_taking_a_sip_tired_but_dete_ea89f0bd-3cec-424c-b616-3ef902b2ce07_3.mp4', // Coffee
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-stretch.mp4', // Stretch
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-power-pose.mp4', // Power Pose
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runXIb_HMRUiT0_He_is_streching_his_arms_ha_2d6fbd3c-4b32-49eb-a5f7-c2b0f2d7bbbc_0.mp4', // Stretch
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Standing_in_superhero_power_pose_with_superman_bccd0d91-830b-4696-bed8-5bdead0eba36_2.mp4', // Power Pose
   ],
   // Afternoon (12:00pm - 4:59pm)
   afternoon: [
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-focus.mp4', // Focus
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-nod.mp4', // Nod
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-point.mp4', // Point
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_forward_slightly_focused_eyes_fingers__5c0d1465-878c-49ea-a8c9-2238975718b0_1.mp4', // Focus
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Nodding_head_a_few_times_subtle_smile_lets_do__6ed8d140-2dc3-4f10-823d-79bfbee8cedc_3.mp4', // Nod
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Pointing_forward_with_determination_focused_ey_6c200771-c0a0-4ccf-99de-53e21b0d89f0_2.mp4', // Point
   ],
   // Evening (5:00pm - 8:59pm)
   evening: [
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-lean-back.mp4', // Lean Back
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-glasses-adjust.mp4', // Glasses Adjust
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-slow-clap.mp4', // Slow Clap
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Leaning_back_in_chair_arms_behind_head_relaxed_850faa8d-67d9-4b68-8cae-277e0f191db1_1.mp4', // Lean Back
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Adjusting_glasses_thoughtfully_intellectual_ev_90f03bdd-89f1-4707-98c6-091573624247_2.mp4', // Glasses Adjust
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Slow_clapping_with_respect_impressed_expressio_0b19509f-cc4b-42f9-8f0b-c3815f48e892_1.mp4', // Slow Clap
   ],
   // Night (9:00pm - 4:59am)
   night: [
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-fist-pump.mp4', // Fist Pump
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-typing.mp4', // Typing
-    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/monkey-salute.mp4', // Salute
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Fist_pump_in_the_air_burning_eyes_midnight_war_e1620aa7-f682-4a1e-939d-72e21a68bdfc_3.mp4', // Fist Pump
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_Typing_rapidly_on_invisible_keyboard_completel_e28a1205-4e65-4eb7-908d-4eacbc5c3a49_1.mp4', // Typing
+    'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.run4YtlydUb6iQ_He_is_doing_Military_salute_f147476f-7106-4200-bc87-65549ff24b91_2.mp4', // Salute
   ],
 };
 
@@ -224,28 +224,19 @@ export default function DashboardPage() {
     });
   }, [lessonProgressStore]);
 
-  if (isLoading || !user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
-        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
-      </div>
-    );
-  }
-
-  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
-  const { greeting, subtext } = getTimeBasedGreeting(userName);
-
-  // Stats for the right sidebar - using real data from stores
+  // Stats for the sidebar - using real data from stores (must be before early return)
   const completedLessons = lessonProgressStore.getCompletedLessonsCount();
   const totalLessons = allLessons.length;
 
   // Completed courses from checklist data (synced with Courses page)
+  // MUST be called before early return to maintain consistent hook order
   const completedCourses = useMemo(() => {
     if (!user?.id) return 0;
     return getCompletedCoursesFromChecklists(user.id, courses.map(c => c.slug));
   }, [user?.id, courses, checklistProgressMap]);
 
   // Weekly progress data for chart - based on actual lesson progress
+  // MUST be called before early return to maintain consistent hook order
   const weeklyData = useMemo(() => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     const totalSlidesCompleted = lessonProgressStore.getTotalSlidesCompleted();
@@ -266,6 +257,18 @@ export default function DashboardPage() {
       return { day, value: Math.min(100, Math.round(basePerDay * variation)) };
     });
   }, [lessonProgressStore, completedLessons]);
+
+  // Early return for loading state - AFTER all hooks
+  if (isLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)]">
+        <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
+  const { greeting, subtext } = getTimeBasedGreeting(userName);
 
   return (
     <DashboardLayout>
