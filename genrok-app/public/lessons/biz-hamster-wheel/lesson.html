@@ -150,10 +150,10 @@
       { type: 'welcome', learningGoals: ['The infinite loop trapping most eCommerce stores', 'Why running faster just digs you deeper', 'The one metric that breaks the cycle'] },
       { type: 'hook', headline: 'You\'re running faster every month. Revenue is up. But your bank account isn\'t. Welcome to The Matrix.', subtext: 'Most store owners are trapped in a cycle they can\'t see. They think they\'re building a business. They\'re actually building a prison. The faster they run, the more trapped they become. And nobody told them the escape hatch exists.' },
       { type: 'content', title: 'The Hamster Wheel Revealed', body: 'Here\'s the cycle: Step 1: Spend money on ads to acquire customers. Step 2: Customer buys once at low margin. Step 3: Need more revenue, so spend more on ads. Step 4: Get more customers at same low margin. Step 5: Need more revenue... The wheel spins faster. You never get ahead.' },
-      { type: 'visual', title: 'The Trap Cycle', visualType: 'stats', data: [
-        { value: 'SPEND', label: 'More Ads', subtext: 'To get customers' },
-        { value: 'ACQUIRE', label: 'Low Margin', subtext: 'One-time buyers' },
-        { value: 'REPEAT', label: 'Need More', subtext: 'Back to Step 1' }
+      { type: 'hamster-cycle', title: 'The Trap Cycle', steps: [
+        { icon: 'DollarSign', label: 'SPEND', subtext: 'More ads to get customers' },
+        { icon: 'Users', label: 'ACQUIRE', subtext: 'Low-margin one-time buyers' },
+        { icon: 'RefreshCw', label: 'REPEAT', subtext: 'Need more revenue...' }
       ]},
       { type: 'content', title: 'The Math Doesn\'t Lie', body: 'If your CAC is $50 and your profit per customer is $60, you made $10. Congratulations. To make $10,000/month, you need 1,000 customers. To get 1,000 customers, you need to spend $50,000 on ads. You\'re trading dollars for slightly more dollars. That\'s not a business. That\'s a job with worse benefits.' },
       { type: 'example', scenario: 'Same Revenue, Different Reality', before: { label: 'Hamster Wheel', text: '$100K revenue. 2,000 customers. $50 CAC. $60 profit each. Net: $20K. Ad spend: $100K. Actual profit: -$80K.' }, after: { label: 'Money Machine', text: '$100K revenue. 200 customers. $100 CAC. $500 profit each. Net: $80K. Ad spend: $20K. Actual profit: $60K.' }, insight: 'Same revenue. 10x fewer customers. 10x more profit. The math changes everything.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'right'},
@@ -163,11 +163,11 @@
         { title: 'Can\'t Turn Off Ads', description: 'If you stop spending, revenue stops. No organic momentum, no retained customers.' }
       ]},
       { type: 'content', title: 'The One Metric That Matters', body: 'LTV > 3x CAC. That\'s the escape hatch. When your Lifetime Value exceeds 3x your Customer Acquisition Cost, you stop trading dollars. You start multiplying them. Every customer becomes an asset, not an expense. Every dollar spent on ads compounds instead of evaporates.' },
-      { type: 'visual', title: 'The Escape Equation', visualType: 'comparison', data: {
-        left: { label: 'On The Wheel', value: 'LTV < CAC', result: 'Losing money', color: '#ef4444' },
-        right: { label: 'Breaking Even', value: 'LTV = CAC', result: 'Working for free', color: '#f59e0b' },
-        center: { label: 'Escaped', value: 'LTV > 3x', result: 'Printing money', color: '#22c55e' }
-      }},
+      { type: 'escape-matrix', title: 'The Escape Equation', zones: [
+        { status: 'trapped', label: 'On The Wheel', ratio: 'LTV < CAC', result: 'Losing money every customer', color: '#ef4444' },
+        { status: 'breaking-even', label: 'Breaking Even', ratio: 'LTV = CAC', result: 'Working for free', color: '#f59e0b' },
+        { status: 'escaped', label: 'ESCAPED', ratio: 'LTV > 3x CAC', result: 'Printing money', color: '#22c55e', highlight: true }
+      ]},
       { type: 'implementation', title: 'How To Track Your Escape', intro: "You can\'t escape what you can\'t measure. Here\'s how to set up your tracking system:", steps: [
         { step: 1, title: 'Install a free LTV tracker', description: 'Apps like DataDrew connect to your Shopify store and calculate real customer lifetime value automatically - no spreadsheets needed.' },
         { step: 2, title: 'Check your current LTV:CAC ratio', description: 'The dashboard shows your actual ratio. Under 1x = losing money. Between 1-3x = surviving. Over 3x = you\'ve escaped.' },
@@ -186,7 +186,238 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      RefreshCw: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      AlertCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+      Unlock: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>,
     };
+
+    // HamsterWheelCycleSlide - UNIQUE spinning wheel visualization
+    // WHITE background with animated dark cycle visualization
+    const HamsterWheelCycleSlide = ({ data }) => {
+      const [rotation, setRotation] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setRotation(prev => prev + 1);
+        }, 50);
+        return () => clearInterval(interval);
+      }, []);
+
+      const iconMap = {
+        DollarSign: Icons.DollarSign,
+        Users: Icons.Users,
+        RefreshCw: Icons.RefreshCw
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 py-8 overflow-hidden bg-white">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-2xl md:text-3xl text-black text-center mb-8"
+          >
+            {data.title}
+          </motion.h2>
+
+          {/* Spinning Wheel Container */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="relative w-72 h-72 md:w-80 md:h-80"
+          >
+            {/* Outer ring - animated */}
+            <div
+              className="absolute inset-0 rounded-full border-4 border-dashed"
+              style={{
+                borderColor: 'var(--accent)',
+                transform: `rotate(${rotation}deg)`,
+                opacity: 0.3
+              }}
+            />
+
+            {/* Inner dark circle */}
+            <div
+              className="absolute inset-4 rounded-full flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)' }}
+            >
+              {/* Center text */}
+              <div className="text-center">
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                  className="text-4xl mb-2"
+                >
+                  ↻
+                </motion.div>
+                <span className="text-white/60 text-xs uppercase tracking-wider">Infinite Loop</span>
+              </div>
+            </div>
+
+            {/* Steps positioned around the wheel */}
+            {data.steps.map((step, i) => {
+              const angle = (i * 120 - 90) * (Math.PI / 180);
+              const radius = 140;
+              const x = Math.cos(angle) * radius;
+              const y = Math.sin(angle) * radius;
+              const Icon = iconMap[step.icon] || Icons.AlertCircle;
+
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 + i * 0.15 }}
+                  className="absolute rounded-xl p-3 text-center w-28"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
+                    background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+                    border: '1px solid rgba(220, 38, 38, 0.3)'
+                  }}
+                >
+                  <div className="w-8 h-8 rounded-lg mx-auto mb-2 flex items-center justify-center" style={{ background: 'rgba(220, 38, 38, 0.2)' }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-xs mb-1" style={{ color: 'var(--accent)' }}>{step.label}</div>
+                  <div className="text-neutral-400 text-[10px] leading-tight">{step.subtext}</div>
+                </motion.div>
+              );
+            })}
+
+            {/* Connecting arrows */}
+            {data.steps.map((_, i) => {
+              const startAngle = (i * 120 - 90 + 25) * (Math.PI / 180);
+              const endAngle = ((i + 1) * 120 - 90 - 25) * (Math.PI / 180);
+              const radius = 105;
+
+              return (
+                <motion.div
+                  key={`arrow-${i}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 + i * 0.1 }}
+                  className="absolute text-xl font-bold"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    transform: `translate(calc(-50% + ${Math.cos((startAngle + endAngle) / 2) * radius}px), calc(-50% + ${Math.sin((startAngle + endAngle) / 2) * radius}px)) rotate(${((i * 120) + 30)}deg)`,
+                    color: 'var(--accent)',
+                    opacity: 0.6
+                  }}
+                >
+                  →
+                </motion.div>
+              );
+            })}
+          </motion.div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="text-center text-neutral-500 text-sm mt-6 max-w-md"
+          >
+            The wheel never stops. The faster you run, the faster it spins.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // EscapeMatrixSlide - UNIQUE escape visualization
+    // WHITE background with progression from trapped → escaped
+    const EscapeMatrixSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 py-8 overflow-hidden bg-white">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="slide-title text-2xl md:text-3xl text-black text-center mb-8"
+        >
+          {data.title}
+        </motion.h2>
+
+        {/* Escape progression */}
+        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 w-full max-w-4xl">
+          {data.zones.map((zone, i) => (
+            <React.Fragment key={i}>
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.15 }}
+                className={`rounded-2xl p-5 md:p-6 flex-1 relative overflow-hidden ${zone.highlight ? 'ring-2 ring-offset-2' : ''}`}
+                style={{
+                  background: zone.highlight ? 'linear-gradient(135deg, #064E3B 0%, #065F46 100%)' : 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+                  border: `1px solid ${zone.color}40`,
+                  ringColor: zone.color,
+                  transform: zone.highlight ? 'scale(1.05)' : 'scale(1)'
+                }}
+              >
+                {/* Top accent line */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-1"
+                  style={{ background: `linear-gradient(90deg, transparent, ${zone.color}, transparent)` }}
+                />
+
+                {/* Status icon */}
+                <div
+                  className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center"
+                  style={{ background: `${zone.color}20` }}
+                >
+                  {zone.status === 'trapped' && <span className="text-2xl" style={{ color: zone.color }}>🐹</span>}
+                  {zone.status === 'breaking-even' && <span className="text-2xl" style={{ color: zone.color }}>😐</span>}
+                  {zone.status === 'escaped' && <Icons.Unlock style={{ color: zone.color }} />}
+                </div>
+
+                <div className="text-center">
+                  <div className="text-xs uppercase tracking-wider mb-2" style={{ color: zone.color }}>{zone.label}</div>
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-2">{zone.ratio}</div>
+                  <div className="text-neutral-400 text-xs">{zone.result}</div>
+                </div>
+
+                {zone.highlight && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6 }}
+                    className="mt-4 text-center"
+                  >
+                    <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase" style={{ background: zone.color, color: 'white' }}>
+                      The Goal
+                    </span>
+                  </motion.div>
+                )}
+              </motion.div>
+
+              {i < data.zones.length - 1 && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  className="text-2xl md:text-3xl text-neutral-300 hidden md:block"
+                >
+                  →
+                </motion.div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          className="mt-8 text-center"
+        >
+          <p className="text-neutral-500 text-sm">
+            Your goal: Get to <span className="font-bold text-green-500">LTV {'>'} 3x CAC</span>
+          </p>
+        </motion.div>
+      </div>
+    );
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -489,6 +720,8 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
+          case 'hamster-cycle': return <HamsterWheelCycleSlide data={slide} />;
+          case 'escape-matrix': return <EscapeMatrixSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'implementation': return <ImplementationSlide data={slide} />;

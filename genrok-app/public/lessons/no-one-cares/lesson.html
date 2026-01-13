@@ -12,12 +12,12 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #64748b; --accent-dark: #475569; --accent-light: #94a3b8; --accent-rgb: 100, 116, 139; }
+    :root { --accent: #dc2626; --accent-dark: #b91c1c; --accent-light: #ef4444; --accent-rgb: 220, 38, 38; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -41,71 +41,28 @@
       id: 'no-one-cares',
       title: 'No One Cares About You',
       description: 'Why self-interest bias means every word must answer: How does this improve MY life?',
-      accentColor: '#64748b',
-      duration: '6 min',
+      accentColor: '#dc2626',
+      duration: '7 min',
       nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more copywriting psychology.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
             <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
@@ -120,124 +77,55 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why customers only care about one thing: themselves', 'How to pass the Self-Interest Filter every time', 'The Authority Transfer that makes customers the hero'] },
-      { type: 'hook', headline: 'Hard truth: No one cares about your brand story, your mission, or your values.', subtext: 'Customers have one filter for every word on your site: "How does this improve MY life?" If your copy talks about YOU, they disconnect. If your copy talks about THEM and their world, they lean in. The Self-Interest Bias is the most powerful psychological force in copywriting. Ignore it and you\'re invisible. Use it and you win.' },
-      { type: 'quote-spotlight', quote: '"No One Cares About You"', attribution: 'Copywriting Psychology' },
-      { type: 'content', title: 'The Self-Interest Filter', body: 'Every human walks around with an invisible filter. Everything they see, hear, or read passes through this filter: "How does this affect ME? How does this improve MY life? What\'s in it for ME?" If the answer isn\'t obvious, they tune out. Instantly. Your brand story? Filtered out. Your 20 years of experience? Filtered out. Your values and mission? Filtered out. Unless you connect them to their world, their problems, their desires - they don\'t exist.' },
-      { type: 'mindset-shift', title: 'The Copywriting Mindset Shift', before: ['Talk about your brand story', 'Highlight your experience', 'Show off your features', 'Prove how innovative you are'], after: ['Show how their life improves', 'Connect experience to their outcomes', 'Paint the picture of benefits', 'Demonstrate clear value for them'] },
-      { type: 'example', scenario: 'Brand-Focused vs Customer-Focused Copy', before: { label: 'Brand-Focused (Ignored)', text: '"We have 20 years of experience crafting premium footwear. Our team is passionate about quality." - Customer thinks: "Cool story. How does this help ME?"' }, after: { label: 'Customer-Focused (Powerful)', text: '"For 20 years we refined one purpose: giving YOU shoes that feel weightless. Your feet don\'t hurt. Your day doesn\'t slow down." - Customer thinks: "Wait, shoes that don\'t hurt? Tell me more."' }, insight: 'Same 20 years. Different focus. One talks about the brand. One talks about the customer. Guess which one converts?' },
-      { type: 'content', title: 'Authority Transfer: The Secret', body: 'Here\'s the copywriting secret most brands miss: Don\'t make YOUR brand the authority. Make the CUSTOMER the hero. Transfer authority to them. Instead of "We\'re experts in X" say "You deserve X." Instead of "Our mission is Y" say "Your life becomes Y." The moment you position them as the main character of the story, they care. Because now it\'s about THEM, not you.' },
-      { type: 'cards', title: 'Passing the Self-Interest Filter', items: [
-        { title: 'Make Them The Hero', description: 'Your brand is the guide. They\'re the hero. Every sentence reinforces their journey, not yours.' },
-        { title: 'Answer The Question', description: 'Every line must answer: "How does this improve MY life?" If it doesn\'t, cut it.' },
-        { title: 'Reflect Their World', description: 'Use their language, their problems, their dreams. Not yours. When copy mirrors their reality, they engage.' },
-        { title: 'Transfer Authority', description: 'Stop saying how great YOU are. Start saying how great THEY can become with your product.' },
-        { title: 'Focus On Outcomes', description: 'Don\'t list features. Paint the picture of their life improved. That\'s what they care about.' },
-        { title: 'Kill Ego Copy', description: 'Delete any line that brags about your brand without connecting to their benefit. Be ruthless.' }
-      ]},
-      { type: 'copy-comparison-table', title: 'Good Copy vs Bad Copy', subtitle: '10 Real Examples', examples: [
-        { bad: 'We use premium materials', good: 'Feels soft on your skin all day' },
-        { bad: 'Our team has 15 years experience', good: 'Get results from day one' },
-        { bad: 'Innovative AI technology', good: 'Saves you 4 hours every week' },
-        { bad: 'Industry-leading quality', good: 'Lasts 3x longer than competitors' },
-        { bad: 'Our mission is sustainability', good: 'Guilt-free shopping for your family' },
-        { bad: 'Award-winning design', good: 'Looks amazing on your shelf' },
-        { bad: 'Patented formula', good: 'Visible results in 7 days' },
-        { bad: 'We ship worldwide', good: 'Arrives at your door in 3 days' },
-        { bad: 'Over 1M customers served', good: 'Join families who sleep better' },
-        { bad: 'Premium craftsmanship', good: 'Never worry about breaking again' }
-      ]},
-      { type: 'copy-templates', title: 'Fill-in-the-Blank Templates', templates: [
-        { category: 'Time Saving', formula: 'Save [X hours] every [week/month] on [task]', example: 'Save 4 hours every week on meal planning' },
-        { category: 'Pain Relief', formula: 'Finally stop [pain point] and start [desired state]', example: 'Finally stop struggling with back pain and start enjoying mornings' },
-        { category: 'Results', formula: 'Get [specific result] in [timeframe] without [common obstacle]', example: 'Get clearer skin in 14 days without harsh chemicals' },
-        { category: 'Transformation', formula: 'Go from [current state] to [desired state] in [timeframe]', example: 'Go from exhausted to energized in just 7 days' },
-        { category: 'Authority Transfer', formula: 'You deserve [benefit]. We make it [easy/possible/simple]', example: 'You deserve better sleep. We make it effortless.' },
-        { category: 'Fear Removal', formula: 'Never worry about [common fear] again', example: 'Never worry about running out of hot water again' },
-        { category: 'Identity', formula: 'For [identity] who want [desire] without [sacrifice]', example: 'For busy parents who want healthy meals without the stress' },
-        { category: 'Comparison', formula: '[X]x better than [alternative] at [benefit]', example: '3x more absorbent than regular towels at half the price' },
-        { category: 'Social Proof', formula: 'Join [number] [identities] who already [achieved outcome]', example: 'Join 50,000 moms who already simplified their mornings' },
-        { category: 'Urgency', formula: 'Start [benefit] today, not [time period] from now', example: 'Start sleeping better tonight, not months from now' }
-      ]},
-      { type: 'content', title: 'The Fatal Copywriting Mistake', body: 'Most brands write like they\'re talking to investors, not customers. "We\'re revolutionizing the industry!" "We\'re the leading provider!" "Our innovative approach!" Every word screams: THIS IS ABOUT US. And customers? They scroll past. Because none of that answers the only question they care about: "What\'s in it for me?" Fix this one thing - make every line about THEM - and your conversion rate transforms overnight.' },
-      { type: 'example', scenario: 'The Authority Transfer In Action', before: { label: 'Your Authority (Weak)', text: '"We\'re the #1 rated fitness app with 5 million users and cutting-edge AI technology." - Customer thinks: "Great for you. I don\'t care."' }, after: { label: 'Their Authority (Strong)', text: '"You get results in 20 minutes. You skip the overwhelm. You finally stick to fitness because it fits YOUR life." - Customer thinks: "This is built for me. I\'m in."' }, insight: 'Stop proving how great YOU are. Start showing how great THEY become. That\'s the copy that converts.' },
-      { type: 'visual', title: 'The Self-Interest Test', visualType: 'stats', data: [
-        { value: '100%', label: 'of customers', subtext: 'Only care about themselves (not you)' },
-        { value: '3 sec', label: 'to answer', subtext: '"What\'s in it for me?" or they leave' },
-        { value: '2x', label: 'potential lift', subtext: 'When copy focuses on customer outcomes' }
-      ]},
-      { type: 'checklist-interactive', title: 'The Brutal Copy Audit', subtitle: 'Click each item as you audit your copy', items: [
-        { title: 'Read every sentence', description: 'Go through your homepage or landing page line by line.' },
-        { title: 'Ask: "Us or them?"', description: 'Is this line about your brand or about customer benefit?' },
-        { title: 'Delete ego copy', description: 'Remove lines that brag without connecting to their outcome.' },
-        { title: 'Reframe to customer', description: 'Transform remaining lines to focus on their transformation.' },
-        { title: 'Test the filter', description: 'Does it answer: "How does this improve MY life?"' }
-      ]},
-      { type: 'content', title: 'Why This Works So Powerfully', body: 'Self-Interest Bias isn\'t manipulation. It\'s human nature. We\'re wired to prioritize ourselves. When your copy reflects their world, speaks their language, and focuses on their outcomes - you\'re not being selfish. You\'re being relevant. Relevance builds attention. Attention builds trust. Trust converts. The brands that win? They make customers feel seen, understood, and prioritized. Not because they\'re generous. Because they understand psychology.' },
-      { type: 'quiz', question: 'What should every line of copy answer to pass the Self-Interest Filter?', options: ['"How great is this brand?"', '"How does this improve MY life?"', '"How innovative is this product?"', '"How many people use this?"'], correctIndex: 1, feedback: { correct: 'Exactly right! Every line must answer: "How does this improve MY life?" Customers filter everything through self-interest. If your copy talks about your brand, they tune out. If it talks about their life improved, they lean in. That\'s the difference between ignored and converting.', incorrect: 'Not quite. The answer is: "How does this improve MY life?" Self-Interest Bias means customers only care about themselves. Your brand story? Your innovation? Your user count? None of it matters unless it connects to their world, their problems, their outcomes. Make them the hero. Then they care.' }},
-      { type: 'completion', sources: [] }
+      { type: 'hook', headline: 'Hard truth: No one cares about your brand story, your mission, or your values.', subtext: 'Customers have one filter for every word on your site: "How does this improve MY life?" If your copy talks about YOU, they disconnect. If it talks about THEM, they lean in.' },
+      { type: 'self-interest-brain', title: 'The Self-Interest Brain' },
+      { type: 'filter-visual', title: 'The Self-Interest Filter' },
+      { type: 'mindset-battle', title: 'The Copywriting Mindset Shift' },
+      { type: 'copy-transformation', title: 'Watch Copy Transform', scenario: 'Brand-Focused vs Customer-Focused' },
+      { type: 'hero-guide', title: 'Authority Transfer: The Secret' },
+      { type: 'six-rules', title: 'The 6 Rules For Passing The Filter' },
+      { type: 'copy-comparison', title: 'Good Copy vs Bad Copy', subtitle: '10 Real Examples' },
+      { type: 'template-builder', title: 'Fill-in-the-Blank Templates' },
+      { type: 'fatal-mistake', title: 'The Fatal Copywriting Mistake' },
+      { type: 'conversion-impact', title: 'The Conversion Impact' },
+      { type: 'copy-audit', title: 'The Brutal Copy Audit' },
+      { type: 'elite-insight', title: 'The Self-Interest Paradox' },
+      { type: 'quiz', question: 'What should every line of copy answer to pass the Self-Interest Filter?', options: ['"How great is this brand?"', '"How does this improve MY life?"', '"How innovative is this product?"', '"How many people use this?"'], correctIndex: 1, feedback: { correct: 'Exactly right! Every line must answer: "How does this improve MY life?" Customers filter everything through self-interest.', incorrect: 'Not quite. The answer is: "How does this improve MY life?" Self-Interest Bias means customers only care about themselves.' }},
+      { type: 'completion' }
     ];
 
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
+    // ============ ELITE COMPONENTS ============
+
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
       const [count, setCount] = useState(0);
       useEffect(() => {
         let start = 0;
-        const increment = target / (duration / 16);
+        const end = parseFloat(target);
+        const increment = end / (duration / 16);
         const timer = setInterval(() => {
           start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
         }, 16);
         return () => clearInterval(timer);
       }, [target, duration]);
-      return <span>{count}{suffix}</span>;
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
     };
-
-    const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
-      <div style={{ marginBottom: '16px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span style={{ fontSize: '14px', fontWeight: '500' }}>{label}</span>
-          <span style={{ fontSize: '14px', fontWeight: '600' }}>{percentage}%</span>
-        </div>
-        <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '6px', overflow: 'hidden' }}>
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${percentage}%` }}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
-            style={{ height: '100%', backgroundColor: color, borderRadius: '6px' }}
-          />
-        </div>
-      </div>
-    );
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -245,11 +133,23 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M8.5 18a4 4 0 1 1-3-6.5"/><path d="M15.5 18a4 4 0 1 0 3-6.5"/></svg>,
+      User: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Crown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Filter: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      MessageCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      FileText: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
     };
 
+    // ============ WELCOME SLIDE ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -278,6 +178,7 @@
       );
     };
 
+    // ============ HOOK SLIDE ============
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -287,227 +188,717 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
+    // ============ SELF-INTEREST BRAIN SLIDE ============
+    const SelfInterestBrainSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 500),
+          setTimeout(() => setPhase(2), 1200),
+          setTimeout(() => setPhase(3), 1900)
+        ];
+        return () => timers.forEach(t => clearTimeout(t));
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          {/* Brain visualization with ME at center */}
+          <div className="relative flex justify-center items-center mb-8">
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: phase >= 1 ? 1 : 0, opacity: phase >= 1 ? 1 : 0 }}
+              transition={{ type: 'spring', damping: 15 }}
+              className="relative w-64 h-64 md:w-80 md:h-80 rounded-full flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(220, 38, 38, 0.3)' }}>
+
+              {/* Pulsing rings */}
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{ border: '2px solid rgba(220, 38, 38, 0.3)' }}
+                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{ border: '2px solid rgba(220, 38, 38, 0.2)' }}
+                animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
+                transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
+              />
+
+              {/* Brain icon */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: phase >= 2 ? 1 : 0 }}
+                transition={{ delay: 0.3, type: 'spring' }}
+                className="absolute top-6 left-1/2 -translate-x-1/2 text-neutral-500">
+                <Icons.Brain />
+              </motion.div>
+
+              {/* ME at center */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: phase >= 2 ? 1 : 0 }}
+                transition={{ type: 'spring', damping: 10 }}
+                className="text-6xl md:text-7xl font-black"
+                style={{ color: 'var(--accent)' }}>
+                ME
+              </motion.div>
+
+              {/* 100% focus indicator */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: phase >= 3 ? 1 : 0, y: phase >= 3 ? 0 : 10 }}
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-lg">
+                <span className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>
+                  <AnimatedCounter target={100} suffix="%" />
+                </span>
+                <span className="text-sm text-neutral-600 ml-2">Focus</span>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Key insight */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+            animate={{ opacity: phase >= 3 ? 1 : 0, y: phase >= 3 ? 0 : 20 }}
+            className="text-center max-w-lg mx-auto">
+            <p className="text-neutral-700 text-lg leading-relaxed">
+              Every customer's brain runs on one operating system: <span className="font-bold" style={{ color: 'var(--accent)' }}>"How does this affect ME?"</span>
+            </p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      );
+    };
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+    // ============ FILTER VISUAL SLIDE ============
+    const FilterVisualSlide = ({ data }) => {
+      const [showingWord, setShowingWord] = useState(0);
+
+      const words = [
+        { text: 'Our Mission', passes: false },
+        { text: 'Your Results', passes: true },
+        { text: 'We Believe', passes: false },
+        { text: 'You Deserve', passes: true },
+        { text: 'Our Values', passes: false },
+        { text: 'Your Success', passes: true },
+      ];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setShowingWord(prev => (prev + 1) % words.length);
+        }, 1500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="relative flex flex-col items-center gap-6">
+            {/* Incoming words */}
+            <div className="h-16 flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={showingWord}
+                  initial={{ opacity: 0, y: -30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 30 }}
+                  className="px-6 py-3 rounded-xl text-xl font-bold"
+                  style={{
+                    background: words[showingWord].passes ? 'linear-gradient(135deg, #10B981, #059669)' : 'linear-gradient(135deg, #EF4444, #DC2626)',
+                    color: 'white'
+                  }}>
+                  "{words[showingWord].text}"
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Filter visualization */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.3 }}
+              className="relative w-full max-w-md">
+              <div className="relative rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(220, 38, 38, 0.2)' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <Icons.Filter className="mx-auto mb-3 text-neutral-400" />
+                <div className="text-white font-bold text-xl mb-2">Self-Interest Filter</div>
+                <div className="text-neutral-400 text-sm">"How does this improve MY life?"</div>
+              </div>
+            </motion.div>
+
+            {/* Result */}
+            <div className="h-16 flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={showingWord}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ delay: 0.5 }}
+                  className="flex items-center gap-3">
+                  {words[showingWord].passes ? (
+                    <>
+                      <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+                      <span className="text-green-600 font-bold text-lg">PASSES</span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+                      <span className="text-red-600 font-bold text-lg">BLOCKED</span>
+                    </>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center text-neutral-600 mt-6 text-sm">
+            Words about YOUR brand get filtered out. Words about THEIR life pass through.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ============ MINDSET BATTLE SLIDE ============
+    const MindsetBattleSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      const oldThinking = ['Talk about your brand story', 'Highlight your experience', 'Show off your features', 'Prove how innovative you are'];
+      const newThinking = ['Show how their life improves', 'Connect experience to their outcomes', 'Paint the picture of benefits', 'Demonstrate clear value for them'];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6 relative">
+            {/* Old Thinking */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
+              <div className="absolute -top-3 left-4 px-3 py-1 rounded-full text-xs font-bold text-white bg-red-500">OLD THINKING</div>
+              <div className="rounded-xl p-6 pt-8 border-2 border-red-200 bg-red-50">
+                <ul className="space-y-3">
+                  {oldThinking.map((item, i) => (
+                    <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-2 text-neutral-600">
+                      <span className="text-red-500 flex-shrink-0 mt-0.5"><Icons.X /></span>
+                      <span className="text-sm">{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+              {showWinner && (
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -bottom-3 right-4 px-3 py-1 rounded-full text-xs font-bold text-white bg-red-500">
+                  LOSES
+                </motion.div>
+              )}
+            </motion.div>
+
+            {/* New Thinking */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="relative">
+              <div className="absolute -top-3 right-4 px-3 py-1 rounded-full text-xs font-bold text-white bg-green-500">NEW THINKING</div>
+              <div className="rounded-xl p-6 pt-8" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showWinner ? '0 0 40px rgba(34, 197, 94, 0.3)' : 'none' }}>
+                <ul className="space-y-3">
+                  {newThinking.map((item, i) => (
+                    <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-start gap-2 text-neutral-300">
+                      <span className="text-green-500 flex-shrink-0 mt-0.5"><Icons.Check /></span>
+                      <span className="text-sm font-medium">{item}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </div>
+              {showWinner && (
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }} className="absolute -bottom-3 left-4 px-4 py-1.5 rounded-full text-sm font-bold text-white bg-green-500 flex items-center gap-1">
+                  <Icons.Crown /> WINS
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // ============ COPY TRANSFORMATION SLIDE ============
+    const CopyTransformationSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 800),
+          setTimeout(() => setPhase(2), 2000)
+        ];
+        return () => timers.forEach(t => clearTimeout(t));
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-3">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-500 text-sm mb-8">{data.scenario}</motion.p>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Brand-Focused */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="relative">
+              <div className="absolute -top-3 left-4 flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white bg-red-500">
+                <Icons.X className="w-3 h-3" /> Brand-Focused
+              </div>
+              <div className="rounded-xl p-6 pt-8 bg-red-50 border-2 border-red-200">
+                <p className="text-neutral-700 text-sm leading-relaxed italic mb-4">
+                  "We have 20 years of experience crafting premium footwear. Our team is passionate about quality."
+                </p>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: phase >= 1 ? 1 : 0 }}
+                  className="bg-red-100 rounded-lg p-3">
+                  <p className="text-red-700 text-xs font-medium flex items-center gap-2">
+                    <Icons.MessageCircle className="w-4 h-4" />
+                    Customer thinks: "Cool story. How does this help ME?"
+                  </p>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Customer-Focused */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="relative">
+              <div className="absolute -top-3 right-4 flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold text-white bg-green-500">
+                <Icons.Check className="w-3 h-3" /> Customer-Focused
+              </div>
+              <div className="rounded-xl p-6 pt-8" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: phase >= 2 ? '0 0 40px rgba(34, 197, 94, 0.3)' : 'none' }}>
+                <p className="text-neutral-200 text-sm leading-relaxed italic mb-4">
+                  "For 20 years we refined one purpose: giving YOU shoes that feel weightless. Your feet don't hurt. Your day doesn't slow down."
+                </p>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: phase >= 2 ? 1 : 0 }}
+                  className="bg-green-900/30 rounded-lg p-3 border border-green-500/30">
+                  <p className="text-green-400 text-xs font-medium flex items-center gap-2">
+                    <Icons.MessageCircle className="w-4 h-4" />
+                    Customer thinks: "Wait, shoes that don't hurt? Tell me more."
+                  </p>
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: phase >= 2 ? 1 : 0, y: phase >= 2 ? 0 : 20 }}
+            className="mt-6 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-900 text-white text-sm">
+              <Icons.Zap className="w-4 h-4 text-yellow-400" />
+              Same 20 years. Different focus. One talks about you. One talks about THEM.
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ HERO GUIDE SLIDE ============
+    const HeroGuideSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 500),
+          setTimeout(() => setPhase(2), 1200),
+          setTimeout(() => setPhase(3), 1900)
+        ];
+        return () => timers.forEach(t => clearTimeout(t));
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+            {/* The Customer - Hero */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: phase >= 1 ? 1 : 0, scale: phase >= 1 ? 1 : 0.5 }}
+              className="relative">
+              <div className="w-40 h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(220, 38, 38, 0.3)' }}>
+                <div className="text-center">
+                  <Icons.Crown className="mx-auto mb-2 text-yellow-500" style={{ width: 40, height: 40 }} />
+                  <div className="text-white font-bold text-lg">THE CUSTOMER</div>
+                  <div className="text-neutral-400 text-sm">Hero</div>
+                </div>
+              </div>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: phase >= 2 ? 1 : 0 }}
+                className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>
+                MAIN CHARACTER
+              </motion.div>
+            </motion.div>
+
+            {/* Arrow */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: phase >= 2 ? 1 : 0, scale: phase >= 2 ? 1 : 0 }}
+              className="text-neutral-400">
+              <svg width="60" height="24" viewBox="0 0 60 24" className="md:rotate-0 rotate-90">
+                <path d="M0 12h50M40 4l10 8-10 8" fill="none" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            </motion.div>
+
+            {/* Your Brand - Guide */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: phase >= 3 ? 1 : 0, scale: phase >= 3 ? 1 : 0.5 }}
+              className="relative">
+              <div className="w-32 h-32 md:w-36 md:h-36 rounded-full flex items-center justify-center border-2 border-neutral-300 bg-neutral-100">
+                <div className="text-center">
+                  <Icons.Shield className="mx-auto mb-2 text-neutral-500" style={{ width: 32, height: 32 }} />
+                  <div className="text-neutral-700 font-bold text-sm">YOUR BRAND</div>
+                  <div className="text-neutral-500 text-xs">Guide</div>
+                </div>
+              </div>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: phase >= 3 ? 1 : 0 }}
+                className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold text-neutral-600 bg-neutral-200">
+                SUPPORTING ROLE
+              </motion.div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: phase >= 3 ? 1 : 0, y: phase >= 3 ? 0 : 20 }}
+            className="mt-8 rounded-xl p-4 max-w-lg mx-auto" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-neutral-300 text-sm text-center leading-relaxed">
+              Stop saying how great <span className="text-red-400">YOU</span> are. Start showing how great <span className="text-green-400">THEY</span> can become.
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ SIX RULES SLIDE ============
+    const SixRulesSlide = ({ data }) => {
+      const [activeRule, setActiveRule] = useState(0);
+
+      const rules = [
+        { icon: Icons.Crown, title: 'Make Them The Hero', description: 'Your brand is the guide. They are the hero. Every sentence reinforces their journey.' },
+        { icon: Icons.Target, title: 'Answer The Question', description: 'Every line must answer: "How does this improve MY life?" If it does not, cut it.' },
+        { icon: Icons.User, title: 'Reflect Their World', description: 'Use their language, their problems, their dreams. Not yours.' },
+        { icon: Icons.Zap, title: 'Transfer Authority', description: 'Stop saying how great YOU are. Start saying how great THEY can become.' },
+        { icon: Icons.Star, title: 'Focus On Outcomes', description: 'Do not list features. Paint the picture of their life improved.' },
+        { icon: Icons.AlertTriangle, title: 'Kill Ego Copy', description: 'Delete any line that brags without connecting to their benefit.' }
+      ];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveRule(prev => (prev + 1) % rules.length);
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-3">
+            {rules.map((rule, i) => {
+              const IconComponent = rule.icon;
+              const isActive = activeRule === i;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.08 }}
+                  onClick={() => setActiveRule(i)}
+                  className="relative cursor-pointer rounded-xl p-4 transition-all duration-300"
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                    border: isActive ? '1px solid rgba(220, 38, 38, 0.3)' : '2px solid #e5e7eb',
+                    boxShadow: isActive ? '0 0 30px rgba(220, 38, 38, 0.2)' : 'none'
+                  }}>
+                  {isActive && <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: isActive ? 'rgba(220, 38, 38, 0.2)' : '#f3f4f6' }}>
+                      <span className={isActive ? 'text-red-400' : 'text-neutral-500'} style={{ width: 16, height: 16 }}><IconComponent /></span>
+                    </div>
+                    <div>
+                      <div className={`flex items-center gap-2 font-bold text-sm mb-1 ${isActive ? 'text-white' : 'text-neutral-900'}`}>
+                        <span className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold" style={{ background: isActive ? 'var(--accent)' : '#d4d4d4', color: 'white' }}>{i + 1}</span>
+                        {rule.title}
+                      </div>
+                      <p className={`text-xs leading-relaxed ${isActive ? 'text-neutral-300' : 'text-neutral-600'}`}>{rule.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ COPY COMPARISON SLIDE ============
+    const CopyComparisonSlide = ({ data }) => {
+      const examples = [
+        { bad: 'We use premium materials', good: 'Feels soft on your skin all day' },
+        { bad: 'Our team has 15 years experience', good: 'Get results from day one' },
+        { bad: 'Innovative AI technology', good: 'Saves you 4 hours every week' },
+        { bad: 'Industry-leading quality', good: 'Lasts 3x longer than competitors' },
+        { bad: 'Our mission is sustainability', good: 'Guilt-free shopping for your family' },
+        { bad: 'Award-winning design', good: 'Looks amazing on your shelf' },
+        { bad: 'Patented formula', good: 'Visible results in 7 days' },
+        { bad: 'We ship worldwide', good: 'Arrives at your door in 3 days' },
+        { bad: 'Over 1M customers served', good: 'Join families who sleep better' },
+        { bad: 'Premium craftsmanship', good: 'Never worry about breaking again' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-500 text-sm mb-4">{data.subtitle}</motion.p>
+
+          <div className="rounded-xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="grid grid-cols-2 border-b border-neutral-700">
+              <div className="p-3 text-center bg-red-500/20">
+                <span className="text-red-400 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1">
+                  <Icons.X className="w-3 h-3" /> Bad Copy
+                </span>
+              </div>
+              <div className="p-3 text-center bg-green-500/20 border-l border-neutral-700">
+                <span className="text-green-400 font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1">
+                  <Icons.Check className="w-3 h-3" /> Good Copy
+                </span>
+              </div>
+            </div>
+            <div className="divide-y divide-neutral-800 max-h-[280px] overflow-y-auto">
+              {examples.map((example, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.03 }} className="grid grid-cols-2 hover:bg-white/5 transition-colors">
+                  <div className="p-3 text-neutral-400 text-xs">"{example.bad}"</div>
+                  <div className="p-3 text-neutral-200 text-xs font-medium border-l border-neutral-800">"{example.good}"</div>
                 </motion.div>
               ))}
             </div>
           </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const QuoteSpotlightSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="relative">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="absolute -top-8 -left-4 text-9xl font-bold opacity-10" style={{ color: 'var(--accent)' }}>"</motion.div>
-          <h2 className="slide-title text-4xl md:text-5xl lg:text-6xl text-black text-center mb-6 relative z-10">{data.quote}</h2>
-          {data.attribution && <p className="text-center text-neutral-500 text-sm md:text-base italic">— {data.attribution}</p>}
-        </motion.div>
-      </div>
-    );
-
-    const MindsetShiftSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
-            <div className="absolute -top-3 -left-3 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">OLD THINKING</div>
-            <div className="bg-neutral-100 border-2 border-neutral-300 rounded-xl p-6 pt-8">
-              <ul className="space-y-3">
-                {data.before.map((item, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-2 text-neutral-600">
-                    <Icons.X className="flex-shrink-0 mt-1 text-red-500" />
-                    <span className="text-sm leading-relaxed">{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="relative">
-            <div className="absolute -top-3 -right-3 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">NEW THINKING</div>
-            <div className="border-2 rounded-xl p-6 pt-8" style={{ background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.05), rgba(var(--accent-rgb), 0.1))`, borderColor: 'var(--accent)' }}>
-              <ul className="space-y-3">
-                {data.after.map((item, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }} className="flex items-start gap-2 text-neutral-800">
-                    <Icons.Check className="flex-shrink-0 mt-1 text-green-500" />
-                    <span className="text-sm leading-relaxed font-medium">{item}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const CopyComparisonTableSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-500 text-sm mb-6">{data.subtitle}</motion.p>
-        <div className="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden">
-          <div className="grid grid-cols-2 bg-neutral-100 border-b-2 border-neutral-200">
-            <div className="p-3 text-center">
-              <span className="text-red-600 font-bold text-xs uppercase tracking-wider">Bad Copy (Feature)</span>
-            </div>
-            <div className="p-3 text-center border-l-2 border-neutral-200">
-              <span className="text-green-600 font-bold text-xs uppercase tracking-wider">Good Copy (Benefit)</span>
-            </div>
-          </div>
-          <div className="divide-y divide-neutral-100">
-            {data.examples.map((example, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.03 }} className="grid grid-cols-2 hover:bg-neutral-50 transition-colors">
-                <div className="p-3 text-neutral-600 text-xs md:text-sm bg-red-50/50">"{example.bad}"</div>
-                <div className="p-3 text-neutral-800 text-xs md:text-sm font-medium border-l-2 border-neutral-100 bg-green-50/50">"{example.good}"</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-
-    const CopyTemplatesSlide = ({ data }) => {
-      const [activeTemplate, setActiveTemplate] = useState(0);
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-6">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="grid md:grid-cols-[200px,1fr] gap-4">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="flex md:flex-col gap-2 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
-              {data.templates.map((template, i) => (
-                <button key={i} onClick={() => setActiveTemplate(i)} className={`px-3 py-2 rounded-lg text-left text-xs font-semibold whitespace-nowrap transition-all ${activeTemplate === i ? 'bg-neutral-900 text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`}>
-                  {template.category}
-                </button>
-              ))}
-            </motion.div>
-            <AnimatePresence mode="wait">
-              <motion.div key={activeTemplate} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }} className="bg-white border-2 border-neutral-200 rounded-xl p-6">
-                <div className="mb-4">
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>{data.templates[activeTemplate].category}</span>
-                  <h3 className="font-bold text-neutral-900 text-lg mb-2">Formula</h3>
-                  <div className="bg-neutral-50 border-2 border-dashed border-neutral-300 rounded-lg p-4 font-mono text-sm text-neutral-700">{data.templates[activeTemplate].formula}</div>
-                </div>
-                <div>
-                  <h3 className="font-bold text-neutral-900 text-sm mb-2">Example</h3>
-                  <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4 text-green-800 text-sm font-medium">"{data.templates[activeTemplate].example}"</div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </div>
         </div>
       );
     };
 
-    const ChecklistInteractiveSlide = ({ data }) => {
+    // ============ TEMPLATE BUILDER SLIDE ============
+    const TemplateBuilderSlide = ({ data }) => {
+      const [activeTemplate, setActiveTemplate] = useState(0);
+
+      const templates = [
+        { category: 'Time Saving', formula: 'Save [X hours] every [week/month] on [task]', example: 'Save 4 hours every week on meal planning' },
+        { category: 'Pain Relief', formula: 'Finally stop [pain point] and start [desired state]', example: 'Finally stop struggling with back pain and start enjoying mornings' },
+        { category: 'Results', formula: 'Get [specific result] in [timeframe] without [obstacle]', example: 'Get clearer skin in 14 days without harsh chemicals' },
+        { category: 'Transformation', formula: 'Go from [current state] to [desired state] in [timeframe]', example: 'Go from exhausted to energized in just 7 days' },
+        { category: 'Authority Transfer', formula: 'You deserve [benefit]. We make it [easy/possible]', example: 'You deserve better sleep. We make it effortless.' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="flex gap-2 overflow-x-auto pb-4 mb-4">
+            {templates.map((template, i) => (
+              <button key={i} onClick={() => setActiveTemplate(i)} className={`px-4 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition-all ${activeTemplate === i ? 'text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`} style={activeTemplate === i ? { background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' } : {}}>
+                {template.category}
+              </button>
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTemplate} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="rounded-xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(220, 38, 38, 0.15)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="mb-4">
+                <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(220, 38, 38, 0.2)', color: '#ef4444' }}>{templates[activeTemplate].category}</span>
+                <h3 className="font-bold text-white text-lg mb-2">Formula</h3>
+                <div className="bg-neutral-800 rounded-lg p-4 font-mono text-sm text-neutral-300">{templates[activeTemplate].formula}</div>
+              </div>
+              <div>
+                <h3 className="font-bold text-white text-sm mb-2">Example</h3>
+                <div className="bg-green-900/30 border border-green-500/30 rounded-lg p-4 text-green-400 text-sm font-medium">"{templates[activeTemplate].example}"</div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ FATAL MISTAKE SLIDE ============
+    const FatalMistakeSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 600),
+          setTimeout(() => setPhase(2), 1400)
+        ];
+        return () => timers.forEach(t => clearTimeout(t));
+      }, []);
+
+      const badPhrases = ["We're revolutionizing the industry!", "We're the leading provider!", "Our innovative approach!"];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-6 mb-6 text-center" style={{ background: 'linear-gradient(135deg, #450a0a, #7f1d1d)', boxShadow: '0 0 40px rgba(220, 38, 38, 0.3)' }}>
+            <Icons.AlertTriangle className="mx-auto mb-4 text-red-400" style={{ width: 48, height: 48 }} />
+            <div className="space-y-3">
+              {badPhrases.map((phrase, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: phase >= 1 ? 1 : 0, x: phase >= 1 ? 0 : -20 }} transition={{ delay: i * 0.15 }} className="text-red-200 text-lg font-medium">
+                  "{phrase}"
+                </motion.div>
+              ))}
+            </div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 1 ? 1 : 0 }} transition={{ delay: 0.5 }} className="mt-4 text-red-300 text-sm">
+              Every word screams: THIS IS ABOUT US
+            </motion.div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: phase >= 2 ? 1 : 0, y: phase >= 2 ? 0 : 20 }} className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-neutral-300 text-center leading-relaxed">
+              Customers scroll past because none of that answers: <span className="text-red-400 font-bold">"What's in it for me?"</span>
+              <br /><br />
+              <span className="text-green-400">Fix this one thing—make every line about THEM—and watch conversions climb.</span>
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ CONVERSION IMPACT SLIDE ============
+    const ConversionImpactSlide = ({ data }) => {
+      const [showStats, setShowStats] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowStats(true), 500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: showStats ? 1 : 0, y: showStats ? 0 : 20 }} transition={{ delay: 0.1 }} className="rounded-xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(220, 38, 38, 0.2)' }}>
+              <div className="text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                <AnimatedCounter target={100} suffix="%" />
+              </div>
+              <div className="text-sm font-semibold text-white mb-1">of customers</div>
+              <div className="text-xs text-neutral-400">Only care about themselves</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: showStats ? 1 : 0, y: showStats ? 0 : 20 }} transition={{ delay: 0.2 }} className="rounded-xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(220, 38, 38, 0.2)' }}>
+              <div className="text-5xl font-bold text-white mb-2">
+                <AnimatedCounter target={3} suffix=" sec" />
+              </div>
+              <div className="text-sm font-semibold text-white mb-1">to answer</div>
+              <div className="text-xs text-neutral-400">"What's in it for me?" or they leave</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: showStats ? 1 : 0, y: showStats ? 0 : 20 }} transition={{ delay: 0.3 }} className="rounded-xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.2)' }}>
+              <div className="text-5xl font-bold text-green-500 mb-2">
+                <AnimatedCounter target={2} suffix="x" />
+              </div>
+              <div className="text-sm font-semibold text-white mb-1">potential lift</div>
+              <div className="text-xs text-neutral-400">When copy focuses on outcomes</div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: showStats ? 1 : 0 }} transition={{ delay: 0.5 }} className="text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium">
+              <Icons.TrendingUp className="w-4 h-4" />
+              Customer-focused copy consistently outperforms ego copy
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ COPY AUDIT SLIDE ============
+    const CopyAuditSlide = ({ data }) => {
       const [checked, setChecked] = useState([]);
       const toggleCheck = (index) => {
         setChecked(prev => prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index]);
       };
+
+      const items = [
+        { title: 'Read every sentence', description: 'Go through your homepage or landing page line by line.' },
+        { title: 'Ask: "Us or them?"', description: 'Is this line about your brand or about customer benefit?' },
+        { title: 'Delete ego copy', description: 'Remove lines that brag without connecting to their outcome.' },
+        { title: 'Reframe to customer', description: 'Transform remaining lines to focus on their transformation.' },
+        { title: 'Test the filter', description: 'Does it answer: "How does this improve MY life?"' }
+      ];
+
+      const allChecked = checked.length === items.length;
+
       return (
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
           <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-3">{data.title}</motion.h2>
-          {data.subtitle && <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-600 mb-6 text-sm">{data.subtitle}</motion.p>}
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-500 text-sm mb-6">Click each item as you audit your copy</motion.p>
+
           <div className="space-y-3">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} onClick={() => toggleCheck(i)} className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${checked.includes(i) ? 'bg-green-50 border-green-300' : 'bg-white border-neutral-200 hover:border-neutral-300'}`}>
+            {items.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} onClick={() => toggleCheck(i)} className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${checked.includes(i) ? 'border-green-300' : 'bg-white border-neutral-200 hover:border-neutral-300'}`} style={checked.includes(i) ? { background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderColor: 'rgba(34, 197, 94, 0.5)' } : {}}>
                 <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-all ${checked.includes(i) ? 'bg-green-500 border-green-500' : 'border-neutral-300'}`}>
                   {checked.includes(i) && <Icons.Check className="text-white" style={{ width: 16, height: 16 }} />}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-neutral-900 mb-1 text-sm">{item.title}</h3>
-                  <p className="text-neutral-600 text-xs leading-relaxed">{item.description}</p>
+                  <h3 className={`font-bold mb-1 text-sm ${checked.includes(i) ? 'text-white' : 'text-neutral-900'}`}>{item.title}</h3>
+                  <p className={`text-xs leading-relaxed ${checked.includes(i) ? 'text-neutral-400' : 'text-neutral-600'}`}>{item.description}</p>
                 </div>
               </motion.div>
             ))}
           </div>
+
+          {allChecked && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500 text-white text-sm font-bold">
+                <Icons.Check className="w-4 h-4" /> Audit Complete!
+              </div>
+            </motion.div>
+          )}
         </div>
       );
     };
 
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(220, 38, 38, 0.2)' }}>
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'rgba(220, 38, 38, 0.2)' }}>
+            <Icons.Lightbulb className="text-red-400" style={{ width: 32, height: 32 }} />
+          </motion.div>
+
+          <motion.h3 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-xl md:text-2xl font-bold text-white mb-4">{data.title}</motion.h3>
+
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-neutral-300 leading-relaxed mb-6">
+            Self-Interest Bias isn't manipulation. It's human nature. When your copy reflects their world, speaks their language, and focuses on their outcomes—you're not being selfish. You're being <span className="text-red-400 font-bold">relevant</span>.
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-800 rounded-xl p-4">
+            <p className="text-neutral-400 text-sm">
+              <span className="text-green-400 font-bold">Relevance</span> builds attention.
+              <span className="text-blue-400 font-bold"> Attention</span> builds trust.
+              <span className="text-yellow-400 font-bold"> Trust</span> converts.
+            </p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -551,32 +942,21 @@
       );
     };
 
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand Self-Interest Bias. No one cares about your brand. They care about themselves. Every line must answer: "How does this improve MY life?" Make them the hero. Transfer authority. Watch conversions climb.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand Self-Interest Bias. No one cares about your brand—they care about themselves. Every line must answer: "How does this improve MY life?" Make them the hero.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -590,14 +970,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -629,15 +1003,18 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'quote-spotlight': return <QuoteSpotlightSlide data={slide} />;
-          case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
-          case 'copy-comparison-table': return <CopyComparisonTableSlide data={slide} />;
-          case 'copy-templates': return <CopyTemplatesSlide data={slide} />;
-          case 'checklist-interactive': return <ChecklistInteractiveSlide data={slide} />;
+          case 'self-interest-brain': return <SelfInterestBrainSlide data={slide} />;
+          case 'filter-visual': return <FilterVisualSlide data={slide} />;
+          case 'mindset-battle': return <MindsetBattleSlide data={slide} />;
+          case 'copy-transformation': return <CopyTransformationSlide data={slide} />;
+          case 'hero-guide': return <HeroGuideSlide data={slide} />;
+          case 'six-rules': return <SixRulesSlide data={slide} />;
+          case 'copy-comparison': return <CopyComparisonSlide data={slide} />;
+          case 'template-builder': return <TemplateBuilderSlide data={slide} />;
+          case 'fatal-mistake': return <FatalMistakeSlide data={slide} />;
+          case 'conversion-impact': return <ConversionImpactSlide data={slide} />;
+          case 'copy-audit': return <CopyAuditSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -667,7 +1044,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>

@@ -17,12 +17,7 @@
   <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #8b5cf6;
-      --accent-dark: #6d28d9;
-      --accent-light: #a78bfa;
-      --accent-rgb: 139, 92, 246;
-    }
+    :root { --accent: #8b5cf6; --accent-dark: #6d28d9; --accent-light: #a78bfa; --accent-rgb: 139, 92, 246; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -39,84 +34,35 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    const getUserName = () => {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'Builder';
-    };
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'objection-destroyer',
       title: 'The At First I Thought Framework',
-      description: 'The best reviews address objections before customers even ask. Mine 1-star reviews and bake objection-crushing into your product pages.',
+      description: 'The best reviews address objections before customers even ask.',
       accentColor: '#8b5cf6',
-      duration: '5 min',
-      nextLesson: {
-        id: 'product-page-anatomy',
-        title: 'The 5-Element Product Page That Converts',
-        teaser: 'Hero section, consolidated offer, clear benefits, integrated trust, objection handling. Get all 5 right and watch CVR soar.'
-      }
+      duration: '6 min',
+      nextLesson: { id: 'product-page-anatomy', title: 'The 5-Element Product Page', teaser: 'Hero section, offer, benefits, trust, objection handling. Get all 5 right.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
             <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
@@ -131,66 +77,53 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: [
-        'Why "Great product!" reviews are useless (and what actually converts)',
-        'The At First I Thought framework for addressing objections before they\'re asked',
-        'Where to mine objections: Amazon 1-stars, TikTok comments, Reddit threads'
-      ]},
-      { type: 'hook', headline: 'Your 5-star review: "Amazing product! Love it!" Cool. Useless.', subtext: 'Compare to this: "At first I thought the resistance bands would rip after a week. I\'ve been using them daily for 3 months and they\'re still perfect." THAT review just crushed your #1 objection. THAT review converts browsers into buyers. The best reviews don\'t praise. They address doubts.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/tiktok-app-icon-social-media-logo_277909-647.png', brandName: 'TikTok'},
-      { type: 'content', title: 'The At First I Thought Framework', body: 'Structure: "At first I thought [OBJECTION], but actually [REALITY]." Example 1: "At first I thought this serum was too expensive, but one bottle lasts 4 months so it\'s actually cheaper per day than drugstore brands." Example 2: "At first I thought assembly would take hours, but it snapped together in 12 minutes with zero tools." This framework pre-emptively destroys objections.' },
-      { type: 'visual', title: 'Review Types That Actually Convert', visualType: 'comparison', data: {
-        left: { label: 'Useless Review', value: '★★★★★', result: '"Great product! Love it!"', color: '#dc2626' },
-        right: { label: 'Converting Review', value: '★★★★★', result: '"At first I thought X, but actually Y"', color: '#10b981' },
-        center: { label: 'The Difference', value: '3x', result: 'Higher conversion impact', color: '#8b5cf6' }
-      }},
-      { type: 'content', title: 'Where to Mine Objections (Gold Mines)', body: 'Source 1: Amazon 1-star reviews of competitor products. People TELL you exactly why they\'re hesitant. Source 2: TikTok comment sections on product videos. "Does it actually work?" "Looks cheap" "Shipping takes forever". Source 3: Reddit product threads. Brutally honest, detailed concerns. Mine these three places. List every objection. Address them in your product description and reviews.' },
-      { type: 'cards', title: 'Mining Objections: The Process', items: [
-        { title: 'Step 1: Find Competitor 1-Stars', description: 'Go to Amazon. Search your product category. Sort reviews by "Most Critical." Read 50+ one-star reviews. List every objection.' },
-        { title: 'Step 2: Scan TikTok Comments', description: 'Search your product type on TikTok. Open 10+ viral videos. Read comments. Screenshot repeated concerns and questions.' },
-        { title: 'Step 3: Reddit Deep Dive', description: 'Search r/[YourNiche] for product discussions. People post DETAILED concerns. Copy-paste the best objections into a doc.' },
-        { title: 'Step 4: Categorize & Address', description: 'Group similar objections. Create "At first I thought" statements for each. Bake into product descriptions and featured reviews.' }
-      ]},
-      { type: 'example', scenario: 'Real Product: Portable Blender', before: { label: 'Without Objection Handling', text: 'Description: "Powerful portable blender. Perfect for smoothies. Rechargeable battery."\n\n(Customers think: "Will it actually blend ice?" "How long does battery last?" "Is it loud?")\n\nCVR: 1.8%' }, after: { label: 'With At First I Thought Reviews', text: 'Featured Review 1: "At first I thought it wouldn\'t blend frozen fruit, but it crushes ice perfectly."\n\nFeatured Review 2: "At first I thought the battery would die fast, but I get 12+ smoothies per charge."\n\nFeatured Review 3: "At first I thought it would be loud, but it\'s quieter than my full-size blender."\n\nCVR: 3.4% (+89%)' }, insight: 'Same product. Objections addressed. Conversion nearly doubled.' },
-      { type: 'content', title: 'How to Feature These Reviews', body: 'Don\'t bury them. FEATURE them prominently. Method 1: Screenshot the best ones and add them as images in your product gallery. Method 2: Pull quotes into your product description under "What Customers Were Worried About." Method 3: Create a FAQ section using real objections as questions. The objection IS the marketing. Address it head-on.' },
-      { type: 'visual', title: 'Objection-Handling Impact', visualType: 'stats', data: [
-        { value: '+67%', label: 'conversion lift', subtext: 'From addressing top 3 objections' },
-        { value: '89%', label: 'of buyers', subtext: 'Read reviews before purchasing' },
-        { value: '3x', label: 'more trust', subtext: 'When objections are addressed' }
-      ]},
-      { type: 'content', title: 'Baking It Into Your Product Page', body: 'Section 1: Product description addresses top objection. Example: "Worried about durability? Our bands are tested to 10,000 stretches." Section 2: Image carousel includes objection-crushing proof. Example: Photo showing product after months of use, still perfect. Section 3: Featured reviews using "At first I thought" framework. Make them impossible to miss.' },
-      { type: 'example', scenario: 'Objection Mining in Action', before: { label: 'Generic Description', text: '"Premium yoga mat. Non-slip surface. Eco-friendly materials."\n\n(Customers wonder: "Will it slide on hardwood?" "Is it thick enough?" "Does it smell?")\n\nCVR: 2.2%' }, after: { label: 'Objection-Crushed Description', text: '"Premium yoga mat. Non-slip surface. Eco-friendly materials.\n\n✓ At first I thought it would slide on my hardwood floor, but the grip is incredible even during hot yoga.\n✓ At first I thought 5mm wouldn\'t be thick enough, but it cushions my knees perfectly without feeling spongy.\n✓ At first I thought it would have that rubbery smell, but it arrived odorless and stayed that way."\n\nCVR: 4.1% (+86%)' }, insight: 'Objections turned into conversion boosters.' },
-      { type: 'quiz', question: 'Why is "At first I thought X, but actually Y" more effective than "Great product"?', options: ['It uses more words and looks more detailed', 'It addresses specific objections buyers have before purchasing', 'It tricks customers into thinking the product is perfect', 'It makes the review seem more professional'], correctIndex: 1, feedback: { correct: 'Exactly! This framework addresses real objections buyers have. When someone reads "At first I thought it would break easily, but it\'s super durable," you just destroyed their #1 hesitation. That converts.', incorrect: 'Not quite. The power isn\'t in length or professionalism - it\'s in addressing specific objections. "At first I thought X" acknowledges the buyer\'s concern, then "but actually Y" proves it wrong with real experience.' }},
+      { type: 'welcome', learningGoals: ['Why "Great product!" reviews are useless and what actually converts', 'The At First I Thought framework for crushing objections', 'Where to mine objections: Amazon 1-stars, TikTok, Reddit'] },
+      { type: 'hook', headline: 'Your 5-star review says "Amazing product! Love it!" Cool. Useless.', subtext: 'Compare to: "At first I thought the bands would rip after a week. I have been using them daily for 3 months and they are still perfect." THAT review crushes your #1 objection. THAT review converts browsers into buyers.' },
+      { type: 'review-battle', title: 'The Review Showdown' },
+      { type: 'formula-reveal', title: 'The At First I Thought Framework' },
+      { type: 'gold-mines', title: 'The 3 Gold Mines For Objections' },
+      { type: 'mining-process', title: 'The 4-Step Mining Process' },
+      { type: 'transformation', title: 'Real Product: Portable Blender' },
+      { type: 'featuring-strategies', title: 'How to Feature These Reviews' },
+      { type: 'impact-stats', title: 'The Objection-Handling Impact' },
+      { type: 'product-page-integration', title: 'Baking It Into Your Product Page' },
+      { type: 'yoga-mat-example', title: 'Objection Mining in Action' },
+      { type: 'elite-insight', title: 'The Objection Paradox' },
+      { type: 'quiz', question: 'Why is "At first I thought X, but actually Y" more effective than "Great product"?', options: ['It uses more words', 'It addresses specific objections buyers have', 'It tricks customers', 'It looks more professional'], correctIndex: 1, feedback: { correct: 'Exactly! This framework addresses real objections. When someone reads "At first I thought it would break easily, but it is super durable" you just destroyed their hesitation.', incorrect: 'The power is in addressing specific objections, not length or professionalism.' }},
       { type: 'completion' }
     ];
+
+    // ============ ELITE COMPONENTS ============
+
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(target);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -198,18 +131,24 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      MessageCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      Search: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      ShoppingBag: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Image: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
+      FileText: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>,
+      HelpCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
     };
 
+    // ============ WELCOME SLIDE ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
-      useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
@@ -234,6 +173,7 @@
       );
     };
 
+    // ============ HOOK SLIDE ============
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -243,125 +183,539 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // ============ REVIEW BATTLE SLIDE ============
+    const ReviewBattleSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6 relative">
+            {/* Useless Review */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
+              <div className="rounded-xl p-6 bg-red-50 border-2 border-red-200">
+                <div className="flex items-center gap-1 mb-4">
+                  {[1,2,3,4,5].map(i => <Icons.Star key={i} className="text-yellow-400 w-5 h-5" />)}
+                </div>
+                <p className="text-neutral-700 text-lg italic mb-4">"Amazing product! Love it!"</p>
+                <div className="flex items-center gap-2 text-sm text-neutral-500">
+                  <Icons.MessageCircle className="w-4 h-4" />
+                  <span>Customer: "Cool story, but does this help ME decide?"</span>
+                </div>
+              </div>
+              {showWinner && (
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -bottom-3 right-4 px-4 py-1.5 rounded-full text-sm font-bold text-white bg-red-500">
+                  USELESS
+                </motion.div>
+              )}
+            </motion.div>
+
+            {/* Converting Review */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="relative">
+              <div className="rounded-xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showWinner ? '0 0 40px rgba(139, 92, 246, 0.3)' : 'none' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="flex items-center gap-1 mb-4">
+                  {[1,2,3,4,5].map(i => <Icons.Star key={i} className="text-yellow-400 w-5 h-5" />)}
+                </div>
+                <p className="text-neutral-200 text-lg italic mb-4">"At first I thought the bands would rip after a week. I have been using them daily for 3 months and they are still perfect."</p>
+                <div className="flex items-center gap-2 text-sm text-green-400">
+                  <Icons.MessageCircle className="w-4 h-4" />
+                  <span>Customer: "Wait, that was my concern too! I am buying."</span>
+                </div>
+              </div>
+              {showWinner && (
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }} className="absolute -bottom-3 left-4 px-4 py-1.5 rounded-full text-sm font-bold text-white bg-green-500 flex items-center gap-1">
+                  <Icons.TrendingUp className="w-4 h-4" /> CONVERTS
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: showWinner ? 1 : 0 }} className="mt-6 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style={{ background: 'rgba(139, 92, 246, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Zap className="w-4 h-4" />
+              The best reviews do not praise. They address doubts.
+            </div>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+    // ============ FORMULA REVEAL SLIDE ============
+    const FormulaRevealSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 500),
+          setTimeout(() => setPhase(2), 1200),
+          setTimeout(() => setPhase(3), 2000)
+        ];
+        return () => timers.forEach(t => clearTimeout(t));
+      }, []);
+
+      const examples = [
+        { objection: 'too expensive', reality: 'one bottle lasts 4 months so it is actually cheaper per day' },
+        { objection: 'assembly would take hours', reality: 'it snapped together in 12 minutes with zero tools' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          {/* Formula */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: phase >= 1 ? 1 : 0, scale: phase >= 1 ? 1 : 0.9 }}
+            className="rounded-2xl p-6 mb-8 text-center relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(139, 92, 246, 0.2)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="text-2xl md:text-3xl font-bold text-white">
+              <span className="text-red-400">"At first I thought</span>
+              <span className="mx-2">[OBJECTION]</span>
+              <span className="text-green-400">but actually</span>
+              <span className="mx-2">[REALITY]"</span>
+            </div>
+          </motion.div>
+
+          {/* Examples */}
+          <div className="grid md:grid-cols-2 gap-4">
+            {examples.map((ex, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: phase >= 2 ? 1 : 0, y: phase >= 2 ? 0 : 20 }}
+                transition={{ delay: i * 0.2 }}
+                className="bg-white border-2 border-neutral-200 rounded-xl p-5">
+                <div className="mb-3">
+                  <span className="px-2 py-1 rounded text-xs font-semibold bg-neutral-100 text-neutral-600">Example {i + 1}</span>
+                </div>
+                <p className="text-neutral-700 text-sm leading-relaxed">
+                  <span className="text-red-500">"At first I thought</span> {ex.objection}, <span className="text-green-500">but actually</span> {ex.reality}."
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: phase >= 3 ? 1 : 0, y: phase >= 3 ? 0 : 20 }}
+            className="mt-6 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 text-green-700 text-sm font-medium">
+              <Icons.Target className="w-4 h-4" />
+              This framework pre-emptively destroys objections
+            </div>
+          </motion.div>
         </div>
+      );
+    };
+
+    // ============ GOLD MINES SLIDE ============
+    const GoldMinesSlide = ({ data }) => {
+      const [activeSource, setActiveSource] = useState(0);
+
+      const sources = [
+        { name: 'Amazon 1-Star Reviews', icon: Icons.ShoppingBag, description: 'Sort competitor reviews by "Most Critical." People TELL you exactly why they are hesitant.', color: '#f59e0b' },
+        { name: 'TikTok Comments', icon: Icons.MessageCircle, description: '"Does it actually work?" "Looks cheap" "Shipping takes forever" - all free objection research.', color: '#ec4899' },
+        { name: 'Reddit Threads', icon: Icons.FileText, description: 'Brutally honest, detailed concerns. Search r/[YourNiche] for product discussions.', color: '#ef4444' }
+      ];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveSource(prev => (prev + 1) % sources.length);
+        }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {sources.map((source, i) => {
+              const IconComponent = source.icon;
+              const isActive = activeSource === i;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  onClick={() => setActiveSource(i)}
+                  className="relative cursor-pointer rounded-xl p-5 transition-all duration-300"
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                    border: isActive ? `1px solid ${source.color}40` : '2px solid #e5e7eb',
+                    boxShadow: isActive ? `0 0 30px ${source.color}30` : 'none'
+                  }}>
+                  {isActive && <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${source.color}, transparent)` }} />}
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: isActive ? `${source.color}30` : '#f3f4f6' }}>
+                      <span style={{ color: isActive ? source.color : '#6b7280' }}><IconComponent /></span>
+                    </div>
+                    <span className={`font-bold text-sm ${isActive ? 'text-white' : 'text-neutral-900'}`}>{source.name}</span>
+                  </div>
+                  <p className={`text-xs leading-relaxed ${isActive ? 'text-neutral-300' : 'text-neutral-600'}`}>{source.description}</p>
+                  <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: source.color, color: 'white' }}>{i + 1}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center text-neutral-600 mt-6 text-sm">
+            Mine these three places. List every objection. Address them in your product pages.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ============ MINING PROCESS SLIDE ============
+    const MiningProcessSlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+
+      const steps = [
+        { title: 'Find Competitor 1-Stars', action: 'Go to Amazon. Sort by "Most Critical." Read 50+ reviews.', result: 'List every objection' },
+        { title: 'Scan TikTok Comments', action: 'Search product type. Open 10+ viral videos.', result: 'Screenshot repeated concerns' },
+        { title: 'Reddit Deep Dive', action: 'Search r/[YourNiche] for product discussions.', result: 'Copy detailed objections' },
+        { title: 'Categorize & Address', action: 'Group similar objections. Create statements.', result: 'Bake into featured reviews' }
+      ];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % steps.length);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-4 gap-3">
+            {steps.map((step, i) => {
+              const isActive = activeStep === i;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  onClick={() => setActiveStep(i)}
+                  className="relative cursor-pointer rounded-xl p-4 transition-all duration-300"
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                    border: isActive ? '1px solid rgba(139, 92, 246, 0.3)' : '2px solid #e5e7eb',
+                    boxShadow: isActive ? '0 0 30px rgba(139, 92, 246, 0.2)' : 'none'
+                  }}>
+                  {isActive && <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />}
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold mb-3" style={{ background: isActive ? 'var(--accent)' : '#e5e7eb', color: isActive ? 'white' : '#6b7280' }}>
+                    {i + 1}
+                  </div>
+                  <h3 className={`font-bold text-sm mb-2 ${isActive ? 'text-white' : 'text-neutral-900'}`}>{step.title}</h3>
+                  <p className={`text-xs mb-2 ${isActive ? 'text-neutral-400' : 'text-neutral-600'}`}>{step.action}</p>
+                  <div className={`text-xs font-medium ${isActive ? 'text-purple-400' : 'text-purple-600'}`}>{step.result}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ TRANSFORMATION SLIDE ============
+    const TransformationSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center text-neutral-500 text-sm mb-6">See the transformation</motion.p>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Before */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <Icons.X className="text-red-500" />
+                <span className="font-bold text-red-700 text-sm">Without Objection Handling</span>
+              </div>
+              <p className="text-neutral-700 text-sm mb-4 italic">"Powerful portable blender. Perfect for smoothies. Rechargeable battery."</p>
+              <div className="bg-red-100 rounded-lg p-3 mb-3">
+                <p className="text-red-700 text-xs">Customer thinks: "Will it blend ice?" "How long does battery last?" "Is it loud?"</p>
+              </div>
+              <div className="text-center">
+                <span className="text-2xl font-bold text-red-600">1.8%</span>
+                <span className="text-neutral-500 text-sm ml-2">CVR</span>
+              </div>
+            </motion.div>
+
+            {/* After */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="relative">
+              <div className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showResult ? '0 0 30px rgba(34, 197, 94, 0.3)' : 'none' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+                <div className="flex items-center gap-2 mb-4">
+                  <Icons.Check className="text-green-500" />
+                  <span className="font-bold text-green-400 text-sm">With At First I Thought Reviews</span>
+                </div>
+                <div className="space-y-2 mb-4">
+                  <p className="text-neutral-300 text-xs italic">"At first I thought it would not blend frozen fruit, but it crushes ice perfectly."</p>
+                  <p className="text-neutral-300 text-xs italic">"At first I thought the battery would die fast, but I get 12+ smoothies per charge."</p>
+                  <p className="text-neutral-300 text-xs italic">"At first I thought it would be loud, but it is quieter than my full-size blender."</p>
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-bold text-green-400">3.4%</span>
+                  <span className="text-neutral-400 text-sm ml-2">CVR</span>
+                  {showResult && (
+                    <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="ml-3 px-2 py-1 rounded-full text-xs font-bold bg-green-500 text-white">
+                      +<AnimatedCounter target={89} suffix="%" />
+                    </motion.span>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: showResult ? 1 : 0 }} className="mt-4 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-900 text-white text-sm">
+              <Icons.Zap className="w-4 h-4 text-yellow-400" />
+              Same product. Objections addressed. Conversion nearly doubled.
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ FEATURING STRATEGIES SLIDE ============
+    const FeaturingStrategiesSlide = ({ data }) => {
+      const strategies = [
+        { icon: Icons.Image, title: 'Screenshot Reviews', description: 'Add best reviews as images in your product gallery. Make them impossible to miss.' },
+        { icon: Icons.FileText, title: 'Pull Quotes', description: 'Add section: "What Customers Were Worried About" with real objection answers.' },
+        { icon: Icons.HelpCircle, title: 'FAQ Section', description: 'Use real objections as questions. "Will it work for X?" becomes answered FAQ.' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {strategies.map((strategy, i) => {
+              const IconComponent = strategy.icon;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1 }}
+                  className="relative rounded-xl p-5"
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(139, 92, 246, 0.15)' }}>
+                  <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: 'rgba(139, 92, 246, 0.2)' }}>
+                    <span className="text-purple-400"><IconComponent /></span>
+                  </div>
+                  <h3 className="font-bold text-white text-sm mb-2">{strategy.title}</h3>
+                  <p className="text-neutral-400 text-xs leading-relaxed">{strategy.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center text-neutral-600 mt-6 text-sm font-medium">
+            The objection IS the marketing. Address it head-on.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ============ IMPACT STATS SLIDE ============
+    const ImpactStatsSlide = ({ data }) => {
+      const [showStats, setShowStats] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowStats(true), 500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      const stats = [
+        { value: 67, suffix: '%', label: 'conversion lift', subtext: 'From addressing top 3 objections' },
+        { value: 89, suffix: '%', label: 'of buyers', subtext: 'Read reviews before purchasing' },
+        { value: 3, suffix: 'x', label: 'more trust', subtext: 'When objections are addressed' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: showStats ? 1 : 0, y: showStats ? 0 : 20 }}
+                transition={{ delay: 0.1 + i * 0.15 }}
+                className="rounded-xl p-6 text-center"
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(139, 92, 246, 0.2)' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                  {showStats ? <><AnimatedCounter target={stat.value} />{stat.suffix}</> : `0${stat.suffix}`}
+                </div>
+                <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                <div className="text-xs text-neutral-400">{stat.subtext}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ PRODUCT PAGE INTEGRATION SLIDE ============
+    const ProductPageIntegrationSlide = ({ data }) => {
+      const sections = [
+        { number: 1, title: 'Product Description', example: '"Worried about durability? Our bands are tested to 10,000 stretches."' },
+        { number: 2, title: 'Image Carousel', example: 'Photo showing product after months of use, still perfect.' },
+        { number: 3, title: 'Featured Reviews', example: 'Using "At first I thought" framework prominently displayed.' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="space-y-4">
+            {sections.map((section, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + i * 0.15 }}
+                className="flex items-start gap-4 p-4 rounded-xl bg-white border-2 border-neutral-200">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                  {section.number}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-neutral-900 mb-1">{section.title}</h3>
+                  <p className="text-neutral-600 text-sm italic">"{section.example}"</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="mt-6 text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium" style={{ background: 'rgba(139, 92, 246, 0.1)', color: 'var(--accent)' }}>
+              <Icons.Target className="w-4 h-4" />
+              Make objections impossible to miss
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ YOGA MAT EXAMPLE SLIDE ============
+    const YogaMatExampleSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Generic */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <Icons.X className="text-red-500" />
+                <span className="font-bold text-red-700 text-sm">Generic Description</span>
+              </div>
+              <p className="text-neutral-700 text-sm italic mb-4">"Premium yoga mat. Non-slip surface. Eco-friendly materials."</p>
+              <div className="bg-red-100 rounded-lg p-3 mb-3">
+                <p className="text-red-700 text-xs">Customer wonders: "Will it slide on hardwood?" "Is it thick enough?" "Does it smell?"</p>
+              </div>
+              <div className="text-center">
+                <span className="text-2xl font-bold text-red-600">2.2%</span>
+                <span className="text-neutral-500 text-sm ml-2">CVR</span>
+              </div>
+            </motion.div>
+
+            {/* Objection-Crushed */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="relative">
+              <div className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showResult ? '0 0 30px rgba(34, 197, 94, 0.3)' : 'none' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+                <div className="flex items-center gap-2 mb-3">
+                  <Icons.Check className="text-green-500" />
+                  <span className="font-bold text-green-400 text-sm">Objection-Crushed Description</span>
+                </div>
+                <div className="space-y-2 mb-4">
+                  <p className="text-neutral-300 text-xs flex items-start gap-2">
+                    <Icons.Check className="text-green-500 w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span>At first I thought it would slide on hardwood, but the grip is incredible even during hot yoga.</span>
+                  </p>
+                  <p className="text-neutral-300 text-xs flex items-start gap-2">
+                    <Icons.Check className="text-green-500 w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span>At first I thought 5mm would not be thick enough, but it cushions my knees perfectly.</span>
+                  </p>
+                  <p className="text-neutral-300 text-xs flex items-start gap-2">
+                    <Icons.Check className="text-green-500 w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span>At first I thought it would have that rubbery smell, but it arrived odorless.</span>
+                  </p>
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-bold text-green-400">4.1%</span>
+                  <span className="text-neutral-400 text-sm ml-2">CVR</span>
+                  {showResult && (
+                    <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="ml-3 px-2 py-1 rounded-full text-xs font-bold bg-green-500 text-white">
+                      +<AnimatedCounter target={86} suffix="%" />
+                    </motion.span>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(139, 92, 246, 0.2)' }}>
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }} className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'rgba(139, 92, 246, 0.2)' }}>
+            <Icons.Lightbulb className="text-purple-400" style={{ width: 32, height: 32 }} />
+          </motion.div>
+
+          <motion.h3 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-xl md:text-2xl font-bold text-white mb-4">{data.title}</motion.h3>
+
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-neutral-300 leading-relaxed mb-6">
+            The reviews that seem negative at first - the ones that mention concerns - are actually your most powerful sales tools. When a customer says "At first I was worried about X, but..." they are doing your marketing FOR you.
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-800 rounded-xl p-4">
+            <p className="text-neutral-400 text-sm">
+              <span className="text-red-400 font-bold">Objections</span> acknowledged become
+              <span className="text-green-400 font-bold"> trust</span> earned.
+            </p>
+          </motion.div>
+        </motion.div>
       </div>
     );
 
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -371,12 +725,7 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => {
-        if (showFeedback) {
-          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
-        }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
@@ -410,21 +759,23 @@
       );
     };
 
-    const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now know how to destroy objections before they\'re asked. Mine Amazon 1-stars. Build "At first I thought" statements. Feature them prominently. Watch conversion soar.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+    // ============ COMPLETION SLIDE ============
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know how to destroy objections before they are asked. Mine Amazon 1-stars. Build "At first I thought" statements. Feature them prominently. Watch conversion soar.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
@@ -436,14 +787,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -475,12 +820,18 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'review-battle': return <ReviewBattleSlide data={slide} />;
+          case 'formula-reveal': return <FormulaRevealSlide data={slide} />;
+          case 'gold-mines': return <GoldMinesSlide data={slide} />;
+          case 'mining-process': return <MiningProcessSlide data={slide} />;
+          case 'transformation': return <TransformationSlide data={slide} />;
+          case 'featuring-strategies': return <FeaturingStrategiesSlide data={slide} />;
+          case 'impact-stats': return <ImpactStatsSlide data={slide} />;
+          case 'product-page-integration': return <ProductPageIntegrationSlide data={slide} />;
+          case 'yoga-mat-example': return <YogaMatExampleSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide />;
+          case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }
       };
@@ -508,7 +859,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>

@@ -18,12 +18,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false);
     });
 
-    // Listen for auth changes
+    // Listen for auth changes - but avoid unnecessary re-renders
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('[AuthProvider] Auth state change:', event);
+
+      // Only update if user actually changed (different ID or signed out)
+      const newUserId = session?.user?.id ?? null;
+      const currentUserId = useAuthStore.getState().user?.id ?? null;
+
+      if (newUserId !== currentUserId) {
+        console.log('[AuthProvider] User changed, updating state');
+        setSession(session);
+        setUser(session?.user ?? null);
+      } else if (event === 'TOKEN_REFRESHED') {
+        // Token refreshed but same user - just update session silently
+        console.log('[AuthProvider] Token refreshed, same user');
+        setSession(session);
+      }
+
       setLoading(false);
     });
 

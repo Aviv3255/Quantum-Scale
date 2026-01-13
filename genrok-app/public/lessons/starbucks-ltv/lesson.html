@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
@@ -40,32 +37,20 @@
     const LESSON_CONFIG = {
       id: 'starbucks-ltv',
       title: 'How Starbucks Makes $14,099 From Every Customer',
-      description: 'The math that changes everything: why your top 5% generates 95% of your profit.',
+      description: 'The math that changes everything',
       accentColor: '#10b981',
       duration: '7 min',
-      nextLesson: { id: 'killer-headlines', title: 'How to Write Killer Ad Headlines', teaser: 'The 3-second rule that separates winners from losers in paid ads.' }
+      nextLesson: { id: 'killer-headlines', title: 'Killer Ad Headlines', teaser: 'The 3-second rule that separates winners.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -79,150 +64,107 @@
           }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
             <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
+            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
           </svg>
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why Starbucks makes $14,099 per customer (not $4.50)', 'The 5/95 rule: your top 5% generates 95% of profit', 'How to identify and clone your most valuable customers'] },
-      { type: 'hook-with-image', headline: '$14,099. That\'s what Starbucks makes from every customer.', subtext: 'Not $4.50 for a latte. $14,099 over a lifetime. And they know EXACTLY who their most valuable customers are - the 5% who generate 95% of profit. Do you?', image: 'https://m.media-amazon.com/images/I/515QZV8blhL.jpg' },
-      { type: 'starbucks-breakdown', title: 'How Starbucks Gets to $14,099' },
-      { type: 'visual', title: 'The Starbucks Math', visualType: 'stats', data: [
-        { value: '$14,099', label: 'per customer lifetime', subtext: 'Not one transaction' },
-        { value: '5%', label: 'of customers', subtext: 'Generate 95% of profit' },
-        { value: '20 years', label: 'average customer lifespan', subtext: 'Compounding value' }
-      ]},
-      { type: 'content', title: 'Quick Exercise: What\'s YOUR Customer LTV?', body: 'Think about ZARA. Average customer visits 6 times per year. Spends $120 each visit. Stays a customer for 25 years. Do the math: 6 visits × $120 × 25 years = $18,000 per customer. But here\'s the thing - that\'s the AVERAGE. The reality is far more extreme.' },
-      { type: 'visual', title: 'Forget 20/80. It\'s Actually 5/95.', visualType: 'gif', image: 'https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyOGxvamtraGNzcnU0eTZoeXltb3hicmVhOXh4eHJhejU0NWIwN2V0dyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/HzYHJZ7uLnvJoVMgIw/giphy.gif', caption: 'The Pareto Principle is dead. The reality is MORE extreme.' },
-      { type: 'interactive-store-data', title: 'Real Store Example: 8,000 Customers' },
-      { type: 'visual', title: 'Top 25% Customers: The Data', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/46.jpg?v=1763050468', caption: '$796 average order value in 2-3 months. These are your whales.' },
-      { type: 'comparison-battle', title: 'The Strategy Shift', before: { title: 'Old Thinking', points: ['Treat all customers equally', 'Spend evenly across audiences', 'Try to "activate" low spenders', 'Guess who your best customers are'] }, after: { title: 'New Thinking', points: ['Segment by actual value', 'Invest heavily in top 5%', 'Clone high spenders with Lookalikes', 'Data-driven customer targeting'] }},
-      { type: 'visual', title: 'The Customer Value Pyramid', visualType: 'image', image: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Screenshot_2025-11-11_224117_1.png?v=1763051216', caption: 'Most customers are break-even. Top 5% fund everything.' },
-      { type: 'content', title: 'The Strategy Shift', body: 'Stop treating all customers the same. Your top 5% deserves VIP treatment, exclusive offers, personal outreach. Your middle 70%? Standard experience is fine. Bottom 25%? Automated nurture until they graduate or churn. Most importantly: Use your top 5% as a seed audience for Meta Lookalike campaigns. Upload their emails, let Facebook find more of them. This is how you scale profitably.' },
-      { type: 'implementation', title: 'How Starbucks CREATES That $14,099 Customer', concept: 'Segmenting customers is step one. But Starbucks doesn\'t just identify high-value customers - they CREATE them. Their rewards program makes every purchase feel like progress. Points accumulate. Customers don\'t want to "lose" their progress by shopping elsewhere. This is how 4.5 visits per week happens.', steps: ['Launch a points-based loyalty program (example: 1 point per $1 spent)', 'Create tiered rewards that feel achievable (50 points = $5 off, 100 points = $10 off)', 'Display points balance at checkout and in email - make progress visible', 'Send "points expiring" reminders to create urgency without pressure'], insight: 'The psychological anchor works both ways: customers see points as an asset they own, and switching to competitors means losing that "investment." That\'s how Starbucks gets 20-year customers.', toolName: 'Joy Loyalty & Referral Program', toolUrl: 'https://apps.shopify.com/joyio' },
-      { type: 'ltv-tool', title: 'Track Your Customer LTV', toolName: 'Customer Lifetime Value App', toolUrl: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva', questions: ['Who are my top 5% most valuable customers?', 'What\'s the average LTV by segment?', 'Which customers to prioritize for retention?', 'Who should I upload to Meta for Lookalikes?'] },
-      { type: 'quiz', question: 'You have 8,000 customers. Top 25% spent $796 avg, bottom 75% spent $117 avg. Where should you focus ad spend?', options: ['Equal budget across all customers', 'Target bottom 75% to "activate" them', 'Create Meta Lookalike from top 25% to find more high-value customers', 'Focus on middle 50% for "quick wins"'], correctIndex: 2, feedback: { correct: 'Exactly! You don\'t fix low spenders - you CLONE high spenders. Upload your top 25% (or top 5% if you have enough data) to Meta, create a Lookalike audience, and let the algorithm find more people who match that profile. That\'s how you scale profitably.', incorrect: 'Not quite. The answer is: Create Meta Lookalike from top 25%. Why waste time trying to "activate" low-value customers when you can clone your best ones? Upload your top 25% to Meta, create a Lookalike, and acquire MORE people who naturally spend $796 instead of $117.' }},
-      { type: 'completion', sources: [{ name: 'Joy Loyalty & Referral Program', url: 'https://apps.shopify.com/joyio' }, { name: 'Customer Lifetime Value App', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }, { name: 'Full LTV Strategy Course', url: 'https://quantum-scale.co/pages/test1' }] }
-    ];
-
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{count}{suffix}</span>;
-    };
-
-    const ProgressBar = ({ percentage, label, color = '#10B981' }) => (
-      <div style={{ marginBottom: '16px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span style={{ fontSize: '14px', fontWeight: '500' }}>{label}</span>
-          <span style={{ fontSize: '14px', fontWeight: '600' }}>{percentage}%</span>
-        </div>
-        <div style={{ height: '12px', backgroundColor: '#E5E7EB', borderRadius: '6px', overflow: 'hidden' }}>
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: `${percentage}%` }}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
-            style={{ height: '100%', backgroundColor: color, borderRadius: '6px' }}
-          />
-        </div>
-      </div>
-    );
-
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Coffee: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Crown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Gift: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+      RefreshCw: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Copy: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>,
+      Award: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      ArrowRightCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
     };
 
+    // AnimatedCounter Component
+    const AnimatedCounter = ({ value, duration = 2000, suffix = '', prefix = '', decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const inc = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += inc;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
+    // Slides Data
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why Starbucks makes $14,099 per customer (not $4.50)',
+        'The 5/95 rule: top 5% generates 95% of profit',
+        'How to identify and clone your most valuable customers',
+        'The loyalty flywheel that creates 20-year customers'
+      ]},
+      { type: 'hook', headline: '$14,099.', subtext: 'That is what Starbucks makes from every customer. Not $4.50 for a latte. $14,099 over a lifetime. And they know EXACTLY who their most valuable customers are - the 5% who generate 95% of profit.' },
+      { type: 'coffee-to-ltv' },
+      { type: 'starbucks-math' },
+      { type: 'five-ninety-five' },
+      { type: 'customer-pyramid' },
+      { type: 'clone-vs-fix' },
+      { type: 'loyalty-flywheel' },
+      { type: 'quiz', question: 'You have 8,000 customers. Top 25% spent $796 avg, bottom 75% spent $117 avg. Where should you focus ad spend?', options: ['Equal budget across all customers', 'Target bottom 75% to activate them', 'Create Meta Lookalike from top 25%', 'Focus on middle 50% for quick wins'], correctIndex: 2, feedback: { correct: 'Exactly! You do not fix low spenders - you CLONE high spenders. Upload your top 25% to Meta, create a Lookalike audience, and acquire MORE people who naturally spend $796.', incorrect: 'Actually: Create Meta Lookalike from top 25%. Why waste time trying to activate low-value customers when you can clone your best ones?' }},
+      { type: 'lookalike-lever' },
+      { type: 'implement-step-one' },
+      { type: 'elite-insight' },
+      { type: 'completion' }
+    ];
+
+    // WelcomeSlide
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
-
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
@@ -230,258 +172,503 @@
               <ul className="space-y-1.5 md:space-y-2">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{i + 1}</span>
                     <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let\'s Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
 
+    // HookSlide
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
           <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Hook</span>
             <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // CoffeeToLTVSlide - Visual transformation
+    const CoffeeToLTVSlide = () => {
+      const [showTransform, setShowTransform] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowTransform(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Transformation</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">One Coffee. Lifetime Value.</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
+          <div className="flex items-center justify-center gap-4 md:gap-8">
+            {/* Single Coffee */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', textAlign: 'center', minWidth: '150px' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(148,163,184,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', margin: '0 auto 16px' }}>
+                <Icons.Coffee />
+              </div>
+              <div className="text-3xl md:text-4xl font-bold text-neutral-400 mb-1">$5.90</div>
+              <p className="text-neutral-500 text-xs">One transaction</p>
+            </motion.div>
+
+            {/* Arrow */}
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: showTransform ? 1 : 0.3, scale: showTransform ? 1.2 : 1 }}
+              style={{ color: showTransform ? 'var(--accent)' : '#94a3b8', transition: 'all 0.5s' }}>
+              <Icons.ArrowRightCircle />
+            </motion.div>
+
+            {/* Lifetime Value */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', textAlign: 'center', minWidth: '150px', border: showTransform ? '2px solid var(--accent)' : '2px solid transparent', boxShadow: showTransform ? '0 0 30px rgba(16,185,129,0.3)' : 'none', transition: 'all 0.5s' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div style={{ width: '56px', height: '56px', borderRadius: '14px', background: 'rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', margin: '0 auto 16px' }}>
+                <Icons.DollarSign />
+              </div>
+              <div className="text-3xl md:text-4xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
+                $<AnimatedCounter value={14099} />
+              </div>
+              <p className="text-neutral-500 text-xs">Lifetime value</p>
+            </motion.div>
           </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+
+          {showTransform && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center', marginTop: '32px' }}>
+              <p className="text-neutral-400 text-sm">That is a <span className="text-white font-bold">2,390x</span> difference. Starbucks sees the lifetime, not the transaction.</p>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // StarbucksMathSlide - Animated calculation
+    const StarbucksMathSlide = () => {
+      const [step, setStep] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setStep(s => s < 4 ? s + 1 : s), 800);
+        return () => clearInterval(timer);
+      }, []);
+
+      const factors = [
+        { value: '4.5', label: 'visits/week', color: '#3b82f6' },
+        { value: '$5.90', label: 'per visit', color: '#8b5cf6' },
+        { value: '52', label: 'weeks/year', color: '#ec4899' },
+        { value: '20', label: 'years', color: '#f97316' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Math</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">How Starbucks Gets to $14,099</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="grid grid-cols-4 gap-3 mb-6">
+              {factors.map((f, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: step >= i ? 1 : 0.3, y: 0 }}
+                  transition={{ delay: i * 0.2 }}
+                  style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '16px', textAlign: 'center', border: step === i ? `2px solid ${f.color}` : '2px solid transparent', transition: 'all 0.3s' }}>
+                  <div className="text-2xl md:text-3xl font-bold mb-1" style={{ color: f.color }}>{f.value}</div>
+                  <p className="text-neutral-500 text-xs">{f.label}</p>
                 </motion.div>
               ))}
             </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'image') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white mb-4">
-              <img src={data.image} alt={data.title} className="w-full h-auto" />
-            </motion.div>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center text-neutral-600 text-sm md:text-base italic">{data.caption}</motion.p>
-          </div>
-        );
-      }
-      if (data.visualType === 'gif') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="flex justify-center mb-4">
-              <img src={data.image} alt={data.title} className="max-h-[50vh] w-auto object-contain rounded-xl" />
-            </motion.div>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-center text-neutral-600 text-sm md:text-base italic">{data.caption}</motion.p>
-          </div>
-        );
-      }
-      return null;
+
+            <div className="border-t border-neutral-700 pt-6">
+              <div className="text-center">
+                <div className="text-neutral-400 text-sm mb-2 font-mono">
+                  4.5 x $5.90 x 52 x 20 x 1.35 (upsells) =
+                </div>
+                <motion.div initial={{ scale: 0.8 }} animate={{ scale: step >= 4 ? 1.1 : 1 }}
+                  className="text-4xl md:text-5xl font-bold" style={{ color: 'var(--accent)' }}>
+                  $<AnimatedCounter value={14099} />
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
+            className="text-center text-neutral-500 text-sm mt-4">
+            This is why Starbucks can afford free drinks. They see the 20-year relationship.
+          </motion.p>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
+    // FiveNinetyFiveSlide - 5%/95% visualization
+    const FiveNinetyFiveSlide = () => {
+      const [showReveal, setShowReveal] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowReveal(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
 
-    const StatCountdownSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12 max-w-5xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-12">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-8 w-full">
-          {data.stats.map((stat, i) => (
-            <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.15, type: 'spring' }} className="text-center">
-              <div className="bg-neutral-900 rounded-2xl p-8 mb-3">
-                <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: 'var(--accent)' }}>
-                  {stat.prefix}{stat.value < 100 ? <AnimatedCounter target={stat.value} suffix={stat.suffix || ''} duration={2000} /> : stat.value}
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239,68,68,0.1)', color: '#ef4444' }}>Forget 20/80</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Reality Is MORE Extreme</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* 5% Customers */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: 'rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                  <Icons.Crown />
                 </div>
-                <div className="text-white font-semibold text-sm md:text-base">{stat.label}</div>
+                <span className="text-white font-semibold">Top 5%</span>
               </div>
-              <p className="text-neutral-600 text-xs md:text-sm italic">{stat.description}</p>
+              <div className="mb-4">
+                <div className="text-5xl md:text-6xl font-bold mb-1" style={{ color: 'var(--accent)' }}>
+                  <AnimatedCounter value={5} suffix="%" />
+                </div>
+                <p className="text-neutral-400 text-sm">of customers</p>
+              </div>
+              <div style={{ height: '16px', background: 'rgba(16,185,129,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
+                <motion.div initial={{ width: 0 }} animate={{ width: '95%' }} transition={{ delay: 0.5, duration: 1.5 }}
+                  style={{ height: '100%', background: 'linear-gradient(90deg, var(--accent), var(--accent-light))', borderRadius: '8px' }} />
+              </div>
+              <p className="text-neutral-500 text-xs text-center mt-2">Generate <span className="text-white font-bold">95%</span> of profit</p>
             </motion.div>
-          ))}
-        </div>
-      </div>
-    );
 
-    const ComparisonBattleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-12">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
-            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 px-4 py-1 bg-red-500 text-white text-xs font-bold rounded-full">BEFORE</div>
-            <div className="bg-neutral-100 border-2 border-neutral-300 rounded-2xl p-6 pt-8">
-              <h3 className="font-bold text-neutral-900 mb-4 text-lg text-center">{data.before.title}</h3>
+            {/* 95% Customers */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: 'rgba(148,163,184,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+                  <Icons.Users />
+                </div>
+                <span className="text-white font-semibold">Bottom 95%</span>
+              </div>
+              <div className="mb-4">
+                <div className="text-5xl md:text-6xl font-bold text-neutral-400 mb-1">
+                  <AnimatedCounter value={95} suffix="%" />
+                </div>
+                <p className="text-neutral-400 text-sm">of customers</p>
+              </div>
+              <div style={{ height: '16px', background: 'rgba(148,163,184,0.1)', borderRadius: '8px', overflow: 'hidden' }}>
+                <motion.div initial={{ width: 0 }} animate={{ width: '5%' }} transition={{ delay: 0.7, duration: 1 }}
+                  style={{ height: '100%', background: '#94a3b8', borderRadius: '8px' }} />
+              </div>
+              <p className="text-neutral-500 text-xs text-center mt-2">Generate only <span className="text-white font-bold">5%</span> of profit</p>
+            </motion.div>
+          </div>
+
+          {showReveal && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+              <p className="text-neutral-400 text-sm">The Pareto Principle is dead. The reality is <span className="font-bold" style={{ color: 'var(--accent)' }}>5/95</span>, not 20/80.</p>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // CustomerPyramidSlide - Value pyramid visualization
+    const CustomerPyramidSlide = () => {
+      const [activeLevel, setActiveLevel] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveLevel(l => (l + 1) % 3), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const levels = [
+        { name: 'Whales', pct: '5%', value: '$796+', color: 'var(--accent)', profit: '95%', treatment: 'VIP treatment' },
+        { name: 'Regulars', pct: '20%', value: '$200-500', color: '#3b82f6', profit: '4%', treatment: 'Standard experience' },
+        { name: 'One-Timers', pct: '75%', value: '<$100', color: '#94a3b8', profit: '1%', treatment: 'Automated nurture' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Pyramid</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Customer Value Pyramid</h2>
+          </motion.div>
+
+          <div className="space-y-3">
+            {levels.map((level, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }} animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', position: 'relative', overflow: 'hidden', cursor: 'pointer', border: activeLevel === i ? `2px solid ${level.color}` : '2px solid transparent', boxShadow: activeLevel === i ? `0 0 20px ${level.color}30` : 'none', transition: 'all 0.3s' }}
+                onClick={() => setActiveLevel(i)}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${level.color}, transparent)` }} />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <span className="text-2xl font-bold" style={{ color: level.color }}>{level.pct}</span>
+                    <div>
+                      <h3 className="text-white font-semibold text-sm">{level.name}</h3>
+                      <p className="text-neutral-500 text-xs">{level.value} avg value</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-lg font-bold" style={{ color: level.color }}>{level.profit}</div>
+                    <p className="text-neutral-500 text-xs">of profit</p>
+                  </div>
+                </div>
+                {activeLevel === i && (
+                  <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} className="mt-3 pt-3 border-t border-neutral-700">
+                    <p className="text-neutral-400 text-xs">Strategy: <span className="text-white">{level.treatment}</span></p>
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
+            className="text-center text-neutral-500 text-sm mt-4">
+            Click each tier to see the strategy
+          </motion.p>
+        </div>
+      );
+    };
+
+    // CloneVsFixSlide - Strategy comparison
+    const CloneVsFixSlide = () => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Strategy Shift</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Clone vs Fix</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Wrong Way */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <Icons.X style={{ color: '#ef4444' }} />
+                <span className="text-red-400 font-bold text-sm uppercase tracking-wider">Wrong Strategy</span>
+              </div>
+              <h3 className="text-white font-semibold mb-3">Try to FIX low spenders</h3>
               <div className="space-y-2">
-                {data.before.points.map((point, i) => (
-                  <p key={i} className="text-neutral-600 text-sm flex items-start gap-2">
-                    <span className="text-red-500 mt-1">✗</span>
-                    <span>{point}</span>
+                {['Target bottom 75% with discounts', 'Spend budget trying to activate them', 'Hope they become valuable', 'Waste resources on unlikely conversions'].map((point, i) => (
+                  <p key={i} className="text-neutral-400 text-xs flex items-start gap-2">
+                    <span className="text-red-400 mt-0.5">x</span>{point}
                   </p>
                 ))}
               </div>
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="relative">
-            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 px-4 py-1 text-white text-xs font-bold rounded-full" style={{ background: 'var(--accent)' }}>AFTER</div>
-            <div className="border-2 rounded-2xl p-6 pt-8" style={{ borderColor: 'var(--accent)', background: 'rgba(var(--accent-rgb), 0.05)' }}>
-              <h3 className="font-bold text-neutral-900 mb-4 text-lg text-center">{data.after.title}</h3>
+            </motion.div>
+
+            {/* Right Way */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <Icons.Check style={{ color: 'var(--accent)' }} />
+                <span className="font-bold text-sm uppercase tracking-wider" style={{ color: 'var(--accent)' }}>Right Strategy</span>
+                {showWinner && (
+                  <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="ml-auto text-xs font-bold px-2 py-1 rounded" style={{ background: 'var(--accent)', color: 'white' }}>WINS</motion.span>
+                )}
+              </div>
+              <h3 className="text-white font-semibold mb-3">CLONE your best customers</h3>
               <div className="space-y-2">
-                {data.after.points.map((point, i) => (
-                  <p key={i} className="text-neutral-700 text-sm flex items-start gap-2">
-                    <span style={{ color: 'var(--accent)' }} className="mt-1">✓</span>
-                    <span>{point}</span>
+                {['Upload top 25% to Meta as seed audience', 'Create Lookalike to find similar people', 'Acquire customers who naturally spend $796', 'Scale profitably with high-value acquisition'].map((point, i) => (
+                  <p key={i} className="text-neutral-400 text-xs flex items-start gap-2">
+                    <span style={{ color: 'var(--accent)' }} className="mt-0.5">+</span>{point}
                   </p>
                 ))}
               </div>
-            </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="text-center mt-6">
+            <p className="text-neutral-500 text-sm">You do not fix low spenders. You <span className="text-white font-bold">clone</span> high spenders.</p>
           </motion.div>
         </div>
-      </div>
-    );
+      );
+    };
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Optional Tool</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
-        </motion.div>
-        {data.image && (
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white mb-4">
-            <img src={data.image} alt={data.toolName} className="w-full h-auto" />
+    // LoyaltyFlywheelSlide - Points accumulation cycle
+    const LoyaltyFlywheelSlide = () => {
+      const [activeStep, setActiveStep] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveStep(s => (s + 1) % 4), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      const steps = [
+        { icon: <Icons.Coffee />, label: 'PURCHASE', desc: 'Earn points on every order', color: '#3b82f6' },
+        { icon: <Icons.Star />, label: 'ACCUMULATE', desc: 'Points grow over time', color: '#8b5cf6' },
+        { icon: <Icons.Gift />, label: 'REWARD', desc: 'Redeem for free items', color: '#ec4899' },
+        { icon: <Icons.RefreshCw />, label: 'LOCK-IN', desc: 'Switching = losing investment', color: 'var(--accent)' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How They Create $14,099 Customers</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Loyalty Flywheel</h2>
           </motion.div>
-        )}
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.body}</motion.p>
-        {data.questions && data.questions.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-50 rounded-xl p-4 mb-4">
-            <p className="text-neutral-500 text-xs font-semibold uppercase tracking-wider mb-2">Helps answer:</p>
-            <ul className="space-y-1">
-              {data.questions.map((q, i) => (
-                <li key={i} className="text-neutral-700 text-xs md:text-sm flex items-start gap-2">
-                  <span style={{ color: 'var(--accent)' }}>•</span>
-                  <span>{q}</span>
-                </li>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              {steps.map((step, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  style={{ textAlign: 'center', padding: '16px', borderRadius: '12px', background: activeStep === i ? 'rgba(255,255,255,0.05)' : 'transparent', border: activeStep === i ? `2px solid ${step.color}` : '2px solid transparent', transition: 'all 0.3s' }}>
+                  <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: `${step.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: step.color, margin: '0 auto 12px' }}>
+                    {step.icon}
+                  </div>
+                  <p className="text-white font-bold text-xs mb-1">{step.label}</p>
+                  <p className="text-neutral-500 text-xs">{step.desc}</p>
+                </motion.div>
               ))}
-            </ul>
-          </motion.div>
-        )}
-        {data.insight && (
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="text-neutral-500 text-xs md:text-sm italic text-center mb-4">{data.insight}</motion.p>
-        )}
-        <motion.a initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white font-semibold text-sm mx-auto hover:opacity-90 transition-opacity" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-          View {data.toolName}
-          <Icons.ExternalLink />
-        </motion.a>
-      </div>
-    );
+            </div>
 
+            <div className="border-t border-neutral-700 pt-4">
+              <p className="text-center text-neutral-400 text-sm">
+                <Icons.Lightbulb style={{ display: 'inline', marginRight: '8px', color: 'var(--accent)' }} />
+                Customers see points as an <span className="text-white font-semibold">asset they own</span>. Switching means losing that investment.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
+            className="text-center text-neutral-500 text-sm mt-4">
+            This is how Starbucks gets 4.5 visits per week for 20 years.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // LookalikeLeverSlide - Meta Lookalike strategy
+    const LookalikeLeverSlide = () => {
+      const [step, setStep] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setStep(s => s < 3 ? s + 1 : s), 1200);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Action</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Lookalike Lever</h2>
+          </motion.div>
+
+          <div className="space-y-4">
+            {[
+              { num: 1, title: 'Export your top 25% customer emails', desc: 'Download from your CRM or Shopify', icon: <Icons.Users /> },
+              { num: 2, title: 'Upload to Meta as Custom Audience', desc: 'Ads Manager > Audiences > Create', icon: <Icons.Target /> },
+              { num: 3, title: 'Create 1% Lookalike Audience', desc: 'Find people who match your whales', icon: <Icons.Copy /> },
+              { num: 4, title: 'Run acquisition campaigns to Lookalike', desc: 'Acquire customers who naturally spend more', icon: <Icons.TrendingUp /> }
+            ].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: step >= i ? 1 : 0.3, x: 0 }}
+                transition={{ delay: i * 0.2 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', position: 'relative', overflow: 'hidden', border: step === i ? '2px solid var(--accent)' : '2px solid transparent', boxShadow: step === i ? '0 0 20px rgba(16,185,129,0.2)' : 'none', transition: 'all 0.3s' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: step >= i ? 'linear-gradient(90deg, transparent, var(--accent), transparent)' : 'transparent' }} />
+                <div className="flex items-center gap-4">
+                  <div style={{ width: '44px', height: '44px', borderRadius: '10px', background: step >= i ? 'rgba(16,185,129,0.2)' : 'rgba(148,163,184,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: step >= i ? 'var(--accent)' : '#94a3b8', flexShrink: 0 }}>
+                    {item.icon}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: step >= i ? 'var(--accent)' : '#94a3b8', color: 'white' }}>{item.num}</span>
+                      <h3 className="text-white font-semibold text-sm">{item.title}</h3>
+                    </div>
+                    <p className="text-neutral-500 text-xs">{item.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ImplementStepOneSlide - How to actually export top customers
+    const ImplementStepOneSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>How To Do It</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Exporting Your Top Customers</h2>
+            <p className="text-neutral-500 text-sm mt-2">Two ways to get your whale list ready for Meta</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Manual Method */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <span className="text-neutral-400 font-semibold text-sm">Option A: Manual</span>
+                <span className="text-xs px-2 py-0.5 bg-neutral-700 text-neutral-400 rounded">2-3 hours</span>
+              </div>
+              <div className="space-y-2">
+                {['Export all orders from Shopify', 'Import to Excel/Sheets', 'Calculate total spend per customer', 'Sort by value, filter top 25%', 'Export email column'].map((step, i) => (
+                  <p key={i} className="text-neutral-400 text-xs flex items-start gap-2">
+                    <span className="text-neutral-500 font-mono">{i + 1}.</span>{step}
+                  </p>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* App Method */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden', border: '2px solid var(--accent)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <span className="font-semibold text-sm" style={{ color: 'var(--accent)' }}>Option B: One-Click</span>
+                <span className="text-xs px-2 py-0.5 rounded" style={{ background: 'rgba(16,185,129,0.2)', color: 'var(--accent)' }}>30 seconds</span>
+              </div>
+              <div className="space-y-2 mb-4">
+                {['Install DataDrew (free)', 'Go to Customer Segments tab', 'Click "Top 25% by LTV"', 'Export segment with one click'].map((step, i) => (
+                  <p key={i} className="text-neutral-300 text-xs flex items-start gap-2">
+                    <span style={{ color: 'var(--accent)' }} className="font-mono">{i + 1}.</span>{step}
+                  </p>
+                ))}
+              </div>
+              <a href="https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80"
+                style={{ background: 'var(--accent)', color: 'white' }}>
+                Get DataDrew (Free)
+                <Icons.ExternalLink />
+              </a>
+            </motion.div>
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            className="text-center text-neutral-500 text-xs mt-5">
+            DataDrew auto-calculates LTV for every customer and lets you segment instantly.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // QuizSlide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -490,10 +677,8 @@
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
-
       useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
-
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
@@ -525,247 +710,64 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the 5/95 rule: your top 5% generates 95% of profit. Identify them, segment them, clone them with Meta Lookalikes. That\'s how you scale profitably.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const HookWithImageSlide = ({ data }) => (
-      <div className="h-full flex flex-col md:flex-row items-center justify-center px-6 md:px-12 max-w-6xl mx-auto">
-        <div className="flex-1 pr-0 md:pr-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-3xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="flex-shrink-0 mt-6 md:mt-0" style={{ width: 'auto', height: '55vh', marginRight: '5%' }}>
-          <img src={data.image} alt="Starbucks" className="h-full w-auto object-contain rounded-2xl shadow-lg" />
-        </motion.div>
-      </div>
-    );
-
-    const StarbucksBreakdownSlide = ({ data }) => {
-      const breakdown = [
-        { label: 'Visits per week', value: '4.5', sublabel: 'average frequency' },
-        { label: 'Average spend', value: '$5.90', sublabel: 'per visit' },
-        { label: 'Years retained', value: '20', sublabel: 'customer lifespan' },
-        { label: 'Upsells & add-ons', value: '+35%', sublabel: 'food, merchandise' }
-      ];
-
+    // EliteInsightSlide
+    const EliteInsightSlide = () => {
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center text-sm mb-8">The complete formula breakdown</motion.p>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Elite Insight</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The LTV Truth</h2>
+          </motion.div>
 
-          <div className="bg-neutral-900 rounded-2xl p-6 md:p-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              {breakdown.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }} className="bg-neutral-800 rounded-xl p-4 text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">{item.value}</div>
-                  <div className="text-xs font-semibold text-neutral-300">{item.label}</div>
-                  <div className="text-xs text-neutral-500 mt-1">{item.sublabel}</div>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="border-t border-neutral-700 pt-6">
-              <div className="text-center mb-4">
-                <div className="text-neutral-400 text-sm mb-2">The Calculation</div>
-                <div className="text-lg md:text-xl text-white font-mono">
-                  4.5 visits × $5.90 × 52 weeks × 20 years × 1.35 = <span className="font-bold" style={{ color: 'var(--accent)' }}>$14,099</span>
-                </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '32px', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="flex items-center gap-4 mb-4">
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)' }}>
+                <Icons.Lightbulb />
               </div>
-              <p className="text-center text-neutral-400 text-xs">This is why Starbucks can afford to give away free drinks. They see the lifetime, not the transaction.</p>
-            </motion.div>
+              <p className="text-neutral-400 text-sm">The real insight</p>
+            </div>
+            <p className="text-white text-lg md:text-xl leading-relaxed mb-4">"Your top 5% generates 95% of profit. Identify them, segment them, clone them with Meta Lookalikes. That is how you scale profitably."</p>
+            <p className="text-neutral-500 text-sm">Stop treating all customers the same. The math does not lie.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-4 gap-3">
+            {[
+              { icon: <Icons.Coffee />, label: '$14,099', desc: 'per customer' },
+              { icon: <Icons.Crown />, label: '5%', desc: 'generate 95%' },
+              { icon: <Icons.Copy />, label: 'Clone', desc: 'do not fix' },
+              { icon: <Icons.RefreshCw />, label: '20 years', desc: 'customer life' }
+            ].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+                <div style={{ width: '36px', height: '36px', borderRadius: '8px', background: 'rgba(16,185,129,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent)', margin: '0 auto 8px' }}>
+                  {item.icon}
+                </div>
+                <p className="text-white font-bold text-sm">{item.label}</p>
+                <p className="text-neutral-500 text-xs">{item.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       );
     };
 
-    const InteractiveStoreDataSlide = ({ data }) => {
-      const [activeView, setActiveView] = useState('top25');
-
-      const views = {
-        top25: {
-          title: 'Top 25% Customers',
-          customers: '2,000',
-          avgValue: '$796',
-          revenue: '$1.6M',
-          percentage: '70%',
-          color: '#10b981'
-        },
-        bottom75: {
-          title: 'Bottom 75% Customers',
-          customers: '6,000',
-          avgValue: '$117',
-          revenue: '$700K',
-          percentage: '30%',
-          color: '#94a3b8'
-        },
-        comparison: {
-          title: 'Value Multiplier',
-          multiplier: '6.8X',
-          insight: 'Top 25% worth nearly 7X more per customer'
-        }
-      };
-
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
-
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex justify-center gap-2 mb-8">
-            {['top25', 'bottom75', 'comparison'].map((view) => (
-              <button
-                key={view}
-                onClick={() => setActiveView(view)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeView === view ? 'text-white' : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'}`}
-                style={activeView === view ? { background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' } : {}}
-              >
-                {view === 'top25' ? 'Top 25%' : view === 'bottom75' ? 'Bottom 75%' : 'Compare'}
-              </button>
-            ))}
-          </motion.div>
-
-          <AnimatePresence mode="wait">
-            {activeView !== 'comparison' ? (
-              <motion.div
-                key={activeView}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="bg-neutral-900 rounded-2xl p-6 md:p-8"
-              >
-                <h3 className="text-white font-bold text-xl mb-6 text-center">{views[activeView].title}</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-neutral-800 rounded-xl p-4 text-center">
-                    <div className="text-2xl font-bold text-white">{views[activeView].customers}</div>
-                    <div className="text-xs text-neutral-400">Customers</div>
-                  </div>
-                  <div className="bg-neutral-800 rounded-xl p-4 text-center">
-                    <div className="text-2xl font-bold" style={{ color: views[activeView].color }}>{views[activeView].avgValue}</div>
-                    <div className="text-xs text-neutral-400">Avg Value</div>
-                  </div>
-                  <div className="bg-neutral-800 rounded-xl p-4 text-center">
-                    <div className="text-2xl font-bold text-white">{views[activeView].revenue}</div>
-                    <div className="text-xs text-neutral-400">Total Revenue</div>
-                  </div>
-                  <div className="bg-neutral-800 rounded-xl p-4 text-center">
-                    <div className="text-2xl font-bold" style={{ color: views[activeView].color }}>{views[activeView].percentage}</div>
-                    <div className="text-xs text-neutral-400">of Revenue</div>
-                  </div>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="comparison"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-neutral-900 rounded-2xl p-8 text-center"
-              >
-                <div className="text-6xl md:text-7xl font-bold mb-4" style={{ color: 'var(--accent)' }}>{views.comparison.multiplier}</div>
-                <p className="text-white text-lg">{views.comparison.insight}</p>
-                <p className="text-neutral-400 text-sm mt-4">This is why you clone your best customers, not try to "fix" low-value ones.</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      );
-    };
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-            <Icons.Star /> Implementation
-          </span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
-        <div className="space-y-2.5 mb-4">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
-              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-        {data.toolUrl && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
-              <span>Tool: {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const LtvToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center px-8 md:px-12 max-w-2xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center w-full">
-          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10b981, #000)' }}>
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Free tool we use</motion.p>
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</motion.h2>
-
-          {data.questions && data.questions.length > 0 && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-50 rounded-xl p-4 mb-6 text-left">
-              <p className="text-neutral-500 text-xs font-semibold uppercase tracking-wider mb-3">Answers these questions:</p>
-              <ul className="space-y-2">
-                {data.questions.map((q, i) => (
-                  <li key={i} className="text-neutral-700 text-sm flex items-start gap-2">
-                    <span style={{ color: 'var(--accent)' }}>•</span>
-                    <span>{q}</span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-
-          <motion.a
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            href={data.toolUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white font-semibold text-base"
-            style={{ background: 'linear-gradient(135deg, #10b981, #000)' }}
-          >
-            Check Average LTV for free
-            <Icons.ExternalLink />
-          </motion.a>
+    // CompletionSlide
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 6px 24px rgba(var(--accent-rgb), 0.35)' }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the 5/95 rule. Identify your whales, clone them with Lookalikes, scale profitably.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
 
+    // Main App
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -779,14 +781,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -818,20 +814,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'hook-with-image': return <HookWithImageSlide data={slide} />;
-          case 'starbucks-breakdown': return <StarbucksBreakdownSlide data={slide} />;
-          case 'interactive-store-data': return <InteractiveStoreDataSlide data={slide} />;
-          case 'ltv-tool': return <LtvToolSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
-          case 'comparison-battle': return <ComparisonBattleSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'coffee-to-ltv': return <CoffeeToLTVSlide />;
+          case 'starbucks-math': return <StarbucksMathSlide />;
+          case 'five-ninety-five': return <FiveNinetyFiveSlide />;
+          case 'customer-pyramid': return <CustomerPyramidSlide />;
+          case 'clone-vs-fix': return <CloneVsFixSlide />;
+          case 'loyalty-flywheel': return <LoyaltyFlywheelSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          case 'lookalike-lever': return <LookalikeLeverSlide />;
+          case 'implement-step-one': return <ImplementStepOneSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };
@@ -869,7 +862,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

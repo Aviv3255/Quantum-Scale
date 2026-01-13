@@ -145,6 +145,412 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Repeat: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Settings: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      Tool: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      BookOpen: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Multiply: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+    };
+
+    // ============ CUSTOM SLIDE COMPONENTS FOR LEVERAGE EQUATION ============
+
+    // Animated counter component
+    const AnimatedCounter = ({ value, prefix = '', suffix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      const numericValue = parseInt(value.toString().replace(/[^0-9]/g, '')) || 0;
+      useEffect(() => {
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.floor(easeOut * numericValue));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [numericValue, duration]);
+      return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
+    };
+
+    // 1. EQUATION CALCULATOR SLIDE - Interactive visualization of the leverage equation
+    const EquationCalculatorSlide = ({ data }) => {
+      const [volume, setVolume] = useState(10);
+      const [leverage, setLeverage] = useState(1);
+      const output = volume * leverage;
+
+      useEffect(() => {
+        const timer1 = setTimeout(() => setLeverage(5), 1500);
+        const timer2 = setTimeout(() => setLeverage(10), 3000);
+        return () => { clearTimeout(timer1); clearTimeout(timer2); };
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-2xl md:text-3xl text-black text-center mb-8"
+          >
+            {data.title}
+          </motion.h2>
+
+          {/* Equation Display */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center justify-center gap-3 md:gap-6 mb-8"
+          >
+            {/* Volume */}
+            <div className="text-center">
+              <motion.div
+                className="w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-bold text-white"
+                style={{ background: 'linear-gradient(135deg, #3b82f6, #2563eb)' }}
+              >
+                {volume}
+              </motion.div>
+              <p className="text-neutral-500 text-sm mt-2">Volume</p>
+            </div>
+
+            {/* Multiply */}
+            <motion.div
+              animate={{ rotate: [0, 90, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
+              className="text-neutral-400"
+            >
+              <Icons.Multiply />
+            </motion.div>
+
+            {/* Leverage */}
+            <div className="text-center">
+              <motion.div
+                key={leverage}
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                className="w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-bold text-white"
+                style={{
+                  background: leverage > 5
+                    ? 'linear-gradient(135deg, #22c55e, #16a34a)'
+                    : leverage > 1
+                    ? 'linear-gradient(135deg, #f59e0b, #d97706)'
+                    : 'linear-gradient(135deg, #ef4444, #dc2626)',
+                  boxShadow: leverage >= 5 ? '0 0 30px rgba(34, 197, 94, 0.4)' : 'none'
+                }}
+              >
+                {leverage}x
+              </motion.div>
+              <p className="text-neutral-500 text-sm mt-2">Leverage</p>
+            </div>
+
+            {/* Equals */}
+            <span className="text-3xl font-bold text-neutral-400">=</span>
+
+            {/* Output */}
+            <div className="text-center">
+              <motion.div
+                key={output}
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                className="w-24 h-20 md:w-32 md:h-24 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-bold text-white"
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  border: '2px solid var(--accent)',
+                  boxShadow: '0 0 30px rgba(16, 185, 129, 0.3)'
+                }}
+              >
+                {output}
+              </motion.div>
+              <p className="text-[var(--accent)] font-semibold text-sm mt-2">Output</p>
+            </div>
+          </motion.div>
+
+          {/* Results Comparison */}
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            {[
+              { vol: 10, lev: 1, label: 'No Leverage' },
+              { vol: 10, lev: 5, label: '5x Leverage' },
+              { vol: 10, lev: 10, label: '10x Leverage' }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + i * 0.15 }}
+                style={{
+                  background: item.lev === leverage ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  border: item.lev === leverage ? '2px solid var(--accent)' : '1px solid #e5e5e5',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                {item.lev === leverage && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                )}
+                <p style={{ color: item.lev === leverage ? '#a3a3a3' : '#737373', fontSize: '12px', marginBottom: '4px' }}>{item.label}</p>
+                <p style={{ color: item.lev === leverage ? 'white' : '#262626', fontWeight: 700, fontSize: '24px' }}>
+                  {item.vol * item.lev}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            className="text-center text-neutral-500 text-sm mt-6"
+          >
+            Same volume (10). Different leverage. Massive output difference.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // 2. LEVERAGE TYPES SLIDE - Visual display of the 5 leverage types
+    const LeverageTypesSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % 5);
+        }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      const leverageTypes = [
+        { icon: Icons.Settings, label: 'Systems', description: 'Document once, execute infinitely', color: '#3b82f6' },
+        { icon: Icons.Tool, label: 'Tools', description: '20 min instead of 4 hours', color: '#8b5cf6' },
+        { icon: Icons.Users, label: 'Delegation', description: 'Strategy over execution', color: '#ec4899' },
+        { icon: Icons.BookOpen, label: 'Skills', description: 'Mastery you own forever', color: '#f59e0b' },
+        { icon: Icons.Target, label: 'Positioning', description: 'Attract instead of chase', color: '#22c55e' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-2xl md:text-3xl text-black text-center mb-8"
+          >
+            {data.title}
+          </motion.h2>
+
+          <div className="grid gap-3">
+            {leverageTypes.map((type, i) => {
+              const Icon = type.icon;
+              const isActive = activeIndex === i;
+
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                    scale: isActive ? 1.02 : 1
+                  }}
+                  transition={{ delay: i * 0.1 }}
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#fafafa',
+                    borderRadius: '16px',
+                    padding: '16px 20px',
+                    border: isActive ? `2px solid ${type.color}50` : '1px solid #e5e5e5',
+                    boxShadow: isActive ? `0 0 25px ${type.color}20` : 'none',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                >
+                  {isActive && (
+                    <div style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: '3px',
+                      background: `linear-gradient(90deg, transparent, ${type.color}, transparent)`
+                    }} />
+                  )}
+
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                      style={{
+                        background: isActive ? `${type.color}20` : 'rgba(0,0,0,0.05)',
+                        color: isActive ? type.color : '#a3a3a3'
+                      }}
+                    >
+                      <Icon />
+                    </div>
+                    <div className="flex-1">
+                      <h3 style={{
+                        color: isActive ? 'white' : '#525252',
+                        fontWeight: 600,
+                        fontSize: '16px'
+                      }}>
+                        {type.label}
+                      </h3>
+                      <p style={{
+                        color: isActive ? '#a3a3a3' : '#737373',
+                        fontSize: '13px'
+                      }}>
+                        {type.description}
+                      </p>
+                    </div>
+                    {isActive && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="px-3 py-1 rounded-full text-xs font-bold"
+                        style={{ background: type.color, color: 'white' }}
+                      >
+                        LEVERAGE
+                      </motion.div>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="mt-6 text-center p-4 rounded-xl"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              border: '1px solid rgba(16, 185, 129, 0.3)'
+            }}
+          >
+            <p className="text-[var(--accent)] font-semibold">Every piece of leverage compounds.</p>
+            <p className="text-neutral-400 text-sm">Your outputs scale while inputs stay flat.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // 3. ACTIVITY VS OUTPUT SLIDE - Visual comparison
+    const ActivityVsOutputSlide = ({ data }) => {
+      const [showTransform, setShowTransform] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowTransform(true), 1000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-2xl md:text-3xl text-black text-center mb-8"
+          >
+            {data.title}
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Activity Focus */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: showTransform ? 0.6 : 1, x: 0, scale: showTransform ? 0.95 : 1 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '24px',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400">
+                  <Icons.Clock />
+                </div>
+                <span className="text-red-400 font-bold text-sm uppercase tracking-wider">Activity Focus</span>
+              </div>
+              <div className="text-center py-4">
+                <p className="text-5xl font-bold text-white mb-2">80</p>
+                <p className="text-neutral-400 text-sm">hours/week</p>
+              </div>
+              <div className="mt-4 text-center p-3 rounded-lg bg-red-500/10">
+                <p className="text-red-400 font-semibold">Mediocre Results</p>
+                <p className="text-neutral-500 text-xs">Low leverage = linear ceiling</p>
+              </div>
+              {showTransform && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-0 flex items-center justify-center bg-black/40"
+                >
+                  <Icons.X />
+                </motion.div>
+              )}
+            </motion.div>
+
+            {/* Output Focus */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0, scale: showTransform ? 1.05 : 1 }}
+              transition={{ duration: 0.5 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '16px',
+                padding: '24px',
+                border: showTransform ? '2px solid rgba(34, 197, 94, 0.5)' : '1px solid rgba(34, 197, 94, 0.3)',
+                boxShadow: showTransform ? '0 0 40px rgba(34, 197, 94, 0.2)' : 'none',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                  <Icons.TrendingUp />
+                </div>
+                <span className="text-green-400 font-bold text-sm uppercase tracking-wider">Output Focus</span>
+              </div>
+              <div className="text-center py-4">
+                <p className="text-5xl font-bold text-white mb-2">20</p>
+                <p className="text-neutral-400 text-sm">hours/week</p>
+              </div>
+              <div className="mt-4 text-center p-3 rounded-lg bg-green-500/10">
+                <p className="text-green-400 font-semibold">10x Competition</p>
+                <p className="text-neutral-500 text-xs">High leverage = exponential scale</p>
+              </div>
+              {showTransform && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="absolute top-3 right-3 text-green-400"
+                >
+                  <Icons.Check />
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5 }}
+            className="mt-8 text-center p-4 rounded-xl"
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              border: '1px solid rgba(249, 115, 22, 0.3)'
+            }}
+          >
+            <p className="text-white font-semibold">The equation doesn't care about effort.</p>
+            <p className="text-[var(--accent)]">Measure leverage applied, not hours worked.</p>
+          </motion.div>
+        </div>
+      );
     };
 
     const slides = [
@@ -154,18 +560,13 @@
       { type: 'mockup', title: 'The Power of Leverage', description: 'Small effort on one side. Massive results on the other. That\'s the fulcrum effect. When you apply leverage, you stop trading time for money and start trading systems for scale.', mockupType: 'lever-diagram' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
       { type: 'content', title: 'Volume: The Reps You Put In', body: 'Volume is straightforward. It\'s the number of times you execute.\n\nSend 100 outreach emails? That\'s volume.\nPost 50 pieces of content? That\'s volume.\nRun 20 ad variations? That\'s volume.\n\nVolume matters. You can\'t win without putting in reps. But volume alone is a linear game. Double your effort, double your results. That\'s not scalable.\n\nThis is why most entrepreneurs hit a ceiling. They max out their volume capacity and wonder why growth stops. The answer isn\'t more hours. The answer is leverage.' },
       { type: 'content', title: 'Leverage: The Force Multiplier', body: 'Leverage is where the magic happens. It\'s what you get from each unit of volume.\n\nHigh leverage means every rep counts more. Every action produces exponentially better results.\n\nExamples of leverage:\n- A system that automates repetitive tasks\n- A skill that makes you 10x faster than competitors\n- A tool that handles what used to take hours\n- A team that executes while you strategize\n- A brand that makes people come to you\n\nWhen you increase leverage, you break the time-for-money trap. You stop being the bottleneck. Your outputs scale independently of your hours worked.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
-      { type: 'stats-grid', title: 'The Leverage Advantage', items: [
-        { value: '1 hour', label: 'With Leverage', description: 'Produces what used to take 10 hours' },
-        { value: '10x', label: 'Output Multiplier', description: 'Same effort, exponential results' },
-        { value: '0 hours', label: 'Time Ceiling', description: 'Leverage removes the time cap' },
-        { value: '∞', label: 'Scale Potential', description: 'No limit when leverage is high' }
-      ]},
+      { type: 'equation-calculator', title: 'The Leverage Equation In Action' },
       { type: 'quote', data: {
         quote: 'To outwork your competition, you must out-leverage them.',
         context: 'The shift from hustle culture to leverage culture'
       }},
-      { type: 'content', title: 'How to Apply Leverage in Your Business', body: 'Leverage isn\'t abstract. It\'s actionable. Here\'s how you build it:\n\n1. Systems over effort. Document your process once. Execute it infinitely.\n\n2. Tools over manual work. If a tool can do it in 20 minutes instead of 4 hours, use the tool.\n\n3. Delegation over DIY. Your time is worth more spent on strategy than execution.\n\n4. Skills over shortcuts. Invest in mastery. A skill you own is leverage you control.\n\n5. Positioning over persuasion. Build a brand that attracts instead of chasing.\n\nEvery piece of leverage you add compounds. Your outputs scale exponentially while your inputs stay flat.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is..._typing_at_a_computer_focused_work_100_pure__5fc46f1f-5169-4325-a7d2-81aceeed3514_2.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'The Trap: Confusing Activity With Output', body: 'Here\'s the trap most fall into: they optimize for activity, not output.\n\nActivity is being busy. Output is getting results.\n\nYou can work 80 hours a week and produce mediocre outputs if your leverage is low. Or you can work 20 hours a week and 10x your competition if your leverage is high.\n\nThe equation doesn\'t care about your effort. It only cares about volume and leverage.\n\nStop measuring hours worked. Start measuring leverage applied. That\'s how you win.' },
+      { type: 'leverage-types', title: 'The 5 Types of Leverage' },
+      { type: 'activity-vs-output', title: 'Activity vs Output' },
       { type: 'quiz', question: 'What is the PRIMARY way to scale outputs without hitting a time ceiling?', options: ['Work more hours to increase volume', 'Increase leverage so every rep produces more', 'Hire more people to do the same tasks', 'Focus solely on effort and hustle'], correctIndex: 1, feedback: { correct: 'Exactly right! Leverage is the multiplier. You can max out your hours (volume), but leverage allows you to get exponentially more from each unit of effort. High leverage breaks the time-for-money trap. Same input, 10x output. That\'s the game.', incorrect: 'Not quite. The answer is leverage. You can work 100 hours with no leverage and get mediocre results, or work 10 hours with high leverage and dominate. Volume matters, but leverage is what removes the ceiling. It\'s the difference between trading time for money and building systems that scale.' }},
       { type: 'completion', sources: [{ name: 'Alex Hormozi - The Leverage Equation Framework', url: 'https://acquisition.com' }] }
     ];
@@ -447,6 +848,9 @@
           case 'quote': return <QuoteSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
+          case 'equation-calculator': return <EquationCalculatorSlide data={slide} />;
+          case 'leverage-types': return <LeverageTypesSlide data={slide} />;
+          case 'activity-vs-output': return <ActivityVsOutputSlide data={slide} />;
           default: return null;
         }
       };

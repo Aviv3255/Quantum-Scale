@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #6366f1; --accent-dark: #4f46e5; --accent-light: #818cf8; --accent-rgb: 99, 102, 241; }
@@ -34,125 +31,27 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    const AnimatedCounter = ({ target, suffix = '', duration = 2000 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{count}{suffix}</span>;
-    };
-
-    const ChannelComparisonSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="space-y-4">
-          {data.channels.map((channel, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{channel.icon}</span>
-                  <span className="font-bold text-neutral-900">{channel.name}</span>
-                </div>
-                <span className={`font-bold text-xl ${channel.highlight ? 'text-indigo-600' : 'text-neutral-400'}`}>{channel.openRate}</span>
-              </div>
-              <div className="w-full bg-neutral-100 rounded-full h-3">
-                <motion.div initial={{ width: 0 }} animate={{ width: channel.barWidth }} transition={{ delay: 0.3 + i * 0.1, duration: 0.8 }} className={`h-3 rounded-full ${channel.highlight ? 'bg-indigo-500' : 'bg-neutral-300'}`} />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-center text-neutral-600 text-sm mt-4 italic">{data.insight}</motion.p>
-      </div>
-    );
-
-    const ComparisonGridSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white text-lg">!</div>
-              <h3 className="font-bold text-red-700">{data.old.title}</h3>
-            </div>
-            <ul className="space-y-2">
-              {data.old.items.map((item, i) => (
-                <li key={i} className="text-sm text-red-700 bg-white/50 px-3 py-2 rounded-lg">{item}</li>
-              ))}
-            </ul>
-            <p className="text-sm text-red-600 italic mt-3">{data.old.insight}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-lg">+</div>
-              <h3 className="font-bold text-indigo-700">{data.new.title}</h3>
-            </div>
-            <ul className="space-y-2">
-              {data.new.items.map((item, i) => (
-                <li key={i} className="text-sm text-indigo-700 bg-white/50 px-3 py-2 rounded-lg">{item}</li>
-              ))}
-            </ul>
-            <p className="text-sm text-indigo-600 italic mt-3">{data.new.insight}</p>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const ProTipSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="w-full">
-          <div className="bg-gradient-to-br from-indigo-50 to-violet-50 border-2 border-indigo-200 rounded-2xl p-8 relative">
-            <div className="absolute -top-4 left-6 px-4 py-1 bg-indigo-500 text-white text-xs font-bold rounded-full">THE PSYCHOLOGY</div>
-            <h2 className="slide-title text-2xl md:text-3xl text-indigo-900 mb-4 pt-2">{data.title}</h2>
-            <p className="text-indigo-800 leading-relaxed">{data.body}</p>
-            {data.action && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-4 p-3 bg-white/50 rounded-lg">
-                <p className="text-sm font-medium text-indigo-700">{data.action}</p>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
-      </div>
-    );
-
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'sms-open-rate-secret',
-      title: 'The 95% Open Rate Channel You\'re Ignoring',
+      title: 'The 95% Open Rate Channel',
       description: 'Why SMS crushes email for cart recovery and how to use conversational commerce without being annoying.',
       accentColor: '#6366f1',
       duration: '6 min',
       nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'More psychology-driven conversion tactics.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -166,33 +65,16 @@
           }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
           style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+            position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px',
+            borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white',
+            border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s'
           }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
             <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
@@ -205,64 +87,18 @@
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why 95% open rate SMS destroys 20% open rate email for cart recovery', 'The psychology of conversational commerce and instant response', 'How to use SMS without being annoying or spammy'] },
-      { type: 'hook', headline: 'Your abandoned cart emails have a 20% open rate. Your competitor\'s SMS has 95%.', subtext: 'Both sent a cart recovery message. One gets ignored. One gets opened within 3 minutes. The difference is not the offer. It is not the discount. It is the CHANNEL. While you are fighting for inbox attention against 100 promotional emails, SMS lands directly in their pocket. Read almost immediately. And yet most stores still treat SMS like a scary unknown. Time to change that.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CLyh0p-rhJADEAE=.webp', brandName: 'TxtCart' },
-      { type: 'channel-comparison', title: 'The Open Rate Reality Check', channels: [
-        { icon: '128233', name: 'SMS Text Message', openRate: '95%', barWidth: '95%', highlight: true },
-        { icon: '128232', name: 'Push Notifications', openRate: '60%', barWidth: '60%', highlight: false },
-        { icon: '128231', name: 'Email (Transactional)', openRate: '45%', barWidth: '45%', highlight: false },
-        { icon: '128230', name: 'Email (Promotional)', openRate: '20%', barWidth: '20%', highlight: false },
-        { icon: '128251', name: 'Facebook Messenger', openRate: '15%', barWidth: '15%', highlight: false }
-      ], insight: 'SMS is not 2x better. It is 5x better. And almost nobody in your niche is using it properly.' },
-      { type: 'content', title: 'Why SMS Feels Different', body: 'Email is public space. We expect noise there. Promotions, newsletters, spam. Our brain auto-filters. But SMS? That is personal territory. Your mom texts you. Your friends text you. Your doctor texts you. When a brand enters that space, it feels DIRECT. Not one-to-many. One-to-ONE. This is conversational commerce. And it changes everything about how customers respond.' },
-      { type: 'comparison-grid', title: 'Email vs SMS Psychology', old: { title: 'Email Psychology', items: ['Scanned quickly, rarely fully read', 'Competes with 50-100 daily emails', 'Often checked hours later', 'Feels like broadcast marketing', 'Easy to ignore, mark as spam'], insight: 'Email is where marketing goes to die quietly.' }, new: { title: 'SMS Psychology', items: ['Read within 3 minutes on average', 'Competes with maybe 10 daily texts', 'Triggers immediate phone check', 'Feels like personal conversation', 'Hard to ignore, very personal'], insight: 'SMS feels like a friend reminding you about something.' }},
-      { type: 'content', title: 'The Cart Recovery Moment', body: 'Someone added to cart. They wanted it. Something interrupted them. Now hours have passed. With email, your recovery message lands in a crowded inbox. Subject line competes with 50 others. Even if opened, they might be on desktop while the purchase happens on mobile. With SMS, your message pops up on their phone. The same device they will use to buy. One tap to return to cart. Friction eliminated.' },
-      { type: 'pro-tip', title: 'The "Friend Reminder" Effect', body: 'Here is the psychology: When a friend texts you "Hey, did you ever get that thing you wanted?" you do not feel sold to. You feel cared about. Great SMS cart recovery mimics this exact feeling. Not "BUY NOW 10% OFF!" but "Hey! Noticed you left something behind. Still thinking about it?" Same goal. Completely different emotional response.', action: 'Conversational tone + personal channel = purchase without resistance' },
-      { type: 'content', title: 'The Fear Factor (And Why It Is Wrong)', body: 'Most stores avoid SMS because they fear being "annoying." Here is the truth: Customers who opted into SMS WANT to hear from you. They gave you their phone number. That is the most personal data they can share. The annoying part is not sending SMS. The annoying part is sending BAD SMS. Spammy. Salesy. Generic. Do it right and they will thank you for the reminder.' },
-      { type: 'cards', title: 'SMS Best Practices', items: [
-        { title: 'Conversational Tone', description: 'Write like you are texting a friend. Short. Casual. Human. Drop the marketing speak entirely.' },
-        { title: 'Timing Matters', description: 'Send within 1-4 hours of abandonment. Strike while purchase intent is still warm.' },
-        { title: 'One Clear Action', description: 'Each SMS should have ONE purpose. Do not overwhelm with multiple offers or links.' },
-        { title: 'Respect Frequency', description: 'Less is more. 1-2 recovery messages max. After that, you are annoying.' },
-        { title: 'Easy Opt-Out', description: 'Always include clear unsubscribe. Trust builds loyalty. Trapping people destroys it.' },
-        { title: 'Personalize Smart', description: 'Use their name. Reference the actual product. Make it feel like it was written just for them.' }
-      ]},
-      { type: 'example', scenario: 'Cart Recovery Message Comparison', before: { label: 'Bad SMS (Salesy)', text: 'FLASH SALE! Your cart is waiting! Complete your purchase NOW and get 15% OFF with code SAVE15! Limited time only! Shop now: [link]' }, after: { label: 'Good SMS (Conversational)', text: 'Hey Sarah! That blue jacket you were looking at is still in your cart. It\'s been selling fast. Want me to hold it for you? Tap here to grab it: [link]' }, insight: 'Same goal. One feels like spam. The other feels like a helpful friend. Which would YOU respond to?' },
-      { type: 'content', title: 'The Two-Way Opportunity', body: 'Here is what most stores miss: SMS can be a CONVERSATION. Not just broadcast. When customers can reply to your texts, magic happens. "Is this available in size M?" "Does it ship by Friday?" Questions that would have killed the sale via email actually get answered in real-time via SMS. Objection handled. Sale closed. All in under 60 seconds.' },
-      { type: 'implementation', title: 'Turning the 95% Open Rate Into Revenue', concept: 'The psychology is clear: SMS lands in personal space where important messages live. A 95% open rate means nothing if you sound like a spammer. Sound like a friend reminding them, and you unlock conversational commerce.', steps: ['Set up two-way SMS so customers can reply with questions - "Does it ship by Friday?" gets answered instantly', 'Write like you text a friend: "Hey Sarah, that blue jacket is still in your cart. Want me to hold it?" not "FLASH SALE 15% OFF!!!"', 'Time it right - 1-4 hours after abandonment while purchase intent is warm', 'Enable AI to handle objections in real-time: sizing questions, shipping concerns, discount requests'], insight: 'If you recover just 5 more carts/day at $50 AOV, that is $90K/year from one channel you are ignoring.', toolName: 'TxtCart', toolUrl: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
-      { type: 'content', title: 'The Compound Effect', body: 'Think about this: If you recover just 5 more carts per day at $50 average order value, that is $250/day. $7,500/month. $90,000/year. From ONE channel you are not using yet. And those recovered customers? They often become repeat buyers. SMS opened the door. Now you have a relationship. This is not just cart recovery. It is customer acquisition through a backdoor everyone ignores.' },
-      { type: 'quiz', question: 'Why does SMS have such higher open rates than email for cart recovery?', options: ['SMS messages are shorter', 'SMS lands in a personal space where people expect important messages', 'SMS has better formatting options', 'SMS allows for more discount codes'], correctIndex: 1, feedback: { correct: 'Exactly! SMS works because it lands in personal territory. Your phone is where friends, family, and important notifications live. When a brand message appears there, it triggers the same "this might be important" response as a text from someone you know. Email lives in public space where we expect marketing noise. SMS lives in private space where we expect personal communication.', incorrect: 'The real reason is that SMS lands in personal space. Your phone is where important messages from friends, family, and services arrive. When a cart recovery message appears there, it triggers genuine attention. Email is expected to be noisy and promotional. SMS is expected to be personal and important. That psychological difference is why open rates are 5x higher.' }},
-      { type: 'completion', sources: [{ name: 'TxtCart (Conversational SMS)', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' }] }
-    ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -270,17 +106,494 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      MessageCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Smartphone: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>,
+      Mail: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Heart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Bell: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
+      ShoppingCart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      MessageCircle: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.94z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 14.5 2z"/></svg>,
+      Send: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+      Reply: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>,
     };
 
+    // AnimatedCounter with decimal support
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      const numericValue = parseFloat(value.toString().replace(/[^0-9.]/g, ''));
+      const hasDecimal = value.toString().includes('.');
+      useEffect(() => {
+        let start = 0;
+        const increment = numericValue / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= numericValue) { setCount(numericValue); clearInterval(timer); }
+          else { setCount(hasDecimal ? parseFloat(start.toFixed(1)) : Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [numericValue, duration, hasDecimal]);
+      return <span>{prefix}{hasDecimal ? count.toFixed(1) : count}{suffix}</span>;
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why 95% open rate SMS destroys 20% open rate email', 'The psychology of conversational commerce', 'How to use SMS without being annoying'] },
+      { type: 'hook', headline: 'Your abandoned cart emails have a 20% open rate. Your competitor\'s SMS has 95%.', subtext: 'Both sent a cart recovery message. One gets ignored. One gets opened within 3 minutes. The difference is not the offer. It\'s the CHANNEL. While you fight for inbox attention against 100 promotional emails, SMS lands directly in their pocket. Read almost immediately.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CLyh0p-rhJADEAE=.webp', brandName: 'TxtCart' },
+      { type: 'open-rate-battle' },
+      { type: 'psychology-comparison' },
+      { type: 'timing-visual' },
+      { type: 'friend-reminder' },
+      { type: 'message-battle' },
+      { type: 'two-way-flow' },
+      { type: 'revenue-calculator' },
+      { type: 'best-practices' },
+      { type: 'get-started-sms' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why does SMS have such higher open rates than email for cart recovery?', options: ['SMS messages are shorter', 'SMS lands in a personal space where people expect important messages', 'SMS has better formatting options', 'SMS allows for more discount codes'], correctIndex: 1, feedback: { correct: 'Exactly! SMS works because it lands in personal territory. Your phone is where friends, family, and important notifications live. When a brand message appears there, it triggers the same "this might be important" response as a text from someone you know.', incorrect: 'The real reason is that SMS lands in personal space. Your phone is where important messages arrive. When a cart recovery appears there, it triggers genuine attention. Email is expected to be noisy. SMS is expected to be personal.' }},
+      { type: 'completion' }
+    ];
+
+    // Open Rate Battle Slide
+    const OpenRateBattleSlide = () => {
+      const [showWinner, setShowWinner] = useState(false);
+      const channels = [
+        { name: 'SMS', rate: 95, color: '#6366f1', icon: <Icons.Smartphone /> },
+        { name: 'Push', rate: 60, color: '#8b5cf6', icon: <Icons.Bell /> },
+        { name: 'Transactional Email', rate: 45, color: '#a855f7', icon: <Icons.Mail /> },
+        { name: 'Promotional Email', rate: 20, color: '#94a3b8', icon: <Icons.Mail /> }
+      ];
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Open Rate Reality</motion.h2>
+          <div className="space-y-4">
+            {channels.map((channel, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '16px', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${channel.color}, transparent)` }} />
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-3">
+                    <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: `${channel.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: channel.color }}>
+                      {channel.icon}
+                    </div>
+                    <span className="font-bold text-white">{channel.name}</span>
+                  </div>
+                  <span className="font-bold text-2xl" style={{ color: channel.color }}><AnimatedCounter value={channel.rate} suffix="%" /></span>
+                </div>
+                <div style={{ width: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: '999px', height: '12px', overflow: 'hidden' }}>
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${channel.rate}%` }} transition={{ delay: 0.3 + i * 0.15, duration: 1 }}
+                    style={{ height: '100%', borderRadius: '999px', background: `linear-gradient(90deg, ${channel.color}, ${channel.color}80)` }} />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showWinner && (
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)', borderRadius: '12px', padding: '16px', marginTop: '16px', textAlign: 'center' }}>
+                <div className="text-white font-bold">SMS is not 2x better. It's <span className="text-yellow-300">5x BETTER</span></div>
+                <div className="text-indigo-200 text-sm mt-1">And almost nobody is using it properly</div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Psychology Comparison Slide
+    const PsychologyComparisonSlide = () => {
+      const [activeTab, setActiveTab] = useState(0);
+      const tabs = [
+        { label: 'Email', icon: <Icons.Mail />, color: '#ef4444', items: [
+          { text: 'Scanned quickly, rarely fully read', icon: <Icons.X /> },
+          { text: 'Competes with 50-100 daily emails', icon: <Icons.X /> },
+          { text: 'Often checked hours later', icon: <Icons.X /> },
+          { text: 'Feels like broadcast marketing', icon: <Icons.X /> }
+        ], insight: 'Email is where marketing goes to die quietly' },
+        { label: 'SMS', icon: <Icons.Smartphone />, color: '#6366f1', items: [
+          { text: 'Read within 3 minutes on average', icon: <Icons.Check /> },
+          { text: 'Competes with maybe 10 daily texts', icon: <Icons.Check /> },
+          { text: 'Triggers immediate phone check', icon: <Icons.Check /> },
+          { text: 'Feels like personal conversation', icon: <Icons.Check /> }
+        ], insight: 'SMS feels like a friend reminding you' }
+      ];
+      useEffect(() => {
+        const timer = setInterval(() => setActiveTab(t => (t + 1) % 2), 4000);
+        return () => clearInterval(timer);
+      }, []);
+      const active = tabs[activeTab];
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">Email vs SMS Psychology</motion.h2>
+          <div className="flex justify-center gap-4 mb-6">
+            {tabs.map((tab, i) => (
+              <button key={i} onClick={() => setActiveTab(i)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all"
+                style={{ background: activeTab === i ? tab.color : '#f5f5f5', color: activeTab === i ? 'white' : '#737373' }}>
+                {tab.icon} {tab.label}
+              </button>
+            ))}
+          </div>
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${active.color}, transparent)` }} />
+            <div className="space-y-3 mb-4">
+              {active.items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
+                  className="flex items-center gap-3">
+                  <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: `${active.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: active.color }}>
+                    {item.icon}
+                  </div>
+                  <span className="text-neutral-300">{item.text}</span>
+                </motion.div>
+              ))}
+            </div>
+            <div style={{ background: `${active.color}20`, borderRadius: '8px', padding: '12px', border: `1px solid ${active.color}40` }}>
+              <div className="text-sm font-medium" style={{ color: active.color }}>{active.insight}</div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Timing Visual Slide
+    const TimingVisualSlide = () => {
+      const [activePhase, setActivePhase] = useState(0);
+      const phases = [
+        { time: '0 min', event: 'Customer adds to cart', color: '#10b981', icon: <Icons.ShoppingCart /> },
+        { time: '2 min', event: 'Something interrupts them', color: '#f59e0b', icon: <Icons.X /> },
+        { time: '1-4 hrs', event: 'SMS reminder sent', color: '#6366f1', icon: <Icons.Smartphone /> },
+        { time: '3 min later', event: 'Message opened', color: '#8b5cf6', icon: <Icons.Zap /> },
+        { time: '60 sec', event: 'Purchase completed', color: '#10b981', icon: <Icons.Check /> }
+      ];
+      useEffect(() => {
+        const timer = setInterval(() => setActivePhase(p => (p + 1) % phases.length), 2500);
+        return () => clearInterval(timer);
+      }, []);
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Cart Recovery Timeline</motion.h2>
+          <div className="flex flex-wrap justify-center gap-3 mb-6">
+            {phases.map((phase, i) => (
+              <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.1 }}
+                onClick={() => setActivePhase(i)}
+                style={{
+                  background: i === activePhase ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  borderRadius: '12px', padding: '16px', cursor: 'pointer', position: 'relative', overflow: 'hidden',
+                  textAlign: 'center', minWidth: '100px', transition: 'all 0.3s ease',
+                  boxShadow: i === activePhase ? `0 0 30px ${phase.color}30` : 'none'
+                }}>
+                {i === activePhase && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${phase.color}, transparent)` }} />}
+                <div style={{ color: phase.color, marginBottom: '8px' }}>{phase.icon}</div>
+                <div className="text-xs font-bold" style={{ color: i === activePhase ? phase.color : '#737373' }}>{phase.time}</div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div key={activePhase} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${phases[activePhase].color}, transparent)` }} />
+            <div style={{ color: phases[activePhase].color, marginBottom: '8px' }}>{phases[activePhase].icon}</div>
+            <div className="text-white font-bold text-xl mb-2">{phases[activePhase].event}</div>
+            <div className="text-neutral-400 text-sm">
+              {activePhase === 2 ? 'Strike while purchase intent is still warm' :
+               activePhase === 3 ? 'SMS opens happen in under 3 minutes' :
+               activePhase === 4 ? 'One tap to return to cart. Friction eliminated.' : ''}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Friend Reminder Slide
+    const FriendReminderSlide = () => {
+      const [showInsight, setShowInsight] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowInsight(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 mx-auto" style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }}>The Psychology</span>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">The "Friend Reminder" Effect</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div className="flex items-center gap-2 mb-3">
+                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10b981' }}>
+                  <Icons.Heart />
+                </div>
+                <span className="text-sm font-semibold text-emerald-400">Friend Text</span>
+              </div>
+              <div style={{ background: 'rgba(16, 185, 129, 0.1)', borderRadius: '12px', padding: '16px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                <p className="text-neutral-300 italic text-sm">"Hey, did you ever get that thing you wanted?"</p>
+              </div>
+              <div className="mt-3 flex items-center gap-2">
+                <Icons.Check className="text-emerald-400" />
+                <span className="text-emerald-400 text-sm">Feels: Cared about</span>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #6366f1, transparent)' }} />
+              <div className="flex items-center gap-2 mb-3">
+                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(99, 102, 241, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6366f1' }}>
+                  <Icons.Smartphone />
+                </div>
+                <span className="text-sm font-semibold text-indigo-400">Good SMS</span>
+              </div>
+              <div style={{ background: 'rgba(99, 102, 241, 0.1)', borderRadius: '12px', padding: '16px', border: '1px solid rgba(99, 102, 241, 0.2)' }}>
+                <p className="text-neutral-300 italic text-sm">"Hey! Noticed you left something behind. Still thinking about it?"</p>
+              </div>
+              <div className="mt-3 flex items-center gap-2">
+                <Icons.Check className="text-indigo-400" />
+                <span className="text-indigo-400 text-sm">Feels: Helpful reminder</span>
+              </div>
+            </motion.div>
+          </div>
+          <AnimatePresence>
+            {showInsight && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                style={{ background: 'linear-gradient(135deg, #6366f1, #4f46e5)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+                <div className="flex items-center justify-center gap-2 text-white font-bold">
+                  <Icons.Brain /> Same goal. Completely different emotional response.
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Message Battle Slide
+    const MessageBattleSlide = () => {
+      const [showResult, setShowResult] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 mx-auto" style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }}>Real Example</span>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">Message Comparison</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-2 mb-3">
+                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                  <Icons.X />
+                </div>
+                <span className="text-sm font-semibold text-red-400">Spammy</span>
+              </div>
+              <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderRadius: '12px', padding: '16px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                <p className="text-neutral-300 text-sm">"FLASH SALE! Your cart is waiting! Complete your purchase NOW and get 15% OFF with code SAVE15! Limited time only! Shop now: [link]"</p>
+              </div>
+              {showResult && <div className="mt-3 text-red-400 text-sm font-semibold">Result: IGNORED</div>}
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div className="flex items-center gap-2 mb-3">
+                <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10b981' }}>
+                  <Icons.Check />
+                </div>
+                <span className="text-sm font-semibold text-emerald-400">Conversational</span>
+              </div>
+              <div style={{ background: 'rgba(16, 185, 129, 0.1)', borderRadius: '12px', padding: '16px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                <p className="text-neutral-300 text-sm">"Hey Sarah! That blue jacket you were looking at is still in your cart. It's been selling fast. Want me to hold it for you? Tap here to grab it: [link]"</p>
+              </div>
+              {showResult && <div className="mt-3 text-emerald-400 text-sm font-semibold">Result: CONVERTED</div>}
+            </motion.div>
+          </div>
+          <AnimatePresence>
+            {showResult && (
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+                <div className="text-neutral-300">Same goal. One feels like spam. The other feels like a helpful friend.</div>
+                <div className="text-indigo-400 font-bold mt-2">Which would YOU respond to?</div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Two-Way Flow Slide
+    const TwoWayFlowSlide = () => {
+      const [activeMessage, setActiveMessage] = useState(0);
+      const messages = [
+        { from: 'customer', text: 'Is this available in size M?', time: '2:34 PM' },
+        { from: 'brand', text: 'Yes! We have M in stock. Want me to add it to your cart?', time: '2:35 PM' },
+        { from: 'customer', text: 'Does it ship by Friday?', time: '2:35 PM' },
+        { from: 'brand', text: 'Absolutely! Order in the next 2 hours and it ships today', time: '2:36 PM' },
+        { from: 'customer', text: 'Perfect, I\'ll take it!', time: '2:36 PM' }
+      ];
+      useEffect(() => {
+        const timer = setInterval(() => setActiveMessage(m => m < messages.length - 1 ? m + 1 : 0), 2000);
+        return () => clearInterval(timer);
+      }, []);
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 mx-auto" style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }}>The Magic</span>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">Two-Way Conversation</motion.h2>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #6366f1)' }} />
+            <div className="space-y-3 mb-4" style={{ maxHeight: '280px', overflowY: 'auto' }}>
+              {messages.slice(0, activeMessage + 1).map((msg, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                  className={`flex ${msg.from === 'customer' ? 'justify-start' : 'justify-end'}`}>
+                  <div style={{
+                    background: msg.from === 'customer' ? 'rgba(255,255,255,0.1)' : 'linear-gradient(135deg, #6366f1, #4f46e5)',
+                    borderRadius: '16px', padding: '12px 16px', maxWidth: '80%'
+                  }}>
+                    <p className="text-white text-sm">{msg.text}</p>
+                    <p className="text-xs mt-1" style={{ color: msg.from === 'customer' ? '#737373' : '#a5b4fc' }}>{msg.time}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+            <div style={{ background: 'rgba(16, 185, 129, 0.1)', borderRadius: '12px', padding: '12px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <div className="flex items-center gap-2">
+                <Icons.Zap className="text-emerald-400" />
+                <span className="text-emerald-400 text-sm font-medium">Objection handled. Sale closed. Under 60 seconds.</span>
+              </div>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="mt-4 text-center text-neutral-500 text-sm">
+            Questions that would have killed the sale via email get answered in real-time
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Revenue Calculator Slide
+    const RevenueCalculatorSlide = () => {
+      const stats = [
+        { value: 5, label: 'Extra carts/day', color: '#6366f1' },
+        { value: 50, prefix: '$', label: 'Average order', color: '#8b5cf6' },
+        { value: 90, prefix: '$', suffix: 'K', label: 'Per year', color: '#10b981' }
+      ];
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4 mx-auto" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>The Math</span>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Revenue You're Missing</motion.h2>
+          <div className="grid md:grid-cols-3 gap-6 mb-6">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-4xl font-bold mb-2" style={{ color: stat.color }}>
+                  <AnimatedCounter value={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix || ''} />
+                </div>
+                <div className="text-neutral-400 text-sm">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #6366f1, #10b981, #6366f1)' }} />
+            <div className="text-neutral-400 text-sm mb-2">5 carts/day x $50 x 365 days</div>
+            <div className="text-4xl font-bold text-white mb-2">$<AnimatedCounter value={91250} /></div>
+            <div className="text-emerald-400 font-semibold">From ONE channel you're ignoring</div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Best Practices Slide
+    const BestPracticesSlide = () => {
+      const [activeCard, setActiveCard] = useState(0);
+      const practices = [
+        { title: 'Conversational Tone', desc: 'Write like texting a friend. Short. Casual. Human.', icon: <Icons.MessageCircle />, color: '#6366f1' },
+        { title: 'Timing Matters', desc: 'Send within 1-4 hours of abandonment', icon: <Icons.Clock />, color: '#8b5cf6' },
+        { title: 'One Clear Action', desc: 'Each SMS has ONE purpose. No overwhelm.', icon: <Icons.Target />, color: '#10b981' },
+        { title: 'Respect Frequency', desc: '1-2 recovery messages max. After that, annoying.', icon: <Icons.Bell />, color: '#f59e0b' },
+        { title: 'Easy Opt-Out', desc: 'Always include clear unsubscribe. Trust builds loyalty.', icon: <Icons.Heart />, color: '#ef4444' },
+        { title: 'Personalize Smart', desc: 'Use their name. Reference the actual product.', icon: <Icons.Users />, color: '#06b6d4' }
+      ];
+      useEffect(() => {
+        const timer = setInterval(() => setActiveCard(c => (c + 1) % practices.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">SMS Best Practices</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {practices.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
+                onClick={() => setActiveCard(i)}
+                style={{
+                  background: i === activeCard ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  borderRadius: '12px', padding: '16px', cursor: 'pointer', position: 'relative', overflow: 'hidden',
+                  transition: 'all 0.3s ease', boxShadow: i === activeCard ? `0 0 30px ${item.color}20` : 'none'
+                }}>
+                {i === activeCard && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }} />}
+                <div className="flex items-center gap-2 mb-2">
+                  <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: i === activeCard ? `${item.color}30` : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', color: item.color }}>
+                    {item.icon}
+                  </div>
+                  <span className="text-sm font-semibold" style={{ color: i === activeCard ? 'white' : '#171717' }}>{item.title}</span>
+                </div>
+                <p className="text-xs" style={{ color: i === activeCard ? '#a3a3a3' : '#737373' }}>{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Elite Insight Slide
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', width: '100%', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(99, 102, 241, 0.15)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #6366f1)' }} />
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: 'rgba(99, 102, 241, 0.2)', color: '#6366f1' }}>
+              <Icons.Lightbulb /> Elite Insight
+            </div>
+          </div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="text-xl md:text-2xl text-white font-medium text-center leading-relaxed mb-6">
+            "SMS lands in personal space where important messages live. A 95% open rate means nothing if you sound like a spammer. Sound like a friend, and you unlock conversational commerce."
+          </motion.p>
+          <div className="grid grid-cols-4 gap-4 mt-6">
+            {[
+              { icon: <Icons.Smartphone />, label: 'Personal', subtext: 'Channel' },
+              { icon: <Icons.MessageCircle />, label: 'Conversational', subtext: 'Tone' },
+              { icon: <Icons.Zap />, label: 'Fast', subtext: 'Response' },
+              { icon: <Icons.DollarSign />, label: 'Revenue', subtext: 'Unlocked' }
+            ].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '12px', textAlign: 'center' }}>
+                <div style={{ color: '#6366f1', marginBottom: '4px' }}>{item.icon}</div>
+                <div className="text-white text-xs font-semibold">{item.label}</div>
+                <div className="text-neutral-500 text-xs">{item.subtext}</div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Standard Slides
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
-
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
@@ -313,107 +626,10 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-indigo-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-indigo-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-indigo-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-            <Icons.MessageCircle /> Implementation
-          </span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
-        <div className="space-y-2.5 mb-4">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
-              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-        {data.toolUrl && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
-              <span>Tool: {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
+            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '52%', maxHeight: '400px', marginRight: '5%', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain rounded-xl" style={{ opacity: 0.9 }} />
           </motion.div>
         )}
       </div>
@@ -427,10 +643,8 @@
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
-
       useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
-
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
@@ -462,29 +676,56 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why SMS has 5x higher open rates than email and how to use conversational commerce for cart recovery. The key is treating SMS like personal communication, not broadcast marketing. Time to recover those abandoned carts.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+    const GetStartedSMSSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(99, 102, 241, 0.1)', color: '#6366f1' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Start SMS Cart Recovery</h2>
+          <p className="text-neutral-500 text-sm mt-2">Turn abandoned carts into revenue with AI-powered SMS</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5 bg-neutral-50 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center text-neutral-500"><Icons.Clock /></div>
+              <span className="font-semibold text-neutral-400 text-sm">Build It Yourself</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-400">
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Set up Twilio or SMS gateway</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Build cart abandonment triggers</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Write conversational flows manually</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Handle replies & support yourself</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-200">
+              <span className="text-xs text-neutral-400">Time: 10+ hours setup + ongoing</span>
             </div>
           </motion.div>
-        )}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #6366f1', boxShadow: '0 0 30px rgba(99, 102, 241, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #6366f1, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#6366f1', color: 'white' }}><Icons.Smartphone /></div>
+              <span className="font-semibold text-white text-sm">AI-Powered SMS Platform</span>
+            </div>
+            <ul className="space-y-2 text-sm text-neutral-300">
+              <li className="flex items-start gap-2"><span style={{ color: '#6366f1' }}>✓</span>95% open rate SMS cart recovery</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#6366f1' }}>✓</span>AI handles 2-way conversations</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#6366f1' }}>✓</span>Conversational commerce built-in</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#6366f1' }}>✓</span>10-45% cart recovery rates</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-700">
+              <a href="https://txtcartapp.com/affiliate/?mref=lsbqcbva" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80" style={{ background: '#6366f1', color: 'white' }}>
+                Try TxtCart <Icons.ExternalLink />
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand why SMS has 5x higher open rates and how to use conversational commerce for cart recovery. Sound like a friend, not a spammer.</motion.p>
       </div>
     );
 
@@ -495,13 +736,9 @@
       const currentSlideRef = React.useRef(0);
       const [gifConfig, setGifConfig] = useState(null);
       const [isAnimating, setIsAnimating] = useState(false);
-
       const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
       const hideGif = useCallback(() => setGifConfig(null), []);
-
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -510,17 +747,14 @@
           lessonSlug: LESSON_CONFIG.id
         }, '*');
       }, [currentSlide]);
-
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
         setIsAnimating(true);
         setDirection(newSlide > currentSlideRef.current ? 1 : -1);
         setCurrentSlide(newSlide);
       }, [isAnimating]);
-
       const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
       const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
-
       useEffect(() => {
         const handleKeyDown = (e) => {
           if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
@@ -529,33 +763,32 @@
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
       }, [nextSlide, prevSlide]);
-
       const slideVariants = {
         enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
         center: { x: 0, opacity: 1 },
         exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
       };
-
       const renderSlide = (slide) => {
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'channel-comparison': return <ChannelComparisonSlide data={slide} />;
-          case 'comparison-grid': return <ComparisonGridSlide data={slide} />;
-          case 'pro-tip': return <ProTipSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'open-rate-battle': return <OpenRateBattleSlide />;
+          case 'psychology-comparison': return <PsychologyComparisonSlide />;
+          case 'timing-visual': return <TimingVisualSlide />;
+          case 'friend-reminder': return <FriendReminderSlide />;
+          case 'message-battle': return <MessageBattleSlide />;
+          case 'two-way-flow': return <TwoWayFlowSlide />;
+          case 'revenue-calculator': return <RevenueCalculatorSlide />;
+          case 'best-practices': return <BestPracticesSlide />;
+          case 'get-started-sms': return <GetStartedSMSSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };
-
       const showPrev = currentSlide > 0;
       const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
-
       return (
         <div className="w-full h-screen bg-white flex flex-col relative">
           <div className="flex-1 relative overflow-hidden z-20">
@@ -586,7 +819,7 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    ReactDOM.createRoot(document.getElementById('root')).render(<LessonApp />);
   </script>
 </body>
 </html>

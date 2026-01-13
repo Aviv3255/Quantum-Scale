@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -58,25 +55,15 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -92,31 +79,15 @@
       };
 
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
           style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+            position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px',
+            borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white',
+            border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s'
           }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
             <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
@@ -129,80 +100,21 @@
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
+    // ============ END ADMIN REPORTER ============
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-        const slides = [
-      { type: 'welcome', learningGoals: [
-        'How brains associate shapes with emotions instantly',
-        'Curves vs angles: which triggers trust, which triggers power',
-        'Using shape psychology for buttons, logos, and layouts'
-      ]},
-      { type: 'hook', headline: 'The shape of your buttons is making you money. Or losing it.', subtext: 'Rounded corners feel safe and approachable. Sharp angles feel precise and powerful. Your brain decides in 50 milliseconds which one to trust. Porsche uses curves to say "elegant performance." Lamborghini uses angles to say "aggressive dominance." Same product category. Opposite shapes. Opposite emotions. This isn\'t random. It\'s neuroscience.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/BMW.svg', brandName: 'Porsche'},
-      { type: 'content', title: 'Shapes Are Emotional Triggers', body: 'Your reptilian brain evolved to read the environment fast. Curves in nature = safe (rolling hills, fruit, faces). Angles in nature = danger (thorns, rocks, claws). This hardwiring is instant and subconscious. Before you read a word, the shape has already told your brain how to feel. Rounded = comfortable. Angular = precise.' },
-      { type: 'visual', title: 'The Shape Psychology Spectrum', visualType: 'comparison', data: {
-        left: { label: 'Curves', value: '●', result: 'Safe, Warm, Organic', color: '#06b6d4' },
-        right: { label: 'Angles', value: '◆', result: 'Sharp, Precise, Tech', color: '#8b5cf6' },
-        center: { label: 'Shape = Emotion', value: '⚡', result: '50ms decision', color: '#10b981' }
-      }},
-      { type: 'cards', title: 'When To Use Curves', items: [
-        { title: 'Wellness & Health', description: 'Calm, natural, nurturing. Think skincare, supplements, meditation apps. Curves say "we care about you."' },
-        { title: 'Family & Kids', description: 'Safe, friendly, non-threatening. Toys, childcare, education. Curves remove fear.' },
-        { title: 'Food & Hospitality', description: 'Inviting, warm, comforting. Restaurants, cafes, meal kits. Curves make you hungry and welcome.' },
-        { title: 'Lifestyle & Fashion', description: 'Elegant, organic, human. Apparel, beauty, home goods. Curves feel premium without intimidation.' }
-      ]},
-      { type: 'cards', title: 'When To Use Angles', items: [
-        { title: 'Tech & Software', description: 'Precise, efficient, cutting-edge. SaaS, AI tools, dev products. Angles say "we\'re serious."' },
-        { title: 'Finance & B2B', description: 'Professional, trustworthy, no-nonsense. Banking, consulting, enterprise tools. Angles build authority.' },
-        { title: 'Performance & Sports', description: 'Aggressive, fast, powerful. Fitness gear, cars, gaming. Angles trigger adrenaline.' },
-        { title: 'Luxury & Prestige', description: 'Exclusive, sharp, aspirational. High-end watches, cars, real estate. Angles = status.' }
-      ]},
-      { type: 'example', scenario: 'Porsche 911 vs Lamborghini Aventador', before: { label: 'Porsche 911 (Curves)', text: 'Rounded edges, flowing lines, soft curves. Emotion: Elegant, timeless, refined. Message: "Sophisticated performance"' }, after: { label: 'Lamborghini Aventador (Angles)', text: 'Sharp edges, aggressive lines, angular body. Emotion: Dominant, fierce, powerful. Message: "Raw aggression"' }, insight: 'Same category (supercars). Opposite shapes. Opposite customer emotions.' },
-      { type: 'content', title: 'The Button Shape Test', body: 'Your CTA button shape is telling customers how to feel. Rounded button (16px radius): "This is safe, try it." Sharp button (4px radius): "This is serious, commit now." Medium rounded (8px): "Professional but friendly." The shape sets the tone before they read the copy. Match the shape to the emotion you want to trigger.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sharing_with_a_friend_two_monkeys_one_explaini_b30f53d7-8f44-4b0a-8c27-ad2e11f08a64_1.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'Shape Psychology In Action', visualType: 'stats', data: [
-        { value: '50ms', label: 'shape processing', subtext: 'Before reading any text' },
-        { value: '2.6x', label: 'recall boost', subtext: 'Curves for wellness brands' },
-        { value: '43%', label: 'trust increase', subtext: 'Angles for tech products' }
-      ]},
-      { type: 'example', scenario: 'Headspace vs GitHub', before: { label: 'Headspace (Meditation)', text: 'Soft rounded buttons, circular icons, flowing shapes. Feeling: Calm, safe, inviting. Perfect for meditation app' }, after: { label: 'GitHub (Developer Tools)', text: 'Sharp buttons, angular UI, precise edges. Feeling: Technical, efficient, professional. Perfect for code platform' }, insight: 'Both use shape psychology perfectly for their audience.' },
-      { type: 'content', title: 'The Logo Shape Rule', body: 'Circle/Oval logos: Community, unity, inclusivity (Target, Pepsi, BMW). Square/Rectangle logos: Stability, trust, reliability (Microsoft, Adobe, American Express). Triangle/Sharp logos: Innovation, direction, energy (Adidas, Reebok, Delta). Your logo shape is your brand\'s first impression. Choose the emotion, then the shape.' },
-      { type: 'cards', title: 'Applying Shape Psychology', items: [
-        { title: 'CTAs & Buttons', description: 'Wellness/lifestyle: 16px+ border radius. Tech/finance: 4-8px border radius. Match button shape to brand emotion.' },
-        { title: 'Cards & Containers', description: 'Friendly brands: soft rounded cards. Professional brands: subtle rounded or sharp edges. Consistency matters.' },
-        { title: 'Icons & Graphics', description: 'Curves for human-focused products. Angles for tech/performance products. Icons reinforce brand feeling.' },
-        { title: 'Overall Layout', description: 'Organic flowing layouts: creative/lifestyle. Grid-based angular layouts: professional/tech. Structure = emotion.' }
-      ]},
-      { type: 'quiz', question: 'Why do wellness brands like Headspace use rounded buttons while tech brands like GitHub use angular buttons?', options: ['Rounded buttons are easier to click on mobile', 'Shapes trigger instant emotions: curves feel safe/warm, angles feel precise/technical', 'Angular buttons look more modern', 'Rounded buttons are a current design trend'], correctIndex: 1, feedback: { correct: 'Exactly! Shape psychology works in milliseconds. Curves trigger safety, warmth, and organic feelings - perfect for wellness. Angles trigger precision, efficiency, and technical trust - perfect for developer tools. The shape sets the emotional tone before you read a word.', incorrect: 'Not quite. It\'s not about trends or clickability - it\'s about emotion. Your brain associates curves with safety and nature (perfect for meditation) and angles with precision and tech (perfect for code). Shape = instant emotional signal.' }},
-      { type: 'completion' }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -210,9 +122,621 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Circle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/></svg>,
+      Square: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>,
+      Triangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 22 22 2 22"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Brain: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Settings: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      Monitor: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
+      Car: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"/><circle cx="6.5" cy="16.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>,
+      Smile: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>,
+      Utensils: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>,
+      ShoppingBag: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+      Briefcase: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+      Dumbbell: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>,
+      Crown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M4 16c0 2 1.5 4 8 4s8-2 8-4"/></svg>
     };
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      const numericValue = parseFloat(value.toString().replace(/[^0-9.]/g, ''));
+      const hasDecimal = value.toString().includes('.');
+
+      useEffect(() => {
+        let startTime;
+        const animate = (currentTime) => {
+          if (!startTime) startTime = currentTime;
+          const progress = Math.min((currentTime - startTime) / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          setCount(numericValue * easeOut);
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [numericValue, duration]);
+
+      return <span>{prefix}{hasDecimal ? count.toFixed(1) : Math.floor(count)}{suffix}</span>;
+    };
+
+    // ============ SLIDES DATA ============
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'How brains associate shapes with emotions instantly',
+        'Curves vs angles: which triggers trust, which triggers power',
+        'Using shape psychology for buttons, logos, and layouts'
+      ]},
+      { type: 'hook', headline: 'The shape of your buttons is making you money. Or losing it.', subtext: 'Rounded corners feel safe and approachable. Sharp angles feel precise and powerful. Your brain decides in 50 milliseconds which one to trust. Porsche uses curves to say "elegant performance." Lamborghini uses angles to say "aggressive dominance." Same product category. Opposite shapes. Opposite emotions. This isn\'t random. It\'s neuroscience.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/BMW.svg', brandName: 'Porsche'},
+      { type: 'brain-speed' },
+      { type: 'shape-spectrum' },
+      { type: 'curves-industries' },
+      { type: 'angles-industries' },
+      { type: 'car-battle' },
+      { type: 'button-demo' },
+      { type: 'shape-stats' },
+      { type: 'brand-shapes' },
+      { type: 'app-comparison' },
+      { type: 'application-grid' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why do wellness brands like Headspace use rounded buttons while tech brands like GitHub use angular buttons?', options: ['Rounded buttons are easier to click on mobile', 'Shapes trigger instant emotions: curves feel safe/warm, angles feel precise/technical', 'Angular buttons look more modern', 'Rounded buttons are a current design trend'], correctIndex: 1, feedback: { correct: 'Exactly! Shape psychology works in milliseconds. Curves trigger safety, warmth, and organic feelings - perfect for wellness. Angles trigger precision, efficiency, and technical trust - perfect for developer tools. The shape sets the emotional tone before you read a word.', incorrect: 'Not quite. It\'s not about trends or clickability - it\'s about emotion. Your brain associates curves with safety and nature (perfect for meditation) and angles with precision and tech (perfect for code). Shape = instant emotional signal.' }},
+      { type: 'completion' }
+    ];
+
+    // ============ UNIQUE SLIDE COMPONENTS ============
+
+    // Brain Speed Slide - Shows 50ms processing
+    const BrainSpeedSlide = () => {
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }}>The Science</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">Shapes Are Emotional Triggers</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #06b6d4, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(6, 182, 212, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icons.Brain />
+                </div>
+                <span className="text-white font-bold">Reptilian Brain</span>
+              </div>
+              <p className="text-neutral-400 text-sm leading-relaxed">Your ancient brain evolved to read the environment fast. Before you read a single word, the shape has already told your brain how to feel.</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+              <div className="text-center">
+                <div className="text-5xl font-bold mb-2" style={{ color: '#8b5cf6' }}>
+                  {showResult ? <AnimatedCounter value={50} suffix="ms" /> : '...'}
+                </div>
+                <div className="text-white font-semibold mb-1">Shape Processing Time</div>
+                <div className="text-neutral-400 text-xs">Before you read ANY text</div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="grid grid-cols-2 gap-4">
+            <div style={{ background: 'rgba(6, 182, 212, 0.1)', borderRadius: '12px', padding: '16px', textAlign: 'center', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
+              <div className="text-2xl mb-2" style={{ color: '#06b6d4' }}>Curves</div>
+              <div className="text-neutral-600 text-sm">Rolling hills, fruit, faces</div>
+              <div className="text-xs text-neutral-500 mt-1">= SAFE</div>
+            </div>
+            <div style={{ background: 'rgba(139, 92, 246, 0.1)', borderRadius: '12px', padding: '16px', textAlign: 'center', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
+              <div className="text-2xl mb-2" style={{ color: '#8b5cf6' }}>Angles</div>
+              <div className="text-neutral-600 text-sm">Thorns, rocks, claws</div>
+              <div className="text-xs text-neutral-500 mt-1">= DANGER</div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Shape Spectrum Slide - Interactive spectrum from curves to angles
+    const ShapeSpectrumSlide = () => {
+      const [activeIndex, setActiveIndex] = useState(2);
+      const spectrum = [
+        { shape: 'circle', label: 'Full Circle', emotion: 'Community, Unity', color: '#06b6d4', radius: '50%' },
+        { shape: 'rounded', label: 'Rounded', emotion: 'Friendly, Approachable', color: '#14b8a6', radius: '16px' },
+        { shape: 'mixed', label: 'Mixed', emotion: 'Balanced, Professional', color: '#8b5cf6', radius: '8px' },
+        { shape: 'sharp', label: 'Sharp', emotion: 'Precise, Technical', color: '#f59e0b', radius: '4px' },
+        { shape: 'angular', label: 'Angular', emotion: 'Aggressive, Powerful', color: '#ef4444', radius: '0px' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveIndex(i => (i + 1) % spectrum.length);
+        }, 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-2xl md:text-4xl text-black mb-2">The Shape Psychology Spectrum</h2>
+            <p className="text-neutral-500">Click or watch the auto-cycle</p>
+          </motion.div>
+
+          <div className="flex justify-center items-end gap-3 md:gap-6 mb-8">
+            {spectrum.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  width: '60px', height: '60px', cursor: 'pointer',
+                  background: i === activeIndex ? item.color : '#e5e7eb',
+                  borderRadius: item.radius,
+                  transform: i === activeIndex ? 'scale(1.3)' : 'scale(1)',
+                  transition: 'all 0.3s ease',
+                  boxShadow: i === activeIndex ? `0 0 30px ${item.color}40` : 'none'
+                }} />
+            ))}
+          </div>
+
+          <motion.div key={activeIndex} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${spectrum[activeIndex].color}, transparent)` }} />
+            <div className="text-3xl font-bold mb-2" style={{ color: spectrum[activeIndex].color }}>{spectrum[activeIndex].label}</div>
+            <div className="text-white text-lg">{spectrum[activeIndex].emotion}</div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Curves Industries Slide
+    const CurvesIndustriesSlide = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const industries = [
+        { icon: <Icons.Heart />, title: 'Wellness & Health', desc: 'Calm, natural, nurturing. Skincare, supplements, meditation apps.', reason: '"We care about you"' },
+        { icon: <Icons.Smile />, title: 'Family & Kids', desc: 'Safe, friendly, non-threatening. Toys, childcare, education.', reason: '"Removes fear"' },
+        { icon: <Icons.Utensils />, title: 'Food & Hospitality', desc: 'Inviting, warm, comforting. Restaurants, cafes, meal kits.', reason: '"Feels welcome"' },
+        { icon: <Icons.ShoppingBag />, title: 'Lifestyle & Fashion', desc: 'Elegant, organic, human. Apparel, beauty, home goods.', reason: '"Premium without intimidation"' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(i => (i + 1) % industries.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }}>Curves</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">When To Use Curves</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {industries.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  background: i === activeIndex ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  borderRadius: '16px', padding: '16px', cursor: 'pointer', position: 'relative', overflow: 'hidden',
+                  boxShadow: i === activeIndex ? '0 0 30px rgba(6, 182, 212, 0.2)' : 'none',
+                  transition: 'all 0.3s ease'
+                }}>
+                {i === activeIndex && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #06b6d4, transparent)' }} />}
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: i === activeIndex ? 'rgba(6, 182, 212, 0.2)' : 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', color: '#06b6d4' }}>
+                  {item.icon}
+                </div>
+                <h3 className="font-bold text-sm mb-1" style={{ color: i === activeIndex ? 'white' : '#171717' }}>{item.title}</h3>
+                <p className="text-xs leading-relaxed" style={{ color: i === activeIndex ? '#a3a3a3' : '#737373' }}>{item.desc}</p>
+                <div className="mt-2 text-xs font-semibold" style={{ color: '#06b6d4' }}>{item.reason}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Angles Industries Slide
+    const AnglesIndustriesSlide = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      const industries = [
+        { icon: <Icons.Monitor />, title: 'Tech & Software', desc: 'Precise, efficient, cutting-edge. SaaS, AI tools, dev products.', reason: '"We\'re serious"' },
+        { icon: <Icons.Briefcase />, title: 'Finance & B2B', desc: 'Professional, trustworthy, no-nonsense. Banking, consulting.', reason: '"Builds authority"' },
+        { icon: <Icons.Dumbbell />, title: 'Performance & Sports', desc: 'Aggressive, fast, powerful. Fitness gear, cars, gaming.', reason: '"Triggers adrenaline"' },
+        { icon: <Icons.Crown />, title: 'Luxury & Prestige', desc: 'Exclusive, sharp, aspirational. High-end watches, cars.', reason: '"Signals status"' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(i => (i + 1) % industries.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>Angles</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">When To Use Angles</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {industries.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setActiveIndex(i)}
+                style={{
+                  background: i === activeIndex ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  borderRadius: '4px', padding: '16px', cursor: 'pointer', position: 'relative', overflow: 'hidden',
+                  boxShadow: i === activeIndex ? '0 0 30px rgba(139, 92, 246, 0.2)' : 'none',
+                  transition: 'all 0.3s ease'
+                }}>
+                {i === activeIndex && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />}
+                <div style={{ width: '40px', height: '40px', borderRadius: '4px', background: i === activeIndex ? 'rgba(139, 92, 246, 0.2)' : 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px', color: '#8b5cf6' }}>
+                  {item.icon}
+                </div>
+                <h3 className="font-bold text-sm mb-1" style={{ color: i === activeIndex ? 'white' : '#171717' }}>{item.title}</h3>
+                <p className="text-xs leading-relaxed" style={{ color: i === activeIndex ? '#a3a3a3' : '#737373' }}>{item.desc}</p>
+                <div className="mt-2 text-xs font-semibold" style={{ color: '#8b5cf6' }}>{item.reason}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Car Battle Slide - Porsche vs Lamborghini
+    const CarBattleSlide = () => {
+      const [showInsight, setShowInsight] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowInsight(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(251, 191, 36, 0.1)', color: '#fbbf24' }}>Real Example</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Porsche 911 vs Lamborghini Aventador</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #06b6d4, transparent)' }} />
+              <div className="flex items-center gap-2 mb-3">
+                <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(6, 182, 212, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icons.Circle />
+                </div>
+                <span className="text-white font-bold">Porsche 911</span>
+              </div>
+              <div className="mb-3">
+                <div className="text-2xl font-bold mb-1" style={{ color: '#06b6d4' }}>CURVES</div>
+                <div className="text-neutral-400 text-sm">Rounded edges, flowing lines, soft curves</div>
+              </div>
+              <div style={{ background: 'rgba(6, 182, 212, 0.1)', borderRadius: '12px', padding: '12px', border: '1px solid rgba(6, 182, 212, 0.2)' }}>
+                <div className="text-xs text-neutral-500 mb-1">Emotion Triggered</div>
+                <div className="text-white font-semibold">Elegant, Timeless, Refined</div>
+                <div className="text-xs mt-1" style={{ color: '#06b6d4' }}>"Sophisticated performance"</div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '4px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-2 mb-3">
+                <div style={{ width: '36px', height: '36px', borderRadius: '4px', background: 'rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icons.Triangle />
+                </div>
+                <span className="text-white font-bold">Lamborghini Aventador</span>
+              </div>
+              <div className="mb-3">
+                <div className="text-2xl font-bold mb-1" style={{ color: '#ef4444' }}>ANGLES</div>
+                <div className="text-neutral-400 text-sm">Sharp edges, aggressive lines, angular body</div>
+              </div>
+              <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderRadius: '4px', padding: '12px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                <div className="text-xs text-neutral-500 mb-1">Emotion Triggered</div>
+                <div className="text-white font-semibold">Dominant, Fierce, Powerful</div>
+                <div className="text-xs mt-1" style={{ color: '#ef4444' }}>"Raw aggression"</div>
+              </div>
+            </motion.div>
+          </div>
+
+          <AnimatePresence>
+            {showInsight && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)', borderRadius: '12px', padding: '16px', textAlign: 'center' }}>
+                <div className="flex items-center justify-center gap-2 text-black font-bold">
+                  <Icons.Lightbulb />
+                  <span>Same category (supercars). Opposite shapes. Opposite customer emotions.</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Button Demo Slide - Interactive button radius demo
+    const ButtonDemoSlide = () => {
+      const [activeRadius, setActiveRadius] = useState(1);
+      const buttons = [
+        { radius: '20px', label: 'Rounded (20px)', message: '"This is safe, try it"', color: '#06b6d4', use: 'Wellness, lifestyle' },
+        { radius: '8px', label: 'Medium (8px)', message: '"Professional but friendly"', color: '#8b5cf6', use: 'Balanced brands' },
+        { radius: '2px', label: 'Sharp (2px)', message: '"This is serious, commit now"', color: '#ef4444', use: 'Tech, finance' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(6, 182, 212, 0.1)', color: '#06b6d4' }}>Interactive Demo</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Button Shape Test</h2>
+            <p className="text-neutral-500 text-sm mt-2">Your CTA button shape is telling customers how to feel</p>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch mb-6">
+            {buttons.map((btn, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setActiveRadius(i)}
+                style={{
+                  background: i === activeRadius ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  borderRadius: '16px', padding: '24px', flex: 1, cursor: 'pointer', position: 'relative', overflow: 'hidden',
+                  textAlign: 'center', transition: 'all 0.3s ease',
+                  boxShadow: i === activeRadius ? `0 0 30px ${btn.color}30` : 'none'
+                }}>
+                {i === activeRadius && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${btn.color}, transparent)` }} />}
+                <button style={{ background: btn.color, color: 'white', padding: '12px 32px', borderRadius: btn.radius, border: 'none', fontWeight: 'bold', marginBottom: '16px', cursor: 'pointer' }}>
+                  Buy Now
+                </button>
+                <div className="font-bold mb-1" style={{ color: i === activeRadius ? 'white' : '#171717' }}>{btn.label}</div>
+                <div className="text-sm mb-2" style={{ color: btn.color }}>{btn.message}</div>
+                <div className="text-xs" style={{ color: i === activeRadius ? '#a3a3a3' : '#737373' }}>{btn.use}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            className="text-center text-neutral-500 text-sm">
+            The shape sets the tone before they read the copy
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Shape Stats Slide - AnimatedCounter stats
+    const ShapeStatsSlide = () => {
+      const stats = [
+        { value: '50', suffix: 'ms', label: 'Shape Processing', subtext: 'Before reading any text', color: '#06b6d4' },
+        { value: '2.6', suffix: 'x', label: 'Recall Boost', subtext: 'Curves for wellness brands', color: '#8b5cf6' },
+        { value: '43', suffix: '%', label: 'Trust Increase', subtext: 'Angles for tech products', color: '#10b981' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-2xl md:text-4xl text-black">Shape Psychology In Action</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '28px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: stat.color }}>
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-white font-semibold mb-1">{stat.label}</div>
+                <div className="text-neutral-400 text-xs">{stat.subtext}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Brand Shapes Slide - Logo shape categories
+    const BrandShapesSlide = () => {
+      const [activeCategory, setActiveCategory] = useState(0);
+      const categories = [
+        { shape: <Icons.Circle />, label: 'Circle/Oval', meaning: 'Community, Unity, Inclusivity', brands: 'Target, Pepsi, BMW', color: '#06b6d4' },
+        { shape: <Icons.Square />, label: 'Square/Rectangle', meaning: 'Stability, Trust, Reliability', brands: 'Microsoft, Adobe, American Express', color: '#8b5cf6' },
+        { shape: <Icons.Triangle />, label: 'Triangle/Sharp', meaning: 'Innovation, Direction, Energy', brands: 'Adidas, Reebok, Delta', color: '#ef4444' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveCategory(i => (i + 1) % categories.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">The Logo Shape Rule</h2>
+            <p className="text-neutral-500 text-sm">Your logo shape is your brand's first impression</p>
+          </motion.div>
+
+          <div className="flex justify-center gap-4 mb-6">
+            {categories.map((cat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setActiveCategory(i)}
+                style={{
+                  width: '80px', height: '80px', borderRadius: i === 0 ? '50%' : i === 1 ? '12px' : '4px',
+                  background: i === activeCategory ? cat.color : '#e5e7eb',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+                  color: i === activeCategory ? 'white' : '#6b7280',
+                  transform: i === activeCategory ? 'scale(1.15)' : 'scale(1)',
+                  boxShadow: i === activeCategory ? `0 0 30px ${cat.color}40` : 'none',
+                  transition: 'all 0.3s ease'
+                }}>
+                {cat.shape}
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div key={activeCategory} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${categories[activeCategory].color}, transparent)` }} />
+            <div className="text-2xl font-bold mb-2" style={{ color: categories[activeCategory].color }}>{categories[activeCategory].label}</div>
+            <div className="text-white text-lg mb-2">{categories[activeCategory].meaning}</div>
+            <div className="text-neutral-400 text-sm">{categories[activeCategory].brands}</div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // App Comparison Slide - Headspace vs GitHub
+    const AppComparisonSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>Perfect Execution</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Headspace vs GitHub</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #f97316, transparent)' }} />
+              <div className="text-center mb-4">
+                <div className="inline-block px-4 py-2 rounded-full text-white font-bold text-sm" style={{ background: '#f97316' }}>Headspace</div>
+              </div>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center gap-2 text-neutral-400 text-sm">
+                  <Icons.Check /> Soft rounded buttons
+                </div>
+                <div className="flex items-center gap-2 text-neutral-400 text-sm">
+                  <Icons.Check /> Circular icons
+                </div>
+                <div className="flex items-center gap-2 text-neutral-400 text-sm">
+                  <Icons.Check /> Flowing shapes
+                </div>
+              </div>
+              <div style={{ background: 'rgba(249, 115, 22, 0.1)', borderRadius: '16px', padding: '12px', textAlign: 'center', border: '1px solid rgba(249, 115, 22, 0.2)' }}>
+                <div className="text-white font-semibold mb-1">Feeling: Calm, Safe, Inviting</div>
+                <div className="text-xs" style={{ color: '#f97316' }}>Perfect for meditation app</div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '4px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #6366f1, transparent)' }} />
+              <div className="text-center mb-4">
+                <div className="inline-block px-4 py-2 rounded text-white font-bold text-sm" style={{ background: '#6366f1', borderRadius: '4px' }}>GitHub</div>
+              </div>
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center gap-2 text-neutral-400 text-sm">
+                  <Icons.Check /> Sharp buttons
+                </div>
+                <div className="flex items-center gap-2 text-neutral-400 text-sm">
+                  <Icons.Check /> Angular UI
+                </div>
+                <div className="flex items-center gap-2 text-neutral-400 text-sm">
+                  <Icons.Check /> Precise edges
+                </div>
+              </div>
+              <div style={{ background: 'rgba(99, 102, 241, 0.1)', borderRadius: '4px', padding: '12px', textAlign: 'center', border: '1px solid rgba(99, 102, 241, 0.2)' }}>
+                <div className="text-white font-semibold mb-1">Feeling: Technical, Efficient, Pro</div>
+                <div className="text-xs" style={{ color: '#6366f1' }}>Perfect for code platform</div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="mt-4 text-center text-neutral-500 text-sm">
+            Both use shape psychology perfectly for their audience
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Application Grid Slide
+    const ApplicationGridSlide = () => {
+      const apps = [
+        { icon: <Icons.Target />, title: 'CTAs & Buttons', curves: '16px+ radius', angles: '4-8px radius', tip: 'Match to brand emotion' },
+        { icon: <Icons.Square />, title: 'Cards & Containers', curves: 'Soft rounded cards', angles: 'Subtle/sharp edges', tip: 'Consistency matters' },
+        { icon: <Icons.Settings />, title: 'Icons & Graphics', curves: 'Human-focused products', angles: 'Tech/performance products', tip: 'Icons reinforce feeling' },
+        { icon: <Icons.Monitor />, title: 'Overall Layout', curves: 'Organic flowing layouts', angles: 'Grid-based angular', tip: 'Structure = emotion' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">Applying Shape Psychology</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {apps.map((app, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '16px', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${i % 2 === 0 ? '#06b6d4' : '#8b5cf6'}, transparent)` }} />
+                <div className="flex items-center gap-2 mb-3">
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: `rgba(${i % 2 === 0 ? '6, 182, 212' : '139, 92, 246'}, 0.2)`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: i % 2 === 0 ? '#06b6d4' : '#8b5cf6' }}>
+                    {app.icon}
+                  </div>
+                  <span className="text-white font-bold text-sm">{app.title}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 mb-2">
+                  <div style={{ background: 'rgba(6, 182, 212, 0.1)', borderRadius: '8px', padding: '8px', fontSize: '11px' }}>
+                    <div style={{ color: '#06b6d4' }}>Curves</div>
+                    <div className="text-neutral-400">{app.curves}</div>
+                  </div>
+                  <div style={{ background: 'rgba(139, 92, 246, 0.1)', borderRadius: '4px', padding: '8px', fontSize: '11px' }}>
+                    <div style={{ color: '#8b5cf6' }}>Angles</div>
+                    <div className="text-neutral-400">{app.angles}</div>
+                  </div>
+                </div>
+                <div className="text-xs text-neutral-500">{app.tip}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Elite Insight Slide
+    const EliteInsightSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', width: '100%', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(6, 182, 212, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, #06b6d4, #8b5cf6, #06b6d4)' }} />
+
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold" style={{ background: 'rgba(6, 182, 212, 0.2)', color: '#06b6d4' }}>
+                <Icons.Lightbulb />
+                The Shape Insight
+              </div>
+            </div>
+
+            <blockquote className="text-xl md:text-2xl text-white text-center font-medium mb-6 leading-relaxed">
+              "Choose the emotion you want to trigger, then choose the shape. Not the other way around."
+            </blockquote>
+
+            <div className="grid grid-cols-4 gap-3">
+              {[
+                { icon: <Icons.Brain />, label: '50ms', subtext: 'Decision' },
+                { icon: <Icons.Circle />, label: 'Curves', subtext: 'Safe' },
+                { icon: <Icons.Triangle />, label: 'Angles', subtext: 'Power' },
+                { icon: <Icons.Target />, label: 'Match', subtext: 'Emotion' }
+              ].map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '12px', textAlign: 'center' }}>
+                  <div style={{ color: '#06b6d4', marginBottom: '4px' }}>{item.icon}</div>
+                  <div className="text-white font-bold text-sm">{item.label}</div>
+                  <div className="text-neutral-500 text-xs">{item.subtext}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ STANDARD SLIDES ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -254,172 +778,12 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
             <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
           </motion.div>
         )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const PopcornVisual = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Decoy In Action</motion.h2>
-        <div className="flex items-end justify-center gap-4 md:gap-8">
-          {/* Small */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="flex flex-col items-center">
-            <div className="w-16 h-20 md:w-20 md:h-24 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-t-2xl rounded-b-lg relative overflow-hidden shadow-lg">
-              <div className="absolute top-2 left-1/2 -translate-x-1/2 text-3xl">🍿</div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
-            <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-neutral-800">{data.small.price}</div>
-              <div className="text-sm text-neutral-500">{data.small.label}</div>
-            </div>
-          </motion.div>
-
-          {/* Medium (Decoy) */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex flex-col items-center relative">
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-red-500 text-white text-[10px] font-bold rounded-full">DECOY</div>
-            <div className="w-20 h-28 md:w-24 md:h-32 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-t-2xl rounded-b-lg relative overflow-hidden shadow-lg opacity-60 border-2 border-dashed border-red-400">
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 text-4xl">🍿</div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
-            <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-red-500 line-through">{data.medium.price}</div>
-              <div className="text-sm text-red-400">{data.medium.label}</div>
-            </div>
-          </motion.div>
-
-          {/* Large (Best) */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex flex-col items-center relative">
-            <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-amber-500 text-white text-[10px] font-bold rounded-full flex items-center gap-1"><Icons.Star />BEST</div>
-            <div className="w-24 h-36 md:w-28 md:h-40 bg-gradient-to-b from-yellow-300 to-yellow-500 rounded-t-3xl rounded-b-lg relative overflow-hidden shadow-xl ring-4 ring-amber-400">
-              <div className="absolute top-4 left-1/2 -translate-x-1/2 text-5xl">🍿</div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
-            <div className="mt-3 text-center">
-              <div className="text-2xl font-bold text-amber-600">{data.large.price}</div>
-              <div className="text-sm text-amber-600 font-semibold">{data.large.label}</div>
-              <div className="text-xs text-green-600 mt-1">Only 50¢ more!</div>
-            </div>
-          </motion.div>
-        </div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center mt-8 text-neutral-500 text-sm max-w-md">The medium exists only to make the large look like a steal. Nobody buys it.</motion.p>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'popcorn') {
-        return <PopcornVisual data={data.data} />;
-      }
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3 relative z-10">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
     );
 
@@ -484,6 +848,7 @@
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -497,7 +862,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -536,10 +900,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'brain-speed': return <BrainSpeedSlide />;
+          case 'shape-spectrum': return <ShapeSpectrumSlide />;
+          case 'curves-industries': return <CurvesIndustriesSlide />;
+          case 'angles-industries': return <AnglesIndustriesSlide />;
+          case 'car-battle': return <CarBattleSlide />;
+          case 'button-demo': return <ButtonDemoSlide />;
+          case 'shape-stats': return <ShapeStatsSlide />;
+          case 'brand-shapes': return <BrandShapesSlide />;
+          case 'app-comparison': return <AppComparisonSlide />;
+          case 'application-grid': return <ApplicationGridSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
@@ -579,7 +950,7 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    ReactDOM.createRoot(document.getElementById('root')).render(<LessonApp />);
   </script>
 </body>
 </html>

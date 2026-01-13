@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson | Quantum Scale</title>
+  <title>The Offer is 90% of the Battle | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #f97316; --accent-dark: #e55f02; --accent-light: #ff872a; --accent-rgb: 249, 115, 22; }
+    :root { --accent: #f97316; --accent-dark: #ea580c; --accent-light: #fb923c; --accent-rgb: 249, 115, 22; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -39,231 +36,53 @@
 
     const LESSON_CONFIG = {
       id: 'offer-is-everything',
-      title: 'Lesson',
-      description: '',
+      title: 'The Offer is 90% of the Battle',
+      description: 'Your offer is not just your product. It is the FULL PACKAGE.',
       accentColor: '#f97316',
-      duration: '5 min',
+      duration: '6 min',
       nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
+    // Admin Reporter System
     let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
+      const handleReport = (e) => { e.stopPropagation(); e.preventDefault(); if (window.parent !== window) { window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*'); } };
+      return ( <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }} onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg> </button> );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-        {
-          type: 'welcome',
-          content: {
-            greeting: typeof window.getGreeting === 'function' ? window.getGreeting() : 'Welcome back',
-            title: 'The Offer is 90% of the Battle',
-            subtitle: 'Your offer isn\'t just your product. It\'s price + bundles + guarantee + positioning.',
-            duration: '4 min'
-          }
-        },
-        {
-          type: 'hook',
-          content: {
-            text: 'Your offer is NOT just your product.',
-            subtext: 'It\'s the FULL PACKAGE.'
-          }
-        },
-        {
-          type: 'content',
-          content: {
-            title: 'What IS an offer?',
-            points: [
-              'Price (the number)',
-              'Bundles (multi-packs, kits)',
-              'Upsells (complementary products)',
-              'Guarantee (risk reversal)',
-              'Positioning (how you frame value)'
-            ]
-          }
-        },
-        {
-          type: 'visual',
-          content: {
-            title: 'The Luxury Lens',
-            example: 'Dior Tote Bag',
-            cost: '$57',
-            price: '$3,500',
-            insight: 'They\'re not selling cotton. They\'re selling STATUS.'
-          }
-        },
-        {
-          type: 'content',
-          content: {
-            title: 'Sabri Suby\'s First Move',
-            quote: '"The first thing I do when a client wires me 50k... I tell them to double your prices."',
-            subtext: 'Why? Because most brands UNDERVALUE themselves.',
-            attribution: '— Sabri Suby, King Kong Agency'
-          }
-        },
-        {
-          type: 'cards',
-          content: {
-            title: 'Engineer Value with Bundles',
-            cards: [
-              {
-                title: 'Multi-Packs',
-                description: 'Buy 1 for $50, Buy 3 for $120',
-                icon: '📦'
-              },
-              {
-                title: 'Premium Versions',
-                description: 'Standard $50, Deluxe w/ Travel Case $75',
-                icon: '✨'
-              },
-              {
-                title: 'Decoy Pricing',
-                description: 'Good $50, Better $75, Best $80',
-                icon: '🎯'
-              }
-            ]
-          }
-        },
-        {
-          type: 'content',
-          content: {
-            title: 'Tools That Make This Easy',
-            description: 'For bundles and quantity breaks, check out Upsell Koala. For premium upsells at checkout, Cart Drawer Upsell works well.',
-            note: 'Both methods work. Manual or tool. Your call.'
-          }
-        },
-        {
-          type: 'quiz',
-          content: {
-            question: 'What happens when you double your prices?',
-            options: [
-              { id: 'a', text: 'Conversion drops 50%', correct: false },
-              { id: 'b', text: 'Nothing changes', correct: false },
-              { id: 'c', text: 'Conversion often stays the same or increases', correct: true },
-              { id: 'd', text: 'You lose all your customers', correct: false }
-            ],
-            correctFeedback: 'Exactly! Higher prices often INCREASE perceived value. RPV/PPV explodes.',
-            incorrectFeedback: 'Not quite. Most brands are shocked to find conversion stays steady or even INCREASES with higher prices.'
-          }
-        },
-        {
-          type: 'example',
-          content: {
-            title: 'The Action',
-            steps: [
-              'Pick one product',
-              'Test a 2X price point',
-              'Watch conversion (it probably won\'t drop)',
-              'Watch RPV/PPV (it will probably skyrocket)',
-              'Repeat with other products'
-            ]
-          }
-        },
-        {
-          type: 'completion',
-          content: {
-            title: 'Holy Shit Moment',
-            insight: 'Stop competing on price. Test doubling your prices. You might be shocked.',
-            cta: 'Next Lesson',
-            nextLesson: '/learn'
-          }
-        }
-      ];
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(target);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.round(count)}{suffix}</span>;
+    };
 
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -271,10 +90,523 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Crown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Layers: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Gift: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+      ArrowRightCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>,
+      Settings: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      Quote: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Plus: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+      Equal: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/></svg>,
     };
 
+    // ============ SLIDES DATA ============
+    const slides = [
+      {
+        type: 'welcome',
+        learningGoals: [
+          'Why your offer is 90% of the battle',
+          'The 5 components of an irresistible offer',
+          'How to double your prices (and why it works)',
+          'Bundle strategies that multiply AOV'
+        ]
+      },
+      {
+        type: 'hook',
+        headline: 'Your offer is NOT just your product.',
+        subtext: 'It is the FULL PACKAGE: price + bundles + guarantee + positioning. Get this wrong, and no amount of ads will save you.'
+      },
+      { type: 'offer-equation' },
+      { type: 'offer-elements' },
+      { type: 'luxury-markup' },
+      { type: 'sabri-quote' },
+      { type: 'price-double-effect' },
+      { type: 'bundle-strategies' },
+      { type: 'decoy-pricing' },
+      {
+        type: 'quiz',
+        question: 'What typically happens when you double your prices?',
+        options: [
+          'Conversion drops 50%',
+          'Nothing changes',
+          'Conversion often stays the same or increases',
+          'You lose all your customers'
+        ],
+        correctIndex: 2,
+        feedback: {
+          correct: 'Exactly! Higher prices often INCREASE perceived value. Your revenue per visitor explodes while conversion holds steady.',
+          incorrect: 'Not quite. Most brands are shocked to find conversion stays steady or even INCREASES with higher prices. Price signals quality.'
+        }
+      },
+      { type: 'action-protocol' },
+      { type: 'impact-stats' },
+      { type: 'elite-insight' },
+      {
+        type: 'completion',
+        sources: []
+      }
+    ];
+
+    // ============ CUSTOM SLIDE COMPONENTS ============
+
+    // Offer Equation Slide - Animated formula OFFER = Price + Bundles + Guarantee + Positioning
+    const OfferEquationSlide = () => {
+      const [phase, setPhase] = useState(0);
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 400),
+          setTimeout(() => setPhase(2), 800),
+          setTimeout(() => setPhase(3), 1200),
+          setTimeout(() => setPhase(4), 1600),
+          setTimeout(() => setPhase(5), 2000)
+        ];
+        return () => timers.forEach(clearTimeout);
+      }, []);
+
+      const elements = [
+        { label: 'PRICE', icon: Icons.DollarSign, color: '#ef4444' },
+        { label: 'BUNDLES', icon: Icons.Package, color: '#f59e0b' },
+        { label: 'GUARANTEE', icon: Icons.Shield, color: '#10b981' },
+        { label: 'POSITIONING', icon: Icons.Target, color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(249, 115, 22, 0.1)', color: 'var(--accent)' }}>The Formula</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">What Makes an OFFER?</h2>
+          </motion.div>
+
+          {/* The Equation */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+            <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: phase >= 1 ? 1 : 0, scale: phase >= 1 ? 1 : 0.5 }} transition={{ type: 'spring' }}
+              className="px-6 py-4 rounded-2xl text-2xl md:text-3xl font-black text-white" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(249, 115, 22, 0.3)' }}>
+              OFFER
+            </motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 1 ? 1 : 0 }} className="text-3xl font-bold text-neutral-400">=</motion.div>
+
+            {elements.map((el, i) => (
+              <React.Fragment key={el.label}>
+                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: phase >= i + 2 ? 1 : 0, y: phase >= i + 2 ? 0 : 30 }} transition={{ type: 'spring' }}
+                  className="flex items-center gap-2 px-4 py-3 rounded-xl" style={{ background: `${el.color}15`, border: `2px solid ${el.color}40` }}>
+                  <el.icon />
+                  <span className="text-sm md:text-base font-bold" style={{ color: el.color }}>{el.label}</span>
+                </motion.div>
+                {i < 3 && <motion.span initial={{ opacity: 0 }} animate={{ opacity: phase >= i + 2 ? 1 : 0 }} className="text-2xl text-neutral-300"><Icons.Plus /></motion.span>}
+              </React.Fragment>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: phase >= 5 ? 1 : 0, y: phase >= 5 ? 0 : 20 }}
+            className="p-5 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-white text-sm md:text-base">Your product is just the vehicle. The <span className="font-bold" style={{ color: 'var(--accent)' }}>offer</span> is what makes people buy.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Offer Elements Detail Slide
+    const OfferElementsSlide = () => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(i => (i + 1) % 5), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      const elements = [
+        { label: 'Price', desc: 'The number on the tag. But more importantly, what that number SIGNALS.', icon: Icons.DollarSign, color: '#ef4444', example: '$50 says "meh". $500 says "premium".' },
+        { label: 'Bundles', desc: 'Multi-packs, kits, and collections that increase AOV and perceived value.', icon: Icons.Package, color: '#f59e0b', example: 'Buy 3 for $120 (vs $50 each) = +40% AOV' },
+        { label: 'Upsells', desc: 'Complementary products at checkout that boost revenue per customer.', icon: Icons.Layers, color: '#3b82f6', example: 'Add matching case for $25 = +30% RPV' },
+        { label: 'Guarantee', desc: 'Risk reversal that eliminates buyer hesitation and builds trust.', icon: Icons.Shield, color: '#10b981', example: '30-day money back = 2x conversion' },
+        { label: 'Positioning', desc: 'How you FRAME the value. The story around the product.', icon: Icons.Target, color: '#8b5cf6', example: 'Not "cotton bag" - "STATUS SYMBOL"' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The 5 Offer Elements</motion.h2>
+
+          <div className="grid md:grid-cols-5 gap-3">
+            {elements.map((el, i) => (
+              <motion.div key={el.label} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
+                className="relative rounded-xl p-4 cursor-pointer transition-all" onClick={() => setActiveIndex(i)}
+                style={{
+                  background: i === activeIndex ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                  border: i === activeIndex ? `2px solid ${el.color}` : '2px solid #e5e7eb',
+                  boxShadow: i === activeIndex ? `0 0 25px ${el.color}30` : 'none',
+                  transform: i === activeIndex ? 'scale(1.02)' : 'scale(1)'
+                }}>
+                {i === activeIndex && <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${el.color}, transparent)` }} />}
+                <div className="flex flex-col items-center text-center">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3" style={{ background: `${el.color}20`, color: el.color }}>
+                    <el.icon />
+                  </div>
+                  <span className={`font-bold text-sm ${i === activeIndex ? 'text-white' : 'text-neutral-900'}`}>{el.label}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div key={activeIndex} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+              className="mt-6 p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <p className="text-white text-sm md:text-base mb-3">{elements[activeIndex].desc}</p>
+              <div className="px-4 py-2 rounded-lg inline-block" style={{ background: `${elements[activeIndex].color}20`, border: `1px solid ${elements[activeIndex].color}40` }}>
+                <span className="text-xs md:text-sm" style={{ color: elements[activeIndex].color }}>{elements[activeIndex].example}</span>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Luxury Markup Slide - Dior $57 → $3,500
+    const LuxuryMarkupSlide = () => {
+      const [showTransform, setShowTransform] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowTransform(true), 800); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>The Luxury Lens</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">Dior Tote Bag</h2>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
+            {/* Cost Side */}
+            <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="relative p-6 rounded-2xl text-center w-full md:w-64" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Manufacturing Cost</p>
+              <div className="text-4xl md:text-5xl font-black text-white mb-2">$57</div>
+              <p className="text-neutral-400 text-sm">Cotton, thread, labor</p>
+              <div className="mt-3 px-3 py-1 rounded-full text-xs font-semibold inline-block" style={{ background: 'rgba(148, 163, 184, 0.2)', color: '#94a3b8' }}>COMMODITY</div>
+            </motion.div>
+
+            {/* Arrow */}
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: showTransform ? 1 : 0, scale: showTransform ? 1 : 0 }} className="text-4xl">
+              <Icons.ArrowRightCircle />
+            </motion.div>
+
+            {/* Retail Side */}
+            <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: showTransform ? 1 : 0, x: showTransform ? 0 : 50 }} transition={{ delay: 0.2 }}
+              className="relative p-6 rounded-2xl text-center w-full md:w-64" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(139, 92, 246, 0.3)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Retail Price</p>
+              <div className="text-4xl md:text-5xl font-black mb-2" style={{ color: '#8b5cf6' }}>$<AnimatedCounter target={3500} /></div>
+              <p className="text-neutral-400 text-sm">Status, identity, belonging</p>
+              <div className="mt-3 px-3 py-1 rounded-full text-xs font-semibold inline-block" style={{ background: 'rgba(139, 92, 246, 0.2)', color: '#8b5cf6' }}><Icons.Crown className="inline w-3 h-3 mr-1" />STATUS</div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: showTransform ? 1 : 0, y: showTransform ? 0 : 20 }} transition={{ delay: 0.5 }}
+            className="grid grid-cols-2 gap-4 mb-6">
+            <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)' }}>
+              <div className="text-2xl md:text-3xl font-black" style={{ color: '#8b5cf6' }}><AnimatedCounter target={6140} suffix="%" /></div>
+              <p className="text-xs text-neutral-600">Markup</p>
+            </div>
+            <div className="p-4 rounded-xl text-center" style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+              <div className="text-2xl md:text-3xl font-black" style={{ color: '#10b981' }}>$<AnimatedCounter target={3443} /></div>
+              <p className="text-xs text-neutral-600">Per-Unit Profit</p>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: showTransform ? 1 : 0, y: showTransform ? 0 : 20 }} transition={{ delay: 0.7 }}
+            className="p-5 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-white text-base md:text-lg">They are not selling cotton. They are selling <span className="font-bold" style={{ color: '#8b5cf6' }}>STATUS</span>.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Sabri Suby Quote Slide
+    const SabriQuoteSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+            className="relative p-8 rounded-2xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 50px rgba(249, 115, 22, 0.2)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="absolute top-6 left-6 opacity-20" style={{ color: 'var(--accent)' }}>
+              <Icons.Quote />
+            </div>
+
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+              className="text-xl md:text-2xl text-white leading-relaxed mb-6 relative z-10 pl-8">
+              "The first thing I do when a client wires me $50k... I tell them to <span className="font-bold" style={{ color: 'var(--accent)' }}>double your prices</span>."
+            </motion.p>
+
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+              className="flex items-center gap-4 pl-8">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', color: 'white' }}>SS</div>
+              <div>
+                <p className="text-white font-bold">Sabri Suby</p>
+                <p className="text-neutral-400 text-sm">Founder, King Kong Agency</p>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+            className="mt-6 p-4 rounded-xl text-center" style={{ background: 'rgba(249, 115, 22, 0.1)', border: '1px solid rgba(249, 115, 22, 0.3)' }}>
+            <p className="text-neutral-700 text-sm md:text-base"><span className="font-bold" style={{ color: 'var(--accent)' }}>Why?</span> Because most brands massively UNDERVALUE themselves.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Price Double Effect Slide
+    const PriceDoubleEffectSlide = () => {
+      const [showAfter, setShowAfter] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowAfter(true), 1000); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The 2X Price Effect</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Before */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}
+              className="relative p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-4">Before (What you think)</p>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center"><span className="text-neutral-400 text-sm">Price</span><span className="text-white font-bold">$50</span></div>
+                <div className="flex justify-between items-center"><span className="text-neutral-400 text-sm">Conversion</span><span className="text-white font-bold">3%</span></div>
+                <div className="flex justify-between items-center"><span className="text-neutral-400 text-sm">RPV</span><span className="text-white font-bold">$1.50</span></div>
+                <div className="h-px bg-neutral-700 my-2"></div>
+                <div className="flex justify-between items-center"><span className="text-neutral-400 text-sm">Per 1000 visitors</span><span className="text-xl font-black text-white">$1,500</span></div>
+              </div>
+            </motion.div>
+
+            {/* After */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: showAfter ? 1 : 0, x: showAfter ? 0 : 30 }}
+              className="relative p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(16, 185, 129, 0.3)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div className="absolute -top-3 -right-3 px-3 py-1 rounded-full text-xs font-bold" style={{ background: '#10b981', color: 'white' }}>+100% Revenue</div>
+              <p className="text-neutral-500 text-xs uppercase tracking-wider mb-4">After (Reality)</p>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center"><span className="text-neutral-400 text-sm">Price</span><span className="font-bold" style={{ color: '#10b981' }}>$100 (2X)</span></div>
+                <div className="flex justify-between items-center"><span className="text-neutral-400 text-sm">Conversion</span><span className="text-white font-bold">3%</span><span className="text-xs text-neutral-500 ml-2">(unchanged!)</span></div>
+                <div className="flex justify-between items-center"><span className="text-neutral-400 text-sm">RPV</span><span className="font-bold" style={{ color: '#10b981' }}>$3.00</span></div>
+                <div className="h-px bg-neutral-700 my-2"></div>
+                <div className="flex justify-between items-center"><span className="text-neutral-400 text-sm">Per 1000 visitors</span><span className="text-xl font-black" style={{ color: '#10b981' }}>$3,000</span></div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: showAfter ? 1 : 0, y: showAfter ? 0 : 20 }} transition={{ delay: 0.3 }}
+            className="p-4 rounded-xl text-center" style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+            <p className="text-neutral-700 text-sm md:text-base"><span className="font-bold" style={{ color: '#10b981' }}>Price signals quality.</span> Higher price = higher perceived value = SAME conversion (often better).</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Bundle Strategies Slide
+    const BundleStrategiesSlide = () => {
+      const strategies = [
+        { title: 'Multi-Packs', desc: 'Buy 1 for $50, Buy 3 for $120', impact: '+40% AOV', icon: Icons.Package, color: '#f59e0b', example: 'Skincare: 1 serum $40, 3 serums $99' },
+        { title: 'Premium Versions', desc: 'Add premium packaging or accessories', impact: '+50% AOV', icon: Icons.Star, color: '#8b5cf6', example: 'Standard $50, Deluxe w/ Travel Case $75' },
+        { title: 'Decoy Pricing', desc: 'Make the middle option irresistible', impact: '+25% AOV', icon: Icons.Target, color: '#10b981', example: 'Good $50, Better $75, Best $80' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(249, 115, 22, 0.1)', color: 'var(--accent)' }}>Bundle Engineering</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">3 Bundle Strategies</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {strategies.map((s, i) => (
+              <motion.div key={s.title} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }}
+                className="relative p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${s.color}, transparent)` }} />
+
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${s.color}20`, color: s.color }}>
+                    <s.icon />
+                  </div>
+                  <div className="px-2 py-1 rounded text-xs font-bold" style={{ background: `${s.color}20`, color: s.color }}>{s.impact}</div>
+                </div>
+
+                <h3 className="text-white font-bold text-lg mb-2">{s.title}</h3>
+                <p className="text-neutral-400 text-sm mb-3">{s.desc}</p>
+
+                <div className="p-3 rounded-lg" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                  <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Example</p>
+                  <p className="text-neutral-300 text-xs">{s.example}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Decoy Pricing Visual Slide
+    const DecoyPricingSlide = () => {
+      const [highlight, setHighlight] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setHighlight(true), 1200); return () => clearTimeout(timer); }, []);
+
+      const tiers = [
+        { name: 'Good', price: 50, features: ['Basic product', 'Standard shipping'], badge: null },
+        { name: 'Better', price: 75, features: ['Premium product', 'Express shipping', 'Free gift'], badge: 'MOST POPULAR' },
+        { name: 'Best', price: 80, features: ['Premium product', 'Express shipping', 'Free gift', 'VIP support'], badge: 'BEST VALUE' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>Decoy Effect</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Psychology of Choice</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {tiers.map((tier, i) => (
+              <motion.div key={tier.name} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }}
+                className="relative p-5 rounded-xl transition-all"
+                style={{
+                  background: i === 2 && highlight ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                  border: i === 2 && highlight ? '2px solid #10b981' : '2px solid #e5e7eb',
+                  boxShadow: i === 2 && highlight ? '0 0 30px rgba(16, 185, 129, 0.3)' : 'none',
+                  transform: i === 2 && highlight ? 'scale(1.05)' : 'scale(1)'
+                }}>
+                {tier.badge && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-bold"
+                    style={{ background: i === 2 ? '#10b981' : '#f59e0b', color: 'white' }}>{tier.badge}</div>
+                )}
+
+                <h3 className={`font-bold text-lg mb-2 ${i === 2 && highlight ? 'text-white' : 'text-neutral-900'}`}>{tier.name}</h3>
+                <div className={`text-3xl font-black mb-4 ${i === 2 && highlight ? '' : 'text-neutral-900'}`} style={{ color: i === 2 && highlight ? '#10b981' : undefined }}>${tier.price}</div>
+
+                <ul className="space-y-2">
+                  {tier.features.map((f, j) => (
+                    <li key={j} className={`flex items-center gap-2 text-sm ${i === 2 && highlight ? 'text-neutral-300' : 'text-neutral-600'}`}>
+                      <span style={{ color: '#10b981' }}><Icons.Check /></span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: highlight ? 1 : 0, y: highlight ? 0 : 20 }}
+            className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-white text-sm md:text-base">
+              <span className="font-bold" style={{ color: '#10b981' }}>$80 vs $75</span> = Only $5 more for VIP support.
+              <span className="text-neutral-400"> Most people choose "Best" because it FEELS like a steal.</span>
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Action Protocol Slide
+    const ActionProtocolSlide = () => {
+      const steps = [
+        { num: 1, title: 'Pick ONE Product', desc: 'Choose your best-seller or highest-margin item', icon: Icons.Target },
+        { num: 2, title: 'Test 2X Price', desc: 'Create a variant with double the price point', icon: Icons.TrendingUp },
+        { num: 3, title: 'Watch Conversion', desc: 'It probably will not drop (seriously)', icon: Icons.Settings },
+        { num: 4, title: 'Watch RPV/PPV', desc: 'Revenue per visitor will likely skyrocket', icon: Icons.DollarSign },
+        { num: 5, title: 'Repeat & Scale', desc: 'Apply to other products, add bundles', icon: Icons.Layers }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(249, 115, 22, 0.1)', color: 'var(--accent)' }}>The Action Plan</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">5-Step Protocol</h2>
+          </motion.div>
+
+          <div className="space-y-3">
+            {steps.map((step, i) => (
+              <motion.div key={step.num} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
+                className="relative flex items-center gap-4 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-lg font-black text-white flex-shrink-0"
+                  style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{step.num}</div>
+                <div className="flex-1">
+                  <h3 className="text-white font-bold text-sm md:text-base">{step.title}</h3>
+                  <p className="text-neutral-400 text-xs md:text-sm">{step.desc}</p>
+                </div>
+                <div className="text-neutral-500"><step.icon /></div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Impact Stats Slide
+    const ImpactStatsSlide = () => {
+      const stats = [
+        { value: '2', suffix: 'x', label: 'Revenue', sub: 'From same traffic', color: 'var(--accent)' },
+        { value: '90', suffix: '%', label: 'Battle Won', sub: 'By offer alone', color: '#10b981' },
+        { value: '3', suffix: '+', label: 'Bundle Types', sub: 'To test today', color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Impact</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={stat.label} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.15 }}
+                className="relative p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: `0 0 30px ${stat.color}20` }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-5xl md:text-6xl font-black mb-2" style={{ color: stat.color }}>
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-white font-semibold mb-1">{stat.label}</div>
+                <div className="text-neutral-500 text-sm">{stat.sub}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Elite Insight Slide
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+          className="relative p-8 rounded-2xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(249, 115, 22, 0.2)' }}>
+          <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(249, 115, 22, 0.2)', color: 'var(--accent)' }}>
+              <Icons.Lightbulb />
+            </div>
+            <div>
+              <p className="text-neutral-500 text-xs uppercase tracking-wider">Elite Insight</p>
+              <h3 className="text-white font-bold text-lg">The Price Paradox</h3>
+            </div>
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+            className="text-xl md:text-2xl text-white leading-relaxed mb-6">
+            Stop competing on price. <span className="font-bold" style={{ color: 'var(--accent)' }}>Higher prices create higher perceived value.</span>
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="p-4 rounded-xl" style={{ background: 'rgba(249, 115, 22, 0.1)', border: '1px solid rgba(249, 115, 22, 0.3)' }}>
+            <p className="text-neutral-300 text-sm md:text-base">Test doubling your prices. Add bundle options. Engineer a guarantee. You are not selling a product. You are selling an <span className="font-bold" style={{ color: 'var(--accent)' }}>OFFER</span>. Get this right, and everything else becomes easier.</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD SLIDE COMPONENTS ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -304,106 +636,12 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
       </div>
     );
 
@@ -422,7 +660,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -454,7 +692,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You have completed this lesson.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -462,12 +700,11 @@
         </motion.div>
         {data?.sources && data.sources.length > 0 && (
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Sources</p>
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
                 <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
+                  {source.name}<Icons.ExternalLink />
                 </a>
               ))}
             </div>
@@ -476,6 +713,7 @@
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -489,14 +727,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -528,11 +760,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'offer-equation': return <OfferEquationSlide />;
+          case 'offer-elements': return <OfferElementsSlide />;
+          case 'luxury-markup': return <LuxuryMarkupSlide />;
+          case 'sabri-quote': return <SabriQuoteSlide />;
+          case 'price-double-effect': return <PriceDoubleEffectSlide />;
+          case 'bundle-strategies': return <BundleStrategiesSlide />;
+          case 'decoy-pricing': return <DecoyPricingSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'action-protocol': return <ActionProtocolSlide />;
+          case 'impact-stats': return <ImpactStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }

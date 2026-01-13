@@ -38,89 +38,66 @@
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
       const [count, setCount] = useState(0);
+      const [hasAnimated, setHasAnimated] = useState(false);
       useEffect(() => {
+        if (hasAnimated) return;
+        setHasAnimated(true);
         let start = 0;
         const increment = target / (duration / 16);
         const timer = setInterval(() => {
           start += increment;
           if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
         }, 16);
         return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{prefix}{count}{suffix}</span>;
+      }, [target, duration, decimals, hasAnimated]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
     };
+
+    // Animated Progress Bar
+    const AnimatedProgressBar = ({ percent, color, delay = 0, glowColor }) => {
+      const [width, setWidth] = useState(0);
+      useEffect(() => {
+        const timer = setTimeout(() => setWidth(percent), delay * 1000);
+        return () => clearTimeout(timer);
+      }, [percent, delay]);
+      return (
+        <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+          <motion.div initial={{ width: 0 }} animate={{ width: `${width}%` }} transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1], delay: delay }}
+            className="h-full rounded-full" style={{ background: `linear-gradient(90deg, ${color}, ${color}dd)`, boxShadow: glowColor ? `0 0 10px ${glowColor}` : 'none' }} />
+        </div>
+      );
+    };
+
     const LESSON_CONFIG = {
       id: 'dopamine-blueprint',
       title: 'The Dopamine Blueprint',
       description: 'Why anticipation is more addictive than the reward itself - and how to create irresistible buying loops.',
       accentColor: '#8b5cf6',
-      duration: '7 min',
+      duration: '8 min',
       nextLesson: { id: 'anti-sell-mastery', title: 'The Anti-Sell', teaser: 'Why pushing harder kills sales - and how pulling back can make customers chase YOU instead.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex: slideIndex, slideType: slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
             <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
@@ -133,8 +110,6 @@
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -161,15 +136,20 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Tool configuration
+    const TOOL_CONFIG = {
+      name: 'Joy Loyalty',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/8b933d5f7554d2e3ebc19f34f9d5ef0e/icon/CICUsMrK8_oCEAE=.png',
+      link: 'https://apps.shopify.com/joy-loyalty',
+      tagline: 'Turn one-time buyers into addicted repeat customers'
+    };
+
     const slides = [
-      { type: 'welcome', learningGoals: ['Why anticipation releases MORE dopamine than the reward itself', 'The Habit Loop: Trigger → Routine → Reward', 'How to make customers CRAVE coming back with Variable Rewards'] },
-      { type: 'hook', headline: 'Scientists gave monkeys juice when a light turned on. The monkeys\' dopamine spiked. But here\'s the twist...', subtext: 'After the pattern was learned, dopamine stopped spiking at the juice. It spiked at the LIGHT. The anticipation became more rewarding than the reward itself. This is the secret casinos, social media, and the world\'s most addictive products exploit. Your customers\' brains work exactly the same way. The question is: are you triggering dopamine, or just delivering products?' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Supreme-Logo.jpg', brandName: 'Supreme' },
-      { type: 'visual', title: 'The Dopamine Shift', visualType: 'comparison', data: {
-        left: { label: 'Before Learning', value: 'Reward', result: 'Dopamine spikes at juice', color: '#94a3b8' },
-        right: { label: 'After Learning', value: 'Trigger', result: 'Dopamine spikes at light', color: '#8b5cf6' },
-        center: { label: 'Key Insight', value: 'Anticipation > Reward', result: 'The waiting is the high', color: '#10b981' }
-      }},
-      { type: 'content', title: 'The Habit Loop', body: 'Every addictive behavior follows a simple loop: TRIGGER → ROUTINE → REWARD. The phone buzzes (trigger), you check it (routine), you see a message (reward). The smell of coffee (trigger), you order one (routine), you feel alert (reward). Notification dot on an app (trigger), you open it (routine), you see new content (reward). Once this loop is established, the trigger ALONE releases dopamine. The brain starts craving before you even act. This is why you reach for your phone before you consciously decide to.' },
+      // ========== PART 1: THE THEORY ==========
+      { type: 'welcome', learningGoals: ['Why anticipation releases MORE dopamine than the reward itself', 'The Habit Loop: Trigger, Routine, Reward', 'How to make customers CRAVE coming back with Variable Rewards'] },
+      { type: 'hook', headline: 'Scientists gave monkeys juice when a light turned on. The monkeys\' dopamine spiked. But here\'s the twist...', subtext: 'After the pattern was learned, dopamine stopped spiking at the juice. It spiked at the LIGHT. The anticipation became more rewarding than the reward itself. This is the secret casinos, social media, and the world\'s most addictive products exploit. Your customers\' brains work exactly the same way. The question is: are you triggering dopamine, or just delivering products?', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Supreme-Logo.jpg', brandName: 'Supreme' },
+      { type: 'dopamine-shift', title: 'The Dopamine Shift' },
+      { type: 'content', title: 'The Habit Loop', body: 'Every addictive behavior follows a simple loop: TRIGGER, ROUTINE, REWARD. The phone buzzes (trigger), you check it (routine), you see a message (reward). The smell of coffee (trigger), you order one (routine), you feel alert (reward). Notification dot on an app (trigger), you open it (routine), you see new content (reward). Once this loop is established, the trigger ALONE releases dopamine. The brain starts craving before you even act. This is why you reach for your phone before you consciously decide to.' },
       { type: 'cards', title: 'The Three Parts of the Loop', items: [
         { title: 'Trigger', description: 'The cue that starts the behavior. Can be external (notification, email) or internal (boredom, anxiety). Your marketing should CREATE triggers that remind customers of you.' },
         { title: 'Routine', description: 'The behavior itself. Checking the app, visiting the website, clicking "add to cart." Make the routine as FRICTIONLESS as possible. Every click is a dropout point.' },
@@ -191,7 +171,13 @@
       { type: 'content', title: 'Building Your Dopamine Loop', body: 'To create addictive buying behavior: 1) Identify or CREATE a trigger (email notification, weekly drop reminder, low-stock alert). 2) Make the routine frictionless (one-click buy, saved payment, fast checkout). 3) Deliver variable rewards (mystery gifts, random discounts, surprise upgrades). The goal isn\'t just to make the sale. It\'s to make the ANTICIPATION of the sale as rewarding as the sale itself. When the trigger alone releases dopamine, you\'ve won.' },
       { type: 'example', scenario: 'Subscription Box Brand', before: { label: 'Predictable Experience', text: 'Same products, same box, same time. Customers know exactly what\'s coming. No anticipation. Churn increases.' }, after: { label: 'Dopamine-Optimized', text: 'Monthly "mystery item" they don\'t know about. Personalized items based on quiz. "Sneak peek" emails that show one item but hide others. Unboxing becomes an EVENT.' }, insight: 'The box itself is the reward. But by adding mystery elements, you\'ve shifted dopamine from "receiving" to "anticipating." They\'re excited BEFORE the box arrives. That\'s the goal.' },
       { type: 'quiz', question: 'A skincare brand sends weekly emails. Which approach creates the strongest dopamine loop?', options: ['Every email contains a 15% discount code for any product', '"Flash sale starts now!" emails sent every Tuesday at 3pm', '"Something special might be in this email... or it might just be skincare tips. Only one way to find out."', '"Buy 3 products, get the 4th free" in every email'], correctIndex: 2, feedback: { correct: 'Exactly! The uncertainty of "might be something special... or might not" creates variable reward psychology. They HAVE to open to find out. The other options are predictable - brain adapts, dopamine fades, open rates drop.', incorrect: 'The winner is the one with UNCERTAINTY. "Might be something special... or might not" creates the variable reward effect. The brain can\'t predict what\'s inside, so it stays engaged. Predictable offers, no matter how good, lose their dopamine power over time.' }},
-      { type: 'completion', sources: [] }
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-loyalty-foundation' },
+      { type: 'step-variable-rewards' },
+      { type: 'step-trigger-system' },
+      { type: 'step-results' },
+      { type: 'completion' }
     ];
 
     const Icons = {
@@ -201,8 +187,11 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Star: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Gift: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+      Bell: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -242,15 +231,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -260,24 +240,55 @@
       </div>
     );
 
-    
+    // Dopamine Shift Visualization Slide
+    const DopamineShiftSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => setPhase(p => (p + 1) % 3), 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      const phases = [
+        { label: 'Before Learning', value: 'Reward', result: 'Dopamine spikes at juice', color: '#94a3b8', icon: '1' },
+        { label: 'After Learning', value: 'Trigger', result: 'Dopamine spikes at light', color: '#8b5cf6', icon: '2' },
+        { label: 'Key Insight', value: 'Anticipation > Reward', result: 'The waiting is the high', color: '#10b981', icon: '!' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {phases.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className={`rounded-xl p-5 text-center transition-all duration-300 cursor-pointer ${phase === i ? 'ring-2' : ''}`}
+                style={{
+                  background: phase === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  ringColor: item.color,
+                  boxShadow: phase === i ? `0 0 30px ${item.color}30` : 'none'
+                }}
+                onClick={() => setPhase(i)}>
+                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg mx-auto mb-3" style={{ background: item.color }}>
+                  {item.icon}
+                </div>
+                <div className="text-xs uppercase tracking-wider mb-2" style={{ color: phase === i ? item.color : '#6b7280' }}>{item.label}</div>
+                <div className="text-2xl font-bold mb-2" style={{ color: phase === i ? 'white' : '#1a1a1a' }}>{item.value}</div>
+                <div className={`text-sm ${phase === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{item.result}</div>
+              </motion.div>
+            ))}
+          </div>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="mt-6 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full rounded-full mb-3" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
+            <p className="text-neutral-300 text-sm">The same principle powers <span className="text-white font-bold">Instagram, TikTok, slot machines</span> - and your loyalty program</p>
+          </motion.div>
+        </div>
+      );
+    };
+
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
@@ -336,18 +347,8 @@
             ))}
           </div>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '45%', maxHeight: '350px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
-
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -392,29 +393,261 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Dopamine Blueprint: Trigger → Routine → Reward, and why Variable Rewards are the ultimate addiction accelerator. Go audit your customer journey and ask: "Where can I add unpredictability to keep them coming back?"</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    // Section Divider Slide
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap className="w-10 h-10 text-white" />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">4 steps to build your dopamine-driven loyalty system</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3, 4].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 4 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
+      </div>
+    );
+
+    // Step 1: Set Up Loyalty Foundation
+    const StepLoyaltyFoundationSlide = ({ data }) => {
+      const features = [
+        { icon: Icons.Star, label: 'Points System', desc: 'Earn points on every purchase' },
+        { icon: Icons.Gift, label: 'VIP Tiers', desc: 'Bronze, Silver, Gold, Platinum' },
+        { icon: Icons.Bell, label: 'Birthday Rewards', desc: 'Automatic trigger dates' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up Your Loyalty Foundation</h2>
+              </div>
             </div>
           </motion.div>
-        )}
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <img src={TOOL_CONFIG.logo} alt="Joy Loyalty" className="w-10 h-10 rounded-lg" />
+                <div>
+                  <div className="text-white font-bold text-sm">{TOOL_CONFIG.name}</div>
+                  <div className="text-neutral-400 text-xs">{TOOL_CONFIG.tagline}</div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                {features.map((f, i) => {
+                  const Icon = f.icon;
+                  return (
+                    <div key={i} className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ color: 'var(--accent)' }}><Icon /></div>
+                      <div>
+                        <div className="text-white text-sm font-medium">{f.label}</div>
+                        <div className="text-neutral-400 text-xs">{f.desc}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-xl bg-neutral-50 border border-neutral-200">
+              <div className="text-sm font-bold text-neutral-700 mb-4">Quick Setup Checklist</div>
+              <div className="space-y-3">
+                {['Install Joy Loyalty app', 'Set points per dollar spent (e.g., 1 point = $1)', 'Create 3-4 VIP tiers with clear benefits', 'Enable birthday reward automation'].map((task, i) => (
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-white border border-neutral-100">
+                    <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                      <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>{i + 1}</span>
+                    </div>
+                    <span className="text-neutral-600 text-sm">{task}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> This creates your TRIGGER system. Points notifications, tier unlock alerts, and birthday rewards all become dopamine triggers.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 2: Add Variable Rewards
+    const StepVariableRewardsSlide = ({ data }) => {
+      const variableRewards = [
+        { title: 'Mystery Discounts', desc: 'Spin-to-win for random discount %', example: '5%, 10%, 25%, or FREE shipping' },
+        { title: 'Surprise Tier Jumps', desc: 'Random double-points days', example: '"Surprise! 2x points today only"' },
+        { title: 'Hidden Rewards', desc: 'Unlock mystery rewards at milestones', example: '"???" until they reach 500 points' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Add Variable Rewards</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {variableRewards.map((reward, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, var(--accent), transparent)` }} />
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                  <Icons.Gift style={{ color: 'var(--accent)' }} />
+                </div>
+                <div className="text-white font-bold text-sm mb-2">{reward.title}</div>
+                <div className="text-neutral-400 text-xs mb-3">{reward.desc}</div>
+                <div className="p-2 rounded-lg text-xs italic" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>{reward.example}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Key:</strong> Variable rewards keep the brain engaged because it can't predict what's coming. The uncertainty IS the dopamine hit.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Create Trigger System
+    const StepTriggerSystemSlide = ({ data }) => {
+      const triggers = [
+        { trigger: 'Points Update', timing: 'After every purchase', action: 'Email + SMS: "You earned X points!"' },
+        { trigger: 'Tier Progress', timing: 'At 75% to next tier', action: '"You\'re so close to Gold status!"' },
+        { trigger: 'Expiration Warning', timing: '30 days before expiry', action: '"Your 500 points expire soon"' },
+        { trigger: 'Birthday', timing: '7 days before', action: '"Your birthday reward is ready!"' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up Your Trigger System</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="rounded-xl p-5 mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full mb-5 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <div className="grid md:grid-cols-2 gap-3">
+              {triggers.map((t, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Icons.Bell style={{ color: 'var(--accent)' }} />
+                    <span className="text-white font-bold text-sm">{t.trigger}</span>
+                  </div>
+                  <div className="text-neutral-500 text-xs mb-2">{t.timing}</div>
+                  <div className="text-neutral-300 text-sm italic">"{t.action}"</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Enable email/SMS notifications in Joy Loyalty. Each notification becomes a TRIGGER that releases dopamine before they even visit your store.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step Results Slide
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '+44%', label: 'Repeat Purchases', desc: 'From loyalty members', icon: Icons.TrendingUp, color: '#22c55e' },
+        { metric: '3.2x', label: 'Higher LTV', desc: 'Engaged vs non-engaged', icon: Icons.Star, color: '#f59e0b' },
+        { metric: '67%', label: 'Open Rate', desc: 'Points notification emails', icon: Icons.Bell, color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">4-8 weeks</span> of implementation</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Completion Slide - Clean with Key Takeaways
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand the Dopamine Blueprint. Trigger, Routine, Reward - and why Variable Rewards are the ultimate addiction accelerator.</motion.p>
+
+        {/* Key Takeaways - Clean summary */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Anticipation releases more dopamine than the reward itself</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Variable rewards keep the brain engaged - predictability kills engagement</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Create triggers (notifications) that release dopamine before customers even shop</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
       </div>
     );
 
@@ -475,7 +708,14 @@
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide data={slide} />;
+          case 'dopamine-shift': return <DopamineShiftSlide data={slide} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-loyalty-foundation': return <StepLoyaltyFoundationSlide data={slide} />;
+          case 'step-variable-rewards': return <StepVariableRewardsSlide data={slide} />;
+          case 'step-trigger-system': return <StepTriggerSystemSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
+          case 'completion': return <CompletionSlide />;
           default: return null;
         }
       };

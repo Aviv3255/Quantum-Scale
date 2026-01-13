@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -57,137 +54,35 @@
       }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'Objection psychology - why resistance is actually engagement',
-        'The Judo technique - agree, then redirect',
-        'Common inversions for price, time, trust, and "I need to think"'
-      ]},
-      { type: 'hook', headline: 'The objection killing your sales is actually your best selling point.', subtext: 'You just need to flip it. What feels like a dealbreaker is often the exact reason they should buy. Stop defending. Start redirecting.' },
-      { type: 'content', title: 'Why Objections Feel Like Walls', body: 'Most sellers treat objections as roadblocks. "I can\'t afford it" feels like game over. But here\'s the truth: objections are doors in disguise. When someone objects, they\'re still engaged. They\'re processing. They\'re considering. The sale isn\'t dead - it\'s just at a crossroads. And you get to choose which direction it goes.' },
-      { type: 'visual', title: 'The Objection Reality', visualType: 'stats', data: [
-        { value: '93%', label: 'smokescreens', subtext: 'Most objections hide the real concern' },
-        { value: '2x', label: 'close rate', subtext: 'With inversion vs defensive responses' },
-        { value: '3 words', label: 'flip phrase', subtext: '"Exactly. That\'s why..." changes everything' }
-      ]},
-      { type: 'content', title: 'The Judo Principle', body: 'In martial arts, judo masters don\'t fight force with force. They redirect it. Use the opponent\'s energy against them. Same principle applies to objections. Don\'t fight the objection. Don\'t defend against it. Agree with it - then show why that exact concern is the reason to act. The objection becomes the selling point.' },
-      { type: 'split', title: 'The Wrong Way vs The Right Way', scenario: 'Customer: "I can\'t afford this right now."', before: { label: 'Defensive Response', text: 'But it\'s actually really affordable! We have payment plans! Most people can make it work!' }, after: { label: 'Judo Inversion', text: 'Exactly. That\'s the problem we\'re solving. If getting more revenue is what you\'re struggling with, isn\'t that why we\'re having this conversation?' }, insight: 'You agreed with their concern, then reframed it as the exact reason they need your solution.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_in_agreement_approving_nod_100_pure_wh_be253664-9147-4cef-ae06-aa315b9f0ff5_1.mp4', characterPosition: 'right'},
-      { type: 'cards', title: '4 Common Objection Inversions', items: [
-        { title: 'Price: "I can\'t afford it"', description: 'Inversion: "Isn\'t that the exact problem we need to solve? If revenue is tight, that\'s precisely why this matters." Reframe the objection as the symptom of the problem you solve.' },
-        { title: 'Time: "I don\'t have time"', description: 'Inversion: "Exactly. That\'s why you need systems that take less of it." Show that your solution saves more time than it requires.' },
-        { title: 'Trust: "I need to see proof"', description: 'Inversion: "Good. You should be skeptical. That\'s why we have [case studies/guarantee/trial]." Turn skepticism into validation of your credibility.' },
-        { title: 'Delay: "I need to think about it"', description: 'Inversion: "What specifically? Let\'s think through it together now." Convert vague delay into specific concerns you can address immediately.' }
-      ]},
-      { type: 'example', scenario: 'eCommerce Product Page', before: { label: 'Fighting the Objection', text: 'Customer: "Shipping takes too long." Response: "Actually our shipping is fast! Most orders arrive in 5-7 days!"' }, after: { label: 'Judo Inversion', text: 'Customer: "Shipping takes too long." Response: "Exactly - that\'s why we include tracking updates at every step, so you\'re never left wondering."' }, insight: 'You agreed with the concern, then showed why your process specifically solves it. No defense needed.' },
-      { type: 'content', title: 'Price Anchoring: The Hidden Lever', body: 'Here\'s a bonus tactic from the same playbook: people don\'t know intrinsic value. They determine it by comparison. Use 3-tier pricing: Basic, Pro, Premium. Most choose the middle option - it looks cheap versus the expensive tier, but feels quality versus the basic. The expensive tier isn\'t there to sell. It\'s there to make the middle option look like a smart choice.' },
-      { type: 'quiz', question: 'What\'s the first step in Objection Inversion?', options: ['Prove them wrong with data and facts', 'Agree with their concern, then reframe it', 'Offer a discount to overcome the objection', 'Change the subject to avoid conflict'], correctIndex: 1, feedback: { correct: 'Exactly! The Judo technique works because you AGREE first - which disarms their defense - then you REFRAME to show why that concern is actually the reason to act. No fighting. Just redirection.', incorrect: 'Not quite. The power of Objection Inversion comes from AGREEING with their concern first (disarms defense), then REFRAMING it as the reason to act. Fighting the objection only creates more resistance.' }},
-      { type: 'completion', actionStep: 'List your top 3 objections and write the inversion for each. Use the "Exactly. That\'s why..." framework to turn each objection into a selling point.' }
-    ];
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(target);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.round(count)}{suffix}</span>;
+    };
 
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -195,7 +90,77 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Clock2: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Brain: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      RefreshCw: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      MessageCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      ArrowRightCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>,
+      Rotate3D: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16.466 7.5C15.643 4.237 13.952 2 12 2 9.239 2 7 6.477 7 12s2.239 10 5 10c.342 0 .677-.069 1-.2"/><path d="m15.194 13.707 3.814 1.86-1.86 3.814"/><path d="M19 15.57c-1.804.885-4.274 1.43-7 1.43-5.523 0-10-2.239-10-5s4.477-5 10-5c4.838 0 8.873 1.718 9.8 4"/></svg>,
     };
+
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Objection psychology - why resistance is actually engagement',
+        'The Judo technique - agree, then redirect',
+        'Master all 4 common objection inversions'
+      ]},
+      { type: 'hook', headline: 'The objection killing your sales is actually your best selling point.', subtext: 'You just need to flip it. What feels like a dealbreaker is often the exact reason they should buy. Stop defending. Start redirecting.' },
+      { type: 'judo-visualization', title: 'The Judo Principle', data: {
+        wrong: { label: 'Fight Force with Force', description: 'Push back against objections. Defend your position. Create resistance.' },
+        right: { label: 'Redirect the Energy', description: 'Use their momentum. Agree, then guide. Turn objections into selling points.' },
+        insight: 'In martial arts, masters never fight force with force. They redirect it. Same principle applies to sales.'
+      }},
+      { type: 'impact-stats', title: 'The Objection Reality', stats: [
+        { value: 93, suffix: '%', label: 'Are Smokescreens', subtext: 'Most objections hide the real concern', color: '#ef4444' },
+        { value: 2, suffix: 'x', label: 'Higher Close Rate', subtext: 'With inversion vs defensive responses', color: '#10b981' },
+        { value: 3, suffix: ' words', label: 'Magic Flip Phrase', subtext: '"Exactly. That\'s why..." changes everything', color: '#8b5cf6' }
+      ]},
+      { type: 'objection-decoder', title: 'What They Say vs What They Mean', objections: [
+        { says: '"I can\'t afford it"', means: 'I\'m not sure the ROI is worth it', flip: '"Exactly. That\'s why we need to solve your revenue problem first."' },
+        { says: '"I don\'t have time"', means: 'This seems like more work than benefit', flip: '"Exactly. You need systems that save time, not take it."' },
+        { says: '"I need to think about it"', means: 'Something specific is bothering me', flip: '"What specifically? Let\'s think through it together."' }
+      ]},
+      { type: 'judo-flip', title: 'The Flip in Action', scenario: 'Customer: "I can\'t afford this right now."', before: { label: 'Defensive Response', lines: ['But it\'s actually really affordable!', 'We have payment plans!', 'Most people can make it work!'] }, after: { label: 'Judo Inversion', lines: ['Exactly. That\'s the problem we\'re solving.', 'If getting more revenue is your struggle...', 'Isn\'t that why we\'re having this conversation?'] }, result: '+78% Close Rate' },
+      { type: 'four-inversions', title: '4 Master Objection Inversions', inversions: [
+        { objection: 'Price', quote: '"I can\'t afford it"', icon: 'DollarSign', color: '#10b981', inversion: '"Isn\'t that the exact problem we need to solve? If revenue is tight, that\'s precisely why this matters."', psychology: 'Reframe the objection as the symptom of the problem you solve' },
+        { objection: 'Time', quote: '"I don\'t have time"', icon: 'Clock2', color: '#3b82f6', inversion: '"Exactly. That\'s why you need systems that take less of it. What\'s costing you time right now?"', psychology: 'Show your solution saves more time than it requires' },
+        { objection: 'Trust', quote: '"I need to see proof"', icon: 'Eye', color: '#8b5cf6', inversion: '"Good. You should be skeptical. That\'s why we have [case studies/guarantee/trial]."', psychology: 'Turn skepticism into validation of your credibility' },
+        { objection: 'Delay', quote: '"I need to think"', icon: 'Brain', color: '#f59e0b', inversion: '"What specifically? Let\'s think through it together right now."', psychology: 'Convert vague delay into specific concerns you can address' }
+      ]},
+      { type: 'magic-phrases', title: 'The Magic Flip Phrases', phrases: [
+        { trigger: 'Exactly.', purpose: 'Disarms defense by agreeing', example: '"Exactly. That\'s the problem we\'re solving."' },
+        { trigger: 'That\'s why...', purpose: 'Redirects into your solution', example: '"That\'s why we built this system."' },
+        { trigger: 'Good question.', purpose: 'Validates their intelligence', example: '"Good question. Let me show you why."' },
+        { trigger: 'I understand.', purpose: 'Creates empathy connection', example: '"I understand. That\'s exactly why..."' }
+      ]},
+      { type: 'ecommerce-example', title: 'eCommerce Example: Shipping Objection', scenario: '"Shipping takes too long"', before: { approach: 'Fighting', response: '"Actually our shipping is fast! Most orders arrive in 5-7 days!"', result: 'Creates argument, increases resistance' }, after: { approach: 'Judo', response: '"Exactly - that\'s why we include tracking updates at every step, so you\'re never left wondering."', result: 'Validates concern, provides solution' }, cvr: '+52%' },
+      { type: 'pricing-psychology', title: 'Bonus: The Pricing Judo', tiers: [
+        { name: 'Basic', price: '$49', purpose: 'Makes middle tier look quality', badge: 'ANCHOR LOW' },
+        { name: 'Professional', price: '$149', purpose: 'The target - looks smart vs premium', badge: 'TARGET', featured: true },
+        { name: 'Enterprise', price: '$499', purpose: 'Makes pro tier look cheap', badge: 'ANCHOR HIGH' }
+      ], insight: 'The expensive tier isn\'t there to sell. It\'s there to make the middle option look like a smart choice.' },
+      { type: 'objection-simulator', title: 'Practice: Live Objection Handler', scenarios: [
+        { objection: '"Your competitor is cheaper"', badResponse: '"But we have better quality!"', judoResponse: '"Exactly. And you probably know why they can afford to charge less. What corners are they cutting?"' },
+        { objection: '"I\'ve been burned before"', badResponse: '"We\'re different, I promise!"', judoResponse: '"Good. That skepticism will serve you well. That\'s exactly why we offer a full guarantee."' },
+        { objection: '"My boss won\'t approve"', badResponse: '"Can I talk to them directly?"', judoResponse: '"What specifically would they need to see? Let\'s build that case together."' }
+      ]},
+      { type: 'framework-summary', title: 'The Objection Judo Framework', steps: [
+        { num: 1, action: 'PAUSE', description: 'Don\'t react defensively. Take a breath.' },
+        { num: 2, action: 'AGREE', description: 'Validate their concern. "Exactly..." or "I understand..."' },
+        { num: 3, action: 'REDIRECT', description: 'Use "That\'s why..." to flip to your solution.' },
+        { num: 4, action: 'CLOSE', description: 'Connect their concern to your value proposition.' }
+      ]},
+      { type: 'elite-insight', title: 'The Judo Paradox', insight: 'The more you fight an objection, the stronger it becomes. The more you agree with it, the faster it dissolves.', principle: 'Resistance creates resistance. Agreement creates openness.', quote: '"The objection isn\'t the enemy. The objection is the door."' },
+      { type: 'quiz', question: 'What\'s the first step in Objection Inversion?', options: ['Prove them wrong with data and facts', 'Agree with their concern, then reframe it', 'Offer a discount to overcome the objection', 'Change the subject to avoid conflict'], correctIndex: 1, feedback: { correct: 'Exactly! The Judo technique works because you AGREE first - which disarms their defense - then you REFRAME to show why that concern is actually the reason to act. No fighting. Just redirection.', incorrect: 'Not quite. The power of Objection Inversion comes from AGREEING with their concern first (disarms defense), then REFRAMING it as the reason to act. Fighting the objection only creates more resistance.' }},
+      { type: 'completion', actionStep: 'List your top 3 objections and write the inversion for each. Use the "Exactly. That\'s why..." framework to turn each objection into a selling point.' }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -238,129 +203,626 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // ============ JUDO VISUALIZATION SLIDE ============
+    const JudoVisualizationSlide = ({ data }) => {
+      const [showRight, setShowRight] = useState(false);
 
-    const SplitSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <h2 className="slide-title text-xl md:text-2xl text-black mb-3">{data.title}</h2>
-          <p className="text-neutral-600 text-sm md:text-base italic">"{data.scenario}"</p>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
-              <span className="font-semibold text-red-700 text-sm">{data.before.label}</span>
-            </div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
-              <span className="font-semibold text-green-700 text-sm">{data.after.label}</span>
-            </div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      useEffect(() => {
+        const timer = setTimeout(() => setShowRight(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Wrong Way - Fight */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="relative rounded-2xl p-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+              {/* Force arrows colliding */}
+              <div className="flex items-center justify-center h-32 mb-4 relative">
+                <motion.div animate={{ x: [0, 20, 0] }} transition={{ duration: 1.5, repeat: Infinity }}
+                  className="absolute left-8">
+                  <div className="flex items-center">
+                    <div className="w-16 h-4 rounded" style={{ background: 'linear-gradient(90deg, #ef4444, #f87171)' }} />
+                    <div className="w-0 h-0 border-t-8 border-b-8 border-l-12 border-t-transparent border-b-transparent" style={{ borderLeftColor: '#f87171' }} />
+                  </div>
+                  <span className="text-xs text-red-400 mt-1 block">OBJECTION</span>
                 </motion.div>
-              ))}
-            </div>
+
+                <motion.div animate={{ x: [0, -20, 0] }} transition={{ duration: 1.5, repeat: Infinity }}
+                  className="absolute right-8">
+                  <div className="flex items-center">
+                    <div className="w-0 h-0 border-t-8 border-b-8 border-r-12 border-t-transparent border-b-transparent" style={{ borderRightColor: '#3b82f6' }} />
+                    <div className="w-16 h-4 rounded" style={{ background: 'linear-gradient(90deg, #60a5fa, #3b82f6)' }} />
+                  </div>
+                  <span className="text-xs text-blue-400 mt-1 block text-right">DEFENSE</span>
+                </motion.div>
+
+                {/* Collision effect */}
+                <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }}
+                  className="w-8 h-8 rounded-full" style={{ background: 'radial-gradient(circle, rgba(239,68,68,0.6), transparent)' }} />
+              </div>
+
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-3" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                  <Icons.X />
+                  <span className="text-red-400 text-sm font-semibold">WRONG</span>
+                </div>
+                <h3 className="text-white font-bold text-lg mb-2">{data.data.wrong.label}</h3>
+                <p className="text-neutral-400 text-sm">{data.data.wrong.description}</p>
+              </div>
+            </motion.div>
+
+            {/* Right Way - Redirect */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: showRight ? 1 : 0, x: showRight ? 0 : 30 }} transition={{ delay: 0.3 }}
+              className="relative rounded-2xl p-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(16, 185, 129, 0.2)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+
+              {/* Redirect animation */}
+              <div className="flex items-center justify-center h-32 mb-4 relative">
+                <svg width="200" height="100" viewBox="0 0 200 100">
+                  {/* Incoming force */}
+                  <motion.path d="M 20,50 L 80,50" stroke="#ef4444" strokeWidth="4" strokeLinecap="round"
+                    initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.8 }} />
+
+                  {/* Curved redirect */}
+                  <motion.path d="M 80,50 Q 100,50 120,30 L 180,30" stroke="#10b981" strokeWidth="4" strokeLinecap="round" fill="none"
+                    initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.8, duration: 1 }} />
+
+                  {/* Arrow at end */}
+                  <motion.polygon points="180,25 190,30 180,35" fill="#10b981"
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }} />
+
+                  {/* Pivot point */}
+                  <motion.circle cx="80" cy="50" r="6" fill="#10b981"
+                    animate={{ scale: [1, 1.3, 1] }} transition={{ delay: 0.8, duration: 0.5 }} />
+                </svg>
+
+                <motion.div className="absolute top-2 right-4 text-green-400 text-xs font-semibold"
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }}>
+                  SALE
+                </motion.div>
+              </div>
+
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-3" style={{ background: 'rgba(16, 185, 129, 0.2)' }}>
+                  <Icons.Check />
+                  <span className="text-green-400 text-sm font-semibold">RIGHT</span>
+                </div>
+                <h3 className="text-white font-bold text-lg mb-2">{data.data.right.label}</h3>
+                <p className="text-neutral-400 text-sm">{data.data.right.description}</p>
+              </div>
+            </motion.div>
           </div>
-        );
-      }
-      return null;
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="text-center rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="inline-flex items-center gap-2 text-amber-400">
+              <Icons.Lightbulb />
+              <span className="text-sm">{data.data.insight}</span>
+            </div>
+          </motion.div>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3 relative z-10">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // ============ IMPACT STATS SLIDE ============
+    const ImpactStatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+              className="relative rounded-2xl p-6 text-center overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: `0 0 30px ${stat.color}20` }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+
+              <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: stat.color }}>
+                <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={1500 + i * 300} />
+              </div>
+              <div className="text-white font-semibold text-lg mb-2">{stat.label}</div>
+              <div className="text-neutral-400 text-sm">{stat.subtext}</div>
             </motion.div>
           ))}
         </div>
       </div>
     );
 
+    // ============ OBJECTION DECODER SLIDE ============
+    const ObjectionDecoderSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % data.objections.length);
+        }, 4000);
+        return () => clearInterval(timer);
+      }, [data.objections.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="space-y-4">
+            {data.objections.map((obj, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className={`relative rounded-2xl p-5 overflow-hidden transition-all duration-500 ${activeIndex === i ? 'ring-2' : ''}`}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  ringColor: activeIndex === i ? 'var(--accent)' : 'transparent',
+                  boxShadow: activeIndex === i ? '0 0 30px rgba(239, 68, 68, 0.2)' : 'none'
+                }}>
+                <div className="absolute top-0 left-0 right-0 h-1 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)', opacity: activeIndex === i ? 1 : 0.3 }} />
+
+                <div className="grid md:grid-cols-3 gap-4 items-center">
+                  {/* What they say */}
+                  <div className="text-center">
+                    <span className="text-xs text-neutral-500 uppercase tracking-wider block mb-2">WHAT THEY SAY</span>
+                    <span className="text-red-400 font-semibold text-lg italic">{obj.says}</span>
+                  </div>
+
+                  {/* Arrow */}
+                  <div className="hidden md:flex justify-center">
+                    <motion.div animate={{ x: activeIndex === i ? [0, 10, 0] : 0 }} transition={{ duration: 1, repeat: activeIndex === i ? Infinity : 0 }}>
+                      <Icons.ArrowRightCircle />
+                    </motion.div>
+                  </div>
+
+                  {/* What they mean */}
+                  <div className="text-center">
+                    <span className="text-xs text-neutral-500 uppercase tracking-wider block mb-2">WHAT THEY MEAN</span>
+                    <span className="text-amber-400 text-sm">{obj.means}</span>
+                  </div>
+                </div>
+
+                {/* The flip */}
+                <AnimatePresence>
+                  {activeIndex === i && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}
+                      className="mt-4 pt-4 border-t border-neutral-700">
+                      <span className="text-xs text-green-400 uppercase tracking-wider block mb-2">THE FLIP</span>
+                      <p className="text-white text-sm italic">{obj.flip}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ JUDO FLIP SLIDE ============
+    const JudoFlipSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 800),
+          setTimeout(() => setPhase(2), 1600),
+          setTimeout(() => setPhase(3), 2400)
+        ];
+        return () => timers.forEach(clearTimeout);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-3">{data.title}</motion.h2>
+
+          {/* Scenario */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            className="text-center mb-6">
+            <span className="inline-block px-4 py-2 rounded-full text-sm font-medium" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              {data.scenario}
+            </span>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Before - Defensive */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: phase >= 1 ? 1 : 0.3, x: 0 }} transition={{ delay: 0.2 }}
+              className="relative rounded-2xl p-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400"><Icons.X /></div>
+                <span className="text-red-400 font-semibold">{data.before.label}</span>
+              </div>
+
+              <div className="space-y-3">
+                {data.before.lines.map((line, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: phase >= 1 ? 1 : 0, x: 0 }} transition={{ delay: 0.3 + i * 0.15 }}
+                    className="flex items-start gap-2">
+                    <span className="text-red-400 text-lg">•</span>
+                    <span className="text-neutral-300 text-sm italic">"{line}"</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 2 ? 1 : 0 }}
+                className="mt-4 px-3 py-2 rounded-lg bg-red-500/10 text-center">
+                <span className="text-red-400 text-xs">Creates resistance. Customer feels pressured.</span>
+              </motion.div>
+            </motion.div>
+
+            {/* After - Judo */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: phase >= 2 ? 1 : 0.3, x: 0 }} transition={{ delay: 0.3 }}
+              className="relative rounded-2xl p-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: phase >= 2 ? '0 0 40px rgba(16, 185, 129, 0.3)' : 'none' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><Icons.Check /></div>
+                <span className="text-green-400 font-semibold">{data.after.label}</span>
+              </div>
+
+              <div className="space-y-3">
+                {data.after.lines.map((line, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: phase >= 2 ? 1 : 0, x: 0 }} transition={{ delay: 0.5 + i * 0.15 }}
+                    className="flex items-start gap-2">
+                    <span className="text-green-400 text-lg">•</span>
+                    <span className="text-neutral-300 text-sm italic">"{line}"</span>
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 3 ? 1 : 0 }}
+                className="mt-4 px-3 py-2 rounded-lg bg-green-500/10 text-center">
+                <span className="text-green-400 text-xs">Agrees first. Redirects concern into reason to buy.</span>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Result badge */}
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: phase >= 3 ? 1 : 0, scale: phase >= 3 ? 1 : 0.8 }}
+            className="flex justify-center mt-6">
+            <div className="px-6 py-3 rounded-full font-bold text-lg" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white' }}>
+              {data.result}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ FOUR INVERSIONS SLIDE ============
+    const FourInversionsSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % data.inversions.length);
+        }, 5000);
+        return () => clearInterval(timer);
+      }, [data.inversions.length]);
+
+      const IconMap = { DollarSign: Icons.DollarSign, Clock2: Icons.Clock2, Eye: Icons.Eye, Brain: Icons.Brain };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-4 gap-3 mb-6">
+            {data.inversions.map((inv, i) => {
+              const IconComponent = IconMap[inv.icon] || Icons.Target;
+              return (
+                <motion.button key={i} onClick={() => setActiveIndex(i)}
+                  initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  className={`relative rounded-xl p-4 text-left transition-all duration-300 ${activeIndex === i ? 'ring-2' : ''}`}
+                  style={{
+                    background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                    ringColor: activeIndex === i ? inv.color : 'transparent',
+                    boxShadow: activeIndex === i ? `0 0 20px ${inv.color}30` : 'none'
+                  }}>
+                  <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl transition-opacity" style={{ background: `linear-gradient(90deg, transparent, ${inv.color}, transparent)`, opacity: activeIndex === i ? 1 : 0.3 }} />
+
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `${inv.color}20`, color: inv.color }}>
+                    <IconComponent />
+                  </div>
+                  <div className="text-white font-bold text-sm mb-1">{inv.objection}</div>
+                  <div className="text-neutral-400 text-xs italic">{inv.quote}</div>
+                </motion.button>
+              );
+            })}
+          </div>
+
+          {/* Active inversion detail */}
+          <AnimatePresence mode="wait">
+            <motion.div key={activeIndex} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+              className="relative rounded-2xl p-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: `0 0 40px ${data.inversions[activeIndex].color}20` }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${data.inversions[activeIndex].color}, transparent)` }} />
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <span className="text-xs uppercase tracking-wider mb-2 block" style={{ color: data.inversions[activeIndex].color }}>THE INVERSION</span>
+                  <p className="text-white text-lg italic leading-relaxed">"{data.inversions[activeIndex].inversion}"</p>
+                </div>
+                <div>
+                  <span className="text-xs text-amber-400 uppercase tracking-wider mb-2 block">PSYCHOLOGY</span>
+                  <p className="text-neutral-300 text-sm leading-relaxed">{data.inversions[activeIndex].psychology}</p>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ MAGIC PHRASES SLIDE ============
+    const MagicPhrasesSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.phrases.map((phrase, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="relative rounded-2xl p-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+              <div className="flex items-center gap-3 mb-4">
+                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', color: 'white' }}>{i + 1}</span>
+                <span className="text-2xl font-bold" style={{ color: 'var(--accent)' }}>"{phrase.trigger}"</span>
+              </div>
+
+              <div className="mb-3">
+                <span className="text-xs text-neutral-500 uppercase tracking-wider">PURPOSE</span>
+                <p className="text-neutral-300 text-sm">{phrase.purpose}</p>
+              </div>
+
+              <div className="p-3 rounded-lg bg-neutral-800/50">
+                <span className="text-xs text-green-400 uppercase tracking-wider">EXAMPLE</span>
+                <p className="text-white text-sm italic">{phrase.example}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ============ ECOMMERCE EXAMPLE SLIDE ============
+    const EcommerceExampleSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-3">{data.title}</motion.h2>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}
+            className="text-center mb-6">
+            <span className="inline-block px-4 py-2 rounded-full text-sm font-medium" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+              Customer: {data.scenario}
+            </span>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Before */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="relative rounded-2xl p-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+              <div className="flex items-center gap-2 mb-4">
+                <Icons.X />
+                <span className="text-red-400 font-semibold">{data.before.approach}</span>
+              </div>
+
+              <div className="bg-neutral-800/50 rounded-lg p-4 mb-4">
+                <p className="text-neutral-300 text-sm italic">"{data.before.response}"</p>
+              </div>
+
+              <div className="text-red-400 text-sm">
+                <Icons.ArrowRightCircle />
+                <span className="ml-2">{data.before.result}</span>
+              </div>
+            </motion.div>
+
+            {/* After */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="relative rounded-2xl p-6 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(16, 185, 129, 0.2)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+
+              <div className="flex items-center gap-2 mb-4">
+                <Icons.Check />
+                <span className="text-green-400 font-semibold">{data.after.approach}</span>
+              </div>
+
+              <div className="bg-neutral-800/50 rounded-lg p-4 mb-4">
+                <p className="text-neutral-300 text-sm italic">"{data.after.response}"</p>
+              </div>
+
+              <div className="text-green-400 text-sm">
+                <Icons.ArrowRightCircle />
+                <span className="ml-2">{data.after.result}</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* CVR Result */}
+          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: showResult ? 1 : 0, scale: showResult ? 1 : 0.8 }}
+            className="flex justify-center mt-6">
+            <div className="px-8 py-4 rounded-full font-bold text-xl" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white' }}>
+              {data.cvr} Conversion Rate
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ PRICING PSYCHOLOGY SLIDE ============
+    const PricingPsychologySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-3 gap-4 mb-6">
+          {data.tiers.map((tier, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+              className={`relative rounded-2xl p-6 text-center overflow-hidden ${tier.featured ? 'ring-2 ring-green-500' : ''}`}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                boxShadow: tier.featured ? '0 0 40px rgba(16, 185, 129, 0.3)' : 'none',
+                transform: tier.featured ? 'scale(1.05)' : 'scale(1)'
+              }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: tier.featured ? 'linear-gradient(90deg, transparent, #10b981, transparent)' : 'linear-gradient(90deg, transparent, #6b7280, transparent)' }} />
+
+              <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 ${tier.featured ? 'bg-green-500/20 text-green-400' : 'bg-neutral-700 text-neutral-400'}`}>
+                {tier.badge}
+              </span>
+
+              <h3 className="text-white font-bold text-xl mb-2">{tier.name}</h3>
+              <div className={`text-4xl font-bold mb-4 ${tier.featured ? 'text-green-400' : 'text-neutral-400'}`}>{tier.price}</div>
+              <p className="text-neutral-400 text-sm">{tier.purpose}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+          className="text-center rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="inline-flex items-center gap-2 text-amber-400">
+            <Icons.Lightbulb />
+            <span className="text-sm">{data.insight}</span>
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ OBJECTION SIMULATOR SLIDE ============
+    const ObjectionSimulatorSlide = ({ data }) => {
+      const [currentIndex, setCurrentIndex] = useState(0);
+      const [showJudo, setShowJudo] = useState(false);
+
+      useEffect(() => {
+        setShowJudo(false);
+        const timer = setTimeout(() => setShowJudo(true), 1500);
+        return () => clearTimeout(timer);
+      }, [currentIndex]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          {/* Scenario selector */}
+          <div className="flex justify-center gap-2 mb-6">
+            {data.scenarios.map((_, i) => (
+              <button key={i} onClick={() => setCurrentIndex(i)}
+                className={`w-10 h-10 rounded-full font-bold text-sm transition-all ${currentIndex === i ? 'text-white' : 'bg-neutral-200 text-neutral-600'}`}
+                style={{ background: currentIndex === i ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : undefined }}>
+                {i + 1}
+              </button>
+            ))}
+          </div>
+
+          {/* Current scenario */}
+          <AnimatePresence mode="wait">
+            <motion.div key={currentIndex} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+              {/* Objection */}
+              <div className="text-center mb-6">
+                <span className="inline-block px-4 py-2 rounded-full text-base font-medium" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>
+                  {data.scenarios[currentIndex].objection}
+                </span>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Bad Response */}
+                <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+                  className="relative rounded-2xl p-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center text-red-400"><Icons.X /></div>
+                    <span className="text-red-400 font-semibold text-sm">BAD RESPONSE</span>
+                  </div>
+
+                  <p className="text-neutral-300 text-sm italic">"{data.scenarios[currentIndex].badResponse}"</p>
+                </motion.div>
+
+                {/* Judo Response */}
+                <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: showJudo ? 1 : 0.3, x: 0 }}
+                  className="relative rounded-2xl p-5 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showJudo ? '0 0 40px rgba(16, 185, 129, 0.3)' : 'none' }}>
+                  <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center text-green-400"><Icons.Check /></div>
+                    <span className="text-green-400 font-semibold text-sm">JUDO RESPONSE</span>
+                  </div>
+
+                  <p className="text-neutral-300 text-sm italic">"{data.scenarios[currentIndex].judoResponse}"</p>
+                </motion.div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ FRAMEWORK SUMMARY SLIDE ============
+    const FrameworkSummarySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-4 gap-4">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+              className="relative rounded-2xl p-5 overflow-hidden text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+              <div className="w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', color: 'white' }}>
+                {step.num}
+              </div>
+
+              <h3 className="text-white font-bold text-lg mb-2">{step.action}</h3>
+              <p className="text-neutral-400 text-sm">{step.description}</p>
+
+              {i < data.steps.length - 1 && (
+                <div className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-neutral-600 z-10">
+                  <Icons.ArrowRight />
+                </div>
+              )}
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          className="w-full relative rounded-3xl p-8 md:p-12 overflow-hidden text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(239, 68, 68, 0.2)' }}>
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="flex justify-center mb-6">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 30px rgba(239, 68, 68, 0.4)' }}>
+              <Icons.Lightbulb />
+            </div>
+          </motion.div>
+
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="slide-title text-2xl md:text-3xl text-white mb-6">{data.title}</motion.h2>
+
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-xl md:text-2xl text-neutral-300 leading-relaxed mb-6">{data.insight}</motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="px-6 py-3 rounded-xl mb-6" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <span className="text-sm" style={{ color: 'var(--accent)' }}>{data.principle}</span>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="text-lg text-white italic font-medium">{data.quote}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -381,7 +843,7 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -409,6 +871,7 @@
       );
     };
 
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -428,6 +891,7 @@
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -440,16 +904,6 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -480,11 +934,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'split': return <SplitSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'judo-visualization': return <JudoVisualizationSlide data={slide} />;
+          case 'impact-stats': return <ImpactStatsSlide data={slide} />;
+          case 'objection-decoder': return <ObjectionDecoderSlide data={slide} />;
+          case 'judo-flip': return <JudoFlipSlide data={slide} />;
+          case 'four-inversions': return <FourInversionsSlide data={slide} />;
+          case 'magic-phrases': return <MagicPhrasesSlide data={slide} />;
+          case 'ecommerce-example': return <EcommerceExampleSlide data={slide} />;
+          case 'pricing-psychology': return <PricingPsychologySlide data={slide} />;
+          case 'objection-simulator': return <ObjectionSimulatorSlide data={slide} />;
+          case 'framework-summary': return <FrameworkSummarySlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -500,7 +960,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

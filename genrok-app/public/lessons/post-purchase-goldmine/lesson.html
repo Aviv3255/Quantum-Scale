@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #8b5cf6; --accent-dark: #7c3aed; --accent-light: #a78bfa; --accent-rgb: 139, 92, 246; }
+    :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -41,147 +38,78 @@
       id: 'post-purchase-goldmine',
       title: 'The Hidden Revenue You\'re Ignoring',
       description: 'The journey doesn\'t end at checkout. That\'s where the REAL money starts.',
-      accentColor: '#8b5cf6',
+      accentColor: '#10b981',
       duration: '8 min',
       nextLesson: { id: 'bottom-up-brand', title: 'Why Movements Beat Marketing', teaser: 'How to build a brand from the bottom-up like a movement, not a mandate.' }
     };
 
+    // ============ CONFIGURATION ARRAYS ============
+    const FUNNEL_STAGES = [
+      { stage: 'Cart Adds', value: 35000, color: '#94a3b8', icon: 'ShoppingCart' },
+      { stage: 'Purchases', value: 8600, color: '#10b981', icon: 'CreditCard' },
+      { stage: 'Lost Revenue', value: 26400, color: '#ef4444', icon: 'AlertTriangle' }
+    ];
+
+    const UPSELL_MATH = [
+      { label: 'Original AOV', value: '$45', color: '#94a3b8' },
+      { label: 'Upsell Offer', value: '$22', color: '#10b981', note: '20% off' },
+      { label: '25% Accept', value: '+$5.50', color: '#10b981' },
+      { label: 'New AOV', value: '$50.50', color: '#10b981', highlight: true }
+    ];
+
+    const SUBSCRIPTION_STAGES = [
+      { phase: 'CAC', value: '$10', desc: 'Customer Acquisition Cost', color: '#ef4444', icon: 'DollarSign' },
+      { phase: '3 Months', value: '$81', desc: 'Subscription Value', color: '#10b981', icon: 'TrendingUp' },
+      { phase: 'Ongoing', value: '8x+', desc: 'Continuous ROAS', color: '#f59e0b', icon: 'Infinity' }
+    ];
+
+    const CART_RECOVERY_ARSENAL = [
+      { title: 'AI SMS Sequences', stat: '+$60K', desc: 'Month 1 revenue with personalized, conversational SMS flows', icon: 'Smartphone', color: '#3b82f6' },
+      { title: 'Interactive Email', stat: '15%+', desc: 'Email capture vs 3-5% industry average with gamified popups', icon: 'Mail', color: '#ec4899' },
+      { title: 'Multi-Touch Recovery', stat: '3x', desc: 'SMS at 1hr, Email at 4hr, Final at 24hr = compounding conversion', icon: 'Layers', color: '#10b981' }
+    ];
+
+    const REVIEW_LOOP = [
+      { day: 'Day 1', action: 'Founder Story Email', icon: 'User', color: '#3b82f6' },
+      { day: 'Day 3', action: 'How-To + Tips', icon: 'BookOpen', color: '#8b5cf6' },
+      { day: 'Day 7', action: 'Review Request + Photo Incentive', icon: 'Camera', color: '#10b981' },
+      { day: 'Day 14', action: 'Cross-Sell Complementary Product', icon: 'Package', color: '#f59e0b' }
+    ];
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
 
-
+    // ============ CELEBRATION GIFS ============
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why checkout is the START, not the end', 'Post-purchase upsells: easiest money you\'ll ever make', 'How subscriptions turn $10 CAC into 8x ROAS instantly'] },
-      { type: 'hook', headline: 'The sale doesn\'t end at checkout. That\'s where it STARTS.', subtext: 'Most stores celebrate the order confirmation like it\'s game over. But the smartest brands? They know that\'s the moment of maximum trust. The customer just gave you their credit card. They believe in you. And you\'re... doing nothing? That\'s millions left on the table.' },
-      { type: 'content', title: 'The Post-Purchase Blindspot', body: 'Think about your last purchase flow. Customer clicks Buy Now. Enters card details. Completes order. Sees thank you page. And then... silence. Maybe a generic "thanks for your order" email. That\'s it. Meanwhile, they\'re in the HIGHEST trust state they\'ll ever be in. They just committed. The hard part is done. And you\'re wasting it.' },
-      { type: 'visual', title: 'The Reality of Your Funnel', visualType: 'stats', data: [
-        { value: '35,000', label: 'Cart Adds', subtext: 'People who started' },
-        { value: '8,600', label: 'Purchases', subtext: 'People who finished' },
-        { value: '20,000+', label: 'Lost Opportunities', subtext: 'Revenue walking away' }
-      ]},
-      { type: 'content', title: 'Strategy 1: Post-Purchase One-Click Upsell', body: 'Here\'s the unlock: immediately after checkout, before the thank you page, show ONE perfectly timed offer. They already bought. Card is saved. One click adds it to their order. No re-entering payment info. No friction. Just "Add this for 20% off?" Studies show 10-30% take rate. That\'s pure profit on top of every sale.' },
-      { type: 'implementation', title: 'The Easiest Post-Purchase Upsell Setup', intro: "Here\'s how to implement this in your store:", steps: [
-        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
-        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
-        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
-        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
-      ], toolUrl: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva', cta: 'Get Started Free' },
-      { type: 'tool-setup', title: 'Setup ReConvert in 5 Minutes', toolName: 'ReConvert', steps: ['Install ReConvert from the Shopify App Store', 'Select complementary products to offer based on what was just purchased', 'Set your discount (10-20% works best)', 'Customize the thank you page layout', 'Enable one-click add - no re-entering payment'], proTip: 'Offer products that enhance what they just bought. Camera buyer? Offer a memory card. Skincare buyer? Offer the matching serum. Relevance is everything.' },
-      { type: 'example', scenario: 'Post-Purchase Upsell in Action', before: { label: 'Without Upsell', text: 'Customer buys $45 serum. Sees generic thank you page. Done. AOV: $45. You paid $30 to acquire them. Profit: $15.' }, after: { label: 'With One-Click Upsell', text: 'Customer buys $45 serum. Instantly offered $28 moisturizer at 20% off ($22). 25% accept. New AOV: $45 + $5.50 avg = $50.50. Profit: $20.50.' }, insight: 'You just increased profit by 37% without spending a single dollar on ads.' },
-      { type: 'content', title: 'Strategy 2: Subscriptions for Consumables', body: 'If you sell anything that runs out - supplements, skincare, food, consumables - you NEED subscriptions. Not as an afterthought. As a core offer. The math is obscene. Customer pays $10 to acquire. They subscribe at $27/month. That\'s $81 for 3 months (typical initial commitment). You just turned $10 CAC into $81 revenue. 8x ROAS. Instantly. Then it renews. Month after month.' },
-      { type: 'visual', title: 'Subscription Economics', visualType: 'stats', data: [
-        { value: '$10', label: 'Customer Acquisition Cost', subtext: 'What you paid' },
-        { value: '$81', label: '3-Month Subscription Value', subtext: '8x immediate ROAS' },
-        { value: '∞', label: 'Ongoing Revenue', subtext: 'Auto-renews forever' }
-      ]},
-      { type: 'content', title: 'The Abandoned Cart Goldmine', body: 'Remember those 20,000+ people who added to cart but didn\'t buy? That\'s not lost revenue. That\'s a LIST. They showed intent. They WANT your product. They just got distracted, hesitated, or needed a nudge. Here\'s where most brands fail: they send a boring "You left something behind" email. Yawn. The winners? They deploy AI SMS + interactive email flows.' },
-      { type: 'cards', title: 'Cart Recovery Arsenal', items: [
-        { title: 'AI SMS Sequences', description: 'One brand added $60K in month 1 with personalized SMS flows. Conversational, not spammy. Feels like a friend reminding you.' },
-        { title: 'Interactive Email Popups', description: '15%+ email capture vs industry 3-5%. Gamified spin-to-win wheels, exit-intent offers that feel fun, not desperate.' },
-        { title: 'Multi-Touch Recovery', description: 'SMS at 1hr. Email at 4hr. Final offer at 24hr. Layered touchpoints = compounding conversion.' }
-      ]},
-      { type: 'content', title: 'Building the Cult Following', body: 'Post-purchase isn\'t just upsells and recovery. It\'s relationship building. Your packaging arrives. Inside: a handwritten-style founder note, cross-sell card for related products, VIP exclusive discount code for next purchase. Then the email sequence starts. Day 1: Founder story. Day 3: How to use product + tips. Day 7: Request review with photo incentive. Day 14: Cross-sell complementary product. This is how you turn customers into loyalists.' },
-      { type: 'example', scenario: 'The Review Loop That Prints Money', before: { label: 'No Review System', text: 'Customer receives product. Uses it. Maybe loves it. You never know. No reviews on site. New visitors don\'t trust you. Conversion suffers.' }, after: { label: 'Automated Review Loop', text: 'Day 7 email: "How\'s the product?" with easy 1-click review link. Incentive: 15% off next order for photo review. You get 5-star review with photo. Display it on product page. New visitor sees real proof. Conversion jumps 20-40%.' }, insight: 'Reviews aren\'t just social proof. They\'re conversion multipliers that compound over time.' },
-      { type: 'quiz', question: 'You have 35,000 cart adds, 8,600 purchases. What\'s the FASTEST way to capture missed revenue?', options: ['Lower prices to convert more upfront', 'Run more ads to get new traffic', 'Deploy AI SMS + email recovery flows to re-engage the 20,000+ who abandoned', 'Add more products to homepage'], correctIndex: 2, feedback: { correct: 'Exactly! Those 20,000+ people already WANTED your product. They showed intent. Re-engaging them with AI SMS and interactive email flows is the fastest, cheapest revenue unlock. One brand added $60K in month 1 doing exactly this.', incorrect: 'Not quite. The fastest revenue is in the 20,000+ people who ALREADY added to cart. They wanted your product - they just got distracted. AI SMS + email recovery flows bring them back. One brand added $60K in revenue in month 1. That\'s your goldmine.' }},
-      { type: 'completion', sources: [{ name: 'Post-Purchase Upsell Strategies', url: 'https://quantum-scale.co/learn' }, { name: 'Subscription Revenue Models', url: 'https://quantum-scale.co/learn' }, { name: 'ReConvert Post-Purchase Upsell', url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva' }] }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -189,10 +117,90 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      ShoppingCart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      CreditCard: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Infinity: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2 2.67 4 4 6 4a4 4 0 0 0 0-8c-2 0-4 1.33-6 4Z"/></svg>,
+      Smartphone: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>,
+      Mail: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>,
+      Layers: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.5-8.97 4.08a2 2 0 0 1-1.66 0L2 12.5"/><path d="m22 17-8.97 4.08a2 2 0 0 1-1.66 0L2 17"/></svg>,
+      User: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      BookOpen: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+      Camera: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>,
+      Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
     };
 
+    const IconComponents = {
+      ShoppingCart: Icons.ShoppingCart, CreditCard: Icons.CreditCard, AlertTriangle: Icons.AlertTriangle,
+      DollarSign: Icons.DollarSign, TrendingUp: Icons.TrendingUp, Infinity: Icons.Infinity,
+      Smartphone: Icons.Smartphone, Mail: Icons.Mail, Layers: Icons.Layers,
+      User: Icons.User, BookOpen: Icons.BookOpen, Camera: Icons.Camera, Package: Icons.Package,
+      Target: Icons.Target, Lightbulb: Icons.Lightbulb, Star: Icons.Star
+    };
+
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, duration = 2000, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      const numericValue = parseFloat(value.toString().replace(/[^0-9.-]/g, ''));
+
+      useEffect(() => {
+        let startTime;
+        const animate = (currentTime) => {
+          if (!startTime) startTime = currentTime;
+          const progress = Math.min((currentTime - startTime) / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.floor(easeOut * numericValue));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [numericValue, duration]);
+
+      return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
+    };
+
+    // ============ SLIDES DATA ============
+    // ReConvert Tool Config
+    const RECONVERT_TOOL = {
+      name: 'ReConvert',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/d7c456ab4c46f0fe14c14b60c135fb26/icon/CKfh7oCa5PQCEAE=.png',
+      link: 'https://apps.shopify.com/reconvert-post-purchase-upsell',
+      tagline: '#1 Post-Purchase Upsell App',
+      stats: { aovIncrease: '15%', stores: '40,000+', rating: '4.9' }
+    };
+
+    const slides = [
+      // ========== PART 1: THE STRATEGY (Theory) ==========
+      { type: 'welcome', learningGoals: ['Why checkout is the START, not the end', 'Post-purchase upsells: easiest money you\'ll ever make', 'How subscriptions turn $10 CAC into 8x ROAS instantly'] },
+      { type: 'hook', headline: 'The sale doesn\'t end at checkout. That\'s where it STARTS.', subtext: 'Most stores celebrate the order confirmation like it\'s game over. But the smartest brands? They know that\'s the moment of maximum trust. The customer just gave you their credit card. They believe in you. And you\'re... doing nothing? That\'s millions left on the table.' },
+      { type: 'funnel-leakage', title: 'The Reality of Your Funnel' },
+      { type: 'trust-window', title: 'The Maximum Trust Moment' },
+      { type: 'one-click-upsell', title: 'Strategy 1: One-Click Post-Purchase Upsell' },
+      { type: 'upsell-math', title: 'The Profit Math' },
+      { type: 'page-transformation', title: 'Thank You Page: Before vs After' },
+      { type: 'subscription-multiplier', title: 'Strategy 2: Subscription Economics' },
+      { type: 'cart-recovery-arsenal', title: 'The Cart Recovery Arsenal' },
+      { type: 'review-loop', title: 'The Review Loop That Compounds Forever' },
+      { type: 'before-after', title: 'Without vs With Post-Purchase Strategy' },
+      { type: 'impact-stats', title: 'The Post-Purchase Impact' },
+      { type: 'elite-insight', title: 'The Goldmine Paradox' },
+      { type: 'quiz', question: 'You have 35,000 cart adds, 8,600 purchases. What\'s the FASTEST way to capture missed revenue?', options: ['Lower prices to convert more upfront', 'Run more ads to get new traffic', 'Deploy AI SMS + email recovery flows to re-engage the 26,000+ who abandoned', 'Add more products to homepage'], correctIndex: 2, feedback: { correct: 'Exactly! Those 26,000+ people already WANTED your product. They showed intent. Re-engaging them with AI SMS and interactive email flows is the fastest, cheapest revenue unlock. One brand added $60K in month 1 doing exactly this.', incorrect: 'Not quite. The fastest revenue is in the 26,000+ people who ALREADY added to cart. They wanted your product - they just got distracted. AI SMS + email recovery flows bring them back. One brand added $60K in month 1.' }},
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-setup-upsells' },
+      { type: 'step-optimize-thankyou' },
+      { type: 'step-cart-recovery' },
+      { type: 'step-results' },
+      { type: 'completion' }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -201,176 +209,774 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl text-black mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-3" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-[10px] uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-2">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-xs leading-snug">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    // ============ UNIQUE CUSTOM SLIDES ============
+
+    // FUNNEL LEAKAGE VISUALIZATION
+    const FunnelLeakageSlide = ({ data }) => {
+      const [activeStage, setActiveStage] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => setActiveStage(s => (s + 1) % 3), 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Problem</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
           </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+
+          <div className="flex items-center justify-center gap-4">
+            {FUNNEL_STAGES.map((stage, i) => {
+              const Icon = IconComponents[stage.icon];
+              const isActive = activeStage === i;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                  className="flex-1 max-w-[180px]" style={{ cursor: 'pointer' }} onClick={() => setActiveStage(i)}>
+                  <div className="rounded-xl p-6 text-center transition-all duration-300" style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                    border: `2px solid ${isActive ? stage.color : '#e5e5e5'}`,
+                    boxShadow: isActive ? `0 0 30px ${stage.color}30` : 'none',
+                    transform: isActive ? 'scale(1.05)' : 'scale(1)'
+                  }}>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: `${stage.color}20`, color: stage.color }}>
+                      <Icon />
+                    </div>
+                    <div className="text-3xl font-bold mb-1" style={{ color: isActive ? stage.color : '#1a1a1a' }}>
+                      <AnimatedCounter value={stage.value} suffix="" />
+                    </div>
+                    <div className={`text-sm font-medium ${isActive ? 'text-white' : 'text-neutral-700'}`}>{stage.stage}</div>
+                  </div>
+                  {i < 2 && (
+                    <div className="flex justify-center my-2">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={stage.color} strokeWidth="2">
+                        <path d="M12 5v14M5 12l7 7 7-7"/>
+                      </svg>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="text-center mt-8 p-4 rounded-xl" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <div className="flex items-center justify-center gap-2">
+              <Icons.AlertTriangle />
+              <span className="text-red-600 font-semibold">75% of interested buyers never complete purchase</span>
+            </div>
+          </motion.div>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
+      );
+    };
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+    // TRUST WINDOW VISUALIZATION
+    const TrustWindowSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Opportunity</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+
+        <div className="relative">
+          {/* Timeline */}
+          <div className="flex items-center justify-between mb-6">
+            {['Add to Cart', 'Checkout', 'Payment', 'MAXIMUM TRUST', 'Thank You'].map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="flex flex-col items-center" style={{ flex: 1 }}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold ${i === 3 ? 'text-white' : 'text-neutral-600 bg-neutral-100'}`}
+                  style={i === 3 ? { background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 20px rgba(var(--accent-rgb), 0.5)' } : {}}>
+                  {i === 3 ? <Icons.Star /> : i + 1}
+                </div>
+                <span className={`text-xs mt-2 text-center ${i === 3 ? 'font-bold text-emerald-600' : 'text-neutral-500'}`}>{step}</span>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Connection line */}
+          <div className="absolute top-5 left-[10%] right-[10%] h-0.5 bg-neutral-200 -z-10"></div>
+
+          {/* Highlight box */}
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 }}
+            className="rounded-xl p-5 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
+            <h3 className="text-white font-bold text-xl mb-2">The Golden Window</h3>
+            <p className="text-neutral-400 text-sm mb-4">Customer just gave you their credit card. They believe in you. They're at PEAK trust. This is where the magic happens.</p>
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { stat: '10-30%', label: 'Upsell Accept Rate' },
+                { stat: '$0', label: 'Extra Ad Spend' },
+                { stat: 'Instant', label: 'Revenue Boost' }
+              ].map((item, i) => (
+                <div key={i} className="p-3 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                  <div className="font-bold text-lg" style={{ color: 'var(--accent)' }}>{item.stat}</div>
+                  <div className="text-xs text-neutral-400">{item.label}</div>
+                </div>
+              ))}
+            </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
+
+          {/* Inline Tool Hint */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="mt-4 flex items-center justify-center gap-2 p-2 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.05)', border: '1px dashed rgba(var(--accent-rgb), 0.3)' }}>
+            <img src={RECONVERT_TOOL.logo} alt="" className="w-5 h-5 rounded" />
+            <span className="text-neutral-500 text-xs">Apps like <strong className="text-neutral-700">ReConvert</strong> help you capture this golden window automatically</span>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+      </div>
+    );
+
+    // ONE-CLICK UPSELL FLOW
+    const OneClickUpsellSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Strategy #1</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Before */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-white">Without Upsell</span>
+            </div>
+            <div className="space-y-3 text-sm text-neutral-400">
+              <p>Customer clicks "Complete Order"</p>
+              <p>Sees generic thank you page</p>
+              <p>Receives confirmation email</p>
+              <p className="font-semibold text-red-400">Transaction over. Money left behind.</p>
+            </div>
+            <div className="mt-4 p-3 rounded-lg bg-red-500/10 border border-red-500/30">
+              <span className="text-red-400 font-bold">AOV: $45</span>
+            </div>
+          </motion.div>
+
+          {/* After */}
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
+            <div className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>WINS</div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-white">With One-Click Upsell</span>
+            </div>
+            <div className="space-y-3 text-sm text-neutral-400">
+              <p>Customer clicks "Complete Order"</p>
+              <p className="text-emerald-400 font-medium">Instant upsell: "Add moisturizer for 20% off?"</p>
+              <p className="text-emerald-400 font-medium">One click - card already saved</p>
+              <p className="font-semibold text-emerald-400">25% accept. Instant profit boost.</p>
+            </div>
+            <div className="mt-4 p-3 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.1)', border: '1px solid rgba(var(--accent-rgb), 0.3)' }}>
+              <span className="font-bold" style={{ color: 'var(--accent)' }}>AOV: $50.50 (+12%)</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // UPSELL MATH BREAKDOWN
+    const UpsellMathSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Math</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="rounded-xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="h-1 w-full rounded-full mb-6" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
+
+          <div className="space-y-4">
+            {UPSELL_MATH.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className={`flex items-center justify-between p-4 rounded-xl ${item.highlight ? 'border-2' : ''}`}
+                style={{
+                  background: item.highlight ? 'rgba(var(--accent-rgb), 0.1)' : 'rgba(255,255,255,0.05)',
+                  borderColor: item.highlight ? 'var(--accent)' : 'transparent'
+                }}>
+                <span className="text-neutral-400">{item.label}</span>
+                <div className="flex items-center gap-2">
+                  <span className={`font-bold text-xl ${item.highlight ? '' : ''}`} style={{ color: item.color }}>{item.value}</span>
+                  {item.note && <span className="text-xs text-neutral-500">({item.note})</span>}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="mt-6 p-4 rounded-xl text-center" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <div className="flex items-center justify-center gap-2">
+              <Icons.Zap />
+              <span className="font-bold" style={{ color: 'var(--accent)' }}>+37% profit increase with zero extra ad spend</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // SUBSCRIPTION MULTIPLIER
+    const SubscriptionMultiplierSlide = ({ data }) => {
+      const [activePhase, setActivePhase] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => setActivePhase(p => (p + 1) % 3), 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>Strategy #2</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="flex items-center justify-center gap-6">
+            {SUBSCRIPTION_STAGES.map((stage, i) => {
+              const Icon = IconComponents[stage.icon];
+              const isActive = activePhase === i;
+              return (
+                <React.Fragment key={i}>
+                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: isActive ? 1.05 : 1 }} transition={{ delay: 0.1 + i * 0.15 }}
+                    className="flex-1 max-w-[200px] rounded-xl p-6 text-center cursor-pointer transition-all"
+                    onClick={() => setActivePhase(i)}
+                    style={{
+                      background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                      border: `2px solid ${isActive ? stage.color : '#e5e5e5'}`,
+                      boxShadow: isActive ? `0 0 30px ${stage.color}30` : 'none'
+                    }}>
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: `${stage.color}20`, color: stage.color }}>
+                      <Icon />
+                    </div>
+                    <div className="text-3xl font-bold mb-1" style={{ color: stage.color }}>{stage.value}</div>
+                    <div className="text-xs font-medium mb-1" style={{ color: isActive ? 'white' : '#1a1a1a' }}>{stage.phase}</div>
+                    <div className={`text-xs ${isActive ? 'text-neutral-400' : 'text-neutral-500'}`}>{stage.desc}</div>
+                  </motion.div>
+                  {i < 2 && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }}>
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={stage.color} strokeWidth="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                      </svg>
+                    </motion.div>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="mt-8 p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }}></div>
+            <p className="text-neutral-400 text-sm">Consumables (supplements, skincare, food) are subscription goldmines.</p>
+            <p className="text-amber-400 font-bold mt-2">Turn one-time buyers into recurring revenue streams.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // CART RECOVERY ARSENAL
+    const CartRecoveryArsenalSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>Strategy #3</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {CART_RECOVERY_ARSENAL.map((item, i) => {
+            const Icon = IconComponents[item.icon];
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 absolute top-0 left-0 right-0" style={{ background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }}></div>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ background: `${item.color}20`, color: item.color }}>
+                  <Icon />
+                </div>
+                <div className="text-2xl font-bold mb-1" style={{ color: item.color }}>{item.stat}</div>
+                <h3 className="text-white font-semibold text-sm mb-2">{item.title}</h3>
+                <p className="text-neutral-400 text-xs leading-relaxed">{item.desc}</p>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+          className="mt-6 p-3 rounded-xl text-center" style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+          <div className="flex items-center justify-center gap-2">
+            <Icons.Lightbulb />
+            <span className="text-blue-500 font-medium text-sm">26,000+ abandoned carts = Your highest-intent audience. Win them back.</span>
+          </div>
         </motion.div>
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+    // REVIEW LOOP FLYWHEEL
+    const ReviewLoopSlide = ({ data }) => {
+      const [activeDay, setActiveDay] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => setActiveDay(d => (d + 1) % 4), 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The System</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-4 gap-3">
+            {REVIEW_LOOP.map((item, i) => {
+              const Icon = IconComponents[item.icon];
+              const isActive = activeDay === i;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  className="rounded-xl p-4 text-center cursor-pointer transition-all"
+                  onClick={() => setActiveDay(i)}
+                  style={{
+                    background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                    border: `2px solid ${isActive ? item.color : '#e5e5e5'}`,
+                    boxShadow: isActive ? `0 0 20px ${item.color}30` : 'none',
+                    transform: isActive ? 'scale(1.03)' : 'scale(1)'
+                  }}>
+                  <div className="text-xs font-bold mb-2" style={{ color: item.color }}>{item.day}</div>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2" style={{ background: `${item.color}20`, color: item.color }}>
+                    <Icon />
+                  </div>
+                  <p className={`text-xs leading-snug ${isActive ? 'text-white' : 'text-neutral-600'}`}>{item.action}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="mt-6 rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full rounded-full mb-4" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-2xl font-bold text-emerald-400">20-40%</div>
+                <div className="text-xs text-neutral-400">Conversion boost from reviews</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-blue-400">5x</div>
+                <div className="text-xs text-neutral-400">More reviews with automation</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-amber-400">15%</div>
+                <div className="text-xs text-neutral-400">Photo review incentive works</div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // BEFORE/AFTER COMPARISON
+    const BeforeAfterSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-5">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            className="rounded-xl p-5" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #ef4444' }}>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-bold text-white">Without Post-Purchase Strategy</span>
+            </div>
+            <ul className="space-y-2.5 text-sm text-neutral-400">
+              <li className="flex items-start gap-2"><span className="text-red-400">-</span> Generic thank you page</li>
+              <li className="flex items-start gap-2"><span className="text-red-400">-</span> No upsells, no revenue capture</li>
+              <li className="flex items-start gap-2"><span className="text-red-400">-</span> Abandoned carts forgotten</li>
+              <li className="flex items-start gap-2"><span className="text-red-400">-</span> No review system</li>
+              <li className="flex items-start gap-2"><span className="text-red-400">-</span> One-time transactions</li>
+            </ul>
+            <div className="mt-4 p-3 rounded-lg text-center" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
+              <span className="text-red-400 font-bold">Result: $45 AOV, 0 recovery</span>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid var(--accent)' }}>
+            <div className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>WINS</div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}><Icons.Check /></div>
+              <span className="font-bold text-white">With Post-Purchase Strategy</span>
+            </div>
+            <ul className="space-y-2.5 text-sm text-neutral-400">
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span> One-click upsells (+12% AOV)</li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span> Subscription offers (8x ROAS)</li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span> AI cart recovery (+$60K/mo)</li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span> Automated review loop (20-40% boost)</li>
+              <li className="flex items-start gap-2"><span style={{ color: 'var(--accent)' }}>+</span> Lifetime customer relationships</li>
+            </ul>
+            <div className="mt-4 p-3 rounded-lg text-center" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+              <span className="font-bold" style={{ color: 'var(--accent)' }}>Result: $50.50 AOV, +$60K recovery, 8x LTV</span>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Tool Callout */}
+        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          href={RECONVERT_TOOL.link} target="_blank" rel="noopener noreferrer"
+          className="mt-4 flex items-center justify-between p-3 rounded-xl transition-all hover:scale-[1.01]" style={{ background: 'linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg overflow-hidden bg-white p-1">
+              <img src={RECONVERT_TOOL.logo} alt="ReConvert" className="w-full h-full object-contain" />
+            </div>
+            <div>
+              <span className="font-semibold text-sm text-neutral-800">Implement this with ReConvert</span>
+              <p className="text-xs text-neutral-500">Post-purchase upsells, thank you page funnels, and more</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1 text-xs font-medium" style={{ color: 'var(--accent)' }}>
+            <span>Learn More</span>
+            <Icons.ExternalLink />
+          </div>
+        </motion.a>
+      </div>
+    );
+
+    // IMPACT STATS
+    const ImpactStatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Impact</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { value: 12, suffix: '%', label: 'AOV Increase', desc: 'From one-click upsells', color: '#10b981' },
+            { value: 60, prefix: '+$', suffix: 'K', label: 'Monthly Recovery', desc: 'From AI cart recovery', color: '#3b82f6' },
+            { value: 8, suffix: 'x', label: 'LTV Multiplier', desc: 'From subscriptions', color: '#f59e0b' }
+          ].map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+              className="rounded-xl p-6 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 absolute top-0 left-0 right-0" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }}></div>
+              <div className="text-5xl font-bold mb-2" style={{ color: stat.color }}>
+                {stat.prefix}<AnimatedCounter value={stat.value} />{stat.suffix}
+              </div>
+              <div className="text-white font-semibold text-lg mb-1">{stat.label}</div>
+              <div className="text-neutral-400 text-sm">{stat.desc}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ELITE INSIGHT
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto text-center">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(var(--accent-rgb), 0.4)' }}>
+          <Icons.Lightbulb />
+        </motion.div>
+        <motion.h3 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-4">{data.title}</motion.h3>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-600 text-base md:text-lg leading-relaxed mb-6">
+          The moment of highest trust isn't when they discover you. It's when they've just given you their credit card. That's when the real relationship begins - and where most brands leave millions on the table.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+          className="flex items-center gap-3 px-6 py-3 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <Icons.Zap />
+          <span className="text-white font-medium">The sale doesn't end at checkout. That's where it starts.</span>
+        </motion.div>
+      </div>
+    );
+
+    // TOOL SHOWCASE SLIDE - Introduction to ReConvert
+    const ToolShowcaseSlide = ({ data }) => {
+      const features = [
+        { icon: 'Zap', title: 'One-Click Upsells', desc: 'Post-purchase offers with zero friction' },
+        { icon: 'Target', title: 'Smart Targeting', desc: 'Right offer to right customer' },
+        { icon: 'TrendingUp', title: 'A/B Testing', desc: 'Optimize every touchpoint' },
+        { icon: 'Star', title: 'Thank You Funnels', desc: 'Turn confirmation into conversion' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Tool</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          {/* Hero Tool Card */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            className="rounded-2xl p-6 mb-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }}></div>
+
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-16 h-16 rounded-xl overflow-hidden bg-white p-2 flex-shrink-0" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                <img src={RECONVERT_TOOL.logo} alt="ReConvert" className="w-full h-full object-contain" />
+              </div>
+              <div>
+                <h3 className="text-white font-bold text-xl">{RECONVERT_TOOL.name}</h3>
+                <p className="text-neutral-400 text-sm">{RECONVERT_TOOL.tagline}</p>
+              </div>
+              <div className="ml-auto flex items-center gap-1 px-3 py-1 rounded-full" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                <Icons.Star />
+                <span className="text-white font-bold text-sm">{RECONVERT_TOOL.stats.rating}</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {features.map((feature, i) => {
+                const Icon = Icons[feature.icon] || Icons.Zap;
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.08 }}
+                    className="p-3 rounded-xl text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                      <Icon />
+                    </div>
+                    <div className="text-white font-medium text-xs mb-1">{feature.title}</div>
+                    <div className="text-neutral-500 text-[10px]">{feature.desc}</div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          {/* Stats Row */}
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { value: RECONVERT_TOOL.stats.aovIncrease, label: 'Avg. AOV Increase', color: 'var(--accent)' },
+              { value: RECONVERT_TOOL.stats.stores, label: 'Active Stores', color: '#3b82f6' },
+              { value: 'Free', label: 'To Start', color: '#f59e0b' }
+            ].map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
+                className="p-4 rounded-xl text-center bg-white" style={{ border: '1px solid #e5e5e5' }}>
+                <div className="text-2xl font-bold mb-1" style={{ color: stat.color }}>{stat.value}</div>
+                <div className="text-xs text-neutral-500">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // PAGE TRANSFORMATION SLIDE - Visual Before/After
+    const PageTransformationSlide = ({ data }) => {
+      const [showAfter, setShowAfter] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowAfter(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Visual Transformation</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* BEFORE - Generic Thank You */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              className={`rounded-xl overflow-hidden transition-all duration-500 ${showAfter ? 'opacity-50 scale-95' : ''}`} style={{ border: '2px solid #ef4444' }}>
+              <div className="bg-red-500 px-4 py-2 flex items-center gap-2">
+                <Icons.X />
+                <span className="text-white font-bold text-sm">BEFORE: Generic Page</span>
+              </div>
+              <div className="bg-white p-6">
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 rounded-full bg-neutral-100 mx-auto mb-4 flex items-center justify-center">
+                    <Icons.Check />
+                  </div>
+                  <h4 className="text-xl font-bold text-neutral-800 mb-2">Thank you for your order!</h4>
+                  <p className="text-neutral-500 text-sm mb-4">Order #12345 confirmed</p>
+                  <div className="text-neutral-400 text-xs">You'll receive an email confirmation shortly.</div>
+                </div>
+                <div className="border-t pt-4 text-center">
+                  <span className="text-red-500 text-sm font-medium">$0 additional revenue captured</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* AFTER - ReConvert Optimized */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: showAfter ? 1 : 0.3, x: 0, scale: showAfter ? 1 : 0.95 }} transition={{ delay: 0.3 }}
+              className="rounded-xl overflow-hidden" style={{ border: '2px solid var(--accent)', boxShadow: showAfter ? '0 0 40px rgba(var(--accent-rgb), 0.3)' : 'none' }}>
+              <div className="px-4 py-2 flex items-center justify-between" style={{ background: 'var(--accent)' }}>
+                <div className="flex items-center gap-2">
+                  <Icons.Check />
+                  <span className="text-white font-bold text-sm">AFTER: ReConvert Optimized</span>
+                </div>
+                <div className="w-6 h-6 rounded bg-white/20 overflow-hidden">
+                  <img src={RECONVERT_TOOL.logo} alt="" className="w-full h-full object-contain" />
+                </div>
+              </div>
+              <div className="bg-white p-4">
+                {/* Upsell Offer */}
+                <div className="rounded-lg p-4 mb-3" style={{ background: 'linear-gradient(135deg, #fef3c7, #fde68a)', border: '2px solid #f59e0b' }}>
+                  <div className="flex items-center gap-1 text-amber-700 text-xs font-bold mb-2">
+                    <Icons.Zap />
+                    <span>EXCLUSIVE ONE-TIME OFFER</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-lg bg-amber-200 flex items-center justify-center">
+                      <Icons.Package />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-neutral-800 text-sm">Add Matching Moisturizer</div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-neutral-400 line-through text-xs">$28</span>
+                        <span className="text-amber-700 font-bold">$22</span>
+                        <span className="px-2 py-0.5 bg-amber-500 text-white text-[10px] rounded-full font-bold">20% OFF</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button className="w-full mt-3 py-2 rounded-lg text-white font-bold text-sm" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}>
+                    Yes! Add to my order
+                  </button>
+                </div>
+
+                {/* Order Status + Extras */}
+                <div className="flex gap-2 mb-3">
+                  <div className="flex-1 p-2 rounded-lg bg-emerald-50 text-center">
+                    <div className="text-emerald-600 text-[10px] font-bold">ORDER CONFIRMED</div>
+                    <div className="text-neutral-800 font-bold text-xs">#12345</div>
+                  </div>
+                  <div className="flex-1 p-2 rounded-lg bg-blue-50 text-center">
+                    <div className="text-blue-600 text-[10px] font-bold">TRACK PACKAGE</div>
+                    <div className="text-neutral-800 font-bold text-xs">Coming Soon</div>
+                  </div>
+                </div>
+
+                <div className="border-t pt-3 text-center">
+                  <span className="text-sm font-bold" style={{ color: 'var(--accent)' }}>+$5.50 avg. per order captured</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Toggle Hint */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+            className="flex justify-center mt-4">
+            <button onClick={() => setShowAfter(!showAfter)}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-neutral-100 hover:bg-neutral-200 transition-colors">
+              <span>{showAfter ? 'Show Before' : 'Show After'}</span>
+              <Icons.ArrowRight />
+            </button>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // TOOL ACTION SLIDE - Strong CTA
+    const ToolActionSlide = ({ data }) => {
+      const benefits = [
+        'Works with Shopify checkout natively',
+        'No coding required - visual drag & drop builder',
+        'Free plan available to test results',
+        'Integrates with email, SMS, and review apps'
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Take Action</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+            <p className="text-neutral-500 text-sm mt-2">Everything you learned - implemented in minutes</p>
+          </motion.div>
+
+          {/* Main CTA Card */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+            className="rounded-2xl p-6 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, var(--accent), #3b82f6, #f59e0b)' }}></div>
+
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-20 h-20 rounded-xl overflow-hidden bg-white p-2 flex-shrink-0" style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.4)' }}>
+                <img src={RECONVERT_TOOL.logo} alt="ReConvert" className="w-full h-full object-contain" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h3 className="text-white font-bold text-xl">{RECONVERT_TOOL.name}</h3>
+                  <div className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icons.Star />
+                    {RECONVERT_TOOL.stats.rating}
+                  </div>
+                </div>
+                <p className="text-neutral-400 text-sm mb-2">{RECONVERT_TOOL.tagline}</p>
+                <div className="flex items-center gap-4 text-xs">
+                  <span className="text-neutral-500">{RECONVERT_TOOL.stats.stores} stores</span>
+                  <span className="text-emerald-400 font-bold">+{RECONVERT_TOOL.stats.aovIncrease} AOV</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits List */}
+            <div className="space-y-2 mb-6">
+              {benefits.map((benefit, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.08 }}
+                  className="flex items-center gap-3 p-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'var(--accent)' }}>
+                    <Icons.Check />
+                  </div>
+                  <span className="text-neutral-300 text-sm">{benefit}</span>
                 </motion.div>
               ))}
             </div>
-          </div>
-        );
-      }
-      return null;
+
+            {/* CTA Button */}
+            <motion.a initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+              href={RECONVERT_TOOL.link} target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 w-full py-4 rounded-xl text-white font-bold text-base transition-all hover:scale-[1.02]"
+              style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 30px rgba(var(--accent-rgb), 0.4)' }}>
+              <span>Start Free with ReConvert</span>
+              <Icons.ExternalLink />
+            </motion.a>
+
+            <p className="text-center text-neutral-500 text-xs mt-3">Install in 2 minutes. No credit card required.</p>
+          </motion.div>
+
+          {/* Social Proof */}
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+            className="mt-4 p-3 rounded-xl text-center" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <div className="flex items-center justify-center gap-2">
+              <div className="flex -space-x-2">
+                {[1,2,3,4].map(i => (
+                  <div key={i} className="w-6 h-6 rounded-full bg-gradient-to-br from-neutral-300 to-neutral-400" style={{ border: '2px solid white' }}></div>
+                ))}
+              </div>
+              <span className="text-neutral-600 text-sm">Trusted by <strong>{RECONVERT_TOOL.stats.stores}</strong> Shopify stores</span>
+            </div>
+          </motion.div>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            {data.cta || 'Get Started'} <Icons.ExternalLink />
-          </a>
-        </motion.div>}
-      </div>
-    );
-
-    const ToolSetupSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Quick Setup</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <div className="space-y-3 mb-6">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm md:text-base leading-relaxed pt-1">{step}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4">
-          <p className="text-neutral-300 text-sm"><span className="text-white font-semibold">Pro Tip:</span> {data.proTip}</p>
-        </motion.div>
-      </div>
-    );
-
+    // QUIZ SLIDE
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -380,33 +986,34 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      useEffect(() => { if (showFeedback) onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); }, [showFeedback, isCorrect]);
+      useEffect(() => () => onHideGif(), [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-8 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback}
+                  className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className="text-neutral-700 text-sm">{option}</span>
                   </div>
                 </motion.button>
               ))}
             </div>
             <AnimatePresence>
               {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
-                </motion.div>
+                <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-4 rounded-xl text-sm ${isCorrect ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-amber-50 border border-amber-200 text-amber-800'}`}>
+                  {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+                </motion.p>
               )}
             </AnimatePresence>
           </div>
@@ -414,32 +1021,243 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know the post-purchase goldmine: one-click upsells, subscription economics, cart recovery that actually works, and the review loop that compounds forever. The sale doesn't end at checkout. That's where it starts.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    // Section Divider Slide - Transition to practical
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap />
           </motion.div>
-        )}
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to unlock your post-purchase goldmine</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
       </div>
     );
 
+    // Step 1: Set Up Post-Purchase Upsells
+    const StepSetupUpsellsSlide = ({ data }) => {
+      const offers = [
+        { type: 'Complementary', example: 'Bought serum → Offer moisturizer', discount: '20% off' },
+        { type: 'Bundle', example: 'Bought 1 item → Offer 3-pack', discount: 'Buy 2 get 1' },
+        { type: 'Upgrade', example: 'Bought standard → Offer premium', discount: '15% off' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Set Up Post-Purchase Upsells</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-3 mb-6">
+            {offers.map((offer, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="text-white font-bold text-sm mb-2">{offer.type}</div>
+                <div className="text-neutral-400 text-xs mb-2">{offer.example}</div>
+                <div className="inline-block px-2 py-1 rounded text-xs font-bold" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>{offer.discount}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Choose your best-selling product. What logical "next purchase" completes the experience? Create that as your first upsell offer.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 2: Optimize Thank You Page
+    const StepOptimizeThankyouSlide = ({ data }) => {
+      const elements = [
+        { icon: Icons.Zap, label: 'One-click upsell', desc: 'Card already saved' },
+        { icon: Icons.Star, label: 'Review request', desc: 'Strike while hot' },
+        { icon: Icons.Package, label: 'Cross-sell widget', desc: 'Related products' },
+        { icon: Icons.User, label: 'Referral program', desc: 'Turn buyers to advocates' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Optimize Your Thank You Page</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {elements.map((el, i) => {
+              const Icon = el.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-xs mb-1">{el.label}</div>
+                  <div className="text-neutral-500 text-[10px]">{el.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Transform your boring confirmation page into a revenue engine. Add at least 2 elements: upsell offer + review request.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Set Up Cart Recovery
+    const StepCartRecoverySlide = ({ data }) => {
+      const sequence = [
+        { time: '1 hour', channel: 'SMS', message: 'Hey! You left something...', color: '#3b82f6' },
+        { time: '4 hours', channel: 'Email', message: 'Your cart is waiting', color: '#ec4899' },
+        { time: '24 hours', channel: 'SMS + Email', message: 'Last chance + discount', color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Deploy Cart Recovery Sequence</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="space-y-3 mb-6">
+            {sequence.map((step, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }} className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="w-16 text-center">
+                  <div className="text-white font-bold text-sm">{step.time}</div>
+                </div>
+                <div className="w-px h-10 bg-neutral-700" />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold text-white" style={{ background: step.color }}>{step.channel}</span>
+                  </div>
+                  <div className="text-neutral-400 text-sm italic">"{step.message}"</div>
+                </div>
+                {i < sequence.length - 1 && (
+                  <div className="text-neutral-600">→</div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Set up a 3-touch recovery sequence. Multi-channel (SMS + Email) converts 3x better than single channel.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide - What to expect
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '10-15%', label: 'Upsell Accept Rate', desc: 'Post-purchase offers', icon: Icons.TrendingUp, color: '#10b981' },
+        { metric: '+$5-15', label: 'AOV Increase', desc: 'Per order average', icon: Icons.DollarSign, color: '#3b82f6' },
+        { metric: '3x', label: 'Cart Recovery', desc: 'Multi-channel vs single', icon: Icons.Layers, color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">2-4 weeks</span> of implementation</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // COMPLETION SLIDE
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }}
+          className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">
+          You now understand the post-purchase goldmine. The sale doesn't end at checkout - that's where the real money starts.
+        </motion.p>
+
+        {/* Key Takeaways - Clean summary */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Post-purchase upsells convert at 10-15% (card already saved)</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Thank you page = revenue engine, not dead end</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Multi-channel cart recovery converts 3x better</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
+          <p className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -453,14 +1271,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -492,13 +1304,24 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
-          case 'tool-setup': return <ToolSetupSlide data={slide} />;
+          case 'funnel-leakage': return <FunnelLeakageSlide data={slide} />;
+          case 'trust-window': return <TrustWindowSlide data={slide} />;
+          case 'one-click-upsell': return <OneClickUpsellSlide data={slide} />;
+          case 'upsell-math': return <UpsellMathSlide data={slide} />;
+          case 'page-transformation': return <PageTransformationSlide data={slide} />;
+          case 'subscription-multiplier': return <SubscriptionMultiplierSlide data={slide} />;
+          case 'cart-recovery-arsenal': return <CartRecoveryArsenalSlide data={slide} />;
+          case 'review-loop': return <ReviewLoopSlide data={slide} />;
+          case 'before-after': return <BeforeAfterSlide data={slide} />;
+          case 'impact-stats': return <ImpactStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-setup-upsells': return <StepSetupUpsellsSlide data={slide} />;
+          case 'step-optimize-thankyou': return <StepOptimizeThankyouSlide data={slide} />;
+          case 'step-cart-recovery': return <StepCartRecoverySlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }
@@ -519,15 +1342,15 @@
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
             {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+          <div className="px-6 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">
               {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>

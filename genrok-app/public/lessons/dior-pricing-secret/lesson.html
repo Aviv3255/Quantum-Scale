@@ -34,8 +34,8 @@
     const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+    // Animated Counter Component with decimal support
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
       const [count, setCount] = useState(0);
       useEffect(() => {
         let start = 0;
@@ -43,11 +43,23 @@
         const timer = setInterval(() => {
           start += increment;
           if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
+          else { setCount(start); }
         }, 16);
         return () => clearInterval(timer);
       }, [target, duration]);
-      return <span>{prefix}{count}{suffix}</span>;
+      const formatted = decimals > 0 ? count.toFixed(decimals) : Math.floor(count).toLocaleString();
+      return <span>{prefix}{formatted}{suffix}</span>;
+    };
+
+    // Parse stat value helper for prefix/number/suffix extraction
+    const parseStatValue = (value) => {
+      const match = value.match(/^([^\d]*)([\d,.]+)(.*)$/);
+      if (match) {
+        const num = parseFloat(match[2].replace(/,/g, ''));
+        const hasDecimal = match[2].includes('.');
+        return { prefix: match[1], number: num, suffix: match[3], decimals: hasDecimal ? 1 : 0 };
+      }
+      return { prefix: '', number: 0, suffix: value, decimals: 0 };
     };
     const LESSON_CONFIG = {
       id: 'dior-pricing-secret',
@@ -149,10 +161,7 @@
     const slides = [
       { type: 'welcome', learningGoals: ['Why Dior charges $3,500 for a $57 bag (and gets away with it)', 'How Rolex sells waitlists instead of watches', 'The psychology of price as a status signal'] },
       { type: 'hook', headline: 'The cotton that costs more than gold.', subtext: 'Walk into any Dior boutique. You will find a tote bag. Canvas. Simple stitching. A logo. Cost to make? $57. Price tag? $3,500. That is not a markup. That is a masterclass. The price itself becomes the product. They are not selling cotton. They are selling status.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Dior_Logo.svg.png', brandName: 'Dior' },
-      { type: 'visual', visualType: 'stats', title: 'The Dior Math', data: [
-        { value: '$57', label: 'Cost to Make', subtext: 'Canvas, stitching, logo' },
-        { value: '$3,500', label: 'Retail Price', subtext: '6,140% markup' }
-      ]},
+      { type: 'luxury-markup', title: 'The Dior Math' },
       { type: 'content', title: 'They Are Not Selling Cotton. They Are Selling Status.', body: 'Here is what most sellers miss: Dior is not competing with other bags. They are competing with Chanel. Hermès. Louis Vuitton. The customer is not buying a bag to carry stuff. They are buying a signal to the world that says: I can afford this. The price itself becomes the product. When you price at $3,500, you are not just setting a number. You are creating a price prime—anchoring value at an elite level that filters OUT everyone except your most qualified buyers.' },
       { type: 'content', title: 'The Rolex Waitlist: Selling What You DO NOT Have', body: 'You walk into a Rolex authorized dealer. You want a Daytona. A Submariner. Anything desirable. The answer? We do not have it. But we can put you on the list. The wait? 2-5 years. Sometimes never. Rolex makes more money selling the waitlist than selling the actual watches. The offer is not the timepiece. The offer is the promise of future access. The ultimate exclusivity signal.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Logo_da_Rolex.png', brandName: 'Rolex' },
       { type: 'example', scenario: 'Rolex Strategy vs Regular Brand', before: { label: 'Regular Brand', text: 'We have 100 in stock! Buy now! Limited time only! Please buy!' }, after: { label: 'Rolex Strategy', text: 'You cannot have it. Join the waitlist. Maybe in 3 years. If you are lucky.' }, insight: 'Scarcity IS the product. The watch is just a bonus.' },
@@ -177,6 +186,15 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Tag: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2H2v10l9.17 9.17a2 2 0 0 0 2.83 0l7.17-7.17a2 2 0 0 0 0-2.83L12 2Z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M3 20h18"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      ShoppingBag: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Lock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -289,31 +307,55 @@
         return (
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
-                  <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
-                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
-                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
+            <div className={`grid gap-4 md:gap-6 ${data.data.length === 2 ? 'md:grid-cols-2 max-w-2xl mx-auto' : 'md:grid-cols-3'}`}>
+              {data.data.map((stat, i) => {
+                const parsed = parseStatValue(stat.value);
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, y: 40, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.1 + i * 0.15, type: 'spring', stiffness: 100 }} className="relative rounded-2xl p-5 md:p-8 text-center overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 60px rgba(var(--accent-rgb),0.2)' }}>
+                    <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3 + i * 0.15, type: 'spring' }} className="text-3xl md:text-6xl font-bold mb-2 md:mb-3" style={{ color: 'var(--accent)', textShadow: '0 0 30px rgba(var(--accent-rgb),0.5)' }}>
+                      <AnimatedCounter target={parsed.number} prefix={parsed.prefix} suffix={parsed.suffix} decimals={parsed.decimals} duration={2000} />
+                    </motion.div>
+                    <div className="text-sm md:text-base font-semibold text-white mb-1">{stat.label}</div>
+                    <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         );
       }
-      return null;    };
+      return null;
+    };
+
+    // CardIconComponents for mapping icons to card items
+    const CardIconComponents = [Icons.Tag, Icons.Lock, Icons.Crown, Icons.ShoppingBag];
 
     const CardsSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
           <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
           <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 hover:shadow-lg transition-all">
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
+            {data.items.map((item, i) => {
+              const IconComponent = CardIconComponents[i % CardIconComponents.length];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="relative rounded-xl p-4 overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+                  <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+                      <span className="text-white font-bold text-sm">{i + 1}</span>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span style={{ color: 'var(--accent)' }}><IconComponent /></span>
+                        <h3 className="font-bold text-white text-sm md:text-base">{item.title}</h3>
+                      </div>
+                      <p className="text-neutral-400 text-xs md:text-sm leading-relaxed">{item.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
         {data.characterVideo && (
@@ -328,6 +370,74 @@
       </div>
     );
 
+
+    // Unique LuxuryMarkupSlide - visualizes the $57 to $3,500 transformation
+    const LuxuryMarkupSlide = ({ data }) => {
+      const [showTransform, setShowTransform] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowTransform(true), 800);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Luxury Formula</span>
+            <h2 className="slide-title text-xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
+            {/* Cost Side */}
+            <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative rounded-2xl p-6 md:p-8 text-center" style={{ background: 'linear-gradient(135deg, #374151, #4b5563)', minWidth: '180px' }}>
+              <div className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold bg-white/20 text-white/80">COST</div>
+              <div className="mt-4">
+                <Icons.ShoppingBag />
+              </div>
+              <div className="text-3xl md:text-5xl font-bold text-white mt-3 mb-1">
+                <AnimatedCounter target={57} prefix="$" duration={1500} />
+              </div>
+              <div className="text-xs text-white/60">Canvas + Stitching + Logo</div>
+            </motion.div>
+
+            {/* Transformation Arrow */}
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: showTransform ? 1 : 0, scale: showTransform ? 1 : 0 }} transition={{ type: 'spring', stiffness: 100 }} className="flex flex-col items-center">
+              <div className="relative">
+                <motion.div animate={{ x: [0, 10, 0] }} transition={{ duration: 1.5, repeat: Infinity }} className="flex items-center gap-2">
+                  <Icons.TrendingUp />
+                  <span className="text-2xl md:text-4xl font-black" style={{ color: 'var(--accent)' }}>+</span>
+                </motion.div>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                  <span className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: 'var(--accent)', color: 'white' }}>STATUS</span>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Retail Side */}
+            <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: showTransform ? 1 : 0, x: showTransform ? 0 : 50 }} transition={{ delay: 0.5, type: 'spring' }} className="relative rounded-2xl p-6 md:p-8 text-center overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', minWidth: '180px', boxShadow: '0 0 60px rgba(var(--accent-rgb),0.3)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="absolute top-3 left-3 px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: 'var(--accent)', color: 'white' }}>RETAIL</div>
+              <div className="mt-4" style={{ color: 'var(--accent)' }}>
+                <Icons.Crown />
+              </div>
+              <motion.div animate={{ textShadow: ['0 0 20px rgba(var(--accent-rgb),0.3)', '0 0 40px rgba(var(--accent-rgb),0.6)', '0 0 20px rgba(var(--accent-rgb),0.3)'] }} transition={{ duration: 2, repeat: Infinity }} className="text-3xl md:text-5xl font-bold mt-3 mb-1" style={{ color: 'var(--accent)' }}>
+                <AnimatedCounter target={3500} prefix="$" duration={2000} />
+              </motion.div>
+              <div className="text-xs text-neutral-400">Canvas + Stitching + Logo + STATUS</div>
+            </motion.div>
+          </div>
+
+          {/* Markup Badge */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: showTransform ? 1 : 0, y: showTransform ? 0 : 20 }} transition={{ delay: 1.5 }} className="flex justify-center mt-8">
+            <div className="px-6 py-3 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+              <div className="text-2xl md:text-3xl font-bold" style={{ color: 'var(--accent)' }}>
+                <AnimatedCounter target={6140} suffix="%" duration={2500} /> Markup
+              </div>
+              <div className="text-xs text-neutral-400 mt-1">The price IS the product</div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -432,6 +542,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'luxury-markup': return <LuxuryMarkupSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #ef4444; --accent-dark: #dc2626; --accent-light: #f87171; --accent-rgb: 239, 68, 68; }
@@ -46,347 +43,371 @@
       nextLesson: { id: 'best-private-agent', title: 'Who Is the Best Private Agent', teaser: 'We tested everything. This is the absolute best fulfillment partner.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
+    // Admin Reporter System
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+          onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
 
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
+    // Animated Counter Component
+    const AnimatedCounter = ({ value, duration = 2000, decimals = 0, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const timer = setInterval(() => {
+          start += end / (duration / 50);
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 50);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
       { type: 'welcome', learningGoals: ['The brutal truth about AliExpress fulfillment', 'Why your packaging kills sales in 0.4 seconds', 'Six advantages of private agents that build real brands'] },
-      { type: 'hook', headline: 'Your customer judges your product in 0.4 seconds. Before they even open the package.', subtext: 'A flimsy plastic bag with Chinese characters screams "cheap knockoff" before they touch the product. It doesn\'t matter if your product is amazing. The packaging already decided their opinion. This is why AliExpress fulfillment is destroying your brand - one plastic bag at a time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Aliexpress_logo.svg.png', brandName: 'AliExpress' },
-      { type: 'content', title: 'The Packaging Problem Nobody Talks About', body: 'Most dropshippers obsess over finding winning products. They test creatives, optimize landing pages, perfect their funnels. Then the package arrives in a plastic bag with Chinese text. Everything you built? Gone in 0.4 seconds. The first impression isn\'t the product - it\'s the packaging. And AliExpress packaging screams cheap.' },
-      { type: 'visual', title: 'What Your Customers Actually See', visualType: 'stats', data: [
-        { value: '0.4s', label: 'to judge quality', subtext: 'Packaging decides first' },
-        { value: '21-45', label: 'days to arrive', subtext: 'They forget about you' },
-        { value: '0%', label: 'quality control', subtext: 'You discover defects last' }
-      ]},
-      { type: 'content', title: 'The Death Spiral', body: 'You spend $50 acquiring a customer. They order, excited about your product. Then they wait. And wait. And wait. 21 days minimum. Most forget why they even ordered. When it finally arrives in a flimsy plastic bag with Chinese text, their subconscious makes a judgment faster than conscious thought: CHEAP. The product never gets a fair chance.' },
-      { type: 'cards', title: 'The Four AliExpress Problems', items: [
-        { title: '1. Shipping Times That Kill Excitement', description: 'Typical shipping: 21-45 days. By week 3, customers forget about you. By week 5, when it arrives, all excitement is dead. Zero chance of repeat purchase.' },
-        { title: '2. Zero Quality Control', description: 'You discover defects when angry customers do. No pre-shipment checks. No inspection. Just hope and pray it arrives in good condition.' },
-        { title: '3. Ghost Support', description: 'When things go wrong, good luck getting help. AliExpress sellers disappear. Disputes take weeks. You\'re completely alone dealing with angry customers.' },
-        { title: '4. Anyone Can Copy You', description: 'Competitors find your supplier in minutes using reverse image search. No competitive moat. Your "winning product" is everyone\'s winning product.' }
-      ]},
-      { type: 'example', scenario: 'The Package Arrives', before: { label: 'AliExpress Package', text: 'Flimsy plastic bag. Chinese text everywhere. No branding. Customer thinks: "Did I just get scammed?"' }, after: { label: 'Private Agent Package', text: 'Branded box. Professional presentation. Clean packaging. Customer thinks: "This is a real company."' }, insight: 'Same product. Different packaging. Completely different brand perception in 0.4 seconds.' },
-      { type: 'content', title: 'What Winners Do Differently', body: 'Here\'s the reality: while everyone else is racing to find the next "winning product" on AliExpress, successful brands are building relationships with private agents. It\'s not about finding magic products. It\'s about creating an experience that makes customers want to buy again. Private agents enable that experience.' },
-      { type: 'comparisonTable', title: 'AliExpress vs Private Agents' },
-      { type: 'cards', title: 'Six Advantages of Private Agents', items: [
-        { title: '1. Central Contact', description: 'ONE person handles ALL your orders. Not 50 different AliExpress sellers. One human who knows your business, your standards. Message them on WhatsApp, get responses within hours.' },
-        { title: '2. Quality Control', description: 'Pre-shipment checks before products leave the warehouse. Catch defects before customers see them. No more surprise returns and angry reviews.' },
-        { title: '3. Branded Packaging', description: 'Custom boxes, inserts, thank you cards. Look like a real company, not a dropshipper. Professional presentation builds trust and repeat purchases.' },
-        { title: '4. Faster Shipping', description: '5-7 days typical delivery. Customers receive products while excitement is still high. Better reviews, lower refund rates, higher repeat purchase rates.' },
-        { title: '5. Better Economics', description: 'Estimated 3-5% cheaper once you scale past 100 orders per month. No platform fees. Direct relationship means direct pricing.' },
-        { title: '6. Automation-Ready', description: 'Integrates with Shopify, DSers, AutoDS. Automated order fulfillment. Spend less time pushing orders, more time building your brand.' }
-      ]},
-      { type: 'content', title: 'The Real Alternative', body: 'Imagine this: Customer orders your product. 5-7 days later, a courier delivers a branded box. Clean packaging, no Chinese text, professional presentation. They open it and think: "This is a real company." The product hasn\'t even been touched yet, but you already won. This is what private agents enable - a completely different brand perception from second one.' },
-      { type: 'content', title: 'Both Methods Work', body: 'Let\'s be clear: You can build a business with AliExpress. People do it every day. But if you want repeat customers, professional packaging, and a real brand - private agents are the path. The choice is yours. Both work. One builds brands that last.\n\nThere are people who still fulfill with AliExpress. But if you want to build a real monster, with repeat customers, with meaningful profit, it is time to move forward. And the best part? It is completely free.' },
-      { type: 'implementation', title: 'Making the Switch to Private Agents', concept: 'The psychology is clear: 0.4 seconds decides brand perception. Making the transition from AliExpress to private agents is simpler than you think - and the difference shows in every unboxing.', steps: ['Install the private agent\'s free Shopify app - no upfront cost, just connects your store to their system.', 'Send your first test order to see quality control in action - they inspect, repackage, and ship with your branding.', 'Compare shipping times: AliExpress 21-45 days vs private agent 5-7 days. Your customers will notice immediately.', 'Scale gradually - move your best-selling products first while maintaining AliExpress as temporary backup.'], insight: 'The switch isn\'t all-or-nothing. Start with one product, see the difference in customer feedback, then expand.', toolName: 'Mate Dropshipping', toolUrl: 'https://erp.matedropshipping.com/login?invite_id=915' },
-      { type: 'content', title: 'How It Works', body: 'No commitment required. Connect via their free Shopify app. When an order comes in, you see the company price instantly. Pay via PayPal or credit card - simple as that. The company handles everything: sourcing the product, quality control checks, repacking with your branding, and professional packaging. You focus on growing your brand while they handle the fulfillment details.' },
-      { type: 'warehouseImages', title: 'Inside a Private Agent Warehouse', images: [
+      { type: 'hook', headline: 'Your customer judges your product in 0.4 seconds. Before they even open the package.', subtext: 'A flimsy plastic bag with Chinese characters screams "cheap knockoff" before they touch the product. This is why AliExpress fulfillment is destroying your brand - one plastic bag at a time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Aliexpress_logo.svg.png', brandName: 'AliExpress' },
+      { type: 'judgment-speed' },
+      { type: 'four-killers' },
+      { type: 'package-battle' },
+      { type: 'shipping-timeline' },
+      { type: 'comparison-table' },
+      { type: 'six-advantages' },
+      { type: 'warehouse-gallery', images: [
         'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg',
         'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg',
         'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/24.jpg'
       ]},
-      { type: 'implementation', title: 'Building Fulfillment Redundancy', concept: 'Professional operations never rely on a single supplier. When your primary agent runs out of stock or faces shipping delays, a backup agent means your business keeps running without interruption.', steps: ['Set up a second private agent as your backup - same process, different company. Both watch your store.', 'Use your backup to source the same products and compare pricing - sometimes the backup has better rates on specific items.', 'When your primary agent runs out of stock, switch orders to backup with one click. No waiting, no customer delays.', 'Compare shipping routes between agents - different companies have different strengths for different regions.'], insight: 'The best operators treat fulfillment like a portfolio - diversified, with redundancy built in. One agent fails? Business continues.', toolName: 'HyperSKU', toolUrl: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' },
-      { type: 'quiz', question: 'According to this lesson, how fast do customers form quality judgments about products?', options: ['5-7 seconds after opening', '0.4 seconds before opening', 'After they use the product', 'Based on the price only'], correctIndex: 1, feedback: { correct: 'Exactly! 0.4 seconds - faster than conscious thought. The packaging decides perceived value before they even touch the product. This is why private agents with branded packaging win.', incorrect: 'Not quite. The research shows 0.4 seconds - before they even open the package. The subconscious judges quality instantly based on packaging. This is why AliExpress plastic bags kill brands.' }},
+      { type: 'implementation', title: 'Making the Switch', steps: ['Install the private agent\'s free Shopify app', 'Send your first test order to see quality control', 'Compare shipping times: 21-45 days vs 5-7 days', 'Scale gradually - move best-sellers first'], toolName: 'Mate Dropshipping', toolUrl: 'https://erp.matedropshipping.com/login?invite_id=915' },
+      { type: 'quiz', question: 'How fast do customers form quality judgments about products?', options: ['5-7 seconds after opening', '0.4 seconds before opening', 'After they use the product', 'Based on the price only'], correctIndex: 1, feedback: { correct: 'Exactly! 0.4 seconds - faster than conscious thought. The packaging decides perceived value before they even touch the product.', incorrect: 'Not quite. The research shows 0.4 seconds - before they even open the package. The subconscious judges quality instantly based on packaging.' }},
+      { type: 'elite-insight' },
       { type: 'completion', sources: [
         { name: 'Mate Dropshipping (Primary Agent)', url: 'https://erp.matedropshipping.com/login?invite_id=915' },
         { name: 'HyperSKU (Backup Agent)', url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq' }
-      ] }
+      ]}
     ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Package: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      Package: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Truck: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2"/><circle cx="7" cy="18" r="2"/><path d="M15 18H9"/><circle cx="17" cy="18" r="2"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      MessageCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Settings: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      AlertTriangle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Skull: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v2h8v-2"/><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M16 20a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20"/></svg>,
+      Award: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Crown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
     };
 
-    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+    // ==================== ELITE CUSTOM SLIDES ====================
+
+    // Judgment Speed Slide - 0.4 seconds visualization
+    const JudgmentSpeedSlide = () => {
+      const [showResult, setShowResult] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowResult(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
 
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
-                  </motion.li>
-                ))}
-              </ul>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Science</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">How Fast Customers Judge Quality</h2>
+          </motion.div>
+
+          <div className="flex items-center justify-center gap-8 mb-8">
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
+              className="text-center p-8 rounded-2xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(239, 68, 68, 0.2)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)', borderRadius: '2px 2px 0 0' }} />
+              <div className="text-6xl md:text-8xl font-bold mb-2" style={{ color: '#ef4444' }}>
+                <AnimatedCounter value={0.4} decimals={1} suffix="s" />
+              </div>
+              <p className="text-neutral-400 text-sm md:text-base">Before conscious thought</p>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: showResult ? 1 : 0 }} transition={{ duration: 0.5 }}
+            className="grid md:grid-cols-2 gap-4">
+            <div className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                  <Icons.Eye />
+                </div>
+                <span className="text-white font-semibold">What They See</span>
+              </div>
+              <p className="text-neutral-400 text-sm">Flimsy plastic bag, Chinese text, zero branding = "CHEAP KNOCKOFF"</p>
+            </div>
+            <div className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.2)' }}>
+                  <Icons.Package />
+                </div>
+                <span className="text-white font-semibold">What Winners Do</span>
+              </div>
+              <p className="text-neutral-400 text-sm">Branded box, professional presentation, clean packaging = "REAL COMPANY"</p>
+            </div>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2 }}
+            className="text-center text-neutral-500 mt-6 text-sm">The product never gets a fair chance. The packaging already decided.</motion.p>
+        </div>
+      );
+    };
+
+    // Four Killers Slide - AliExpress problems with auto-cycling
+    const FourKillersSlide = () => {
+      const [activeKiller, setActiveKiller] = useState(0);
+      const killers = [
+        { icon: Icons.Truck, title: 'Shipping Times', stat: '21-45 days', desc: 'By week 3, customers forget about you. By week 5, all excitement is dead.', color: '#ef4444' },
+        { icon: Icons.Shield, title: 'Zero Quality Control', stat: '0%', desc: 'You discover defects when angry customers do. No pre-shipment checks.', color: '#f97316' },
+        { icon: Icons.MessageCircle, title: 'Ghost Support', stat: 'Weeks', desc: 'Sellers disappear. Disputes take weeks. You\'re completely alone.', color: '#eab308' },
+        { icon: Icons.Users, title: 'Anyone Can Copy', stat: 'Minutes', desc: 'Competitors find your supplier with reverse image search. No moat.', color: '#8b5cf6' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveKiller(k => (k + 1) % killers.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
+              <Icons.AlertTriangle style={{ display: 'inline', marginRight: '6px', width: '14px', height: '14px' }} />
+              The Problems
+            </span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">The Four AliExpress Killers</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-4">
+            {killers.map((killer, i) => {
+              const Icon = killer.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * i }}
+                  className="relative p-5 rounded-xl transition-all duration-300"
+                  style={{
+                    background: activeKiller === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'linear-gradient(135deg, #f5f5f5, #e5e5e5)',
+                    boxShadow: activeKiller === i ? `0 0 30px ${killer.color}30` : 'none',
+                    border: activeKiller === i ? `1px solid ${killer.color}40` : '1px solid transparent'
+                  }}>
+                  {activeKiller === i && (
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${killer.color}, transparent)`, borderRadius: '12px 12px 0 0' }} />
+                  )}
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${killer.color}20`, color: killer.color }}>
+                      <Icon />
+                    </div>
+                    <span className="text-xs font-bold" style={{ color: activeKiller === i ? killer.color : '#666' }}>#{i + 1}</span>
+                  </div>
+                  <h3 className="font-bold mb-1 text-sm" style={{ color: activeKiller === i ? 'white' : '#1a1a1a' }}>{killer.title}</h3>
+                  <div className="text-2xl font-bold mb-2" style={{ color: killer.color }}>{killer.stat}</div>
+                  <p className="text-xs leading-relaxed" style={{ color: activeKiller === i ? '#9ca3af' : '#666' }}>{killer.desc}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       );
     };
 
-    const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
+    // Package Battle Slide - AliExpress vs Private Agent comparison
+    const PackageBattleSlide = () => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Package Arrives</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">Same Product. Different Perception.</h2>
           </motion.div>
-        )}
-      </div>
-    );
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="relative p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)', borderRadius: '12px 12px 0 0' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center">
+                  <Icons.X />
+                </div>
+                <span className="text-white font-bold">AliExpress Package</span>
+              </div>
+              <div className="space-y-3 mb-4">
+                <div className="flex items-center gap-2 text-red-400 text-sm"><Icons.X /><span>Flimsy plastic bag</span></div>
+                <div className="flex items-center gap-2 text-red-400 text-sm"><Icons.X /><span>Chinese text everywhere</span></div>
+                <div className="flex items-center gap-2 text-red-400 text-sm"><Icons.X /><span>Zero branding</span></div>
+              </div>
+              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30">
+                <p className="text-red-400 text-sm italic">"Did I just get scammed?"</p>
+              </div>
+            </motion.div>
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              className="relative p-6 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: showWinner ? '0 0 40px rgba(34, 197, 94, 0.3)' : 'none', border: showWinner ? '1px solid rgba(34, 197, 94, 0.4)' : '1px solid transparent' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)', borderRadius: '12px 12px 0 0' }} />
+              {showWinner && (
+                <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}
+                  className="absolute -top-3 -right-3 px-3 py-1 rounded-full text-xs font-bold text-white" style={{ background: '#22c55e' }}>WINS</motion.div>
+              )}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
+                  <Icons.Check />
+                </div>
+                <span className="text-white font-bold">Private Agent Package</span>
+              </div>
+              <div className="space-y-3 mb-4">
+                <div className="flex items-center gap-2 text-green-400 text-sm"><Icons.Check /><span>Branded box</span></div>
+                <div className="flex items-center gap-2 text-green-400 text-sm"><Icons.Check /><span>Professional presentation</span></div>
+                <div className="flex items-center gap-2 text-green-400 text-sm"><Icons.Check /><span>Clean packaging</span></div>
+              </div>
+              <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/30">
+                <p className="text-green-400 text-sm italic">"This is a real company."</p>
+              </div>
+            </motion.div>
           </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
+    // Shipping Timeline Slide - 21-45 days vs 5-7 days
+    const ShippingTimelineSlide = () => {
+      const [progress, setProgress] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setProgress(p => p < 100 ? p + 2 : p), 50);
+        return () => clearInterval(timer);
+      }, []);
 
-    const ComparisonTableSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>Shipping Reality</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">The Waiting Game</h2>
+          </motion.div>
+
+          <div className="space-y-8">
+            {/* AliExpress Timeline */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Icons.Skull />
+                  <span className="text-white font-bold">AliExpress</span>
+                </div>
+                <span className="text-3xl font-bold text-red-400">21-45 days</span>
+              </div>
+              <div className="relative h-3 bg-neutral-700 rounded-full overflow-hidden mb-3">
+                <motion.div className="absolute h-full bg-red-500 rounded-full" style={{ width: `${Math.min(progress, 100)}%` }} />
+                <div className="absolute h-full w-1 bg-white/50" style={{ left: '15%' }} />
+                <div className="absolute h-full w-1 bg-white/50" style={{ left: '33%' }} />
+                <div className="absolute h-full w-1 bg-white/50" style={{ left: '100%' }} />
+              </div>
+              <div className="flex justify-between text-xs text-neutral-500">
+                <span>Order</span>
+                <span>Week 1: Excited</span>
+                <span>Week 3: Forgot</span>
+                <span>Week 5: Dead excitement</span>
+              </div>
+            </motion.div>
+
+            {/* Private Agent Timeline */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+              className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 30px rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.3)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)', borderRadius: '12px 12px 0 0' }} />
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <Icons.Crown />
+                  <span className="text-white font-bold">Private Agent</span>
+                </div>
+                <span className="text-3xl font-bold text-green-400">5-7 days</span>
+              </div>
+              <div className="relative h-3 bg-neutral-700 rounded-full overflow-hidden mb-3">
+                <motion.div className="absolute h-full bg-green-500 rounded-full" style={{ width: `${Math.min(progress * 6, 100)}%` }} />
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-neutral-500">Order</span>
+                <span className="text-green-400 font-bold">Excitement STILL HIGH</span>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Comparison Table Elite Slide
+    const ComparisonTableSlide = () => {
       const tableData = [
         { category: 'Shipping', aliexpress: '21-45 days', privateAgent: '5-7 days' },
-        { category: 'Quality Control', aliexpress: 'Zero - discover defects last', privateAgent: 'Pre-shipment inspection' },
-        { category: 'Support', aliexpress: 'Ghost sellers, weeks for disputes', privateAgent: 'One contact, WhatsApp responses' },
-        { category: 'Packaging', aliexpress: 'Plastic bag, Chinese text', privateAgent: 'Branded boxes, professional' },
+        { category: 'Quality Control', aliexpress: 'Zero', privateAgent: 'Pre-shipment inspection' },
+        { category: 'Support', aliexpress: 'Ghost sellers', privateAgent: 'WhatsApp responses' },
+        { category: 'Packaging', aliexpress: 'Plastic bag', privateAgent: 'Branded boxes' },
         { category: 'Pricing', aliexpress: 'Platform fees', privateAgent: '3-5% cheaper at scale' }
       ];
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white border-2 border-neutral-200 rounded-xl overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>Head to Head</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">AliExpress vs Private Agents</h2>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
             <table className="w-full">
               <thead>
-                <tr className="bg-neutral-900">
-                  <th className="text-left px-4 md:px-6 py-3 md:py-4 text-neutral-400 text-xs md:text-sm font-semibold uppercase tracking-wider">Comparison</th>
-                  <th className="text-left px-4 md:px-6 py-3 md:py-4 text-neutral-400 text-xs md:text-sm font-semibold uppercase tracking-wider">AliExpress</th>
-                  <th className="text-left px-4 md:px-6 py-3 md:py-4 text-white text-xs md:text-sm font-semibold uppercase tracking-wider">Private Agent</th>
+                <tr style={{ background: 'rgba(255,255,255,0.05)' }}>
+                  <th className="text-left px-5 py-4 text-neutral-400 text-xs font-semibold uppercase tracking-wider">Category</th>
+                  <th className="text-left px-5 py-4 text-red-400 text-xs font-semibold uppercase tracking-wider">AliExpress</th>
+                  <th className="text-left px-5 py-4 text-green-400 text-xs font-semibold uppercase tracking-wider">Private Agent</th>
                 </tr>
               </thead>
               <tbody>
                 {tableData.map((row, i) => (
-                  <motion.tr key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="border-b border-neutral-100 last:border-b-0">
-                    <td className="px-4 md:px-6 py-3 md:py-4 text-neutral-900 text-xs md:text-sm font-semibold">{row.category}</td>
-                    <td className="px-4 md:px-6 py-3 md:py-4 text-neutral-600 text-xs md:text-sm">{row.aliexpress}</td>
-                    <td className="px-4 md:px-6 py-3 md:py-4 text-neutral-900 text-xs md:text-sm font-medium" style={{ color: 'var(--accent)' }}>{row.privateAgent}</td>
+                  <motion.tr key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                    className="border-t border-white/10">
+                    <td className="px-5 py-4 text-white text-sm font-semibold">{row.category}</td>
+                    <td className="px-5 py-4 text-red-400 text-sm">{row.aliexpress}</td>
+                    <td className="px-5 py-4 text-green-400 text-sm font-medium">{row.privateAgent}</td>
                   </motion.tr>
                 ))}
               </tbody>
@@ -396,87 +417,189 @@
       );
     };
 
-    const WarehouseImagesSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.images.map((img, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-              <img src={img} alt={`Warehouse ${i + 1}`} className="w-full h-auto object-cover" style={{ aspectRatio: 'auto' }} />
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
+    // Six Advantages Slide
+    const SixAdvantagesSlide = () => {
+      const [activeAdvantage, setActiveAdvantage] = useState(0);
+      const advantages = [
+        { icon: Icons.MessageCircle, title: 'Central Contact', desc: 'ONE person handles ALL orders. Not 50 different sellers.', color: '#3b82f6' },
+        { icon: Icons.Shield, title: 'Quality Control', desc: 'Pre-shipment checks. Catch defects before customers see them.', color: '#8b5cf6' },
+        { icon: Icons.Package, title: 'Branded Packaging', desc: 'Custom boxes, inserts, thank you cards. Look like a real company.', color: '#ec4899' },
+        { icon: Icons.Truck, title: 'Faster Shipping', desc: '5-7 days delivery. Customers receive while excitement is high.', color: '#22c55e' },
+        { icon: Icons.DollarSign, title: 'Better Economics', desc: '3-5% cheaper at scale. No platform fees. Direct pricing.', color: '#f97316' },
+        { icon: Icons.Settings, title: 'Automation-Ready', desc: 'Integrates with Shopify, DSers, AutoDS. Automated fulfillment.', color: '#06b6d4' }
+      ];
 
-    const ToolSlide = ({ data }) => {
-      const buttonBg = data.buttonStyle === 'green'
-        ? 'linear-gradient(135deg, #22c55e, #16a34a)'
-        : `linear-gradient(135deg, var(--accent), var(--accent-dark))`;
-      const checkBg = data.buttonStyle === 'green' ? '#22c55e' : 'var(--accent)';
+      useEffect(() => {
+        const timer = setInterval(() => setActiveAdvantage(a => (a + 1) % advantages.length), 2500);
+        return () => clearInterval(timer);
+      }, []);
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: data.buttonStyle === 'green' ? 'rgba(34, 197, 94, 0.1)' : `rgba(var(--accent-rgb), 0.1)`, color: data.buttonStyle === 'green' ? '#22c55e' : 'var(--accent)' }}>Pro Tool</span>
-            <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e' }}>The Solution</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Six Advantages of Private Agents</h2>
           </motion.div>
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl overflow-hidden border-2 border-neutral-200 bg-white">
-              <img src={data.image} alt={data.toolName} className="w-full h-auto" />
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="flex flex-col justify-center">
-              <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-              <div className="bg-neutral-50 rounded-xl p-4 mb-4">
-                <p className="text-xs uppercase tracking-wider text-neutral-400 mb-2">What You Get</p>
-                <ul className="space-y-1.5">
-                  {data.questions.map((q, i) => (
-                    <li key={i} className="flex items-start gap-2 text-neutral-700 text-xs md:text-sm">
-                      <span className="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: checkBg }}>✓</span>
-                      {q}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: buttonBg, boxShadow: data.buttonStyle === 'green' ? '0 4px 12px rgba(34, 197, 94, 0.3)' : undefined }}>
-                <span>Connect {data.toolName}</span>
-                <Icons.ExternalLink />
-              </a>
-            </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-3">
+            {advantages.map((adv, i) => {
+              const Icon = adv.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * i }}
+                  className="relative p-4 rounded-xl transition-all duration-300"
+                  style={{
+                    background: activeAdvantage === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                    boxShadow: activeAdvantage === i ? `0 0 25px ${adv.color}25` : 'none',
+                    border: activeAdvantage === i ? `1px solid ${adv.color}40` : '1px solid transparent'
+                  }}>
+                  {activeAdvantage === i && (
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${adv.color}, transparent)`, borderRadius: '12px 12px 0 0' }} />
+                  )}
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white" style={{ background: adv.color }}>{i + 1}</div>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${adv.color}20`, color: adv.color }}>
+                      <Icon />
+                    </div>
+                  </div>
+                  <h3 className="font-bold text-sm mb-1" style={{ color: activeAdvantage === i ? 'white' : '#1a1a1a' }}>{adv.title}</h3>
+                  <p className="text-xs leading-relaxed" style={{ color: activeAdvantage === i ? '#9ca3af' : '#666' }}>{adv.desc}</p>
+                </motion.div>
+              );
+            })}
           </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-            <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-          </motion.div>
         </div>
       );
     };
 
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-            <Icons.Package />
-            Implementation
-          </span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+    // Warehouse Gallery Slide
+    const WarehouseGallerySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e' }}>Inside Look</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Private Agent Warehouse</h2>
         </motion.div>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed text-center mb-6">{data.concept}</motion.p>
-        <div className="space-y-3 mb-6">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border border-neutral-200 rounded-xl p-3">
-              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
+        <div className="grid md:grid-cols-3 gap-4">
+          {data.images.map((img, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+              className="rounded-xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', padding: '4px' }}>
+              <img src={img} alt={`Warehouse ${i + 1}`} className="w-full h-auto rounded-lg" />
             </motion.div>
           ))}
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 text-center mb-4">
-          <p className="text-neutral-300 text-sm flex items-center justify-center gap-2"><Icons.Zap className="flex-shrink-0" /><span>{data.insight}</span></p>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+          className="text-center text-neutral-500 mt-4 text-sm">Professional operations. Quality control. Branded packaging.</motion.p>
+      </div>
+    );
+
+    // Elite Insight Slide
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>
+            <Icons.Lightbulb style={{ display: 'inline', marginRight: '6px', width: '14px', height: '14px' }} />
+            The Bottom Line
+          </span>
+          <h2 className="slide-title text-2xl md:text-4xl text-black">Both Methods Work. One Builds Brands.</h2>
         </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+          className="p-8 rounded-2xl mb-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(239, 68, 68, 0.15)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)', borderRadius: '16px 16px 0 0' }} />
+          <p className="text-xl md:text-2xl text-white leading-relaxed text-center mb-6">
+            "You can build a business with AliExpress. But if you want <span style={{ color: '#ef4444' }}>repeat customers</span>, <span style={{ color: '#22c55e' }}>professional packaging</span>, and a <span style={{ color: '#f97316' }}>real brand</span> - private agents are the path."
+          </p>
+          <div className="grid grid-cols-4 gap-4 pt-4 border-t border-white/10">
+            {[
+              { icon: Icons.Eye, label: '0.4s', desc: 'Judgment' },
+              { icon: Icons.Truck, label: '5-7 days', desc: 'Shipping' },
+              { icon: Icons.Package, label: 'Branded', desc: 'Packaging' },
+              { icon: Icons.Award, label: 'Real', desc: 'Brand' }
+            ].map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div key={i} className="text-center">
+                  <div className="w-10 h-10 rounded-lg mx-auto mb-2 flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-sm">{item.label}</div>
+                  <div className="text-neutral-500 text-xs">{item.desc}</div>
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // ==================== STANDARD SLIDES ====================
+
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl text-black mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-3 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 mb-4 max-w-sm w-full" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <p className="text-neutral-500 text-[10px] uppercase tracking-wider mb-3">In this lesson</p>
+              <ul className="space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: '#ef4444' }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-sm">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }} onClick={onStart} className="px-7 py-3 rounded-xl text-white font-semibold" style={{ background: '#ef4444' }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="absolute bottom-0 right-0 z-0 hidden md:block" style={{ height: '25%', maxHeight: '160px', marginRight: '60px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.8 }} />
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const ImplementationSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-6">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e' }}>
+            <Icons.Package /> Implementation
+          </span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+        </motion.div>
+        <div className="space-y-3 mb-6">
+          {data.steps.map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+              className="flex items-start gap-3 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: '#22c55e' }}>{i + 1}</span>
+              <p className="text-neutral-300 text-sm pt-0.5">{step}</p>
+            </motion.div>
+          ))}
+        </div>
         {data.toolName && data.toolUrl && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
-              <span>Tool: {data.toolName}</span>
-              <Icons.ExternalLink />
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center">
+            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: '#22c55e' }}>
+              Connect {data.toolName} <Icons.ExternalLink />
             </a>
           </motion.div>
         )}
@@ -492,24 +615,25 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect]);
+      useEffect(() => () => onHideGif(), [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto py-10 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+              <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback}
+                  className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className="text-neutral-700 text-sm">{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -517,7 +641,7 @@
             <AnimatePresence>
               {showFeedback && (
                 <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                  <p className={`text-sm ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -527,23 +651,22 @@
     };
 
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: '#ef4444' }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why AliExpress kills brands - and what real builders use instead. The packaging decides in 0.4 seconds. Private agents build brands. The choice is yours.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md">You now understand why AliExpress kills brands and what real builders use instead.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="rounded-xl p-5 max-w-md w-full mb-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
+        {data?.sources && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Sources</p>
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
+                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: '#ef4444' }}>
+                  {source.name} <Icons.ExternalLink />
                 </a>
               ))}
             </div>
@@ -551,6 +674,8 @@
         )}
       </div>
     );
+
+    // ==================== MAIN APP ====================
 
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
@@ -565,14 +690,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -604,14 +723,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'comparisonTable': return <ComparisonTableSlide data={slide} />;
-          case 'warehouseImages': return <WarehouseImagesSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
+          case 'judgment-speed': return <JudgmentSpeedSlide />;
+          case 'four-killers': return <FourKillersSlide />;
+          case 'package-battle': return <PackageBattleSlide />;
+          case 'shipping-timeline': return <ShippingTimelineSlide />;
+          case 'comparison-table': return <ComparisonTableSlide />;
+          case 'six-advantages': return <SixAdvantagesSlide />;
+          case 'warehouse-gallery': return <WarehouseGallerySlide data={slide} />;
           case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -630,18 +750,18 @@
                 <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
-            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
-            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 z-10"><Icons.ArrowRight /></button>}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+          <div className="px-6 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
             <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? '#ef4444' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -651,7 +771,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

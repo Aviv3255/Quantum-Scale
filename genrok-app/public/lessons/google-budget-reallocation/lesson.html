@@ -46,79 +46,37 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
         if (window.parent !== window) {
           window.parent.postMessage({
             type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
+            slideIndex, slideType,
             lessonSlug: LESSON_CONFIG.id,
             elementId: slideType + '-' + slideIndex
           }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -139,12 +97,15 @@
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why spreading budget evenly is killing your ROAS', 'The fastest way to improve account performance without new campaigns', 'How to identify your winners and losers', 'Real example: Going from 2.8x to 5.1x ROAS through smart reallocation'] },
-      { type: 'hook', headline: 'Most advertisers spread their budget evenly across campaigns. Campaign A gets $1,000. Campaign B gets $1,000. Campaign C gets $1,000. Seems fair, right? Wrong.', subtext: 'One of those campaigns is delivering 6x ROAS. Another is barely breaking even. By spreading budget evenly, you\'re literally throwing money away on losers while starving your winners.' },
-      { type: 'content', title: 'The Biggest Mistake: Even Splits', body: 'It sounds simple, but it\'s one of the fastest ways to improve overall account performance.\n\nMost advertisers default to spreading their budget evenly:\n- 4 campaigns running\n- Each gets $1,000/month\n- "Fair" distribution\n\nBut here\'s the problem: Not all campaigns perform equally. Some are crushing it. Others are bleeding money. When you spread budget evenly, you\'re funding mediocrity.\n\nThe fix? Don\'t spread your budget evenly. Concentrate it where it works best.\n\nFeed your winners. Starve your losers.' },
-      { type: 'mockup', title: 'Before vs After: Budget Reallocation', description: 'Same total budget. Massive difference in results. This is the power of feeding your winners.', mockupType: 'budget-reallocation' },
-      { type: 'content', title: 'The Math That Changes Everything', body: 'Let\'s break down exactly what happens when you reallocate:\n\nBEFORE (Even Split):\nCampaign A: $1,000 budget → 1.5x ROAS → $1,500 revenue\nCampaign B: $1,000 budget → 2.0x ROAS → $2,000 revenue\nCampaign C: $1,000 budget → 1.8x ROAS → $1,800 revenue\nCampaign D: $1,000 budget → 6.0x ROAS → $6,000 revenue\n\nTotal: $4,000 spend → $11,200 revenue = 2.8x ROAS\n\nAFTER (Smart Reallocation):\nCampaign A: $500 budget → 1.5x ROAS → $750 revenue\nCampaign B: $500 budget → 2.0x ROAS → $1,000 revenue\nCampaign C: $500 budget → 1.8x ROAS → $900 revenue\nCampaign D: $2,500 budget → 6.0x ROAS → $15,000 revenue\n\nTotal: $4,000 spend → $17,650 revenue = 4.4x ROAS\n\nSame budget. 57% better ROAS. Just by feeding the winner.' },
-      { type: 'content', title: 'How to Find Your Winners', body: 'Continuously audit your campaigns and feed your winners. Here\'s how:\n\n1. Pull Campaign Performance Data\nLook at the last 30 days. Which campaigns have the highest ROAS? Which have the lowest? Don\'t just look at spend - look at return.\n\n2. Identify Clear Winners and Losers\nWinners: ROAS significantly above account average\nLosers: ROAS below breakeven or dragging down average\n\n3. Reallocate Ruthlessly\nCut budget from losers (or pause them entirely). Triple budget on winners. Watch your account ROAS skyrocket.\n\n4. Repeat Monthly\nPerformance changes. What worked last month might not work this month. Continuously audit and reallocate.\n\nThis isn\'t a one-time fix. It\'s a monthly habit that compounds results over time.' },
-      { type: 'quiz', question: 'Why is budget reallocation one of the fastest wins in Google Ads?', options: ['It creates new campaigns automatically', 'It concentrates budget on high-performing campaigns without needing new creative or testing', 'It lowers your cost per click', 'It improves Quality Score across all campaigns'], correctIndex: 1, feedback: { correct: 'Exactly! Budget reallocation is powerful because it requires zero new work - no new campaigns, no new creative, no testing. You simply move money from losers to winners. Campaign D was already delivering 6x ROAS. By giving it more budget, you get more of those 6x returns. It\'s the fastest way to improve account performance because you\'re leveraging what already works instead of trying to fix what doesn\'t.', incorrect: 'Not quite. The power of budget reallocation is that it concentrates money on what\'s already working. Campaign D is delivering 6x ROAS. Instead of giving it $1,000, you give it $2,500. Same campaign, same creative, same targeting - just more budget going to the proven winner. No new campaigns needed. No testing required. Just smart allocation of existing resources. This is why it\'s the fastest win - you\'re not building something new, you\'re scaling what already works.' }},
+      { type: 'hook', headline: 'Most advertisers spread their budget evenly across campaigns. Campaign A gets $1,000. Campaign B gets $1,000. Seems fair, right? Wrong.', subtext: 'One of those campaigns is delivering 6x ROAS. Another is barely breaking even. By spreading budget evenly, you\'re literally throwing money away on losers while starving your winners.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Google_Ads_logo.svg.png', brandName: 'Google Ads' },
+      { type: 'even-split-problem' },
+      { type: 'budget-shift-animation' },
+      { type: 'roas-math-visualization' },
+      { type: 'winner-identifier' },
+      { type: 'reallocation-protocol' },
+      { type: 'monthly-audit-system' },
+      { type: 'elite-insight' },
+      { type: 'quiz', question: 'Why is budget reallocation one of the fastest wins in Google Ads?', options: ['It creates new campaigns automatically', 'It concentrates budget on high-performing campaigns without needing new creative or testing', 'It lowers your cost per click', 'It improves Quality Score across all campaigns'], correctIndex: 1, feedback: { correct: 'Exactly! Budget reallocation is powerful because it requires zero new work - no new campaigns, no new creative, no testing. You simply move money from losers to winners. Campaign D was already delivering 6x ROAS. By giving it more budget, you get more of those 6x returns.', incorrect: 'Not quite. The power of budget reallocation is that it concentrates money on what\'s already working. Campaign D is delivering 6x ROAS. Instead of giving it $1,000, you give it $2,500. Same campaign, same creative, same targeting - just more budget going to the proven winner.' }},
       { type: 'completion', sources: [{ name: 'Google Ads Budget Optimization', url: 'https://ads.google.com' }] }
     ];
 
@@ -154,6 +115,42 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      BarChart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Star: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Skull: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v2h8v-2"/><path d="m12.5 17-.5-1-.5 1h1z"/><path d="M16 20a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20"/></svg>,
+      ArrowRightCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 16 16 12 12 8"/><line x1="8" y1="12" x2="16" y2="12"/></svg>,
+      RefreshCw: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Search: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+      Calendar: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+      AlertTriangle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+    };
+
+    // AnimatedCounter component for animated statistics
+    const AnimatedCounter = ({ target, duration = 2, prefix = '', suffix = '', decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(target);
+        const increment = end / (duration * 60);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) {
+            setCount(end);
+            clearInterval(timer);
+          } else {
+            setCount(start);
+          }
+        }, 1000 / 60);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -193,15 +190,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -211,175 +199,940 @@
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed whitespace-pre-line">{data.body}</motion.p>
-      
-        {data.characterVideo && (
+    // UNIQUE SLIDE TYPE 1: Even Split Problem Visualization
+    const EvenSplitProblemSlide = ({ data }) => {
+      const [showProblem, setShowProblem] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowProblem(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      const campaigns = [
+        { label: 'A', budget: 1000, roas: 1.5, revenue: 1500, status: 'loser', color: '#ef4444' },
+        { label: 'B', budget: 1000, roas: 2.0, revenue: 2000, status: 'weak', color: '#f59e0b' },
+        { label: 'C', budget: 1000, roas: 1.8, revenue: 1800, status: 'loser', color: '#ef4444' },
+        { label: 'D', budget: 1000, roas: 6.0, revenue: 6000, status: 'winner', color: '#22c55e' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>THE PROBLEM</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The "Fair" Budget Split Illusion</h2>
+            <p className="text-neutral-600 text-sm mt-2">Equal budgets, unequal results - you're funding failure</p>
+          </motion.div>
+
+          {/* Campaign Bar Visualization */}
+          <div className="flex justify-center items-end gap-4 md:gap-8 mb-8" style={{ height: '280px' }}>
+            {campaigns.map((campaign, i) => {
+              const maxHeight = 240;
+              const height = (campaign.roas / 6) * maxHeight;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.15 }}
+                  className="flex flex-col items-center"
+                >
+                  <motion.div
+                    className="relative"
+                    initial={{ height: 0 }}
+                    animate={{ height }}
+                    transition={{ delay: 0.5 + i * 0.15, duration: 0.8, type: 'spring' }}
+                    style={{
+                      width: '60px',
+                      background: `linear-gradient(180deg, ${campaign.color}40, ${campaign.color}80)`,
+                      borderRadius: '8px 8px 0 0',
+                      border: `2px solid ${campaign.color}`,
+                      borderBottom: 'none'
+                    }}
+                  >
+                    {/* ROAS Label */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 1 + i * 0.15 }}
+                      className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap"
+                    >
+                      <span className="text-sm font-bold" style={{ color: campaign.color }}>{campaign.roas}x</span>
+                    </motion.div>
+                    {/* Winner/Loser Badge */}
+                    {showProblem && campaign.status === 'winner' && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                        className="absolute -top-16 left-1/2 -translate-x-1/2"
+                      >
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ background: '#22c55e', color: 'white' }}>
+                          <Icons.Star />
+                          <span className="text-xs font-bold">WINNER</span>
+                        </div>
+                      </motion.div>
+                    )}
+                    {showProblem && campaign.status === 'loser' && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                        className="absolute -top-16 left-1/2 -translate-x-1/2"
+                      >
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-full" style={{ background: '#ef4444', color: 'white' }}>
+                          <Icons.Skull />
+                          <span className="text-xs font-bold">LOSER</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                  {/* Budget Bar (equal for all) */}
+                  <div className="w-full h-10 rounded-b-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #6b7280, #9ca3af)', width: '60px' }}>
+                    <span className="text-white text-xs font-semibold">$1,000</span>
+                  </div>
+                  <span className="mt-2 text-lg font-bold text-neutral-800">Campaign {campaign.label}</span>
+                  <span className="text-xs text-neutral-500">${campaign.revenue.toLocaleString()} revenue</span>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Problem Callout */}
+          <AnimatePresence>
+            {showProblem && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px 24px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: '0 0 40px rgba(239, 68, 68, 0.15)'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+                <div className="flex items-start gap-4">
+                  <div style={{ background: 'linear-gradient(135deg, #ef4444, #dc2626)', borderRadius: '10px', padding: '10px', flexShrink: 0 }}>
+                    <span style={{ color: 'white' }}><Icons.AlertTriangle /></span>
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-base mb-1">You're Starving Your Winner!</p>
+                    <p className="text-neutral-400 text-sm">Campaign D is delivering <span style={{ color: '#22c55e', fontWeight: 700 }}>6x ROAS</span> but only getting $1,000. Meanwhile, you're giving the same $1,000 to losers delivering 1.5x.</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE TYPE 2: Budget Shift Animation (Before vs After)
+    const BudgetShiftAnimationSlide = ({ data }) => {
+      const [phase, setPhase] = useState('before');
+      const [autoPlayed, setAutoPlayed] = useState(false);
+
+      useEffect(() => {
+        if (!autoPlayed) {
+          const timer = setTimeout(() => {
+            setPhase('after');
+            setAutoPlayed(true);
+          }, 2500);
+          return () => clearTimeout(timer);
+        }
+      }, [autoPlayed]);
+
+      const beforeData = [
+        { label: 'A', budget: 1000, roas: 1.5 },
+        { label: 'B', budget: 1000, roas: 2.0 },
+        { label: 'C', budget: 1000, roas: 1.8 },
+        { label: 'D', budget: 1000, roas: 6.0 }
+      ];
+
+      const afterData = [
+        { label: 'A', budget: 500, roas: 1.5 },
+        { label: 'B', budget: 500, roas: 2.0 },
+        { label: 'C', budget: 500, roas: 1.8 },
+        { label: 'D', budget: 2500, roas: 6.0 }
+      ];
+
+      const currentData = phase === 'before' ? beforeData : afterData;
+      const totalRevenue = currentData.reduce((sum, c) => sum + (c.budget * c.roas), 0);
+      const totalROAS = totalRevenue / 4000;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">Watch the Budget Shift</h2>
+            <p className="text-neutral-600 text-sm">Same $4,000 total budget - completely different results</p>
+          </motion.div>
+
+          {/* Phase Toggle */}
+          <div className="flex justify-center gap-4 mb-6">
+            <button
+              onClick={() => setPhase('before')}
+              className="px-6 py-2 rounded-full font-semibold text-sm transition-all"
+              style={{
+                background: phase === 'before' ? 'linear-gradient(135deg, #6b7280, #9ca3af)' : 'transparent',
+                color: phase === 'before' ? 'white' : '#6b7280',
+                border: phase === 'before' ? 'none' : '2px solid #d1d5db'
+              }}
+            >
+              BEFORE (Even Split)
+            </button>
+            <button
+              onClick={() => setPhase('after')}
+              className="px-6 py-2 rounded-full font-semibold text-sm transition-all"
+              style={{
+                background: phase === 'after' ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : 'transparent',
+                color: phase === 'after' ? 'white' : '#9ca3af',
+                border: phase === 'after' ? 'none' : '2px solid #d1d5db'
+              }}
+            >
+              AFTER (Smart Reallocation)
+            </button>
+          </div>
+
+          {/* Budget Bars */}
+          <div className="flex justify-center items-end gap-6 md:gap-10 mb-6" style={{ height: '200px' }}>
+            {currentData.map((campaign, i) => {
+              const maxHeight = 180;
+              const height = (campaign.budget / 2500) * maxHeight;
+              const isWinner = campaign.label === 'D';
+              return (
+                <motion.div
+                  key={campaign.label}
+                  className="flex flex-col items-center"
+                  layout
+                >
+                  <motion.div
+                    className="relative rounded-t-lg"
+                    initial={false}
+                    animate={{ height }}
+                    transition={{ duration: 0.6, type: 'spring', stiffness: 100 }}
+                    style={{
+                      width: '70px',
+                      background: isWinner
+                        ? 'linear-gradient(180deg, #22c55e40, #22c55e80)'
+                        : 'linear-gradient(180deg, #6b728040, #6b728080)',
+                      border: isWinner ? '2px solid #22c55e' : '2px solid #9ca3af',
+                      borderBottom: 'none'
+                    }}
+                  >
+                    {/* Budget Label Inside Bar */}
+                    <motion.div
+                      className="absolute inset-0 flex items-center justify-center"
+                      initial={false}
+                      animate={{ opacity: 1 }}
+                    >
+                      <span className="text-sm font-bold" style={{ color: isWinner ? '#166534' : '#374151' }}>
+                        ${campaign.budget.toLocaleString()}
+                      </span>
+                    </motion.div>
+                  </motion.div>
+                  {/* Campaign Label */}
+                  <div
+                    className="w-full py-2 rounded-b-lg flex items-center justify-center"
+                    style={{
+                      background: isWinner ? '#22c55e' : '#9ca3af',
+                      width: '70px'
+                    }}
+                  >
+                    <span className="text-white text-sm font-bold">{campaign.label}</span>
+                    <span className="text-white text-xs ml-1 opacity-80">({campaign.roas}x)</span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Results Summary */}
+          <motion.div
+            layout
+            className="grid grid-cols-3 gap-4 max-w-xl mx-auto"
+          >
+            <div className="text-center p-4 rounded-xl" style={{ background: '#f5f5f5' }}>
+              <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Total Budget</p>
+              <p className="text-xl font-bold text-neutral-800">$4,000</p>
+            </div>
+            <div className="text-center p-4 rounded-xl" style={{ background: '#f5f5f5' }}>
+              <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Total Revenue</p>
+              <motion.p
+                key={totalRevenue}
+                initial={{ scale: 1.2, color: 'var(--accent)' }}
+                animate={{ scale: 1, color: '#1f2937' }}
+                className="text-xl font-bold"
+              >
+                ${totalRevenue.toLocaleString()}
+              </motion.p>
+            </div>
+            <div
+              className="text-center p-4 rounded-xl"
+              style={{ background: phase === 'after' ? 'linear-gradient(135deg, #22c55e20, #22c55e40)' : '#f5f5f5' }}
+            >
+              <p className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Overall ROAS</p>
+              <motion.p
+                key={totalROAS}
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                className="text-xl font-bold"
+                style={{ color: phase === 'after' ? '#22c55e' : '#1f2937' }}
+              >
+                {totalROAS.toFixed(1)}x
+              </motion.p>
+            </div>
+          </motion.div>
+
+          {/* Improvement Badge */}
+          <AnimatePresence>
+            {phase === 'after' && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="flex justify-center mt-4"
+              >
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: '#22c55e', color: 'white' }}>
+                  <Icons.TrendingUp />
+                  <span className="font-bold">+57% ROAS Improvement</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE TYPE 3: ROAS Math Visualization
+    const ROASMathVisualizationSlide = ({ data }) => {
+      const [showAfter, setShowAfter] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowAfter(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8 slide-scroll overflow-y-auto">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>THE MATH</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Numbers Don't Lie</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {/* BEFORE Card */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: 'linear-gradient(135deg, #374151, #4b5563)',
+                borderRadius: '16px',
+                padding: '20px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #9ca3af, transparent)' }} />
+              <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                <Icons.TrendingDown />
+                BEFORE: Even Split
+              </h3>
+              <div className="space-y-2">
+                {[
+                  { label: 'A', budget: '$1,000', roas: '1.5x', revenue: '$1,500' },
+                  { label: 'B', budget: '$1,000', roas: '2.0x', revenue: '$2,000' },
+                  { label: 'C', budget: '$1,000', roas: '1.8x', revenue: '$1,800' },
+                  { label: 'D', budget: '$1,000', roas: '6.0x', revenue: '$6,000' }
+                ].map((row, i) => (
+                  <div key={i} className="flex items-center justify-between py-1 border-b border-white/10 last:border-0">
+                    <span className="text-neutral-300 text-sm">Campaign {row.label}</span>
+                    <div className="flex items-center gap-3">
+                      <span className="text-neutral-400 text-xs">{row.budget}</span>
+                      <span className="text-neutral-400 text-xs">×</span>
+                      <span className={`text-xs font-semibold ${row.label === 'D' ? 'text-green-400' : 'text-neutral-300'}`}>{row.roas}</span>
+                      <span className="text-neutral-400 text-xs">=</span>
+                      <span className="text-white text-sm font-semibold">{row.revenue}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/20">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-300 font-semibold">TOTAL</span>
+                  <div className="text-right">
+                    <p className="text-white text-lg font-bold">$11,300 revenue</p>
+                    <p className="text-neutral-400 text-sm">2.8x ROAS</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* AFTER Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: showAfter ? 1 : 0.3, x: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{
+                background: showAfter ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'linear-gradient(135deg, #374151, #4b5563)',
+                borderRadius: '16px',
+                padding: '20px',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: showAfter ? '0 0 40px rgba(249, 115, 22, 0.2)' : 'none'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: showAfter ? 'linear-gradient(90deg, transparent, var(--accent), transparent)' : 'linear-gradient(90deg, transparent, #9ca3af, transparent)' }} />
+              <h3 className="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                <Icons.TrendingUp />
+                AFTER: Smart Reallocation
+              </h3>
+              <div className="space-y-2">
+                {[
+                  { label: 'A', budget: '$500', roas: '1.5x', revenue: '$750', reduced: true },
+                  { label: 'B', budget: '$500', roas: '2.0x', revenue: '$1,000', reduced: true },
+                  { label: 'C', budget: '$500', roas: '1.8x', revenue: '$900', reduced: true },
+                  { label: 'D', budget: '$2,500', roas: '6.0x', revenue: '$15,000', boosted: true }
+                ].map((row, i) => (
+                  <div key={i} className="flex items-center justify-between py-1 border-b border-white/10 last:border-0">
+                    <span className="text-neutral-300 text-sm">Campaign {row.label}</span>
+                    <div className="flex items-center gap-3">
+                      <span className={`text-xs ${row.boosted ? 'text-green-400 font-bold' : row.reduced ? 'text-red-400' : 'text-neutral-400'}`}>{row.budget}</span>
+                      <span className="text-neutral-400 text-xs">×</span>
+                      <span className={`text-xs font-semibold ${row.label === 'D' ? 'text-green-400' : 'text-neutral-300'}`}>{row.roas}</span>
+                      <span className="text-neutral-400 text-xs">=</span>
+                      <span className={`text-sm font-semibold ${row.boosted ? 'text-green-400' : 'text-white'}`}>{row.revenue}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/20">
+                <div className="flex justify-between items-center">
+                  <span className="text-neutral-300 font-semibold">TOTAL</span>
+                  <div className="text-right">
+                    <p className="text-white text-lg font-bold" style={{ color: showAfter ? '#22c55e' : 'white' }}>
+                      {showAfter && <AnimatedCounter target={17650} prefix="$" suffix=" revenue" duration={1.5} />}
+                      {!showAfter && '$17,650 revenue'}
+                    </p>
+                    <p className="text-sm font-bold" style={{ color: 'var(--accent)' }}>4.4x ROAS</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Comparison Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: showAfter ? 1 : 0, y: showAfter ? 0 : 20 }}
+            transition={{ delay: 0.5 }}
+            className="flex justify-center mt-6"
+          >
+            <div
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '12px',
+                padding: '16px 24px',
+                boxShadow: '0 0 30px rgba(34, 197, 94, 0.2)'
+              }}
+            >
+              <div className="flex items-center gap-6">
+                <div className="text-center">
+                  <p className="text-neutral-500 text-xs uppercase tracking-wider">Before</p>
+                  <p className="text-neutral-400 text-lg font-bold">2.8x</p>
+                </div>
+                <div style={{ color: '#22c55e' }}>
+                  <Icons.ArrowRightCircle />
+                </div>
+                <div className="text-center">
+                  <p className="text-xs uppercase tracking-wider" style={{ color: 'var(--accent)' }}>After</p>
+                  <p className="text-lg font-bold" style={{ color: '#22c55e' }}>4.4x</p>
+                </div>
+                <div className="pl-4 border-l border-neutral-700">
+                  <span className="text-xl font-bold text-white">+57%</span>
+                  <p className="text-xs text-neutral-400">Same Budget</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE TYPE 4: Winner Identifier Tool
+    const WinnerIdentifierSlide = ({ data }) => {
+      const [hoveredCampaign, setHoveredCampaign] = useState(null);
+
+      const campaigns = [
+        { id: 'A', roas: 1.5, status: 'loser', action: 'CUT 50%', actionColor: '#ef4444', reason: 'Below breakeven, draining budget' },
+        { id: 'B', roas: 2.0, status: 'neutral', action: 'REDUCE 25%', actionColor: '#f59e0b', reason: 'Average performer, not scaling' },
+        { id: 'C', roas: 1.8, status: 'loser', action: 'CUT 50%', actionColor: '#ef4444', reason: 'Underperforming, reallocate funds' },
+        { id: 'D', roas: 6.0, status: 'winner', action: 'SCALE 150%', actionColor: '#22c55e', reason: 'High performer, give it more fuel!' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>IDENTIFY</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">How to Spot Winners & Losers</h2>
+            <p className="text-neutral-600 text-sm mt-2">Click each campaign to see the recommended action</p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            {campaigns.map((campaign, i) => (
+              <motion.div
+                key={campaign.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                onMouseEnter={() => setHoveredCampaign(campaign.id)}
+                onMouseLeave={() => setHoveredCampaign(null)}
+                className="cursor-pointer"
+                style={{
+                  background: hoveredCampaign === campaign.id
+                    ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)'
+                    : '#f5f5f5',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  transform: hoveredCampaign === campaign.id ? 'scale(1.05)' : 'scale(1)',
+                  boxShadow: hoveredCampaign === campaign.id ? `0 0 30px ${campaign.actionColor}40` : 'none'
+                }}
+              >
+                {hoveredCampaign === campaign.id && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${campaign.actionColor}, transparent)` }} />
+                )}
+                <div className="text-center">
+                  <div
+                    className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
+                    style={{
+                      background: hoveredCampaign === campaign.id
+                        ? `linear-gradient(135deg, ${campaign.actionColor}40, ${campaign.actionColor}80)`
+                        : '#e5e5e5'
+                    }}
+                  >
+                    <span
+                      className="text-xl font-bold"
+                      style={{ color: hoveredCampaign === campaign.id ? 'white' : '#374151' }}
+                    >
+                      {campaign.id}
+                    </span>
+                  </div>
+                  <p
+                    className="text-2xl font-bold mb-1"
+                    style={{ color: hoveredCampaign === campaign.id ? 'white' : '#1f2937' }}
+                  >
+                    {campaign.roas}x
+                  </p>
+                  <p className="text-xs mb-2" style={{ color: hoveredCampaign === campaign.id ? '#9ca3af' : '#6b7280' }}>ROAS</p>
+
+                  {/* Action Badge */}
+                  <motion.div
+                    initial={false}
+                    animate={{ opacity: hoveredCampaign === campaign.id ? 1 : 0.5, scale: hoveredCampaign === campaign.id ? 1.1 : 1 }}
+                    className="inline-block px-3 py-1 rounded-full text-xs font-bold"
+                    style={{ background: campaign.actionColor, color: 'white' }}
+                  >
+                    {campaign.action}
+                  </motion.div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Explanation Panel */}
+          <AnimatePresence mode="wait">
+            {hoveredCampaign && (
+              <motion.div
+                key={hoveredCampaign}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '12px',
+                  padding: '16px 24px',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${campaigns.find(c => c.id === hoveredCampaign)?.actionColor}, transparent)` }} />
+                <p className="text-white text-sm">
+                  <span className="font-bold" style={{ color: campaigns.find(c => c.id === hoveredCampaign)?.actionColor }}>Campaign {hoveredCampaign}:</span>{' '}
+                  {campaigns.find(c => c.id === hoveredCampaign)?.reason}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {!hoveredCampaign && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              style={{
+                background: '#f5f5f5',
+                borderRadius: '12px',
+                padding: '16px 24px',
+                textAlign: 'center'
+              }}
+            >
+              <p className="text-neutral-500 text-sm flex items-center justify-center gap-2">
+                <Icons.Search />
+                Hover over campaigns to see recommended actions
+              </p>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE TYPE 5: Reallocation Protocol (4 Steps)
+    const ReallocationProtocolSlide = ({ data }) => {
+      const [activeStep, setActiveStep] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % 4);
+        }, 3500);
+        return () => clearInterval(interval);
+      }, []);
+
+      const steps = [
+        {
+          num: 1,
+          title: 'Pull Campaign Data',
+          desc: 'Look at the last 30 days. Which campaigns have highest ROAS? Which have the lowest?',
+          icon: Icons.BarChart,
+          color: '#3b82f6',
+          tip: 'Don\'t just look at spend - look at return'
+        },
+        {
+          num: 2,
+          title: 'Identify Winners & Losers',
+          desc: 'Winners = ROAS significantly above account average. Losers = Below breakeven or dragging average down.',
+          icon: Icons.Target,
+          color: '#22c55e',
+          tip: 'Be ruthless in your assessment'
+        },
+        {
+          num: 3,
+          title: 'Reallocate Ruthlessly',
+          desc: 'Cut budget from losers (or pause entirely). Triple budget on winners. Watch your ROAS skyrocket.',
+          icon: Icons.Zap,
+          color: '#f97316',
+          tip: 'Move money to what works'
+        },
+        {
+          num: 4,
+          title: 'Repeat Monthly',
+          desc: 'Performance changes. What worked last month might not work this month. Continuously audit.',
+          icon: Icons.RefreshCw,
+          color: '#8b5cf6',
+          tip: 'This compounds over time'
+        }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>THE PROTOCOL</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The 4-Step Reallocation System</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-4 gap-4">
+            {steps.map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setActiveStep(i)}
+                className="cursor-pointer"
+                style={{
+                  background: activeStep === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  transform: activeStep === i ? 'scale(1.02)' : 'scale(1)',
+                  boxShadow: activeStep === i ? `0 0 30px ${step.color}30` : 'none'
+                }}
+              >
+                {activeStep === i && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${step.color}, transparent)` }} />
+                )}
+
+                {/* Step Number */}
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center mb-3"
+                  style={{
+                    background: activeStep === i ? `linear-gradient(135deg, ${step.color}, ${step.color}cc)` : '#e5e5e5'
+                  }}
+                >
+                  <span className="text-sm font-bold" style={{ color: activeStep === i ? 'white' : '#6b7280' }}>{step.num}</span>
+                </div>
+
+                {/* Icon */}
+                <div className="mb-2" style={{ color: activeStep === i ? step.color : '#9ca3af' }}>
+                  <step.icon />
+                </div>
+
+                <h3
+                  className="font-bold text-sm mb-2"
+                  style={{ color: activeStep === i ? 'white' : '#374151' }}
+                >
+                  {step.title}
+                </h3>
+                <p
+                  className="text-xs leading-relaxed mb-3"
+                  style={{ color: activeStep === i ? '#9ca3af' : '#6b7280' }}
+                >
+                  {step.desc}
+                </p>
+
+                {/* Pro Tip */}
+                {activeStep === i && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-center gap-2 pt-2 border-t"
+                    style={{ borderColor: `${step.color}40` }}
+                  >
+                    <Icons.Lightbulb />
+                    <span className="text-xs" style={{ color: step.color }}>{step.tip}</span>
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Progress Dots */}
+          <div className="flex justify-center gap-2 mt-6">
+            {steps.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveStep(i)}
+                className="w-2.5 h-2.5 rounded-full transition-all"
+                style={{
+                  background: activeStep === i ? steps[i].color : '#d4d4d4',
+                  transform: activeStep === i ? 'scale(1.3)' : 'scale(1)'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE TYPE 6: Monthly Audit System
+    const MonthlyAuditSystemSlide = ({ data }) => {
+      const [checkedItems, setCheckedItems] = useState([]);
+
+      const auditItems = [
+        { id: 1, task: 'Export campaign performance data (last 30 days)', time: '2 min' },
+        { id: 2, task: 'Sort by ROAS - identify top 20% and bottom 20%', time: '3 min' },
+        { id: 3, task: 'Calculate potential reallocation amounts', time: '5 min' },
+        { id: 4, task: 'Adjust budgets in Google Ads', time: '5 min' }
+      ];
+
+      const toggleCheck = (id) => {
+        setCheckedItems(prev =>
+          prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+        );
+      };
+
+      const completionPercent = (checkedItems.length / auditItems.length) * 100;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>MONTHLY HABIT</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The 15-Minute Monthly Audit</h2>
+            <p className="text-neutral-600 text-sm mt-2">This isn't a one-time fix. It's a habit that compounds results.</p>
+          </motion.div>
+
+          {/* Progress Bar */}
+          <div className="mb-6 max-w-xl mx-auto w-full">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm text-neutral-600">Monthly Audit Progress</span>
+              <span className="text-sm font-bold" style={{ color: 'var(--accent)' }}>{Math.round(completionPercent)}%</span>
+            </div>
+            <div className="h-3 bg-neutral-200 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, var(--accent), var(--accent-dark))' }}
+                initial={{ width: 0 }}
+                animate={{ width: `${completionPercent}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+          </div>
+
+          {/* Checklist */}
+          <div className="space-y-3 max-w-xl mx-auto w-full">
+            {auditItems.map((item, i) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => toggleCheck(item.id)}
+                className="cursor-pointer"
+                style={{
+                  background: checkedItems.includes(item.id) ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5',
+                  borderRadius: '12px',
+                  padding: '16px 20px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                {checkedItems.includes(item.id) && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+                )}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center"
+                      style={{
+                        background: checkedItems.includes(item.id) ? '#22c55e' : '#e5e5e5',
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      {checkedItems.includes(item.id) ? (
+                        <Icons.Check />
+                      ) : (
+                        <span className="text-sm font-bold text-neutral-500">{item.id}</span>
+                      )}
+                    </div>
+                    <span
+                      className="text-sm"
+                      style={{
+                        color: checkedItems.includes(item.id) ? 'white' : '#374151',
+                        textDecoration: checkedItems.includes(item.id) ? 'line-through' : 'none'
+                      }}
+                    >
+                      {item.task}
+                    </span>
+                  </div>
+                  <span
+                    className="text-xs px-2 py-1 rounded-full"
+                    style={{
+                      background: checkedItems.includes(item.id) ? '#22c55e20' : '#e5e5e5',
+                      color: checkedItems.includes(item.id) ? '#22c55e' : '#6b7280'
+                    }}
+                  >
+                    {item.time}
+                  </span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Completion Message */}
+          <AnimatePresence>
+            {completionPercent === 100 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex justify-center mt-6"
+              >
+                <div className="flex items-center gap-3 px-5 py-3 rounded-xl" style={{ background: '#22c55e', color: 'white' }}>
+                  <Icons.Star />
+                  <span className="font-bold">Audit Complete! 15 minutes well spent.</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE TYPE 7: Elite Insight
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          style={{
+            background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+            borderRadius: '24px',
+            padding: '40px',
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '0 0 60px rgba(249, 115, 22, 0.15)'
+          }}
+        >
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          {/* Quote Icon */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-center mb-6"
+          >
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+              <Icons.Brain />
+            </div>
+          </motion.div>
+
+          {/* Main Quote */}
+          <motion.blockquote
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-center mb-8"
+          >
+            <p className="text-white text-xl md:text-2xl font-bold leading-relaxed mb-4">
+              "Don't spread your budget evenly. <span style={{ color: 'var(--accent)' }}>Concentrate it where it works best.</span>"
+            </p>
+            <p className="text-neutral-400 text-lg">
+              Feed your winners. Starve your losers.
+            </p>
+          </motion.blockquote>
+
+          {/* Key Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
+            transition={{ delay: 0.4 }}
+            className="grid grid-cols-3 gap-4"
+          >
+            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <p className="text-3xl font-bold" style={{ color: '#ef4444' }}>2.8x</p>
+              <p className="text-xs text-neutral-500 mt-1">Before (Even Split)</p>
+            </div>
+            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(34, 197, 94, 0.1)' }}>
+              <p className="text-3xl font-bold" style={{ color: '#22c55e' }}>4.4x</p>
+              <p className="text-xs text-neutral-400 mt-1">After (Smart)</p>
+            </div>
+            <div className="text-center p-4 rounded-xl" style={{ background: 'rgba(249, 115, 22, 0.1)' }}>
+              <p className="text-3xl font-bold" style={{ color: 'var(--accent)' }}>+57%</p>
+              <p className="text-xs text-neutral-400 mt-1">ROAS Improvement</p>
+            </div>
           </motion.div>
-        )}
+
+          {/* Bottom Line */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="mt-6 pt-6 border-t border-neutral-700 text-center"
+          >
+            <p className="text-neutral-400 text-sm">
+              Zero new work. Zero new campaigns. Zero new creative.<br/>
+              <span className="text-white font-semibold">Just smart allocation of existing resources.</span>
+            </p>
+          </motion.div>
+        </motion.div>
       </div>
     );
-
-    const MockupSlide = ({ data }) => {
-      if (data.mockupType === 'budget-reallocation') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">{data.title}</motion.h2>
-            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm text-neutral-600 text-center mb-8 max-w-2xl mx-auto">{data.description}</motion.p>
-            <div className="relative w-full max-w-4xl mx-auto">
-              <svg viewBox="0 0 800 500" className="w-full">
-                <defs>
-                  <linearGradient id="orangeGradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                    <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
-                    <stop offset="100%" stopColor="#ea580c" stopOpacity="0.3" />
-                  </linearGradient>
-                  <linearGradient id="grayGradient" x1="0%" y1="100%" x2="0%" y2="0%">
-                    <stop offset="0%" stopColor="#9ca3af" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#6b7280" stopOpacity="0.3" />
-                  </linearGradient>
-                </defs>
-
-                {/* BEFORE Section */}
-                <motion.g initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-                  <text x="200" y="40" fontSize="18" fontWeight="700" textAnchor="middle" fill="#1f2937">BEFORE: Even Split</text>
-                  <text x="200" y="65" fontSize="14" textAnchor="middle" fill="#6b7280">Total ROAS: 2.8x</text>
-
-                  {/* Campaign bars */}
-                  {/* Campaign A */}
-                  <rect x="50" y="350" width="60" height="60" fill="url(#grayGradient)" stroke="#9ca3af" strokeWidth="2" rx="4"/>
-                  <text x="80" y="425" fontSize="11" fontWeight="600" textAnchor="middle" fill="#374151">A</text>
-                  <text x="80" y="440" fontSize="9" textAnchor="middle" fill="#6b7280">$1k</text>
-                  <text x="80" y="455" fontSize="9" textAnchor="middle" fill="#9ca3af">1.5x</text>
-
-                  {/* Campaign B */}
-                  <rect x="130" y="330" width="60" height="80" fill="url(#grayGradient)" stroke="#9ca3af" strokeWidth="2" rx="4"/>
-                  <text x="160" y="425" fontSize="11" fontWeight="600" textAnchor="middle" fill="#374151">B</text>
-                  <text x="160" y="440" fontSize="9" textAnchor="middle" fill="#6b7280">$1k</text>
-                  <text x="160" y="455" fontSize="9" textAnchor="middle" fill="#9ca3af">2.0x</text>
-
-                  {/* Campaign C */}
-                  <rect x="210" y="340" width="60" height="70" fill="url(#grayGradient)" stroke="#9ca3af" strokeWidth="2" rx="4"/>
-                  <text x="240" y="425" fontSize="11" fontWeight="600" textAnchor="middle" fill="#374151">C</text>
-                  <text x="240" y="440" fontSize="9" textAnchor="middle" fill="#6b7280">$1k</text>
-                  <text x="240" y="455" fontSize="9" textAnchor="middle" fill="#9ca3af">1.8x</text>
-
-                  {/* Campaign D - The Winner */}
-                  <rect x="290" y="200" width="60" height="210" fill="url(#orangeGradient)" stroke="#f97316" strokeWidth="2" rx="4"/>
-                  <text x="320" y="425" fontSize="11" fontWeight="700" textAnchor="middle" fill="#7c2d12">D</text>
-                  <text x="320" y="440" fontSize="9" textAnchor="middle" fill="#ea580c">$1k</text>
-                  <text x="320" y="455" fontSize="9" fontWeight="700" textAnchor="middle" fill="#f97316">6.0x</text>
-
-                  {/* Star on winner */}
-                  <text x="320" y="180" fontSize="20" textAnchor="middle">⭐</text>
-
-                  {/* Baseline */}
-                  <line x1="40" y1="410" x2="360" y2="410" stroke="#d4d4d8" strokeWidth="2"/>
-                </motion.g>
-
-                {/* Divider */}
-                <motion.line
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{ delay: 0.4 }}
-                  x1="400" y1="80" x2="400" y2="470"
-                  stroke="#d4d4d8"
-                  strokeWidth="3"
-                  strokeDasharray="8,8"
-                  style={{ transformOrigin: 'center' }}
-                />
-
-                {/* AFTER Section */}
-                <motion.g initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
-                  <text x="600" y="40" fontSize="18" fontWeight="700" textAnchor="middle" fill="#f97316">AFTER: Smart Reallocation</text>
-                  <text x="600" y="65" fontSize="14" fontWeight="700" textAnchor="middle" fill="#15803d">Total ROAS: 4.4x</text>
-
-                  {/* Campaign bars - smaller losers, bigger winner */}
-                  {/* Campaign A - reduced */}
-                  <rect x="450" y="380" width="60" height="30" fill="url(#grayGradient)" stroke="#9ca3af" strokeWidth="2" rx="4" opacity="0.5"/>
-                  <text x="480" y="425" fontSize="11" fontWeight="600" textAnchor="middle" fill="#374151">A</text>
-                  <text x="480" y="440" fontSize="9" textAnchor="middle" fill="#6b7280">$500</text>
-                  <text x="480" y="455" fontSize="9" textAnchor="middle" fill="#9ca3af">1.5x</text>
-
-                  {/* Campaign B - reduced */}
-                  <rect x="530" y="370" width="60" height="40" fill="url(#grayGradient)" stroke="#9ca3af" strokeWidth="2" rx="4" opacity="0.5"/>
-                  <text x="560" y="425" fontSize="11" fontWeight="600" textAnchor="middle" fill="#374151">B</text>
-                  <text x="560" y="440" fontSize="9" textAnchor="middle" fill="#6b7280">$500</text>
-                  <text x="560" y="455" fontSize="9" textAnchor="middle" fill="#9ca3af">2.0x</text>
-
-                  {/* Campaign C - reduced */}
-                  <rect x="610" y="375" width="60" height="35" fill="url(#grayGradient)" stroke="#9ca3af" strokeWidth="2" rx="4" opacity="0.5"/>
-                  <text x="640" y="425" fontSize="11" fontWeight="600" textAnchor="middle" fill="#374151">C</text>
-                  <text x="640" y="440" fontSize="9" textAnchor="middle" fill="#6b7280">$500</text>
-                  <text x="640" y="455" fontSize="9" textAnchor="middle" fill="#9ca3af">1.8x</text>
-
-                  {/* Campaign D - MASSIVE increase */}
-                  <motion.rect
-                    x="690"
-                    y="100"
-                    width="70"
-                    height="310"
-                    fill="url(#orangeGradient)"
-                    stroke="#f97316"
-                    strokeWidth="3"
-                    rx="4"
-                    initial={{ height: 0, y: 410 }}
-                    animate={{ height: 310, y: 100 }}
-                    transition={{ delay: 0.6, duration: 0.8, type: "spring" }}
-                  />
-                  <text x="725" y="425" fontSize="12" fontWeight="900" textAnchor="middle" fill="#7c2d12">D</text>
-                  <text x="725" y="442" fontSize="10" fontWeight="700" textAnchor="middle" fill="#ea580c">$2,500</text>
-                  <text x="725" y="458" fontSize="10" fontWeight="900" textAnchor="middle" fill="#f97316">6.0x</text>
-
-                  {/* Multiple stars on winner */}
-                  <text x="710" y="75" fontSize="24" textAnchor="middle">⭐</text>
-                  <text x="740" y="75" fontSize="24" textAnchor="middle">⭐</text>
-                  <text x="725" y="55" fontSize="24" textAnchor="middle">⭐</text>
-
-                  {/* Baseline */}
-                  <line x1="440" y1="410" x2="770" y2="410" stroke="#d4d4d8" strokeWidth="2"/>
-                </motion.g>
-
-                {/* Arrow showing improvement */}
-                <motion.g
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                >
-                  <path d="M 380,100 L 420,100" stroke="#15803d" strokeWidth="3" markerEnd="url(#arrowhead)"/>
-                  <defs>
-                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-                      <polygon points="0 0, 10 5, 0 10" fill="#15803d"/>
-                    </marker>
-                  </defs>
-                  <text x="400" y="90" fontSize="12" fontWeight="700" textAnchor="middle" fill="#15803d">+57% ROAS</text>
-                </motion.g>
-
-                {/* Bottom insight */}
-                <motion.text
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.2 }}
-                  x="400" y="490" fontSize="13" textAnchor="middle" fill="#6b7280">
-                  Same total budget ($4,000) - Just reallocated to the winner
-                </motion.text>
-              </svg>
-            </div>
-          </div>
-        );
-      }
-    };
 
     const QuizSlide = ({ data, onAnswer, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -459,7 +1212,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -498,11 +1250,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'mockup': return <MockupSlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'even-split-problem': return <EvenSplitProblemSlide data={slide} />;
+          case 'budget-shift-animation': return <BudgetShiftAnimationSlide data={slide} />;
+          case 'roas-math-visualization': return <ROASMathVisualizationSlide data={slide} />;
+          case 'winner-identifier': return <WinnerIdentifierSlide data={slide} />;
+          case 'reallocation-protocol': return <ReallocationProtocolSlide data={slide} />;
+          case 'monthly-audit-system': return <MonthlyAuditSystemSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onAnswer={() => {}} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
-          default: return <ContentSlide data={slide} />;
+          default: return null;
         }
       };
 

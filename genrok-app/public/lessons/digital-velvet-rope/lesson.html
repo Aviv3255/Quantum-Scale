@@ -38,7 +38,7 @@
     const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
       const [count, setCount] = useState(0);
       useEffect(() => {
         let start = 0;
@@ -46,11 +46,22 @@
         const timer = setInterval(() => {
           start += increment;
           if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
         }, 16);
         return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{prefix}{count}{suffix}</span>;
+      }, [target, duration, decimals]);
+      return <span>{prefix}{typeof count === 'number' ? (decimals > 0 ? count.toFixed(decimals) : count) : count}{suffix}</span>;
+    };
+
+    // Parse stat values for AnimatedCounter
+    const parseStatValue = (value) => {
+      const match = value.match(/^([^\d]*)([\d.]+)(.*)$/);
+      if (match) {
+        const num = parseFloat(match[2]);
+        const hasDecimal = match[2].includes('.');
+        return { prefix: match[1], number: num, suffix: match[3], decimals: hasDecimal ? 1 : 0 };
+      }
+      return { prefix: '', number: 0, suffix: value, decimals: 0 };
     };
     const LESSON_CONFIG = {
       id: 'digital-velvet-rope',
@@ -165,6 +176,7 @@
         { value: '2.8x', label: 'Stronger Brand Loyalty', subtext: 'From VIP membership programs' }
       ]},
       { type: 'content', title: 'The Digital Velvet Rope: Password-Protected Pages', body: 'Here is how to create the same psychology online. Create a separate collection page that requires a password to access. This could be early access to new products, exclusive colorways, limited editions, or special bundles. The password is the velvet rope. Even if you give the password to everyone who asks, the act of needing it transforms the experience. They are not just shopping. They are accessing something exclusive.' },
+      { type: 'velvetRopeVisual', title: 'The Transformation', insight: 'The password costs nothing. But it transforms ordinary customers into VIP insiders who feel special and share their status.' },
       { type: 'example', scenario: 'Password-Protected VIP Collection', before: { label: 'Standard Store', text: 'New collection launches. Everyone sees the same page. Same products. Same prices. Same experience. Nothing special about being a customer. No reason to feel loyalty.' }, after: { label: 'With Digital Velvet Rope', text: 'Email goes out: "VIP ACCESS: Password is INSIDER2024." Customer enters password. Sees exclusive products first. Feels like an insider. Screenshots and shares with friends. Buys because access feels precious.' }, insight: 'The password costs you nothing. But it transforms a transaction into a membership experience.' },
       { type: 'content', title: 'Why Restriction Creates Desire', body: 'Your brain has a quirk. When something becomes less available, it becomes more valuable in your mind. This is called reactance theory. The moment you are told you cannot have something, you want it more. Password-protected pages trigger this response. Even if the customer gets the password easily, the mere existence of a gate changes psychology. They had to do something to get in. That tiny effort creates ownership.' },
       { type: 'cards', title: 'Ways to Use Digital Velvet Ropes', items: [
@@ -196,6 +208,16 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Lock: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      Unlock: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Crown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M3 20h18"/></svg>,
+      Gift: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Archive: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -302,30 +324,53 @@
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
             <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
             <div className="grid md:grid-cols-3 gap-3 md:gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
-                  <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
-                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
-                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
+              {data.data.map((stat, i) => {
+                const parsed = parseStatValue(stat.value);
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="rounded-xl p-4 md:p-6 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+                    <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                    <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>
+                      <AnimatedCounter target={parsed.number} prefix={parsed.prefix} suffix={parsed.suffix} duration={1500} decimals={parsed.decimals} />
+                    </div>
+                    <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
+                    <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         );
       }
-      return null;    };
+      return null;
+    };
+
+    const CardIconComponents = [Icons.Clock, Icons.Star, Icons.Gift, Icons.Unlock, Icons.Archive, Icons.Eye];
 
     const CardsSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
           <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 hover:shadow-lg transition-all">
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
+          <div className={`grid gap-3 relative z-10 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
+            {data.items.map((item, i) => {
+              const IconComponent = CardIconComponents[i % CardIconComponents.length];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="rounded-xl p-4 hover:shadow-lg transition-all relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(var(--accent-rgb), 0.2)' }}>
+                  <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                      <span style={{ color: 'var(--accent)' }}><IconComponent /></span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>{i + 1}</span>
+                        <h3 className="font-bold text-white text-sm md:text-base">{item.title}</h3>
+                      </div>
+                      <p className="text-neutral-400 text-xs md:text-sm leading-relaxed">{item.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
         {data.characterVideo && (
@@ -340,6 +385,110 @@
       </div>
     );
 
+
+    // Custom Slide: Velvet Rope Visual - Shows the exclusivity transformation
+    const VelvetRopeVisualSlide = ({ data }) => {
+      const [showUnlock, setShowUnlock] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowUnlock(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Locked Side */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="rounded-xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(100,100,100,0.3)' }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #666, transparent)' }} />
+              <div className="text-center">
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+                  style={{ background: 'rgba(100,100,100,0.3)' }}
+                >
+                  <span className="text-neutral-500"><Icons.Lock /></span>
+                </motion.div>
+                <h3 className="text-white font-bold mb-2">VIP Collection</h3>
+                <div className="bg-neutral-800 rounded-lg p-4 mb-4">
+                  <input
+                    type="password"
+                    placeholder="Enter Password"
+                    className="w-full bg-neutral-700 text-white px-4 py-2 rounded text-center text-sm"
+                    disabled
+                  />
+                </div>
+                <p className="text-neutral-500 text-xs">Password required for access</p>
+              </div>
+            </motion.div>
+
+            {/* Unlocked Side */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: showUnlock ? 1 : 0.5, x: 0, scale: showUnlock ? 1.02 : 1 }}
+              transition={{ duration: 0.5 }}
+              className="rounded-xl p-6 relative overflow-hidden"
+              style={{
+                background: showUnlock ? 'linear-gradient(135deg, #1a1a2d, #2d2d4d)' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: showUnlock ? '2px solid rgba(var(--accent-rgb), 0.5)' : '1px solid rgba(100,100,100,0.3)',
+                boxShadow: showUnlock ? '0 0 40px rgba(var(--accent-rgb), 0.2)' : 'none'
+              }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: showUnlock ? 'linear-gradient(90deg, transparent, var(--accent), transparent)' : 'transparent' }} />
+              <div className="text-center">
+                <motion.div
+                  animate={showUnlock ? { scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] } : {}}
+                  transition={{ duration: 0.5 }}
+                  className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
+                  style={{ background: showUnlock ? 'rgba(var(--accent-rgb), 0.3)' : 'rgba(100,100,100,0.3)' }}
+                >
+                  <span style={{ color: showUnlock ? 'var(--accent)' : '#666' }}>
+                    {showUnlock ? <Icons.Unlock /> : <Icons.Lock />}
+                  </span>
+                </motion.div>
+                <h3 className="text-white font-bold mb-2">Welcome, VIP</h3>
+                <div className="space-y-2 mb-4">
+                  {['Exclusive Drops', 'Early Access', 'Special Pricing'].map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: showUnlock ? 1 : 0.3, x: 0 }}
+                      transition={{ delay: showUnlock ? 0.2 + i * 0.1 : 0 }}
+                      className="flex items-center gap-2 justify-center"
+                    >
+                      <span style={{ color: 'var(--accent)' }}><Icons.Check /></span>
+                      <span className="text-neutral-300 text-sm">{item}</span>
+                    </motion.div>
+                  ))}
+                </div>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: showUnlock ? 1 : 0 }}
+                  className="px-4 py-1 rounded-full inline-block text-xs font-bold"
+                  style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}
+                >
+                  ACCESS GRANTED
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-6 rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <p className="text-neutral-300 text-sm flex items-center justify-center gap-2">
+              <Icons.Lightbulb />
+              <span>{data.insight}</span>
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
 
     const ProTipSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-2xl mx-auto py-8">
@@ -483,6 +632,7 @@
           case 'example': return <ExampleSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'velvetRopeVisual': return <VelvetRopeVisualSlide data={slide} />;
           case 'pro-tip': return <ProTipSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;

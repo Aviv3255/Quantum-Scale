@@ -1,0 +1,3460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tactic Hero</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+        }
+
+        .landing-section {
+            all: initial;
+            position: relative !important;
+            left: 50% !important;
+            right: 50% !important;
+            margin-left: -50vw !important;
+            margin-right: -50vw !important;
+            width: 100vw !important;
+            min-width: 100vw !important;
+            background: #000000 !important;
+            padding: 25px 5px 28px 5px !important;
+            text-align: center !important;
+            font-family: 'Open Sans', sans-serif !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
+            display: block !important;
+        }
+
+        .landing-section::before,
+        .landing-section::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            background: #000000 !important;
+            z-index: -1 !important;
+        }
+
+        .landing-section::before {
+            left: -100vw !important;
+        }
+
+        .landing-section::after {
+            right: -100vw !important;
+        }
+
+        .landing-section * {
+            box-sizing: border-box !important;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .intro-text {
+            background: rgba(0, 207, 255, 0.15) !important;
+            border: 1px solid #00CFFF !important;
+            border-radius: 25px !important;
+            padding: 12px 20px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            font-size: 11.83px !important;
+            color: #ffffff !important;
+            font-weight: 500 !important;
+            margin: 0 0 32px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .pulse-dot {
+            width: 8px !important;
+            height: 8px !important;
+            background: #00CFFF !important;
+            border-radius: 50% !important;
+            animation: pulse 2s infinite !important;
+            box-shadow: 0 0 10px #00CFFF !important;
+            display: block !important;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
+            }
+        }
+
+        .main-headline {
+            font-size: 48.52px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            line-height: 1.2 !important;
+            margin: 0 0 22px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+        }
+
+        .highlight {
+            color: #00CFFF !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            font-size: inherit !important;
+        }
+
+        .sub-headline {
+            font-size: 17px !important;
+            color: #e8e8e8 !important;
+            margin: 0 0 44px 0 !important;
+            font-weight: 400 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+        }
+
+        .screenshot-container {
+            margin: 0 0 34px 0 !important;
+            display: block !important;
+        }
+
+        .screenshot {
+            max-width: 100% !important;
+            height: auto !important;
+            border-radius: 8px !important;
+            box-shadow: 0 10px 40px rgba(0, 207, 255, 0.3) !important;
+            display: block !important;
+            margin: 0 auto !important;
+        }
+
+        .pricing-section {
+            margin: 34px 0 0 0 !important;
+            display: block !important;
+        }
+
+        .price-text {
+            font-size: 36.16px !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            margin: 0 0 28px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+        }
+
+        .original-price {
+            color: #999999 !important;
+            text-decoration: line-through !important;
+            font-size: 27.71px !important;
+            margin-right: 14.48px !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .current-price {
+            color: #00CFFF !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .cta-button {
+            all: unset !important;
+            display: inline-block !important;
+            background: radial-gradient(ellipse at bottom, #7DF5FF 0%, #00CFFF 40%) !important;
+            color: #ffffff !important;
+            padding: 16px 24px !important;
+            font-size: 14.88px !important;
+            font-weight: 600 !important;
+            border-radius: 12px !important;
+            cursor: pointer !important;
+            transition: transform 0.2s ease !important;
+            text-decoration: none !important;
+            min-width: 280px !important;
+            font-family: 'Open Sans', sans-serif !important;
+            position: relative !important;
+            overflow: hidden !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+            box-shadow: 0 6px 16px rgba(0, 207, 255, 0.4) !important;
+            border: none !important;
+            margin: 12px auto !important;
+            line-height: 1.4 !important;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px) !important;
+        }
+
+        .cta-button.loading {
+            opacity: 0.8 !important;
+            pointer-events: none !important;
+        }
+
+        .cta-button span {
+            font-size: 14.88px !important;
+            font-weight: 600 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            color: #ffffff !important;
+            position: relative !important;
+            z-index: 999 !important;
+            display: inline-block !important;
+            line-height: 1.4 !important;
+        }
+
+        .cta-button * {
+            font-size: 14.88px !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .secure-payment {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            font-size: 15.44px !important;
+            color: #e8e8e8 !important;
+            font-weight: 500 !important;
+            margin-top: 10px !important;
+            margin-bottom: 8px !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .secure-payment-icon {
+            width: 28.31px !important;
+            height: 28.31px !important;
+            background-image: url('https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Mastercard-Logo.wine.png?v=1758464867') !important;
+            background-size: contain !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            display: block !important;
+        }
+
+        .bundle-wrapper {
+            text-align: center !important;
+            margin: 12px 0 0 0 !important;
+            display: block !important;
+        }
+
+        .bundle-wrapper span {
+            color: #e8e8e8 !important;
+            font-size: 14px !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .bundle-link {
+            color: #00CFFF !important;
+            text-decoration: underline !important;
+        }
+
+        @media (max-width: 768px) {
+            .landing-section {
+                padding: 3px 3px 20px 3px !important;
+            }
+
+            .intro-text {
+                font-size: 10.92px !important;
+            }
+
+            .main-headline {
+                font-size: 31.46px !important;
+            }
+
+            .sub-headline {
+                font-size: 17px !important;
+            }
+
+            .screenshot {
+                max-width: 85% !important;
+            }
+
+            .cta-button {
+                min-width: 280px !important;
+                font-size: 14.88px !important;
+                padding: 16px 24px !important;
+            }
+
+            .cta-button span {
+                font-size: 14.88px !important;
+            }
+
+            .price-text {
+                font-size: 28.9px !important;
+            }
+
+            .original-price {
+                font-size: 22px !important;
+            }
+
+            .secure-payment {
+                font-size: 14.2px !important;
+            }
+
+            .secure-payment-icon {
+                width: 26.04px !important;
+                height: 26.04px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .landing-section {
+                padding: 2px 2px 20px 2px !important;
+            }
+
+            .intro-text {
+                font-size: 10.92px !important;
+            }
+
+            .main-headline {
+                font-size: 26.45px !important;
+            }
+
+            .sub-headline {
+                font-size: 17px !important;
+            }
+
+            .screenshot {
+                max-width: 80% !important;
+            }
+
+            .cta-button {
+                min-width: 280px !important;
+                font-size: 16px !important;
+                padding: 16px 24px !important;
+            }
+
+            .cta-button span {
+                font-size: 16px !important;
+            }
+
+            .secure-payment {
+                font-size: 14.2px !important;
+            }
+
+            .secure-payment-icon {
+                width: 26.04px !important;
+                height: 26.04px !important;
+            }
+        }
+
+        @media only screen and (min-width: 769px) {
+            .cta-button {
+                width: 600px !important;
+                margin: 12px auto !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="landing-section">
+        <div class="content-container">
+            <div class="intro-text">
+                <div class="pulse-dot"></div>
+                <span>The billion-dollar tactic elite brands hide from you</span>
+            </div>
+
+            <h1 class="main-headline">
+                Steal The <span class="highlight">Quiz Tactic</span> That Took Brands From 3% to 10% Conversion
+            </h1>
+
+            <p class="sub-headline">
+                (The secret weapon billion-dollar companies use to make visitors <strong>10X more likely to buy</strong>)
+            </p>
+
+            <div class="screenshot-container">
+                <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/007dff_8.jpg?v=1760529285" alt="Quiz Tactic Results" class="screenshot">
+            </div>
+
+            <div class="pricing-section">
+                <p class="price-text">
+                    <span class="original-price">$197</span>
+                    <span class="current-price">Only $39 </span>
+                </p>
+
+                <button class="cta-button" id="quiz-add-to-cart-btn" data-variant-id="43188055277661">
+                    <span>Access The Quiz Tactic</span>
+                </button>
+
+                <div class="bundle-wrapper">
+                    <span>$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a></span>
+                </div>
+
+                <div class="secure-payment">
+                    <div class="secure-payment-icon"></div>
+                    <span>Secure 256-bit SSL encrypted payment</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    const CONFIG = {
+        VARIANT_ID: '43188055277661',
+        DEBUG: true,
+        RETRY_ATTEMPTS: 3,
+        RETRY_DELAY: 500
+    };
+    
+    // ============================================
+    // LOGGING UTILITIES
+    // ============================================
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log(`[Quiz Tactic] ℹ️ ${msg}`, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log(`[Quiz Tactic] ✅ ${msg}`, data || ''),
+        error: (msg, data) => console.error(`[Quiz Tactic] ❌ ${msg}`, data || ''),
+        warn: (msg, data) => console.warn(`[Quiz Tactic] ⚠️ ${msg}`, data || '')
+    };
+    
+    // ============================================
+    // CLEANUP INTERFERING ELEMENTS
+    // ============================================
+    function removeInterferingElements() {
+        log.info('Removing interfering popups and overlays...');
+        
+        const interferingSelectors = [
+            '[class*="rewards"]', '[class*="Rewards"]',
+            '[id*="rewards"]', '[id*="Rewards"]',
+            '.smile-launcher-frame', 'iframe[title*="Smile.io"]',
+            '[class*="smile-"]', '.loyalty-modal', '.rewards-launcher',
+            '.modal-backdrop', '.popup-overlay'
+        ];
+        
+        let removed = 0;
+        interferingSelectors.forEach(selector => {
+            try {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                    if (el.remove) el.remove();
+                    removed++;
+                });
+            } catch (e) {
+                // Ignore selector errors
+            }
+        });
+        
+        if (removed > 0) {
+            log.success(`Removed ${removed} interfering elements`);
+        }
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 1: SHOPIFY AJAX API
+    // ============================================
+    async function addToCartAjaxAPI(variantId) {
+        log.info('Attempting Method 1: Shopify Ajax API...');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{
+                    id: parseInt(variantId),
+                    quantity: 1
+                }]
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Ajax API failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 2: FORM DATA
+    // ============================================
+    async function addToCartFormData(variantId) {
+        log.info('Attempting Method 2: FormData...');
+        
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`FormData failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 3: SIMPLE JSON
+    // ============================================
+    async function addToCartSimpleJSON(variantId) {
+        log.info('Attempting Method 3: Simple JSON...');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Simple JSON failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 4: FALLBACK FORM SUBMIT
+    // ============================================
+    function addToCartFormSubmit(variantId) {
+        log.info('Attempting Method 4: Form Submit (fallback)...');
+        
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/cart/add';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = variantId;
+        
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'quantity';
+        qtyInput.value = '1';
+        
+        form.appendChild(idInput);
+        form.appendChild(qtyInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve({ method: 'form_submit', status: 'submitted' }), 1000);
+        });
+    }
+    
+    // ============================================
+    // MAIN ADD TO CART FUNCTION WITH FALLBACKS
+    // ============================================
+    async function addToCart(variantId) {
+        log.info(`Starting add to cart process for variant: ${variantId}`);
+        
+        const methods = [
+            { name: 'Ajax API', fn: addToCartAjaxAPI },
+            { name: 'FormData', fn: addToCartFormData },
+            { name: 'Simple JSON', fn: addToCartSimpleJSON },
+            { name: 'Form Submit', fn: addToCartFormSubmit }
+        ];
+        
+        for (const method of methods) {
+            try {
+                log.info(`Trying: ${method.name}`);
+                const result = await method.fn(variantId);
+                log.success(`${method.name} succeeded!`, result);
+                return result;
+            } catch (error) {
+                log.warn(`${method.name} failed:`, error.message);
+                // Continue to next method
+            }
+        }
+        
+        throw new Error('All add-to-cart methods failed');
+    }
+    
+    // ============================================
+    // REFRESH CART UI
+    // ============================================
+    async function refreshCart() {
+        log.info('Refreshing cart...');
+        
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            
+            log.success(`Cart updated: ${cart.item_count} items, Total: ${cart.total_price}`);
+            
+            // Update cart count elements
+            const cartCountSelectors = [
+                '.cart-count', '.cart-count-bubble', '[data-cart-count]',
+                '.cart__count', '#cart-icon-bubble'
+            ];
+            
+            cartCountSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.textContent = cart.item_count;
+                    el.setAttribute('data-cart-count', cart.item_count);
+                });
+            });
+            
+            // Trigger Shopify events
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+                bubbles: true,
+                detail: { cart }
+            }));
+            
+            if (window.Shopify && window.Shopify.theme) {
+                document.documentElement.dispatchEvent(new CustomEvent('cart:updated', {
+                    bubbles: true,
+                    detail: { cart }
+                }));
+            }
+            
+            // Try to open cart drawer
+            setTimeout(() => {
+                openCartDrawer();
+            }, 300);
+            
+            return cart;
+            
+        } catch (error) {
+            log.error('Failed to refresh cart:', error);
+        }
+    }
+    
+    // ============================================
+    // OPEN CART DRAWER
+    // ============================================
+    function openCartDrawer() {
+        log.info('Attempting to open cart drawer...');
+        
+        // Method 1: Look for cart drawer trigger
+        const cartTriggers = [
+            '[href="/cart"]',
+            '.cart-link',
+            '.cart-icon',
+            '.header__icon--cart',
+            '[data-cart-drawer]',
+            '#cart-icon-bubble'
+        ];
+        
+        for (const selector of cartTriggers) {
+            const element = document.querySelector(selector);
+            if (element) {
+                log.info(`Found cart trigger: ${selector}`);
+                element.click();
+                return true;
+            }
+        }
+        
+        // Method 2: Trigger theme-specific events
+        const events = ['theme:cart:open', 'cart:open', 'drawer:open'];
+        events.forEach(eventName => {
+            document.documentElement.dispatchEvent(new CustomEvent(eventName, {
+                bubbles: true
+            }));
+        });
+        
+        log.warn('Could not find cart drawer trigger');
+        return false;
+    }
+    
+    // ============================================
+    // BUTTON CLICK HANDLER
+    // ============================================
+    async function handleButtonClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        log.info('Button clicked!');
+        
+        // Remove interfering elements
+        removeInterferingElements();
+        
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+        
+        // Disable button
+        button.disabled = true;
+        button.classList.add('loading');
+        button.style.cursor = 'wait';
+        button.innerHTML = '<span style="font-size: 16px; color: #ffffff; font-weight: 600;">⏳ ADDING TO CART...</span>';
+        
+        try {
+            // Add to cart with retries
+            const result = await addToCart(variantId);
+            
+            log.success('Successfully added to cart!', result);
+            
+            // Show success
+            button.style.background = 'radial-gradient(ellipse at bottom, #7DF5FF 0%, #00CFFF 40%)';
+            button.innerHTML = '<span style="font-size: 16px; color: #ffffff; font-weight: 600;">✓ ADDED SUCCESSFULLY!</span>';
+            
+            // Refresh cart
+            await refreshCart();
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 2000);
+            
+        } catch (error) {
+            log.error('Failed to add to cart:', error);
+            
+            // Show error
+            button.style.background = '#d32f2f';
+            button.innerHTML = '<span style="font-size: 16px; color: #ffffff; font-weight: 600;">❌ ERROR - PLEASE TRY AGAIN</span>';
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 3000);
+        }
+    }
+    
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    function init() {
+        log.info('Initializing Quiz Tactic System...');
+        
+        const button = document.getElementById('quiz-add-to-cart-btn');
+        
+        if (!button) {
+            log.error('Button not found! Retrying...');
+            setTimeout(init, 500);
+            return;
+        }
+        
+        log.success('Button found!');
+        
+        // Remove old event listeners
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Add click handler
+        newButton.addEventListener('click', handleButtonClick);
+        
+        // Ensure button is on top
+        newButton.style.position = 'relative';
+        newButton.style.zIndex = '999999';
+        
+        log.success('Quiz Tactic System ready! 🚀');
+    }
+    
+    // ============================================
+    // START THE SYSTEM
+    // ============================================
+    
+    // Remove interfering elements immediately
+    removeInterferingElements();
+    
+    // Continue removing them periodically
+    [1000, 2000, 3000, 5000].forEach(delay => {
+        setTimeout(removeInterferingElements, delay);
+    });
+    
+    // Initialize when ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    // Backup initialization
+    setTimeout(init, 500);
+    setTimeout(init, 1500);
+    
+    // ============================================
+    // MANUAL TESTING FUNCTION
+    // ============================================
+    window.testQuizSystem = function() {
+        log.info('=== MANUAL TEST TRIGGERED ===');
+        const button = document.getElementById('quiz-add-to-cart-btn');
+        if (button) {
+            button.click();
+        } else {
+            log.error('Button not found for manual test!');
+        }
+    };
+    
+    // ============================================
+    // DIAGNOSTICS FUNCTION
+    // ============================================
+    window.diagnoseQuizSystem = function() {
+        console.log('=== QUIZ TACTIC DIAGNOSTICS ===');
+        console.log('Button:', document.getElementById('quiz-add-to-cart-btn'));
+        console.log('Variant ID:', CONFIG.VARIANT_ID);
+        console.log('Shopify available:', typeof Shopify !== 'undefined');
+        console.log('Cart API:', '/cart/add.js');
+        console.log('==========================');
+    };
+    
+    log.info('Quiz Tactic System script loaded successfully! 🎉');
+    log.info('Test manually with: testQuizSystem()');
+    log.info('Run diagnostics with: diagnoseQuizSystem()');
+    
+})();
+    </script>
+</body>
+</html> 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tactic Section 2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        .story-mega-section {
+            position: relative !important;
+            left: 50% !important;
+            right: 50% !important;
+            margin-left: -50vw !important;
+            margin-right: -50vw !important;
+            width: 100vw !important;
+            min-width: 100vw !important;
+            padding: 40px 0 !important;
+            background: #ffffff !important;
+            font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+            line-height: 1.6 !important;
+            overflow-x: hidden !important;
+            box-sizing: border-box !important;
+        }
+
+        .story-mega-section * {
+            box-sizing: border-box !important;
+            color: #000000 !important;
+        }
+
+        .story-mega-section::before,
+        .story-mega-section::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            background: #ffffff !important;
+            z-index: -2 !important;
+        }
+
+        .story-mega-section::before {
+            left: -100vw !important;
+        }
+
+        .story-mega-section::after {
+            right: -100vw !important;
+        }
+
+        .container {
+            max-width: 800px !important;
+            margin: 0 auto !important;
+            padding: 0 20px !important;
+            text-align: center !important;
+        }
+
+        .section-title {
+            font-size: 42px !important;
+            font-weight: 800 !important;
+            color: #000000 !important;
+            margin: 0 0 20px 0 !important;
+            line-height: 1.2 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .section-subtitle {
+            font-size: 22px !important;
+            color: #000000 !important;
+            margin: 0 0 30px 0 !important;
+            font-weight: 400 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .highlight-text {
+            background-color: #fceda9 !important;
+            padding: 2px 6px !important;
+            display: inline !important;
+            box-decoration-break: clone !important;
+            -webkit-box-decoration-break: clone !important;
+            color: #000000 !important;
+        }
+
+        .story-text {
+            font-size: 18px !important;
+            color: #000000 !important;
+            line-height: 1.8 !important;
+            margin: 20px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .story-text strong {
+            font-weight: 700 !important;
+            color: #000000 !important;
+        }
+
+        .gif-container {
+            margin: 30px 0 !important;
+            text-align: center !important;
+        }
+
+        .gif-container img {
+            max-width: 100% !important;
+            height: auto !important;
+            display: inline-block !important;
+        }
+
+        .proof-image {
+            max-width: 100% !important;
+            height: auto !important;
+            margin: 20px 0 !important;
+            display: inline-block !important;
+        }
+
+        .big-claim {
+            font-size: 34px !important;
+            font-weight: 800 !important;
+            color: #000000 !important;
+            margin: 40px 0 30px 0 !important;
+            line-height: 1.2 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .emphasis-text {
+            font-size: 30px !important;
+            font-weight: 700 !important;
+            color: #000000 !important;
+            margin: 30px 0 !important;
+            line-height: 1.3 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .list-text {
+            font-size: 17px !important;
+            color: #000000 !important;
+            line-height: 1.8 !important;
+            margin: 10px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        /* Smaller highlighted section */
+        .conversion-highlight {
+            font-size: 29px !important;
+            font-weight: 800 !important;
+            color: #000000 !important;
+            margin: 50px 0 10px 0 !important;
+            line-height: 1.45 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 32px !important;
+            }
+
+            .big-claim {
+                font-size: 28px !important;
+            }
+
+            .emphasis-text {
+                font-size: 24px !important;
+            }
+
+            .story-text {
+                font-size: 16px !important;
+            }
+
+            .conversion-highlight {
+                font-size: 22px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="story-mega-section">
+        <div class="container">
+            <h2 class="section-title">In a world where Zuck rules us...</h2>
+            
+            <p class="story-text">
+                Millions of eCom store owners believe their creative is what sets them apart,<br>
+                blindly testing creatives hoping to find a "winner" and barely hitting <strong>1% conversion rate</strong>.
+            </p>
+
+            <p class="story-text" style="font-weight: 700; margin-top: 25px; color: #000000;">
+                And they think it's called 'strategy'...
+            </p>
+
+            <div class="gif-container">
+                <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/9708718a5263943a338e9072eec122d5.gif?v=1742999762" alt="Frustration GIF" width="266" height="305">
+            </div>
+
+            <h2 class="conversion-highlight">
+                <span class="highlight-text">We build a conversion machine for every brand</span><br>
+                <span class="highlight-text">that keeps generating for us over 2 years</span><br>
+                <span class="highlight-text">8–10% conversion Rate</span>
+            </h2>
+
+            <p class="story-text" style="font-size: 16px; font-weight: 400; color: #000000;">
+                (That's a "Cha-ching!" for every 10-12 visitors)
+            </p>
+
+            <div style="height: 60px;"></div>
+
+            <p class="story-text" style="font-weight: 700; font-size: 20px; color: #000000; margin: 0;">
+                So, If you're in eCommerce...
+            </p>
+
+            <p class="story-text" style="color: #000000;">
+                What you're about to read on this short page is going to make you <strong>more money than every tip any 'guru'</strong> has ever given you…
+            </p>
+
+            <div style="height: 60px;"></div>
+
+            <p class="story-text" style="text-decoration: underline; font-weight: 700; color: #000000; margin: 0;">
+                Straight to the point:
+            </p>
+
+            <h2 class="big-claim" style="font-size: 41.1px; color: #000000;">We stole a billion-dollar tactic.</h2>
+
+            <br>
+
+            <div style="height: 40px;"></div>
+
+            <h3 class="section-subtitle" style="font-size: 26px; font-weight: 700; color: #000000; margin: 0 0 30px 0;">
+                And here's the proof...
+            </h3>
+
+            <p class="story-text" style="color: #000000;">
+                On 23.01.2025, we started working with a new fashion brand that mainly operates in the UK. The first thing we did was implement the Quiz tactic… Before that, <strong>their conversion rate was 3.03%</strong>... Steady, right?
+            </p>
+
+            <img class="proof-image" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/f8dc6699dbd6bbaf07f2ec5dfa97326e.jpg?v=1762278162" alt="Before Results" width="486" height="211">
+
+            <p class="story-text" style="margin-top: 30px; color: #000000;">
+                And just a few days later… everything took off...
+            </p>
+
+            <img class="proof-image" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/1.jpg?v=1762278237" alt="After Results" width="475" height="215">
+
+            <p class="emphasis-text" style="margin-top: 50px; color: #000000;">
+                "The Quiz tactic is like a money machine,<br><strong>Put in $1 – get back $10."</strong>
+            </p>
+
+            <br><br>
+
+            <p class="story-text" style="font-weight: 700; font-size: 18px; color: #000000;">
+                Pay attention...
+            </p>
+
+            <p class="list-text" style="color: #000000;">
+                Not a "winning product" (cheap gimmick),<br>
+                Not endless streams of creatives…<br>
+                Not "winning" copywriting,<br>
+                Not products that competitors can steal from you…
+            </p>
+
+            <p class="story-text" style="font-size: 26px; font-weight: 400; margin-top: 50px; color: #000000;">
+                The quiz tactic is one of the <span class="highlight-text"><strong>3 tactics</strong></span> that can take your brand's conversion rate <strong>above 8%</strong>
+            </p>
+
+            <p class="story-text" style="font-size: 12.88px; font-weight: 400; margin: 10px 0; font-style: italic; color: #000000;">
+                (Laser targeting tactic, social proof tactic, quiz tactic)
+            </p>
+
+            <br><br>
+
+            <p class="story-text" style="font-size: 18px; margin-top: 40px; color: #000000;">
+                And if you combine them together, Good luck…
+            </p>
+
+            <h2 class="section-title" style="font-size: 26px; margin-top: 20px; color: #000000;">
+                Your conversion rate will go to the MOON
+            </h2>
+
+            <div class="gif-container">
+                <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/3be5a1c2fd9a8bd284bfabb6506ed8ce.gif?v=1742999766" alt="Moon GIF">
+            </div>
+
+            <p class="story-text" style="font-size: 16px; max-width: 600px; margin: 40px auto; color: #000000;">
+                A properly built quiz tactic changes the game forever. We're not talking about tweaks – but about jumps of <strong>300–400%</strong> in conversion rate that actually happen <strong><span style="text-decoration: underline;">when done right.</span></strong>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tactic Section 3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        .origin-mega-section {
+            position: relative !important;
+            left: 50% !important;
+            right: 50% !important;
+            margin-left: -50vw !important;
+            margin-right: -50vw !important;
+            width: 100vw !important;
+            min-width: 100vw !important;
+            padding: 60px 0 !important;
+            background: #f9f9f9 !important;
+            font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+            line-height: 1.6 !important;
+            overflow-x: hidden !important;
+            box-sizing: border-box !important;
+        }
+
+        .origin-mega-section * {
+            box-sizing: border-box !important;
+        }
+
+        .origin-mega-section::before,
+        .origin-mega-section::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            background: #f9f9f9 !important;
+            z-index: -2 !important;
+        }
+
+        .origin-mega-section::before {
+            left: -100vw !important;
+        }
+
+        .origin-mega-section::after {
+            right: -100vw !important;
+        }
+
+        .container {
+            max-width: 800px !important;
+            margin: 0 auto !important;
+            padding: 0 20px !important;
+            text-align: center !important;
+        }
+
+        .section-title {
+            font-size: 42px !important;
+            font-weight: 800 !important;
+            color: #000000 !important;
+            margin: 0 0 30px 0 !important;
+            line-height: 1.2 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .story-text {
+            font-size: 18px !important;
+            color: #333333 !important;
+            line-height: 1.8 !important;
+            margin: 20px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .story-text strong {
+            font-weight: 700 !important;
+        }
+
+        .quote-text {
+            font-size: 30px !important;
+            font-weight: 700 !important;
+            color: #000000 !important;
+            margin: 40px 0 30px 0 !important;
+            line-height: 1.3 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .big-number {
+            font-size: 34px !important;
+            font-weight: 800 !important;
+            color: #000000 !important;
+            margin: 30px 0 !important;
+            line-height: 1.2 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .gif-container {
+            margin: 30px 0 !important;
+            text-align: center !important;
+        }
+
+        .gif-container img {
+            max-width: 100% !important;
+            height: auto !important;
+            display: inline-block !important;
+        }
+
+        .proof-image {
+            max-width: 100% !important;
+            height: auto !important;
+            margin: 30px auto !important;
+            display: block !important;
+        }
+
+        .emphasis-text {
+            font-size: 30px !important;
+            font-weight: 700 !important;
+            color: #000000 !important;
+            margin: 40px 0 !important;
+            line-height: 1.3 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .benefit-text {
+            font-size: 18px !important;
+            color: #333333 !important;
+            line-height: 1.8 !important;
+            margin: 20px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .power-word {
+            font-size: 36px !important;
+            font-weight: 800 !important;
+            color: #00CFFF !important;
+            margin: 40px 0 20px 0 !important;
+            line-height: 1.2 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .testimonial-container {
+            margin: 50px 0 !important;
+            text-align: center !important;
+        }
+
+        .testimonial-image {
+            max-width: 100% !important;
+            height: auto !important;
+            margin: 20px auto !important;
+            display: block !important;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .note-text {
+            font-size: 14px !important;
+            font-style: italic !important;
+            color: #666666 !important;
+            margin: 30px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 32px !important;
+            }
+
+            .big-number {
+                font-size: 28px !important;
+            }
+
+            .emphasis-text {
+                font-size: 24px !important;
+            }
+
+            .quote-text {
+                font-size: 24px !important;
+            }
+
+            .story-text {
+                font-size: 16px !important;
+            }
+
+            .gif-container img {
+                max-width: 98% !important;
+                width: 98% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="origin-mega-section">
+        <div class="container">
+            <h1 class="section-title">It all started two years ago...</h1>
+
+            <p class="story-text">
+                when a friendly guy sitting with me at the office complex,<br>
+                turned out to be the lead developer at one of the <strong>biggest skincare companies in the world...</strong>
+            </p>
+
+            <div style="height: 40px;"></div>
+
+            <p class="story-text">
+                And then, during a regular lunch break,<br>
+                <strong>I asked him...</strong>
+            </p>
+
+            <p class="quote-text">
+                "What's your conversion rate?"
+            </p>
+
+            <div style="height: 40px;"></div>
+
+            <p class="story-text">
+                And he gave an answer I didn't believe was real…
+            </p>
+
+            <h2 class="big-number">
+                "8%–12%, depends on the period"
+            </h2>
+
+            <div class="gif-container">
+                <img src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/what-why.gif?v=1743003262" alt="What Why GIF" width="243" height="243">
+            </div>
+
+            <p class="story-text">
+                From that moment – everything inside me changed completely.
+            </p>
+
+            <div style="height: 40px;"></div>
+
+            <p class="story-text">
+                Like a good source of truth, he just <strong>spilled everything…</strong>
+            </p>
+
+            <p class="story-text">
+                The entire method that took them from losing money to a company generating <strong>hundreds of millions a year.</strong>
+            </p>
+
+            <p class="story-text">
+                So I <strong>copied everything</strong> from the company and implemented it...
+            </p>
+
+            <img class="proof-image" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/8_1.png?v=1742999762" alt="Implementation Results" width="284" height="374">
+
+            <p class="emphasis-text">
+                I was speechless, this was next-level genius.
+            </p>
+
+            <p class="story-text">
+                At that time, I had a kids' shoes brand, so I quickly decided to implement everything there…
+            </p>
+
+            <p class="emphasis-text">
+                And here's the result...
+            </p>
+
+            <img class="proof-image" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-03-26T172124.280.png?v=1743002520" alt="Kids Shoes Results" width="396" height="200">
+
+            <div style="height: 50px;"></div>
+
+            <p class="story-text" style="font-size: 18px;">
+                But even more than that, we got…
+            </p>
+
+            <h2 class="power-word">Power</h2>
+
+            <p class="benefit-text">
+                You don't need a crazy creative…
+            </p>
+
+            <p class="benefit-text">
+                It doesn't matter if competitors are stealing your products…
+            </p>
+
+            <p class="benefit-text">
+                You now have the power to stick to a strategy that works on deep levels,<br>
+                master it, and repeat it again and again… <strong>and no one can stop you.</strong>
+            </p>
+
+            <div style="height: 80px;"></div>
+
+            <p class="benefit-text">
+                When you have the knowledge, add more advanced tactics together,<br>
+                and <strong>amplify</strong> it across every brand you ever launch to make…
+            </p>
+
+            <h2 class="power-word">Money</h2>
+
+            <p class="story-text">
+                So here too - we've decided to pass on all the knowledge we've gained with this tactic.
+            </p>
+
+            <p class="story-text" style="font-size: 22px; font-weight: 700;">
+                You'll be left speechless… and with deeper pockets. Promise.
+            </p>
+
+            <p class="story-text" style="font-size: 24px; text-align: left;">
+                Within <strong>days</strong>, you'll witness this beast in action - just like they did....
+            </p>
+
+            <div class="testimonial-container">
+                <img class="testimonial-image" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Hurdeep.png?v=1745236417" alt="Testimonial 1" width="538" height="358">
+                
+                <img class="testimonial-image" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Hurdeep_2.png?v=1745236442" alt="Testimonial 2" width="548" height="365">
+                
+                <img class="testimonial-image" src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Hurdeep_1.png?v=1745236439" alt="Testimonial 3">
+            </div>
+
+            <p class="note-text">
+                *We recommend combining it with tools from the site to strengthen your overall foundation.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tactic Section 4</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        .features-mega-section-wrapper {
+            all: initial !important;
+            display: block !important;
+        }
+
+        .features-mega-section {
+            all: initial !important;
+            display: block !important;
+            position: relative !important;
+            left: 50% !important;
+            right: 50% !important;
+            margin-left: -50vw !important;
+            margin-right: -50vw !important;
+            width: 100vw !important;
+            min-width: 100vw !important;
+            padding: 60px 0 !important;
+            background: #000000 !important;
+            font-family: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+            line-height: 1.6 !important;
+            overflow-x: hidden !important;
+            box-sizing: border-box !important;
+        }
+
+        .features-mega-section *:not(style):not(script) {
+            all: unset !important;
+            display: revert !important;
+            box-sizing: border-box !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .features-mega-section::before,
+        .features-mega-section::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            background: #000000 !important;
+            z-index: -2 !important;
+            all: unset !important;
+            display: block !important;
+        }
+
+        .features-mega-section::before {
+            left: -100vw !important;
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            background: #000000 !important;
+            z-index: -2 !important;
+        }
+
+        .features-mega-section::after {
+            right: -100vw !important;
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            background: #000000 !important;
+            z-index: -2 !important;
+        }
+
+        .features-mega-section .container {
+            display: block !important;
+            max-width: 900px !important;
+            margin: 0 auto !important;
+            padding: 0 20px !important;
+        }
+
+        .features-mega-section .section-title {
+            display: block !important;
+            font-size: 42px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            margin: 0 0 15px 0 !important;
+            line-height: 1.2 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            text-align: center !important;
+        }
+
+        .features-mega-section .section-subtitle {
+            display: block !important;
+            font-size: 18px !important;
+            color: #b0b0b0 !important;
+            margin: 0 0 50px 0 !important;
+            font-weight: 400 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            text-align: center !important;
+        }
+
+        .features-mega-section .features-grid {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 30px !important;
+            margin: 40px 0 !important;
+        }
+
+        .features-mega-section .feature-card {
+            display: block !important;
+            background: rgba(255, 255, 255, 0.02) !important;
+            padding: 35px !important;
+            border-radius: 20px !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .features-mega-section .feature-card::before {
+            content: '' !important;
+            position: absolute !important;
+            top: -2px !important;
+            left: -2px !important;
+            right: -2px !important;
+            bottom: -2px !important;
+            background: linear-gradient(135deg, rgba(0, 207, 255, 0) 0%, rgba(0, 207, 255, 0.1) 50%, rgba(0, 207, 255, 0) 100%) !important;
+            opacity: 0 !important;
+            transition: opacity 0.5s ease !important;
+            pointer-events: none !important;
+            border-radius: 20px !important;
+            z-index: -1 !important;
+            display: block !important;
+        }
+
+        .features-mega-section .feature-card::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: -100% !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent) !important;
+            transition: left 0.6s ease !important;
+            display: block !important;
+        }
+
+        .features-mega-section .feature-card:hover {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(0, 207, 255, 0.3) !important;
+            transform: translateY(-8px) !important;
+            box-shadow: 0 25px 70px rgba(0, 207, 255, 0.15), 
+                        0 10px 40px rgba(0, 207, 255, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                        inset 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
+        }
+
+        .features-mega-section .feature-card:hover::before {
+            opacity: 1 !important;
+        }
+
+        .features-mega-section .feature-card:hover::after {
+            left: 100% !important;
+        }
+
+        .features-mega-section .feature-number {
+            display: block !important;
+            font-size: 48px !important;
+            font-weight: 800 !important;
+            background: linear-gradient(135deg, #00CFFF 0%, #00A3CC 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            margin: 0 0 15px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            transition: filter 0.3s ease !important;
+        }
+
+        .features-mega-section .feature-card:hover .feature-number {
+            filter: drop-shadow(0 0 25px rgba(0, 207, 255, 0.6)) !important;
+        }
+
+        .features-mega-section .feature-title {
+            display: block !important;
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            margin: 0 0 15px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            transition: color 0.3s ease !important;
+        }
+
+        .features-mega-section .feature-card:hover .feature-title {
+            color: #00CFFF !important;
+        }
+
+        .features-mega-section .feature-description {
+            display: block !important;
+            font-size: 16px !important;
+            color: #b0b0b0 !important;
+            line-height: 1.8 !important;
+            margin: 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            transition: color 0.3s ease !important;
+        }
+
+        .features-mega-section .feature-card:hover .feature-description {
+            color: #d0d0d0 !important;
+        }
+
+        .features-mega-section .feature-description strong {
+            display: inline !important;
+            color: #00CFFF !important;
+            font-weight: 700 !important;
+        }
+
+        .features-mega-section .highlight-box {
+            display: block !important;
+            background: linear-gradient(135deg, rgba(252, 237, 169, 0.12) 0%, rgba(252, 237, 169, 0.04) 100%) !important;
+            padding: 35px !important;
+            border-radius: 20px !important;
+            margin: 50px 0 !important;
+            text-align: center !important;
+            border: 1px solid rgba(252, 237, 169, 0.25) !important;
+            backdrop-filter: blur(20px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+            box-shadow: 0 10px 40px rgba(252, 237, 169, 0.08),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .features-mega-section .highlight-text {
+            display: block !important;
+            font-size: 24px !important;
+            font-weight: 700 !important;
+            color: #ffffff !important;
+            margin: 0 !important;
+            line-height: 1.4 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .features-mega-section .highlight-text strong {
+            display: inline !important;
+            color: #fceda9 !important;
+        }
+
+        .features-mega-section div {
+            display: block !important;
+        }
+
+        .features-mega-section h2,
+        .features-mega-section h3 {
+            display: block !important;
+        }
+
+        .features-mega-section p {
+            display: block !important;
+        }
+
+        @media (max-width: 768px) {
+            .features-mega-section .section-title {
+                font-size: 32px !important;
+            }
+
+            .features-mega-section .feature-number {
+                font-size: 36px !important;
+            }
+
+            .features-mega-section .feature-title {
+                font-size: 20px !important;
+            }
+
+            .features-mega-section .highlight-text {
+                font-size: 20px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="features-mega-section-wrapper">
+        <div class="features-mega-section">
+            <div class="container">
+                <h2 class="section-title">What's Inside The Quiz Tactic</h2>
+                <p class="section-subtitle">
+                    The exact framework billion-dollar brands use to turn browsers into buyers
+                </p>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-number">01</div>
+                        <h3 class="feature-title">The Psychology Framework</h3>
+                        <p class="feature-description">
+                            Discover why quizzes bypass logical resistance and tap directly into the buyer's emotional decision-making process. You'll learn the exact psychological triggers that make visitors <strong>10X more likely to purchase</strong> after completing a quiz.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-number">02</div>
+                        <h3 class="feature-title">Quiz Architecture Blueprint</h3>
+                        <p class="feature-description">
+                            Get the proven question structure that elite brands use. Learn which questions to ask, in what order, and why each one builds unstoppable momentum toward the purchase. This isn't guesswork - it's <strong>battle-tested science</strong>.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-number">03</div>
+                        <h3 class="feature-title">Personalization Engine</h3>
+                        <p class="feature-description">
+                            Master the art of making every visitor feel like you're speaking directly to them. You'll learn how to segment and recommend products with <strong>laser precision</strong>, dramatically increasing perceived value and purchase intent.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-number">04</div>
+                        <h3 class="feature-title">Implementation Templates</h3>
+                        <p class="feature-description">
+                            No need to start from scratch. You get <strong>plug-and-play templates</strong> for fashion, beauty, supplements, and general eCommerce. Simply customize for your brand and deploy within hours - not weeks.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-number">05</div>
+                        <h3 class="feature-title">Data Collection Strategy</h3>
+                        <p class="feature-description">
+                            Learn how to ethically collect valuable customer data while delivering massive value. This data becomes <strong>pure gold</strong> for your email marketing, retargeting, and product development.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-number">06</div>
+                        <h3 class="feature-title">Conversion Optimization Secrets</h3>
+                        <p class="feature-description">
+                            Discover the micro-optimizations that separate 3% conversion rates from 10%+ conversion rates. Every button placement, color choice, and word matters - and you'll know exactly <strong>what works and why</strong>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tactic Section 5</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        .section-wrapper-isolated {
+            all: initial !important;
+            font-family: 'Open Sans', sans-serif !important;
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            display: block !important;
+            padding: 60px 20px !important;
+            box-sizing: border-box !important;
+            line-height: 1.6 !important;
+            font-size: 16px !important;
+            font-weight: 400 !important;
+            text-align: left !important;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .section-wrapper-isolated *,
+        .section-wrapper-isolated *::before,
+        .section-wrapper-isolated *::after {
+            all: unset !important;
+            box-sizing: border-box !important;
+        }
+
+        .section-wrapper-isolated table {
+            border-collapse: collapse !important;
+            display: table !important;
+        }
+
+        .section-wrapper-isolated thead {
+            display: table-header-group !important;
+        }
+
+        .section-wrapper-isolated tbody {
+            display: table-row-group !important;
+        }
+
+        .section-wrapper-isolated tr {
+            display: table-row !important;
+        }
+
+        .section-wrapper-isolated th,
+        .section-wrapper-isolated td {
+            display: table-cell !important;
+        }
+
+        .section-wrapper-isolated .container-isolated {
+            max-width: 800px !important;
+            margin: 0 auto !important;
+            text-align: center !important;
+            position: relative !important;
+            z-index: 1 !important;
+            display: block !important;
+        }
+
+        .section-wrapper-isolated .title-isolated {
+            font-family: 'Open Sans', sans-serif !important;
+            font-weight: 800 !important;
+            font-size: 42px !important;
+            margin: 0 0 15px 0 !important;
+            color: #000000 !important;
+            display: block !important;
+            line-height: 1.2 !important;
+            text-align: center !important;
+        }
+
+        .section-wrapper-isolated .title-isolated .highlight-isolated {
+            color: #00CFFF !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            font-size: inherit !important;
+        }
+
+        .section-wrapper-isolated .subtitle-isolated {
+            font-size: 18px !important;
+            margin: 0 0 40px 0 !important;
+            color: #000000 !important;
+            font-weight: 400 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+            text-align: center !important;
+        }
+
+        .section-wrapper-isolated .comparison-table-isolated {
+            width: 100% !important;
+            margin: 50px 0 !important;
+            border-collapse: collapse !important;
+            background: #ffffff !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+            display: table !important;
+        }
+
+        .section-wrapper-isolated .column-header-isolated {
+            padding: 20px !important;
+            font-size: 20px !important;
+            font-weight: 700 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: table-cell !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        .section-wrapper-isolated .left-column-isolated {
+            background: #f5f5f5 !important;
+            color: #666666 !important;
+            width: 50% !important;
+        }
+
+        .section-wrapper-isolated .right-column-isolated {
+            background: #00CFFF !important;
+            color: #000000 !important;
+            width: 50% !important;
+        }
+
+        .section-wrapper-isolated .comparison-item-isolated {
+            padding: 20px !important;
+            font-size: 16px !important;
+            font-family: 'Open Sans', sans-serif !important;
+            border-top: 1px solid #e8e8e8 !important;
+            display: table-cell !important;
+            text-align: left !important;
+            vertical-align: top !important;
+        }
+
+        .section-wrapper-isolated .left-item-isolated {
+            background: #ffffff !important;
+            color: #333333 !important;
+        }
+
+        .section-wrapper-isolated .right-item-isolated {
+            background: #ffffff !important;
+            color: #000000 !important;
+            font-weight: 600 !important;
+        }
+
+        .section-wrapper-isolated .checkmark-isolated {
+            color: #00CFFF !important;
+            font-weight: 700 !important;
+            margin-right: 8px !important;
+            font-size: 18px !important;
+        }
+
+        .section-wrapper-isolated .crossmark-isolated {
+            color: #999999 !important;
+            font-weight: 700 !important;
+            margin-right: 8px !important;
+            font-size: 18px !important;
+        }
+
+        .section-wrapper-isolated .price-box-isolated {
+            background: #000000 !important;
+            padding: 30px 40px !important;
+            border-radius: 12px !important;
+            margin: 50px 0 !important;
+            display: block !important;
+        }
+
+        .section-wrapper-isolated .price-text-isolated {
+            font-size: 48px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            margin: 0 0 20px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+            text-align: center !important;
+        }
+
+        .section-wrapper-isolated .original-price-isolated {
+            color: #999999 !important;
+            text-decoration: line-through !important;
+            font-size: 32px !important;
+            margin-right: 15px !important;
+        }
+
+        .section-wrapper-isolated .current-price-isolated {
+            color: #00CFFF !important;
+            font-size: 44.16px !important;
+        }
+
+        .section-wrapper-isolated .cta-button-isolated {
+            background: radial-gradient(ellipse at bottom, #7DF5FF 0%, #00CFFF 40%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 24px 60px !important;
+            font-size: 20.88px !important;
+            font-weight: 700 !important;
+            border-radius: 35px !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            display: inline-block !important;
+            text-decoration: none !important;
+            max-width: 90% !important;
+            width: 400px !important;
+            font-family: 'Open Sans', sans-serif !important;
+            margin: 20px 0 !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .section-wrapper-isolated .cta-button-isolated:hover {
+            transform: translateY(-3px) !important;
+        }
+
+        .section-wrapper-isolated .cta-button-isolated.loading {
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .section-wrapper-isolated .cta-button-isolated span {
+            font-size: 20.88px !important;
+            font-weight: 700 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            color: #ffffff !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+            position: relative !important;
+            z-index: 999 !important;
+        }
+
+        .section-wrapper-isolated .bundle-price-wrapper-isolated {
+            margin: 15px 0 0 0 !important;
+            text-align: center !important;
+            display: block !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .section-wrapper-isolated .bundle-price-text-isolated {
+            color: #ffffff !important;
+            font-size: 14px !important;
+        }
+
+        .section-wrapper-isolated .bundle-link-isolated {
+            color: #00CFFF !important;
+            text-decoration: underline !important;
+            font-size: 14px !important;
+            transition: all 0.3s ease !important;
+            cursor: pointer !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .section-wrapper-isolated .bundle-link-isolated:hover {
+            color: #00b8e6 !important;
+            text-decoration: none !important;
+        }
+
+        .section-wrapper-isolated .guarantee-text-isolated {
+            font-size: 14px !important;
+            color: #ffffff !important;
+            margin: 15px 0 0 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+            text-align: center !important;
+        }
+
+        @media (max-width: 768px) {
+            .section-wrapper-isolated .title-isolated {
+                font-size: 32px !important;
+            }
+
+            .section-wrapper-isolated .comparison-table-isolated {
+                font-size: 14px !important;
+            }
+
+            .section-wrapper-isolated .column-header-isolated {
+                font-size: 18px !important;
+                padding: 15px 10px !important;
+            }
+
+            .section-wrapper-isolated .comparison-item-isolated {
+                padding: 15px !important;
+                font-size: 14px !important;
+            }
+
+            .section-wrapper-isolated .cta-button-isolated {
+                font-size: 15.66px !important;
+                padding: 18px 35px !important;
+                width: 100% !important;
+                max-width: 320px !important;
+            }
+
+            .section-wrapper-isolated .cta-button-isolated span {
+                font-size: 15.66px !important;
+            }
+
+            .section-wrapper-isolated .price-box-isolated {
+                padding: 25px 20px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="section-wrapper-isolated">
+        <div class="container-isolated">
+            <h2 class="title-isolated">
+                Choose Your Path: <span class="highlight-isolated">Struggle or Succeed</span>
+            </h2>
+            <p class="subtitle-isolated">
+                Here's what separates the 1% conversion brands from the 10%+ conversion brands
+            </p>
+
+            <table class="comparison-table-isolated">
+                <thead>
+                    <tr>
+                        <th class="column-header-isolated left-column-isolated">Without The Quiz Tactic</th>
+                        <th class="column-header-isolated right-column-isolated">With The Quiz Tactic</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="comparison-item-isolated left-item-isolated">
+                            <span class="crossmark-isolated">✗</span>Endless creative testing with no clear winner
+                        </td>
+                        <td class="comparison-item-isolated right-item-isolated">
+                            <span class="checkmark-isolated">✓</span>Systematic conversion machine that works 24/7
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="comparison-item-isolated left-item-isolated">
+                            <span class="crossmark-isolated">✗</span>1-3% conversion rate (industry average)
+                        </td>
+                        <td class="comparison-item-isolated right-item-isolated">
+                            <span class="checkmark-isolated">✓</span>6-10% conversion rate consistently
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="comparison-item-isolated left-item-isolated">
+                            <span class="crossmark-isolated">✗</span>Competitors easily copy your products
+                        </td>
+                        <td class="comparison-item-isolated right-item-isolated">
+                            <span class="checkmark-isolated">✓</span>Uncopiable psychological framework
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="comparison-item-isolated left-item-isolated">
+                            <span class="crossmark-isolated">✗</span>Burning ad budget with minimal returns
+                        </td>
+                        <td class="comparison-item-isolated right-item-isolated">
+                            <span class="checkmark-isolated">✓</span>Every $1 spent returns $10+ consistently
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="comparison-item-isolated left-item-isolated">
+                            <span class="crossmark-isolated">✗</span>Guessing what customers want
+                        </td>
+                        <td class="comparison-item-isolated right-item-isolated">
+                            <span class="checkmark-isolated">✓</span>Data-driven personalization that converts
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="comparison-item-isolated left-item-isolated">
+                            <span class="crossmark-isolated">✗</span>Constantly fighting to stay relevant
+                        </td>
+                        <td class="comparison-item-isolated right-item-isolated">
+                            <span class="checkmark-isolated">✓</span>Long-term competitive advantage
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="price-box-isolated">
+                <p class="price-text-isolated">
+                    <span class="original-price-isolated">$197</span>
+                    <span class="current-price-isolated">$39</span>
+                </p>
+
+                <button class="cta-button-isolated" id="quiz-section5-add-to-cart-btn" data-variant-id="43188055277661">
+                    <span>Get The Quiz Tactic Now</span>
+                </button>
+
+                <div class="bundle-price-wrapper-isolated">
+                    <span class="bundle-price-text-isolated">$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link-isolated">building a bundle</a></span>
+                </div>
+
+                <p class="guarantee-text-isolated">
+                    ✓ Instant Access • ✓ Lifetime Updates • ✓ 100% Satisfaction Guaranteed
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    const CONFIG = {
+        VARIANT_ID: '43188055277661',
+        DEBUG: true,
+        RETRY_ATTEMPTS: 3,
+        RETRY_DELAY: 500
+    };
+    
+    // ============================================
+    // LOGGING UTILITIES
+    // ============================================
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log(`[Quiz Tactic Section 5] ℹ️ ${msg}`, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log(`[Quiz Tactic Section 5] ✅ ${msg}`, data || ''),
+        error: (msg, data) => console.error(`[Quiz Tactic Section 5] ❌ ${msg}`, data || ''),
+        warn: (msg, data) => console.warn(`[Quiz Tactic Section 5] ⚠️ ${msg}`, data || '')
+    };
+    
+    // ============================================
+    // CLEANUP INTERFERING ELEMENTS
+    // ============================================
+    function removeInterferingElements() {
+        log.info('Removing interfering popups and overlays...');
+        
+        const interferingSelectors = [
+            '[class*="rewards"]', '[class*="Rewards"]',
+            '[id*="rewards"]', '[id*="Rewards"]',
+            '.smile-launcher-frame', 'iframe[title*="Smile.io"]',
+            '[class*="smile-"]', '.loyalty-modal', '.rewards-launcher',
+            '.modal-backdrop', '.popup-overlay'
+        ];
+        
+        let removed = 0;
+        interferingSelectors.forEach(selector => {
+            try {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                    if (el.remove) el.remove();
+                    removed++;
+                });
+            } catch (e) {
+                // Ignore selector errors
+            }
+        });
+        
+        if (removed > 0) {
+            log.success(`Removed ${removed} interfering elements`);
+        }
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 1: SHOPIFY AJAX API
+    // ============================================
+    async function addToCartAjaxAPI(variantId) {
+        log.info('Attempting Method 1: Shopify Ajax API...');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{
+                    id: parseInt(variantId),
+                    quantity: 1
+                }]
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Ajax API failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 2: FORM DATA
+    // ============================================
+    async function addToCartFormData(variantId) {
+        log.info('Attempting Method 2: FormData...');
+        
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`FormData failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 3: SIMPLE JSON
+    // ============================================
+    async function addToCartSimpleJSON(variantId) {
+        log.info('Attempting Method 3: Simple JSON...');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Simple JSON failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 4: FALLBACK FORM SUBMIT
+    // ============================================
+    function addToCartFormSubmit(variantId) {
+        log.info('Attempting Method 4: Form Submit (fallback)...');
+        
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/cart/add';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = variantId;
+        
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'quantity';
+        qtyInput.value = '1';
+        
+        form.appendChild(idInput);
+        form.appendChild(qtyInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve({ method: 'form_submit', status: 'submitted' }), 1000);
+        });
+    }
+    
+    // ============================================
+    // MAIN ADD TO CART FUNCTION WITH FALLBACKS
+    // ============================================
+    async function addToCart(variantId) {
+        log.info(`Starting add to cart process for variant: ${variantId}`);
+        
+        const methods = [
+            { name: 'Ajax API', fn: addToCartAjaxAPI },
+            { name: 'FormData', fn: addToCartFormData },
+            { name: 'Simple JSON', fn: addToCartSimpleJSON },
+            { name: 'Form Submit', fn: addToCartFormSubmit }
+        ];
+        
+        for (const method of methods) {
+            try {
+                log.info(`Trying: ${method.name}`);
+                const result = await method.fn(variantId);
+                log.success(`${method.name} succeeded!`, result);
+                return result;
+            } catch (error) {
+                log.warn(`${method.name} failed:`, error.message);
+                // Continue to next method
+            }
+        }
+        
+        throw new Error('All add-to-cart methods failed');
+    }
+    
+    // ============================================
+    // REFRESH CART UI
+    // ============================================
+    async function refreshCart() {
+        log.info('Refreshing cart...');
+        
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            
+            log.success(`Cart updated: ${cart.item_count} items, Total: ${cart.total_price}`);
+            
+            // Update cart count elements
+            const cartCountSelectors = [
+                '.cart-count', '.cart-count-bubble', '[data-cart-count]',
+                '.cart__count', '#cart-icon-bubble'
+            ];
+            
+            cartCountSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.textContent = cart.item_count;
+                    el.setAttribute('data-cart-count', cart.item_count);
+                });
+            });
+            
+            // Trigger Shopify events
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+                bubbles: true,
+                detail: { cart }
+            }));
+            
+            if (window.Shopify && window.Shopify.theme) {
+                document.documentElement.dispatchEvent(new CustomEvent('cart:updated', {
+                    bubbles: true,
+                    detail: { cart }
+                }));
+            }
+            
+            // Try to open cart drawer
+            setTimeout(() => {
+                openCartDrawer();
+            }, 300);
+            
+            return cart;
+            
+        } catch (error) {
+            log.error('Failed to refresh cart:', error);
+        }
+    }
+    
+    // ============================================
+    // OPEN CART DRAWER
+    // ============================================
+    function openCartDrawer() {
+        log.info('Attempting to open cart drawer...');
+        
+        // Method 1: Look for cart drawer trigger
+        const cartTriggers = [
+            '[href="/cart"]',
+            '.cart-link',
+            '.cart-icon',
+            '.header__icon--cart',
+            '[data-cart-drawer]',
+            '#cart-icon-bubble'
+        ];
+        
+        for (const selector of cartTriggers) {
+            const element = document.querySelector(selector);
+            if (element) {
+                log.info(`Found cart trigger: ${selector}`);
+                element.click();
+                return true;
+            }
+        }
+        
+        // Method 2: Trigger theme-specific events
+        const events = ['theme:cart:open', 'cart:open', 'drawer:open'];
+        events.forEach(eventName => {
+            document.documentElement.dispatchEvent(new CustomEvent(eventName, {
+                bubbles: true
+            }));
+        });
+        
+        log.warn('Could not find cart drawer trigger');
+        return false;
+    }
+    
+    // ============================================
+    // BUTTON CLICK HANDLER
+    // ============================================
+    async function handleButtonClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        log.info('Button clicked!');
+        
+        // Remove interfering elements
+        removeInterferingElements();
+        
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+        
+        // Disable button
+        button.disabled = true;
+        button.classList.add('loading');
+        button.style.cursor = 'wait';
+        button.innerHTML = '<span style="font-size: 18px; color: #ffffff; font-weight: 700;">⏳ ADDING TO CART...</span>';
+        
+        try {
+            // Add to cart with retries
+            const result = await addToCart(variantId);
+            
+            log.success('Successfully added to cart!', result);
+            
+            // Show success
+            button.style.background = 'radial-gradient(ellipse at bottom, #7DF5FF 0%, #00CFFF 40%)';
+            button.innerHTML = '<span style="font-size: 18px; color: #ffffff; font-weight: 700;">✓ ADDED SUCCESSFULLY!</span>';
+            
+            // Refresh cart
+            await refreshCart();
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 2000);
+            
+        } catch (error) {
+            log.error('Failed to add to cart:', error);
+            
+            // Show error
+            button.style.background = '#d32f2f';
+            button.innerHTML = '<span style="font-size: 16px; color: #ffffff; font-weight: 700;">❌ ERROR - PLEASE TRY AGAIN</span>';
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 3000);
+        }
+    }
+    
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    function init() {
+        log.info('Initializing Quiz Tactic Section 5 System...');
+        
+        const button = document.getElementById('quiz-section5-add-to-cart-btn');
+        
+        if (!button) {
+            log.error('Button not found! Retrying...');
+            setTimeout(init, 500);
+            return;
+        }
+        
+        log.success('Button found!');
+        
+        // Remove old event listeners
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Add click handler
+        newButton.addEventListener('click', handleButtonClick);
+        
+        // Ensure button is on top
+        newButton.style.position = 'relative';
+        newButton.style.zIndex = '999999';
+        
+        log.success('Quiz Tactic Section 5 System ready! 🚀');
+    }
+    
+    // ============================================
+    // START THE SYSTEM
+    // ============================================
+    
+    // Remove interfering elements immediately
+    removeInterferingElements();
+    
+    // Continue removing them periodically
+    [1000, 2000, 3000, 5000].forEach(delay => {
+        setTimeout(removeInterferingElements, delay);
+    });
+    
+    // Initialize when ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    // Backup initialization
+    setTimeout(init, 500);
+    setTimeout(init, 1500);
+    
+    log.info('Quiz Tactic Section 5 System script loaded successfully! 🎉');
+    
+})();
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Tactic FAQ</title>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@800&display=swap" rel="stylesheet">
+<style>
+.faq-section {
+all: initial !important;
+display: block !important;
+position: relative !important;
+left: 50% !important;
+right: 50% !important;
+margin-left: -50vw !important;
+margin-right: -50vw !important;
+width: 100vw !important;
+min-width: 100vw !important;
+background: #ffffff !important;
+padding: 60px 0 !important;
+box-sizing: border-box !important;
+font-family: Arial, sans-serif !important;
+isolation: isolate !important;
+overflow-x: hidden !important;
+}
+
+.faq-section::before,
+.faq-section::after {
+content: '' !important;
+position: absolute !important;
+top: 0 !important;
+bottom: 0 !important;
+width: 100vw !important;
+background: #ffffff !important;
+z-index: -1 !important;
+display: block !important;
+}
+
+.faq-section::before {
+left: -100vw !important;
+}
+
+.faq-section::after {
+right: -100vw !important;
+}
+
+.faq-section *,
+.faq-section *::before,
+.faq-section *::after {
+all: unset !important;
+display: revert !important;
+box-sizing: border-box !important;
+}
+
+.faq-section h1 {
+font-family: 'Open Sans', sans-serif !important;
+font-weight: 800 !important;
+font-size: 2.5rem !important;
+text-align: center !important;
+margin: 0 0 40px 0 !important;
+padding: 0 !important;
+color: black !important;
+display: block !important;
+}
+
+.faq-container {
+max-width: 900px !important;
+margin: 0 auto !important;
+padding: 0 20px !important;
+display: block !important;
+}
+
+.faq-section .faq-item {
+margin-bottom: 15px !important;
+display: block !important;
+}
+
+.faq-section .question {
+background-color: black !important;
+border-radius: 12px !important;
+padding: 25px !important;
+color: white !important;
+font-weight: bold !important;
+font-size: 18px !important;
+cursor: pointer !important;
+transition: opacity 0.3s ease !important;
+user-select: none !important;
+margin: 0 !important;
+box-sizing: border-box !important;
+display: flex !important;
+justify-content: space-between !important;
+align-items: center !important;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.faq-section .question:hover {
+opacity: 0.9 !important;
+}
+
+.faq-section .question .arrow {
+font-size: 14px !important;
+transition: transform 0.3s ease !important;
+margin-left: 15px !important;
+flex-shrink: 0 !important;
+display: inline-block !important;
+}
+
+.faq-section .question.active .arrow {
+transform: rotate(180deg) !important;
+}
+
+.faq-section .answer {
+background-color: white !important;
+border: 1px solid black !important;
+border-radius: 8px !important;
+padding: 20px !important;
+margin-top: 10px !important;
+font-size: 16px !important;
+line-height: 1.7 !important;
+color: black !important;
+display: none !important;
+box-sizing: border-box !important;
+font-family: Arial, sans-serif !important;
+}
+
+.faq-section .answer.active {
+display: block !important;
+}
+
+.faq-section .answer strong {
+color: black !important;
+font-weight: 700 !important;
+}
+
+@media (max-width: 768px) {
+.faq-section .question {
+font-size: 17px !important;
+padding: 24px !important;
+}
+
+.faq-section h1 {
+font-size: 2rem !important;
+}
+}
+</style>
+<script>
+function toggleAnswer(element) {
+element.classList.toggle('active');
+const answer = element.nextElementSibling;
+answer.classList.toggle('active');
+}
+</script>
+</head>
+<body>
+<div class="faq-section">
+<div class="faq-container">
+<h1>Common Questions</h1>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>I don't need this. Why should I care about quiz tactics?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">You think you don't need it only because you haven't known it yet. There's a reason why the world's leading brands invest <strong>billions</strong> in this tactic. They don't do it for fun - they do it because it <strong>multiplies revenue</strong>. While you're stuck at 1-3% conversion, they're cruising at 8-12%. The gap isn't talent or budget - it's <strong>knowing what they know</strong>.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Will this work for my specific type of eCommerce store?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">The Quiz Tactic works for <strong>any eCommerce brand</strong> that sells to humans. Fashion, beauty, supplements, home goods, electronics - it doesn't matter. The psychology is universal. We've seen it transform conversion rates across <strong>dozens of niches</strong>. If you have products and customers who need help choosing, this works.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>What if I buy multiple courses - do they overlap?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Every course is designed to solve a <strong>specific part of the conversion equation</strong>. They complement each other without repeating, so stacking them creates <strong>compounding impact</strong>. Think of it like building blocks - each one adds a new layer of power to your store.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Will I get lifetime access?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Yes. <strong>One-time payment, lifetime access.</strong> No subscriptions. No hidden fees. You buy it once and own it forever, including all future updates.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Is this just theory or can I apply it right away?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">This is <strong>100% practical</strong>. You'll get a clear framework + real examples + plug & play templates that you can implement <strong>immediately</strong>. No fluff, no filler - just actionable strategies that start working from day one.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>Do I need a team to apply this?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Not at all. Every tactic was designed for <strong>solo operators</strong>. You can implement everything with minimal tech skills or outsource it easily if you prefer. No developers required—just you and the templates.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>How long will it take to see results?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">Most brands see measurable improvements <strong>within days</strong> of implementing the Quiz Tactic. The case study in this page? That brand saw results in <strong>less than a week</strong>. This isn't a slow-burn strategy—it's a rapid transformation tool.</div>
+</div>
+
+<div class="faq-item">
+<div class="question" onclick="toggleAnswer(this)">
+<span>What if I'm not tech-savvy?</span>
+<span class="arrow">▼</span>
+</div>
+<div class="answer">The templates are designed to be <strong>plug-and-play</strong>. If you can copy and paste, you can implement this. We've removed all technical barriers so you can focus on results, not code.</div>
+</div>
+
+</div>
+</div>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Tactic Final CTA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #ffffff;
+        }
+
+        .final-cta-section {
+            all: initial;
+            position: relative !important;
+            left: 50% !important;
+            right: 50% !important;
+            margin-left: -50vw !important;
+            margin-right: -50vw !important;
+            width: 100vw !important;
+            min-width: 100vw !important;
+            background: #000000 !important;
+            padding: 60px 20px !important;
+            text-align: center !important;
+            font-family: 'Open Sans', sans-serif !important;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
+            display: block !important;
+        }
+
+        .final-cta-section::before,
+        .final-cta-section::after {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            background: #000000 !important;
+            z-index: -1 !important;
+        }
+
+        .final-cta-section::before {
+            left: -100vw !important;
+        }
+
+        .final-cta-section::after {
+            right: -100vw !important;
+        }
+
+        .final-cta-section * {
+            box-sizing: border-box !important;
+        }
+
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .final-headline {
+            font-size: 48px !important;
+            font-weight: 800 !important;
+            color: #ffffff !important;
+            line-height: 1.2 !important;
+            margin: 0 0 20px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+        }
+
+        .highlight {
+            color: #00CFFF !important;
+            font-family: inherit !important;
+            font-weight: inherit !important;
+            font-size: inherit !important;
+        }
+
+        .final-subheadline {
+            font-size: 20px !important;
+            color: #e8e8e8 !important;
+            margin: 0 0 40px 0 !important;
+            font-weight: 400 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+            line-height: 1.6 !important;
+        }
+
+        .choice-text {
+            font-size: 24px !important;
+            color: #ffffff !important;
+            margin: 40px 0 30px 0 !important;
+            font-weight: 400 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            line-height: 1.6 !important;
+        }
+
+        .or-divider {
+            font-size: 28px !important;
+            color: #00CFFF !important;
+            margin: 30px 0 !important;
+            font-weight: 700 !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .pricing-section {
+            margin: 50px 0 0 0 !important;
+            display: block !important;
+        }
+
+        .price-text {
+            font-size: 42px !important;
+            color: #ffffff !important;
+            font-weight: 700 !important;
+            margin: 0 0 30px 0 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            display: block !important;
+        }
+
+        .original-price {
+            color: #999999 !important;
+            text-decoration: line-through !important;
+            font-size: 32px !important;
+            margin-right: 15px !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .current-price {
+            color: #00CFFF !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .cta-button {
+            background: radial-gradient(ellipse at bottom, #00CFFF 0%, #00A8CC 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            padding: 24px 40px !important;
+            font-size: 23.19px !important;
+            font-weight: 800 !important;
+            border-radius: 35px !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            display: block !important;
+            text-decoration: none !important;
+            max-width: calc(100% - 40px) !important;
+            width: 447px !important;
+            font-family: 'Open Sans', sans-serif !important;
+            position: relative !important;
+            overflow: hidden !important;
+            margin: 0 auto !important;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) !important;
+            background: radial-gradient(ellipse at bottom, #1AD9FF 0%, #00CFFF 100%) !important;
+        }
+
+        .cta-button.loading {
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .cta-button span {
+            font-size: 23.19px !important;
+            font-weight: 800 !important;
+            font-family: 'Open Sans', sans-serif !important;
+            color: #ffffff !important;
+            text-shadow: none !important;
+            position: relative !important;
+            z-index: 999 !important;
+        }
+
+        .bundle-wrapper {
+            text-align: center !important;
+            margin: 15px 0 0 0 !important;
+            display: block !important;
+        }
+
+        .bundle-wrapper span {
+            color: #e8e8e8 !important;
+            font-size: 14px !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        .bundle-link {
+            color: #00CFFF !important;
+            text-decoration: underline !important;
+        }
+
+        .guarantee-text {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 8px !important;
+            font-size: 15px !important;
+            color: #e8e8e8 !important;
+            font-weight: 500 !important;
+            margin-top: 20px !important;
+            font-family: 'Open Sans', sans-serif !important;
+        }
+
+        @media (max-width: 768px) {
+            .final-headline {
+                font-size: 32px !important;
+            }
+
+            .final-subheadline {
+                font-size: 18px !important;
+            }
+
+            .choice-text {
+                font-size: 20px !important;
+            }
+
+            .cta-button {
+                width: calc(100% - 40px) !important;
+                max-width: 340px !important;
+                font-size: 19px !important;
+                padding: 18px 30px !important;
+            }
+
+            .cta-button span {
+                font-size: 19px !important;
+            }
+
+            .price-text {
+                font-size: 32px !important;
+            }
+
+            .original-price {
+                font-size: 24px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="final-cta-section">
+        <div class="content-container">
+            <h2 class="final-headline">
+                Every Day You Wait, You're <span class="highlight">Losing Money</span>
+            </h2>
+
+            <p class="final-subheadline">
+                While you're stuck at 1-3% conversion, your competitors are implementing systems like this and dominating your market.
+            </p>
+
+            <p class="choice-text" style="margin-top: 40px; font-size: 20px;">
+                <strong>Choice #1:</strong> Keep burning ad budget, testing endless creatives, watching visitors leave without buying.
+            </p>
+
+            <p class="or-divider">OR</p>
+
+            <p class="choice-text" style="font-size: 20px;">
+                <strong>Choice #2:</strong> Implement the billion-dollar tactic, multiply your conversion rate by 3-4X, and build the profitable store you deserve.
+            </p>
+
+            <div class="pricing-section">
+                <p class="price-text">
+                    <span class="original-price">$197</span>
+                    <span class="current-price">Only $39</span>
+                </p>
+
+                <button class="cta-button" id="quiz-final-add-to-cart-btn" data-variant-id="43188055277661">
+                    <span>Yes, I Want The Quiz Tactic</span>
+                </button>
+
+                <div class="bundle-wrapper">
+                    <span>$25.35 If <a href="https://quantum-scale.co/pages/bundle-builder" class="bundle-link">building a bundle</a></span>
+                </div>
+
+                <div class="guarantee-text">
+                    <span>✓ Instant Access • ✓ Lifetime Updates</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+(function() {
+    'use strict';
+    
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    const CONFIG = {
+        VARIANT_ID: '43188055277661',
+        DEBUG: true,
+        RETRY_ATTEMPTS: 3,
+        RETRY_DELAY: 500
+    };
+    
+    // ============================================
+    // LOGGING UTILITIES
+    // ============================================
+    const log = {
+        info: (msg, data) => CONFIG.DEBUG && console.log(`[Quiz Tactic Final] ℹ️ ${msg}`, data || ''),
+        success: (msg, data) => CONFIG.DEBUG && console.log(`[Quiz Tactic Final] ✅ ${msg}`, data || ''),
+        error: (msg, data) => console.error(`[Quiz Tactic Final] ❌ ${msg}`, data || ''),
+        warn: (msg, data) => console.warn(`[Quiz Tactic Final] ⚠️ ${msg}`, data || '')
+    };
+    
+    // ============================================
+    // CLEANUP INTERFERING ELEMENTS
+    // ============================================
+    function removeInterferingElements() {
+        log.info('Removing interfering popups and overlays...');
+        
+        const interferingSelectors = [
+            '[class*="rewards"]', '[class*="Rewards"]',
+            '[id*="rewards"]', '[id*="Rewards"]',
+            '.smile-launcher-frame', 'iframe[title*="Smile.io"]',
+            '[class*="smile-"]', '.loyalty-modal', '.rewards-launcher',
+            '.modal-backdrop', '.popup-overlay'
+        ];
+        
+        let removed = 0;
+        interferingSelectors.forEach(selector => {
+            try {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.style.display = 'none';
+                    el.style.visibility = 'hidden';
+                    el.style.opacity = '0';
+                    el.style.pointerEvents = 'none';
+                    if (el.remove) el.remove();
+                    removed++;
+                });
+            } catch (e) {
+                // Ignore selector errors
+            }
+        });
+        
+        if (removed > 0) {
+            log.success(`Removed ${removed} interfering elements`);
+        }
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 1: SHOPIFY AJAX API
+    // ============================================
+    async function addToCartAjaxAPI(variantId) {
+        log.info('Attempting Method 1: Shopify Ajax API...');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                items: [{
+                    id: parseInt(variantId),
+                    quantity: 1
+                }]
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Ajax API failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 2: FORM DATA
+    // ============================================
+    async function addToCartFormData(variantId) {
+        log.info('Attempting Method 2: FormData...');
+        
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`FormData failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 3: SIMPLE JSON
+    // ============================================
+    async function addToCartSimpleJSON(variantId) {
+        log.info('Attempting Method 3: Simple JSON...');
+        
+        const response = await fetch('/cart/add.js', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Simple JSON failed: ${response.status} ${response.statusText}`);
+        }
+        
+        return await response.json();
+    }
+    
+    // ============================================
+    // ADD TO CART - METHOD 4: FALLBACK FORM SUBMIT
+    // ============================================
+    function addToCartFormSubmit(variantId) {
+        log.info('Attempting Method 4: Form Submit (fallback)...');
+        
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/cart/add';
+        
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = 'id';
+        idInput.value = variantId;
+        
+        const qtyInput = document.createElement('input');
+        qtyInput.type = 'hidden';
+        qtyInput.name = 'quantity';
+        qtyInput.value = '1';
+        
+        form.appendChild(idInput);
+        form.appendChild(qtyInput);
+        document.body.appendChild(form);
+        form.submit();
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve({ method: 'form_submit', status: 'submitted' }), 1000);
+        });
+    }
+    
+    // ============================================
+    // MAIN ADD TO CART FUNCTION WITH FALLBACKS
+    // ============================================
+    async function addToCart(variantId) {
+        log.info(`Starting add to cart process for variant: ${variantId}`);
+        
+        const methods = [
+            { name: 'Ajax API', fn: addToCartAjaxAPI },
+            { name: 'FormData', fn: addToCartFormData },
+            { name: 'Simple JSON', fn: addToCartSimpleJSON },
+            { name: 'Form Submit', fn: addToCartFormSubmit }
+        ];
+        
+        for (const method of methods) {
+            try {
+                log.info(`Trying: ${method.name}`);
+                const result = await method.fn(variantId);
+                log.success(`${method.name} succeeded!`, result);
+                return result;
+            } catch (error) {
+                log.warn(`${method.name} failed:`, error.message);
+                // Continue to next method
+            }
+        }
+        
+        throw new Error('All add-to-cart methods failed');
+    }
+    
+    // ============================================
+    // REFRESH CART UI
+    // ============================================
+    async function refreshCart() {
+        log.info('Refreshing cart...');
+        
+        try {
+            const response = await fetch('/cart.js');
+            const cart = await response.json();
+            
+            log.success(`Cart updated: ${cart.item_count} items, Total: ${cart.total_price}`);
+            
+            // Update cart count elements
+            const cartCountSelectors = [
+                '.cart-count', '.cart-count-bubble', '[data-cart-count]',
+                '.cart__count', '#cart-icon-bubble'
+            ];
+            
+            cartCountSelectors.forEach(selector => {
+                const elements = document.querySelectorAll(selector);
+                elements.forEach(el => {
+                    el.textContent = cart.item_count;
+                    el.setAttribute('data-cart-count', cart.item_count);
+                });
+            });
+            
+            // Trigger Shopify events
+            document.documentElement.dispatchEvent(new CustomEvent('cart:refresh', {
+                bubbles: true,
+                detail: { cart }
+            }));
+            
+            if (window.Shopify && window.Shopify.theme) {
+                document.documentElement.dispatchEvent(new CustomEvent('cart:updated', {
+                    bubbles: true,
+                    detail: { cart }
+                }));
+            }
+            
+            // Try to open cart drawer
+            setTimeout(() => {
+                openCartDrawer();
+            }, 300);
+            
+            return cart;
+            
+        } catch (error) {
+            log.error('Failed to refresh cart:', error);
+        }
+    }
+    
+    // ============================================
+    // OPEN CART DRAWER
+    // ============================================
+    function openCartDrawer() {
+        log.info('Attempting to open cart drawer...');
+        
+        // Method 1: Look for cart drawer trigger
+        const cartTriggers = [
+            '[href="/cart"]',
+            '.cart-link',
+            '.cart-icon',
+            '.header__icon--cart',
+            '[data-cart-drawer]',
+            '#cart-icon-bubble'
+        ];
+        
+        for (const selector of cartTriggers) {
+            const element = document.querySelector(selector);
+            if (element) {
+                log.info(`Found cart trigger: ${selector}`);
+                element.click();
+                return true;
+            }
+        }
+        
+        // Method 2: Trigger theme-specific events
+        const events = ['theme:cart:open', 'cart:open', 'drawer:open'];
+        events.forEach(eventName => {
+            document.documentElement.dispatchEvent(new CustomEvent(eventName, {
+                bubbles: true
+            }));
+        });
+        
+        log.warn('Could not find cart drawer trigger');
+        return false;
+    }
+    
+    // ============================================
+    // BUTTON CLICK HANDLER
+    // ============================================
+    async function handleButtonClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        log.info('Button clicked!');
+        
+        // Remove interfering elements
+        removeInterferingElements();
+        
+        const button = event.currentTarget;
+        const originalContent = button.innerHTML;
+        const variantId = button.getAttribute('data-variant-id') || CONFIG.VARIANT_ID;
+        
+        // Disable button
+        button.disabled = true;
+        button.classList.add('loading');
+        button.style.cursor = 'wait';
+        button.innerHTML = '<span style="font-size: 18px; color: #ffffff; font-weight: 700;">⏳ ADDING TO CART...</span>';
+        
+        try {
+            // Add to cart with retries
+            const result = await addToCart(variantId);
+            
+            log.success('Successfully added to cart!', result);
+            
+            // Show success
+            button.style.background = 'radial-gradient(ellipse at bottom, #00CFFF 0%, #00A8CC 100%)';
+            button.innerHTML = '<span style="font-size: 18px; color: #ffffff; font-weight: 700;">✓ ADDED SUCCESSFULLY!</span>';
+            
+            // Refresh cart
+            await refreshCart();
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 2000);
+            
+        } catch (error) {
+            log.error('Failed to add to cart:', error);
+            
+            // Show error
+            button.style.background = '#d32f2f';
+            button.innerHTML = '<span style="font-size: 16px; color: #ffffff; font-weight: 700;">❌ ERROR - PLEASE TRY AGAIN</span>';
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                button.innerHTML = originalContent;
+                button.disabled = false;
+                button.classList.remove('loading');
+                button.style.cursor = 'pointer';
+                button.style.background = '';
+            }, 3000);
+        }
+    }
+    
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    function init() {
+        log.info('Initializing Quiz Tactic Final System...');
+        
+        const button = document.getElementById('quiz-final-add-to-cart-btn');
+        
+        if (!button) {
+            log.error('Button not found! Retrying...');
+            setTimeout(init, 500);
+            return;
+        }
+        
+        log.success('Button found!');
+        
+        // Remove old event listeners
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        // Add click handler
+        newButton.addEventListener('click', handleButtonClick);
+        
+        // Ensure button is on top
+        newButton.style.position = 'relative';
+        newButton.style.zIndex = '999999';
+        
+        log.success('Quiz Tactic Final System ready! 🚀');
+    }
+    
+    // ============================================
+    // START THE SYSTEM
+    // ============================================
+    
+    // Remove interfering elements immediately
+    removeInterferingElements();
+    
+    // Continue removing them periodically
+    [1000, 2000, 3000, 5000].forEach(delay => {
+        setTimeout(removeInterferingElements, delay);
+    });
+    
+    // Initialize when ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    // Backup initialization
+    setTimeout(init, 500);
+    setTimeout(init, 1500);
+    
+    log.info('Quiz Tactic Final System script loaded successfully! 🎉');
+    
+})();
+    </script>
+</body>
+</html>

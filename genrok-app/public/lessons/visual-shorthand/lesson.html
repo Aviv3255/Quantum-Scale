@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson | Quantum Scale</title>
+  <title>Toothpaste Stripes Psychology | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,12 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { --accent: #f97316; --accent-dark: #e55f02; --accent-light: #ff872a; --accent-rgb: 249, 115, 22; }
+    :root { --accent: #ec4899; --accent-dark: #db2777; --accent-light: #f472b6; --accent-rgb: 236, 72, 153; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -39,296 +36,42 @@
 
     const LESSON_CONFIG = {
       id: 'visual-shorthand',
-      title: 'Lesson',
-      description: '',
-      accentColor: '#f97316',
-      duration: '5 min',
+      title: 'Toothpaste Stripes Psychology',
+      description: 'Why visuals persuade better than words ever could',
+      accentColor: '#ec4899',
+      duration: '8 min',
       nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'Continue your learning journey.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-            {
-                type: 'welcome',
-                title: 'Toothpaste Stripes Psychology',
-                subtitle: 'Why visuals persuade better than words ever could',
-                accentText: 'Visual Shorthand'
-            },
-            {
-                type: 'hook',
-                question: 'Why does toothpaste have stripes?',
-                options: [
-                    'Different ingredients for different benefits',
-                    'Visual signal of multiple benefits (even though it mixes)',
-                    'Manufacturing efficiency',
-                    'To look pretty'
-                ],
-                correctIndex: 1,
-                explanation: 'The stripes serve NO logical purpose once mixed in your mouth. But visually? They signal "cavity protection + fresh breath + whitening." Your brain uses visual shortcuts to judge quality faster than reading labels.',
-                insight: 'Humans don\'t process information logically. We use VISUAL CUES as shortcuts to judge quality, benefits, and value. This is perception hacking at its finest.'
-            , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Tiffany_Logo.svg.png', brandName: 'Tiffany'},
-            {
-                type: 'content',
-                title: 'The Visual Shorthand Principle',
-                content: 'Your brain is lazy (in a smart way). Reading and processing words takes WORK. Visual cues? Instant judgment.',
-                points: [
-                    'Visual processing is 60,000x faster than text',
-                    'People judge quality in 0.05 seconds based on aesthetics',
-                    'Premium visuals = premium product (even if identical inside)',
-                    'Perception IS reality in purchasing decisions'
-                ]
-            },
-            {
-                type: 'visual',
-                title: 'The Toothpaste Stripe Breakdown',
-                examples: [
-                    {
-                        label: 'LOGICAL REALITY',
-                        description: 'All ingredients mix together instantly. Stripes are meaningless functionally.'
-                    },
-                    {
-                        label: 'VISUAL PERCEPTION',
-                        description: 'Stripes signal: "This has MULTIPLE benefits." Brain shortcuts: More stripes = More value.'
-                    },
-                    {
-                        label: 'PURCHASE DECISION',
-                        description: 'Buyer chooses striped toothpaste over plain white, paying more for identical formula.'
-                    }
-                ]
-            },
-            {
-                type: 'content',
-                title: 'Case Study: Rolls-Royce',
-                content: 'Rolls-Royce uses BMW engines. The actual engineering? Same luxury tier as competitors.',
-                points: [
-                    'Engine: BMW (hidden, unknown to most buyers)',
-                    'Interior: Hand-stitched leather, lambswool carpets, chrome details',
-                    'Result: Perceived as "the ultimate luxury" despite shared parts',
-                    'Visual cues (plush interiors) communicate value more than specs'
-                ]
-            , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_whispering_a_secret_hand_cupped_to_mouth_--ar__972dd80b-da4e-481d-aedc-bbcfdfb88716_3.mp4', characterPosition: 'right'},
-            {
-                type: 'visual',
-                title: 'Sephora\'s $2 Bag Strategy',
-                examples: [
-                    {
-                        label: 'BASIC PLASTIC BAG',
-                        description: '$0.10 cost. Functional. Forgettable. No Instagram posts.'
-                    },
-                    {
-                        label: 'SEPHORA ROPE-HANDLE BAG',
-                        description: '$2+ cost. Premium feel. Instagram-worthy. Free advertising as customers carry it.'
-                    },
-                    {
-                        label: 'PERCEPTION SHIFT',
-                        description: 'Same makeup inside. But the BAG signals: "I shop at premium stores." Worth the expense.'
-                    }
-                ]
-            },
-            {
-                type: 'cards',
-                title: 'Visual Shorthand in Action',
-                cards: [
-                    {
-                        title: 'Apple Packaging',
-                        description: 'White, minimalist boxes cost 3x more to produce. But they signal: "Premium, thoughtful, valuable product inside."'
-                    },
-                    {
-                        title: 'Tiffany Blue Box',
-                        description: 'A robin\'s egg blue box adds ZERO functional value. But it\'s so iconic it increases perceived value 30%+.'
-                    },
-                    {
-                        title: 'Luxury Car Interiors',
-                        description: 'Wood trim, metal accents, ambient lighting. Engineers say it doesn\'t affect performance. Buyers disagree with their wallets.'
-                    },
-                    {
-                        title: 'Premium Water Bottles',
-                        description: 'Fiji, Voss, Evian. Same H2O. Different bottles. 10x price difference based purely on visual design.'
-                    }
-                ]
-            },
-            {
-                type: 'content',
-                title: 'Why This Works: Brain Science',
-                content: 'Your brain evolved to make FAST decisions based on visual patterns. Reading labels = slow. Visual assessment = instant survival.',
-                points: [
-                    'Visual cortex processes images in 13 milliseconds',
-                    'Text comprehension requires conscious effort and time',
-                    'Aesthetic judgments trigger emotional, not logical, pathways',
-                    'First impressions (visual) are nearly impossible to override'
-                ]
-            },
-            {
-                type: 'content',
-                title: 'DTC Application: Your Product',
-                content: 'Packaging IS the product. Not an afterthought. Not "good enough." OBSESSIVE.',
-                points: [
-                    'Invest in packaging like it\'s your marketing budget (it is)',
-                    'Every visual detail signals quality or cheapness',
-                    'Unboxing experience = first physical brand interaction',
-                    'Instagram-worthy packaging = free advertising'
-                ]
-            },
-            {
-                type: 'visual',
-                title: 'DTC Application: Your Website',
-                examples: [
-                    {
-                        label: 'TYPOGRAPHY & SPACING',
-                        description: 'This is your "plush Rolls-Royce interior." Clean fonts, generous white space, perfect hierarchy = premium brand.'
-                    },
-                    {
-                        label: 'CUSTOM PHOTOGRAPHY',
-                        description: 'Stock photos scream "cheap startup." Custom product photography signals: "We invested, we care, we\'re real."'
-                    },
-                    {
-                        label: 'UI MICRO-DETAILS',
-                        description: 'Button shadows, hover states, loading animations. These "unnecessary" details separate premium from amateur.'
-                    }
-                ]
-            },
-            {
-                type: 'example',
-                title: 'Real-World Implementation',
-                scenario: 'You sell a $40 skincare serum. Same formula as competitors.',
-                approaches: [
-                    {
-                        label: 'AMATEUR APPROACH',
-                        description: 'Clear plastic bottle, printed label, bubble mailer shipping. Focuses budget on Facebook ads.',
-                        result: 'Looks like a $15 product. Price resistance. Low perceived value.'
-                    },
-                    {
-                        label: 'VISUAL SHORTHAND APPROACH',
-                        description: 'Frosted glass bottle, embossed logo, magnetic-closure box, tissue paper wrap, branded sticker seal.',
-                        result: 'Looks like a $60 product. Unboxing videos. Customers justify premium price to themselves.'
-                    }
-                ]
-            },
-            {
-                type: 'quiz',
-                question: 'Your competitor uses basic packaging and undercuts your price by $5. What\'s the VISUAL SHORTHAND move?',
-                options: [
-                    'Match their price and packaging to compete',
-                    'Invest MORE in packaging to justify premium positioning',
-                    'Focus on product quality only, ignore packaging',
-                    'Add flashy colors and graphics to stand out'
-                ],
-                correctIndex: 1,
-                celebration: 'EXACTLY. Premium packaging JUSTIFIES premium pricing. When visuals scream quality, customers don\'t question the price - they assume your product is worth more. Race to the top, not the bottom.',
-                empathy: 'It feels risky to spend on "just packaging." But here\'s the truth: customers can\'t taste your skincare formula through the screen. They CAN see your packaging. Visual cues are your ONLY quality signal until they buy. Invest there first.'
-            },
-            {
-                type: 'completion',
-                title: 'You\'re Now Dangerous',
-                summary: 'You understand that humans don\'t judge products logically - they use visual shortcuts. Toothpaste stripes, Rolls-Royce interiors, Sephora bags - all perception hacking.',
-                keyTakeaway: 'Your packaging, website design, and visual details aren\'t "nice to have." They\'re your primary quality signals. Invest obsessively in visual shorthand, and customers will justify your premium prices to themselves.',
-                nextSteps: [
-                    'Audit your packaging: Does it signal premium or amateur?',
-                    'Review your website typography and spacing: Plush or cramped?',
-                    'Replace ALL stock photos with custom product photography',
-                    'Add one "unnecessary" premium detail to your packaging'
-                ]
-            }
-        ];
+      { type: 'welcome', learningGoals: ['The Visual Shorthand principle and why it works', 'How toothpaste stripes hack perception', 'Premium visual cues that justify pricing', 'Applying visual shorthand to DTC brands'] },
+      { type: 'hook', headline: 'Why does toothpaste have stripes?', subtext: 'The stripes serve NO logical purpose once mixed in your mouth. But visually? They signal "cavity protection + fresh breath + whitening." Your brain uses visual shortcuts to judge quality faster than reading labels.' },
+      { type: 'brain-speed' },
+      { type: 'toothpaste-demo' },
+      { type: 'perception-flow' },
+      { type: 'brand-examples' },
+      { type: 'brand-detail', brand: 'rollsroyce' },
+      { type: 'brand-detail', brand: 'sephora' },
+      { type: 'brand-detail', brand: 'tiffany' },
+      { type: 'website-breakdown' },
+      { type: 'transformation-battle' },
+      { type: 'quiz', question: 'Your competitor uses basic packaging and undercuts your price by $5. What\'s the VISUAL SHORTHAND move?', options: ['Match their price and packaging to compete', 'Invest MORE in packaging to justify premium positioning', 'Focus on product quality only, ignore packaging', 'Add flashy colors and graphics to stand out'], correctIndex: 1, feedback: { correct: 'EXACTLY. Premium packaging JUSTIFIES premium pricing. When visuals scream quality, customers don\'t question the price - they assume your product is worth more.', incorrect: 'Think bigger. Premium packaging JUSTIFIES premium pricing. When visuals scream quality, customers don\'t question the price - they assume your product is worth more.' } },
+      { type: 'visual-stats' },
+      { type: 'elite-insight' },
+      { type: 'completion' }
+    ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -336,14 +79,49 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24A2.5 2.5 0 0 1 9.5 2"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 14.5 2"/></svg>,
+      Eye: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Package: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>,
+      Crown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      ShoppingBag: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+      Gift: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5"/></svg>,
+      Car: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>,
+      Droplet: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>,
+      Layout: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="9" x2="9" y1="21" y2="9"/></svg>,
+      Image: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>,
+      Sparkles: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Timer: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>,
+    };
+
+    // AnimatedCounter component
+    const AnimatedCounter = ({ value, duration = 2000, prefix = '', suffix = '', decimals = 0, useCommas = false }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        const end = parseFloat(value);
+        const startTime = Date.now();
+        const timer = setInterval(() => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(end * eased);
+          if (progress === 1) clearInterval(timer);
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      const formatted = useCommas ? Math.round(count).toLocaleString() : count.toFixed(decimals);
+      return <span>{prefix}{formatted}{suffix}</span>;
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const goals = data.learningGoals || ['The Visual Shorthand principle', 'How perception drives purchase', 'Premium visual strategies'];
       useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
@@ -355,7 +133,7 @@
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
               <ul className="space-y-1.5 md:space-y-2">
-                {data.learningGoals.map((goal, i) => (
+                {goals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
                     <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
                     <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
@@ -370,106 +148,433 @@
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
       </div>
     );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
+    // Slide 1: Brain Processing Speed Visualization
+    const BrainSpeedSlide = ({ data }) => {
+      const [showResult, setShowResult] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowResult(true), 1500); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Science</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">Visual Processing Speed</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, #6b7280, transparent)' }} />
+              <div className="w-16 h-16 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(107, 114, 128, 0.2)' }}>
+                <span className="text-2xl text-gray-400">Aa</span>
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">Text Processing</h3>
+              <div className="text-4xl font-bold text-gray-400 mb-2">1x</div>
+              <p className="text-gray-500 text-sm">Requires conscious effort</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6 text-center relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="w-16 h-16 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(var(--accent-rgb), 0.2)' }}>
+                <Icons.Eye />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">Visual Processing</h3>
+              <div className="text-4xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                {showResult ? <AnimatedCounter value={60000} suffix="x" useCommas={true} /> : '???'}
+              </div>
+              <p className="text-gray-400 text-sm">Instant, automatic</p>
+              {showResult && (
+                <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="absolute -top-2 -right-2 px-2 py-1 rounded-full text-xs font-bold text-white" style={{ background: 'var(--accent)' }}>FASTER</motion.div>
+              )}
+            </motion.div>
           </div>
-        );
-      }
-      return null;
+
+          {showResult && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 rounded-xl p-4 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <p className="text-gray-300 text-sm"><Icons.Brain className="inline mr-2 w-4 h-4" style={{ color: 'var(--accent)' }} />Your brain judges quality in <span className="font-bold" style={{ color: 'var(--accent)' }}>0.05 seconds</span> based on aesthetics alone</p>
+            </motion.div>
+          )}
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+    // Slide 2: Toothpaste Demo with Animated Stripes
+    const ToothpasteDemoSlide = ({ data }) => {
+      const [activePhase, setActivePhase] = useState(0);
+      const phases = [
+        { title: 'LOGICAL REALITY', description: 'All ingredients mix together instantly. Stripes are meaningless functionally.', color: '#6b7280' },
+        { title: 'VISUAL PERCEPTION', description: 'Stripes signal: "This has MULTIPLE benefits." Brain shortcuts: More stripes = More value.', color: 'var(--accent)' },
+        { title: 'PURCHASE DECISION', description: 'Buyer chooses striped toothpaste over plain white, paying more for identical formula.', color: '#22c55e' }
+      ];
+      useEffect(() => { const timer = setInterval(() => setActivePhase(p => (p + 1) % 3), 3000); return () => clearInterval(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Perception Hack</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">The Toothpaste Stripe Breakdown</h2>
+          </motion.div>
+
+          {/* Animated Toothpaste Visualization */}
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="flex justify-center mb-6">
+            <div className="relative w-32 h-48 rounded-2xl overflow-hidden" style={{ background: 'linear-gradient(180deg, #fff, #f0f0f0)', boxShadow: '0 10px 40px rgba(0,0,0,0.1)' }}>
+              {/* Stripes animation */}
+              <motion.div animate={{ y: [0, -20, 0] }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-2 flex flex-col gap-1">
+                <div className="flex-1 rounded" style={{ background: '#fff' }} />
+                <div className="flex-1 rounded" style={{ background: '#f472b6' }} />
+                <div className="flex-1 rounded" style={{ background: '#fff' }} />
+                <div className="flex-1 rounded" style={{ background: '#60a5fa' }} />
+                <div className="flex-1 rounded" style={{ background: '#fff' }} />
+              </motion.div>
+              <div className="absolute bottom-2 left-2 right-2 text-center text-[8px] font-bold text-gray-500">STRIPES = VALUE</div>
+            </div>
+          </motion.div>
+
+          {/* Phase Cards */}
+          <div className="grid md:grid-cols-3 gap-3">
+            {phases.map((phase, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className={`rounded-xl p-4 relative transition-all duration-300 ${activePhase === i ? 'ring-2' : ''}`} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', ringColor: phase.color }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl transition-all duration-300" style={{ background: activePhase === i ? `linear-gradient(90deg, transparent, ${phase.color}, transparent)` : 'transparent' }} />
+                <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mb-2" style={{ background: phase.color, color: 'white' }}>{i + 1}</div>
+                <h3 className="text-white font-bold text-sm mb-2">{phase.title}</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">{phase.description}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
+      );
+    };
+
+    // Slide 3: Perception Flow Pyramid
+    const PerceptionFlowSlide = ({ data }) => {
+      const [activeLevel, setActiveLevel] = useState(0);
+      const levels = [
+        { label: 'SEE', description: 'Visual cortex processes in 13 milliseconds', icon: Icons.Eye, color: 'var(--accent)' },
+        { label: 'JUDGE', description: 'Aesthetic triggers emotional pathways', icon: Icons.Brain, color: '#8b5cf6' },
+        { label: 'DECIDE', description: 'First impressions nearly impossible to override', icon: Icons.DollarSign, color: '#22c55e' }
+      ];
+      useEffect(() => { const timer = setInterval(() => setActiveLevel(l => (l + 1) % 3), 2500); return () => clearInterval(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Process</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">How Visuals Drive Decisions</h2>
+          </motion.div>
+
+          <div className="flex justify-center">
+            <div className="relative w-full max-w-md">
+              {levels.map((level, i) => {
+                const IconComp = level.icon;
+                return (
+                  <motion.div key={i} initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className={`mb-4 last:mb-0 rounded-xl p-5 relative overflow-hidden transition-all duration-500 ${activeLevel === i ? 'scale-105' : 'scale-100'}`} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: activeLevel === i ? `0 0 30px ${level.color}30` : 'none' }}>
+                    <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: activeLevel === i ? `linear-gradient(90deg, transparent, ${level.color}, transparent)` : 'transparent' }} />
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300" style={{ background: activeLevel === i ? `${level.color}30` : 'rgba(255,255,255,0.05)', color: level.color }}>
+                        <IconComp />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="w-5 h-5 rounded flex items-center justify-center text-xs font-bold text-white" style={{ background: level.color }}>{i + 1}</span>
+                          <h3 className="text-white font-bold text-lg">{level.label}</h3>
+                        </div>
+                        <p className="text-gray-400 text-sm">{level.description}</p>
+                      </div>
+                      {activeLevel === i && (
+                        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-3 h-3 rounded-full" style={{ background: level.color, boxShadow: `0 0 10px ${level.color}` }} />
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // Slide 4: Brand Examples Grid
+    const BrandExamplesSlide = ({ data }) => {
+      const [activeCard, setActiveCard] = useState(0);
+      const brands = [
+        { name: 'Apple Packaging', description: 'White, minimalist boxes cost 3x more. Signals: "Premium, thoughtful, valuable."', icon: Icons.Package, color: '#6b7280' },
+        { name: 'Tiffany Blue Box', description: 'Robin\'s egg blue adds ZERO function. Increases perceived value 30%+.', icon: Icons.Gift, color: '#0ea5e9' },
+        { name: 'Luxury Car Interiors', description: 'Wood trim, metal accents, ambient lighting. Engineers say it doesn\'t affect performance. Wallets disagree.', icon: Icons.Car, color: '#8b5cf6' },
+        { name: 'Premium Water Bottles', description: 'Fiji, Voss, Evian. Same H2O. Different bottles. 10x price difference.', icon: Icons.Droplet, color: '#22c55e' }
+      ];
+      useEffect(() => { const timer = setInterval(() => setActiveCard(c => (c + 1) % 4), 2500); return () => clearInterval(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Visual Shorthand in Action</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">Perception Hacking Masters</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 gap-3">
+            {brands.map((brand, i) => {
+              const IconComp = brand.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className={`rounded-xl p-4 relative overflow-hidden transition-all duration-300 ${activeCard === i ? 'ring-2' : ''}`} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', ringColor: brand.color }}>
+                  <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl transition-all duration-300" style={{ background: activeCard === i ? `linear-gradient(90deg, transparent, ${brand.color}, transparent)` : 'transparent' }} />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `${brand.color}20`, color: brand.color }}>
+                    <IconComp />
+                  </div>
+                  <h3 className="text-white font-bold text-sm mb-2">{brand.name}</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">{brand.description}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // Slide 5-7: Brand Detail Slides
+    const BrandDetailSlide = ({ data }) => {
+      const [showInsight, setShowInsight] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowInsight(true), 2000); return () => clearTimeout(timer); }, []);
+
+      const brandConfig = {
+        rollsroyce: {
+          title: 'Rolls-Royce Case Study',
+          subtitle: 'Same Engine, Premium Perception',
+          visible: { label: 'What You See', items: ['Hand-stitched leather', 'Lambswool carpets', 'Chrome details', 'Spirit of Ecstasy hood ornament'] },
+          hidden: { label: 'What\'s Hidden', items: ['BMW N74 V12 engine', 'Shared platform components', 'Same luxury tier as competitors'] },
+          insight: 'Visual cues (plush interiors) communicate value more than specs ever could',
+          color: '#8b5cf6'
+        },
+        sephora: {
+          title: 'Sephora\'s $2 Bag Strategy',
+          subtitle: 'Packaging as Free Advertising',
+          visible: { label: 'Premium Bag', items: ['Rope handle = luxury feel', 'Instagram-worthy design', 'Walking billboard effect', 'Status signal to others'] },
+          hidden: { label: 'Basic Bag', items: ['$0.10 cost', 'Functional only', 'Forgettable', 'No social shares'] },
+          insight: 'Same makeup inside. But the BAG signals: "I shop at premium stores."',
+          color: 'var(--accent)'
+        },
+        tiffany: {
+          title: 'Tiffany Blue Box',
+          subtitle: 'Color That Commands Premium',
+          visible: { label: 'The Box Effect', items: ['Robin\'s egg blue = instant recognition', '+30% perceived value', 'Emotional anticipation trigger', 'Gift-giving ritual anchor'] },
+          hidden: { label: 'Functional Reality', items: ['Adds ZERO to jewelry quality', 'Just cardboard and ribbon', 'Color is trademarked asset'] },
+          insight: 'The box is so iconic that empty boxes sell on eBay for $20+',
+          color: '#0ea5e9'
+        }
+      };
+
+      const brand = brandConfig[data.brand] || brandConfig.rollsroyce;
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `${brand.color}20`, color: brand.color }}>Case Study</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-1">{brand.title}</h2>
+            <p className="text-gray-500 text-sm">{brand.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${brand.color}, transparent)` }} />
+              <h3 className="text-white font-bold mb-3 flex items-center gap-2">
+                <Icons.Eye className="w-4 h-4" style={{ color: brand.color }} />
+                {brand.visible.label}
+              </h3>
+              <ul className="space-y-2">
+                {brand.visible.items.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-center gap-2 text-gray-300 text-sm">
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: brand.color }} />
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-5 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, #6b7280, transparent)' }} />
+              <h3 className="text-white font-bold mb-3 flex items-center gap-2">
+                <span className="text-gray-400">?</span>
+                {brand.hidden.label}
+              </h3>
+              <ul className="space-y-2">
+                {brand.hidden.items.map((item, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-center gap-2 text-gray-500 text-sm">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-600" />
+                    {item}
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+
+          {showInsight && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl p-4 text-center" style={{ background: `${brand.color}15`, border: `1px solid ${brand.color}40` }}>
+              <p className="text-sm font-medium" style={{ color: brand.color }}><Icons.Lightbulb className="inline w-4 h-4 mr-2" />{brand.insight}</p>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // Slide 8: Website Breakdown with Tabs
+    const WebsiteBreakdownSlide = ({ data }) => {
+      const [activeTab, setActiveTab] = useState(0);
+      const tabs = [
+        { title: 'Typography & Spacing', icon: Icons.Layout, description: 'This is your "plush Rolls-Royce interior." Clean fonts, generous white space, perfect hierarchy = premium brand.', color: 'var(--accent)' },
+        { title: 'Custom Photography', icon: Icons.Image, description: 'Stock photos scream "cheap startup." Custom product photography signals: "We invested, we care, we\'re real."', color: '#8b5cf6' },
+        { title: 'UI Micro-Details', icon: Icons.Sparkles, description: 'Button shadows, hover states, loading animations. These "unnecessary" details separate premium from amateur.', color: '#22c55e' }
+      ];
+      useEffect(() => { const timer = setInterval(() => setActiveTab(t => (t + 1) % 3), 3000); return () => clearInterval(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>DTC Application</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">Your Website Visual Cues</h2>
+          </motion.div>
+
+          {/* Tab buttons */}
+          <div className="flex justify-center gap-2 mb-6">
+            {tabs.map((tab, i) => (
+              <button key={i} onClick={() => setActiveTab(i)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === i ? 'text-white' : 'text-gray-500 bg-gray-100'}`} style={{ background: activeTab === i ? tab.color : undefined }}>{tab.title}</button>
+            ))}
+          </div>
+
+          {/* Active tab content */}
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="rounded-2xl p-8 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: `linear-gradient(90deg, transparent, ${tabs[activeTab].color}, transparent)` }} />
+              <div className="flex items-start gap-6">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${tabs[activeTab].color}20`, color: tabs[activeTab].color }}>
+                  {React.createElement(tabs[activeTab].icon)}
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-xl mb-3">{tabs[activeTab].title}</h3>
+                  <p className="text-gray-300 text-base leading-relaxed">{tabs[activeTab].description}</p>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // Slide 9: Transformation Battle
+    const TransformationBattleSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowWinner(true), 2500); return () => clearTimeout(timer); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Implementation</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">$40 Skincare Serum: Two Approaches</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Amateur Approach */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <Icons.X className="w-5 h-5 text-red-500" />
+                <h3 className="text-white font-bold">Amateur Approach</h3>
+              </div>
+              <ul className="space-y-2 mb-4">
+                {['Clear plastic bottle', 'Printed label', 'Bubble mailer shipping', 'Budget on Facebook ads'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-gray-400 text-sm">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="rounded-lg p-3" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
+                <p className="text-red-400 text-xs">Result: Looks like a $15 product. Price resistance. Low perceived value.</p>
+              </div>
+            </motion.div>
+
+            {/* Visual Shorthand Approach */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="rounded-xl p-5 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              {showWinner && (
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="absolute -top-3 -right-3 px-3 py-1 rounded-full text-xs font-bold text-white bg-green-500">WINS</motion.div>
+              )}
+              <div className="flex items-center gap-2 mb-4">
+                <Icons.Check className="w-5 h-5 text-green-500" />
+                <h3 className="text-white font-bold">Visual Shorthand Approach</h3>
+              </div>
+              <ul className="space-y-2 mb-4">
+                {['Frosted glass bottle', 'Embossed logo', 'Magnetic-closure box', 'Tissue paper + branded sticker'].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-gray-300 text-sm">
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <div className="rounded-lg p-3" style={{ background: 'rgba(34, 197, 94, 0.1)' }}>
+                <p className="text-green-400 text-xs">Result: Looks like a $60 product. Unboxing videos. Premium justified.</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Slide 10: Visual Stats
+    const VisualStatsSlide = ({ data }) => {
+      const stats = [
+        { value: '60000', suffix: 'x', label: 'Faster', description: 'Visual vs text processing', color: 'var(--accent)' },
+        { value: '0.05', suffix: 's', label: 'Judgment Time', description: 'Based on aesthetics alone', decimals: 2, color: '#8b5cf6' },
+        { value: '30', prefix: '+', suffix: '%', label: 'Value Lift', description: 'From premium packaging', color: '#22c55e' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Numbers</span>
+            <h2 className="slide-title text-2xl md:text-4xl text-black">Visual Shorthand Impact</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="rounded-xl p-6 text-center relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color }}>
+                  <AnimatedCounter value={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix} decimals={stat.decimals || 0} useCommas={stat.value === '60000'} />
+                </div>
+                <div className="text-white font-semibold mb-1">{stat.label}</div>
+                <div className="text-gray-500 text-sm">{stat.description}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Elite Insight Slide
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="rounded-2xl p-8 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 mx-auto" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+            <Icons.Lightbulb />
+          </div>
+          <h2 className="slide-title text-xl md:text-2xl text-white text-center mb-4">The Visual Shorthand Truth</h2>
+          <p className="text-gray-300 text-center text-lg mb-6 leading-relaxed">"Your packaging, website design, and visual details aren't 'nice to have.' They're your primary quality signals."</p>
+          <div className="grid grid-cols-3 gap-3">
+            {[{ icon: Icons.Package, label: 'Obsessive Packaging' }, { icon: Icons.Layout, label: 'Premium Design' }, { icon: Icons.Sparkles, label: 'Micro-Details' }].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="rounded-lg p-3 text-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <item.icon className="w-5 h-5 mx-auto mb-2" style={{ color: 'var(--accent)' }} />
+                <p className="text-gray-400 text-xs">{item.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     );
 
@@ -482,13 +587,13 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -520,29 +625,22 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">Great work! You've completed this lesson.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand how visual shortcuts drive perception and purchasing decisions.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Key Takeaways</p>
+          <ul className="space-y-2 text-left">
+            {['Invest in packaging like it\'s your marketing budget', 'Every visual detail signals quality or cheapness', 'Instagram-worthy packaging = free advertising'].map((item, i) => (
+              <li key={i} className="flex items-start gap-2 text-neutral-300 text-sm">
+                <Icons.Check className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--accent)' }} />
+                {item}
+              </li>
+            ))}
+          </ul>
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
       </div>
     );
 
-    const LessonApp = () => {
+    const App = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
@@ -554,16 +652,6 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -594,10 +682,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'brain-speed': return <BrainSpeedSlide data={slide} />;
+          case 'toothpaste-demo': return <ToothpasteDemoSlide data={slide} />;
+          case 'perception-flow': return <PerceptionFlowSlide data={slide} />;
+          case 'brand-examples': return <BrandExamplesSlide data={slide} />;
+          case 'brand-detail': return <BrandDetailSlide data={slide} />;
+          case 'website-breakdown': return <WebsiteBreakdownSlide data={slide} />;
+          case 'transformation-battle': return <TransformationBattleSlide data={slide} />;
+          case 'visual-stats': return <VisualStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -613,21 +706,20 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
             {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
-            <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
-            </div>
+          <div className="flex justify-center gap-1.5 py-4 bg-white">
+            {slides.map((_, i) => (
+              <button key={i} onClick={() => goToSlide(i)} className="w-2 h-2 rounded-full transition-all" style={{ background: i === currentSlide ? 'var(--accent)' : '#e5e7eb', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />
+            ))}
           </div>
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -637,7 +729,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
   </script>
 </body>
 </html>

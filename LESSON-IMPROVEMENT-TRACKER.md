@@ -1,7 +1,7 @@
 # LESSON IMPROVEMENT TRACKER
 ## Quantum Scale Learning Center - Elite Design Upgrade
 
-**Last Updated:** December 30, 2024
+**Last Updated:** January 5, 2026
 **Total Lessons:** 308
 
 ---
@@ -72,7 +72,7 @@ When improving a lesson to elite level, ensure it has:
 
 ---
 
-## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (53 lessons)
+## CATEGORY 1: IMPROVED / DON'T NEED IMPROVEMENT (283 lessons)
 
 These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless specifically requested.
 
@@ -131,270 +131,275 @@ These lessons are at elite-level design (Score 8+). **DO NOT MODIFY** unless spe
 | 51 | biz-animal-mindset | 9 | Elite (Improved Dec 30) |
 | 52 | biz-asset-not-job | 9 | Elite (Improved Dec 30) |
 | 53 | biz-asymmetric-monopoly | 9 | Elite (Improved Dec 30) |
+| 54 | biz-authenticity-engine | 9 | Elite (Improved Dec 30) |
+| 55 | biz-courage-variable | 9 | Elite (Improved Dec 30) |
+| 56 | biz-golden-ratio-growth | 9 | Elite (Improved Dec 30) |
+| 57 | biz-hamster-wheel | 9 | Elite (Improved Dec 30) |
+| 58 | biz-infinite-flywheel | 9 | Elite (Improved Dec 30) |
+| 59 | biz-leaders-burden | 9 | Elite (Improved Dec 30) |
+| 60 | biz-leverage-equation | 9 | Elite (Improved Dec 30) |
+| 61 | biz-logic-trap | 9 | Elite (Improved Dec 30) |
+| 62 | biz-ltv-cac-dashboard | 9 | Elite (Improved Dec 30) |
+| 63 | biz-model-vs-method | 9 | Elite (Improved Dec 30) |
+| 64 | biz-operator-mindset | 9 | Elite (Improved Dec 30) |
+| 65 | biz-presale-financing | 9 | Elite (Improved Dec 30) |
+| 66 | biz-replication-protocol | 9 | Elite (Improved Dec 30) |
+| 67 | biz-rfm-secret | 9 | Elite (Improved Dec 30) |
+| 68 | biz-rule-of-100 | 9 | Elite (Improved Dec 30) |
+| 69 | biz-starbucks-ltv-secret | 9 | Elite (Improved Dec 30) |
+| 70 | biz-valley-protocol | 9 | Elite (Improved Dec 30) |
+| 71 | blind-spot-effect | 9 | Elite (Improved Dec 31) |
+| 72 | borrowed-trust | 9 | Elite (Improved Dec 31) |
+| 73 | box-worth-300 | 9 | Elite (Improved Dec 31) |
+| 74 | brand-moat | 9 | Elite (Improved Dec 31) |
+| 75 | anchor-moments | 9 | Elite (Improved Dec 31) |
+| 76 | anti-sell-mastery | 9 | Elite (Improved Dec 31) |
+| 77 | biz-attention-auction | 9 | Elite (Improved Dec 31) |
+| 78 | biz-automation-ratio | 9 | Elite (Improved Dec 30) |
+| 79 | biz-awareness-sweet-spot | 9 | Elite (Improved Dec 30) |
+| 80 | biz-barbell-strategy | 9 | Elite (Improved Dec 30) |
+| 81 | biz-brand-ltv-engine | 9 | Elite (Improved Dec 30) |
+| 82 | biz-brand-temple | 9 | Elite (Improved Dec 30) |
+| 83 | biz-cash-conversion | 9 | Elite (Improved Dec 30) |
+| 84 | biz-channel-cac-decoder | 9 | Elite (Improved Dec 30) |
+| 85 | biz-closer-framework | 9 | Elite (Improved Dec 30) |
+| 86 | biz-counter-position | 9 | Elite (Improved Dec 30) |
+| 87 | biz-creative-targeting | 9 | Elite (Improved Dec 30) |
+| 88 | biz-creator-army | 9 | Elite (Improved Dec 30) |
+| 89 | biz-empathy-engine | 9 | Elite (Improved Dec 30) |
+| 90 | biz-four-pillars | 9 | Elite (Improved Dec 30) |
+| 91 | biz-infinite-flywheel | 9 | Elite (Improved Dec 30) |
+| 92 | biz-hamster-wheel | 9 | Elite (Improved Dec 30) |
+| 93 | biz-australia-arbitrage | 9 | Elite (Improved Dec 30) |
+| 94 | biz-authenticity-anchor | 9 | Elite (Improved Dec 30) |
+| 95 | biz-high-margin-fortress | 9 | Elite (Reference) |
+| 96 | biz-systems-architect | 9 | Elite (Reference) |
+| 97 | biz-infinite-money-glitch | 9 | Elite |
+| 98 | biz-survival-cycle | 9 | Elite |
+| 99 | biz-hidden-cac-costs | 9 | Elite (Improved Dec 31) |
+| 100 | biz-lifetime-gross-profit | 9 | Elite (Improved Jan 1) |
+| 101 | biz-look-back-window | 9 | Elite (Improved Jan 1) |
+| 102 | biz-ltv-levers | 9 | Elite (Improved Jan 1) |
+| 103 | biz-infinite-money-loop | 9 | Elite (Verified Jan 1) |
+| 104 | biz-marketing-company | 9 | Elite (Improved Jan 1) |
+| 105 | biz-mission-driven-brand | 9 | Elite (Improved Jan 1) |
+| 106 | biz-objection-dance | 9 | Elite (Improved Jan 1) |
+| 107 | biz-one-pager-blueprint | 9 | Elite (Improved Jan 1) |
+| 108 | biz-price-anchoring | 9 | Elite (Improved Jan 1) |
+| 109 | biz-product-expansion | 9 | Elite (Improved Jan 1) |
+| 110 | biz-purchase-cycle-engine | 9 | Elite (Improved Jan 1) |
+| 111 | biz-rat-brain-hijack | 9 | Elite (Improved Jan 1) |
+| 112 | biz-remarkable-product | 9 | Elite (Improved Jan 1) |
+| 113 | biz-savage-mentality | 9 | Elite (Improved Jan 1) |
+| 114 | biz-subscribe-save-ltv | 9 | Elite (Improved Jan 1) |
+| 115 | biz-velocity-advantage | 9 | Elite (Improved Jan 1) |
+| 116 | biz-zero-cac-engine | 9 | Elite (Improved Jan 1) |
+| 117 | bottom-up-brand | 9 | Elite (Improved Jan 1) |
+| 118 | brand-promise-code | 9 | Elite (Improved Jan 1) |
+| 119 | brand-universe | 9 | Elite (Improved Jan 1) |
+| 120 | brand-search-campaign | 9 | Elite (QA'd Jan 1) |
+| 121 | cbo-vs-abo | 9 | Elite (Verified Jan 1) |
+| 122 | celebrity-gifting-flywheel | 9 | Elite (Improved Jan 1) |
+| 123 | certainty-transfer | 9 | Elite (Fixed Jan 1) |
+| 124 | checkout-line-effect | 9 | Elite (Fixed Jan 1) |
+| 125 | choose-products | 9 | Elite (Fixed Jan 1) |
+| 126 | coupon-leaking | 9 | Elite (Fixed Jan 1) |
+| 127 | damaging-admission | 9 | Elite (Fixed Jan 1) |
+| 128 | digital-pause-power | 9 | Elite (Improved Jan 1) |
+| 129 | digital-velvet-rope | 9 | Elite (Improved Jan 1) |
+| 130 | dior-pricing-secret | 9 | Elite (Improved Jan 1) |
+| 131 | email-vs-sms | 9 | Elite (Improved Jan 1) |
+| 132 | fomo-engineering | 9 | Elite (Improved Jan 1) |
+| 133 | formula-to-sell | 9 | Elite (Fixed Jan 1) |
+| 134 | framing-effect-mastery | 9 | Elite (Fixed Jan 1) |
+| 135 | meta-value-rules | 9 | Elite (Fixed Jan 1) |
+| 136 | meta-learning-loop | 9 | Elite (Fixed Jan 1) |
+| 137 | meta-creative-matrix | 9 | Elite (Fixed Jan 1) |
+| 138 | owned-audience-effect | 9 | Elite (Fixed Jan 1) |
+| 139 | post-purchase-momentum | 9 | Elite (Fixed Jan 1) |
+| 140 | meta-sequence-learning | 9 | Elite (Fixed Jan 1) |
+| 141 | meta-machine-scale | 9 | Elite (Fixed Jan 1) |
+| 142 | emotional-precision | 9 | Elite (Improved Jan 1) |
+| 143 | emotional-problem | 9 | Elite (Improved Jan 2) |
+| 144 | ethical-persuasion-compass | 9 | Elite (Improved Jan 2) |
+| 145 | fly-in-the-urinal | 9 | Elite (Improved Jan 2) |
+| 146 | fonts-psychology | 9 | Elite (Improved Jan 2) |
+| 147 | forbidden-coffee-hook | 9 | Elite (Improved Jan 2) |
+| 148 | founder-operating-system | 9 | Elite (Improved Jan 2) |
+| 149 | four-primal-needs | 9 | Elite (Improved Jan 2) |
+| 150 | fred-method | 9 | Elite (Improved Jan 2) |
+| 151 | gatekeeper-method | 9 | Elite (Improved Jan 2) |
+| 152 | gaze-direction | 9 | Elite (Improved Jan 2) |
+| 153 | geo-announcement-bar | 9 | Elite (Improved Jan 2) |
+| 154 | geo-personalization | 9 | Elite (Improved Jan 2) |
+| 155 | gift-that-sells | 9 | Elite (Improved Jan 2) |
+| 156 | gillette-model | 9 | Elite (Improved Jan 2) |
+| 157 | golden-lookalike | 9 | Elite (Improved Jan 2) |
+| 158 | google-ad-assets-arsenal | 9 | Elite (Improved Jan 2) |
+| 159 | google-ai-max-decision | 9 | Elite (Improved Jan 2) |
+| 160 | google-ai-overviews-opportunity | 9 | Elite (Improved Jan 2) |
+| 161 | google-brand-moat | 9 | Elite (Full Upgrade Jan 4) |
+| 162 | google-budget-reallocation | 9 | Elite (Improved Jan 2) |
+| 163 | google-cable-drawer-problem | 9 | Elite (Improved Jan 2) |
+| 164 | google-click-fraud-shield | 9 | Elite (Improved Jan 2) |
+| 165 | google-competitor-conquest | 9 | Elite (Improved Jan 2) |
+| 166 | google-creative-targeting | 9 | Elite (Improved Jan 2) |
+| 167 | google-data-quality-edge | 9 | Elite (Improved Jan 2) |
+| 168 | google-focus-firepower | 9 | Elite (Improved Jan 2) |
+| 169 | google-hero-product-funnel | 9 | Elite (Improved Jan 2) |
+| 170 | google-highest-cpa-wins | 9 | Elite (Improved Jan 2) |
+| 171 | google-influencer-creative | 9 | Elite (Improved Jan 2) |
+| 172 | google-landing-page-bridge | 9 | Elite (Verified Jan 2) |
+| 173 | google-negative-keyword-colander | 9 | Elite (Verified Jan 2) |
+| 174 | google-new-customer-acquisition | 9 | Elite (Improved Jan 2) |
+| 175 | google-optimization-cadence | 9 | Elite (Improved Jan 2) |
+| 176 | google-pmax-blueprint | 9 | Elite (Improved Jan 2) |
+| 177 | google-product-feed-mastery | 9 | Elite (Improved Jan 2) |
+| 178 | google-shopping-intent | 9 | Elite (Verified Jan 2) |
+| 179 | google-signal-mastery | 9 | Elite (Improved Jan 2) |
+| 180 | google-store-trust-checklist | 9 | Elite (Improved Jan 2) |
+| 181 | gucci-short-termism | 9 | Elite (Verified Jan 2) |
+| 182 | hero-mechanism | 9 | Elite (Verified Jan 2) |
+| 183 | halo-serial-position | 9 | Elite (Improved Jan 2) |
+| 184 | herd-instinct | 9 | Elite (Improved Jan 2) |
+| 185 | hermes-doctrine | 9 | Elite (Improved Jan 2) |
+| 186 | hidden-menu-psychology | 9 | Elite (Improved Jan 2) |
+| 187 | ice-prioritization | 9 | Elite (Verified Jan 2) |
+| 188 | identity-marketing | 9 | Elite (Verified Jan 2) |
+| 189 | identity-shift-effect | 9 | Elite (Verified Jan 2) |
+| 190 | ikea-effect | 9 | Elite (Improved Jan 2) |
+| 191 | imperceptible-nudge | 9 | Elite (Fixed Jan 2) |
+| 192 | information-asymmetry | 9 | Elite (Verified Jan 2) |
+| 193 | invisible-influence | 9 | Elite (Verified Jan 2) |
+| 194 | irrational-loyalty | 9 | Elite (Verified Jan 2) |
+| 195 | jakobs-law | 9 | Elite (Verified Jan 2) |
+| 196 | leaky-bucket-audit | 9 | Elite (Fixed Jan 2) |
+| 197 | le-creuset-scarcity-engine | 9 | Elite (Fixed Jan 2) |
+| 198 | local-holiday-legitimacy | 9 | Elite (Verified Jan 2) |
+| 199 | logo-is-worthless | 9 | Elite (Verified Jan 2) |
+| 200 | ltv-cheat-code | 9 | Elite (Verified Jan 2) |
+| 201 | luxury-mindset-shift | 9 | Elite (Verified Jan 2) |
+| 202 | marketers-delusion | 9 | Elite (Fixed Jan 2) |
+| 203 | mastercard-psychology | 9 | Elite (Verified Jan 2) |
+| 204 | master-key-framework | 9 | Elite (Fixed Jan 2) |
+| 205 | meta-1-1-x-structure | 9 | Elite (Fixed Jan 2) |
+| 206 | meta-70-20-10-rule | 9 | Elite (Fixed Jan 2) |
+| 207 | meta-ad-scheduling | 9 | Elite (Fixed Jan 2) |
+| 208 | meta-ai-era-edge | 9 | Elite (Fixed Jan 2) |
+| 209 | meta-andromeda | 9 | Elite (Verified Jan 2) |
+| 210 | meta-andromeda-engine | 9 | Elite (Verified Jan 2) |
+| 211 | meta-attribution-test | 9 | Elite (Verified Jan 2) |
+| 212 | meta-auction-formula | 9 | Elite (Verified Jan 2) |
+| 213 | meta-automated-rules | 9 | Elite (Fixed Jan 2) |
+| 214 | meta-capi-pixel-setup | 9 | Elite (Fixed Jan 2) |
+| 215 | meta-clean-signals | 9 | Elite (Verified Jan 2) |
+| 216 | meta-commander-collaborator | 9 | Elite (Fixed Jan 2) |
+| 217 | meta-consolidation-principle | 9 | Elite (Verified Jan 2) |
+| 218 | meta-controls-vs-suggestions | 9 | Elite (Verified Jan 2) |
+| 219 | meta-creative-ecosystem | 9 | Elite (Fixed Jan 2) |
+| 220 | meta-distinct-angles | 9 | Elite (Verified Jan 2) |
+| 221 | meta-four-pillars-trust | 9 | Elite (Verified Jan 2) |
+| 222 | meta-ga4-integration | 9 | Elite (Verified Jan 2) |
+| 223 | meta-gem-brain | 9 | Elite (Verified Jan 2) |
+| 224 | meta-hybrid-adset | 9 | Elite (Verified Jan 2) |
+| 225 | meta-marathon-metrics | 9 | Elite (Verified Jan 2) |
+| 226 | meta-omnipresent-content | 9 | Elite (Verified Jan 2) |
+| 227 | meta-radical-diversity | 9 | Elite (Verified Jan 2) |
+| 228 | meta-three-second-hook | 9 | Elite (Fixed Jan 2) |
+| 229 | meta-whatsapp-ai | 9 | Elite (Verified Jan 2) |
+| 230 | micro-yes-mastery | 9 | Elite (Verified Jan 2) |
+| 231 | missing-piece-effect | 9 | Elite (Improved Jan 3) |
+| 232 | myth-and-urgency | 9 | Elite (Improved Jan 3) |
+| 233 | nine-trust-levers | 9 | Elite (Improved Jan 3) |
+| 234 | no-one-cares | 9 | Elite (Improved Jan 3) |
+| 235 | objection-destroyer | 9 | Elite (Improved Jan 3) |
+| 236 | objection-inversion | 9 | Elite (Improved Jan 3) |
+| 237 | ocpb-formula | 9 | Elite (Improved Jan 3) |
+| 238 | offer-is-everything | 9 | Elite (Improved Jan 3) |
+| 239 | pain-escalation-ladder | 9 | Elite (Improved Jan 3) |
+| 240 | paradox-of-choice | 9 | Elite (Improved Jan 3) |
+| 241 | pattern-interrupts | 9 | Elite (Improved Jan 3) |
+| 242 | performance-engine | 9 | Elite (Improved Jan 3) |
+| 243 | persuasion-blueprint | 9 | Elite (Improved Jan 3) |
+| 244 | persuasion-stack | 9 | Elite (Improved Jan 3) |
+| 245 | placebo-product | 9 | Elite (Improved Jan 3) |
+| 246 | poppy-disruptor-blueprint | 9 | Elite (Improved Jan 3) |
+| 247 | post-purchase-goldmine | 9 | Elite (Improved Jan 3) |
+| 248 | post-purchase-surveys | 9 | Elite (Improved Jan 3) |
+| 249 | precise-price-trick | 9 | Elite (Improved Jan 3) |
+| 250 | premium-flywheel | 9 | Elite (Improved Jan 3) |
+| 251 | pre-suasion-hack | 9 | Elite (Improved Jan 3) |
+| 252 | price-chunking-yesloop | 9 | Elite (Improved Jan 3) |
+| 253 | price-format-code | 9 | Elite (Improved Jan 3) |
+| 254 | primal-stimuli | 9 | Elite (Improved Jan 3) |
+| 255 | product-page-anatomy | 9 | Elite (Improved Jan 3) |
+| 256 | product-to-identity | 9 | Elite (Improved Jan 3) |
+| 257 | psychological-moat | 9 | Elite (Improved Jan 3) |
+| 258 | race-to-bottom-escape | 9 | Elite (Improved Jan 3) |
+| 259 | radical-honesty-play | 9 | Elite (Improved Jan 3) |
+| 260 | reciprocity-engine | 9 | Elite (Improved Jan 3) |
+| 261 | red-button-effect | 9 | Elite (Improved Jan 3) |
+| 262 | rounded-button | 9 | Elite (Improved Jan 3) |
+| 263 | rule-of-one | 9 | Elite (Improved Jan 3) |
+| 264 | sales-message-anatomy | 9 | Elite (Improved Jan 3) |
+| 265 | scammer-playbook-good | 9 | Elite (Verified Jan 4) |
+| 266 | scarcity-calendar | 9 | Elite (Full Upgrade Jan 4) |
+| 267 | science-of-selling | 9 | Elite (Full Upgrade Jan 4) |
+| 268 | telescope-flip | 9 | Elite (Full Upgrade Jan 4) |
+| 269 | self-persuasion-architecture | 9 | Elite (Verified Jan 4) |
+| 270 | self-selection-principle | 9 | Elite (Full Upgrade Jan 4) |
+| 271 | shape-psychology | 9 | Elite (Full Upgrade Jan 4) |
+| 272 | smallest-viable-market | 9 | Elite (Full Upgrade Jan 4) |
+| 273 | sms-open-rate-secret | 9 | Elite (Full Upgrade Jan 4) |
+| 274 | speed-equals-trust | 9 | Elite (Full Upgrade Jan 5) |
+| 275 | starbucks-ltv | 9 | Elite (Full Upgrade Jan 5) |
+| 276 | stop-aliexpress | 9 | Elite (Full Upgrade Jan 5) |
+| 277 | story-changes-taste | 9 | Elite (Full Upgrade Jan 5) |
+| 278 | story-taste-experiment | 9 | Elite (Full Upgrade Jan 5) |
+| 279 | structural-tension | 9 | Elite (Full Upgrade Jan 5) |
+| 280 | swatch-variants | 9 | Elite (Full Upgrade Jan 5) |
+| 281 | thirty-five-thousand-decisions | 9 | Elite (Full Upgrade Jan 5) |
+| 282 | thirty-two-violinist | 9 | Elite (Full Upgrade Jan 5) |
+| 283 | trust-architecture | 9 | Elite (Full Upgrade Jan 5) |
 
 ---
 
-## CATEGORY 2: NEED IMPROVEMENT (248 lessons)
+## CATEGORY 2: NEED IMPROVEMENT (10 lessons remaining - 7 errors + 3 score-5)
 
 These lessons need design improvements to reach elite level.
 
 | # | Lesson | Current Score |
 |---|--------|---------------|
-| 1 | biz-attention-auction | 5 |
-| 17 | biz-australia-arbitrage | 5 |
-| 18 | biz-authenticity-anchor | 4 |
-| 19 | biz-authenticity-engine | 4 |
-| 20 | biz-automation-ratio | 4 |
-| 21 | biz-awareness-sweet-spot | 4 |
-| 22 | biz-barbell-strategy | 4 |
-| 23 | biz-brand-ltv-engine | 4 |
-| 24 | biz-brand-temple | 4 |
-| 25 | biz-cash-conversion | 5 |
-| 26 | biz-channel-cac-decoder | 7 |
-| 27 | biz-closer-framework | 5 |
-| 28 | biz-counter-position | 5 |
-| 29 | biz-courage-variable | 5 |
-| 30 | biz-creative-targeting | 5 |
-| 31 | biz-creator-army | 5 |
-| 32 | biz-empathy-engine | 5 |
-| 33 | biz-four-pillars | 5 |
-| 34 | biz-golden-ratio-growth | 5 |
-| 35 | biz-hamster-wheel | 5 |
-| 36 | biz-hidden-cac-costs | 5 |
-| 37 | biz-high-margin-fortress | 7 |
-| 38 | biz-infinite-flywheel | 5 |
-| 39 | biz-infinite-money-glitch | 7 |
-| 40 | biz-infinite-money-loop | 5 |
-| 41 | biz-leaders-burden | 5 |
-| 42 | biz-leverage-equation | 5 |
-| 43 | biz-lifetime-gross-profit | 5 |
-| 44 | biz-logic-trap | 5 |
-| 45 | biz-look-back-window | 5 |
-| 46 | biz-ltv-cac-dashboard | 5 |
-| 47 | biz-ltv-levers | 5 |
-| 48 | biz-marketing-company | 5 |
-| 49 | biz-mission-driven-brand | 5 |
-| 50 | biz-model-vs-method | 5 |
-| 51 | biz-objection-dance | 5 |
-| 52 | biz-one-pager-blueprint | 5 |
-| 53 | biz-operator-mindset | 5 |
-| 54 | biz-presale-financing | 5 |
-| 55 | biz-price-anchoring | 5 |
-| 56 | biz-product-expansion | 5 |
-| 57 | biz-purchase-cycle-engine | 5 |
-| 58 | biz-rat-brain-hijack | 5 |
-| 59 | biz-remarkable-product | 5 |
-| 60 | biz-replication-protocol | 5 |
-| 61 | biz-rfm-secret | 5 |
-| 62 | biz-rule-of-100 | 5 |
-| 63 | biz-savage-mentality | 5 |
-| 64 | biz-starbucks-ltv-secret | 5 |
-| 65 | biz-subscribe-save-ltv | 5 |
-| 66 | biz-survival-cycle | 7 |
-| 67 | biz-systems-architect | 6 |
-| 68 | biz-valley-protocol | 5 |
-| 69 | biz-velocity-advantage | 5 |
-| 70 | biz-zero-cac-engine | 5 |
-| 71 | blind-spot-effect | 5 |
-| 72 | borrowed-trust | 5 |
-| 73 | bottom-up-brand | 5 |
-| 74 | box-worth-300 | 5 |
-| 75 | brain-friendly-ux | ERROR |
-| 76 | brand-moat | 5 |
-| 77 | brand-promise-code | 5 |
-| 78 | brand-search-campaign | 5 |
-| 79 | brand-universe | 5 |
-| 80 | cbo-vs-abo | 5 |
-| 81 | celebrity-gifting-flywheel | 5 |
-| 82 | certainty-transfer | 6 |
-| 83 | checkout-line-effect | 6 |
-| 84 | choose-products | 6 |
-| 85 | coupon-leaking | 5 |
-| 86 | damaging-admission | 5 |
-| 87 | digital-pause-power | 5 |
-| 88 | digital-velvet-rope | 5 |
-| 89 | dior-pricing-secret | 5 |
-| 90 | email-vs-sms | 5 |
-| 91 | emotional-precision | 5 |
-| 92 | emotional-problem | 5 |
+| 57 | brain-friendly-ux | ERROR |
 | 93 | entrepreneur-images | ERROR |
-| 94 | ethical-persuasion-compass | 5 |
 | 95 | five-value-heuristics | ERROR |
-| 96 | fly-in-the-urinal | 5 |
-| 97 | fomo-engineering | 5 |
-| 98 | fonts-psychology | 5 |
-| 99 | forbidden-coffee-hook | 5 |
-| 100 | formula-to-sell | 5 |
-| 101 | founder-operating-system | 5 |
-| 102 | four-primal-needs | 5 |
-| 103 | framing-effect-mastery | 5 |
-| 104 | fred-method | 5 |
-| 105 | gatekeeper-method | 5 |
-| 106 | gaze-direction | 5 |
-| 107 | geo-announcement-bar | 5 |
-| 108 | geo-personalization | 5 |
-| 109 | gift-that-sells | 5 |
-| 110 | gillette-model | 5 |
-| 111 | golden-lookalike | 5 |
-| 112 | google-ad-assets-arsenal | 5 |
-| 113 | google-ai-max-decision | 5 |
-| 114 | google-ai-overviews-opportunity | 5 |
-| 115 | google-brand-moat | 5 |
-| 116 | google-budget-reallocation | 5 |
-| 117 | google-cable-drawer-problem | 5 |
-| 118 | google-click-fraud-shield | 5 |
-| 119 | google-competitor-conquest | 5 |
-| 120 | google-creative-targeting | 5 |
-| 121 | google-data-quality-edge | 5 |
-| 122 | google-focus-firepower | 5 |
-| 123 | google-hero-product-funnel | 5 |
-| 124 | google-highest-cpa-wins | 5 |
-| 125 | google-influencer-creative | 5 |
-| 126 | google-landing-page-bridge | 5 |
-| 127 | google-negative-keyword-colander | 5 |
-| 128 | google-new-customer-acquisition | 5 |
-| 129 | google-optimization-cadence | 5 |
-| 130 | google-pmax-blueprint | 5 |
-| 131 | google-product-feed-mastery | 5 |
-| 132 | google-shopping-intent | 5 |
-| 133 | google-signal-mastery | 5 |
-| 134 | google-store-trust-checklist | 5 |
-| 135 | gucci-short-termism | 5 |
-| 136 | halo-serial-position | 5 |
-| 137 | herd-instinct | 5 |
-| 138 | hermes-doctrine | 5 |
-| 139 | hero-mechanism | 5 |
-| 140 | hidden-menu-psychology | 5 |
-| 141 | ice-prioritization | 5 |
-| 142 | identity-marketing | 5 |
-| 143 | identity-shift-effect | 5 |
-| 144 | ikea-effect | 5 |
-| 145 | imperceptible-nudge | 5 |
-| 146 | information-asymmetry | 5 |
-| 147 | invisible-influence | 5 |
-| 148 | irrational-loyalty | 5 |
-| 149 | jakobs-law | 5 |
-| 150 | leaky-bucket-audit | 5 |
-| 151 | le-creuset-scarcity-engine | 5 |
-| 152 | local-holiday-legitimacy | 5 |
-| 153 | logo-is-worthless | 5 |
-| 154 | ltv-cheat-code | 5 |
-| 155 | luxury-mindset-shift | 5 |
-| 156 | marketers-delusion | 5 |
-| 157 | mastercard-psychology | 5 |
-| 158 | master-key-framework | 5 |
-| 159 | meta-1-1-x-structure | 5 |
-| 160 | meta-70-20-10-rule | 5 |
-| 161 | meta-ad-scheduling | 5 |
-| 162 | meta-ai-era-edge | 5 |
-| 163 | meta-andromeda | 5 |
-| 164 | meta-andromeda-engine | 5 |
-| 165 | meta-attribution-test | 5 |
-| 166 | meta-auction-formula | 5 |
-| 167 | meta-automated-rules | 5 |
-| 168 | meta-capi-pixel-setup | 5 |
-| 169 | meta-clean-signals | 5 |
-| 170 | meta-commander-collaborator | 5 |
-| 171 | meta-consolidation-principle | 5 |
-| 172 | meta-controls-vs-suggestions | 5 |
-| 173 | meta-creative-ecosystem | 5 |
-| 174 | meta-creative-matrix | 5 |
-| 175 | meta-distinct-angles | 5 |
-| 176 | meta-four-pillars-trust | 5 |
-| 177 | meta-ga4-integration | 5 |
-| 178 | meta-gem-brain | 5 |
-| 179 | meta-hybrid-adset | 5 |
-| 180 | meta-learning-loop | 5 |
-| 181 | meta-machine-scale | 7 |
-| 182 | meta-marathon-metrics | 5 |
-| 183 | meta-omnipresent-content | 5 |
-| 184 | meta-radical-diversity | 5 |
-| 185 | meta-sequence-learning | 5 |
-| 186 | meta-three-second-hook | 5 |
-| 187 | meta-value-rules | 5 |
-| 188 | meta-whatsapp-ai | 5 |
 | 189 | micro-yes-engine | ERROR |
-| 190 | micro-yes-mastery | 5 |
-| 191 | missing-piece-effect | 5 |
-| 192 | myth-and-urgency | 5 |
-| 193 | nine-trust-levers | 5 |
-| 194 | no-one-cares | 5 |
-| 195 | objection-destroyer | 5 |
-| 196 | objection-inversion | 5 |
-| 197 | ocpb-formula | 5 |
-| 198 | offer-is-everything | 5 |
-| 199 | owned-audience-effect | 5 |
 | 200 | pain-dream-bridge | ERROR |
-| 201 | pain-escalation-ladder | 5 |
-| 202 | paradox-of-choice | 5 |
-| 203 | pattern-interrupts | 5 |
-| 204 | performance-engine | 5 |
-| 205 | persuasion-blueprint | 5 |
-| 206 | persuasion-stack | 5 |
-| 207 | placebo-product | 5 |
-| 208 | poppy-disruptor-blueprint | 5 |
-| 209 | post-purchase-goldmine | 5 |
-| 210 | post-purchase-momentum | 5 |
-| 211 | post-purchase-surveys | 5 |
-| 212 | precise-price-trick | 5 |
-| 213 | premium-flywheel | 5 |
-| 214 | pre-suasion-hack | 5 |
-| 215 | price-chunking-yesloop | 5 |
 | 216 | price-creates-value | ERROR |
-| 217 | price-format-code | 5 |
-| 218 | primal-stimuli | 5 |
-| 219 | product-page-anatomy | 5 |
-| 220 | product-to-identity | 5 |
-| 221 | psychological-moat | 5 |
-| 222 | race-to-bottom-escape | 5 |
-| 223 | radical-honesty-play | 5 |
-| 224 | reciprocity-engine | 5 |
-| 225 | red-button-effect | 5 |
-| 226 | rounded-button | 5 |
-| 227 | rule-of-one | 5 |
-| 228 | sales-message-anatomy | 5 |
-| 229 | scammer-playbook-good | 5 |
-| 230 | scarcity-calendar | 5 |
-| 231 | science-of-selling | 5 |
-| 232 | self-persuasion-architecture | 5 |
-| 233 | self-selection-principle | 5 |
 | 234 | sell-the-identity | ERROR |
-| 235 | shape-psychology | 5 |
-| 236 | smallest-viable-market | 5 |
-| 237 | sms-open-rate-secret | 5 |
-| 238 | speed-equals-trust | 5 |
-| 239 | starbucks-ltv | 5 |
-| 240 | stop-aliexpress | 5 |
-| 241 | story-changes-taste | 5 |
-| 242 | story-taste-experiment | 5 |
-| 243 | structural-tension | 5 |
-| 244 | swatch-variants | 5 |
-| 245 | telescope-flip | 5 |
-| 246 | thirty-five-thousand-decisions | 5 |
-| 247 | thirty-two-violinist | 5 |
-| 248 | three-brains-wallet | 5 |
-| 249 | three-canons-of-craft | 5 |
-| 250 | three-cro-tests | 5 |
-| 251 | three-growth-levers | 5 |
-| 252 | three-levels-of-change | 5 |
-| 253 | three-second-rule | 5 |
-| 254 | trust-architecture | 5 |
-| 255 | trust-blueprint | 5 |
-| 256 | two-dirty-tricks | 5 |
-| 257 | two-meta-rules | 5 |
-| 258 | two-worlds-mastery | 5 |
-| 259 | unique-mechanism | 5 |
-| 260 | unity-principle | 5 |
-| 261 | us-vs-them | 5 |
-| 262 | value-ladder | 5 |
-| 263 | value-perception-lever | 5 |
-| 264 | visual-priming | 5 |
-| 265 | visual-shorthand | 5 |
-| 266 | von-restorff-effect | 5 |
-| 267 | whale-customer-paradox | 5 |
-| 268 | whatsapp-support | 5 |
-| 269 | wiifm-principle | 5 |
-| 270 | wishlist-effect | 5 |
+| 248 | three-brains-wallet | ELITE ✓ | Jan 4 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
+| 249 | three-canons-of-craft | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
+| 250 | three-cro-tests | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
+| 251 | three-growth-levers | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 252 | three-levels-of-change | ELITE ✓ | Jan 5 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
+| 253 | three-second-rule | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 254 | trust-architecture | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 255 | trust-blueprint | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 256 | two-dirty-tricks | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 257 | two-meta-rules | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 258 | two-worlds-mastery | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 259 | unique-mechanism | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 260 | unity-principle | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 261 | us-vs-them | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 262 | value-ladder | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
+| 263 | value-perception-lever | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 264 | visual-priming | ELITE ✓ | Jan 5 - 8 unique custom slides, AnimatedCounter, dark gradient cards |
+| 265 | visual-shorthand | ELITE ✓ | Jan 5 - 9 unique custom slides, AnimatedCounter, dark gradient cards |
+| 266 | von-restorff-effect | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 267 | whale-customer-paradox | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 268 | whatsapp-support | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 269 | wiifm-principle | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards |
+| 270 | wishlist-effect | ELITE ✓ | Jan 5 - 10 unique custom slides, AnimatedCounter, dark gradient cards - ALL SCORE-5 LESSONS COMPLETE! |
 
 ---
 
@@ -416,10 +421,10 @@ These lessons need their lesson.html file created:
 
 | Category | Count |
 |----------|-------|
-| Improved / Don't Need Improvement | 50 |
-| Need Improvement | 251 |
+| Improved / Don't Need Improvement | 291 |
+| Need Improvement | 5 |
 | Errors (No lesson.html) | 7 |
-| **TOTAL** | **308** |
+| **TOTAL** | **304** |
 
 ---
 

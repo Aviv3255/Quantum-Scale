@@ -12,8 +12,8 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #3b82f6; --accent-dark: #2563eb; --accent-light: #60a5fa; --accent-rgb: 59, 130, 246; }
@@ -38,135 +38,53 @@
 
     const LESSON_CONFIG = {
       id: 'ice-prioritization',
-      title: 'The ICE Framework: How to Prioritize What to Test First',
+      title: 'The ICE Framework',
       description: 'Stop guessing which tests to run first. ICE scoring helps you rank ideas by Impact, Confidence, and Ease.',
       accentColor: '#3b82f6',
-      duration: '5 min',
+      duration: '6 min',
       nextLesson: { id: 'next-lesson', title: 'Next Lesson Coming Soon', teaser: 'Stay tuned for more optimization tactics.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
 
-
+    // ============ CELEBRATION GIFS ============
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
     ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['How to score test ideas using Impact, Confidence, and Ease', 'Why ICE prevents wasted time on low-value tests', 'How to rank your test backlog and start with winners'] },
-      { type: 'hook', headline: 'You can\'t test everything at once.', subtext: 'Dozens of test ideas. Limited time. Limited traffic. Which test do you run first? The one that sounds exciting? The one your boss suggested? The easiest one? Wrong. You need a system. ICE scoring ranks every idea by three factors: Impact, Confidence, Ease. Multiply them together. Highest score wins. Run that test first. No gut feelings. No politics. Just data-driven prioritization that maximizes your ROI per test.' },
-      { type: 'content', title: 'The Problem: Too Many Ideas, Not Enough Clarity', body: 'Every marketer has a backlog of test ideas. Change the headline. Move the CTA. Add testimonials. Try a video. The list is endless. Without a system, you pick randomly. Or worse, you test the loudest opinion in the room. Meanwhile, high-impact tests sit ignored. Time gets wasted on low-confidence guesses. Resources burn on hard-to-implement ideas that barely move the needle. ICE fixes this.' },
-      { type: 'cards', title: 'What Is ICE Scoring?', items: [
-        { title: 'I = Impact (1-10)', description: 'How much will this increase your primary conversion goal? Revenue per visitor? Add-to-cart rate?' },
-        { title: 'C = Confidence (1-10)', description: 'Based on experience and data, how confident are you this will produce positive results?' },
-        { title: 'E = Ease (1-10)', description: 'How easy to implement? Does it require developers, designers, external teams?' }
-      ]},
-      { type: 'content', title: 'How to Calculate ICE Score', body: 'Score each idea on all three dimensions: Impact (1-10), Confidence (1-10), Ease (1-10). Then multiply: ICE Score = Impact × Confidence × Ease. The result is a number between 1 and 1,000. Higher score = higher priority. Sort your backlog by ICE score. Start at the top. Run the highest-scoring test first. When that concludes, run the next one. Simple. Systematic. Effective.' },
-      { type: 'example', scenario: 'Scoring Three Real Test Ideas', before: { label: 'Floating Add-to-Cart', text: 'Impact: 7 (could significantly boost mobile conversions). Confidence: 6 (seen mixed results in case studies). Ease: 9 (theme setting, takes 10 minutes). ICE Score: 7 × 6 × 9 = 378' }, after: { label: 'Reviews Under Title', text: 'Impact: 8 (social proof near decision point). Confidence: 9 (proven tactic, high conviction). Ease: 4 (requires custom code, developer time). ICE Score: 8 × 9 × 4 = 288' }, insight: 'Floating Add-to-Cart scores higher (378 vs 288) despite lower confidence, because it is much easier to implement.' },
-      { type: 'content', title: 'Example: "NEW" Badges on Products', body: 'Let\'s score one more: Adding "NEW" badges to recently launched products. Impact: 5 (slight urgency boost, not major). Confidence: 7 (scarcity/novelty psychology works). Ease: 10 (upload badge image, add to product, done in 15 minutes). ICE Score: 5 × 7 × 10 = 350. This scores between the other two examples. Run it second.' },
-      { type: 'content', title: 'Why Ease Matters So Much', body: 'Notice how Ease acts as a multiplier. A high-impact idea that requires months of dev work might score lower than a medium-impact idea you can launch tomorrow. This is intentional. Testing is about velocity. The faster you test, the faster you learn. Quick wins compound. A test that takes 3 months to build is 3 months of lost learnings. Ease keeps you moving.' },
-      { type: 'cards', title: 'Your Final Test Priority List', items: [
-        { title: '1. Floating Add-to-Cart (378)', description: 'High ease compensates for medium confidence. Quick win potential.' },
-        { title: '2. "NEW" Badges (350)', description: 'Balanced across all three dimensions. Solid second choice.' },
-        { title: '3. Reviews Under Title (288)', description: 'High impact and confidence, but low ease drags the score down.' }
-      ]},
-      { type: 'quiz', question: 'What does the ICE score prioritize?', options: ['The test with the highest impact only', 'The easiest test to implement', 'Tests that balance impact, confidence, and ease through multiplication', 'The test your boss suggests'], correctIndex: 2, feedback: { correct: 'Exactly. ICE scoring multiplies Impact × Confidence × Ease, forcing you to balance all three dimensions. A high-impact test that is impossible to implement scores low. An easy test with no impact scores low. ICE finds the sweet spot: ideas that move the needle AND can actually get done. This prevents wasted effort on flashy ideas that never launch or easy tweaks that don\'t matter.', incorrect: 'Not quite. ICE scoring multiplies Impact × Confidence × Ease together. It is not just one factor. A test might have huge impact but take 6 months to build (low ease = low score). Another might be easy but have zero impact (still low score). ICE balances all three. The highest ICE score wins because it represents the best ROI for your time and resources.' }},
-      { type: 'completion', sources: [] }
-    ];
-
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -174,10 +92,55 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Calculator: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="10" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="10" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/></svg>,
+      Gauge: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>,
+      Timer: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="10" y1="2" x2="14" y2="2"/><line x1="12" y1="14" x2="12" y2="8"/><circle cx="12" cy="14" r="8"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      ListOrdered: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>,
     };
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
+    };
+
+    // ============ SLIDES DATA ============
+    const slides = [
+      // ========== PART 1: THE STRATEGY (Theory) ==========
+      { type: 'welcome', learningGoals: ['How to score test ideas using Impact, Confidence, and Ease', 'Why ICE prevents wasted time on low-value tests', 'How to rank your test backlog and start with winners'] },
+      { type: 'hook', headline: 'You can\'t test everything at once.', subtext: 'Dozens of test ideas. Limited time. Limited traffic. Which test do you run first? The one that sounds exciting? The one your boss suggested? The easiest one? Wrong. You need a system that maximizes your ROI per test. ICE scoring ranks every idea by three factors: Impact, Confidence, Ease. Multiply them together. Highest score wins. No gut feelings. No politics. Just data-driven prioritization.' },
+      { type: 'problem', title: 'The Testing Chaos Problem' },
+      { type: 'ice-formula', title: 'The ICE Formula' },
+      { type: 'ice-breakdown', title: 'Breaking Down Each Factor' },
+      { type: 'scoring-example', title: 'ICE Scoring in Action' },
+      { type: 'why-ease-matters', title: 'Why Ease Matters So Much' },
+      { type: 'final-priority-list', title: 'Your Final Priority List' },
+      { type: 'psychology', title: 'The Psychology Behind ICE' },
+      { type: 'quiz', question: 'What does the ICE score prioritize?', options: ['The test with the highest impact only', 'The easiest test to implement', 'Tests that balance impact, confidence, and ease through multiplication', 'The test your boss suggests'], correctIndex: 2, feedback: { correct: 'Exactly. ICE scoring multiplies Impact x Confidence x Ease, forcing you to balance all three dimensions. A high-impact test that is impossible to implement scores low. An easy test with no impact scores low. ICE finds the sweet spot: ideas that move the needle AND can actually get done.', incorrect: 'Not quite. ICE scoring multiplies Impact x Confidence x Ease together. It is not just one factor. A test might have huge impact but take 6 months to build (low ease = low score). Another might be easy but have zero impact (still low score). ICE balances all three.' }},
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-create-backlog' },
+      { type: 'step-score-ideas' },
+      { type: 'step-run-test' },
+      { type: 'step-results' },
+      { type: 'completion' }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -186,110 +149,341 @@
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl text-black mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-3" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }} className="flex items-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-[10px] uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-2">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-xs leading-snug">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let\'s Go</motion.button>
+            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl text-black leading-tight">{data.headline}</h2>
         </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">1</div><span className="font-semibold text-blue-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    // PROBLEM SLIDE - The Testing Chaos
+    const ProblemSlide = ({ data }) => {
+      const problems = [
+        { icon: Icons.Lightbulb, label: 'Too Many Ideas', desc: 'Change headline, move CTA, add testimonials, try video...', color: '#ef4444' },
+        { icon: Icons.Target, label: 'Random Selection', desc: 'Picking based on gut feeling or loudest opinion', color: '#f59e0b' },
+        { icon: Icons.Timer, label: 'Wasted Time', desc: 'High-impact tests sit ignored while easy ones run', color: '#8b5cf6' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Problem</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-blue-50 border-2 border-blue-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">2</div><span className="font-semibold text-blue-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {problems.map((problem, i) => {
+              const Icon = problem.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  className="rounded-xl p-5 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${problem.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3" style={{ background: `${problem.color}20`, color: problem.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-sm mb-2">{problem.label}</div>
+                  <div className="text-neutral-400 text-xs">{problem.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="p-4 rounded-xl text-center" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <p className="text-red-600 font-medium text-sm">Without a system, you test randomly. High-impact ideas get buried. Resources burn on low-value experiments.</p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+      );
+    };
+
+    // ICE FORMULA SLIDE
+    const IceFormulaSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Solution</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+          className="rounded-2xl p-8 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="h-1 w-full mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="w-20 h-20 rounded-xl flex items-center justify-center text-3xl font-bold" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#3b82f6' }}>I</motion.div>
+            <span className="text-3xl text-neutral-500">x</span>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+              className="w-20 h-20 rounded-xl flex items-center justify-center text-3xl font-bold" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' }}>C</motion.div>
+            <span className="text-3xl text-neutral-500">x</span>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}
+              className="w-20 h-20 rounded-xl flex items-center justify-center text-3xl font-bold" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b' }}>E</motion.div>
+            <span className="text-3xl text-neutral-500">=</span>
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.6 }}
+              className="w-24 h-20 rounded-xl flex items-center justify-center text-2xl font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 30px rgba(var(--accent-rgb), 0.4)' }}>Score</motion.div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 mt-6">
+            <div className="text-center">
+              <div className="text-blue-400 font-bold text-sm mb-1">Impact</div>
+              <div className="text-neutral-500 text-xs">How much will it move the needle?</div>
+            </div>
+            <div className="text-center">
+              <div className="text-emerald-400 font-bold text-sm mb-1">Confidence</div>
+              <div className="text-neutral-500 text-xs">How sure are you it will work?</div>
+            </div>
+            <div className="text-center">
+              <div className="text-amber-400 font-bold text-sm mb-1">Ease</div>
+              <div className="text-neutral-500 text-xs">How easy to implement?</div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+          className="mt-6 text-center">
+          <p className="text-neutral-500 text-sm">Score each 1-10. Multiply. Range: <span className="font-bold text-neutral-700">1 to 1,000</span>. Higher = Higher Priority.</p>
         </motion.div>
       </div>
     );
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 6 ? 'md:grid-cols-3' : data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+    // ICE BREAKDOWN SLIDE
+    const IceBreakdownSlide = ({ data }) => {
+      const factors = [
+        { letter: 'I', name: 'Impact', color: '#3b82f6', scale: '1-10', question: 'How much will this increase your primary conversion goal?', examples: ['10 = Homepage redesign (affects all traffic)', '5 = Product page tweak (affects some traffic)', '2 = Footer change (minimal effect)'] },
+        { letter: 'C', name: 'Confidence', color: '#10b981', scale: '1-10', question: 'Based on experience and data, how confident are you it will work?', examples: ['10 = Proven tactic, strong case studies', '5 = Educated guess, some evidence', '2 = Wild speculation, no data'] },
+        { letter: 'E', name: 'Ease', color: '#f59e0b', scale: '1-10', question: 'How easy to implement? Time, resources, dependencies?', examples: ['10 = 15 minutes, no devs needed', '5 = Few days, some coordination', '2 = Months of work, multiple teams'] }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="space-y-4">
+            {factors.map((factor, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="flex items-start gap-4">
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl font-bold flex-shrink-0" style={{ background: `${factor.color}20`, color: factor.color }}>{factor.letter}</div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-bold text-white">{factor.name}</span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: `${factor.color}30`, color: factor.color }}>{factor.scale}</span>
+                    </div>
+                    <p className="text-neutral-400 text-sm mb-2">{factor.question}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {factor.examples.map((ex, j) => (
+                        <span key={j} className="px-2 py-1 rounded text-[10px] bg-neutral-800 text-neutral-300">{ex}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // SCORING EXAMPLE SLIDE
+    const ScoringExampleSlide = ({ data }) => {
+      const examples = [
+        { name: 'Floating Add-to-Cart', impact: 7, confidence: 6, ease: 9, score: 378, notes: 'Theme setting, 10 minutes' },
+        { name: '"NEW" Badges', impact: 5, confidence: 7, ease: 10, score: 350, notes: 'Upload badge, done in 15 min' },
+        { name: 'Reviews Under Title', impact: 8, confidence: 9, ease: 4, score: 288, notes: 'Needs custom code, dev time' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Real Example</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="space-y-3">
+            {examples.map((ex, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className={`rounded-xl p-4 ${i === 0 ? 'border-2' : ''}`}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderColor: i === 0 ? 'var(--accent)' : 'transparent', boxShadow: i === 0 ? '0 0 20px rgba(var(--accent-rgb), 0.2)' : 'none' }}>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ background: i === 0 ? 'var(--accent)' : '#4b5563' }}>{i + 1}</span>
+                    <div>
+                      <div className="text-white font-bold text-sm">{ex.name}</div>
+                      <div className="text-neutral-500 text-xs">{ex.notes}</div>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold" style={{ color: i === 0 ? 'var(--accent)' : '#9ca3af' }}>{ex.score}</div>
+                    <div className="text-neutral-500 text-[10px]">ICE Score</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="px-2 py-1 rounded" style={{ background: 'rgba(59, 130, 246, 0.2)', color: '#3b82f6' }}>I:{ex.impact}</span>
+                  <span className="text-neutral-600">x</span>
+                  <span className="px-2 py-1 rounded" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10b981' }}>C:{ex.confidence}</span>
+                  <span className="text-neutral-600">x</span>
+                  <span className="px-2 py-1 rounded" style={{ background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b' }}>E:{ex.ease}</span>
+                  <span className="text-neutral-600">=</span>
+                  <span className="font-bold text-white">{ex.score}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="mt-4 p-3 rounded-xl text-center" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}>Floating Add-to-Cart wins despite lower confidence because it's much easier to implement!</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // WHY EASE MATTERS SLIDE
+    const WhyEaseMattersSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>Key Insight</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+            <h3 className="text-white font-bold mb-4">Ease = The Multiplier Effect</h3>
+            <div className="space-y-3 text-sm text-neutral-400">
+              <p>A high-impact idea that requires months of dev work might score lower than a medium-impact idea you can launch tomorrow.</p>
+              <p className="text-amber-400 font-medium">This is intentional.</p>
+              <p>Testing is about velocity. The faster you test, the faster you learn. Quick wins compound.</p>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="rounded-xl p-6 bg-neutral-50 border border-neutral-200">
+            <h3 className="text-neutral-900 font-bold mb-4">The Math Reality</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white border border-neutral-100">
+                <span className="text-neutral-600 text-sm">3-month project</span>
+                <span className="text-red-500 font-bold text-sm">= 3 months of lost learnings</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-lg bg-white border border-neutral-100">
+                <span className="text-neutral-600 text-sm">3 quick wins</span>
+                <span className="text-emerald-500 font-bold text-sm">= 3 compounding learnings</span>
+              </div>
+              <div className="flex items-center justify-between p-3 rounded-lg" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-neutral-700 text-sm">Ease keeps you</span>
+                <span className="font-bold text-sm" style={{ color: 'var(--accent)' }}>MOVING</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     );
 
+    // FINAL PRIORITY LIST SLIDE
+    const FinalPriorityListSlide = ({ data }) => {
+      const priorities = [
+        { rank: 1, name: 'Floating Add-to-Cart', score: 378, color: '#3b82f6', status: 'Run First' },
+        { rank: 2, name: '"NEW" Badges', score: 350, color: '#10b981', status: 'Run Second' },
+        { rank: 3, name: 'Reviews Under Title', score: 288, color: '#f59e0b', status: 'Run Third' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>The Result</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="space-y-3 mb-6">
+            {priorities.map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold text-white" style={{ background: item.color }}>{item.rank}</div>
+                <div className="flex-1">
+                  <div className="text-white font-bold">{item.name}</div>
+                  <div className="text-neutral-500 text-xs">{item.status}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold" style={{ color: item.color }}>{item.score}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+            className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">No gut feelings. No politics. Just <span className="text-white font-bold">data-driven prioritization</span> that maximizes ROI per test.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // PSYCHOLOGY SLIDE
+    const PsychologySlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>The Deeper Truth</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+          className="rounded-xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+          <div className="h-1 w-full mb-6 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #8b5cf6, transparent)' }} />
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-white font-bold mb-3">ICE Removes Politics</h3>
+              <ul className="space-y-2 text-sm text-neutral-400">
+                <li className="flex items-start gap-2"><span className="text-purple-400">-</span>No more "the boss wants this" prioritization</li>
+                <li className="flex items-start gap-2"><span className="text-purple-400">-</span>No more "loudest person wins" meetings</li>
+                <li className="flex items-start gap-2"><span className="text-purple-400">-</span>No more emotional attachment to bad ideas</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-white font-bold mb-3">ICE Creates Alignment</h3>
+              <ul className="space-y-2 text-sm text-neutral-400">
+                <li className="flex items-start gap-2"><span className="text-purple-400">+</span>Team agrees on objective criteria</li>
+                <li className="flex items-start gap-2"><span className="text-purple-400">+</span>Everyone sees the math</li>
+                <li className="flex items-start gap-2"><span className="text-purple-400">+</span>Disagreements become productive debates</li>
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="mt-6 p-4 rounded-xl text-center" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
+          <p className="text-purple-600 font-medium text-sm">ICE isn't just a scoring system. It's a decision-making framework that eliminates bias and maximizes learning velocity.</p>
+        </motion.div>
+      </div>
+    );
+
+    // QUIZ SLIDE
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -299,33 +493,34 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      useEffect(() => { if (showFeedback) onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); }, [showFeedback, isCorrect]);
+      useEffect(() => () => onHideGif(), [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-8 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback}
+                  className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className="text-neutral-700 text-sm">{option}</span>
                   </div>
                 </motion.button>
               ))}
             </div>
             <AnimatePresence>
               {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
-                </motion.div>
+                <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-4 rounded-xl text-sm ${isCorrect ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-amber-50 border border-amber-200 text-amber-800'}`}>
+                  {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+                </motion.p>
               )}
             </AnimatePresence>
           </div>
@@ -333,19 +528,254 @@
       );
     };
 
-    const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now know how to prioritize test ideas using ICE scoring. Score each idea on Impact, Confidence, and Ease. Multiply them together. Start with the highest score. Stop guessing. Start systematically winning.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+    // ========== PART 2: PRACTICAL SLIDES ==========
+
+    // Section Divider Slide
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to implement ICE scoring in your testing workflow</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     );
 
+    // Step 1: Create Your Backlog
+    const StepCreateBacklogSlide = ({ data }) => {
+      const sources = [
+        { icon: Icons.Lightbulb, label: 'Your own ideas', desc: 'Things you\'ve noticed could improve' },
+        { icon: Icons.Target, label: 'Analytics insights', desc: 'High drop-off pages, low conversion areas' },
+        { icon: Icons.Star, label: 'Competitor research', desc: 'What\'s working for others in your space' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Create Your Test Backlog</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-3 mb-6">
+            {sources.map((source, i) => {
+              const Icon = source.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-sm mb-1">{source.label}</div>
+                  <div className="text-neutral-500 text-xs">{source.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Open a spreadsheet. List every test idea you have - headlines, CTAs, layouts, offers. Aim for at least 10 ideas to start.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 2: Score Each Idea
+    const StepScoreIdeasSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Score Each Idea</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-xl p-5 mb-4" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+            <div className="grid grid-cols-4 gap-3 text-center text-xs font-bold text-neutral-400 mb-3">
+              <div>Test Idea</div>
+              <div style={{ color: '#3b82f6' }}>Impact (1-10)</div>
+              <div style={{ color: '#10b981' }}>Confidence (1-10)</div>
+              <div style={{ color: '#f59e0b' }}>Ease (1-10)</div>
+            </div>
+
+            {['New headline', 'Add urgency timer', 'Social proof badge'].map((idea, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                className="grid grid-cols-4 gap-3 py-3 border-t border-neutral-800">
+                <div className="text-white text-sm">{idea}</div>
+                <div className="text-center"><input type="text" placeholder="?" className="w-10 h-8 rounded bg-neutral-800 text-center text-white text-sm border-none focus:ring-2 focus:ring-blue-500" /></div>
+                <div className="text-center"><input type="text" placeholder="?" className="w-10 h-8 rounded bg-neutral-800 text-center text-white text-sm border-none focus:ring-2 focus:ring-emerald-500" /></div>
+                <div className="text-center"><input type="text" placeholder="?" className="w-10 h-8 rounded bg-neutral-800 text-center text-white text-sm border-none focus:ring-2 focus:ring-amber-500" /></div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Score each idea 1-10 for Impact, Confidence, and Ease. Be honest - overconfidence kills good prioritization.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Run Your Top Test
+    const StepRunTestSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Run Your Highest-Scoring Test</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <h3 className="text-white font-bold mb-3">The Process</h3>
+              <div className="space-y-2 text-sm text-neutral-400">
+                <div className="flex items-center gap-2"><span className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold" style={{ background: 'var(--accent)', color: 'white' }}>1</span>Sort by ICE score (highest first)</div>
+                <div className="flex items-center gap-2"><span className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold" style={{ background: 'var(--accent)', color: 'white' }}>2</span>Implement the top test</div>
+                <div className="flex items-center gap-2"><span className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold" style={{ background: 'var(--accent)', color: 'white' }}>3</span>Run with statistical significance</div>
+                <div className="flex items-center gap-2"><span className="w-5 h-5 rounded flex items-center justify-center text-[10px] font-bold" style={{ background: 'var(--accent)', color: 'white' }}>4</span>Document results, move to next</div>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="p-5 rounded-xl bg-neutral-50 border border-neutral-200">
+              <h3 className="text-neutral-900 font-bold mb-3">Pro Tips</h3>
+              <div className="space-y-2 text-sm text-neutral-600">
+                <p>- Run one test at a time for clean data</p>
+                <p>- Wait for statistical significance (95%+)</p>
+                <p>- Re-score your backlog quarterly</p>
+                <p>- Add new ideas continuously</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Pick your #1 ICE score idea and set it up as an A/B test today. Use tools like ABConvert to run the test.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '3-5x', label: 'More Tests Run', desc: 'Per quarter with clear prioritization', icon: Icons.TrendingUp, color: '#3b82f6' },
+        { metric: '+40%', label: 'Win Rate', desc: 'Higher-confidence ideas win more', icon: Icons.Target, color: '#10b981' },
+        { metric: '2x', label: 'Learning Velocity', desc: 'Quick wins compound faster', icon: Icons.Timer, color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Teams using ICE consistently report <span className="text-white font-bold">higher test velocity and better outcomes</span> within 4-6 weeks.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // COMPLETION SLIDE
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }}
+          className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">
+          You now know how to prioritize test ideas using ICE scoring. Stop guessing. Start systematically winning.
+        </motion.p>
+
+        {/* Key Takeaways - Clean summary */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Score every idea: Impact x Confidence x Ease = Priority</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Ease matters - quick wins compound into big results</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Run highest-scoring tests first, document results, repeat</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="bg-neutral-100 rounded-xl p-5 max-w-md w-full">
+          <p className="text-neutral-400 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-lg mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -359,7 +789,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -398,10 +827,20 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'problem': return <ProblemSlide data={slide} />;
+          case 'ice-formula': return <IceFormulaSlide data={slide} />;
+          case 'ice-breakdown': return <IceBreakdownSlide data={slide} />;
+          case 'scoring-example': return <ScoringExampleSlide data={slide} />;
+          case 'why-ease-matters': return <WhyEaseMattersSlide data={slide} />;
+          case 'final-priority-list': return <FinalPriorityListSlide data={slide} />;
+          case 'psychology': return <PsychologySlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          // Part 2: Practical
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-create-backlog': return <StepCreateBacklogSlide data={slide} />;
+          case 'step-score-ideas': return <StepScoreIdeasSlide data={slide} />;
+          case 'step-run-test': return <StepRunTestSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }

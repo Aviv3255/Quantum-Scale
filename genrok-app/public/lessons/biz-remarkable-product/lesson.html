@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #6ee7b7; --accent-rgb: 16, 185, 129; }
@@ -43,149 +40,82 @@
       description: 'Why "good enough" products fight the laws of the matrix forever',
       accentColor: '#10b981',
       duration: '7 min',
-      nextLesson: { id: 'next-lesson', title: 'Next Lesson', teaser: 'More business foundations coming soon.' }
+      nextLesson: { id: 'biz-savage-mentality', title: 'The Savage Mentality', teaser: 'The mindset that separates 7-figure founders from everyone else.' }
     };
-
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const DramaticReveal = ({ children, delay = 0 }) => (
-      <motion.div initial={{ opacity: 0, scale: 0.8, rotateX: -30 }} animate={{ opacity: 1, scale: 1, rotateX: 0 }} transition={{ delay, duration: 0.6, type: 'spring' }}>
-        {children}
-      </motion.div>
-    );
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 1.5, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const startTime = Date.now();
+        const tick = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / (duration * 1000), 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(start + (end - start) * eased);
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        tick();
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
 
     const slides = [
       { type: 'welcome', learningGoals: ['Why mediocre products force you to fight forever', 'The Smallest Viable Audience - your secret weapon', 'The 3-question litmus test for remarkable products'] },
-      { type: 'hook', headline: 'A plain gray t-shirt. Nothing special. Sells okay. But you\'re stuck in an endless loop of discounts, ads, and customer churn. Now picture TOMS Shoes: "Buy a pair, give a pair." Distinctive design. Built-in story. People line up. Not because of ads. Because the product is worth talking about.', subtext: 'Marketing starts BEFORE the product is finished. You can\'t create a high-LTV business by selling mediocre products and hoping ads fix it. The goal is to invent something worth making a remark about. That\'s where everything changes.' },
-      { type: 'quoteSpotlight', data: {
-        quote: 'Stop making average crap for average people.',
-        context: 'Seth Godin - The foundation of remarkable marketing',
-        personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/seth-godin-brian-bloom-xl.jpg',
-        personName: 'Seth Godin'
-      }},
-      { type: 'content', title: 'The Foundation: Marketing Starts Before the Product', body: 'Here\'s what most people get wrong: They build a product first. Then they try to find customers. But that sequence creates mediocrity. Because you\'re designing for "everyone" - which means you\'re designing for no one. Remarkable products start with a different question: "What could I make that a SPECIFIC group of people would miss if it were gone?" Not what can I sell to anyone. What would make a small audience CARE so much they tell others? That\'s the shift. Marketing isn\'t what happens after. Marketing is the reason the product exists at all.' },
-      { type: 'vsBattle', title: 'Mediocre vs Remarkable', data: {
-        left: { value: 'Mediocre', label: 'Average Product', description: 'Generic, forgettable, needs constant ads to survive' },
-        right: { value: 'Remarkable', label: 'Worth Talking About', description: 'Distinctive, memorable, customers do the marketing' }
-      }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_weighing_options_scales_in_hands_100_pure_whit_8cbe7780-615e-48f5-aafe-2184114c1b33_2.mp4', characterPosition: 'right'},
-      { type: 'mockup', title: 'Mediocre vs Remarkable Product' },
-      { type: 'content', title: 'Focus on the Smallest Viable Audience', body: 'Don\'t design for "everyone." Design your product and story for a SPECIFIC group of people who will care so much they\'ll tell others. Blake Mycoskie didn\'t make shoes for everyone. He made TOMS for people who wanted fashion AND impact. The smallest viable audience was conscious consumers who felt guilt about inequality but didn\'t know how to help. He built for them. They told everyone. The product spread - not through ads, but through remarks. That\'s the power of specificity. When you try to please everyone, you excite no one. When you solve a problem perfectly for a small group, they become your marketing engine.' },
-      { type: 'cards', title: 'The Litmus Test: 3 Questions', items: [
-        { title: '1. Does it have a story worth telling?', description: 'Not a tagline. A genuine narrative someone would share at dinner. "You know what\'s cool about this product?"' },
-        { title: '2. Would they miss it if it were gone?', description: 'Is this a "nice to have" or a "can\'t live without"? Remarkable products create dependency - not addiction, but genuine value they can\'t replace.' },
-        { title: '3. Is there a built-in reason to tell someone?', description: 'TOMS: "Buy a pair, give a pair." The product itself includes the reason to share. What\'s YOUR built-in share trigger?' }
-      ]},
-      { type: 'example', scenario: 'Seth Godin\'s Pizza Quote', before: { label: 'Average Pizza Shop', text: 'Generic pizza. Okay taste. Nothing special. You run TikTok ads. A few people come. Most forget. You keep paying for ads forever.' }, after: { label: 'Remarkable Pizza Shop', text: 'Line around the block. Not because of TikTok ads. Because they made pizza worth putting on TikTok. The PRODUCT is the marketing. Customers film it. Share it. The business grows from remarks, not budget.' }, insight: 'There are people who open a pizza shop and there\'s a line around the block. There isn\'t a line \'cuz they\'re good at TikTok. There\'s a line \'cuz they made a pizza worth other people putting on TikTok.' },
-      { type: 'content', title: 'This is the Source Code of a High-LTV Business', body: 'Without a remarkable product, you are constantly fighting the laws of the matrix. You spend money to acquire customers. They churn. You spend more to replace them. The cycle never ends. But when you build something remarkable - something a specific audience would genuinely miss - everything inverts. Customers stay longer. They buy more. They tell others. Your CAC drops because word-of-mouth does the heavy lifting. This is how you escape the mediocrity trap. Not with better ads. With a better product that people actually care about.' },
-      { type: 'implementation', title: 'Measuring If Your Product Is Remarkable', concept: 'The psychology is clear: remarkable products get remarked about. But how do you KNOW if yours is remarkable or just acceptable? The answer comes from what customers say - not what you assume. Here is how to find out.', steps: ['Set up a post-purchase survey asking two questions: "What made you decide to buy?" and "What almost stopped you from buying?" These reveal if customers bought for the PRODUCT or just the discount.', 'Analyze the patterns. If 70%+ mention the product itself (features, story, uniqueness), you have something remarkable. If most mention price or discount, you are selling mediocrity.', 'Look for "remark triggers" - specific phrases that show customers are ready to share. "I love the story behind this" or "My friends need to see this" indicate remarkability. "Good deal" does not.', 'Use the objection data to strengthen your product. What almost stopped them? Fix those issues and you remove barriers to both purchase AND word-of-mouth.'], insight: 'Products where customers mention the STORY or UNIQUENESS see 40% higher repeat purchase rates than those where customers only mention price.', toolName: 'Grapevine Surveys', toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' },
-      { type: 'cards', title: 'Why Remarkable Products Win', items: [
-        { title: 'Higher LTV', description: 'Customers who love the product stay longer and buy more. They don\'t churn after one purchase.' },
-        { title: 'Lower CAC', description: 'Word-of-mouth and organic sharing reduce your dependence on paid ads. Customers do the marketing.' },
-        { title: 'Competitive Moat', description: 'Generic products get copied instantly. Remarkable products with genuine stories can\'t be replicated easily.' },
-        { title: 'Sustainable Growth', description: 'You\'re not trapped in an endless loop of discounts and ad spend. The product carries the business.' }
-      ]},
-      { type: 'quiz', question: 'What is the primary reason remarkable products create high-LTV businesses?', options: ['They have better packaging design', 'They solve a problem so well for a specific audience that customers stay longer, buy more, and tell others', 'They run more expensive ad campaigns', 'They offer bigger discounts to everyone'], correctIndex: 1, feedback: { correct: 'Exactly! Remarkable products aren\'t about being "better for everyone." They\'re about being ESSENTIAL for a specific group. When you solve their problem perfectly, they don\'t churn. They don\'t need discounts. They tell their friends. That\'s how you build a high-LTV business - not through ads, but through products worth remarking about.', incorrect: 'Not quite. The key insight is SPECIFICITY and VALUE. Remarkable products solve a problem so perfectly for a specific audience that those people can\'t imagine going back. They stay. They buy more. They tell others. That\'s the source of high LTV - not better ads or discounts, but a product people genuinely care about.' }},
-      { type: 'completion', sources: [{ name: 'Grapevine Surveys - Post-Purchase Insights', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+      { type: 'hook', headline: 'A plain gray t-shirt. Nothing special. Sells okay. But you are stuck in an endless loop.', subtext: 'Discounts, ads, customer churn. Now picture TOMS Shoes: "Buy a pair, give a pair." Distinctive design. Built-in story. People line up. Not because of ads. Because the product is worth talking about.' },
+      { type: 'quote-spotlight', quote: 'Stop making average crap for average people.', author: 'Seth Godin', context: 'The foundation of remarkable marketing', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/seth-godin-brian-bloom-xl.jpg' },
+      { type: 'product-battle', title: 'Mediocre vs Remarkable',
+        mediocre: { label: 'Gray T-Shirt', traits: ['Generic', 'Forgettable', 'Needs constant ads'] },
+        remarkable: { label: 'TOMS Shoes', traits: ['Distinctive', 'Story built-in', 'Customers market it'], tagline: 'Buy a pair, give a pair' }
+      },
+      { type: 'audience-focus', title: 'The Smallest Viable Audience',
+        wrong: { label: 'Everyone', description: 'Designing for "everyone" means no one gets excited' },
+        right: { label: 'Specific Group', description: 'Solve perfectly for a small group who tell others' },
+        example: 'TOMS: Conscious consumers who wanted fashion AND impact'
+      },
+      { type: 'litmus-test', title: 'The 3-Question Litmus Test',
+        questions: [
+          { number: 1, question: 'Does it have a story worth telling?', example: '"You know what is cool about this?"' },
+          { number: 2, question: 'Would they miss it if gone?', example: '"Nice to have" vs "Cannot live without"' },
+          { number: 3, question: 'Is there a built-in reason to share?', example: 'TOMS: Buy a pair, give a pair' }
+        ]
+      },
+      { type: 'pizza-example', title: 'Seth Godin\'s Pizza Insight',
+        before: { type: 'Average Pizza', description: 'Run TikTok ads. A few people come. Most forget. Keep paying forever.' },
+        after: { type: 'Remarkable Pizza', description: 'Line around the block. Not because of ads. Because they made pizza worth filming.' },
+        quote: 'There is a line because they made pizza worth putting on TikTok.'
+      },
+      { type: 'mediocrity-cycle', title: 'The Mediocrity Trap',
+        cycle: [
+          { stage: 'Spend', description: 'Pay for ads to acquire customers' },
+          { stage: 'Churn', description: 'Customers leave after one purchase' },
+          { stage: 'Repeat', description: 'Spend more to replace them' }
+        ],
+        escape: 'Build something remarkable - customers stay, buy more, tell others'
+      },
+      { type: 'four-wins', title: 'Why Remarkable Products Win',
+        wins: [
+          { stat: '40', unit: '%', title: 'Higher LTV', description: 'Customers who love products stay longer' },
+          { stat: '3', unit: 'x', title: 'Lower CAC', description: 'Word-of-mouth reduces ad dependency' },
+          { stat: '10', unit: 'x', title: 'Competitive Moat', description: 'Stories cannot be copied easily' },
+          { stat: '0', unit: '%', title: 'Discount Dependency', description: 'No endless discount loops' }
+        ]
+      },
+      { type: 'quiz', question: 'What is the primary reason remarkable products create high-LTV businesses?', options: ['They have better packaging design', 'They solve a problem so well for a specific audience that customers stay and tell others', 'They run more expensive ad campaigns', 'They offer bigger discounts'], correctIndex: 1, feedback: { correct: 'Exactly! Remarkable products are ESSENTIAL for a specific group. When you solve their problem perfectly, they stay, buy more, and tell friends. That is high LTV.', incorrect: 'Not quite. The key is SPECIFICITY and VALUE. Remarkable products solve problems so perfectly for a specific audience that those people cannot imagine going back.' }},
+      { type: 'mindset-shift', title: 'The Remarkability Paradox', insight: 'You cannot market your way to a remarkable product. You cannot advertise mediocrity into success. The product IS the marketing. Build something worth talking about, and customers become your marketing engine.' },
+      { type: 'completion', sources: ['Seth Godin - Purple Cow', 'TOMS Shoes Case Study'] }
     ];
 
     const Icons = {
@@ -194,10 +124,19 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      ClipboardList: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14h6"/><path d="M9 18h6"/><path d="M9 10h6"/></svg> };
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      RefreshCw: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      MessageCircle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+    };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -228,233 +167,324 @@
     };
 
     const HookSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      </div>
+    );
+
+    // Quote Spotlight Slide with person image
+    const QuoteSpotlightSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const MockupSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-2xl text-black text-center mb-8">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="w-full max-w-3xl">
-          <svg viewBox="0 0 800 400" className="w-full h-auto">
-            <defs>
-              <linearGradient id="mediocreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#9ca3af', stopOpacity: 0.3 }} />
-                <stop offset="100%" style={{ stopColor: '#6b7280', stopOpacity: 0.1 }} />
-              </linearGradient>
-              <linearGradient id="remarkableGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#10b981', stopOpacity: 0.3 }} />
-                <stop offset="100%" style={{ stopColor: '#059669', stopOpacity: 0.1 }} />
-              </linearGradient>
-            </defs>
-
-            {/* Left Side - Mediocre Product */}
-            <g>
-              <rect x="20" y="50" width="360" height="300" rx="20" fill="url(#mediocreGradient)" stroke="#9ca3af" strokeWidth="3"/>
-              <text x="200" y="90" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#6b7280">MEDIOCRE</text>
-              <text x="200" y="115" textAnchor="middle" fontSize="13" fill="#9ca3af">Generic • Forgettable</text>
-
-              {/* Gray T-shirt */}
-              <g transform="translate(140, 140)">
-                <path d="M 30 20 L 20 30 L 20 80 L 40 90 L 80 90 L 100 80 L 100 30 L 90 20 L 70 25 L 60 20 L 50 25 L 30 20 Z" fill="#d1d5db" stroke="#9ca3af" strokeWidth="2"/>
-                <text x="60" y="115" textAnchor="middle" fontSize="11" fill="#6b7280" fontWeight="600">Plain Gray T-Shirt</text>
-              </g>
-
-              {/* Small, forgettable indicators */}
-              <text x="80" y="260" fontSize="12" fill="#9ca3af">• Nothing special</text>
-              <text x="80" y="280" fontSize="12" fill="#9ca3af">• Nothing to say</text>
-              <text x="80" y="300" fontSize="12" fill="#9ca3af">• Easily forgotten</text>
-            </g>
-
-            {/* VS Circle */}
-            <g>
-              <circle cx="400" cy="200" r="35" fill="#1f2937"/>
-              <text x="400" y="210" textAnchor="middle" fontSize="20" fontWeight="bold" fill="white">VS</text>
-            </g>
-
-            {/* Right Side - Remarkable Product */}
-            <g>
-              <rect x="420" y="50" width="360" height="300" rx="20" fill="url(#remarkableGradient)" stroke="#10b981" strokeWidth="3"/>
-              <text x="600" y="90" textAnchor="middle" fontSize="22" fontWeight="bold" fill="#059669">REMARKABLE</text>
-              <text x="600" y="115" textAnchor="middle" fontSize="13" fill="#10b981">Worth Talking About</text>
-
-              {/* TOMS-style shoe */}
-              <g transform="translate(520, 140)">
-                <ellipse cx="80" cy="60" rx="70" ry="25" fill="#10b981" opacity="0.3"/>
-                <path d="M 20 50 Q 30 40 50 40 L 110 40 Q 130 40 135 50 L 140 60 Q 140 70 130 75 L 50 75 Q 30 75 25 70 Z" fill="#10b981" stroke="#059669" strokeWidth="2.5"/>
-                <path d="M 50 40 L 50 75" stroke="#059669" strokeWidth="1.5"/>
-                <path d="M 80 40 L 80 75" stroke="#059669" strokeWidth="1.5"/>
-                <path d="M 110 40 L 110 75" stroke="#059669" strokeWidth="1.5"/>
-                <text x="80" y="115" textAnchor="middle" fontSize="11" fill="#059669" fontWeight="600">TOMS Shoes</text>
-              </g>
-
-              {/* Arrows pointing to features */}
-              <g>
-                <path d="M 480 180 L 510 165" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrowhead2)"/>
-                <text x="460" y="175" fontSize="10" fill="#059669">Distinctive</text>
-                <text x="460" y="187" fontSize="10" fill="#059669">design</text>
-              </g>
-
-              <g>
-                <path d="M 720 200 L 690 195" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrowhead2)"/>
-                <text x="665" y="205" fontSize="10" fill="#059669" textAnchor="end">Conversation</text>
-                <text x="665" y="217" fontSize="10" fill="#059669" textAnchor="end">starter</text>
-              </g>
-
-              <g>
-                <path d="M 600 280 L 600 255" stroke="#10b981" strokeWidth="2" markerEnd="url(#arrowhead2)"/>
-                <text x="600" y="295" textAnchor="middle" fontSize="10" fill="#059669">Story worth</text>
-                <text x="600" y="307" textAnchor="middle" fontSize="10" fill="#059669">telling</text>
-              </g>
-
-              {/* "Buy a pair, give a pair" badge */}
-              <g>
-                <rect x="530" y="310" width="140" height="25" rx="12" fill="#059669"/>
-                <text x="600" y="326" textAnchor="middle" fontSize="10" fill="white" fontWeight="600">Buy a pair, give a pair</text>
-              </g>
-            </g>
-
-            <defs>
-              <marker id="arrowhead2" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                <polygon points="0 0, 10 3, 0 6" fill="#10b981"/>
-              </marker>
-            </defs>
-          </svg>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-center text-sm text-neutral-500 italic mt-4">Mediocre products are forgettable. Remarkable products have stories, designs, and reasons to share built in.</motion.p>
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8 relative z-10">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-2xl p-8 md:p-12 text-center">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }}
+              className="w-12 h-12 mx-auto rounded-full flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+              <span className="text-white text-2xl">"</span>
             </motion.div>
-          ))}
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="text-white text-2xl md:text-3xl font-bold leading-relaxed mb-4">{data.quote}</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+              className="text-emerald-400 font-medium">{data.author}</motion.p>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+              className="text-neutral-500 text-sm">{data.context}</motion.p>
+          </motion.div>
         </div>
+        {data.personImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="absolute bottom-0 right-[5%] z-0 pointer-events-none hidden md:block" style={{ height: '50%', maxHeight: '400px' }}>
+            <img src={data.personImage} alt={data.author} className="h-full w-auto object-contain object-bottom" />
+          </motion.div>
+        )}
       </div>
     );
 
-    const ToolSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Tool Integration</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
+    // Product Battle Slide
+    const ProductBattleSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => setActiveIndex(prev => (prev + 1) % 2), 2500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-3 gap-6 items-center">
+            {/* Mediocre */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: activeIndex === 0 ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', position: 'relative', overflow: 'hidden' }}
+              className="rounded-2xl p-6 transition-all duration-500">
+              {activeIndex === 0 && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #9ca3af, transparent)' }} />}
+              <div className="text-center">
+                <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 ${activeIndex === 0 ? 'bg-gray-600' : 'bg-gray-200'}`}>
+                  <div className={`w-10 h-10 rounded ${activeIndex === 0 ? 'bg-gray-500' : 'bg-gray-300'}`}></div>
+                </div>
+                <h3 className={`text-xl font-bold mb-3 ${activeIndex === 0 ? 'text-white' : 'text-neutral-400'}`}>{data.mediocre.label}</h3>
+                <div className="space-y-2">
+                  {data.mediocre.traits.map((trait, i) => (
+                    <div key={i} className={`text-xs py-1 px-3 rounded-full inline-block mr-1 ${activeIndex === 0 ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-400'}`}>{trait}</div>
+                  ))}
+                </div>
+                {activeIndex === 0 && <div className="mt-4 py-2 px-4 rounded-full text-xs font-bold bg-red-500 text-white inline-block">FORGETTABLE</div>}
+              </div>
+            </motion.div>
+
+            {/* VS */}
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }} className="text-center hidden md:block">
+              <div className="w-16 h-16 mx-auto rounded-full bg-neutral-900 flex items-center justify-center">
+                <span className="text-white font-bold text-xl">VS</span>
+              </div>
+            </motion.div>
+
+            {/* Remarkable */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              style={{ background: activeIndex === 1 ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', position: 'relative', overflow: 'hidden' }}
+              className="rounded-2xl p-6 transition-all duration-500">
+              {activeIndex === 1 && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />}
+              <div className="text-center">
+                <div className={`w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4`} style={{ background: activeIndex === 1 ? 'linear-gradient(135deg, #10b981, #059669)' : '#e5e5e5' }}>
+                  <Icons.Heart />
+                </div>
+                <h3 className={`text-xl font-bold mb-3 ${activeIndex === 1 ? 'text-white' : 'text-neutral-400'}`}>{data.remarkable.label}</h3>
+                <div className="space-y-2">
+                  {data.remarkable.traits.map((trait, i) => (
+                    <div key={i} className={`text-xs py-1 px-3 rounded-full inline-block mr-1 ${activeIndex === 1 ? 'bg-emerald-900/50 text-emerald-300' : 'bg-gray-100 text-gray-400'}`}>{trait}</div>
+                  ))}
+                </div>
+                {activeIndex === 1 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4">
+                    <div className="py-2 px-4 rounded-full text-xs font-bold text-white inline-block" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>{data.remarkable.tagline}</div>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Audience Focus Slide
+    const AudienceFocusSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          {/* Wrong - Everyone */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="bg-neutral-100 rounded-xl p-6 border-2 border-neutral-200 text-center">
+            <div className="flex justify-center gap-1 mb-4">
+              {[...Array(12)].map((_, i) => (
+                <motion.div key={i} animate={{ x: [0, (Math.random() - 0.5) * 10, 0], y: [0, (Math.random() - 0.5) * 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 2, delay: i * 0.1 }}
+                  className="w-3 h-3 rounded-full bg-gray-300" />
+              ))}
+            </div>
+            <h3 className="text-xl font-bold text-neutral-600 mb-2">{data.wrong.label}</h3>
+            <p className="text-neutral-500 text-sm">{data.wrong.description}</p>
+            <div className="mt-4 py-2 px-4 rounded-full text-xs font-bold bg-red-100 text-red-600 inline-block">NO ONE EXCITED</div>
+          </motion.div>
+
+          {/* Right - Specific Group */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-6 text-center">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 2 }}
+              className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+              <Icons.Target />
+            </motion.div>
+            <h3 className="text-xl font-bold text-white mb-2">{data.right.label}</h3>
+            <p className="text-neutral-400 text-sm">{data.right.description}</p>
+            <div className="mt-4 py-2 px-4 rounded-full text-xs font-bold text-white inline-block" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>THEY TELL OTHERS</div>
+          </motion.div>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm"><Icons.Lightbulb className="inline mr-2 w-4 h-4 text-emerald-400" />{data.example}</p>
         </motion.div>
-        <div className="max-w-2xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="mb-4">
-            <p className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4">{data.body}</p>
-            <div className="flex gap-3 justify-center">
-              <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02]" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <span>Try {data.toolName}</span>
-                <Icons.ExternalLink />
-              </a>
+      </div>
+    );
+
+    // Litmus Test Slide
+    const LitmusTestSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => setActiveIndex(prev => (prev + 1) % data.questions.length), 3000);
+        return () => clearInterval(interval);
+      }, [data.questions.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="space-y-4">
+            {data.questions.map((q, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0, scale: activeIndex === i ? 1.02 : 1 }} transition={{ delay: 0.1 * i }}
+                style={{ background: activeIndex === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f5f5f5', position: 'relative', overflow: 'hidden' }}
+                className="rounded-xl p-5 transition-all duration-300">
+                {activeIndex === i && <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />}
+                <div className="flex items-start gap-4">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${activeIndex === i ? 'text-white' : 'text-neutral-400'}`}
+                    style={{ background: activeIndex === i ? 'linear-gradient(135deg, #10b981, #059669)' : '#e5e5e5' }}>
+                    <span className="font-bold">{q.number}</span>
+                  </div>
+                  <div>
+                    <h3 className={`text-lg font-bold mb-1 ${activeIndex === i ? 'text-white' : 'text-neutral-600'}`}>{q.question}</h3>
+                    <p className={`text-sm ${activeIndex === i ? 'text-emerald-400' : 'text-neutral-500'}`}>{q.example}</p>
+                  </div>
+                  {activeIndex === i && (
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="ml-auto flex-shrink-0">
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                        <Icons.Check />
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Pizza Example Slide
+    const PizzaExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="bg-neutral-100 rounded-xl p-6 border-2 border-neutral-200">
+            <div className="text-center mb-4">
+              <div className="text-4xl mb-2">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" className="mx-auto">
+                  <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+                </svg>
+              </div>
+              <h3 className="text-lg font-bold text-neutral-600">{data.before.type}</h3>
+            </div>
+            <p className="text-neutral-500 text-sm text-center">{data.before.description}</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-6">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div className="text-center mb-4">
+              <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
+                <Icons.Star className="mx-auto text-emerald-400" />
+              </motion.div>
+              <h3 className="text-lg font-bold text-white mt-2">{data.after.type}</h3>
+            </div>
+            <p className="text-neutral-400 text-sm text-center">{data.after.description}</p>
+            <div className="mt-4 flex justify-center">
+              <div className="py-2 px-4 rounded-full text-xs font-bold text-white" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>LINE AROUND THE BLOCK</div>
             </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="bg-neutral-900 rounded-xl p-3 text-center">
-            <p className="text-neutral-300 text-xs md:text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
+        </div>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="bg-neutral-900 rounded-xl p-4 text-center">
+          <p className="text-emerald-400 font-medium">"{data.quote}"</p>
+        </motion.div>
+      </div>
+    );
+
+    // Mediocrity Cycle Slide
+    const MediocrityCycleSlide = ({ data }) => {
+      const [activeStage, setActiveStage] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => setActiveStage(prev => (prev + 1) % data.cycle.length), 1500);
+        return () => clearInterval(interval);
+      }, [data.cycle.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          {/* Cycle visualization */}
+          <div className="flex justify-center items-center gap-4 mb-8">
+            {data.cycle.map((item, i) => (
+              <React.Fragment key={i}>
+                <motion.div animate={{ scale: activeStage === i ? 1.1 : 1, opacity: activeStage === i ? 1 : 0.5 }}
+                  style={{ background: activeStage === i ? 'linear-gradient(135deg, #ef4444, #dc2626)' : '#e5e5e5' }}
+                  className="w-24 h-24 rounded-full flex flex-col items-center justify-center text-center p-2">
+                  <span className={`text-sm font-bold ${activeStage === i ? 'text-white' : 'text-neutral-500'}`}>{item.stage}</span>
+                  <span className={`text-xs ${activeStage === i ? 'text-red-100' : 'text-neutral-400'}`}>{item.description.split(' ').slice(0, 2).join(' ')}</span>
+                </motion.div>
+                {i < data.cycle.length - 1 && (
+                  <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 1, delay: i * 0.3 }}>
+                    <Icons.ArrowRight className="text-neutral-300" />
+                  </motion.div>
+                )}
+              </React.Fragment>
+            ))}
+            <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 1, delay: 0.6 }}>
+              <Icons.RefreshCw className="text-red-400" />
+            </motion.div>
+          </div>
+
+          {/* Escape path */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-6 text-center">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div className="flex items-center justify-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                <Icons.Zap />
+              </div>
+              <span className="text-lg font-bold text-white">THE ESCAPE</span>
+            </div>
+            <p className="text-emerald-400">{data.escape}</p>
           </motion.div>
+        </div>
+      );
+    };
+
+    // Four Wins Slide
+    const FourWinsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          {data.wins.map((win, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 * i }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+              className="rounded-xl p-5">
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div className="flex items-center gap-4">
+                <div className="text-4xl font-bold text-emerald-400">
+                  <AnimatedCounter value={win.stat} />{win.unit}
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-white">{win.title}</h3>
+                  <p className="text-neutral-400 text-sm">{win.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     );
 
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-6">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-            <Icons.ClipboardList /> Implementation
-          </span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-sm md:text-base leading-relaxed mb-4 text-center">{data.concept}</motion.p>
-        <div className="space-y-2.5 mb-4">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="flex items-start gap-3 bg-white border-2 border-neutral-200 rounded-xl p-3 hover:border-neutral-300 transition-colors">
-              <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm leading-relaxed pt-0.5">{step}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4 mb-3">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-        {data.toolUrl && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-center">
-            <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-600 transition-colors">
-              <span>Tool: {data.toolName}</span>
-              <Icons.ExternalLink />
-            </a>
+    // Mindset Shift Slide
+    const MindsetShiftSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+          className="rounded-2xl p-8 md:p-12 text-center w-full">
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }}
+            className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+            <Icons.Star />
           </motion.div>
-        )}
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="text-2xl md:text-3xl font-bold text-white mb-4">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-neutral-400 text-lg leading-relaxed">{data.insight}</motion.p>
+        </motion.div>
       </div>
     );
 
@@ -467,13 +497,13 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
@@ -481,7 +511,7 @@
               {data.options.map((option, i) => (
                 <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
                     <span className="text-neutral-700 text-sm md:text-base">{option}</span>
@@ -501,81 +531,17 @@
       );
     };
 
-    const VsBattleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid grid-cols-3 gap-4 items-center">
-          <motion.div initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="bg-gradient-to-br from-gray-50 to-gray-100 border-2 border-gray-300 rounded-2xl p-6">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-gray-600 mb-2">{data.data.left.value}</div>
-              <div className="text-lg font-bold text-gray-700 mb-2">{data.data.left.label}</div>
-              <p className="text-sm text-gray-600">{data.data.left.description}</p>
-            </div>
-          </motion.div>
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }} className="text-center">
-            <div className="w-16 h-16 mx-auto rounded-full bg-neutral-900 flex items-center justify-center">
-              <span className="text-white font-bold text-xl">VS</span>
-            </div>
-          </motion.div>
-          <motion.div initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200 rounded-2xl p-6">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-emerald-600 mb-2">{data.data.right.value}</div>
-              <div className="text-lg font-bold text-emerald-700 mb-2">{data.data.right.label}</div>
-              <p className="text-sm text-emerald-600">{data.data.right.description}</p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
-
-    const QuoteSpotlightSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto py-8 relative z-10">
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="bg-neutral-900 rounded-2xl p-8 md:p-12 text-center relative">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'var(--accent)' }}>
-              <span className="text-white text-xl">"</span>
-            </div>
-            <motion.p initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-white text-xl md:text-2xl font-medium leading-relaxed mb-4">{data.data.quote}</motion.p>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-neutral-400">{data.data.context}</motion.p>
-          </motion.div>
-        </div>
-        {data.data.personImage && (
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-[5%] z-0 pointer-events-none"
-            style={{ height: '45%', maxHeight: '350px' }}
-          >
-            <img src={data.data.personImage} alt={data.data.personName || ''} className="h-full w-auto object-contain object-bottom" />
-          </motion.div>
-        )}
-      </div>
-    );
-
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why remarkable products are the foundation of high-LTV businesses. Stop making average crap for average people. Build something worth making a remark about.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring' }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand why remarkable products are the foundation of high-LTV businesses. Stop making average products for average people. Build something worth talking about.</motion.p>
+        <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} href={`/lessons/${LESSON_CONFIG.nextLesson.id}/lesson.html`} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4 block hover:bg-neutral-800 transition-colors">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
           <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
+        </motion.a>
+        {data.sources?.length > 0 && <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }} className="text-neutral-400 text-xs">Sources: {data.sources.join(', ')}</motion.div>}
       </div>
     );
 
@@ -591,16 +557,6 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -631,16 +587,16 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'mockup': return <MockupSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'tool': return <ToolSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'quote-spotlight': return <QuoteSpotlightSlide data={slide} />;
+          case 'product-battle': return <ProductBattleSlide data={slide} />;
+          case 'audience-focus': return <AudienceFocusSlide data={slide} />;
+          case 'litmus-test': return <LitmusTestSlide data={slide} />;
+          case 'pizza-example': return <PizzaExampleSlide data={slide} />;
+          case 'mediocrity-cycle': return <MediocrityCycleSlide data={slide} />;
+          case 'four-wins': return <FourWinsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
           case 'completion': return <CompletionSlide data={slide} />;
-          case 'vsBattle': return <VsBattleSlide data={slide} />;
-          case 'quoteSpotlight': return <QuoteSpotlightSlide data={slide} />;
           default: return null;
         }
       };
@@ -654,7 +610,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
@@ -667,8 +622,8 @@
           </div>
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>

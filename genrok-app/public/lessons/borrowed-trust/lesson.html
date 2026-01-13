@@ -42,86 +42,38 @@
       title: 'Borrowed Trust',
       description: 'Why strangers in white coats sell better than your best sales copy.',
       accentColor: '#0d9488',
-      duration: '7 min',
+      duration: '8 min',
       nextLesson: { id: 'herd-instinct', title: 'The Herd Instinct', teaser: 'Why 1,000 strangers are more convincing than your best ad copy.' }
     };
 
+    // Tool configuration
+    const TOOL_CONFIG = {
+      name: 'Trust Badges Bear',
+      logo: 'https://cdn.shopify.com/app-store/listing_images/f1f9f77f1fb8db00e09f0fbb54fd8ea7/icon/CL2Z3cX08_sCEAE=.png',
+      link: 'https://apps.shopify.com/trust-badge-bear',
+      tagline: 'One-click visual authority badges'
+    };
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -149,14 +101,11 @@
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
+      // ========== PART 1: THE PSYCHOLOGY (Theory) ==========
       { type: 'welcome', learningGoals: ['Why strangers in uniforms get instant trust (and you don\'t)', 'The psychology of borrowed authority and liking', 'How to ethically borrow credibility for your Shopify store'] },
-      { type: 'hook', headline: 'A security guard tells you to move. You move. A random person tells you to move. You ignore them.', subtext: 'Same command. Same situation. Different uniform. Why does the uniform win? Because your brain has a shortcut: Authority = Trust. And trust = sales. The question is: How do you borrow that trust when you\'re nobody in your market yet?'  },
+      { type: 'hook', headline: 'A security guard tells you to move. You move. A random person tells you to move. You ignore them.', subtext: 'Same command. Same situation. Different uniform. Why does the uniform win? Because your brain has a shortcut: Authority = Trust. And trust = sales. The question is: How do you borrow that trust when you\'re nobody in your market yet?' },
       { type: 'content', title: 'The Uniform Study That Changes Everything', body: 'Psychologist Leonard Bickman ran a simple experiment. A researcher asked people on the street to do something trivial - pick up a bag, give money for parking, move away from a bus stop. Same person. Same request. Only one thing changed: what they wore. In street clothes, 42% complied. In a security guard uniform? 92% complied. The uniform alone increased compliance by 119%. The person had ZERO actual authority. But the symbol of authority was enough.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_reading_intently_with_glasses_book_in_hand_--a_fae4f829-ea0b-4a5a-8fb0-3de395a6b6ee_2.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'The Power of Borrowed Authority', visualType: 'stats', data: [
-        { value: '42%', label: 'Street Clothes', subtext: 'No authority signal' },
-        { value: '92%', label: 'Guard Uniform', subtext: 'Authority symbol only' },
-        { value: '+119%', label: 'Compliance Lift', subtext: 'Same person, different attire' }
-      ]},
+      { type: 'uniform-study', title: 'The Power of Borrowed Authority' },
       { type: 'content', title: 'Why This Works (And Why It Matters)', body: 'We are conditioned from birth to defer to authority. Doctors. Police. Scientists. Experts. Not because we verify their credentials every time - we don\'t have time for that. We use mental shortcuts. Lab coat = trust the medical advice. Badge = obey the command. "As Seen In Forbes" = trust the product. Your customers use the same shortcuts. If your brand LOOKS credible, they assume it IS credible. This is borrowed trust.' },
       { type: 'cards', title: '3 Ways to Borrow Authority in Ecommerce', items: [
         { title: '1. Media Mentions', description: '"As Seen In..." badges from reputable sources (Forbes, TechCrunch, NYT). Even if it was a tiny mention. The logo alone signals credibility to your brain\'s shortcut system.' },
@@ -165,21 +114,19 @@
       ]},
       { type: 'example', scenario: 'Coffee Brand Ad', before: { label: 'No Authority Signal', text: '"Premium Organic Coffee Beans - Ethically Sourced, Expertly Roasted"' }, after: { label: 'Authority Borrowed', text: '"As Seen In: Forbes | TechCrunch | Food & Wine. Certified Organic. Award-Winning Roasters Since 2018."' }, insight: 'Same coffee. Different trust level. The logos do the heavy lifting your copy can\'t.' },
       { type: 'content', title: 'The Liking Principle: We Buy From People Like Us', body: 'A 1970s insurance study tracked what made customers more likely to buy. Turns out, it wasn\'t the pitch. It was similarity. Customers bought more from salespeople who were like them - same age, religion, politics, even smoking habits. Why? Because similarity = safety = trust. "If they\'re like me, they GET me. They won\'t screw me over." This is the Liking Principle. And it\'s lethal in ecommerce.' },
-      { type: 'cards', title: '3 Liking Triggers for Ecommerce', items: [
-        { title: '1. Similarity', description: 'Mirror your audience\'s exact language in ad copy. If they say "exhausted mom," don\'t say "busy parent." Speak their dialect. They\'ll feel seen.' },
-        { title: '2. Familiarity', description: 'Use UGC from relatable customers, not polished influencers. A 34-year-old mom reviewing your product hits harder than a 22-year-old model for your 30+ audience.' },
-        { title: '3. Association', description: 'Align your brand with causes or values they care about. Sustainability. Veteran-owned. Family-run. If your values match theirs, they like you. If they like you, they buy.' }
-      ]},
+      { type: 'borrowing-grid', title: 'The Trust Borrowing Playbook' },
       { type: 'example', scenario: 'Fashion Brand Instagram Ad', before: { label: 'Polished, No Similarity', text: 'Professional model (age 23) in perfect lighting, flawless makeup, studio background' }, after: { label: 'Relatable UGC', text: 'Real customer (age 38) in her kitchen, natural lighting, wearing the outfit while making breakfast for kids' }, insight: 'Target audience is 30-45 moms. Who do they trust more? The influencer? Or someone who looks EXACTLY like them?' },
-      { type: 'visual', title: 'Authority + Liking = Maximum Trust', visualType: 'comparison', data: {
-        left: { label: 'Authority Only', value: '2.1x', result: 'Trust Lift', color: '#94a3b8' },
-        right: { label: 'Liking Only', value: '1.8x', result: 'Trust Lift', color: '#94a3b8' },
-        center: { label: 'Both Combined', value: '3.7x', result: 'Trust Multiplier', color: '#0d9488' }
-      }},
+      { type: 'trust-stack', title: 'Authority + Liking = Maximum Trust' },
       { type: 'content', title: 'Combine Them: Authority + Liking', body: 'Here\'s the magic: Use Authority to get them to stop. Use Liking to get them to stay. "As Seen In Forbes" stops the scroll (authority). Real customer testimonial from someone exactly like them keeps them reading (liking). Dermatologist-tested serum (authority). UGC video from 40-year-old using it in her bathroom (liking). Stack them. Don\'t choose. Both work better together than either alone.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'left'},
       { type: 'example', scenario: 'Skincare Brand Product Page', before: { label: 'Missing Both', text: 'Product photo, generic description, "Add to Cart" button' }, after: { label: 'Authority + Liking Stacked', text: '"Dermatologist-Tested | As Featured in Vogue" (authority) + UGC review video from 45-year-old customer showing real results (liking)' }, insight: 'The authority badge stops them. The relatable video converts them. One-two punch.' },
       { type: 'quiz', question: 'Which Shopify ad combines Authority + Liking most effectively?', options: ['"Premium Yoga Mats - Free Shipping Today Only!"', '"As Seen In Women\'s Health | Yoga Journal - Trusted by 10,000+ Instructors"', '"Meet Sarah, 52, Who Does Yoga Daily on Our Mat (As Seen In Yoga Journal)"', '"Top-Rated Yoga Mats - Check Our 5-Star Reviews"'], correctIndex: 2, feedback: { correct: 'Exactly! It stacks Authority ("As Seen In Yoga Journal") with Liking (Sarah, 52 - a real, relatable person). The media logo stops the scroll. Sarah keeps them engaged. Both working together = maximum trust.', incorrect: 'Close, but not quite. The winning answer stacks BOTH principles: Authority (media mention) + Liking (relatable person). Authority stops the scroll. Liking keeps them reading. You need both for maximum trust.' }},
-      { type: 'completion', sources: [] }
+      // ========== PART 2: HOW TO BUILD YOURS (Practical) ==========
+      { type: 'section-divider' },
+      { type: 'step-identify-authority' },
+      { type: 'step-visual-badges' },
+      { type: 'step-stack-ugc' },
+      { type: 'step-results' },
+      { type: 'completion' }
     ];
 
     const Icons = {
@@ -190,7 +137,479 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> };
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      User: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      Shield: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Award: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Plus: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Image: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>,
+      Camera: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>,
+    };
+
+    // ============ CUSTOM SLIDE COMPONENTS ============
+
+    // UniformStudySlide - 42% vs 92% compliance visualization
+    const UniformStudySlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+            {data.title}
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Street Clothes */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: '#94a3b820', border: '2px dashed #94a3b8' }}>
+                  <div style={{ color: '#94a3b8' }}><Icons.User /></div>
+                </div>
+                <div className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Street Clothes</div>
+                <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#94a3b8' }}>42%</div>
+                <div className="text-neutral-500 text-sm">Compliance rate</div>
+                <div className="mt-4 h-3 rounded-full bg-neutral-800">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: '42%' }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
+                    className="h-full rounded-full"
+                    style={{ background: '#94a3b8' }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Guard Uniform */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #0d9488, transparent)' }} />
+              <div className="text-center">
+                <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center" style={{ background: '#0d948820', border: '2px solid #0d9488' }}>
+                  <div style={{ color: '#0d9488' }}><Icons.Shield /></div>
+                </div>
+                <div className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Guard Uniform</div>
+                <div className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#0d9488' }}>92%</div>
+                <div className="text-neutral-500 text-sm">Compliance rate</div>
+                <div className="mt-4 h-3 rounded-full bg-neutral-800">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: '92%' }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    className="h-full rounded-full"
+                    style={{ background: '#0d9488' }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            className="text-center mt-6"
+          >
+            <span className="inline-block px-4 py-2 rounded-lg text-sm font-bold" style={{ background: '#0d948830', color: '#0d9488' }}>
+              +119% Lift - Same person, different uniform
+            </span>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // TrustStackSlide - Authority + Liking = 3.7x trust multiplier
+    const TrustStackSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">
+            {data.title}
+          </motion.h2>
+
+          <div className="rounded-2xl p-6 relative" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #0d9488, transparent)' }} />
+
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
+              {/* Authority */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-center flex-1"
+              >
+                <div className="w-14 h-14 rounded-lg mx-auto mb-3 flex items-center justify-center" style={{ background: '#3b82f620', color: '#3b82f6' }}>
+                  <Icons.Award />
+                </div>
+                <div className="text-white font-semibold text-sm mb-1">Authority</div>
+                <div className="text-3xl md:text-4xl font-bold" style={{ color: '#3b82f6' }}>2.1x</div>
+                <div className="text-neutral-500 text-xs">Trust Lift</div>
+              </motion.div>
+
+              {/* Plus sign */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ background: '#ffffff10', color: '#ffffff' }}
+              >
+                <Icons.Plus />
+              </motion.div>
+
+              {/* Liking */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3 }}
+                className="text-center flex-1"
+              >
+                <div className="w-14 h-14 rounded-lg mx-auto mb-3 flex items-center justify-center" style={{ background: '#f59e0b20', color: '#f59e0b' }}>
+                  <Icons.Heart />
+                </div>
+                <div className="text-white font-semibold text-sm mb-1">Liking</div>
+                <div className="text-3xl md:text-4xl font-bold" style={{ color: '#f59e0b' }}>1.8x</div>
+                <div className="text-neutral-500 text-xs">Trust Lift</div>
+              </motion.div>
+
+              {/* Equals sign */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="text-3xl font-bold text-white"
+              >
+                =
+              </motion.div>
+
+              {/* Combined */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6 }}
+                className="text-center flex-1 rounded-xl p-4"
+                style={{ background: '#0d948820', border: '2px solid #0d9488' }}
+              >
+                <div className="w-14 h-14 rounded-lg mx-auto mb-3 flex items-center justify-center" style={{ background: '#0d9488', color: 'white' }}>
+                  <Icons.Star />
+                </div>
+                <div className="text-white font-semibold text-sm mb-1">Combined</div>
+                <div className="text-4xl md:text-5xl font-bold" style={{ color: '#0d9488' }}>3.7x</div>
+                <div className="text-neutral-400 text-xs">Trust Multiplier</div>
+              </motion.div>
+            </div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.9 }}
+            className="text-center text-sm text-neutral-500 mt-6"
+          >
+            Authority stops the scroll. Liking converts them. Stack both.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // BorrowingGridSlide - 3 Authority + 3 Liking methods (NO tool mention)
+    const BorrowingGridSlide = ({ data }) => {
+      const methods = [
+        { category: 'Authority', items: [
+          { name: 'Media Mentions', desc: 'As Seen In logos' },
+          { name: 'Expert Endorsements', desc: 'Tested by professionals' },
+          { name: 'Credentials', desc: 'Awards & certifications' }
+        ], color: '#3b82f6', icon: <Icons.Award /> },
+        { category: 'Liking', items: [
+          { name: 'Similarity', desc: 'Mirror their language' },
+          { name: 'Familiarity', desc: 'Relatable UGC' },
+          { name: 'Association', desc: 'Shared values' }
+        ], color: '#f59e0b', icon: <Icons.Heart /> }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto bg-white">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">
+            {data.title}
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {methods.map((method, mi) => (
+              <motion.div
+                key={mi}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + mi * 0.1 }}
+                className="rounded-2xl p-5 relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+              >
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${method.color}, transparent)` }} />
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${method.color}20`, color: method.color }}>
+                    {method.icon}
+                  </div>
+                  <div className="text-white font-bold">{method.category}</div>
+                </div>
+                <div className="space-y-3">
+                  {method.items.map((item, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.3 + mi * 0.1 + i * 0.1 }}
+                      className="flex items-center gap-3"
+                    >
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: `${method.color}20`, color: method.color }}>
+                        {i + 1}
+                      </div>
+                      <div>
+                        <div className="text-white text-sm font-semibold">{item.name}</div>
+                        <div className="text-neutral-500 text-xs">{item.desc}</div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="text-center text-sm text-neutral-500 mt-6"
+          >
+            Master both principles. Stack them for maximum conversion.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ============ PART 2: PRACTICAL SLIDES ============
+
+    // Section Divider Slide
+    const SectionDividerSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center max-w-2xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-20 h-20 rounded-2xl mx-auto mb-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 8px 32px rgba(var(--accent-rgb), 0.3)' }}>
+            <Icons.Zap />
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: 'var(--accent)' }}>Part 2</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-5xl text-black mb-4">Now Let's Build Yours</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500 text-lg">3 steps to borrow trust for your store</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex items-center justify-center gap-4 mt-8">
+            {[1, 2, 3].map((num) => (
+              <div key={num} className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{num}</div>
+                {num < 3 && <div className="w-8 h-0.5 bg-neutral-200 rounded" />}
+              </div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Step 1: Identify Your Authority Sources
+    const StepIdentifyAuthoritySlide = ({ data }) => {
+      const sources = [
+        { type: 'Media', examples: 'Forbes, TechCrunch, local news, podcasts', action: 'List any mentions (even small ones)' },
+        { type: 'Certifications', examples: 'Organic, FDA, ISO, industry-specific', action: 'Check if your product qualifies' },
+        { type: 'Awards', examples: 'Industry awards, competitions, recognition', action: 'Enter relevant competitions' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>1</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 1</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Identify Your Authority Sources</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-3 mb-6">
+            {sources.map((source, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                <div className="h-1 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                <div className="text-white font-bold text-sm mb-2">{source.type}</div>
+                <div className="text-neutral-400 text-xs mb-3">{source.examples}</div>
+                <div className="px-2 py-1 rounded text-xs" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>{source.action}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Write down every possible authority source - media mentions, certifications, awards, expert connections. Even small ones count.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 2: Add Visual Trust Badges
+    const StepVisualBadgesSlide = ({ data }) => {
+      const badgeTypes = [
+        { icon: Icons.Shield, label: 'Security Seals', examples: 'SSL, Safe Checkout, Encrypted' },
+        { icon: Icons.Award, label: 'Certifications', examples: 'Organic, Cruelty-Free, FDA' },
+        { icon: Icons.Star, label: 'Payment Trust', examples: 'Visa, PayPal, Apple Pay logos' },
+        { icon: Icons.Users, label: 'Social Proof', examples: '10,000+ Happy Customers' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>2</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 2</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Add Visual Trust Badges</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {badgeTypes.map((badge, i) => {
+              const Icon = badge.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.2)', color: 'var(--accent)' }}>
+                    <Icon />
+                  </div>
+                  <div className="text-white font-bold text-xs mb-1">{badge.label}</div>
+                  <div className="text-neutral-500 text-[10px]">{badge.examples}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Tool recommendation */}
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="flex items-center gap-4 p-4 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <img src={TOOL_CONFIG.logo} alt={TOOL_CONFIG.name} className="w-12 h-12 rounded-xl" />
+            <div className="flex-1">
+              <div className="text-white font-bold text-sm">{TOOL_CONFIG.name}</div>
+              <div className="text-neutral-400 text-xs">{TOOL_CONFIG.tagline}</div>
+            </div>
+            <a href={TOOL_CONFIG.link} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-lg text-sm font-semibold transition-all hover:scale-105" style={{ background: 'var(--accent)', color: 'white' }}>
+              Get App
+            </a>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="p-4 rounded-xl mt-4" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> Add trust badges below your Add to Cart button - payment icons, security seals, and guarantee badges.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Step 3: Stack Authority + UGC
+    const StepStackUGCSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>3</div>
+              <div>
+                <span className="text-xs uppercase tracking-wider text-neutral-400">Step 3</span>
+                <h2 className="slide-title text-2xl md:text-3xl text-black">Stack Authority + Relatable UGC</h2>
+              </div>
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #3b82f6, transparent)' }} />
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#3b82f620', color: '#3b82f6' }}>
+                  <Icons.Award />
+                </div>
+                <span className="text-white font-bold text-sm">Authority (Stops Scroll)</span>
+              </div>
+              <ul className="space-y-2 text-sm text-neutral-400">
+                <li className="flex items-center gap-2"><span style={{ color: '#3b82f6' }}>+</span> "As Seen In Forbes"</li>
+                <li className="flex items-center gap-2"><span style={{ color: '#3b82f6' }}>+</span> "Dermatologist Tested"</li>
+                <li className="flex items-center gap-2"><span style={{ color: '#3b82f6' }}>+</span> "2024 Award Winner"</li>
+              </ul>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="h-1 w-full mb-4 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#f59e0b20', color: '#f59e0b' }}>
+                  <Icons.Camera />
+                </div>
+                <span className="text-white font-bold text-sm">UGC (Converts)</span>
+              </div>
+              <ul className="space-y-2 text-sm text-neutral-400">
+                <li className="flex items-center gap-2"><span style={{ color: '#f59e0b' }}>+</span> Real customer photos</li>
+                <li className="flex items-center gap-2"><span style={{ color: '#f59e0b' }}>+</span> Video testimonials</li>
+                <li className="flex items-center gap-2"><span style={{ color: '#f59e0b' }}>+</span> Before/after results</li>
+              </ul>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-4 rounded-xl" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+            <p className="text-sm" style={{ color: 'var(--accent)' }}><strong>Action:</strong> On your product page, place authority badges above the fold. Add UGC reviews (photos/videos from customers who match your target audience) below.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Results Slide
+    const StepResultsSlide = ({ data }) => {
+      const results = [
+        { metric: '+32%', label: 'Conversion Lift', desc: 'With trust badges', icon: Icons.TrendingUp, color: '#0d9488' },
+        { metric: '2.1x', label: 'Authority Effect', desc: 'Media logos alone', icon: Icons.Award, color: '#3b82f6' },
+        { metric: '3.7x', label: 'Combined Stack', desc: 'Authority + UGC together', icon: Icons.Star, color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Expected Results</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">What You Can Expect</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {results.map((result, i) => {
+              const Icon = result.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-6 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+                  <div className="h-1 w-full mb-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${result.color}, transparent)` }} />
+                  <div className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center" style={{ background: `${result.color}20`, color: result.color }}>
+                    <Icon />
+                  </div>
+                  <div className="text-3xl font-bold mb-2" style={{ color: result.color }}>{result.metric}</div>
+                  <div className="text-white font-bold text-sm mb-1">{result.label}</div>
+                  <div className="text-neutral-400 text-xs">{result.desc}</div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+            <div className="h-0.5 w-full mb-3 rounded-full" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+            <p className="text-neutral-300 text-sm">Results typically visible within <span className="text-white font-bold">1-2 weeks</span> of implementation</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ STANDARD SLIDES ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -238,21 +657,13 @@
             </video>
           </motion.div>
         )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
         {data.characterVideo && (
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -289,50 +700,6 @@
         </motion.div>
       </div>
     );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
 
     const CardsSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -392,28 +759,42 @@
     };
 
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 slide-scroll overflow-y-auto py-6">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand how to borrow trust through Authority and Liking. Add media badges, expert endorsements, and relatable UGC to your store. Stack both principles for maximum credibility.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand borrowed trust. Authority stops the scroll. Liking converts them. Stack both for maximum credibility.</motion.p>
+
+        {/* Key Takeaways */}
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="bg-neutral-50 rounded-xl p-5 max-w-md w-full mb-4 border border-neutral-100">
+          <div className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Key Takeaways</div>
+          <div className="space-y-2 text-left">
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>1</span>
+              </span>
+              <span className="text-sm text-neutral-600">Authority signals (badges, logos, credentials) trigger instant trust</span>
             </div>
-          </motion.div>
-        )}
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>2</span>
+              </span>
+              <span className="text-sm text-neutral-600">Liking (relatable UGC) keeps them engaged and converts</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <span className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center mt-0.5" style={{ background: 'rgba(var(--accent-rgb), 0.1)' }}>
+                <span className="text-xs font-bold" style={{ color: 'var(--accent)' }}>3</span>
+              </span>
+              <span className="text-sm text-neutral-600">Stack both principles for 3.7x trust multiplier</span>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-100 rounded-xl p-4 max-w-md w-full">
+          <p className="text-neutral-400 text-[10px] uppercase tracking-wider mb-1">Up Next</p>
+          <h3 className="text-neutral-900 font-bold text-base mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-500 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
       </div>
     );
 
@@ -430,7 +811,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -471,10 +851,18 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
+          case 'uniform-study': return <UniformStudySlide data={slide} />;
+          case 'trust-stack': return <TrustStackSlide data={slide} />;
+          case 'borrowing-grid': return <BorrowingGridSlide data={slide} />;
+          // Part 2: Practical slides
+          case 'section-divider': return <SectionDividerSlide data={slide} />;
+          case 'step-identify-authority': return <StepIdentifyAuthoritySlide data={slide} />;
+          case 'step-visual-badges': return <StepVisualBadgesSlide data={slide} />;
+          case 'step-stack-ugc': return <StepStackUGCSlide data={slide} />;
+          case 'step-results': return <StepResultsSlide data={slide} />;
           default: return null;
         }
       };

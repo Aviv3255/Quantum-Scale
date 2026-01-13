@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #0ea5e9; --accent-dark: #0284c7; --accent-light: #38bdf8; --accent-rgb: 14, 165, 233; }
@@ -46,151 +43,33 @@
       nextLesson: { id: 'risk-reversal', title: 'Risk Reversal Mastery', teaser: 'Remove every barrier between your customer and the buy button.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
+    // Admin Reporter System
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
-        e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s' }}
+          onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <img src="data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' strokeWidth='2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m8 2 1.88 1.88'/%3E%3Cpath d='M14.12 3.88 16 2'/%3E%3Cpath d='M9 7.13v-1a3.003 3.003 0 1 1 6 0v1'/%3E%3Cpath d='M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6'/%3E%3Cpath d='M12 20v-9'/%3E%3C/svg%3E" alt="Report" />
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why trust is built BEFORE the sale - not after', 'The Trust Equation: Credibility + Reliability + Intimacy', 'How to systematically remove every type of risk', 'Why survey responses become your most powerful social proof'] },
-      { type: 'hook', headline: 'Your customer carries invisible shields. Protective barriers built from years of being scammed, disappointed, let down.', subtext: 'Their default mode is skepticism. Your job isn\'t to overcome it through force. It\'s to systematically lower those shields through trust architecture. Think of trust as a bank account. Every testimonial, every guarantee, every piece of social proof makes a deposit. By the time you ask for the sale, you\'ve built up enough credit that saying "yes" feels natural, even obvious.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys'},
-      { type: 'content', title: 'Trust Isn\'t Earned After the Sale', body: 'Here\'s what most marketers get fundamentally backwards: Trust isn\'t earned after the sale. It\'s built before. Every element of trust you add removes friction. Every doubt you eliminate makes "yes" easier. Your customer\'s brain is constantly scanning for threats. They\'re looking for reasons NOT to buy. The trust shield is your systematic approach to neutralizing every objection before it becomes conscious.' },
-      { type: 'visual', title: 'The Trust Equation', visualType: 'comparison', data: {
-        left: { label: 'Credibility', value: 'Can you?', result: 'Expertise & track record', color: '#0ea5e9' },
-        right: { label: 'Reliability', value: 'Will you?', result: 'Consistency & promises', color: '#0ea5e9' },
-        center: { label: 'Intimacy', value: 'Get me?', result: 'Empathy & connection', color: '#0ea5e9' }
-      }},
-      { type: 'content', title: 'The Three Trust Pillars', body: 'Credibility answers "Can you deliver?" - established through expertise, credentials, and track record. Reliability answers "Will you follow through?" - demonstrated through consistency and keeping promises. Intimacy answers "Do you understand me?" - built through empathy, personal connection, and speaking their language. Trust isn\'t mysterious or magical. It\'s a formula. Understand the components, and you can engineer trust systematically like an architect designs a building.' },
-      { type: 'cards', title: 'The Risk Removal Stack', items: [
-        { title: 'Financial Risk', description: 'Money-Back Guarantee - "100% money back within 60 days, no questions asked." The stronger your guarantee, the fewer refunds you\'ll actually process.' },
-        { title: 'Performance Risk', description: 'Results Guarantee - "If you don\'t see X result in Y days, we\'ll work with you until you do." Shows you believe in what you\'re selling.' },
-        { title: 'Social Risk', description: 'Social Proof - Testimonials, case studies, user counts prove that other smart people took the leap first. They validated the decision.' },
-        { title: 'Time Risk', description: 'Quick-Start Promise - "Get started in 5 minutes," "See your first results today." Show them their time investment will be minimal.' }
-      ]},
-      { type: 'example', scenario: 'Supplement Store - Risk Reversal', before: { label: 'High Risk (Weak)', text: '"Try our premium supplements today. 30-day money back guarantee."' }, after: { label: 'Zero Risk (Strong)', text: '"Try for 90 days. If you don\'t feel more energized, we\'ll refund 100% AND let you keep the bottle. We\'ll even cover return shipping. Zero risk, pure results."' }, insight: 'The stronger you remove risk, the more confident you appear, and the more they trust.' },
-      { type: 'content', title: 'Social Proof: The Ultimate Trust Signal', body: 'People trust people more than they trust brands. Reviews, case studies, testimonials, awards, press mentions, and numbers - these prove that others have taken the leap and won. Stack multiple forms of social proof for maximum impact. But here\'s what most miss: generic testimonials don\'t work. "Great product!" means nothing. You need specific, detailed proof that speaks to objections and outcomes.' },
-      { type: 'content', title: 'The Ultimate Trust Signal: Their Own Words', body: 'Here\'s the brutal truth about trust: prospects don\'t believe what YOU say about your product. They believe what OTHER CUSTOMERS say. But there\'s a problem. Most social proof is generic, vague, forgettable. "Great product! 5 stars!" doesn\'t move the needle. What if you could capture the EXACT moment of purchase? The real reasons why someone bought? The hesitations they overcame? The specific results they expected? That\'s the power of post-purchase surveys.' },
-      { type: 'content', title: 'How Survey Responses Become Social Proof', body: 'Post-purchase surveys displayed right after checkout reveal WHY customers buy - not just what they did. When someone just handed you money, their guard is down. They\'re honest. They\'re excited. They tell you the REAL story. These responses become your most powerful testimonials because they\'re specific, detailed, and genuine. Instead of "Great product!" you get "I bought this because I tried 3 other solutions and they all failed because they didn\'t address the root cause. This was the first to explain WHY the problem exists."' },
-      { type: 'visual', title: 'Survey Response → Testimonial Factory', visualType: 'stats', data: [
-        { value: '95%', label: 'response rate', subtext: 'Right after purchase, customers WANT to share' },
-        { value: '10x', label: 'more specific', subtext: 'Survey testimonials vs generic reviews' },
-        { value: '47%', label: 'trust increase', subtext: 'When prospects see detailed "why they bought"' }
-      ]},
-      { type: 'implementation', title: 'Turn Every Purchase Into Trust-Building Social Proof', intro: "Here\'s how to implement this in your store:", steps: [
-        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
-        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
-        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
-        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
-      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
-      { type: 'implementation', title: 'Visual Trust Signals That Convert', intro: "Here\'s how to implement this in your store:", steps: [
-        { step: 1, title: 'Install the recommended app', description: 'Search the Shopify App Store for the tool mentioned. Most offer free trials to test before committing.' },
-        { step: 2, title: 'Connect to your store', description: 'Follow the setup wizard to link the app with your Shopify data. Usually takes less than 5 minutes.' },
-        { step: 3, title: 'Configure your settings', description: 'Adjust the default settings to match your brand and business model. Start with recommended defaults.' },
-        { step: 4, title: 'Test and optimize', description: 'Run the tool for 2-4 weeks, measure results, and tweak settings based on what you learn.' }
-      ], toolUrl: 'https://platform.shoffi.app/r/rl_uUHJkiZx', cta: 'Get Started Free' },
-      { type: 'tool-setup', title: 'Implementing Trust Badges', toolName: 'Essential Trust Badges', steps: ['Install Essential Trust Badges from the Shopify App Store', 'Choose badge styles that match your brand aesthetic', 'Place badges near Add to Cart buttons and at checkout', 'Enable payment icons (Visa, Mastercard, PayPal, etc.)', 'Add guarantee badges (money-back, free shipping, secure checkout)'], proTip: 'Less is more. Pick 4-5 of the most relevant badges. Too many badges can look desperate and have the opposite effect.' },
-      { type: 'example', scenario: 'Skincare Store - Survey Response Transformation', before: { label: 'Generic Testimonial', text: '"Love this serum! Works great. 5 stars!"' }, after: { label: 'Post-Purchase Survey Response', text: '"I bought this because my dermatologist quoted me $400 for laser treatment. I saw your ingredient breakdown and realized this has the same active compound at 1/10th the price. I was hesitant because I\'ve been burned by cheap alternatives before, but your 90-day guarantee removed the risk. If this works half as well as the $400 treatment, I\'m thrilled."' }, insight: 'Survey responses give you the specificity that makes social proof actually WORK. This is trust-building gold.' },
-      { type: 'content', title: 'When There\'s No Risk, There\'s No Reason to Say No', body: 'The goal isn\'t to convince people to trust you. It\'s to remove every reason they have NOT to trust you. Build your trust architecture brick by brick: credibility through expertise, reliability through consistency, intimacy through empathy. Remove financial risk with guarantees. Remove performance risk with results promises. Remove social risk with proof. Remove time risk with quick-start promises. And capture real customer voices the moment they buy. Stack these systematically, and conversions become inevitable.' },
-      { type: 'quiz', question: 'According to the Trust Architecture, what\'s the most powerful form of social proof?', options: ['Generic 5-star reviews saying "Great product!"', 'Celebrity endorsements and influencer mentions', 'Post-purchase survey responses explaining WHY they bought', 'Number of followers on social media'], correctIndex: 2, feedback: { correct: 'Exactly! Survey responses captured right after purchase are the most powerful because they\'re specific, genuine, and address real objections. Prospects believe other customers way more than they believe you. And detailed "why they bought" testimonials move the needle because they speak to doubts and outcomes.', incorrect: 'Not quite. While all social proof helps, post-purchase survey responses are the most powerful because they capture the REAL reasons why someone bought - specific, detailed, genuine. Generic reviews like "Great!" don\'t address objections or outcomes. Survey responses do. That\'s why they convert.' }},
-      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }, { name: 'Essential Trust Badges', url: 'https://platform.shoffi.app/r/rl_uUHJkiZx' }] }
-    ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -198,10 +77,79 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Award: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      RefreshCw: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      MessageSquare: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
     };
+
+    // AnimatedCounter component
+    const AnimatedCounter = ({ value, duration = 1.5, decimals = 0 }) => {
+      const [displayValue, setDisplayValue] = useState(0);
+      const numericValue = parseFloat(value) || 0;
+
+      useEffect(() => {
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / (duration * 1000), 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setDisplayValue(numericValue * eased);
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [numericValue, duration]);
+
+      return <span>{displayValue.toFixed(decimals)}</span>;
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why trust is built BEFORE the sale - not after', 'The Trust Equation: Credibility + Reliability + Intimacy', 'How to systematically remove every type of risk', 'Why survey responses become your most powerful social proof'] },
+      { type: 'hook', headline: 'Your customer carries invisible shields. Protective barriers built from years of being scammed, disappointed, let down.', subtext: 'Their default mode is skepticism. Your job isn\'t to overcome it through force. It\'s to systematically lower those shields through trust architecture.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys' },
+      { type: 'shield-visual', title: 'The Trust Shield', content: 'Think of trust as a bank account. Every testimonial, guarantee, and piece of social proof makes a deposit. By the time you ask for the sale, you\'ve built up enough credit that saying "yes" feels natural.' },
+      { type: 'trust-equation', title: 'The Trust Equation', pillars: [
+        { name: 'Credibility', question: 'Can you?', description: 'Expertise & track record', icon: 'Award' },
+        { name: 'Reliability', question: 'Will you?', description: 'Consistency & promises', icon: 'RefreshCw' },
+        { name: 'Intimacy', question: 'Get me?', description: 'Empathy & connection', icon: 'Heart' }
+      ]},
+      { type: 'pillar-detail', pillarName: 'Credibility', question: 'Can you deliver?', details: ['Established through expertise', 'Backed by credentials', 'Proven by track record'], color: '#0ea5e9' },
+      { type: 'pillar-detail', pillarName: 'Reliability', question: 'Will you follow through?', details: ['Demonstrated through consistency', 'Proven by keeping promises', 'Built on repeat behavior'], color: '#10b981' },
+      { type: 'pillar-detail', pillarName: 'Intimacy', question: 'Do you understand me?', details: ['Built through empathy', 'Personal connection matters', 'Speak their language'], color: '#f59e0b' },
+      { type: 'risk-stack', title: 'The Risk Removal Stack', risks: [
+        { type: 'Financial Risk', solution: 'Money-Back Guarantee', example: '100% money back within 60 days, no questions asked', icon: 'DollarSign' },
+        { type: 'Performance Risk', solution: 'Results Guarantee', example: 'If you don\'t see X result in Y days, we\'ll work until you do', icon: 'Target' },
+        { type: 'Social Risk', solution: 'Social Proof', example: 'Testimonials, case studies, user counts prove others took the leap', icon: 'Users' },
+        { type: 'Time Risk', solution: 'Quick-Start Promise', example: 'Get started in 5 minutes, see first results today', icon: 'Zap' }
+      ]},
+      { type: 'guarantee-battle', title: 'Guarantee Showdown', scenario: 'Supplement Store', weak: { label: 'Weak Guarantee', text: 'Try our premium supplements today. 30-day money back guarantee.', conversion: '2.1' }, strong: { label: 'Zero Risk', text: 'Try for 90 days. If you don\'t feel more energized, we\'ll refund 100% AND let you keep the bottle. We\'ll even cover return shipping.', conversion: '5.8' }},
+      { type: 'survey-power', title: 'The Ultimate Trust Signal: Their Own Words', content: 'Prospects don\'t believe what YOU say about your product. They believe what OTHER CUSTOMERS say. But generic testimonials like "Great product! 5 stars!" don\'t work. You need SPECIFIC, detailed proof.' },
+      { type: 'testimonial-transform', title: 'Survey Response = Testimonial Gold', before: { label: 'Generic Testimonial', text: 'Love this serum! Works great. 5 stars!' }, after: { label: 'Post-Purchase Survey Response', text: 'I bought this because my dermatologist quoted me $400 for laser treatment. I saw your ingredient breakdown and realized this has the same active compound at 1/10th the price. I was hesitant because I\'ve been burned by cheap alternatives before, but your 90-day guarantee removed the risk.' }},
+      { type: 'trust-stats', title: 'Survey Response Power', stats: [
+        { value: '95', suffix: '%', label: 'response rate', subtext: 'Right after purchase, customers WANT to share' },
+        { value: '10', suffix: 'x', label: 'more specific', subtext: 'Survey testimonials vs generic reviews' },
+        { value: '47', suffix: '%', label: 'trust increase', subtext: 'When prospects see detailed "why they bought"' }
+      ]},
+      { type: 'implementation', title: 'Turn Purchases Into Trust-Building Proof', intro: 'Here\'s how to implement this in your store:', steps: [
+        { step: 1, title: 'Install a post-purchase survey', description: 'Show a short survey right after checkout when customers are most honest.' },
+        { step: 2, title: 'Ask the right questions', description: '"What almost stopped you from buying?" "Why did you choose us?"' },
+        { step: 3, title: 'Collect 50-100 responses', description: 'Clear patterns emerge. 80%+ often say the same unexpected thing.' },
+        { step: 4, title: 'Turn responses into testimonials', description: 'Display specific survey quotes on product pages and ads.' }
+      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
+      { type: 'quiz', question: 'What\'s the most powerful form of social proof?', options: ['Generic 5-star reviews saying "Great product!"', 'Celebrity endorsements and influencer mentions', 'Post-purchase survey responses explaining WHY they bought', 'Number of followers on social media'], correctIndex: 2, feedback: { correct: 'Exactly! Survey responses captured right after purchase are the most powerful because they\'re specific, genuine, and address real objections.', incorrect: 'Post-purchase survey responses are the most powerful because they capture the REAL reasons why someone bought - specific, detailed, genuine.' }},
+      { type: 'elite-insight', quote: 'The goal isn\'t to convince people to trust you. It\'s to remove every reason they have NOT to trust you.', actions: ['Audit your guarantees - make them stronger', 'Set up post-purchase surveys to capture real voices', 'Stack multiple forms of social proof on every page'] },
+      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+    ];
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -240,125 +188,357 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" />
           </motion.div>
         )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // UNIQUE SLIDE: Shield Visual with animated deposits
+    const ShieldVisualSlide = ({ data }) => {
+      const [deposits, setDeposits] = useState(0);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
+      useEffect(() => {
+        const timer = setInterval(() => setDeposits(prev => (prev + 1) % 5), 1500);
+        return () => clearInterval(timer);
+      }, []);
+
+      const depositItems = ['Testimonial', 'Guarantee', 'Social Proof', 'Case Study'];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6 items-center">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #0ea5e9, transparent)' }} />
+              <motion.div animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 2, repeat: Infinity }} style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', boxShadow: '0 0 40px rgba(14, 165, 233, 0.4)' }}>
+                <Icons.Shield />
+              </motion.div>
+              <div style={{ fontSize: '14px', fontWeight: '600', color: 'white', marginBottom: '12px' }}>Trust Bank Account</div>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '4px', marginBottom: '12px' }}>
+                {[0, 1, 2, 3].map((i) => (
+                  <motion.div key={i} animate={{ opacity: i <= deposits ? 1 : 0.3, scale: i <= deposits ? 1 : 0.8 }} style={{ width: '12px', height: '12px', borderRadius: '50%', background: i <= deposits ? '#10b981' : '#374151', transition: 'all 0.3s' }} />
+                ))}
+              </div>
+              <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>+ {depositItems[deposits]}</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '24px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <p style={{ color: 'white', fontSize: '15px', lineHeight: '1.7', fontStyle: 'italic' }}>"{data.content}"</p>
+            </motion.div>
+          </div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 4 ? 'md:grid-cols-2' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
+    // UNIQUE SLIDE: Trust Equation with 3 pillars
+    const TrustEquationSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.pillars.length), 3000);
+        return () => clearInterval(timer);
+      }, [data.pillars.length]);
+
+      const IconComponent = (iconName) => {
+        const iconMap = { Award: Icons.Award, RefreshCw: Icons.RefreshCw, Heart: Icons.Heart };
+        const Icon = iconMap[iconName] || Icons.Star;
+        return <Icon />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.pillars.map((pillar, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  textAlign: 'center',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  border: i === activeIndex ? '1px solid rgba(14, 165, 233, 0.5)' : '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: i === activeIndex ? '0 0 30px rgba(14, 165, 233, 0.3)' : 'none',
+                  transition: 'all 0.5s ease'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === activeIndex ? 'linear-gradient(90deg, transparent, #0ea5e9, transparent)' : 'transparent' }} />
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', margin: '0 auto 16px' }}>
+                  {IconComponent(pillar.icon)}
+                </div>
+                <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'white', marginBottom: '8px', fontFamily: 'Fraunces, serif' }}>{pillar.name}</h3>
+                <div style={{ fontSize: '24px', fontWeight: '800', color: '#0ea5e9', marginBottom: '8px', fontFamily: 'Fraunces, serif' }}>{pillar.question}</div>
+                <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)' }}>{pillar.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} style={{ textAlign: 'center', marginTop: '24px' }}>
+            <p style={{ color: '#6b7280', fontSize: '14px' }}>Trust isn't magical. It's a formula you can engineer.</p>
+          </motion.div>
         </div>
+      );
+    };
+
+    // UNIQUE SLIDE: Pillar Detail
+    const PillarDetailSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, transparent, ${data.color}, transparent)` }} />
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <span style={{ display: 'inline-block', padding: '8px 20px', borderRadius: '20px', fontSize: '12px', fontWeight: '700', background: `${data.color}20`, color: data.color, marginBottom: '12px' }}>{data.pillarName}</span>
+            <h2 style={{ fontSize: '28px', fontWeight: '800', color: 'white', fontFamily: 'Fraunces, serif' }}>{data.question}</h2>
+          </div>
+          <div className="space-y-3">
+            {data.details.map((detail, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }}
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', borderLeft: `3px solid ${data.color}` }}>
+                <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: data.color, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: '700' }}>{i + 1}</div>
+                <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>{detail}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     );
 
+    // UNIQUE SLIDE: Risk Stack with auto-cycling
+    const RiskStackSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.risks.length), 3500);
+        return () => clearInterval(timer);
+      }, [data.risks.length]);
+
+      const IconComponent = (iconName) => {
+        const iconMap = { DollarSign: Icons.DollarSign, Target: Icons.Target, Users: Icons.Users, Zap: Icons.Zap };
+        const Icon = iconMap[iconName] || Icons.Shield;
+        return <Icon />;
+      };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {data.risks.map((risk, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  border: i === activeIndex ? '1px solid rgba(16, 185, 129, 0.5)' : '1px solid rgba(255,255,255,0.1)',
+                  boxShadow: i === activeIndex ? '0 0 25px rgba(16, 185, 129, 0.3)' : 'none',
+                  transition: 'all 0.5s ease'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === activeIndex ? 'linear-gradient(90deg, transparent, #10b981, transparent)' : 'transparent' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                    {IconComponent(risk.icon)}
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '14px', fontWeight: '700', color: '#ef4444', marginBottom: '2px' }}>{risk.type}</h3>
+                    <p style={{ fontSize: '12px', fontWeight: '600', color: '#10b981' }}>{risk.solution}</p>
+                  </div>
+                </div>
+                <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', fontStyle: 'italic', lineHeight: '1.5' }}>"{risk.example}"</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE: Guarantee Battle
+    const GuaranteeBattleSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span style={{ display: 'inline-block', padding: '6px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: '600', background: 'rgba(14, 165, 233, 0.1)', color: '#0ea5e9', marginBottom: '12px' }}>Real Example</span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
+            <p style={{ color: '#6b7280', fontSize: '14px', marginTop: '8px' }}>{data.scenario}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}><Icons.X /></div>
+                <span style={{ fontSize: '12px', fontWeight: '600', color: '#f87171' }}>{data.weak.label}</span>
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6' }}>"{data.weak.text}"</p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '28px', fontWeight: '800', color: '#ef4444', fontFamily: 'Fraunces, serif' }}><AnimatedCounter value={data.weak.conversion} decimals={1} />%</span>
+                <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>conversion</span>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(16, 185, 129, 0.3)', boxShadow: showWinner ? '0 0 30px rgba(16, 185, 129, 0.3)' : 'none', transition: 'box-shadow 0.5s' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}><Icons.Check /></div>
+                <span style={{ fontSize: '12px', fontWeight: '600', color: '#34d399' }}>{data.strong.label}</span>
+                {showWinner && (
+                  <motion.span initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} style={{ marginLeft: 'auto', padding: '4px 10px', borderRadius: '12px', background: '#10b981', color: 'white', fontSize: '10px', fontWeight: '700' }}>WINNER</motion.span>
+                )}
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px', fontStyle: 'italic', marginBottom: '16px', lineHeight: '1.6' }}>"{data.strong.text}"</p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '28px', fontWeight: '800', color: '#10b981', fontFamily: 'Fraunces, serif' }}><AnimatedCounter value={data.strong.conversion} decimals={1} />%</span>
+                <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>conversion</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {showWinner && (
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: 'center', marginTop: '20px', padding: '12px 20px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <span style={{ color: '#10b981', fontSize: '14px', fontWeight: '600' }}>+{Math.round((parseFloat(data.strong.conversion) / parseFloat(data.weak.conversion) - 1) * 100)}% LIFT</span>
+              <span style={{ color: '#6b7280', fontSize: '14px', marginLeft: '8px' }}>- Stronger guarantee = more confidence</span>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE: Survey Power content
+    const SurveyPowerSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #0ea5e9, transparent)' }} />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+            <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', boxShadow: '0 0 30px rgba(14, 165, 233, 0.4)' }}>
+              <Icons.MessageSquare />
+            </div>
+          </div>
+          <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'white', marginBottom: '16px', fontFamily: 'Fraunces, serif' }}>{data.title}</h2>
+          <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', lineHeight: '1.7' }}>{data.content}</p>
+        </motion.div>
+      </div>
+    );
+
+    // UNIQUE SLIDE: Testimonial Transform
+    const TestimonialTransformSlide = ({ data }) => {
+      const [showAfter, setShowAfter] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowAfter(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(148, 163, 184, 0.3)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #94a3b8, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <span style={{ fontSize: '12px', fontWeight: '600', color: '#94a3b8' }}>{data.before.label}</span>
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', fontStyle: 'italic', lineHeight: '1.6' }}>"{data.before.text}"</p>
+              <div style={{ marginTop: '16px', padding: '8px 12px', background: 'rgba(148, 163, 184, 0.1)', borderRadius: '8px', display: 'inline-block' }}>
+                <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '600' }}>WEAK - No specifics</span>
+              </div>
+            </motion.div>
+
+            {showAfter && (
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: '1px solid rgba(14, 165, 233, 0.5)', boxShadow: '0 0 30px rgba(14, 165, 233, 0.2)' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #0ea5e9, transparent)' }} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                  <span style={{ fontSize: '12px', fontWeight: '600', color: '#0ea5e9' }}>{data.after.label}</span>
+                  <span style={{ padding: '3px 8px', borderRadius: '8px', background: '#10b981', color: 'white', fontSize: '9px', fontWeight: '700' }}>GOLD</span>
+                </div>
+                <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '14px', fontStyle: 'italic', lineHeight: '1.6' }}>"{data.after.text}"</p>
+                <div style={{ marginTop: '16px', padding: '8px 12px', background: 'rgba(14, 165, 233, 0.1)', borderRadius: '8px', display: 'inline-block' }}>
+                  <span style={{ fontSize: '11px', color: '#0ea5e9', fontWeight: '600' }}>POWERFUL - Specific, detailed, addresses objections</span>
+                </div>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE: Trust Stats with AnimatedCounter
+    const TrustStatsSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveIndex(prev => (prev + 1) % data.stats.length), 2500);
+        return () => clearInterval(timer);
+      }, [data.stats.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  textAlign: 'center',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: i === activeIndex ? '0 0 40px rgba(14, 165, 233, 0.4)' : 'none',
+                  border: i === activeIndex ? '1px solid rgba(14, 165, 233, 0.5)' : '1px solid rgba(255,255,255,0.1)',
+                  transition: 'all 0.5s ease'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === activeIndex ? 'linear-gradient(90deg, transparent, #0ea5e9, transparent)' : 'transparent' }} />
+                <div style={{ fontSize: '48px', fontWeight: '800', color: '#0ea5e9', marginBottom: '8px', fontFamily: 'Fraunces, serif' }}>
+                  <AnimatedCounter value={stat.value} duration={1.2} />{stat.suffix}
+                </div>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: 'white', marginBottom: '4px' }}>{stat.label}</div>
+                <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)' }}>{stat.subtext}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Implementation Slide
     const ImplementationSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
@@ -385,26 +565,7 @@
       </div>
     );
 
-    const ToolSetupSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Quick Setup</span>
-          <h2 className="slide-title text-xl md:text-2xl lg:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        <div className="space-y-3 mb-6">
-          {data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex items-start gap-4 bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white flex-shrink-0" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-              <p className="text-neutral-700 text-sm md:text-base leading-relaxed pt-1">{step}</p>
-            </motion.div>
-          ))}
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="bg-neutral-900 rounded-xl p-4">
-          <p className="text-neutral-300 text-sm"><span className="text-white font-semibold">Pro Tip:</span> {data.proTip}</p>
-        </motion.div>
-      </div>
-    );
-
+    // Quiz Slide
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -414,7 +575,7 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
@@ -448,11 +609,41 @@
       );
     };
 
+    // UNIQUE SLIDE: Elite Insight
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', position: 'relative', overflow: 'hidden', marginBottom: '24px' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #0ea5e9, transparent)' }} />
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+            <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', boxShadow: '0 0 30px rgba(14, 165, 233, 0.4)' }}>
+              <Icons.Shield />
+            </div>
+          </div>
+          <p style={{ color: 'white', fontSize: '18px', fontWeight: '500', textAlign: 'center', lineHeight: '1.7', fontStyle: 'italic' }}>"{data.quote}"</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+          <p style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textAlign: 'center', marginBottom: '12px', letterSpacing: '0.05em' }}>YOUR ACTION ITEMS</p>
+          <div className="space-y-2">
+            {data.actions.map((action, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'rgba(14, 165, 233, 0.05)', borderRadius: '12px', border: '1px solid rgba(14, 165, 233, 0.1)' }}>
+                <span style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'linear-gradient(135deg, #0ea5e9, #0284c7)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: '700' }}>{i + 1}</span>
+                <span style={{ color: '#374151', fontSize: '14px' }}>{action}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    );
+
+    // Completion Slide
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Trust Architecture. Build credibility, reliability, and intimacy. Remove every type of risk. Capture real customer voices right after purchase. Stack these systematically, and conversions become inevitable.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Trust Architecture. Build credibility, reliability, and intimacy. Remove every type of risk. Capture real customer voices.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -464,8 +655,7 @@
             <div className="space-y-1.5">
               {data.sources.map((source, i) => (
                 <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
+                  {source.name} <Icons.ExternalLink />
                 </a>
               ))}
             </div>
@@ -473,6 +663,8 @@
         )}
       </div>
     );
+
+    // ============ MAIN APP ============
 
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
@@ -487,14 +679,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -526,13 +712,17 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'shield-visual': return <ShieldVisualSlide data={slide} />;
+          case 'trust-equation': return <TrustEquationSlide data={slide} />;
+          case 'pillar-detail': return <PillarDetailSlide data={slide} />;
+          case 'risk-stack': return <RiskStackSlide data={slide} />;
+          case 'guarantee-battle': return <GuaranteeBattleSlide data={slide} />;
+          case 'survey-power': return <SurveyPowerSlide data={slide} />;
+          case 'testimonial-transform': return <TestimonialTransformSlide data={slide} />;
+          case 'trust-stats': return <TrustStatsSlide data={slide} />;
           case 'implementation': return <ImplementationSlide data={slide} />;
-          case 'tool-setup': return <ToolSetupSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
         }
@@ -561,7 +751,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -571,7 +761,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

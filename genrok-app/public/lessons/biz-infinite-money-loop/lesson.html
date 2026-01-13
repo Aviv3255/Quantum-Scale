@@ -14,9 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23;
-    }
+    :root { --accent: #D4A017; --accent-dark: #B8860B; --accent-light: #F4D03F; --accent-rgb: 212, 160, 23; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -45,81 +43,6 @@
       nextLesson: { id: 'biz-marketing-company', title: "You're Not a Brand", teaser: 'The identity shift that separates winners from wannabes.' }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -142,50 +65,410 @@
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-      RefreshCw: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-      Award: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
-      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      DollarSign: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      RefreshCw: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Zap: ({ size = 18, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Target: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Award: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>,
+      Users: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Crown: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Infinity: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z"/></svg>,
+      Gavel: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="m14.5 12.5-8 8a2.119 2.119 0 1 1-3-3l8-8"/><path d="m16 16 6 6"/><path d="m8 8 1.88-1.88a2.83 2.83 0 0 1 4 0L16 8"/><path d="m16 8 1.88 1.88a2.83 2.83 0 0 1 0 4L16 16"/></svg>,
+      BarChart: ({ size = 20, color = 'currentColor' }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+    };
+
+    // Animated Counter Component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
     };
 
     const slides = [
       { type: 'welcome', learningGoals: ['The one equation that rules eCommerce: LTV > CAC', 'Why high LTV lets you outbid every competitor', 'The 6-step flywheel that compounds growth'] },
-      { type: 'hook', headline: 'Most brands burn cash on ads. Winners print money.', subtext: "The difference? One equation. Master it, and you\'ll never worry about ad costs again. You\'ll outbid competitors while paying less." , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'left'},
+      { type: 'hook', headline: 'Most brands burn cash on ads. Winners print money.', subtext: 'The difference? One equation. Master it, and you\'ll never worry about ad costs again. You\'ll outbid competitors while paying less.', characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'left' },
       { type: 'quote', text: '"LTV to CAC is the only thing that matters. It\'s the foundational economic unit of any business."', author: 'Alex Hormozi', role: 'CEO, Acquisition.com', image: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc81vaj73li2pag9pt7-removebg-preview.png' },
-      { type: 'formula-reveal', title: 'The Only Metric That Matters', formula: { parts: [
-        { name: 'Lifetime Value', symbol: 'LTV', color: '#10B981' },
-        { name: 'Must Be Greater Than', symbol: '>', color: '#D4A017' },
-        { name: 'Customer Acquisition Cost', symbol: 'CAC', color: '#EF4444' }
-      ], equation: 'LTV > CAC = Scale' }, insight: 'When LTV is 3x+ your CAC, you have a machine. Put $1 in, get $3 back.' },
-      { type: 'example', scenario: 'The Auction Battle', before: { label: 'Low LTV Brand', points: ['Can only afford $50 CAC', 'Gets outbid constantly', 'Stuck at low volume', 'Eventually dies'] }, after: { label: 'High LTV Brand', points: ['Can afford $150 CAC', 'Wins every auction', 'Scales infinitely', 'Dominates market'] }, insight: 'Same product. Different LTV. One survives. One dominates.' },
-      { type: 'content', title: 'The Attention Auction', body: "Every ad platform is an auction. Meta, Google, TikTok. The advertiser who can pay MORE per customer wins the most traffic. If you can afford $200/customer and competitors max at $80, you get prime placements. They get scraps." },
-      { type: 'flywheel', title: 'The 6-Step Infinite Loop', steps: [
-        { num: '1', label: 'High LTV', desc: 'Premium products, upsells, retention' },
-        { num: '2', label: 'High Margins', desc: 'More profit per sale' },
-        { num: '3', label: 'Higher CAC', desc: 'Can afford to pay more' },
-        { num: '4', label: 'Win Auctions', desc: 'Outbid all competitors' },
-        { num: '5', label: 'More Traffic', desc: 'Best placements, highest volume' },
-        { num: '6', label: 'More Data', desc: 'Better targeting, back to step 1' }
-      ]},
+      { type: 'formula-reveal', title: 'The Only Metric That Matters' },
+      { type: 'auction-battle', title: 'The Attention Auction' },
+      { type: 'infinite-flywheel', title: 'The 6-Step Infinite Loop' },
+      { type: 'stat-countdown', title: 'The Math That Changes Everything' },
       { type: 'cards', title: 'How to Engineer High LTV', items: [
-        { title: 'Premium Products', description: "Charge more. Higher margins fund higher CAC. Ridge started at $65 wallets, now sells $400 bags.", iconType: 'dollar' },
-        { title: 'Product Expansion', description: "Same customer, multiple purchases. Ridge added rings, cases, luggage. 50%+ revenue from non-wallets.", iconType: 'trending' },
-        { title: 'Retention Systems', description: "Email, SMS, subscriptions. A customer who buys 3x is worth 3x. Build the relationship.", iconType: 'refresh' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_connecting_the_dots_drawing_lines_between_poin_66a88945-b2d0-442a-b48e-0c20060e3fcf_2.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'The Math That Changes Everything', scenario: { you: { ltv: 300, cac: 100, ratio: '3:1', verdict: 'Scale infinitely' }, competitor: { ltv: 150, cac: 120, ratio: '1.25:1', verdict: 'Barely surviving' } }},
-      { type: 'quiz', question: 'Your LTV is $200 and CAC is $80. Competitor has $100 LTV and $60 CAC. Who wins long-term?', options: ['Competitor - lower CAC is more efficient', 'You - higher LTV lets you outbid them', 'Tie - both are profitable', 'Need more data'], correctIndex: 1, feedback: { correct: "Exactly! Your 2.5:1 ratio means you can scale CAC to $100+ and still profit. Competitor\'s 1.67:1 leaves no room. You\'ll outbid them and take their traffic.", incorrect: "Think again. You have 2.5:1 ratio ($200/$80). You can afford to bid MORE and still profit. Competitor\'s 1.67:1 means they can\'t compete when you raise bids." }},
-      { type: 'content', title: 'The Uncomfortable Truth', body: "You don\'t need better ads. You don\'t need lower CPMs. You need higher LTV. Fix the business model first. Then ads become easy. Put $1 in, get $3 out. That\'s the game." },
+        { title: 'Premium Products', description: 'Charge more. Higher margins fund higher CAC. Ridge started at $65 wallets, now sells $400 bags.', icon: 'DollarSign', color: '#22c55e' },
+        { title: 'Product Expansion', description: 'Same customer, multiple purchases. Ridge added rings, cases, luggage. 50%+ revenue from non-wallets.', icon: 'TrendingUp', color: '#3b82f6' },
+        { title: 'Retention Systems', description: 'Email, SMS, subscriptions. A customer who buys 3x is worth 3x. Build the relationship.', icon: 'RefreshCw', color: '#8b5cf6' }
+      ]},
+      { type: 'content', title: 'The Uncomfortable Truth', body: 'You don\'t need better ads. You don\'t need lower CPMs. You need higher LTV. Fix the business model first. Then ads become easy. Put $1 in, get $3 out. That\'s the game.' },
       { type: 'action-checklist', title: 'Start The Loop Today', items: [
         { task: 'Calculate your current LTV and CAC ratio', done: false },
         { task: 'Identify 2-3 products to add for expansion', done: false },
         { task: 'Set up email/SMS retention flows', done: false },
         { task: 'Test a premium price point (+20%)', done: false }
       ], bottomNote: 'Every 10% LTV increase = 10% more you can spend on ads. The loop compounds.' },
+      { type: 'quiz', question: 'Your LTV is $200 and CAC is $80. Competitor has $100 LTV and $60 CAC. Who wins long-term?', options: ['Competitor - lower CAC is more efficient', 'You - higher LTV lets you outbid them', 'Tie - both are profitable', 'Need more data'], correctIndex: 1, feedback: { correct: 'Exactly! Your 2.5:1 ratio means you can scale CAC to $100+ and still profit. Competitor\'s 1.67:1 leaves no room. You\'ll outbid them and take their traffic.', incorrect: 'Think again. You have 2.5:1 ratio ($200/$80). You can afford to bid MORE and still profit. Competitor\'s 1.67:1 means they can\'t compete when you raise bids.' }},
       { type: 'completion', sources: [{ name: 'Alex Hormozi - $100M Leads', url: '#' }] }
     ];
+
+    // ============ ELITE CUSTOM SLIDES ============
+
+    // Formula Reveal Slide - Glowing animated equation
+    const FormulaRevealSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+      useEffect(() => {
+        const timers = [
+          setTimeout(() => setPhase(1), 500),
+          setTimeout(() => setPhase(2), 1200),
+          setTimeout(() => setPhase(3), 1900),
+        ];
+        return () => timers.forEach(clearTimeout);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(212, 160, 23, 0.1)', color: '#D4A017' }}>
+              <Icons.Infinity size={14} color="#D4A017" />
+              <span>The Core Equation</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="rounded-2xl p-8 md:p-12 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(212, 160, 23, 0.3)' }}>
+            <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #D4A017, transparent)' }}></div>
+
+            <div className="flex items-center justify-center gap-4 md:gap-8 mb-8">
+              {/* LTV */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: phase >= 1 ? 1 : 0.2, scale: phase >= 1 ? 1 : 0.9 }}
+                className="text-center"
+              >
+                <div className="text-5xl md:text-7xl font-bold mb-2" style={{ color: '#22c55e', textShadow: phase >= 1 ? '0 0 30px rgba(34, 197, 94, 0.5)' : 'none' }}>LTV</div>
+                <div className="text-xs text-neutral-400 uppercase tracking-wider">Lifetime Value</div>
+              </motion.div>
+
+              {/* > */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: phase >= 2 ? 1 : 0.2, scale: phase >= 2 ? 1 : 0.9 }}
+                className="text-5xl md:text-7xl font-bold"
+                style={{ color: '#D4A017', textShadow: phase >= 2 ? '0 0 30px rgba(212, 160, 23, 0.5)' : 'none' }}
+              >
+                &gt;
+              </motion.div>
+
+              {/* CAC */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: phase >= 3 ? 1 : 0.2, scale: phase >= 3 ? 1 : 0.9 }}
+                className="text-center"
+              >
+                <div className="text-5xl md:text-7xl font-bold mb-2" style={{ color: '#ef4444', textShadow: phase >= 3 ? '0 0 30px rgba(239, 68, 68, 0.5)' : 'none' }}>CAC</div>
+                <div className="text-xs text-neutral-400 uppercase tracking-wider">Acquisition Cost</div>
+              </motion.div>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: phase >= 3 ? 1 : 0, y: phase >= 3 ? 0 : 20 }}
+              transition={{ delay: 0.3 }}
+              className="text-center"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full" style={{ background: 'rgba(212, 160, 23, 0.15)', border: '1px solid rgba(212, 160, 23, 0.3)' }}>
+                <span className="text-lg font-bold" style={{ color: '#D4A017' }}>=</span>
+                <span className="text-sm font-semibold text-white">SCALE INFINITELY</span>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.5 }}
+            className="text-center text-neutral-600 text-sm mt-6 max-w-md mx-auto"
+          >
+            When LTV is 3x+ your CAC, you have a machine. Put $1 in, get $3 back.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // Auction Battle Slide - Visual auction competition
+    const AuctionBattleSlide = ({ data }) => {
+      const [animated, setAnimated] = useState(false);
+      useEffect(() => { setTimeout(() => setAnimated(true), 500); }, []);
+
+      const highLTV = { name: 'High LTV Brand', ltv: 300, maxCAC: 150, color: '#22c55e' };
+      const lowLTV = { name: 'Low LTV Brand', ltv: 100, maxCAC: 50, color: '#ef4444' };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(212, 160, 23, 0.1)', color: '#D4A017' }}>
+              <Icons.Gavel size={14} color="#D4A017" />
+              <span>The Battle</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+            <p className="text-neutral-500 text-sm mt-2">Every ad platform is an auction. The highest bidder wins.</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* High LTV Brand */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(34, 197, 94, 0.3)' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }}></div>
+
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(34, 197, 94, 0.2)' }}>
+                  <Icons.Crown size={20} color="#22c55e" />
+                </div>
+                <div>
+                  <div className="text-white font-semibold">{highLTV.name}</div>
+                  <div className="text-xs text-neutral-400">LTV: ${highLTV.ltv}</div>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="text-xs text-neutral-400 mb-2">Can bid up to:</div>
+                <div className="text-4xl font-bold" style={{ color: '#22c55e' }}>${highLTV.maxCAC}</div>
+              </div>
+
+              {/* Bid Bar */}
+              <div className="h-4 rounded-full overflow-hidden mb-4" style={{ background: '#333' }}>
+                <motion.div
+                  className="h-full rounded-full"
+                  style={{ background: 'linear-gradient(90deg, #22c55e, #16a34a)' }}
+                  initial={{ width: 0 }}
+                  animate={{ width: animated ? '100%' : 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                />
+              </div>
+
+              <div className="flex items-center gap-2 text-sm" style={{ color: '#22c55e' }}>
+                <Icons.Check />
+                <span className="font-semibold">WINS THE AUCTION</span>
+              </div>
+            </motion.div>
+
+            {/* Low LTV Brand */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="rounded-2xl p-6 relative overflow-hidden"
+              style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(239, 68, 68, 0.3)' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }}></div>
+
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                  <Icons.Users size={20} color="#ef4444" />
+                </div>
+                <div>
+                  <div className="text-white font-semibold">{lowLTV.name}</div>
+                  <div className="text-xs text-neutral-400">LTV: ${lowLTV.ltv}</div>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="text-xs text-neutral-400 mb-2">Can only bid:</div>
+                <div className="text-4xl font-bold" style={{ color: '#ef4444' }}>${lowLTV.maxCAC}</div>
+              </div>
+
+              {/* Bid Bar */}
+              <div className="h-4 rounded-full overflow-hidden mb-4" style={{ background: '#333' }}>
+                <motion.div
+                  className="h-full rounded-full"
+                  style={{ background: 'linear-gradient(90deg, #ef4444, #dc2626)' }}
+                  initial={{ width: 0 }}
+                  animate={{ width: animated ? '33%' : 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                />
+              </div>
+
+              <div className="flex items-center gap-2 text-sm" style={{ color: '#ef4444' }}>
+                <Icons.X />
+                <span className="font-semibold">LOSES EVERY TIME</span>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 }}
+            className="rounded-xl p-4 mt-6 text-center"
+            style={{ background: 'rgba(212, 160, 23, 0.1)', border: '1px solid rgba(212, 160, 23, 0.2)' }}
+          >
+            <p className="text-neutral-700 text-sm font-medium">
+              Same product. Different LTV. <span className="font-bold" style={{ color: '#D4A017' }}>The higher LTV brand takes all the traffic.</span>
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Infinite Flywheel Slide - Circular animated loop
+    const InfiniteFlywheelSlide = ({ data }) => {
+      const steps = [
+        { num: 1, label: 'High LTV', desc: 'Premium products, upsells', color: '#22c55e', icon: Icons.DollarSign },
+        { num: 2, label: 'High Margins', desc: 'More profit per sale', color: '#3b82f6', icon: Icons.TrendingUp },
+        { num: 3, label: 'Higher CAC', desc: 'Can afford to pay more', color: '#8b5cf6', icon: Icons.Target },
+        { num: 4, label: 'Win Auctions', desc: 'Outbid competitors', color: '#f59e0b', icon: Icons.Gavel },
+        { num: 5, label: 'More Traffic', desc: 'Best placements', color: '#ec4899', icon: Icons.Users },
+        { num: 6, label: 'More Data', desc: 'Better targeting', color: '#06b6d4', icon: Icons.BarChart },
+      ];
+
+      const [activeStep, setActiveStep] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveStep(s => (s + 1) % 6);
+        }, 1500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(212, 160, 23, 0.1)', color: '#D4A017' }}>
+              <Icons.RefreshCw size={14} color="#D4A017" />
+              <span>The Flywheel</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="rounded-2xl p-6 md:p-8 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: '1px solid rgba(212, 160, 23, 0.3)' }}>
+            <div className="absolute top-0 left-0 w-full h-1" style={{ background: 'linear-gradient(90deg, transparent, #D4A017, transparent)' }}></div>
+
+            {/* Circular layout representation as a grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+              {steps.map((step, i) => {
+                const IconComponent = step.icon;
+                const isActive = activeStep === i;
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 + i * 0.1 }}
+                    className="rounded-xl p-4 text-center relative transition-all duration-300"
+                    style={{
+                      background: isActive ? `${step.color}15` : 'rgba(255,255,255,0.03)',
+                      border: isActive ? `2px solid ${step.color}` : '1px solid rgba(255,255,255,0.1)',
+                      boxShadow: isActive ? `0 0 30px ${step.color}30` : 'none',
+                      transform: isActive ? 'scale(1.02)' : 'scale(1)'
+                    }}
+                  >
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: `${step.color}20` }}>
+                      <IconComponent size={20} color={step.color} />
+                    </div>
+                    <div className="text-xs font-bold px-2 py-0.5 rounded-full mb-2 inline-block" style={{ background: step.color, color: 'white' }}>{step.num}</div>
+                    <div className="text-white font-semibold text-sm mb-1">{step.label}</div>
+                    <div className="text-neutral-400 text-xs">{step.desc}</div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Loop indicator */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              className="flex items-center justify-center gap-3 mt-6 pt-4 border-t border-neutral-700"
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+              >
+                <Icons.RefreshCw size={20} color="#D4A017" />
+              </motion.div>
+              <span className="text-sm font-semibold" style={{ color: '#D4A017' }}>The loop compounds. Each cycle makes the next stronger.</span>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Stat Countdown Slide - Animated statistics
+    const StatCountdownSlide = ({ data }) => {
+      const stats = [
+        { value: 3, suffix: 'x', label: 'Target Ratio', subtext: 'LTV should be 3x CAC', color: '#22c55e' },
+        { value: 200, prefix: '$', label: 'Example LTV', subtext: 'Your customer value', color: '#3b82f6' },
+        { value: 67, prefix: '$', label: 'Max Safe CAC', subtext: 'To maintain 3:1 ratio', color: '#D4A017' },
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-4" style={{ background: 'rgba(212, 160, 23, 0.1)', color: '#D4A017' }}>
+              <Icons.BarChart size={14} color="#D4A017" />
+              <span>The Numbers</span>
+            </div>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + i * 0.15 }}
+                className="rounded-2xl p-6 text-center relative overflow-hidden"
+                style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: `1px solid ${stat.color}40` }}
+              >
+                <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }}></div>
+
+                <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: stat.color, textShadow: `0 0 30px ${stat.color}30` }}>
+                  <AnimatedCounter target={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix || ''} duration={2000 + i * 500} />
+                </div>
+                <div className="text-white font-semibold text-sm mb-1">{stat.label}</div>
+                <div className="text-neutral-400 text-xs">{stat.subtext}</div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="grid md:grid-cols-2 gap-4 mt-6"
+          >
+            <div className="rounded-xl p-4 flex items-center justify-between" style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
+              <div>
+                <div className="text-xs text-green-600 uppercase tracking-wider mb-1">You</div>
+                <div className="text-lg font-bold text-green-600">LTV $300 / CAC $100 = 3:1</div>
+              </div>
+              <div className="text-green-500"><Icons.Check /></div>
+            </div>
+            <div className="rounded-xl p-4 flex items-center justify-between" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+              <div>
+                <div className="text-xs text-red-600 uppercase tracking-wider mb-1">Competitor</div>
+                <div className="text-lg font-bold text-red-500">LTV $150 / CAC $120 = 1.25:1</div>
+              </div>
+              <div className="text-red-500"><Icons.X /></div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ END ELITE CUSTOM SLIDES ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -233,16 +516,9 @@
             </video>
           </motion.div>
         )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
     const QuoteSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative">
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative">
@@ -263,163 +539,44 @@
       </div>
     );
 
-    const FormulaRevealSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-2xl p-8 mb-6">
-          <div className="text-center mb-6 relative z-10">
-            <div className="text-3xl md:text-4xl font-mono font-bold text-white mb-2">{data.formula.equation}</div>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            {data.formula.parts.map((part, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="text-center">
-                <div className="text-2xl font-mono font-bold mb-1" style={{ color: part.color }}>{part.symbol}</div>
-                <div className="text-xs text-neutral-400">{part.name}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="text-center">
-          <p className="text-sm text-neutral-600 bg-amber-50 border border-amber-200 rounded-lg p-4">{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.scenario}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center text-red-600">
-                <Icons.X />
-              </div>
-              <span className="font-bold text-red-700">{data.before.label}</span>
-            </div>
-            <ul className="space-y-2">
-              {data.before.points.map((point, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-neutral-700">
-                  <span className="text-red-500">✗</span> {point}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center text-green-600">
-                <Icons.Check />
-              </div>
-              <span className="font-bold text-green-700">{data.after.label}</span>
-            </div>
-            <ul className="space-y-2">
-              {data.after.points.map((point, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-neutral-700">
-                  <span className="text-green-500">✓</span> {point}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm">{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg md:text-xl text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const FlywheelSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-2xl p-6">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {data.steps.map((step, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.08 }} className="bg-neutral-800/50 rounded-xl p-4 text-center border border-neutral-700">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold mx-auto mb-2" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{step.num}</div>
-                <div className="text-white font-semibold text-sm mb-1">{step.label}</div>
-                <div className="text-neutral-400 text-xs">{step.desc}</div>
-              </motion.div>
-            ))}
-          </div>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-neutral-700">
-            <Icons.RefreshCw />
-            <span className="text-sm" style={{ color: 'var(--accent)' }}>The loop compounds. Each cycle makes the next stronger.</span>
-          </motion.div>
-        </motion.div>
       </div>
     );
 
     const CardsSlide = ({ data }) => {
-      const getIcon = (type) => {
-        switch(type) {
-          case 'dollar': return <Icons.DollarSign />;
-          case 'trending': return <Icons.TrendingUp />;
-          case 'refresh': return <Icons.RefreshCw />;
-          default: return <Icons.Zap />;
-        }
+      const cardColors = ['#22c55e', '#3b82f6', '#8b5cf6'];
+      const getIcon = (name) => {
+        const iconMap = { DollarSign: Icons.DollarSign, TrendingUp: Icons.TrendingUp, RefreshCw: Icons.RefreshCw };
+        return iconMap[name] || Icons.Zap;
       };
 
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
-                  {getIcon(item.iconType)}
-                </div>
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">{data.title}</h2>
+          </motion.div>
+          <div className="grid md:grid-cols-3 gap-4">
+            {data.items.map((item, i) => {
+              const color = item.color || cardColors[i % cardColors.length];
+              const IconComponent = getIcon(item.icon);
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 + i * 0.1 }} className="rounded-2xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)', border: `1px solid ${color}30` }}>
+                  <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}></div>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ background: `${color}15`, border: `1px solid ${color}40` }}>
+                    <IconComponent size={24} color={color} />
+                  </div>
+                  <h3 className="font-bold text-white mb-2 text-base">{item.title}</h3>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{item.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       );
     };
-
-    const VisualSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-green-50 border-2 border-green-300 rounded-xl p-6 text-center">
-            <div className="text-lg font-semibold text-green-700 mb-4">You</div>
-            <div className="space-y-3">
-              <div><span className="text-neutral-500 text-sm">LTV:</span> <span className="text-2xl font-bold text-green-600">${data.scenario.you.ltv}</span></div>
-              <div><span className="text-neutral-500 text-sm">CAC:</span> <span className="text-2xl font-bold text-neutral-700">${data.scenario.you.cac}</span></div>
-              <div className="pt-2 border-t border-green-200"><span className="text-sm text-neutral-500">Ratio:</span> <span className="text-xl font-bold" style={{ color: 'var(--accent)' }}>{data.scenario.you.ratio}</span></div>
-              <div className="text-xs text-green-600 font-semibold">{data.scenario.you.verdict}</div>
-            </div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center">
-            <div className="text-lg font-semibold text-red-700 mb-4">Competitor</div>
-            <div className="space-y-3">
-              <div><span className="text-neutral-500 text-sm">LTV:</span> <span className="text-2xl font-bold text-red-500">${data.scenario.competitor.ltv}</span></div>
-              <div><span className="text-neutral-500 text-sm">CAC:</span> <span className="text-2xl font-bold text-neutral-700">${data.scenario.competitor.cac}</span></div>
-              <div className="pt-2 border-t border-red-200"><span className="text-sm text-neutral-500">Ratio:</span> <span className="text-xl font-bold text-red-500">{data.scenario.competitor.ratio}</span></div>
-              <div className="text-xs text-red-600 font-semibold">{data.scenario.competitor.verdict}</div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    );
 
     const ActionChecklistSlide = ({ data }) => {
       const [checkedItems, setCheckedItems] = useState({});
@@ -440,8 +597,8 @@
               </motion.div>
             ))}
           </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
-            <p className="text-amber-800 text-sm">{data.bottomNote}</p>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="rounded-xl p-4 text-center" style={{ background: 'rgba(212, 160, 23, 0.1)', border: '1px solid rgba(212, 160, 23, 0.2)' }}>
+            <p className="text-neutral-700 text-sm font-medium">{data.bottomNote}</p>
           </motion.div>
         </div>
       );
@@ -494,7 +651,7 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Infinite Money Loop. LTV > CAC is the game. Engineer high LTV through premium products, expansion, and retention. Then outbid every competitor and scale infinitely.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Infinite Money Loop. LTV &gt; CAC is the game. Engineer high LTV through premium products, expansion, and retention. Then outbid every competitor and scale infinitely.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -516,7 +673,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -557,11 +713,11 @@
           case 'hook': return <HookSlide data={slide} />;
           case 'quote': return <QuoteSlide data={slide} />;
           case 'formula-reveal': return <FormulaRevealSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
+          case 'auction-battle': return <AuctionBattleSlide data={slide} />;
+          case 'infinite-flywheel': return <InfiniteFlywheelSlide data={slide} />;
+          case 'stat-countdown': return <StatCountdownSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'flywheel': return <FlywheelSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'action-checklist': return <ActionChecklistSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
@@ -578,7 +734,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}

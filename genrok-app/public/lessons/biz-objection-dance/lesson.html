@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #f97316; --accent-dark: #ea580c; --accent-light: #fb923c; --accent-rgb: 249, 115, 22; }
@@ -40,137 +37,38 @@
     const LESSON_CONFIG = {
       id: 'biz-objection-dance',
       title: 'The Objection Dance',
-      description: 'Handling objections is a dance, not a fight. Learn the 4 techniques that disarm resistance without arguing.',
+      description: 'Handle objections like a dance, not a fight',
       accentColor: '#f97316',
       duration: '7 min',
-      nextLesson: { id: 'biz-infinite-flywheel', title: 'The Infinite Money Flywheel', teaser: 'How $100 ad spend becomes a predictable, scalable money machine through the LTV flywheel.' }
+      nextLesson: { id: 'biz-infinite-flywheel', title: 'The Infinite Money Flywheel', teaser: 'How $100 ad spend becomes a predictable, scalable money machine.' }
     };
-
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
-      { type: 'welcome', learningGoals: ['Why objections are a dance, not a fight', 'The 4 techniques: Curiosity, Questions, Eminem Method, Back Foot', 'How to disarm resistance without arguing'] },
-      { type: 'hook', headline: 'The moment someone objects, most salespeople fight. The best ones? They dance.', subtext: 'An objection isn\'t rejection. It\'s an invitation to lead. Alex Hormozi teaches this: objections are dance moves. When they step left, you step right. When they push, you pull. You never argue. You never force. You guide. You disarm. And by the end, they\'ve sold themselves. This is the objection dance.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eov911dsc81vaj73li2pag9pt7-removebg-preview.png', personName: 'Alex Hormozi' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_httpss.mj.runL4Kiyy-A1lI_He_is_waving_a_red_flag_100_c6c04ad4-c9e2-4a37-81cc-c7da0ca2b396_2.mp4', characterPosition: 'left'},
-      { type: 'content', title: 'Objections Are Not Resistance', body: 'When someone objects, they\'re not saying no. They\'re saying "I need more information" or "I\'m scared." Most people react by pushing harder. Wrong move. The dance requires you to step back, listen, and disarm. Objections are opportunities. Not obstacles. Once you see this, everything changes.' },
-      { type: 'visual', title: 'The 4 Techniques', visualType: 'stats', data: [
-        { value: '1', label: 'Childlike Curiosity', subtext: 'Ask "Tell me more about that"' },
-        { value: '2', label: 'Only Questions', subtext: 'Never statements. Lead with questions.' },
-        { value: '3', label: 'Eminem Method', subtext: 'Own their negatives first' }
-      ]},
-      { type: 'content', title: 'Technique 1: Childlike Curiosity', body: 'When they object, get genuinely curious. "Tell me more about that." "What makes you feel that way?" You\'re not defending. You\'re exploring. This disarms them immediately. They expect a fight. You give them curiosity. Now they\'re explaining, not resisting. And as they explain, they often talk themselves OUT of the objection.' },
-      { type: 'content', title: 'Technique 2: Only Ask Questions', body: 'Stop making statements. Start asking questions. "What would need to be true for this to work for you?" "If time wasn\'t an issue, would you want this?" Questions shift the power dynamic. They\'re not being sold to. They\'re solving their own problem. With your guidance. This is how you lead the dance.' },
-      { type: 'example', scenario: 'Questions vs Statements', before: { label: 'Statement (Pushy)', text: '"Trust me, this works for everyone. You just need to commit."' }, after: { label: 'Question (Dance)', text: '"What would make this feel like the right decision for you?"' }, insight: 'Questions invite. Statements repel. Dance don\'t push.' },
-      { type: 'content', title: 'Technique 3: The Eminem Method (Own Their Negatives)', body: 'Before they can bring up negatives, YOU bring them up first. "Look, this isn\'t cheap." "This won\'t work if you don\'t put in the effort." When you own the negatives, they can\'t use them against you. You\'ve disarmed the objection before it lands. This is Eminem\'s strategy in 8 Mile. And it\'s genius.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_drawing_a_strategy_whiteboardplanning_100_pure_95302861-8c44-460f-bcd1-7faa302067c4_3.mp4', characterPosition: 'left'},
-      { type: 'cards', title: 'The Eminem Method in Action', items: [
-        { title: 'Example 1: Price', description: '"This costs $5,000. It\'s not for everyone. But if you\'re serious about results, it\'s worth 10x that."' },
-        { title: 'Example 2: Time', description: '"This takes 6 months. Not overnight. But that\'s why it works—no shortcuts, just real transformation."' },
-        { title: 'Example 3: Effort', description: '"You\'ll need to show up. This isn\'t passive. But that\'s exactly why people succeed with it."' }
-      ]},
-      { type: 'content', title: 'Technique 4: Sell From the Back Foot', body: 'Stop chasing. Start retreating. "If you want it, I\'m here. But if it\'s not right for you, no problem." This creates FOMO. When you pull away, they lean in. You\'re not desperate. You\'re confident. And confidence is magnetic. The dance is about pull, not push. Always.' },
-      { type: 'example', scenario: 'The Back Foot Close', before: { label: 'Pushy Close', text: '"You need to decide now. This offer expires tonight. Don\'t miss out!"' }, after: { label: 'Back Foot Close', text: '"Take your time. If it\'s right, you\'ll know. And if not, no hard feelings. I\'m here either way."' }, insight: 'Pulling away creates more desire than pushing ever could.' },
-      { type: 'content', title: 'Never Argue. Disarm Instead.', body: 'The moment you argue, you lose. Even if you "win" the argument, you lose the sale. Because nobody likes being told they\'re wrong. Instead, disarm. Agree. Redirect. "I totally get that. A lot of people felt the same way before they tried it. What changed for them was..." You\'re not fighting. You\'re dancing. And they follow your lead.' },
-      { type: 'quiz', question: 'What is the "Eminem Method" for handling objections?', options: ['Rap really fast to confuse them', 'Own their negatives before they can use them against you', 'Tell them they\'re wrong', 'Ignore the objection completely'], correctIndex: 1, feedback: { correct: 'Exactly! The Eminem Method means YOU bring up the negatives first. "This isn\'t cheap." "This takes effort." When you own the negatives, they can\'t be used against you. You\'ve disarmed the objection before it lands. Genius.', incorrect: 'Not quite. The Eminem Method is about owning their negatives BEFORE they can use them. "This costs $5K. It\'s not for everyone. But..." By bringing it up first, you disarm the objection. They can\'t attack what you\'ve already acknowledged.' }},
-      { type: 'completion', sources: [] }
+      { type: 'welcome', learningGoals: ['Why objections are a dance, not a fight', 'The 4 techniques: Curiosity, Questions, Eminem, Back Foot', 'How to disarm resistance without arguing'] },
+      { type: 'hook', headline: 'The moment someone objects, most salespeople fight. The best ones? They dance.', subtext: 'An objection is not rejection. It is an invitation to lead. When they step left, you step right. When they push, you pull. You never argue. You never force. You guide. You disarm.' },
+      { type: 'fight-vs-dance', title: 'Fight vs Dance', subtitle: 'Two approaches to objections' },
+      { type: 'four-techniques', title: 'The 4 Dance Moves', subtitle: 'Master these and objections become opportunities' },
+      { type: 'technique-detail', title: 'Technique 1: Childlike Curiosity', num: 1, color: '#f97316', desc: 'When they object, get genuinely curious. "Tell me more about that." "What makes you feel that way?" You are not defending. You are exploring. They expect a fight. You give them curiosity.', example: '"Tell me more about that..."' },
+      { type: 'technique-detail', title: 'Technique 2: Only Questions', num: 2, color: '#3B82F6', desc: 'Stop making statements. Start asking questions. Questions shift the power dynamic. They are not being sold to. They are solving their own problem with your guidance.', example: '"What would need to be true for this to work for you?"' },
+      { type: 'push-vs-pull', title: 'Statements vs Questions', subtitle: 'One pushes. One leads.' },
+      { type: 'technique-detail', title: 'Technique 3: The Eminem Method', num: 3, color: '#8B5CF6', desc: 'Before they can bring up negatives, YOU bring them up first. "Look, this is not cheap." "This will not work if you do not put in the effort." When you own the negatives, they cannot use them against you.', example: '"This costs $5K. It is not for everyone..."' },
+      { type: 'eminem-examples', title: 'The Eminem Method in Action', subtitle: 'Own their negatives before they can use them' },
+      { type: 'technique-detail', title: 'Technique 4: Sell From the Back Foot', num: 4, color: '#22C55E', desc: 'Stop chasing. Start retreating. "If you want it, I am here. But if it is not right for you, no problem." This creates FOMO. When you pull away, they lean in.', example: '"Take your time. If it is right, you will know."' },
+      { type: 'quiz', question: 'What is the "Eminem Method" for handling objections?', options: ['Rap really fast to confuse them', 'Own their negatives before they can use them against you', 'Tell them they are wrong', 'Ignore the objection completely'], correctIndex: 1, feedback: { correct: 'Exactly! The Eminem Method means YOU bring up the negatives first. When you own the negatives, they cannot be used against you.', incorrect: 'Not quite. The Eminem Method is about owning their negatives BEFORE they can use them. By bringing it up first, you disarm the objection.' }},
+      { type: 'mindset-shift', title: 'The Golden Rule', insight: 'The moment you argue, you lose. Even if you "win" the argument, you lose the sale. Never fight. Always dance.' },
+      { type: 'completion', sources: ['Alex Hormozi - $100M Offers'] }
     ];
 
     const Icons = {
@@ -180,9 +78,262 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      MessageCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      HelpCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Shield: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      ArrowUpRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>,
+      TrendingDown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Clock2: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
     };
+
+    // ============ CUSTOM ELITE SLIDE COMPONENTS ============
+
+    // Fight vs Dance Comparison
+    const FightVsDanceSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Fight */}
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: 16, padding: 24, position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ color: '#EF4444' }}><Icons.X /></span>
+              </div>
+              <div>
+                <p className="text-red-400 text-xs uppercase tracking-wider">Wrong Approach</p>
+                <p className="text-white font-semibold text-lg">Fight</p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {['Push harder when they resist', 'Argue to prove you are right', 'Make statements, not questions', 'Chase when they pull away'].map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+                  className="flex items-center gap-3 text-neutral-400 text-sm">
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#EF4444' }} />
+                  {item}
+                </motion.div>
+              ))}
+            </div>
+            <div className="mt-4 pt-4 border-t border-neutral-700">
+              <p className="text-red-400 text-sm font-medium">Result: You win the argument, lose the sale</p>
+            </div>
+          </motion.div>
+
+          {/* Dance */}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+            style={{ background: 'linear-gradient(135deg, #1a1f1a, #2d3d2d)', borderRadius: 16, padding: 24, position: 'relative', overflow: 'hidden', boxShadow: '0 0 40px rgba(249, 115, 22, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, transparent, #f97316, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: 'rgba(249, 115, 22, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ color: '#f97316' }}><Icons.Check /></span>
+              </div>
+              <div>
+                <p className="text-orange-400 text-xs uppercase tracking-wider">Right Approach</p>
+                <p className="text-white font-semibold text-lg">Dance</p>
+              </div>
+            </div>
+            <div className="space-y-3">
+              {['Step back when they push', 'Get curious, not defensive', 'Lead with questions', 'Pull away to create desire'].map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }}
+                  className="flex items-center gap-3 text-orange-200/80 text-sm">
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#f97316' }} />
+                  {item}
+                </motion.div>
+              ))}
+            </div>
+            <div className="mt-4 pt-4 border-t border-orange-900/30">
+              <p className="text-orange-400 text-sm font-medium">Result: They sell themselves</p>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Four Techniques Grid
+    const FourTechniquesSlide = ({ data }) => {
+      const techniques = [
+        { num: 1, title: 'Childlike Curiosity', desc: '"Tell me more about that..."', icon: Icons.HelpCircle, color: '#f97316' },
+        { num: 2, title: 'Only Questions', desc: 'Never statements. Lead with questions.', icon: Icons.MessageCircle, color: '#3B82F6' },
+        { num: 3, title: 'Eminem Method', desc: 'Own their negatives first', icon: Icons.Shield, color: '#8B5CF6' },
+        { num: 4, title: 'Back Foot', desc: 'Pull away to create desire', icon: Icons.TrendingDown, color: '#22C55E' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {techniques.map((tech, i) => (
+              <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: 16, padding: 20, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent, ${tech.color}, transparent)` }} />
+                <div className="flex items-start gap-3">
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: `${tech.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: `1px solid ${tech.color}30` }}>
+                    <span style={{ color: tech.color }}>{tech.num}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white text-sm mb-1">{tech.title}</h3>
+                    <p className="text-neutral-400 text-xs">{tech.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+            className="text-center text-neutral-500 text-sm mt-6">
+            Master all four and objections become opportunities
+          </motion.p>
+        </div>
+      );
+    };
+
+    // Technique Detail Slide
+    const TechniqueDetailSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: 20, padding: 32, position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent, ${data.color}, transparent)` }} />
+
+          <div className="flex items-center gap-4 mb-6">
+            <div style={{ width: 56, height: 56, borderRadius: 14, background: `${data.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${data.color}30` }}>
+              <span className="text-2xl font-bold" style={{ color: data.color }}>{data.num}</span>
+            </div>
+            <div>
+              <p style={{ color: data.color }} className="text-xs uppercase tracking-wider mb-1">Technique {data.num}</p>
+              <h2 className="slide-title text-xl md:text-2xl text-white">{data.title.replace(`Technique ${data.num}: `, '')}</h2>
+            </div>
+          </div>
+
+          <p className="text-neutral-300 text-base leading-relaxed mb-6">{data.desc}</p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            style={{ background: `${data.color}15`, borderRadius: 12, padding: 16, border: `1px solid ${data.color}30` }}>
+            <p className="text-xs uppercase tracking-wider mb-2" style={{ color: data.color }}>Example</p>
+            <p className="text-white font-medium italic">"{data.example}"</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // Push vs Pull Comparison
+    const PushVsPullSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Statement (Push) */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: 16, padding: 24, position: 'relative' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }} />
+            <div className="flex items-center gap-2 mb-4">
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ color: '#EF4444' }}><Icons.ArrowUpRight /></span>
+              </div>
+              <p className="text-red-400 text-sm font-semibold">Statement (Pushy)</p>
+            </div>
+            <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderRadius: 12, padding: 16, border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+              <p className="text-neutral-300 text-sm italic">"Trust me, this works for everyone. You just need to commit."</p>
+            </div>
+            <p className="text-neutral-500 text-xs mt-3">Tells them what to think. Creates resistance.</p>
+          </motion.div>
+
+          {/* Question (Pull) */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            style={{ background: 'linear-gradient(135deg, #1a1f1a, #2d3d2d)', borderRadius: 16, padding: 24, position: 'relative', boxShadow: '0 0 30px rgba(59, 130, 246, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, transparent, #3B82F6, transparent)' }} />
+            <div className="flex items-center gap-2 mb-4">
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(59, 130, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ color: '#3B82F6' }}><Icons.HelpCircle /></span>
+              </div>
+              <p className="text-blue-400 text-sm font-semibold">Question (Dance)</p>
+            </div>
+            <div style={{ background: 'rgba(59, 130, 246, 0.1)', borderRadius: 12, padding: 16, border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+              <p className="text-blue-100 text-sm italic">"What would make this feel like the right decision for you?"</p>
+            </div>
+            <p className="text-blue-300/60 text-xs mt-3">Invites them to think. Creates engagement.</p>
+          </motion.div>
+        </div>
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+          className="text-center text-neutral-500 text-sm mt-6">
+          Questions invite. Statements repel. Dance, do not push.
+        </motion.p>
+      </div>
+    );
+
+    // Eminem Examples Slide
+    const EminemExamplesSlide = ({ data }) => {
+      const examples = [
+        { objection: 'Price', response: '"This costs $5,000. It is not for everyone. But if you are serious about results, it is worth 10x that."', icon: Icons.DollarSign, color: '#f97316' },
+        { objection: 'Time', response: '"This takes 6 months. Not overnight. But that is why it works—no shortcuts, just real transformation."', icon: Icons.Clock2, color: '#3B82F6' },
+        { objection: 'Effort', response: '"You will need to show up. This is not passive. But that is exactly why people succeed with it."', icon: Icons.Target, color: '#22C55E' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="space-y-4">
+            {examples.map((ex, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: 16, padding: 20, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 4, background: ex.color }} />
+                <div className="flex items-start gap-4">
+                  <div style={{ width: 40, height: 40, borderRadius: 10, background: `${ex.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: `1px solid ${ex.color}30` }}>
+                    <span style={{ color: ex.color }}><ex.icon /></span>
+                  </div>
+                  <div>
+                    <p style={{ color: ex.color }} className="text-xs uppercase tracking-wider mb-2">{ex.objection} Objection</p>
+                    <p className="text-neutral-300 text-sm italic leading-relaxed">{ex.response}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // Mindset Shift Slide
+    const MindsetShiftSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+          style={{ background: 'linear-gradient(135deg, #1f1a0f, #3d2d1a)', borderRadius: 24, padding: 40, textAlign: 'center', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(249, 115, 22, 0.2)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: 'linear-gradient(90deg, transparent, #f97316, transparent)' }} />
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            style={{ width: 64, height: 64, borderRadius: 16, background: 'rgba(249, 115, 22, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', border: '1px solid rgba(249, 115, 22, 0.3)' }}>
+            <span style={{ color: '#f97316' }}><Icons.Zap /></span>
+          </motion.div>
+
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            className="slide-title text-2xl md:text-3xl text-white mb-6">{data.title}</motion.h2>
+
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-orange-100/80 text-lg leading-relaxed">{data.insight}</motion.p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ STANDARD TEMPLATE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -221,207 +372,123 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
     );
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
-      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
-      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      useEffect(() => {
+        if (showFeedback) {
+          const gif = isCorrect ? getRandomCelebrationGif() : getRandomEmpathyGif();
+          onShowGif(gif, '50%', 'right');
+          return () => onHideGif();
+        }
+      }, [showFeedback, isCorrect, onShowGif, onHideGif]);
+
+      const handleSelect = (index) => {
+        if (showFeedback) return;
+        setSelected(index);
+        setShowFeedback(true);
+      };
 
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
-            </motion.div>
-            <div className="space-y-3 mb-6">
-              {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
-                  <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                    </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
-                  </div>
-                </motion.button>
-              ))}
-            </div>
-            <AnimatePresence>
-              {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2">Quick Check</p>
+            <h2 className="slide-title text-xl md:text-2xl text-black">{data.question}</h2>
+          </motion.div>
+          <div className="space-y-3">
+            {data.options.map((option, i) => (
+              <motion.button key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }}
+                onClick={() => handleSelect(i)}
+                disabled={showFeedback}
+                className={`w-full p-4 rounded-xl text-left flex items-center gap-3 transition-all ${showFeedback ? (i === data.correctIndex ? 'bg-green-50 border-2 border-green-500' : i === selected ? 'bg-red-50 border-2 border-red-500' : 'bg-neutral-50 border-2 border-neutral-200 opacity-50') : 'bg-white border-2 border-neutral-200 hover:border-neutral-400'}`}>
+                <span className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected ? 'bg-red-500 text-white' : 'bg-neutral-200 text-neutral-700'}`}>
+                  {String.fromCharCode(65 + i)}
+                </span>
+                <span className="text-neutral-700 text-sm">{option}</span>
+              </motion.button>
+            ))}
           </div>
+          <AnimatePresence>
+            {showFeedback && (
+              <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                className={`mt-6 p-4 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                <p className={`text-sm ${isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                  {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       );
     };
 
     const CompletionSlide = ({ data }) => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the objection dance. Childlike curiosity. Only questions. Own their negatives first (Eminem Method). Sell from the back foot. Never argue. Always disarm. Objections aren't obstacles—they're invitations to lead. Dance, don't push.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
+      <div className="h-full flex flex-col items-center justify-center text-center px-6 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+          className="w-20 h-20 rounded-full flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+          <Icons.Check />
         </motion.div>
-        {data?.sources && data.sources.length > 0 && (
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="bg-neutral-50 border border-neutral-200 rounded-xl p-4 max-w-md w-full">
-            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-2 flex items-center justify-center gap-1"><Icons.Link /> Relevant Sources</p>
-            <div className="space-y-1.5">
-              {data.sources.map((source, i) => (
-                <a key={i} href={source.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-sm font-medium transition-colors hover:underline" style={{ color: 'var(--accent)' }}>
-                  {source.name}
-                  <Icons.ExternalLink />
-                </a>
-              ))}
-            </div>
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete!</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="text-neutral-600 mb-6">You have mastered the objection dance.</motion.p>
+        {LESSON_CONFIG.nextLesson && (
+          <motion.a initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            href={`/lessons/${LESSON_CONFIG.nextLesson.id}/lesson.html`}
+            className="px-6 py-3 rounded-xl text-white font-semibold" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
+            Next: {LESSON_CONFIG.nextLesson.title}
+          </motion.a>
+        )}
+        {data.sources && data.sources.length > 0 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8 text-xs text-neutral-400">
+            Sources: {data.sources.join(', ')}
           </motion.div>
         )}
       </div>
     );
 
+    // ============ LESSON APP ============
+
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide);
       const [direction, setDirection] = useState(1);
-      const userName = useMemo(() => getUserName(), []);
-      const currentSlideRef = React.useRef(0);
-      const [gifConfig, setGifConfig] = useState(null);
       const [isAnimating, setIsAnimating] = useState(false);
+      const [gifConfig, setGifConfig] = useState(null);
+      const userName = getUserName();
 
-      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
-      const hideGif = useCallback(() => setGifConfig(null), []);
-
-      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-
-      // Send slide update to parent for admin issue tracking
-      useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
-      }, [currentSlide]);
-
-      const goToSlide = useCallback((newSlide) => {
-        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+      const nextSlide = useCallback(() => {
+        if (isAnimating || currentSlide >= slides.length - 1) return;
+        setDirection(1);
         setIsAnimating(true);
-        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
-        setCurrentSlide(newSlide);
-      }, [isAnimating]);
+        setCurrentSlide(prev => prev + 1);
+      }, [isAnimating, currentSlide]);
 
-      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
-      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => {
+        if (isAnimating || currentSlide <= 0) return;
+        setDirection(-1);
+        setIsAnimating(true);
+        setCurrentSlide(prev => prev - 1);
+      }, [isAnimating, currentSlide]);
+
+      const goToSlide = useCallback((index) => {
+        if (isAnimating || index === currentSlide) return;
+        setDirection(index > currentSlide ? 1 : -1);
+        setIsAnimating(true);
+        setCurrentSlide(index);
+      }, [isAnimating, currentSlide]);
+
+      const showGif = useCallback((url, height = '50%', side = 'right') => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
 
       useEffect(() => {
         const handleKeyDown = (e) => {
-          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+          if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+          if (e.key === 'ArrowLeft') prevSlide();
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
@@ -437,12 +504,15 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
+          // Custom elite slides
+          case 'fight-vs-dance': return <FightVsDanceSlide data={slide} />;
+          case 'four-techniques': return <FourTechniquesSlide data={slide} />;
+          case 'technique-detail': return <TechniqueDetailSlide data={slide} />;
+          case 'push-vs-pull': return <PushVsPullSlide data={slide} />;
+          case 'eminem-examples': return <EminemExamplesSlide data={slide} />;
+          case 'mindset-shift': return <MindsetShiftSlide data={slide} />;
           default: return null;
         }
       };
@@ -456,7 +526,6 @@
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
               <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
             {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
@@ -470,7 +539,7 @@
           <AnimatePresence>
             {gifConfig && (
               <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>

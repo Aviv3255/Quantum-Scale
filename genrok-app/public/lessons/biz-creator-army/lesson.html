@@ -162,6 +162,27 @@
       { type: 'completion', sources: ['The E-commerce Cheat Code'] }
     ];
 
+    // AnimatedCounter component for elite stats
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      const numTarget = typeof target === 'string' ? parseFloat(target.replace(/[^0-9.]/g, '')) : target;
+
+      useEffect(() => {
+        if (isNaN(numTarget)) { setCount(target); return; }
+        let start = 0;
+        const increment = numTarget / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= numTarget) { setCount(numTarget); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [numTarget, duration]);
+
+      if (typeof target === 'string' && isNaN(numTarget)) return <span>{target}</span>;
+      return <span>{prefix}{typeof count === 'number' ? count.toLocaleString() : count}{suffix}</span>;
+    };
+
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -171,6 +192,16 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Camera: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Package: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      Trophy: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      BarChart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Filter: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+      Network: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -359,29 +390,47 @@
       </div>
     );
 
-    const ComparisonCardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className={`rounded-xl p-5 ${data.left && data.left.color === 'red' ? 'bg-red-50 border-2 border-red-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.left && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.left.color === 'red' ? 'text-red-500' : 'text-neutral-500'}`}>{data.left.label}</span>
-              {data.left.value && <h3 className={`text-2xl font-bold ${data.left.color === 'red' ? 'text-red-600' : 'text-neutral-900'}`}>{data.left.value}</h3>}
-              {data.left.subtext && <p className="text-xs text-neutral-500">{data.left.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.left.items && data.left.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.left.color === 'red' ? 'text-red-400' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className={`rounded-xl p-5 ${data.right && data.right.color === 'green' ? 'bg-green-50 border-2 border-green-200' : 'bg-neutral-50 border-2 border-neutral-200'}`}>
-            {data.right && <><div className="text-center mb-4">
-              <span className={`text-xs font-bold uppercase tracking-wider ${data.right.color === 'green' ? 'text-green-500' : 'text-neutral-500'}`}>{data.right.label}</span>
-              {data.right.value && <h3 className={`text-2xl font-bold ${data.right.color === 'green' ? 'text-green-600' : 'text-neutral-900'}`}>{data.right.value}</h3>}
-              {data.right.subtext && <p className="text-xs text-neutral-500">{data.right.subtext}</p>}
-            </div>
-            <ul className="space-y-2">{data.right.items && data.right.items.map((item, i) => <li key={i} className="text-neutral-700 text-sm flex items-start gap-2"><span className={data.right.color === 'green' ? 'text-green-500' : 'text-neutral-400'}>•</span>{item}</li>)}</ul></>}
-          </motion.div>
+    const ComparisonCardsSlide = ({ data }) => {
+      const leftColor = data.left?.color || '#EF4444';
+      const rightColor = data.right?.color || '#22C55E';
+      const LeftIcon = data.left?.iconComponent && Icons[data.left.iconComponent];
+      const RightIcon = data.right?.iconComponent && Icons[data.right.iconComponent];
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `1px solid ${leftColor}40`, boxShadow: `0 0 30px ${leftColor}20` }}
+              className="rounded-2xl p-5 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${leftColor}, transparent)` }} />
+              {data.left && <>
+                <div className="flex items-center gap-3 mb-4">
+                  {LeftIcon && <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${leftColor}20`, color: leftColor }}><LeftIcon /></div>}
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: leftColor }}>{data.left.label}</span>
+                </div>
+                <ul className="space-y-2">{data.left.items && data.left.items.map((item, i) => (
+                  <li key={i} className="text-neutral-400 text-sm flex items-start gap-2"><span style={{ color: leftColor }}>•</span>{item}</li>
+                ))}</ul>
+              </>}
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `1px solid ${rightColor}40`, boxShadow: `0 0 30px ${rightColor}20` }}
+              className="rounded-2xl p-5 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${rightColor}, transparent)` }} />
+              {data.right && <>
+                <div className="flex items-center gap-3 mb-4">
+                  {RightIcon && <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${rightColor}20`, color: rightColor }}><RightIcon /></div>}
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: rightColor }}>{data.right.label}</span>
+                </div>
+                <ul className="space-y-2">{data.right.items && data.right.items.map((item, i) => (
+                  <li key={i} className="text-neutral-400 text-sm flex items-start gap-2"><span style={{ color: rightColor }}>•</span>{item}</li>
+                ))}</ul>
+              </>}
+            </motion.div>
+          </div>
         </div>
-      </div>
-    );
+      );
+    };
 
     const DoomLoopSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
@@ -532,10 +581,138 @@
 
     const QuoteSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="text-6xl mb-6" style={{ color: 'var(--accent)' }}>"</motion.div>
-        <motion.blockquote initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-2xl md:text-3xl font-medium text-neutral-800 mb-6 leading-relaxed">{data.quote}</motion.blockquote>
-        {data.author && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-neutral-500">— {data.author}{data.context && <span className="block text-sm mt-1">{data.context}</span>}</motion.p>}
-        {data.insight && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="mt-6 bg-neutral-100 rounded-xl p-4 max-w-xl"><p className="text-sm text-neutral-600">{data.insight}</p></motion.div>}
+        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(139, 92, 246, 0.3)' }}
+          className="rounded-2xl p-8 md:p-10 border border-purple-500/30 relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+          <div className="text-5xl mb-4" style={{ color: 'var(--accent)' }}>"</div>
+          <blockquote className="text-xl md:text-2xl font-medium text-white mb-6 leading-relaxed">{data.quote}</blockquote>
+          {data.author && <p className="text-neutral-400">— <span className="text-white font-semibold">{data.author}</span>{data.company && <span className="block text-sm mt-1 text-purple-400">{data.company}</span>}</p>}
+        </motion.div>
+      </div>
+    );
+
+    // Elite HitRateComparisonSlide
+    const HitRateComparisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        {data.subtitle && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-500 text-center mb-8">{data.subtitle}</motion.p>}
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #ef444450', boxShadow: '0 0 40px #ef444420' }}
+            className="rounded-2xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400"><Icons.Camera /></div>
+              <div><h3 className="font-bold text-white">1 Agency</h3><p className="text-xs text-neutral-500">Traditional approach</p></div>
+            </div>
+            <div className="text-4xl font-bold text-red-400 mb-2 title-font">$10K<span className="text-lg text-neutral-500">/mo</span></div>
+            <p className="text-neutral-400 text-sm">Limited polished content. One perspective. One style.</p>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #22c55e50', boxShadow: '0 0 40px #22c55e20' }}
+            className="rounded-2xl p-6 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-green-400"><Icons.Users /></div>
+              <div><h3 className="font-bold text-white">500 Creators</h3><p className="text-xs text-neutral-500">Creator army model</p></div>
+            </div>
+            <div className="text-4xl font-bold text-green-400 mb-2 title-font">Unlimited<span className="text-lg text-neutral-500"> content</span></div>
+            <p className="text-neutral-400 text-sm">Authentic voices. Exponential reach. 3X higher conversions.</p>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Elite FunnelVisualSlide
+    const FunnelVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        {data.subtitle && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-500 text-center mb-8">{data.subtitle}</motion.p>}
+        <div className="flex flex-col items-center gap-3">
+          {[
+            { label: '500 Creators', value: '500', color: '#8B5CF6', width: '100%' },
+            { label: 'x 500 Followers Each', value: '250K', color: '#3B82F6', width: '85%' },
+            { label: 'Network Effect', value: '∞', color: '#22C55E', width: '70%' }
+          ].map((step, i) => (
+            <motion.div key={i} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 + i * 0.15 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `2px solid ${step.color}50`, boxShadow: `0 0 30px ${step.color}30`, width: step.width }}
+              className="rounded-2xl p-5 text-center relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${step.color}, transparent)` }} />
+              <div className="flex items-center justify-center gap-4">
+                <div className="text-3xl font-bold title-font" style={{ color: step.color }}>{step.value}</div>
+                <div className="text-neutral-300 text-sm font-semibold">{step.label}</div>
+              </div>
+            </motion.div>
+          ))}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="flex items-center gap-2 mt-4 text-green-400">
+            <Icons.TrendingUp />
+            <span className="text-sm font-semibold">250,000+ brand ambassadors</span>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // Elite StepBreakdownSlide
+    const StepBreakdownSlide = ({ data }) => {
+      const IconComponent = data.icon && Icons[data.icon];
+      const color = data.color || 'var(--accent)';
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `2px solid ${color}50`, boxShadow: `0 0 40px ${color}30` }}
+            className="rounded-2xl p-6 md:p-8 relative overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }} />
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-white" style={{ background: `linear-gradient(135deg, ${color}, ${color}aa)`, boxShadow: `0 4px 20px ${color}50` }}>
+                {IconComponent ? <IconComponent /> : <span className="text-xl font-bold">{data.stepNumber}</span>}
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-wider mb-1" style={{ color }}>Step {data.stepNumber}</p>
+                <h2 className="slide-title text-xl md:text-2xl text-white">{data.title}</h2>
+              </div>
+            </div>
+            <p className="text-neutral-300 text-base leading-relaxed mb-4">{data.description}</p>
+            {data.cost && (
+              <div className="flex items-center gap-2 pt-4 border-t border-neutral-700">
+                <span className="text-xs uppercase tracking-wider text-neutral-500">Investment:</span>
+                <span className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: `${color}20`, color }}>{data.cost}</span>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      );
+    };
+
+    // Elite EconomicsVisualSlide
+    const EconomicsVisualSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+        {data.subtitle && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-500 text-center mb-8">{data.subtitle}</motion.p>}
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { value: 70, suffix: '%', label: 'Lower Cost', color: '#22C55E', icon: 'DollarSign' },
+            { value: 100, suffix: 'X', label: 'More Content', color: '#3B82F6', icon: 'BarChart' },
+            { value: 3, suffix: 'X', label: 'Conversions', color: '#8B5CF6', icon: 'TrendingUp' }
+          ].map((stat, i) => {
+            const IconComponent = Icons[stat.icon];
+            return (
+              <motion.div key={i} initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.1 + i * 0.1 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: `1px solid ${stat.color}40`, boxShadow: `0 0 40px ${stat.color}25` }}
+                className="rounded-2xl p-6 text-center relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl mx-auto mb-3 flex items-center justify-center text-white" style={{ background: `linear-gradient(135deg, ${stat.color}, ${stat.color}aa)`, boxShadow: `0 4px 15px ${stat.color}50` }}>
+                  {IconComponent && <IconComponent />}
+                </div>
+                <div className="text-4xl font-bold title-font mb-1" style={{ color: stat.color, textShadow: `0 0 30px ${stat.color}50` }}>
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-sm font-semibold text-white">{stat.label}</div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     );
 
@@ -871,6 +1048,10 @@
           case 'formats': return <FormatsSlide data={slide} />;
           case 'matrixVisualization': return <MatrixVisualizationSlide data={slide} />;
           case 'matrixBuilder': return <MatrixBuilderSlide data={slide} />;
+          case 'hit-rate-comparison': return <HitRateComparisonSlide data={slide} />;
+          case 'funnel-visual': return <FunnelVisualSlide data={slide} />;
+          case 'step-breakdown': return <StepBreakdownSlide data={slide} />;
+          case 'economics-visual': return <EconomicsVisualSlide data={slide} />;
           case 'stats': return <StatCountdownSlide data={slide} />;
           case 'roadmap': return <StrategyStepsSlide data={slide} />;
           case 'triangle': return <GenericListSlide data={slide} />;

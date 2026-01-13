@@ -1,0 +1,45 @@
+================================================
+INSTRUCTIONS:
+1. Copy ONLY the SQL below (between the lines)
+2. Change YOUR_EMAIL@gmail.com to your actual email
+3. Paste in Supabase → SQL Editor → Run
+================================================
+
+----- COPY FROM HERE -----
+
+ALTER TABLE user_profiles ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
+
+UPDATE user_profiles SET is_admin = TRUE WHERE user_id IN (SELECT id FROM auth.users WHERE email = 'YOUR_EMAIL@gmail.com');
+
+CREATE TABLE IF NOT EXISTS admin_issues (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  page_url TEXT NOT NULL,
+  page_type TEXT NOT NULL,
+  lesson_slug TEXT,
+  slide_index INTEGER,
+  section_id TEXT,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  priority TEXT DEFAULT 'normal',
+  status TEXT DEFAULT 'pending',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  fixed_at TIMESTAMPTZ,
+  validated_at TIMESTAMPTZ,
+  reported_by UUID REFERENCES auth.users(id),
+  fixed_by TEXT,
+  direct_link TEXT NOT NULL
+);
+
+ALTER TABLE admin_issues ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Admins can manage issues" ON admin_issues;
+DROP POLICY IF EXISTS "Public can read issues" ON admin_issues;
+DROP POLICY IF EXISTS "Users can read own profile" ON user_profiles;
+
+CREATE POLICY "Admins can manage issues" ON admin_issues FOR ALL USING (EXISTS (SELECT 1 FROM user_profiles WHERE user_profiles.user_id = auth.uid() AND user_profiles.is_admin = TRUE));
+
+CREATE POLICY "Public can read issues" ON admin_issues FOR SELECT USING (true);
+
+CREATE POLICY "Users can read own profile" ON user_profiles FOR SELECT USING (auth.uid() = user_id);
+
+----- COPY TO HERE -----

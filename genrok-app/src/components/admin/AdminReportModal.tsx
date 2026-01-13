@@ -1,10 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Bug, MapPin, AlertTriangle, CheckSquare } from 'lucide-react';
+import { X, Bug, MapPin, AlertTriangle, CheckSquare, Zap, Layout } from 'lucide-react';
 import { createIssue, generateDirectLink, detectPageType } from '@/lib/adminIssues';
 import type { LessonSlideContext } from '@/types/admin';
+
+interface BugTemplate {
+  id: string;
+  title: string;
+  description: string;
+}
+
+// Layout options for "Change layout" feature
+const layoutOptions = [
+  { id: 'single-column', name: 'Single Column', description: 'Full width content stacked vertically' },
+  { id: 'two-column-equal', name: 'Two Columns (50/50)', description: 'Equal width side-by-side columns' },
+  { id: 'sidebar-content', name: 'Sidebar + Content', description: 'Narrow sidebar with wide content area' },
+  { id: 'three-column', name: 'Three Columns', description: 'Three equal columns side by side' },
+  { id: 'grid-2x2', name: 'Grid (2x2)', description: 'Four equal boxes in a grid' },
+  { id: 'hero-cards', name: 'Hero + Cards', description: 'Large hero section with card grid below' },
+];
+
+// Default bug report templates
+const defaultBugTemplates: BugTemplate[] = [
+  { id: '1', title: 'Add running numbers', description: 'Add numbered list formatting to improve readability' },
+  { id: '2', title: 'Improve paragraph readability', description: 'Paragraph is in boring layout and barely readable. Add bold words, line breakers, better formatting' },
+  { id: '3', title: 'Slide shows white/blank', description: 'Slide is shown as white blank. Fix the rendering issue' },
+  { id: '4', title: 'Image not loading', description: 'Image is broken or not displaying correctly' },
+  { id: '5', title: 'Text overflow/cut off', description: 'Text is getting cut off or overflowing its container' },
+  { id: '6', title: 'Mobile layout broken', description: 'Layout is broken on mobile devices, needs responsive fix' },
+  { id: '7', title: 'Change layout', description: 'Change the layout structure of this slide' },
+];
 
 interface AdminReportModalProps {
   isOpen: boolean;
@@ -21,6 +48,48 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [usePlaywright, setUsePlaywright] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [bugTemplates, setBugTemplates] = useState<BugTemplate[]>(defaultBugTemplates);
+  const [showLayoutPicker, setShowLayoutPicker] = useState(false);
+
+  // Handle layout selection
+  const selectLayout = (layout: typeof layoutOptions[0]) => {
+    setTitle('Change layout');
+    setDescription(`Change to: ${layout.name} - ${layout.description}`);
+    setShowLayoutPicker(false);
+  };
+
+  // Load templates from localStorage (synced with admin page)
+  useEffect(() => {
+    const saved = localStorage.getItem('bugTemplates');
+    if (saved) {
+      try {
+        setBugTemplates(JSON.parse(saved));
+      } catch {
+        // Keep defaults if parse fails
+      }
+    }
+  }, [isOpen]); // Reload when modal opens
+
+  // Filter templates based on input
+  const filteredTemplates = useMemo(() => {
+    if (!title.trim()) return [];
+    const query = title.toLowerCase();
+    return bugTemplates.filter(
+      (t) => t.title.toLowerCase().includes(query) || t.description.toLowerCase().includes(query)
+    );
+  }, [title, bugTemplates]);
+
+  // Handle template selection
+  const selectTemplate = (template: BugTemplate) => {
+    if (template.title === 'Change layout') {
+      setShowLayoutPicker(true);
+      return;
+    }
+    setTitle(template.title);
+    setDescription(template.description);
+    setShowSuggestions(false);
+  };
 
   const pageUrl = typeof window !== 'undefined' ? window.location.pathname : '';
   // Override pageType to 'lesson' when we have lesson context (iframe reports)
@@ -124,19 +193,156 @@ export function AdminReportModal({ isOpen, onClose, lessonContext }: AdminReport
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              {/* Title */}
+              {/* Quick Templates */}
               <div>
+                <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 mb-2">
+                  <Zap className="w-4 h-4 text-amber-500" />
+                  Quick Report
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {bugTemplates.slice(0, 4).map((template) => (
+                    <button
+                      key={template.id}
+                      type="button"
+                      onClick={() => selectTemplate(template)}
+                      className="px-3 py-1.5 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-xs font-medium text-neutral-600 transition-colors"
+                    >
+                      {template.title}
+                    </button>
+                  ))}
+                  {/* Change Layout Button */}
+                  <button
+                    type="button"
+                    onClick={() => setShowLayoutPicker(true)}
+                    className="px-3 py-1.5 rounded-lg bg-purple-100 hover:bg-purple-200 text-xs font-medium text-purple-700 transition-colors flex items-center gap-1"
+                  >
+                    <Layout className="w-3 h-3" />
+                    Change layout
+                  </button>
+                </div>
+              </div>
+
+              {/* Layout Picker */}
+              <AnimatePresence>
+                {showLayoutPicker && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="p-4 bg-purple-50 rounded-xl border border-purple-200">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="text-sm font-medium text-purple-900">Select Layout</h4>
+                        <button
+                          type="button"
+                          onClick={() => setShowLayoutPicker(false)}
+                          className="p-1 rounded hover:bg-purple-100 text-purple-500"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-3 gap-3">
+                        {layoutOptions.map((layout) => (
+                          <button
+                            key={layout.id}
+                            type="button"
+                            onClick={() => selectLayout(layout)}
+                            className="p-3 bg-white rounded-lg border-2 border-purple-100 hover:border-purple-400 transition-colors group"
+                          >
+                            {/* Layout Mockup */}
+                            <div className="aspect-[4/3] mb-2 rounded bg-neutral-100 p-1.5 flex flex-col gap-1">
+                              {layout.id === 'single-column' && (
+                                <>
+                                  <div className="h-2 bg-purple-300 rounded-sm" />
+                                  <div className="flex-1 bg-purple-200 rounded-sm" />
+                                  <div className="h-2 bg-purple-300 rounded-sm" />
+                                </>
+                              )}
+                              {layout.id === 'two-column-equal' && (
+                                <div className="flex-1 flex gap-1">
+                                  <div className="flex-1 bg-purple-200 rounded-sm" />
+                                  <div className="flex-1 bg-purple-300 rounded-sm" />
+                                </div>
+                              )}
+                              {layout.id === 'sidebar-content' && (
+                                <div className="flex-1 flex gap-1">
+                                  <div className="w-1/4 bg-purple-300 rounded-sm" />
+                                  <div className="flex-1 bg-purple-200 rounded-sm" />
+                                </div>
+                              )}
+                              {layout.id === 'three-column' && (
+                                <div className="flex-1 flex gap-1">
+                                  <div className="flex-1 bg-purple-200 rounded-sm" />
+                                  <div className="flex-1 bg-purple-300 rounded-sm" />
+                                  <div className="flex-1 bg-purple-200 rounded-sm" />
+                                </div>
+                              )}
+                              {layout.id === 'grid-2x2' && (
+                                <div className="flex-1 grid grid-cols-2 gap-1">
+                                  <div className="bg-purple-200 rounded-sm" />
+                                  <div className="bg-purple-300 rounded-sm" />
+                                  <div className="bg-purple-300 rounded-sm" />
+                                  <div className="bg-purple-200 rounded-sm" />
+                                </div>
+                              )}
+                              {layout.id === 'hero-cards' && (
+                                <>
+                                  <div className="h-1/2 bg-purple-300 rounded-sm" />
+                                  <div className="flex-1 flex gap-1">
+                                    <div className="flex-1 bg-purple-200 rounded-sm" />
+                                    <div className="flex-1 bg-purple-200 rounded-sm" />
+                                    <div className="flex-1 bg-purple-200 rounded-sm" />
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                            <div className="text-xs font-medium text-neutral-700 group-hover:text-purple-700 transition-colors">
+                              {layout.name}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Title with auto-suggest */}
+              <div className="relative">
                 <label className="block text-sm font-medium text-neutral-700 mb-1.5">
                   Issue Title
                 </label>
                 <input
                   type="text"
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    setShowSuggestions(true);
+                  }}
+                  onFocus={() => setShowSuggestions(true)}
+                  onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
                   placeholder="e.g., Text overlapping image on mobile"
                   className="w-full px-4 py-2.5 rounded-xl border border-neutral-200 focus:border-neutral-400 focus:ring-0 outline-none transition-colors text-sm"
                   autoFocus
                 />
+
+                {/* Auto-suggest dropdown */}
+                {showSuggestions && filteredTemplates.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-neutral-200 rounded-xl shadow-lg z-10 overflow-hidden">
+                    {filteredTemplates.map((template) => (
+                      <button
+                        key={template.id}
+                        type="button"
+                        onMouseDown={() => selectTemplate(template)}
+                        className="w-full px-4 py-2.5 text-left hover:bg-neutral-50 transition-colors border-b border-neutral-100 last:border-0"
+                      >
+                        <div className="text-sm font-medium text-neutral-900">{template.title}</div>
+                        <div className="text-xs text-neutral-500 truncate">{template.description}</div>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Description */}

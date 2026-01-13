@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #B8860B; --accent-dark: #996515; --accent-light: #D4A017; --accent-rgb: 184, 134, 11; }
@@ -42,129 +39,99 @@
       title: 'The Missing Piece Effect',
       description: 'How Apple engineered product incompleteness to create a multi-billion dollar ecosystem.',
       accentColor: '#B8860B',
-      duration: '6 min',
+      duration: '7 min',
       nextLesson: { id: 'identity-marketing', title: 'Identity Marketing', teaser: 'Discover how to make customers see your product as part of who they are.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
+            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
+            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/>
           </svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // ============ ELITE SLIDES DATA ============
     const slides = [
-      { type: 'welcome', learningGoals: ['The Missing Piece Strategy: Design incomplete offers that feel complete', 'The Ecosystem Prison: Make switching cost more than staying', 'How to apply strategic incompleteness ethically'] },
+      { type: 'welcome', learningGoals: ['How Apple makes $10B+ annually from AirPods alone', 'The Zeigarnik Effect: Why 80% complete beats 100%', 'Building ecosystem prisons that customers love'] },
       { type: 'hook', headline: 'In 2016, Apple removed the headphone jack from the iPhone. Everyone called them crazy. Then they released AirPods.', subtext: 'Revenue from AirPods alone: $10+ billion annually. This wasn\'t a mistake. It was strategic product incompleteness. Apple designed a problem to sell the solution.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Apple_logo_grey.svg.png', brandName: 'Apple' },
-      { type: 'content', title: 'Strategy #1: The Missing Piece Effect', body: 'Design your core offer to feel INCOMPLETE. Create a natural ascension point to another product by intentionally leaving a gap. Apple\'s iPhone is sold without a charger, requiring a Lightning cable, then a dongle, then AirPods, then Apple Watch. Each "problem" they created became a multi-billion dollar product line.' },
-      { type: 'visual', title: 'Visualizing The Missing Piece', visualType: 'stats', data: [
-        { value: '70-80%', label: 'Core Product Value', subtext: 'Works on its own' },
-        { value: '+', label: 'Missing Piece', subtext: 'Natural next step' },
-        { value: '100%', label: 'Complete Solution', subtext: 'What customer wants' }
-      ]},
-      { type: 'content', title: 'The Psychology: Zeigarnik Effect', body: 'Humans have a compulsion to complete incomplete systems. The Zeigarnik Effect proves we remember unfinished tasks 2x better than completed ones. When your product feels 80% complete, customers WANT the missing 20%. They\'ll seek it out. And you can provide it.' },
-      { type: 'content', title: 'Strategy #2: The Ecosystem Prison', body: 'Make products work better TOGETHER. Create a "walled garden" where leaving feels more painful than staying. iMessage (blue vs green bubbles), iCloud (seamless sync), Handoff (start on iPhone, finish on Mac), AirDrop. Syncing with Android is clunky BY DESIGN. Switching = losing everything.' },
-      { type: 'cards', title: 'How To Apply This To Your Business', items: [
-        { title: 'For Product Creators', description: 'Identify the "complete solution" your customer wants. Deliver 70-80% in the core offer (so it works and provides value). Make the missing 20-30% a natural next step (not forced).' },
-        { title: 'For Ecosystem Builders', description: 'Design products that share data or functionality. Make cross-product features genuinely better (not fake). Reward customers who use multiple products.' },
-        { title: 'Critical Rule', description: 'The core product must deliver value on its own. If it feels broken without the upsell, you\'ve crossed into manipulation.' }
-      ]},
-      { type: 'quiz', question: 'A fitness app wants to use the Missing Piece Effect. Which approach follows the strategy correctly?', options: ['Sell a workout tracker that doesn\'t save data unless you buy premium', 'Sell a complete workout tracker, then offer a meal planning add-on that integrates seamlessly', 'Give away the app for free but lock all features behind paywalls', 'Remove core features to force users to upgrade'], correctIndex: 1, feedback: { correct: 'Exactly right! The core product (workout tracker) works perfectly on its own, but the meal planning integration creates a natural desire to complete the ecosystem. This is strategic incompleteness done right.', incorrect: 'Not quite. The Missing Piece Effect requires the core product to deliver full value on its own. Breaking basic functionality (like saving data) crosses into manipulation. Option B is correct because the tracker works perfectly, but the meal plan creates a natural completion desire.' }},
+      { type: 'airpods-revenue', title: 'The AirPods Effect' },
+      { type: 'missing-piece-visual', title: 'The Missing Piece Strategy' },
+      { type: 'zeigarnik-effect', title: 'The Zeigarnik Effect' },
+      { type: 'ecosystem-prison', title: 'The Ecosystem Prison' },
+      { type: 'apple-ecosystem-visual', title: 'Apple\'s Walled Garden' },
+      { type: 'before-after-ecosystem', title: 'Why Customers Stay' },
+      { type: 'application-cards', title: 'Apply This To Your Business' },
+      { type: 'elite-insight', title: 'The Elite Insight' },
+      { type: 'quiz', question: 'A fitness app wants to use the Missing Piece Effect. Which approach follows the strategy correctly?', options: ['Sell a workout tracker that doesn\'t save data unless you buy premium', 'Sell a complete workout tracker, then offer a meal planning add-on that integrates seamlessly', 'Give away the app for free but lock all features behind paywalls', 'Remove core features to force users to upgrade'], correctIndex: 1, feedback: { correct: 'Exactly right! The core product works perfectly on its own, but the meal planning creates a natural completion desire.', incorrect: 'The Missing Piece Effect requires the core to deliver full value. Option B is correct - tracker works, but meal plan creates natural desire to complete.' }},
       { type: 'completion', sources: [] }
     ];
 
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
-      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Puzzle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.611a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.315 8.685a.98.98 0 0 1 .837-.276c.47.07.802.48.968.925a2.501 2.501 0 1 0 3.214-3.214c-.446-.166-.855-.497-.925-.968a.979.979 0 0 1 .276-.837l1.61-1.611a2.404 2.404 0 0 1 1.705-.707c.618 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/></svg>,
+      Lock: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      Smartphone: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>,
+      Watch: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="7"/><polyline points="12 9 12 12 13.5 13.5"/><path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.83a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7.35-3.83A2 2 0 0 1 9.83 1h4.35a2 2 0 0 1 2 1.82l.35 3.83"/></svg>,
+      Headphones: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>,
+      Laptop: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
     };
 
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ target, duration = 2000, prefix = '', suffix = '', decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(target);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
+    // ============ WELCOME SLIDE ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -193,6 +160,7 @@
       );
     };
 
+    // ============ HOOK SLIDE ============
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -202,15 +170,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
@@ -220,48 +179,404 @@
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      </div>
-    );
+    // ============ AIRPODS REVENUE SLIDE ============
+    const AirPodsRevenueSlide = ({ data }) => {
+      const [isVisible, setIsVisible] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setIsVisible(true), 300); return () => clearTimeout(timer); }, []);
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(184, 134, 11, 0.15)', border: '1px solid rgba(184, 134, 11, 0.2)' }}
+              className="rounded-2xl p-6 md:p-8 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(184, 134, 11, 0.2)' }}>
+                  <Icons.Headphones />
+                </div>
+                <span className="text-neutral-400 text-sm font-medium">AirPods Revenue</span>
+              </div>
+              <div className="text-5xl md:text-6xl font-black mb-2" style={{ color: 'var(--accent)' }}>
+                {isVisible && <AnimatedCounter target={10} prefix="$" suffix="B+" duration={1500} decimals={0} />}
+              </div>
+              <p className="text-neutral-400 text-sm">Annual revenue from a product that solves a problem Apple created</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)' }}
+              className="rounded-2xl p-6 md:p-8 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10B981, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(16, 185, 129, 0.2)' }}>
+                  <Icons.TrendingUp />
+                </div>
+                <span className="text-neutral-400 text-sm font-medium">2016 Strategy</span>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-red-400 text-lg">-</span>
+                  <span className="text-neutral-300 text-sm">Removed headphone jack</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-400 text-lg">+</span>
+                  <span className="text-neutral-300 text-sm">Released AirPods</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-400 text-lg">=</span>
+                  <span className="text-neutral-300 text-sm font-bold">$10B+ new revenue stream</span>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        );
-      }
-      return null;
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-center text-neutral-500 text-sm mt-6 italic">
+            "They called it crazy. It was strategic genius."
+          </motion.p>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 relative z-10 ${data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
+    // ============ MISSING PIECE VISUAL SLIDE ============
+    const MissingPieceVisualSlide = ({ data }) => {
+      const [phase, setPhase] = useState(0);
+      useEffect(() => {
+        const timers = [setTimeout(() => setPhase(1), 500), setTimeout(() => setPhase(2), 1200), setTimeout(() => setPhase(3), 1900)];
+        return () => timers.forEach(clearTimeout);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="flex items-center justify-center gap-4 md:gap-8 mb-8">
+            {/* 70-80% Circle */}
+            <motion.div initial={{ scale: 0 }} animate={{ scale: phase >= 1 ? 1 : 0 }} transition={{ type: 'spring', duration: 0.6 }}
+              className="relative">
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center"
+                style={{ background: 'conic-gradient(var(--accent) 0deg, var(--accent) 270deg, #333 270deg, #333 360deg)', boxShadow: '0 0 30px rgba(184, 134, 11, 0.3)' }}>
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-neutral-900 flex flex-col items-center justify-center">
+                  <span className="text-3xl md:text-4xl font-black text-white">75%</span>
+                  <span className="text-xs text-neutral-400">Core Value</span>
+                </div>
+              </div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 1 ? 1 : 0 }} className="absolute -bottom-8 left-0 right-0 text-center text-sm text-neutral-600 font-medium">
+                Works on its own
+              </motion.div>
+            </motion.div>
+
+            {/* Plus */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 2 ? 1 : 0 }} className="text-4xl font-bold" style={{ color: 'var(--accent)' }}>+</motion.div>
+
+            {/* Missing Piece */}
+            <motion.div initial={{ scale: 0, rotate: -180 }} animate={{ scale: phase >= 2 ? 1 : 0, rotate: phase >= 2 ? 0 : -180 }} transition={{ type: 'spring', duration: 0.6 }}
+              className="relative">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 25px rgba(184, 134, 11, 0.4)' }}>
+                <Icons.Puzzle />
+              </div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 2 ? 1 : 0 }} className="absolute -bottom-8 left-0 right-0 text-center text-sm text-neutral-600 font-medium whitespace-nowrap">
+                Missing Piece
+              </motion.div>
+            </motion.div>
+
+            {/* Equals */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 3 ? 1 : 0 }} className="text-4xl font-bold" style={{ color: '#10B981' }}>=</motion.div>
+
+            {/* 100% Circle */}
+            <motion.div initial={{ scale: 0 }} animate={{ scale: phase >= 3 ? 1 : 0 }} transition={{ type: 'spring', duration: 0.6 }}
+              className="relative">
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center"
+                style={{ background: 'conic-gradient(#10B981 0deg, #10B981 360deg)', boxShadow: '0 0 30px rgba(16, 185, 129, 0.3)' }}>
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-neutral-900 flex flex-col items-center justify-center">
+                  <span className="text-3xl md:text-4xl font-black text-white">100%</span>
+                  <span className="text-xs text-neutral-400">Complete</span>
+                </div>
+              </div>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase >= 3 ? 1 : 0 }} className="absolute -bottom-8 left-0 right-0 text-center text-sm text-green-600 font-medium">
+                What they want
+              </motion.div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: phase >= 3 ? 1 : 0, y: phase >= 3 ? 0 : 20 }} transition={{ delay: 0.3 }}
+            className="text-center mt-8 p-4 rounded-xl" style={{ background: 'rgba(184, 134, 11, 0.1)', border: '1px solid rgba(184, 134, 11, 0.2)' }}>
+            <p className="text-neutral-700">Design your core at <strong>70-80%</strong> complete. Create natural desire for the missing <strong>20-30%</strong>.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ ZEIGARNIK EFFECT SLIDE ============
+    const ZeigarnikEffectSlide = ({ data }) => {
+      const [isVisible, setIsVisible] = useState(false);
+      useEffect(() => { setTimeout(() => setIsVisible(true), 400); }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-6">{data.title}</motion.h2>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+            className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(184, 134, 11, 0.15)' }}>
+              <Icons.Brain />
+            </div>
+            <p className="text-neutral-600 text-lg max-w-md">Humans have a compulsion to complete incomplete systems</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl">X</span>
+                <span className="text-neutral-300 font-semibold">Completed Tasks</span>
+              </div>
+              <div className="relative h-8 bg-neutral-800 rounded-full overflow-hidden mb-2">
+                <motion.div initial={{ width: 0 }} animate={{ width: isVisible ? '50%' : 0 }} transition={{ duration: 1.5, delay: 0.5 }}
+                  className="h-full rounded-full" style={{ background: '#EF4444' }} />
+              </div>
+              <p className="text-neutral-400 text-sm">Quickly forgotten</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
+              className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-2xl" style={{ color: 'var(--accent)' }}>...</span>
+                <span className="text-neutral-300 font-semibold">Incomplete Tasks</span>
+              </div>
+              <div className="relative h-8 bg-neutral-800 rounded-full overflow-hidden mb-2">
+                <motion.div initial={{ width: 0 }} animate={{ width: isVisible ? '100%' : 0 }} transition={{ duration: 1.5, delay: 0.7 }}
+                  className="h-full rounded-full" style={{ background: 'var(--accent)' }} />
+              </div>
+              <p className="text-neutral-400 text-sm">Remembered <span className="font-bold text-white">2x longer</span></p>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="text-center p-5 rounded-xl" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(184, 134, 11, 0.3)' }}>
+            <p className="text-white text-lg font-semibold">When your product feels 80% complete, customers <span style={{ color: 'var(--accent)' }}>WANT</span> the missing 20%.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ ECOSYSTEM PRISON SLIDE ============
+    const EcosystemPrisonSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          className="flex items-center justify-center gap-3 mb-8">
+          <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'rgba(184, 134, 11, 0.15)' }}>
+            <Icons.Lock />
+          </div>
+          <p className="text-neutral-600 text-lg max-w-md">Make products work <strong>better together</strong>. Make leaving <strong>more painful</strong> than staying.</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-4 gap-3 mb-6">
+          {[
+            { icon: 'message', name: 'iMessage', detail: 'Blue vs Green bubbles' },
+            { icon: 'cloud', name: 'iCloud', detail: 'Seamless sync' },
+            { icon: 'phone', name: 'Handoff', detail: 'Start on iPhone, finish on Mac' },
+            { icon: 'share', name: 'AirDrop', detail: 'Instant sharing' }
+          ].map((item, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}
+              className="p-4 rounded-xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(184, 134, 11, 0.2)' }}>
+              <div className="w-10 h-10 mx-auto mb-2 rounded-lg flex items-center justify-center" style={{ background: 'rgba(184, 134, 11, 0.2)' }}>
+                <Icons.Smartphone />
+              </div>
+              <p className="text-white font-semibold text-sm mb-1">{item.name}</p>
+              <p className="text-neutral-400 text-xs">{item.detail}</p>
             </motion.div>
           ))}
         </div>
+
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+          className="text-center p-4 rounded-xl" style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+          <p className="text-neutral-700"><strong>Switching to Android?</strong> Lose all of it. Clunky. Broken. Painful. <em>By design.</em></p>
+        </motion.div>
       </div>
     );
 
+    // ============ APPLE ECOSYSTEM VISUAL SLIDE ============
+    const AppleEcosystemVisualSlide = ({ data }) => {
+      const products = [
+        { name: 'iPhone', icon: Icons.Smartphone, angle: 0 },
+        { name: 'AirPods', icon: Icons.Headphones, angle: 72 },
+        { name: 'Apple Watch', icon: Icons.Watch, angle: 144 },
+        { name: 'MacBook', icon: Icons.Laptop, angle: 216 },
+        { name: 'iPad', icon: Icons.Smartphone, angle: 288 }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="relative w-64 h-64 md:w-80 md:h-80">
+            {/* Center Apple logo */}
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', delay: 0.2 }}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center z-10"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(184, 134, 11, 0.3)', border: '2px solid var(--accent)' }}>
+              <img src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Apple_logo_grey.svg.png" alt="Apple" className="w-10 h-10 md:w-12 md:h-12" />
+            </motion.div>
+
+            {/* Orbiting products */}
+            {products.map((product, i) => {
+              const radius = 100;
+              const x = Math.cos((product.angle - 90) * Math.PI / 180) * radius;
+              const y = Math.sin((product.angle - 90) * Math.PI / 180) * radius;
+              const Icon = product.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 + i * 0.15 }}
+                  className="absolute left-1/2 top-1/2 w-14 h-14 md:w-16 md:h-16 rounded-xl flex flex-col items-center justify-center text-white"
+                  style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`, background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(184, 134, 11, 0.3)' }}>
+                  <Icon />
+                  <span className="text-[8px] mt-1 text-neutral-400">{product.name}</span>
+                </motion.div>
+              );
+            })}
+
+            {/* Connecting lines */}
+            <svg className="absolute inset-0 w-full h-full" style={{ transform: 'translate(-0%, -0%)' }}>
+              {products.map((product, i) => {
+                const radius = 100;
+                const cx = 128 + 16;
+                const cy = 128 + 16;
+                const x = cx + Math.cos((product.angle - 90) * Math.PI / 180) * radius;
+                const y = cy + Math.sin((product.angle - 90) * Math.PI / 180) * radius;
+                return (
+                  <motion.line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="rgba(184, 134, 11, 0.3)" strokeWidth="1" strokeDasharray="4"
+                    initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.6 + i * 0.1, duration: 0.5 }} />
+                );
+              })}
+            </svg>
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="text-neutral-600 text-center mt-8 max-w-md">
+            Each product makes the others <strong>more valuable</strong>. Leaving means losing <strong>everything</strong>.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ============ BEFORE/AFTER ECOSYSTEM SLIDE ============
+    const BeforeAfterEcosystemSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #EF4444, transparent)' }} />
+            <div className="flex items-center gap-2 mb-4">
+              <span className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#EF4444' }}>SWITCHING</span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-4">Cost of Leaving</h3>
+            <ul className="space-y-3">
+              {['Lose all iCloud data sync', 'Break iMessage groups', 'Lose Apple Watch functionality', 'Repurchase all apps', 'Learn new ecosystem'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }}
+                  className="flex items-center gap-2 text-neutral-300 text-sm">
+                  <span className="text-red-400"><Icons.X /></span>
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10B981, transparent)' }} />
+            <div className="flex items-center gap-2 mb-4">
+              <span className="px-3 py-1 rounded-full text-xs font-bold" style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#10B981' }}>STAYING</span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-4">Cost of Staying</h3>
+            <ul className="space-y-3">
+              {['Everything just works', 'Seamless device switching', 'Automatic backups', 'Ecosystem gets better yearly', 'Status symbol maintained'].map((item, i) => (
+                <motion.li key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 + i * 0.1 }}
+                  className="flex items-center gap-2 text-neutral-300 text-sm">
+                  <span className="text-green-400"><Icons.Check /></span>
+                  {item}
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
+          className="text-center mt-6 p-4 rounded-xl" style={{ background: 'rgba(184, 134, 11, 0.1)', border: '1px solid rgba(184, 134, 11, 0.2)' }}>
+          <p className="text-neutral-700 font-semibold">Switching cost > Staying cost = <span style={{ color: 'var(--accent)' }}>Customer for life</span></p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ APPLICATION CARDS SLIDE ============
+    const ApplicationCardsSlide = ({ data }) => {
+      const cards = [
+        { title: 'Product Creators', icon: Icons.Target, items: ['Identify the "complete solution"', 'Deliver 70-80% core value', 'Make missing 20% a natural next step'] },
+        { title: 'Ecosystem Builders', icon: Icons.Puzzle, items: ['Products share data/functionality', 'Cross-product features genuinely better', 'Reward multi-product customers'] },
+        { title: 'Critical Rule', icon: Icons.Lightbulb, items: ['Core MUST deliver value alone', 'Broken without upsell = manipulation', 'Natural desire, not forced need'] }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {cards.map((card, i) => {
+              const Icon = card.icon;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                  className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(184, 134, 11, 0.2)' }}>
+                  <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(184, 134, 11, 0.2)' }}>
+                      <Icon />
+                    </div>
+                    <h3 className="text-white font-bold text-sm">{card.title}</h3>
+                  </div>
+                  <ul className="space-y-2">
+                    {card.items.map((item, j) => (
+                      <li key={j} className="text-neutral-400 text-xs flex items-start gap-2">
+                        <span style={{ color: 'var(--accent)' }}>•</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }}
+          className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(184, 134, 11, 0.4)' }}>
+          <Icons.Lightbulb />
+        </motion.div>
+
+        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="slide-title text-2xl md:text-4xl text-black text-center mb-6">{data.title}</motion.h2>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="p-6 md:p-8 rounded-2xl text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid rgba(184, 134, 11, 0.3)', boxShadow: '0 0 60px rgba(184, 134, 11, 0.15)' }}>
+          <p className="text-xl md:text-2xl text-white font-semibold leading-relaxed mb-4">
+            Apple didn't become a <span style={{ color: 'var(--accent)' }}>$3 trillion</span> company by accident.
+          </p>
+          <p className="text-neutral-400 text-base md:text-lg leading-relaxed">
+            They architected <strong className="text-white">incompleteness</strong> into brilliance. Every "problem" they created became a multi-billion dollar product line. Every solution locked customers deeper into the ecosystem.
+          </p>
+        </motion.div>
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-neutral-500 text-sm mt-6 italic text-center">
+          "The best business model makes switching cost more than staying."
+        </motion.p>
+      </div>
+    );
+
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -271,24 +586,25 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { if (showFeedback) { onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); } }, [showFeedback]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback}
+                  className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
+                    <span className="text-neutral-700 text-sm">{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -296,7 +612,7 @@
             <AnimatePresence>
               {showFeedback && (
                 <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                  <p className={`text-sm ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -305,11 +621,17 @@
       );
     };
 
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }}
+          className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}>
+          <Icons.Check />
+        </motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You've unlocked the Missing Piece Strategy. Design core offers at 70-80% complete (works, but could be better). Create natural ascension to complementary products. Build ecosystems where products work better together. Make cost of switching higher than cost of staying. Apple didn't become a $3 trillion company by accident—they architected incompleteness into brilliance.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">
+          You've unlocked the Missing Piece Strategy. Design incomplete systems that customers want to complete.
+        </motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
           <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -318,6 +640,7 @@
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -331,14 +654,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -370,9 +687,14 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'airpods-revenue': return <AirPodsRevenueSlide data={slide} />;
+          case 'missing-piece-visual': return <MissingPieceVisualSlide data={slide} />;
+          case 'zeigarnik-effect': return <ZeigarnikEffectSlide data={slide} />;
+          case 'ecosystem-prison': return <EcosystemPrisonSlide data={slide} />;
+          case 'apple-ecosystem-visual': return <AppleEcosystemVisualSlide data={slide} />;
+          case 'before-after-ecosystem': return <BeforeAfterEcosystemSlide data={slide} />;
+          case 'application-cards': return <ApplicationCardsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -401,8 +723,9 @@
           </div>
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }}
+                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>

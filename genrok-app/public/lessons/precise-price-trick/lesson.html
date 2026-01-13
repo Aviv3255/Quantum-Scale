@@ -17,12 +17,7 @@
   <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #10b981;
-      --accent-dark: #059669;
-      --accent-light: #34d399;
-      --accent-rgb: 16, 185, 129;
-    }
+    :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -39,10 +34,8 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    const getUserName = () => {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'Builder';
-    };
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'precise-price-trick',
@@ -50,87 +43,34 @@
       description: 'Why $4,988 feels fairer than $5,000 - the psychology of specific numbers.',
       accentColor: '#10b981',
       duration: '5 min',
-      nextLesson: {
-        id: 'paradox-of-choice',
-        title: 'The Paradox of Choice',
-        teaser: 'Why Chipotle outsells Cheesecake Factory - and the conversion-killing mistake you\'re making.'
-      }
+      nextLesson: { id: 'paradox-of-choice', title: 'The Paradox of Choice', teaser: 'Why Chipotle outsells Cheesecake Factory - and the conversion-killing mistake you are making.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
@@ -142,7 +82,6 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
@@ -156,50 +95,52 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'Why round numbers trigger negotiation instincts',
-        'The University of Florida study that changed pricing forever',
-        'When to use precise vs round numbers for max conversions'
-      ]},
-      { type: 'hook', headline: 'Which price feels more calculated? $5,000 or $4,988?', subtext: 'Researchers at University of Florida tested this exact question. The result? People estimated items priced at round numbers ($5,000) were worth LESS than identical items priced at precise numbers ($4,988). The round number felt like a guess. The precise number felt researched. Same item. Different perception. Different sales.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Cheesecake-Factory-Logo.jpg', brandName: 'Cheesecake Factory' },
-      { type: 'visual', title: 'The Subconscious Reaction', visualType: 'priceComparison', data: {
-        round: { price: '$5,000', reaction: '"That feels like a guess. I bet the real price is lower. I\'ll offer $4,500."', color: '#94a3b8' },
-        precise: { price: '$4,988', reaction: '"That looks calculated. Based on real costs. Not much room to negotiate."', color: '#10b981' }
-      }},
-      { type: 'content', title: 'The Psychology: Precision = Calculation', body: 'Your brain makes an instant assumption: Round numbers = arbitrary. Precise numbers = calculated. When you see $5,000, your subconscious thinks "they just rounded up." When you see $4,988, your subconscious thinks "they did the math." One invites haggling. The other commands respect.' },
-      { type: 'visual', title: 'The Florida Study Results', visualType: 'stats', data: [
-        { value: '$4,988', label: 'perceived as', subtext: 'Fair and researched price' },
-        { value: '$5,000', label: 'perceived as', subtext: 'Arbitrary guess - negotiate down' },
-        { value: '12%', label: 'higher value', subtext: 'Precise prices perceived as worth more' }
-      ]},
-      { type: 'content', title: 'Why This Matters for E-commerce', body: 'You\'re not just selling products. You\'re defending your prices against the customer\'s inner skeptic. A round price like $100 whispers "I made this up." A precise price like $97.43 whispers "I calculated this carefully." The precise price builds trust before you say a single word.' },
-      { type: 'example', scenario: 'High-Ticket Course Pricing', before: { label: 'Round Price', text: 'Course price: $2,000\n\nCustomer thinks: "That\'s a round number. Probably inflated. I wonder if there\'s a discount code..."' }, after: { label: 'Precise Price', text: 'Course price: $1,997\n\nCustomer thinks: "That\'s specific. They must have calculated the value carefully. Seems fair."' }, insight: 'Same value. Precise price reduces discount-seeking by 23%.' },
-      { type: 'cards', title: 'When To Use Precise Numbers', items: [
-        { title: 'High-Ticket Items ($500+)', description: 'The bigger the price, the more scrutiny. Precision signals you\'ve done the math and aren\'t just rounding up.' },
-        { title: 'B2B Proposals', description: 'Business buyers are trained to negotiate. A precise price ($14,750 vs $15,000) leaves less perceived wiggle room.' },
-        { title: 'Salary Negotiations', description: 'Research shows precise salary asks get better results. $68,500 beats $70,000 in negotiations.' },
-        { title: 'Premium Products', description: 'Luxury items benefit from precision. It suggests careful craftsmanship and calculated value.' }
-      ]},
-      { type: 'cards', title: 'When Round Numbers Win', items: [
-        { title: 'Low-Ticket Items (<$20)', description: 'For small purchases, cognitive ease matters more. $10 is easier to process than $9.73.' },
-        { title: 'Emotional Purchases', description: 'Gifts, donations, impulse buys. Round numbers feel generous and easy. "I gave $100" sounds better than "$97."' },
-        { title: 'Speed-Priority Checkouts', description: 'When friction kills conversions (mobile, impulse), round numbers reduce mental math.' }
-      ]},
-      { type: 'visual', title: 'The Precision Sweet Spots', visualType: 'comparison', data: {
-        left: { label: 'End in 7 or 8', value: '$X97', result: 'Feels calculated, not cheap', color: '#10b981' },
-        right: { label: 'End in 3 or 4', value: '$X43', result: 'Signals real cost calculation', color: '#10b981' },
-        center: { label: 'Avoid', value: '$X00', result: 'Feels arbitrary, invites negotiation', color: '#ef4444' }
-      }},
-      { type: 'example', scenario: 'Shopify Store: Mattress Brand', before: { label: 'Original Pricing', text: 'Queen mattress: $1,000\nKing mattress: $1,500\n\nAvg discount request rate: 34%' }, after: { label: 'Precise Pricing', text: 'Queen mattress: $987\nKing mattress: $1,487\n\nAvg discount request rate: 19%' }, insight: 'Precise prices reduced haggling attempts by 44%.' },
-      { type: 'content', title: 'The Implementation', body: 'For products over $100: End prices in 7 or 8 (feels calculated, not cheap like .99). For B2B or high-ticket: Use specific numbers like $14,847 or $2,388. For bundles: Let the math be visible. "$47 + $47 + $47 = $141 (you pay $127)" shows deliberate pricing.' },
-      { type: 'quiz', question: 'Why do precise prices like $4,988 reduce negotiation attempts compared to $5,000?', options: ['Because $4,988 is technically cheaper', 'Because precise numbers signal careful calculation, reducing perceived wiggle room', 'Because odd numbers are harder to remember', 'Because customers prefer even numbers'], correctIndex: 1, feedback: { correct: 'Exactly! The subconscious interprets precise numbers as calculated and researched, while round numbers feel arbitrary and negotiable. It\'s about perceived fairness, not the actual amount.', incorrect: 'Not quite. The power of precise pricing comes from psychology: your brain assumes precise numbers were carefully calculated, while round numbers feel like guesses open to negotiation.' }},
-      { type: 'completion' }
+    // ============ CONFIGURATION ARRAYS ============
+    const PRICE_COMPARISON = {
+      round: { price: '$5,000', thought: 'That feels like a guess. I bet the real price is lower. I will offer $4,500.', label: 'ROUND', color: '#94a3b8', result: 'INVITES NEGOTIATION' },
+      precise: { price: '$4,988', thought: 'That looks calculated. Based on real costs. Not much room to negotiate.', label: 'PRECISE', color: '#10b981', result: 'COMMANDS RESPECT' }
+    };
+
+    const PRICE_PSYCHOLOGY = [
+      { type: 'Round', example: '$5,000', perception: 'Arbitrary guess', behavior: 'Negotiate down', color: '#ef4444', icon: 'HelpCircle' },
+      { type: 'Precise', example: '$4,988', perception: 'Calculated cost', behavior: 'Accept as fair', color: '#10b981', icon: 'Calculator' }
     ];
 
+    const SWEET_SPOT_ENDINGS = [
+      { ending: '7 or 8', example: '$X97', effect: 'Feels calculated, not cheap', status: 'good', color: '#10b981' },
+      { ending: '3 or 4', example: '$X43', effect: 'Signals real cost math', status: 'good', color: '#10b981' },
+      { ending: '00', example: '$X00', effect: 'Feels arbitrary', status: 'avoid', color: '#ef4444' }
+    ];
+
+    const WHEN_PRECISE = [
+      { title: 'High-Ticket Items ($500+)', desc: 'The bigger the price, the more scrutiny. Precision signals you have done the math.', icon: 'DollarSign', color: '#10b981' },
+      { title: 'B2B Proposals', desc: 'Business buyers negotiate. $14,750 vs $15,000 leaves less wiggle room.', icon: 'Briefcase', color: '#3b82f6' },
+      { title: 'Salary Negotiations', desc: 'Precise asks get better results. $68,500 beats $70,000.', icon: 'TrendingUp', color: '#8b5cf6' },
+      { title: 'Premium Products', desc: 'Luxury items benefit from precision. Suggests careful craftsmanship.', icon: 'Crown', color: '#f59e0b' }
+    ];
+
+    const WHEN_ROUND = [
+      { title: 'Low-Ticket Items (<$20)', desc: 'For small purchases, cognitive ease matters. $10 beats $9.73.', icon: 'ShoppingCart', color: '#10b981' },
+      { title: 'Emotional Purchases', desc: 'Gifts, donations, impulse buys. "I gave $100" sounds better.', icon: 'Heart', color: '#ec4899' },
+      { title: 'Speed Checkouts', desc: 'When friction kills conversions, round numbers reduce mental math.', icon: 'Zap', color: '#f59e0b' }
+    ];
+
+    const MATTRESS_CASE_STUDY = {
+      before: { queen: '$1,000', king: '$1,500', discountRate: 34 },
+      after: { queen: '$987', king: '$1,487', discountRate: 19 },
+      reduction: 44
+    };
+
+    const IMPACT_STATS = [
+      { value: 12, suffix: '%', label: 'Higher Perceived Value', subtext: 'Precise vs round prices' },
+      { value: 44, suffix: '%', label: 'Less Haggling', subtext: 'With precise pricing' },
+      { value: 23, suffix: '%', label: 'Fewer Discount Requests', subtext: 'On high-ticket items' }
+    ];
+    // ============ END CONFIGURATION ============
+
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -207,16 +148,374 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      DollarSign: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Calculator: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/></svg>,
+      HelpCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Briefcase: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Crown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      ShoppingCart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>,
+      Heart: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M8.5 17a5 5 0 0 1 7 0"/><path d="M12 18v-9"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
     };
 
+    const IconComponents = {
+      DollarSign: Icons.DollarSign,
+      Calculator: Icons.Calculator,
+      HelpCircle: Icons.HelpCircle,
+      Briefcase: Icons.Briefcase,
+      TrendingUp: Icons.TrendingUp,
+      Crown: Icons.Crown,
+      ShoppingCart: Icons.ShoppingCart,
+      Heart: Icons.Heart,
+      Zap: Icons.Zap,
+      Brain: Icons.Brain,
+      Lightbulb: Icons.Lightbulb
+    };
+    // ============ END ICONS ============
+
+    // ============ COMPONENTS ============
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000, decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(decimals > 0 ? parseFloat(start.toFixed(decimals)) : Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration, decimals]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : count}{suffix}</span>;
+    };
+
+    // ============ CUSTOM ELITE SLIDES ============
+
+    // PriceComparisonSlide - Round vs Precise with auto-cycling
+    const PriceComparisonSlide = ({ data }) => {
+      const [activePrice, setActivePrice] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActivePrice(p => (p + 1) % 2), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const prices = [PRICE_COMPARISON.round, PRICE_COMPARISON.precise];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {prices.map((p, i) => {
+              const isActive = activePrice === i;
+              const isWinner = i === 1;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, x: i === 0 ? -30 : 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  style={{ background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f9fafb', borderRadius: '20px', padding: '28px', position: 'relative', overflow: 'hidden', border: isActive ? `2px solid ${p.color}` : '2px solid #e5e5e5', transition: 'all 0.5s ease', boxShadow: isActive ? `0 0 40px ${p.color}30` : 'none' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, transparent, ${p.color}, transparent)` }} />
+
+                  {/* Label badge */}
+                  <div className="flex items-center justify-between mb-4">
+                    <span style={{ background: `${p.color}20`, color: p.color, padding: '6px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 700 }}>{p.label}</span>
+                    {isWinner && isActive && (
+                      <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} style={{ background: '#10b981', color: 'white', padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: 700 }}>WINS</motion.span>
+                    )}
+                  </div>
+
+                  {/* Price */}
+                  <div style={{ fontSize: '56px', fontWeight: 900, color: isActive ? p.color : '#9ca3af', fontFamily: 'monospace', marginBottom: '16px', transition: 'color 0.5s' }}>
+                    {p.price}
+                  </div>
+
+                  {/* Thought bubble */}
+                  <div style={{ background: isActive ? '#ffffff10' : '#f3f4f6', borderRadius: '12px', padding: '16px', marginBottom: '12px' }}>
+                    <p style={{ fontSize: '12px', color: isActive ? '#9ca3af' : '#6b7280', fontStyle: 'italic', marginBottom: '8px' }}>Subconscious thought:</p>
+                    <p style={{ fontSize: '14px', color: isActive ? '#d1d5db' : '#4b5563', lineHeight: 1.5 }}>"{p.thought}"</p>
+                  </div>
+
+                  {/* Result */}
+                  <div style={{ textAlign: 'center', padding: '12px', background: `${p.color}15`, borderRadius: '10px' }}>
+                    <span style={{ fontWeight: 700, color: p.color, fontSize: '13px' }}>{p.result}</span>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-center mt-6" style={{ color: '#6b7280', fontSize: '14px' }}>
+            Same product. $12 difference. Completely different perception.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // PricePsychologySlide - Round = Arbitrary, Precise = Calculated
+    const PricePsychologySlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {PRICE_PSYCHOLOGY.map((item, i) => {
+              const IconComponent = IconComponents[item.icon];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', position: 'relative', overflow: 'hidden', border: `2px solid ${item.color}` }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }} />
+
+                  <div className="flex items-center gap-3 mb-4">
+                    <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: `${item.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: item.color }}>
+                      {IconComponent && <IconComponent />}
+                    </div>
+                    <div>
+                      <span style={{ fontWeight: 700, color: 'white', fontSize: '18px' }}>{item.type} Numbers</span>
+                      <p style={{ fontSize: '28px', fontWeight: 900, color: item.color, fontFamily: 'monospace' }}>{item.example}</p>
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                      <span style={{ color: '#9ca3af', fontSize: '12px', width: '100px' }}>Perceived as:</span>
+                      <span style={{ color: 'white', fontWeight: 600 }}>{item.perception}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <span style={{ color: '#9ca3af', fontSize: '12px', width: '100px' }}>Behavior:</span>
+                      <span style={{ color: item.color, fontWeight: 600 }}>{item.behavior}</span>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // SweetSpotEndingsSlide - Which endings to use
+    const SweetSpotEndingsSlide = ({ data }) => {
+      const [activeEnding, setActiveEnding] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => setActiveEnding(e => (e + 1) % SWEET_SPOT_ENDINGS.length), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {SWEET_SPOT_ENDINGS.map((item, i) => {
+              const isActive = activeEnding === i;
+              const isGood = item.status === 'good';
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                  style={{ background: isActive ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#f9fafb', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: isActive ? `2px solid ${item.color}` : '2px solid #e5e5e5', transition: 'all 0.5s ease', textAlign: 'center' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${item.color}, transparent)`, opacity: isActive ? 1 : 0.3 }} />
+
+                  <div style={{ marginBottom: '16px' }}>
+                    <span style={{ background: isGood ? '#10b98120' : '#ef444420', color: item.color, padding: '4px 12px', borderRadius: '20px', fontSize: '11px', fontWeight: 700 }}>
+                      {isGood ? 'USE' : 'AVOID'}
+                    </span>
+                  </div>
+
+                  <p style={{ fontSize: '14px', color: isActive ? '#9ca3af' : '#6b7280', marginBottom: '8px' }}>End in {item.ending}</p>
+                  <p style={{ fontSize: '36px', fontWeight: 900, color: item.color, fontFamily: 'monospace', marginBottom: '12px' }}>{item.example}</p>
+                  <p style={{ fontSize: '13px', color: isActive ? '#d1d5db' : '#4b5563' }}>{item.effect}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // WhenToUsePreciseSlide - 4-item grid
+    const WhenToUsePreciseSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-center mb-8" style={{ color: '#6b7280', fontSize: '14px' }}>
+            Use precision when the stakes are high
+          </motion.p>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {WHEN_PRECISE.map((item, i) => {
+              const IconComponent = IconComponents[item.icon];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }}
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${item.color}, transparent)` }} />
+
+                  <div className="flex items-start gap-4">
+                    <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: `${item.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: item.color, flexShrink: 0 }}>
+                      {IconComponent && <IconComponent />}
+                    </div>
+                    <div>
+                      <h3 style={{ fontWeight: 700, color: 'white', fontSize: '15px', marginBottom: '6px' }}>{item.title}</h3>
+                      <p style={{ fontSize: '13px', color: '#9ca3af', lineHeight: 1.5 }}>{item.desc}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // WhenToUseRoundSlide - 3-item grid
+    const WhenToUseRoundSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-2">{data.title}</motion.h2>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-center mb-8" style={{ color: '#6b7280', fontSize: '14px' }}>
+            Round numbers have their place too
+          </motion.p>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {WHEN_ROUND.map((item, i) => {
+              const IconComponent = IconComponents[item.icon];
+              return (
+                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.1 }}
+                  style={{ background: '#f9fafb', borderRadius: '16px', padding: '24px', position: 'relative', overflow: 'hidden', border: '2px solid #e5e5e5', textAlign: 'center' }}>
+
+                  <div style={{ width: '52px', height: '52px', borderRadius: '14px', background: `${item.color}15`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: item.color, margin: '0 auto 16px' }}>
+                    {IconComponent && <IconComponent />}
+                  </div>
+                  <h3 style={{ fontWeight: 700, color: '#1f2937', fontSize: '15px', marginBottom: '8px' }}>{item.title}</h3>
+                  <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: 1.5 }}>{item.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // MattressCaseStudySlide - Before/After with stats
+    const MattressCaseStudySlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '6px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>Case Study</span>
+            <h2 className="slide-title text-xl md:text-2xl text-black mt-3">{data.title}</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Before */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+              style={{ background: '#fef2f2', border: '2px solid #fecaca', borderRadius: '16px', padding: '24px' }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                  <Icons.X />
+                </div>
+                <span style={{ fontWeight: 700, color: '#dc2626' }}>Original Pricing</span>
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <p style={{ color: '#6b7280', fontSize: '13px' }}>Queen mattress: <strong style={{ color: '#1f2937', fontFamily: 'monospace' }}>{MATTRESS_CASE_STUDY.before.queen}</strong></p>
+                <p style={{ color: '#6b7280', fontSize: '13px' }}>King mattress: <strong style={{ color: '#1f2937', fontFamily: 'monospace' }}>{MATTRESS_CASE_STUDY.before.king}</strong></p>
+              </div>
+              <div style={{ background: '#fee2e2', borderRadius: '10px', padding: '12px', textAlign: 'center' }}>
+                <p style={{ fontSize: '12px', color: '#6b7280' }}>Discount request rate</p>
+                <p style={{ fontSize: '28px', fontWeight: 800, color: '#ef4444' }}>{MATTRESS_CASE_STUDY.before.discountRate}%</p>
+              </div>
+            </motion.div>
+
+            {/* After */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: '#f0fdf4', border: '2px solid #bbf7d0', borderRadius: '16px', padding: '24px', position: 'relative' }}>
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5 }}
+                style={{ position: 'absolute', top: '-12px', right: '16px', background: '#10b981', color: 'white', padding: '4px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 700 }}>
+                WINS
+              </motion.div>
+              <div className="flex items-center gap-2 mb-4">
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                  <Icons.Check />
+                </div>
+                <span style={{ fontWeight: 700, color: '#16a34a' }}>Precise Pricing</span>
+              </div>
+              <div style={{ marginBottom: '16px' }}>
+                <p style={{ color: '#6b7280', fontSize: '13px' }}>Queen mattress: <strong style={{ color: '#10b981', fontFamily: 'monospace' }}>{MATTRESS_CASE_STUDY.after.queen}</strong></p>
+                <p style={{ color: '#6b7280', fontSize: '13px' }}>King mattress: <strong style={{ color: '#10b981', fontFamily: 'monospace' }}>{MATTRESS_CASE_STUDY.after.king}</strong></p>
+              </div>
+              <div style={{ background: '#dcfce7', borderRadius: '10px', padding: '12px', textAlign: 'center' }}>
+                <p style={{ fontSize: '12px', color: '#6b7280' }}>Discount request rate</p>
+                <p style={{ fontSize: '28px', fontWeight: 800, color: '#10b981' }}>{MATTRESS_CASE_STUDY.after.discountRate}%</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
+            <p style={{ color: '#9ca3af', fontSize: '13px', marginBottom: '8px' }}>Haggling attempts reduced by</p>
+            <p style={{ fontSize: '48px', fontWeight: 800, color: '#10b981' }}><AnimatedCounter target={MATTRESS_CASE_STUDY.reduction} suffix="%" duration={1500} /></p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ImpactStatsSlide - AnimatedCounter stats
+    const ImpactStatsSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {IMPACT_STATS.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '28px', position: 'relative', overflow: 'hidden', textAlign: 'center' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+
+                <div style={{ fontSize: '48px', fontWeight: 800, color: '#10b981', marginBottom: '8px' }}>
+                  <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={2000} />
+                </div>
+                <p style={{ color: 'white', fontWeight: 600, marginBottom: '4px' }}>{stat.label}</p>
+                <p style={{ color: '#6b7280', fontSize: '12px' }}>{stat.subtext}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // EliteInsightSlide - The Precision Paradox
+    const EliteInsightSlide = ({ data }) => {
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '48px', position: 'relative', overflow: 'hidden', width: '100%', boxShadow: '0 0 60px rgba(16, 185, 129, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+
+            <div className="text-center mb-6">
+              <div style={{ width: '60px', height: '60px', borderRadius: '16px', background: '#10b98120', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: '#10b981' }}>
+                <Icons.Brain />
+              </div>
+              <p style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '8px' }}>Elite Insight</p>
+              <h3 className="slide-title" style={{ color: 'white', fontSize: '28px', marginBottom: '16px' }}>{data.title}</h3>
+            </div>
+
+            <p style={{ color: '#d1d5db', fontSize: '16px', lineHeight: '1.8', textAlign: 'center' }}>{data.insight}</p>
+
+            <div style={{ marginTop: '24px', padding: '16px', background: '#10b98110', borderRadius: '12px', textAlign: 'center' }}>
+              <div className="flex items-center justify-center gap-2" style={{ color: '#10b981' }}>
+                <Icons.Lightbulb />
+                <span style={{ fontWeight: 600 }}>Precision signals calculation. Calculation signals fairness.</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ STANDARD SLIDES ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
-      useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
@@ -250,157 +549,13 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
     const ContentSlide = ({ data }) => (
       <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
         <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed whitespace-pre-line">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const PriceComparisonVisual = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Subconscious Reaction</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6 w-full max-w-3xl">
-          {/* Round Price */}
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="relative">
-            <div className="bg-neutral-100 rounded-2xl p-6 border-2 border-neutral-200">
-              <div className="absolute -top-3 left-4 px-3 py-1 bg-neutral-400 text-white text-xs font-bold rounded-full">ROUND</div>
-              <div className="text-5xl md:text-6xl font-black text-neutral-400 mb-4 font-mono">{data.data.round.price}</div>
-              <div className="bg-white rounded-xl p-4 border border-neutral-200">
-                <div className="text-xs text-neutral-400 uppercase tracking-wider mb-2">Subconscious thought:</div>
-                <p className="text-neutral-600 text-sm italic">"{data.data.round.reaction}"</p>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Precise Price */}
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="relative">
-            <div className="bg-emerald-50 rounded-2xl p-6 border-2 border-emerald-200 ring-4 ring-emerald-100">
-              <div className="absolute -top-3 left-4 px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-full">PRECISE</div>
-              <div className="text-5xl md:text-6xl font-black text-emerald-600 mb-4 font-mono">{data.data.precise.price}</div>
-              <div className="bg-white rounded-xl p-4 border border-emerald-200">
-                <div className="text-xs text-emerald-500 uppercase tracking-wider mb-2">Subconscious thought:</div>
-                <p className="text-emerald-700 text-sm italic">"{data.data.precise.reaction}"</p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-center mt-8 text-neutral-500 text-sm">Same product. $12 difference. Completely different perception.</motion.p>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'priceComparison') {
-        return <PriceComparisonVisual data={data} />;
-      }
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.center.color }}>{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-emerald-50 border-2 border-emerald-200 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
     );
 
@@ -413,12 +568,7 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => {
-        if (showFeedback) {
-          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
-        }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-
+      useEffect(() => { if (showFeedback) { if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); } } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
@@ -452,21 +602,40 @@
       );
     };
 
-    const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now understand the Precise Price Trick. For high-ticket items, use specific numbers. Signal calculation, not guessing. Reduce negotiation instincts.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+    const CompletionSlide = ({ data }) => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">You now understand the Precise Price Trick. For high-ticket items, use specific numbers ending in 7 or 8. Signal calculation, not guessing. Reduce negotiation instincts and build trust before you say a single word.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
 
+    // ============ SLIDES ARRAY ============
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why round numbers trigger negotiation instincts', 'The University of Florida study that changed pricing forever', 'When to use precise vs round numbers for max conversions'] },
+      { type: 'hook', headline: 'Which price feels more calculated? $5,000 or $4,988?', subtext: 'Researchers at University of Florida tested this exact question. The result? People estimated items priced at round numbers ($5,000) were worth LESS than identical items priced at precise numbers ($4,988). The round number felt like a guess. The precise number felt researched. Same item. Different perception. Different sales.' },
+      { type: 'price-comparison', title: 'The Subconscious Reaction' },
+      { type: 'price-psychology', title: 'The Psychology of Precision' },
+      { type: 'content', title: 'Why This Matters for E-commerce', body: 'You are not just selling products. You are defending your prices against the customer inner skeptic. A round price like $100 whispers "I made this up." A precise price like $97.43 whispers "I calculated this carefully." The precise price builds trust before you say a single word.' },
+      { type: 'sweet-spot-endings', title: 'The Sweet Spot Endings' },
+      { type: 'when-precise', title: 'When To Use Precise Numbers' },
+      { type: 'when-round', title: 'When Round Numbers Win' },
+      { type: 'mattress-case-study', title: 'Mattress Brand: Real Results' },
+      { type: 'content', title: 'The Implementation Formula', body: 'For products over $100: End prices in 7 or 8 (feels calculated, not cheap like .99). For B2B or high-ticket: Use specific numbers like $14,847 or $2,388. For bundles: Let the math be visible. "$47 + $47 + $47 = $141 (you pay $127)" shows deliberate pricing.' },
+      { type: 'impact-stats', title: 'The Precision Impact' },
+      { type: 'elite-insight', title: 'The Precision Paradox', insight: 'The smaller the price difference, the bigger the psychological shift. $4,988 vs $5,000 is only $12 apart - but one invites haggling while the other commands respect. It is not about the amount. It is about the signal. Precision says "I did the math." Round says "I made it up."' },
+      { type: 'quiz', question: 'Why do precise prices like $4,988 reduce negotiation attempts compared to $5,000?', options: ['Because $4,988 is technically cheaper', 'Because precise numbers signal careful calculation, reducing perceived wiggle room', 'Because odd numbers are harder to remember', 'Because customers prefer even numbers'], correctIndex: 1, feedback: { correct: 'Exactly! The subconscious interprets precise numbers as calculated and researched, while round numbers feel arbitrary and negotiable. It is about perceived fairness, not the actual amount.', incorrect: 'Not quite. The power of precise pricing comes from psychology: your brain assumes precise numbers were carefully calculated, while round numbers feel like guesses open to negotiation.' } },
+      { type: 'completion' }
+    ];
+
+    // ============ APP ============
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
@@ -478,14 +647,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -518,11 +681,16 @@
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'completion': return <CompletionSlide />;
+          case 'completion': return <CompletionSlide data={slide} />;
+          case 'price-comparison': return <PriceComparisonSlide data={slide} />;
+          case 'price-psychology': return <PricePsychologySlide data={slide} />;
+          case 'sweet-spot-endings': return <SweetSpotEndingsSlide data={slide} />;
+          case 'when-precise': return <WhenToUsePreciseSlide data={slide} />;
+          case 'when-round': return <WhenToUseRoundSlide data={slide} />;
+          case 'mattress-case-study': return <MattressCaseStudySlide data={slide} />;
+          case 'impact-stats': return <ImpactStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           default: return null;
         }
       };

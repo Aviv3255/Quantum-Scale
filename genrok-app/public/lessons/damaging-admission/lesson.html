@@ -449,12 +449,15 @@
           </div>
         );
       }
+      if (data.visualType === 'trustflow') {
+        return (
+          <div className="h-full flex items-center justify-center">
+            <TrustFlowVisual />
+          </div>
+        );
+      }
       return null;
     };
-      <div className="h-full flex items-center justify-center">
-        {data.visualType === 'trustflow' && <TrustFlowVisual />}
-      </div>
-    );
 
     const CardsSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
@@ -481,6 +484,9 @@
       </div>
     );
 
+    const FrameworkCardsSlide = ({ data }) => {
+      const icons = { Time: Icons.Time, Effort: Icons.Effort, Exclusion: Icons.Exclusion, Limitation: Icons.Limitation, Step1: Icons.Step1, Step2: Icons.Step2, Step3: Icons.Step3 };
+      const getIcon = (iconName) => {
         const IconComp = icons[iconName];
         return IconComp ? <IconComp /> : null;
       };

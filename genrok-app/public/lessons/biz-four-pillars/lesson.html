@@ -146,47 +146,64 @@
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    const PILLAR_DATA = {
+      I: { name: 'Financial Engine', subtitle: 'The Numbers', color: '#059669', icon: 'calculator', description: 'Know your LTV, CAC, and the ratio that determines everything.' },
+      II: { name: 'Human Algorithm', subtitle: 'The Psychology', color: '#0ea5e9', icon: 'brain', description: 'Understand that customers buy feelings, not features.' },
+      III: { name: 'Emotional Moat', subtitle: 'The Brand', color: '#8b5cf6', icon: 'heart', description: 'Build an emotional core so strong they can\'t switch.' },
+      IV: { name: 'Content Machine', subtitle: 'The Distribution', color: '#f59e0b', icon: 'layers', description: 'Create assets that reduce CAC while you sleep.' }
+    };
+
     const slides = [
       { type: 'welcome', learningGoals: ['The 4 pillars that control LTV vs CAC', 'How each pillar multiplies your profits', 'The complete escape route from the hamster wheel'] },
       { type: 'hook', headline: 'There are only 4 things you can control that determine if your business prints money or bleeds cash.', subtext: 'Everything else is noise. Master these four pillars, and the math works in your favor forever. Ignore them, and you\'ll run on the hamster wheel until you burn out. This is the protocol.' },
-      { type: 'visual', title: 'The Four Pillars', visualType: 'stats', data: [
-        { value: 'I', label: 'Financial Engine', subtext: 'The numbers' },
-        { value: 'II', label: 'Human Algorithm', subtext: 'The psychology' },
-        { value: 'III', label: 'Emotional Moat', subtext: 'The brand' },
-        { value: 'IV', label: 'Content Machine', subtext: 'The distribution' }
+      { type: 'four-pillars-temple', title: 'The Four Pillars Protocol' },
+      { type: 'pillar-detail', pillarNum: 'I', title: 'Architect the Financial Engine', body: 'This is where most stores fail before they start. Know your numbers: What\'s your true CAC? Not your guess—your ACTUAL cost to acquire a customer. What\'s your real LTV? Not revenue—gross profit over time. What\'s the ratio? If it\'s not 3:1 or better, you\'re running uphill.' },
+      { type: 'pillar-checklist', pillarNum: 'I', items: [
+        { title: 'Track Real LTV', description: 'Use gross profit, not revenue. Include repeat purchases over 12-24 months.' },
+        { title: 'Know True CAC', description: 'Include ALL costs: ads, software, team time. Don\'t lie to yourself.' },
+        { title: 'Monitor The Ratio', description: 'Below 3:1 = danger. At 3:1 = healthy. Above 5:1 = scale hard.' }
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'right' },
+      { type: 'pillar-detail', pillarNum: 'II', title: 'Decode the Human Algorithm', body: 'Rory Sutherland calls it "psychological moonshots." Logic says lower fat is good. Psychology says people want indulgence. Your customers don\'t buy products. They buy feelings, identities, transformations. Frame your offer around what they FEEL, not what you SELL.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/6aab00d0-a2dc-11ed-bfe6-65e61c4b531d-Rory_Headshot_Colour_Change_16-removebg-preview.png', personName: 'Rory Sutherland' },
+      { type: 'pillar-checklist', pillarNum: 'II', items: [
+        { title: 'Find The Real Buy', description: 'What emotion are they purchasing? Status? Relief? Belonging?' },
+        { title: 'Frame, Don\'t List', description: '"Save time" < "Never miss another moment with your kids."' },
+        { title: 'Test Psychology', description: 'A/B test frames, not colors. Loss vs gain. Identity vs feature.' }
       ]},
-      { type: 'content', title: 'Pillar I: Architect the Financial Engine', body: 'This is where most stores fail before they start. Know your numbers: What\'s your true CAC? Not your guess—your ACTUAL cost to acquire a customer. What\'s your real LTV? Not revenue—gross profit over time. What\'s the ratio? If it\'s not 3:1 or better, you\'re running uphill.' },
-      { type: 'cards', title: 'Pillar I Checklist', items: [
-        { title: 'Track Real LTV', description: 'Use gross profit, not revenue. Include repeat purchases over 12-24 months. Segment by source.' },
-        { title: 'Know True CAC', description: 'Include ALL costs: ads, software, team time. Don\'t lie to yourself about the real number.' },
-        { title: 'Monitor The Ratio', description: 'LTV:CAC below 3:1 = danger zone. At 3:1 = healthy. Above 5:1 = scale aggressively.' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_calculating_numbers_with_calculator_100_pure_w_b930553b-32c0-4367-bcc5-c1b2c51a9318_2.mp4', characterPosition: 'right'},
-      { type: 'content', title: 'Pillar II: Decode the Human Algorithm', body: 'Rory Sutherland calls it "psychological moonshots." Logic says lower fat is good. Psychology says people want indulgence. Your customers don\'t buy products. They buy feelings, identities, transformations. Frame your offer around what they FEEL, not what you SELL.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/6aab00d0-a2dc-11ed-bfe6-65e61c4b531d-Rory_Headshot_Colour_Change_16-removebg-preview.png', personName: 'Rory Sutherland' },
-      { type: 'cards', title: 'Pillar II Checklist', items: [
-        { title: 'Find The Real Buy', description: 'What emotion are they purchasing? Status? Relief? Belonging? That\'s your marketing angle.' },
-        { title: 'Frame, Don\'t List', description: 'Features bore. Frames convert. "Save time" < "Never miss another moment with your kids."' },
-        { title: 'Test Psychology', description: 'A/B test frames, not just colors. Loss vs gain. Identity vs feature. Story vs specs.' }
+      { type: 'pillar-detail', pillarNum: 'III', title: 'Build an Emotional Moat', body: 'Nike didn\'t chase trends with the Air Force 1. They stood still and let culture find them. Your brand needs an emotional core so strong that customers can\'t imagine switching. This isn\'t about logos—it\'s about the FEELING people get when they think of you.' },
+      { type: 'pillar-checklist', pillarNum: 'III', items: [
+        { title: 'Define Your Emotion', description: 'Nike = Victory. Apple = Creativity. Patagonia = Responsibility.' },
+        { title: 'Consistency Over Novelty', description: 'The AF1 never changed. Your core shouldn\'t either.' },
+        { title: 'Let Them Find You', description: 'Stand for something clear. The right customers will gravitate.' }
       ]},
-      { type: 'content', title: 'Pillar III: Build an Emotional Moat', body: 'Nike didn\'t chase trends with the Air Force 1. They stood still and let culture find them. Your brand needs an emotional core so strong that customers can\'t imagine switching. This isn\'t about logos—it\'s about the FEELING people get when they think of you.' },
-      { type: 'cards', title: 'Pillar III Checklist', items: [
-        { title: 'Define Your Emotion', description: 'What ONE feeling do you own? Nike = Victory. Apple = Creativity. Patagonia = Responsibility.' },
-        { title: 'Consistency Over Novelty', description: 'The AF1 never changed. Your core shouldn\'t either. Consistency builds trust and recognition.' },
-        { title: 'Let Them Find You', description: 'Don\'t chase every trend. Stand for something clear. The right customers will gravitate.' }
-      ]},
-      { type: 'content', title: 'Pillar IV: Engineer the Content Machine', body: 'Traffic is oxygen. But paid-only traffic is a trap. The best stores build content engines that generate organic reach, reduce CAC over time, and create compounding value. This means email lists, social content, SEO—assets that work while you sleep.' },
-      { type: 'cards', title: 'Pillar IV Checklist', items: [
-        { title: 'Build Owned Audiences', description: 'Email list. SMS list. These are YOURS. No algorithm can take them. Nurture relentlessly.' },
-        { title: 'Create Evergreen Content', description: 'Content that stays relevant. Guides, tutorials, stories. Compounds over time unlike ads.' },
-        { title: 'Reduce CAC Over Time', description: 'Every piece of content should lower your blended CAC. Track organic vs paid ratio.' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'left'},
-      { type: 'visual', title: 'The Protocol in Action', visualType: 'comparison', data: {
-        left: { label: 'Without Protocol', value: 'CHAOS', result: 'Hamster wheel forever', color: '#ef4444' },
-        right: { label: 'With Protocol', value: 'SYSTEM', result: 'Compounding growth', color: '#22c55e' },
-        center: { label: '4 Pillars', value: 'CONTROL', result: 'Money machine', color: '#059669' }
-      }},
+      { type: 'pillar-detail', pillarNum: 'IV', title: 'Engineer the Content Machine', body: 'Traffic is oxygen. But paid-only traffic is a trap. The best stores build content engines that generate organic reach, reduce CAC over time, and create compounding value. Email lists, social content, SEO—assets that work while you sleep.' },
+      { type: 'pillar-checklist', pillarNum: 'IV', items: [
+        { title: 'Build Owned Audiences', description: 'Email & SMS lists are YOURS. No algorithm can take them.' },
+        { title: 'Create Evergreen Content', description: 'Guides, tutorials, stories. Compounds over time unlike ads.' },
+        { title: 'Reduce CAC Over Time', description: 'Every piece of content should lower your blended CAC.' }
+      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_building_something_with_tools_constructing_100_52683f04-d09a-47c4-89a1-84b57476d150_2.mp4', characterPosition: 'left' },
+      { type: 'protocol-transformation', title: 'The Protocol in Action' },
       { type: 'quiz', question: 'Which of the Four Pillars is about understanding customer psychology and framing?', options: ['Pillar I: Financial Engine', 'Pillar II: Human Algorithm', 'Pillar III: Emotional Moat', 'Pillar IV: Content Machine'], correctIndex: 1, feedback: { correct: 'Exactly. Pillar II—Decode the Human Algorithm—is about understanding that customers buy feelings, not features. It\'s where Rory Sutherland\'s psychological insights come in.', incorrect: 'Not quite. The pillar focused on customer psychology and framing is Pillar II: Decode the Human Algorithm. It\'s about understanding what customers FEEL when they buy.' }},
       { type: 'completion', sources: ['The LTV:CAC Playbook', 'Rory Sutherland', 'Greg Hoffman'] }
     ];
+
+    // AnimatedCounter component
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      const numTarget = typeof target === 'string' ? parseFloat(target.replace(/[^0-9.]/g, '')) : target;
+      useEffect(() => {
+        if (isNaN(numTarget)) { setCount(target); return; }
+        let start = 0;
+        const increment = numTarget / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= numTarget) { setCount(numTarget); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [numTarget, duration]);
+      if (typeof target === 'string' && isNaN(numTarget)) return <span>{target}</span>;
+      return <span>{prefix}{typeof count === 'number' ? count.toLocaleString() : count}{suffix}</span>;
+    };
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -196,6 +213,14 @@
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+      Calculator: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="8" y2="18"/><line x1="12" y1="18" x2="12" y2="18"/><line x1="16" y1="18" x2="16" y2="18"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      Layers: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      AlertCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+      Shuffle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
     };
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
@@ -383,6 +408,500 @@
       );
     };
 
+    // =============== FOUR PILLARS UNIQUE COMPONENTS ===============
+
+    // FourPillarsTempleSlide - Animated temple structure with 4 rising pillars
+    const FourPillarsTempleSlide = ({ data }) => {
+      const pillars = ['I', 'II', 'III', 'IV'];
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 py-8 overflow-hidden bg-white">
+          <motion.h2
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-2xl md:text-3xl lg:text-4xl text-black text-center mb-2"
+          >
+            {data.title}
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-neutral-500 text-sm md:text-base text-center mb-6 max-w-lg"
+          >
+            The complete framework to escape the hamster wheel
+          </motion.p>
+
+          {/* Temple Container - Dark block */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="rounded-2xl p-6 md:p-8 w-full max-w-2xl"
+            style={{ background: 'linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%)' }}
+          >
+            {/* Temple Roof */}
+            <motion.div
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ delay: 1.8, duration: 0.5 }}
+              className="relative w-full mb-2"
+            >
+              <div style={{
+                width: '100%',
+                height: '35px',
+                background: 'linear-gradient(180deg, #b8860b 0%, #8b6914 100%)',
+                clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                boxShadow: '0 10px 40px rgba(184, 134, 11, 0.3)'
+              }} />
+            </motion.div>
+
+            {/* Pillars Container */}
+            <div className="flex justify-center items-end gap-3 md:gap-6 w-full">
+              {pillars.map((num, i) => {
+                const pillar = PILLAR_DATA[num];
+                const IconComponent = Icons[pillar.icon.charAt(0).toUpperCase() + pillar.icon.slice(1)];
+                return (
+                  <motion.div
+                    key={num}
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: '150px' }}
+                    transition={{ delay: 0.3 + i * 0.3, duration: 0.6, ease: 'easeOut' }}
+                    className="flex flex-col items-center"
+                  >
+                    {/* Pillar Column */}
+                    <div
+                      className="w-14 md:w-16 rounded-t-lg flex flex-col items-center justify-start pt-3 relative overflow-hidden"
+                      style={{
+                        height: '150px',
+                        background: `linear-gradient(180deg, ${pillar.color}40 0%, ${pillar.color}20 100%)`,
+                        border: `2px solid ${pillar.color}60`,
+                        borderBottom: 'none'
+                      }}
+                    >
+                      {/* Glow effect at top */}
+                      <div style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: '4px',
+                        background: pillar.color,
+                        boxShadow: `0 0 20px ${pillar.color}`
+                      }} />
+
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.8 + i * 0.3 }}
+                        className="w-8 h-8 rounded-full flex items-center justify-center mb-1"
+                        style={{ background: `${pillar.color}30`, border: `2px solid ${pillar.color}` }}
+                      >
+                        <span style={{ color: pillar.color }}>{IconComponent && <IconComponent />}</span>
+                      </motion.div>
+
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1 + i * 0.3 }}
+                        className="text-base md:text-lg font-bold text-white"
+                      >
+                        {num}
+                      </motion.span>
+
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.2 + i * 0.3 }}
+                        className="text-[7px] md:text-[9px] text-center px-1 mt-1"
+                        style={{ color: pillar.color }}
+                      >
+                        {pillar.name}
+                      </motion.span>
+                    </div>
+
+                    {/* Pillar Base */}
+                    <div
+                      className="w-16 md:w-20 h-2"
+                      style={{
+                        background: `linear-gradient(180deg, ${pillar.color} 0%, ${pillar.color}80 100%)`,
+                        boxShadow: `0 4px 20px ${pillar.color}40`
+                      }}
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Foundation */}
+            <motion.div
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ delay: 0.1, duration: 0.4 }}
+              className="w-full h-3 mt-0"
+              style={{
+                background: 'linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%)',
+                borderRadius: '0 0 4px 4px'
+              }}
+            />
+          </motion.div>
+
+          {/* Bottom tagline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2.2 }}
+            className="text-neutral-600 text-xs md:text-sm mt-6 text-center"
+          >
+            Master all four. The math works in your favor <span className="font-bold text-black">forever</span>.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // PillarDetailSlide - Individual pillar showcase with icon and description
+    const PillarDetailSlide = ({ data }) => {
+      const pillar = PILLAR_DATA[data.pillarNum];
+      const IconComponent = Icons[pillar.icon.charAt(0).toUpperCase() + pillar.icon.slice(1)];
+
+      return (
+        <div className="h-full relative overflow-hidden bg-white">
+          {/* Pillar accent strip on left */}
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: '100%' }}
+            transition={{ duration: 0.8 }}
+            className="absolute left-0 top-0 w-1.5"
+            style={{ background: `linear-gradient(180deg, ${pillar.color} 0%, ${pillar.color}40 100%)` }}
+          />
+
+          <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
+            {/* Pillar Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-4 mb-6"
+            >
+              <div
+                className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center"
+                style={{
+                  background: `linear-gradient(135deg, ${pillar.color}20 0%, ${pillar.color}10 100%)`,
+                  border: `2px solid ${pillar.color}50`,
+                  boxShadow: `0 0 20px ${pillar.color}15`
+                }}
+              >
+                <span style={{ color: pillar.color, transform: 'scale(1.5)' }}>{IconComponent && <IconComponent />}</span>
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span
+                    className="text-2xl md:text-3xl font-bold"
+                    style={{ color: pillar.color }}
+                  >
+                    Pillar {data.pillarNum}
+                  </span>
+                </div>
+                <span className="text-neutral-500 text-sm">{pillar.subtitle}</span>
+              </div>
+            </motion.div>
+
+            {/* Title */}
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6"
+            >
+              {data.title}
+            </motion.h2>
+
+            {/* Body */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="text-base md:text-lg text-neutral-600 leading-relaxed"
+            >
+              {data.body}
+            </motion.p>
+          </div>
+
+          {/* Person Image (like Rory Sutherland) */}
+          {data.personImage && (
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="absolute bottom-0 right-[5%] z-0 pointer-events-none hidden md:block"
+              style={{ height: '50%', maxHeight: '400px' }}
+            >
+              <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" style={{ opacity: 0.9 }} />
+              {data.personName && (
+                <div className="absolute bottom-4 right-4 px-3 py-1 rounded-lg" style={{ background: 'rgba(0,0,0,0.8)' }}>
+                  <span className="text-white text-xs font-medium">{data.personName}</span>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* Large pillar numeral watermark */}
+          <div
+            className="absolute right-8 top-1/2 -translate-y-1/2 text-[200px] md:text-[300px] font-bold pointer-events-none select-none hidden md:block"
+            style={{
+              color: pillar.color,
+              opacity: 0.08,
+              fontFamily: 'Fraunces, serif'
+            }}
+          >
+            {data.pillarNum}
+          </div>
+        </div>
+      );
+    };
+
+    // PillarChecklistSlide - Actionable checklist with pillar branding
+    const PillarChecklistSlide = ({ data }) => {
+      const pillar = PILLAR_DATA[data.pillarNum];
+      const IconComponent = Icons[pillar.icon.charAt(0).toUpperCase() + pillar.icon.slice(1)];
+
+      return (
+        <div className="h-full relative overflow-hidden bg-white">
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
+            {/* Header */}
+            <motion.div
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                style={{ background: `${pillar.color}15`, border: `2px solid ${pillar.color}40` }}
+              >
+                <span style={{ color: pillar.color }}>{IconComponent && <IconComponent />}</span>
+              </div>
+              <div>
+                <span className="text-neutral-500 text-xs uppercase tracking-wider">Pillar {data.pillarNum} Action Items</span>
+                <h3 className="font-bold text-lg" style={{ color: pillar.color }}>{pillar.name}</h3>
+              </div>
+            </motion.div>
+
+            {/* Checklist Items - Dark cards on white background */}
+            <div className="space-y-3">
+              {data.items.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.15 + i * 0.12 }}
+                  className="relative"
+                >
+                  <div
+                    className="rounded-xl p-4 md:p-5"
+                    style={{
+                      background: 'linear-gradient(135deg, #1a1a1a 0%, #252525 100%)',
+                      border: `1px solid ${pillar.color}30`
+                    }}
+                  >
+                    {/* Top accent line */}
+                    <div
+                      className="absolute top-0 left-4 right-4 h-0.5 rounded-full"
+                      style={{ background: `linear-gradient(90deg, transparent, ${pillar.color}, transparent)` }}
+                    />
+
+                    <div className="flex items-start gap-4">
+                      {/* Checkbox */}
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.3 + i * 0.12 }}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                        style={{
+                          background: `${pillar.color}25`,
+                          border: `2px solid ${pillar.color}`,
+                          boxShadow: `0 0 12px ${pillar.color}25`
+                        }}
+                      >
+                        <span className="text-white"><Icons.Check /></span>
+                      </motion.div>
+
+                      <div className="flex-1">
+                        <h4 className="text-white font-semibold text-base md:text-lg mb-1">{item.title}</h4>
+                        <p className="text-neutral-400 text-sm leading-relaxed">{item.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Character Video */}
+          {data.characterVideo && (
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none hidden md:block`}
+              style={{ height: '45%', maxHeight: '350px' }}
+            >
+              <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
+                <source src={data.characterVideo} type="video/mp4" />
+              </video>
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // ProtocolTransformationSlide - Before/After chaos vs control visual
+    const ProtocolTransformationSlide = ({ data }) => {
+      const [showAfter, setShowAfter] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowAfter(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 py-8 bg-white">
+          <motion.h2
+            initial={{ opacity: 0, y: -15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="slide-title text-2xl md:text-3xl text-black text-center mb-8"
+          >
+            {data.title}
+          </motion.h2>
+
+          <div className="grid grid-cols-2 gap-4 md:gap-6 w-full max-w-3xl">
+            {/* BEFORE - Chaos (Dark card) */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="rounded-2xl p-5 md:p-6 relative overflow-hidden"
+              style={{
+                background: 'linear-gradient(135deg, #2a1a1a 0%, #1a0f0f 100%)',
+                border: '2px solid rgba(239, 68, 68, 0.3)'
+              }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+
+              <div className="text-center mb-4">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-2" style={{ background: 'rgba(239, 68, 68, 0.2)' }}>
+                  <span className="text-red-400"><Icons.Shuffle /></span>
+                </div>
+                <h3 className="text-red-400 font-bold text-lg">WITHOUT Protocol</h3>
+              </div>
+
+              <div className="space-y-2">
+                {[
+                  'Guessing at CAC & LTV',
+                  'Feature-focused messaging',
+                  'Chasing every trend',
+                  'Paid traffic dependency'
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 + i * 0.1 }}
+                    className="flex items-center gap-2 text-neutral-400 text-xs md:text-sm"
+                  >
+                    <span className="text-red-400"><Icons.X /></span>
+                    {item}
+                  </motion.div>
+                ))}
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="mt-4 pt-4 border-t border-red-900/30 text-center"
+              >
+                <span className="text-red-400 text-2xl md:text-3xl font-bold">
+                  <AnimatedCounter target={87} suffix="%" />
+                </span>
+                <p className="text-neutral-500 text-xs mt-1">fail within 2 years</p>
+              </motion.div>
+            </motion.div>
+
+            {/* AFTER - Control (Dark card) */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: showAfter ? 1 : 0.3, x: 0, scale: showAfter ? 1 : 0.95 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+              className="rounded-2xl p-5 md:p-6 relative overflow-hidden"
+              style={{
+                background: showAfter ? 'linear-gradient(135deg, #0f2a1a 0%, #0a1f0f 100%)' : 'linear-gradient(135deg, #1a1a1a 0%, #151515 100%)',
+                border: `2px solid ${showAfter ? 'rgba(34, 197, 94, 0.4)' : 'rgba(100, 100, 100, 0.2)'}`,
+                transition: 'all 0.5s ease'
+              }}
+            >
+              {showAfter && <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />}
+
+              <div className="text-center mb-4">
+                <div
+                  className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-2 transition-all duration-500"
+                  style={{ background: showAfter ? 'rgba(34, 197, 94, 0.2)' : 'rgba(100, 100, 100, 0.1)' }}
+                >
+                  <span className={showAfter ? 'text-green-400' : 'text-neutral-500'}><Icons.Target /></span>
+                </div>
+                <h3 className={`font-bold text-lg transition-colors duration-500 ${showAfter ? 'text-green-400' : 'text-neutral-500'}`}>WITH Protocol</h3>
+              </div>
+
+              <div className="space-y-2">
+                {[
+                  { icon: 'Calculator', text: 'Know exact numbers' },
+                  { icon: 'Brain', text: 'Psychology-first framing' },
+                  { icon: 'Heart', text: 'Unshakeable brand moat' },
+                  { icon: 'Layers', text: 'Content compounds daily' }
+                ].map((item, i) => {
+                  const ItemIcon = Icons[item.icon];
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: 10 }}
+                      animate={{ opacity: showAfter ? 1 : 0.4, x: 0 }}
+                      transition={{ delay: showAfter ? 1.6 + i * 0.1 : 0 }}
+                      className={`flex items-center gap-2 text-xs md:text-sm transition-colors duration-500 ${showAfter ? 'text-neutral-300' : 'text-neutral-600'}`}
+                    >
+                      <span className={showAfter ? 'text-green-400' : 'text-neutral-600'}>{ItemIcon && <ItemIcon />}</span>
+                      {item.text}
+                    </motion.div>
+                  );
+                })}
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: showAfter ? 1 : 0.3 }}
+                transition={{ delay: showAfter ? 2 : 0 }}
+                className="mt-4 pt-4 border-t border-green-900/30 text-center"
+              >
+                <span className={`text-2xl md:text-3xl font-bold transition-colors duration-500 ${showAfter ? 'text-green-400' : 'text-neutral-600'}`}>
+                  {showAfter ? <AnimatedCounter target={3} suffix="x+" /> : '?x'}
+                </span>
+                <p className={`text-xs mt-1 transition-colors duration-500 ${showAfter ? 'text-neutral-400' : 'text-neutral-600'}`}>LTV:CAC ratio</p>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Bottom message */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: showAfter ? 1 : 0, y: showAfter ? 0 : 20 }}
+            transition={{ delay: 2.2 }}
+            className="text-neutral-600 text-sm md:text-base mt-8 text-center max-w-lg"
+          >
+            The protocol isn't optional. It's the difference between <span className="text-red-500 font-semibold">burning out</span> and <span className="text-green-600 font-semibold">printing money</span>.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // =============== END FOUR PILLARS UNIQUE COMPONENTS ===============
+
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -451,6 +970,10 @@
           case 'content': return <ContentSlide data={slide} />;
           case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
+          case 'four-pillars-temple': return <FourPillarsTempleSlide data={slide} />;
+          case 'pillar-detail': return <PillarDetailSlide data={slide} />;
+          case 'pillar-checklist': return <PillarChecklistSlide data={slide} />;
+          case 'protocol-transformation': return <ProtocolTransformationSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Story Changes How Products TASTE | Quantum Scale</title>
+  <title>Story Taste Experiment | Quantum Scale</title>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
@@ -12,17 +12,9 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #9333ea;
-      --accent-dark: #7e22ce;
-      --accent-light: #a855f7;
-      --accent-rgb: 147, 51, 234;
-    }
+    :root { --accent: #9333ea; --accent-dark: #7e22ce; --accent-light: #a855f7; --accent-rgb: 147, 51, 234; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
     .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
@@ -36,47 +28,29 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    const { motion, AnimatePresence, useInView } = window.Motion;
-    const { useState, useEffect, useCallback, useMemo, useRef } = React;
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
 
-    const getUserName = () => {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'Builder';
-    };
+    const getUserName = () => { const params = new URLSearchParams(window.location.search); return params.get('userName') || 'Builder'; };
+    const getInitialSlide = () => { const params = new URLSearchParams(window.location.search); const slide = params.get('slide'); return slide ? parseInt(slide, 10) : 0; };
 
     const LESSON_CONFIG = {
       id: 'story-taste-experiment',
       title: 'Your Story Changes How Products TASTE',
-      description: 'The story you tell LITERALLY changes how the product is experienced.',
+      description: 'The Stanford wine experiment that proved story changes taste perception',
       accentColor: '#9333ea',
       duration: '6 min',
-      nextLesson: {
-        id: 'conversion-psychology',
-        title: 'Conversion Psychology Mastery',
-        teaser: 'More psychological triggers that turn browsers into buyers.'
-      }
+      nextLesson: { id: 'conversion-psychology', title: 'Conversion Psychology Mastery', teaser: 'More psychological triggers that turn browsers into buyers.' }
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -92,28 +66,8 @@
       };
 
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
           onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
         >
@@ -129,69 +83,18 @@
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'Stanford wine study that proved story changes taste perception',
-        'How expectation shapes product experience at neurological level',
-        'Framework for crafting origin stories that increase perceived value'
-      ]},
-      { type: 'hook', headline: 'Same wine. Different story. Different taste ratings.', subtext: 'Stanford researchers gave people identical wine. Half were told it was $90 per bottle. Half were told it was $10 per bottle. The "$90 wine" was rated significantly better - smoother, more complex, more enjoyable. But it was the EXACT SAME WINE. The story changed how it tasted. Not metaphorically. Literally. Brain scans showed different pleasure centers activating based purely on the story.' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Alibaba-Logo-3.png', brandName: 'Alibaba' },
-      { type: 'content', title: 'The Story Creates the Experience', body: 'You think your product quality is what matters most. It matters. But the story you tell about that product? That story CREATES the experience. The customer\'s brain doesn\'t separate "product" from "story about product." The story IS the product experience. Change the story, change how the product tastes, feels, and performs in their mind.' },
-      { type: 'visual', title: 'The Stanford Wine Experiment', visualType: 'stats', data: [
-        { value: '+41%', label: 'Taste Rating Increase', subtext: 'Same wine, "$90" story vs "$10" story' },
-        { value: '100%', label: 'Identical Product', subtext: 'Only the story changed' },
-        { value: 'Real', label: 'Neurological Effect', subtext: 'Brain scans showed actual pleasure response' }
-      ]},
-      { type: 'content', title: 'Expectation Shapes Reality', body: 'When you tell someone this wine is expensive, their brain expects complexity. So it FINDS complexity. When you tell someone this supplement was formulated by PhD scientists, their brain expects it to work better. So it DOES work better (placebo effect is real). The expectation you create through story directly influences the results they experience.' , characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sharing_with_a_friend_two_monkeys_one_explaini_b30f53d7-8f44-4b0a-8c27-ad2e11f08a64_1.mp4', characterPosition: 'right'},
-      { type: 'cards', title: 'How Story Changes Product Experience', items: [
-        { title: 'Origin Stories Create Credibility', description: 'Sourced from Himalayan monks vs ordered from Alibaba. Same ingredient. Different perceived efficacy. The origin story creates expectation of quality.' },
-        { title: 'Process Stories Signal Value', description: 'Small-batch handcrafted vs mass-produced. Same product. Different willingness to pay. The process story justifies premium pricing.' },
-        { title: 'Founder Stories Build Connection', description: 'Created by someone who had your problem vs created by corporation. Same solution. Different emotional investment. The founder story creates loyalty.' },
-        { title: 'Results Stories Set Expectations', description: 'Changed 10,000 lives vs new product launch. Same formula. Different trust level. The results story triggers social proof and placebo effect.' }
-      ]},
-      { type: 'example', scenario: 'Skincare Brand Story Shift', before: { label: 'No Story', text: 'Anti-aging serum with retinol and vitamin C. Reduces wrinkles. $45 per bottle.' }, after: { label: 'Origin Story Added', text: 'Formulated by Korean dermatologist after 8 years researching traditional hanbang ingredients. Combines ancient wisdom with clinical-grade actives. Small-batch produced in Seoul. $45 per bottle.' }, insight: 'Same product. Same price. With story: 3.2x conversion rate. 67% higher repurchase rate. Customers reported "seeing results faster" even though formula was identical.' },
-      { type: 'content', title: 'The Three Story Layers', body: 'Every product needs three story layers: 1) WHERE it comes from (origin creates credibility). 2) HOW it\'s made (process justifies premium). 3) WHY it exists (founder story builds emotional connection). Most sellers have zero layers. You need all three. Stack them correctly, and the product literally performs better in the customer\'s experience.' },
-      { type: 'comparison', title: 'Story Framework Comparison', bad: { title: 'Generic Product Description', description: 'Premium coffee beans. Rich flavor. Ethically sourced. Fair trade certified. Delivers smooth taste with notes of chocolate and caramel. 12oz bag, $18. Zero differentiation. Competes on price. Customer has no emotional investment. Tastes like coffee.' }, good: { title: 'Layered Story Framework', description: 'Grown at 6,000ft in Colombian highlands by 3rd-generation farmer Maria. She hand-selects only beans that pass her grandmother\'s ripeness test - a technique refined over 60 years. Small-batch roasted in San Francisco within 48 hours of harvest. 12oz bag, $18. Creates expectation of quality. Justifies price. Customer emotionally invested. Tastes exceptional.' }},
-      { type: 'content', title: 'Your Product Already Has a Story', body: 'You just haven\'t told it yet. Every product has an origin. A reason it exists. A process of creation. A person who made it. Find those elements. Craft them into narrative. Layer them throughout your product copy, packaging, and marketing. The product doesn\'t change. But how customers EXPERIENCE that product? Completely transforms.' },
-      { type: 'cards', title: 'Story Elements That Increase Perceived Value', items: [
-        { title: 'Geographic Specificity', description: 'Tuscany vs Italy. Okinawa vs Japan. Patagonia vs South America. The more specific the location, the more authentic the story feels.' },
-        { title: 'Time Investment', description: '18-month aging process. 3-year development. 40-year family tradition. Time signals care, refinement, and value.' },
-        { title: 'Expertise Indicators', description: 'PhD chemist. 5th-generation craftsman. Award-winning chef. Expertise creates trust in quality.' },
-        { title: 'Limited Production Details', description: 'Small-batch. Hand-selected. Only 500 units per month. Scarcity creates premium perception.' }
-      ]},
-      { type: 'quiz', question: 'In the Stanford wine study, why did the "$90 wine" taste better than the "$10 wine" even though they were identical?', options: ['The "$90" bottle had better packaging that enhanced aroma', 'Brain scans showed the story created actual expectation that activated different pleasure centers, literally changing taste perception', 'Participants were wine experts who could detect subtle differences', 'The experiment was flawed and results were not statistically significant'], correctIndex: 1, feedback: { correct: 'Exactly! This wasn\'t psychological bias - brain scans showed ACTUAL neurological differences. The "$90 story" activated pleasure centers that the "$10 story" didn\'t. The expectation created by the story literally changed how the brain processed the taste. Story doesn\'t just influence perception. Story IS perception.', incorrect: 'Not quite. Brain scans proved this was neurological, not just opinion. The "$90 story" activated different pleasure centers than the "$10 story." Same wine, different brain response. The story you tell creates the expectation, and expectation shapes actual experience at a biological level.' }},
-      { type: 'completion' }
-    ];
 
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -200,182 +103,643 @@
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Wine: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 22h8"/><path d="M12 22V9.5"/><path d="M5 9c0 .5.1 1 .3 1.5l.6 1.4a7.5 7.5 0 0 0 12.2 0l.6-1.4c.2-.5.3-1 .3-1.5"/><path d="M5 9V2h14v7"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Heart: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      MapPin: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+      Clock2: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Award: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>,
+      Layers: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/></svg>,
+      Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
     };
+
+    // AnimatedCounter component
+    const AnimatedCounter = ({ value, duration = 2000, decimals = 0, prefix = '', suffix = '' }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const timer = setInterval(() => {
+          start += end / (duration / 50);
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 50);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
+    const slides = [
+      {
+        type: 'welcome',
+        learningGoals: [
+          'Stanford wine study that proved story changes taste perception',
+          'How expectation shapes product experience at neurological level',
+          'Framework for crafting origin stories that increase perceived value'
+        ]
+      },
+      {
+        type: 'hook',
+        headline: 'Same wine. Different story. Different taste ratings.',
+        subtext: 'Stanford researchers gave people identical wine. Half were told it was $90 per bottle. Half were told it was $10 per bottle. The "$90 wine" was rated significantly better. But it was the EXACT SAME WINE.'
+      },
+      { type: 'wine-battle' },
+      { type: 'brain-scan' },
+      { type: 'stats-visual' },
+      { type: 'three-layers' },
+      { type: 'story-comparison' },
+      { type: 'story-elements' },
+      {
+        type: 'quiz',
+        question: 'In the Stanford wine study, why did the "$90 wine" taste better than the "$10 wine" even though they were identical?',
+        options: [
+          'The "$90" bottle had better packaging that enhanced aroma',
+          'Brain scans showed the story created actual expectation that activated different pleasure centers',
+          'Participants were wine experts who could detect subtle differences',
+          'The experiment was flawed and results were not statistically significant'
+        ],
+        correctIndex: 1,
+        feedback: {
+          correct: 'Exactly! This wasn\'t psychological bias - brain scans showed ACTUAL neurological differences. The "$90 story" activated pleasure centers that the "$10 story" didn\'t. Story IS perception.',
+          incorrect: 'Not quite. Brain scans proved this was neurological, not just opinion. The "$90 story" activated different pleasure centers. Same wine, different brain response.'
+        }
+      },
+      { type: 'completion' }
+    ];
+
+    // ============ CUSTOM SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
-      useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
+            <motion.h1 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg mb-2 max-w-lg" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-xs mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl p-4 mb-4 max-w-sm w-full">
+              <p className="text-neutral-500 text-[10px] uppercase tracking-wider mb-2">In this lesson</p>
+              <ul className="space-y-1.5">
                 {data.learningGoals.map((goal, i) => (
                   <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
                     <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm">{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 py-2.5 rounded-xl text-white font-semibold text-sm" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
 
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
-        </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
+      <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Stanford University Study</span>
+          <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+        </motion.div>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // Wine Battle Slide - $90 vs $10 wine bottles
+    const WineBattleSlide = () => {
+      const [showWinner, setShowWinner] = useState(false);
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Wine /> The Experiment
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Two Wine Bottles. One Truth.</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            {/* $10 Wine */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: '#ffffff',
+                border: '2px solid #e5e5e5',
+                borderRadius: '20px',
+                padding: '32px',
+                textAlign: 'center'
+              }}
+            >
+              <div className="flex justify-center mb-4">
+                <div style={{
+                  width: '60px',
+                  height: '120px',
+                  background: 'linear-gradient(180deg, #4a1c6d 0%, #2d1045 100%)',
+                  borderRadius: '8px 8px 4px 4px',
+                  position: 'relative'
+                }}>
+                  <div style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', width: '20px', height: '20px', background: '#8B4513', borderRadius: '4px' }} />
+                </div>
+              </div>
+              <div className="text-3xl font-bold text-neutral-400 mb-2">$10</div>
+              <div className="text-sm text-neutral-500">Cheap Wine</div>
+              <div className="mt-4 flex justify-center gap-1">
+                {[1,2,3].map(i => (
+                  <div key={i} className="w-4 h-4 rounded-full bg-neutral-200" />
+                ))}
+                {[4,5].map(i => (
+                  <div key={i} className="w-4 h-4 rounded-full bg-neutral-100" />
+                ))}
+              </div>
+              <div className="text-xs text-neutral-400 mt-2">Average ratings</div>
+            </motion.div>
+
+            {/* $90 Wine */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: '2px solid var(--accent)',
+                borderRadius: '20px',
+                padding: '32px',
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+              <AnimatePresence>
+                {showWinner && (
+                  <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
+                    className="absolute -top-2 -right-2 px-3 py-1 rounded-full text-xs font-bold text-white z-10"
+                    style={{ background: 'var(--accent)' }}>
+                    WINNER
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="flex justify-center mb-4">
+                <div style={{
+                  width: '60px',
+                  height: '120px',
+                  background: 'linear-gradient(180deg, #4a1c6d 0%, #2d1045 100%)',
+                  borderRadius: '8px 8px 4px 4px',
+                  position: 'relative',
+                  boxShadow: '0 0 30px rgba(147, 51, 234, 0.3)'
+                }}>
+                  <div style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', width: '20px', height: '20px', background: '#DAA520', borderRadius: '4px' }} />
+                </div>
+              </div>
+              <div className="text-3xl font-bold mb-2" style={{ color: 'var(--accent)' }}>$90</div>
+              <div className="text-sm text-neutral-400">Premium Wine</div>
+              <div className="mt-4 flex justify-center gap-1">
+                {[1,2,3,4,5].map(i => (
+                  <div key={i} className="w-4 h-4 rounded-full" style={{ background: 'var(--accent)' }} />
+                ))}
+              </div>
+              <div className="text-xs text-neutral-500 mt-2">Excellent ratings</div>
+            </motion.div>
           </div>
-        );
-      }
-      return null;
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="text-center mt-8">
+            <div style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderRadius: '16px',
+              padding: '20px 32px',
+              display: 'inline-block'
+            }}>
+              <p className="text-white text-lg font-bold">The twist: It was the <span style={{ color: 'var(--accent)' }}>EXACT SAME WINE</span></p>
+            </div>
+          </motion.div>
+        </div>
+      );
     };
 
-    const CardsSlide = ({ data }) => {
-      const getCardStyle = (i) => {
-        const styles = [
-          { bg: 'bg-neutral-900', text: 'text-white', desc: 'text-neutral-300', accent: true },
-          { bg: 'bg-white border border-neutral-200', text: 'text-neutral-900', desc: 'text-neutral-600', accent: false },
-          { bg: 'bg-white border border-neutral-200', text: 'text-neutral-900', desc: 'text-neutral-600', accent: false },
-          { bg: 'bg-neutral-900', text: 'text-white', desc: 'text-neutral-300', accent: true }
-        ];
-        return styles[i % 4];
-      };
+    // Brain Scan Slide - Visualization of different brain activity
+    const BrainScanSlide = () => {
+      const [activeRegion, setActiveRegion] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveRegion(r => (r + 1) % 2), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
       return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {data.items.map((item, i) => {
-              const style = getCardStyle(i);
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 100 }}
-                  whileHover={{ scale: 1.02, y: -3 }}
-                  className={`${style.bg} rounded-2xl p-5 relative overflow-hidden`}
-                  style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}
-                >
-                  {style.accent && <div className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-20" style={{ background: 'var(--accent)', filter: 'blur(25px)', transform: 'translate(30%, -30%)' }}></div>}
-                  <h3 className={`font-bold mb-2 text-base ${style.text}`}>{item.title}</h3>
-                  <p className={`text-sm leading-relaxed ${style.desc}`}>{item.description}</p>
-                </motion.div>
-              );
-            })}
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Brain /> The Neuroscience
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Brain Scans Don't Lie</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* $10 Brain */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: activeRegion === 0 ? '#ffffff' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: `2px solid ${activeRegion === 0 ? '#e5e5e5' : 'var(--accent)'}`,
+                borderRadius: '20px',
+                padding: '24px',
+                textAlign: 'center',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              {activeRegion === 1 && (
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              )}
+
+              <div className="text-sm font-bold mb-4" style={{ color: activeRegion === 0 ? '#6b7280' : 'var(--accent)' }}>
+                "$10 Wine" Brain
+              </div>
+
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <div style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  background: activeRegion === 0 ? '#f3f4f6' : '#2d2d2d',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s ease'
+                }}>
+                  <Icons.Brain />
+                </div>
+                {/* Minimal activity dots */}
+                <div className="absolute top-2 right-4 w-3 h-3 rounded-full bg-neutral-300" />
+                <div className="absolute bottom-4 left-2 w-2 h-2 rounded-full bg-neutral-300" />
+              </div>
+
+              <div className={`text-sm ${activeRegion === 0 ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                Minimal pleasure center activation
+              </div>
+            </motion.div>
+
+            {/* $90 Brain */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              style={{
+                background: activeRegion === 1 ? '#ffffff' : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: `2px solid ${activeRegion === 1 ? '#e5e5e5' : 'var(--accent)'}`,
+                borderRadius: '20px',
+                padding: '24px',
+                textAlign: 'center',
+                transition: 'all 0.3s ease',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              {activeRegion === 0 && (
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+              )}
+
+              <div className="text-sm font-bold mb-4" style={{ color: activeRegion === 1 ? '#6b7280' : 'var(--accent)' }}>
+                "$90 Wine" Brain
+              </div>
+
+              <div className="relative w-32 h-32 mx-auto mb-4">
+                <div style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  background: activeRegion === 1 ? '#f3f4f6' : '#2d2d2d',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.3s ease',
+                  boxShadow: activeRegion === 0 ? '0 0 30px rgba(147, 51, 234, 0.4)' : 'none'
+                }}>
+                  <Icons.Brain />
+                </div>
+                {/* Active pleasure dots */}
+                {activeRegion === 0 && (
+                  <>
+                    <div className="absolute top-2 right-4 w-3 h-3 rounded-full animate-pulse" style={{ background: 'var(--accent)' }} />
+                    <div className="absolute top-6 left-2 w-4 h-4 rounded-full animate-pulse" style={{ background: 'var(--accent)', animationDelay: '0.2s' }} />
+                    <div className="absolute bottom-4 left-6 w-3 h-3 rounded-full animate-pulse" style={{ background: 'var(--accent)', animationDelay: '0.4s' }} />
+                    <div className="absolute bottom-8 right-2 w-4 h-4 rounded-full animate-pulse" style={{ background: 'var(--accent)', animationDelay: '0.1s' }} />
+                  </>
+                )}
+              </div>
+
+              <div className={`text-sm ${activeRegion === 1 ? 'text-neutral-600' : 'text-neutral-400'}`}>
+                Strong pleasure center activation
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-neutral-500 text-sm text-center mt-6">
+            The story didn't change opinion. It changed <strong>brain chemistry</strong>.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // Stats Visual Slide - +41% with AnimatedCounter
+    const StatsVisualSlide = () => {
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.TrendingUp /> The Numbers
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">The Stanford Wine Results</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { value: 41, suffix: '%', label: 'Taste Rating Increase', subtext: 'Same wine, "$90" story vs "$10" story', icon: Icons.Star },
+              { value: 100, suffix: '%', label: 'Identical Product', subtext: 'Only the story changed', icon: Icons.Wine },
+              { value: 100, suffix: '%', label: 'Neurological', subtext: 'Brain scans showed actual pleasure response', icon: Icons.Brain }
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + i * 0.15 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '20px',
+                  padding: '32px 24px',
+                  textAlign: 'center',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: `rgba(var(--accent-rgb), 0.2)`, color: 'var(--accent)' }}>
+                  <stat.icon />
+                </div>
+
+                <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>
+                  +<AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
+                <div className="text-xs text-neutral-400">{stat.subtext}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       );
     };
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
+    // Three Layers Slide - Origin, Process, Founder
+    const ThreeLayersSlide = () => {
+      const [activeLayer, setActiveLayer] = useState(0);
 
-    const ComparisonSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <h4 className="text-red-700 font-bold text-lg mb-3">{data.bad.title}</h4>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.bad.description}</p>
+      useEffect(() => {
+        const timer = setInterval(() => setActiveLayer(l => (l + 1) % 3), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const layers = [
+        { icon: Icons.MapPin, title: 'WHERE It Comes From', subtitle: 'Origin Story', description: 'Geographic specificity creates credibility. "Himalayan" beats "somewhere." The more specific, the more authentic.', color: '#ef4444' },
+        { icon: Icons.Clock2, title: 'HOW It\'s Made', subtitle: 'Process Story', description: 'Time and craft signal value. "18-month aging" justifies premium. Process reveals care and quality.', color: 'var(--accent)' },
+        { icon: Icons.Users, title: 'WHY It Exists', subtitle: 'Founder Story', description: 'Personal connection builds loyalty. "I had this problem too" creates emotional investment beyond logic.', color: '#10b981' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Layers /> The Three Story Layers
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Every Product Needs All Three</h2>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <h4 className="text-green-700 font-bold text-lg mb-3">{data.good.title}</h4>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.good.description}</p>
-          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {layers.map((layer, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: activeLayer === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#ffffff',
+                  border: `2px solid ${activeLayer === i ? layer.color : '#e5e5e5'}`,
+                  borderRadius: '16px',
+                  padding: '24px',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                {activeLayer === i && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${layer.color}, transparent)` }} />
+                )}
+
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `${layer.color}20`, color: layer.color }}>
+                    <layer.icon />
+                  </div>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: `${layer.color}20`, color: layer.color }}>
+                    LAYER {i + 1}
+                  </span>
+                </div>
+
+                <h3 className={`font-bold text-sm mb-1 ${activeLayer === i ? 'text-white' : 'text-neutral-900'}`}>
+                  {layer.title}
+                </h3>
+                <p className={`text-[10px] uppercase tracking-wider mb-3 ${activeLayer === i ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                  {layer.subtitle}
+                </p>
+                <p className={`text-xs leading-relaxed ${activeLayer === i ? 'text-neutral-300' : 'text-neutral-600'}`}>
+                  {layer.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="text-neutral-500 text-sm text-center mt-6">
+            Most sellers have <strong>zero layers</strong>. Stack all three for maximum perceived value.
+          </motion.p>
         </div>
-      </div>
-    );
+      );
+    };
+
+    // Story Comparison Slide - Generic vs Layered
+    const StoryComparisonSlide = () => {
+      const [showWinner, setShowWinner] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Zap /> Real Example: Coffee
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">Same Product. Same Price.</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Generic */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: '#ffffff',
+                border: '2px solid #e5e5e5',
+                borderRadius: '16px',
+                padding: '24px'
+              }}
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center text-neutral-500">
+                  <Icons.X />
+                </div>
+                <span className="font-bold text-neutral-500 text-sm">Generic Description</span>
+              </div>
+              <p className="text-neutral-600 text-sm italic leading-relaxed mb-4">
+                "Premium coffee beans. Rich flavor. Ethically sourced. Fair trade certified. Delivers smooth taste with notes of chocolate and caramel. 12oz bag, $18."
+              </p>
+              <div className="text-neutral-400 text-xs">Zero differentiation. Competes on price.</div>
+            </motion.div>
+
+            {/* Layered Story */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                border: '2px solid var(--accent)',
+                borderRadius: '16px',
+                padding: '24px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+              <AnimatePresence>
+                {showWinner && (
+                  <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
+                    className="absolute -top-2 -right-2 px-3 py-1 rounded-full text-xs font-bold text-white z-10"
+                    style={{ background: 'var(--accent)' }}>
+                    WINS
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-white" style={{ background: 'var(--accent)' }}>
+                  <Icons.Check />
+                </div>
+                <span className="font-bold text-white text-sm">Layered Story</span>
+              </div>
+              <p className="text-neutral-300 text-sm italic leading-relaxed mb-4">
+                "Grown at 6,000ft in Colombian highlands by 3rd-generation farmer Maria. She hand-selects only beans that pass her grandmother's ripeness test - a technique refined over 60 years. Small-batch roasted in SF within 48 hours of harvest. 12oz bag, $18."
+              </p>
+              <div className="text-neutral-500 text-xs">Tastes exceptional. Worth every penny.</div>
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // Story Elements Slide - 4 value-increasing elements
+    const StoryElementsSlide = () => {
+      const [activeElement, setActiveElement] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveElement(e => (e + 1) % 4), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const elements = [
+        { icon: Icons.MapPin, title: 'Geographic Specificity', example: 'Tuscany vs Italy. Okinawa vs Japan.', tip: 'The more specific, the more authentic' },
+        { icon: Icons.Clock2, title: 'Time Investment', example: '18-month aging. 3-year development.', tip: 'Time signals care and refinement' },
+        { icon: Icons.Award, title: 'Expertise Indicators', example: 'PhD chemist. 5th-generation craftsman.', tip: 'Expertise creates quality trust' },
+        { icon: Icons.Layers, title: 'Limited Production', example: 'Small-batch. Only 500 units/month.', tip: 'Scarcity creates premium perception' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+              <Icons.Lightbulb /> Story Elements
+            </span>
+            <h2 className="slide-title text-2xl md:text-3xl text-black">4 Elements That Increase Perceived Value</h2>
+          </motion.div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {elements.map((element, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                style={{
+                  background: activeElement === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : '#ffffff',
+                  border: `2px solid ${activeElement === i ? 'var(--accent)' : '#e5e5e5'}`,
+                  borderRadius: '16px',
+                  padding: '20px',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+              >
+                {activeElement === i && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                )}
+
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+                    <element.icon />
+                  </div>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>
+                    #{i + 1}
+                  </span>
+                </div>
+
+                <h3 className={`font-bold text-sm mb-2 ${activeElement === i ? 'text-white' : 'text-neutral-900'}`}>
+                  {element.title}
+                </h3>
+                <p className={`text-xs mb-2 ${activeElement === i ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                  {element.example}
+                </p>
+                <p className={`text-[10px] ${activeElement === i ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                  {element.tip}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -386,24 +750,20 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      useEffect(() => {
-        if (showFeedback) {
-          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
-        }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-
+      useEffect(() => { if (showFeedback) { if (isCorrect) onShowGif(celebrationGif, '60%', gifSide); else onShowGif(empathyGif, '60%', gifSide); } }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
       useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
               <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
             </motion.div>
             <div className="space-y-3 mb-6">
               {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback}
+                  className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
                   <div className="flex items-center gap-3">
                     <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
@@ -426,20 +786,22 @@
     };
 
     const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">Story changes taste. Stanford proved it. The expectation you create through story directly shapes product experience. Origin, process, and founder stories stack to increase perceived value.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-2xl md:text-3xl text-black mb-3">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-sm mb-5 max-w-md leading-relaxed">
+          Story changes taste. Stanford proved it. The expectation you create through story directly shapes product experience. Origin, process, and founder stories stack to increase perceived value.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-5 max-w-md w-full mb-4">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-2">Up Next</p>
+          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-xs">{LESSON_CONFIG.nextLesson.teaser}</p>
         </motion.div>
       </div>
     );
 
     const LessonApp = () => {
-      const [currentSlide, setCurrentSlide] = useState(0);
+      const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
@@ -451,7 +813,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -490,11 +851,12 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'comparison': return <ComparisonSlide data={slide} />;
+          case 'wine-battle': return <WineBattleSlide />;
+          case 'brain-scan': return <BrainScanSlide />;
+          case 'stats-visual': return <StatsVisualSlide />;
+          case 'three-layers': return <ThreeLayersSlide />;
+          case 'story-comparison': return <StoryComparisonSlide />;
+          case 'story-elements': return <StoryElementsSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
@@ -534,7 +896,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

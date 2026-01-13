@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -30,6 +27,8 @@
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes orbit { from { transform: rotate(0deg) translateX(120px) rotate(0deg); } to { transform: rotate(360deg) translateX(120px) rotate(-360deg); } }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(14, 165, 233, 0.3); } 50% { box-shadow: 0 0 40px rgba(14, 165, 233, 0.6); } }
   </style>
 </head>
 <body>
@@ -58,160 +57,109 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; }
     });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
+        e.stopPropagation(); e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
 
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     const slides = [
       { type: 'welcome', learningGoals: [
         'How great brands build universes, not just products',
         'The 4 elements of a brand universe (values, language, rituals, enemies)',
-        'Real examples: Patagonia, Apple, Nike, Harley-Davidson'
+        'Real examples: Patagonia, Apple, Nike'
       ]},
       { type: 'hook', headline: 'Nike doesn\'t sell shoes. Apple doesn\'t sell computers. Patagonia doesn\'t sell jackets.', subtext: 'They sell UNIVERSES. Complete worlds with their own values, language, rituals, and enemies. Customers don\'t just buy products. They join the universe. And once you\'re in, you never leave.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Nike-Logo.png', brandName: 'Nike' },
-      { type: 'content', title: 'What Is a Brand Universe?', body: 'A brand universe is a complete ecosystem of meaning that exists beyond the product. It has values you believe in, language that separates insiders from outsiders, rituals that reinforce belonging, and enemies that unite the tribe. When done right, customers stop seeing themselves as "people who bought from you" and start seeing themselves as "members of this world."' },
-      { type: 'visual', title: 'Product vs Universe', visualType: 'stats', data: [
-        { value: 'Product', label: 'Transactional', subtext: 'Customer buys once, leaves' },
-        { value: 'Brand', label: 'Relational', subtext: 'Customer returns for more' },
-        { value: 'Universe', label: 'Identity-Based', subtext: 'Customer becomes a member' }
-      ]},
-      { type: 'cards', title: 'The 4 Elements of a Brand Universe', items: [
-        { title: '1. Core Values (The Foundation)', description: 'What does this universe stand FOR? Patagonia: environmental activism. Apple: creative rebellion. Nike: relentless pursuit of excellence.' },
-        { title: '2. Tribal Language (The Code)', description: 'Words and phrases only insiders use. "Just Do It." "Think Different." "Builders, not learners." Language creates belonging.' },
-        { title: '3. Rituals (The Glue)', description: 'Repeated behaviors that reinforce identity. Apple product launches. Nike marathon culture. Starbucks morning routine. Rituals build habits.' },
-        { title: '4. The Enemy (The Fire)', description: 'What does this universe reject? Nike rejects mediocrity. Apple rejects conformity. Patagonia rejects wasteful consumption. Enemies unite tribes.' }
-      ]},
-      { type: 'example', scenario: 'Patagonia: The Environmental Movement', before: { label: 'Product-Only Brand', text: '"We make high-quality outdoor jackets. Buy from us because our products are durable." - Forgettable. Transactional.' }, after: { label: 'Brand Universe', text: 'Values: Save the planet. Language: "Don\'t Buy This Jacket" (anti-consumerism). Rituals: Repair, reuse, activism. Enemy: Wasteful fast fashion. - Patagonia customers are MEMBERS of an environmental movement.' }, insight: 'Same jacket. Different meaning. One sells products. The other creates lifelong members who evangelize the brand.' },
-      { type: 'content', title: 'Apple: The Creative Rebellion Universe', body: 'Apple built a universe for creative rebels who reject conformity. Values: Innovation, simplicity, creativity. Language: "Think Different." Rituals: Product launches as cultural events, minimalist design worship. Enemy: Corporate conformity (IBM, then Microsoft). Result? Apple customers tattoo the logo on their bodies. That\'s not product loyalty. That\'s identity.' },
-      { type: 'split', title: 'Store vs Universe', leftContent: { label: 'Just a Store', items: ['Sells products', 'Focuses on features', 'Customers are transactions', 'No deeper meaning'] }, rightContent: { label: 'A Universe', items: ['Sells belonging', 'Focuses on identity', 'Customers are members', 'Deep cultural meaning'] }, characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_holding_a_magnifying_glass_investigating_--ar__50d13799-7bb7-4f9d-bb20-51dab6df6ac3_2.mp4', characterPosition: 'right'},
-      { type: 'cards', title: 'How to Build YOUR Brand Universe', items: [
-        { title: 'Step 1: Define Your Core Value', description: 'What does your brand STAND for beyond the product? Not "quality" - everyone says that. What belief drives everything you do?' },
-        { title: 'Step 2: Create Tribal Language', description: 'Give your customers words that separate them from outsiders. Nike: "Just Do It." Liquid Death: "Murder Your Thirst." What\'s YOURS?' },
-        { title: 'Step 3: Design Rituals', description: 'What repeated behaviors reinforce belonging? Starbucks has the morning coffee ritual. Apple has product launch events. What will YOURS be?' },
-        { title: 'Step 4: Identify the Enemy', description: 'What ideology do your customers reject? Patagonia rejects waste. Apple rejects conformity. What does YOUR tribe stand AGAINST?' }
-      ]},
-      { type: 'example', scenario: 'Shopify Store: Sustainable Skincare', before: { label: 'Product-Only Positioning', text: '"We sell organic skincare products made with natural ingredients." - Generic. No universe. Just another store.' }, after: { label: 'Universe Positioning', text: 'Values: Radical transparency in beauty. Language: "Clean beauty rebels." Rituals: Monthly ingredient education emails, refill program. Enemy: Toxic beauty industry hiding chemicals in fine print. - Customers become members of the clean beauty movement.' }, insight: 'Same products. But now customers aren\'t just buying skincare. They\'re joining a movement against toxic beauty.' },
-      { type: 'content', title: 'Nike: The Athletic Excellence Universe', body: 'Nike doesn\'t sell shoes. They sell the relentless pursuit of greatness. Values: Athletic excellence, pushing limits. Language: "Just Do It." Rituals: Marathon culture, athlete endorsements, running clubs. Enemy: Mediocrity, laziness, excuses. Result? Nike customers see themselves as athletes, even if they never compete. That\'s identity-based marketing.' },
-      { type: 'quiz', question: 'What makes a "brand universe" more powerful than just selling good products?', options: ['Better products attract more customers', 'It creates identity-based belonging - customers become MEMBERS of a world with values, language, and rituals', 'It\'s cheaper to market', 'Customers like fancy branding'], correctIndex: 1, feedback: { correct: 'Exactly. A brand universe transforms transactions into identity. Customers stop being "people who bought from you" and become "members of this world." That creates loyalty no competitor can steal with better pricing or features.', incorrect: 'Not quite. The power is in identity. When you build a universe with core values, tribal language, rituals, and enemies, customers see themselves as PART OF something bigger. They don\'t just buy products - they join a movement. That\'s loyalty competitors can\'t replicate.' }},
+      { type: 'universe-orbit' },
+      { type: 'evolution-stack' },
+      { type: 'four-pillars' },
+      { type: 'brand-case-study', brand: 'patagonia' },
+      { type: 'tribal-language' },
+      { type: 'brand-case-study', brand: 'apple' },
+      { type: 'membership-transform' },
+      { type: 'universe-builder' },
+      { type: 'brand-case-study', brand: 'nike' },
+      { type: 'quiz', question: 'What makes a "brand universe" more powerful than just selling good products?', options: ['Better products attract more customers', 'It creates identity-based belonging - customers become MEMBERS of a world with values, language, and rituals', 'It\'s cheaper to market', 'Customers like fancy branding'], correctIndex: 1, feedback: { correct: 'Exactly. A brand universe transforms transactions into identity. Customers stop being "people who bought from you" and become "members of this world." That creates loyalty no competitor can steal.', incorrect: 'Not quite. The power is in identity. When you build a universe with core values, tribal language, rituals, and enemies, customers see themselves as PART OF something bigger. They join a movement.' }},
       { type: 'completion' }
     ];
 
+    // Icons
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-      Globe: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      Globe: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+      Heart: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
+      MessageCircle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>,
+      RefreshCw: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>,
+      Skull: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><path d="M8 20v2h8v-2"/><path d="M12.5 17l-.5-1-.5 1h1z"/><path d="M16 20a2 2 0 0 0 1.56-3.25 8 8 0 1 0-11.12 0A2 2 0 0 0 8 20"/></svg>,
+      Users: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Star: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Crown: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Lightbulb: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Package: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>,
+      ArrowUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>,
     };
+
+    // Animated Counter Component
+    const AnimatedCounter = ({ value, suffix = '', duration = 2 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const increment = end / (duration * 60);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 1000 / 60);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{count}{suffix}</span>;
+    };
+
+    // ============ SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
-      useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
@@ -245,130 +193,408 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" />
           </motion.div>
         )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // UNIQUE SLIDE 1: Universe Orbit - Animated orbiting elements around a brand core
+    const UniverseOrbitSlide = () => {
+      const [activeElement, setActiveElement] = useState(0);
+      const elements = [
+        { icon: Icons.Heart, label: 'VALUES', color: '#ef4444', desc: 'What you stand for' },
+        { icon: Icons.MessageCircle, label: 'LANGUAGE', color: '#8b5cf6', desc: 'Words only insiders use' },
+        { icon: Icons.RefreshCw, label: 'RITUALS', color: '#10b981', desc: 'Repeated behaviors' },
+        { icon: Icons.Skull, label: 'ENEMIES', color: '#f59e0b', desc: 'What you reject' }
+      ];
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.before.text}</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed">{data.after.text}</p>
+      useEffect(() => {
+        const timer = setInterval(() => setActiveElement(p => (p + 1) % 4), 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">What Is a Brand Universe?</motion.h2>
+
+          <div className="relative w-72 h-72 md:w-96 md:h-96 mb-6">
+            {/* Center core */}
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', delay: 0.2 }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 md:w-32 md:h-32 rounded-full flex flex-col items-center justify-center z-10"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(14, 165, 233, 0.3)' }}>
+              <Icons.Globe />
+              <span className="text-white text-xs font-bold mt-1">BRAND</span>
+            </motion.div>
+
+            {/* Orbit ring */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+              className="absolute inset-0 rounded-full border-2 border-dashed border-neutral-200" />
+
+            {/* Orbiting elements */}
+            {elements.map((el, i) => {
+              const angle = (i * 90 - 45) * (Math.PI / 180);
+              const radius = 120;
+              const x = Math.cos(angle) * radius;
+              const y = Math.sin(angle) * radius;
+              const isActive = i === activeElement;
+
+              return (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: isActive ? 1.15 : 1 }} transition={{ delay: 0.5 + i * 0.1 }}
+                  className="absolute top-1/2 left-1/2 flex flex-col items-center cursor-pointer"
+                  style={{ transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))` }}
+                  onClick={() => setActiveElement(i)}>
+                  <motion.div animate={{ boxShadow: isActive ? `0 0 30px ${el.color}40` : 'none' }}
+                    className="w-14 h-14 md:w-16 md:h-16 rounded-xl flex items-center justify-center transition-all"
+                    style={{ background: `linear-gradient(135deg, ${el.color}, ${el.color}dd)` }}>
+                    <div className="text-white"><el.icon /></div>
+                  </motion.div>
+                  <span className="text-xs font-bold mt-1 text-neutral-700">{el.label}</span>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-4 max-w-md text-center">
+            <p className="text-white text-sm font-medium">{elements[activeElement].label}: <span className="text-neutral-400">{elements[activeElement].desc}</span></p>
           </motion.div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
-                  <div className="text-xl md:text-4xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
-                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
-                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
+      );
     };
 
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-3 relative z-10">
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
+    // UNIQUE SLIDE 2: Evolution Stack - Product → Brand → Universe progression
+    const EvolutionStackSlide = () => {
+      const [stage, setStage] = useState(0);
+      const stages = [
+        { label: 'PRODUCT', icon: Icons.Package, desc: 'Transactional', sublabel: 'Customer buys once, leaves', color: '#6b7280' },
+        { label: 'BRAND', icon: Icons.Star, desc: 'Relational', sublabel: 'Customer returns for more', color: '#8b5cf6' },
+        { label: 'UNIVERSE', icon: Icons.Globe, desc: 'Identity-Based', sublabel: 'Customer becomes a MEMBER', color: '#0ea5e9' }
+      ];
 
-    const SplitSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-6">
-            <h3 className="font-bold text-red-700 text-sm uppercase tracking-wider mb-4">{data.leftContent.label}</h3>
-            <ul className="space-y-3">
-              {data.leftContent.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-red-200 flex items-center justify-center text-red-600 text-xs flex-shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-neutral-700 text-sm">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-6" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-            <h3 className="font-bold text-white/90 text-sm uppercase tracking-wider mb-4">{data.rightContent.label}</h3>
-            <ul className="space-y-3">
-              {data.rightContent.items.map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-white text-xs flex-shrink-0 mt-0.5">{i + 1}</span>
-                  <span className="text-white text-sm font-medium">{item}</span>
-                </li>
-              ))}
-            </ul>
+      useEffect(() => {
+        const timer = setInterval(() => setStage(p => (p + 1) % 3), 2500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">The Evolution of Selling</motion.h2>
+
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 mb-8">
+            {stages.map((s, i) => (
+              <React.Fragment key={i}>
+                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
+                  className={`relative flex flex-col items-center cursor-pointer transition-all ${stage === i ? 'scale-110' : 'scale-100 opacity-60'}`}
+                  onClick={() => setStage(i)}>
+                  <motion.div animate={{ boxShadow: stage === i ? `0 0 40px ${s.color}50` : 'none' }}
+                    className="w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center mb-3"
+                    style={{ background: `linear-gradient(135deg, ${s.color}, ${s.color}cc)` }}>
+                    <div className="text-white scale-125"><s.icon /></div>
+                  </motion.div>
+                  <span className="text-sm font-bold text-neutral-900">{s.label}</span>
+                  <span className="text-xs text-neutral-500">{s.desc}</span>
+                  {stage === i && (
+                    <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
+                      className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                      <Icons.Check />
+                    </motion.div>
+                  )}
+                </motion.div>
+                {i < 2 && (
+                  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+                    className="text-neutral-300 rotate-90 md:rotate-0">
+                    <Icons.ArrowRight />
+                  </motion.div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-5 max-w-lg text-center">
+            <p className="text-neutral-300 text-sm">{stages[stage].sublabel}</p>
           </motion.div>
         </div>
-      </div>
-    );
+      );
+    };
+
+    // UNIQUE SLIDE 3: Four Pillars - 4-pillar visualization
+    const FourPillarsSlide = () => {
+      const [hoveredPillar, setHoveredPillar] = useState(null);
+      const pillars = [
+        { icon: Icons.Heart, title: 'Core Values', subtitle: 'The Foundation', desc: 'What does your universe stand FOR?', example: 'Patagonia: Environmental activism', color: '#ef4444' },
+        { icon: Icons.MessageCircle, title: 'Tribal Language', subtitle: 'The Code', desc: 'Words only insiders understand', example: '"Just Do It" - Nike', color: '#8b5cf6' },
+        { icon: Icons.RefreshCw, title: 'Rituals', subtitle: 'The Glue', desc: 'Repeated behaviors that build identity', example: 'Apple product launches', color: '#10b981' },
+        { icon: Icons.Skull, title: 'The Enemy', subtitle: 'The Fire', desc: 'What does your tribe reject?', example: 'Apple rejects conformity', color: '#f59e0b' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8 max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The 4 Elements of a Brand Universe</motion.h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {pillars.map((p, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="relative group cursor-pointer"
+                onMouseEnter={() => setHoveredPillar(i)} onMouseLeave={() => setHoveredPillar(null)}>
+                <div className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-4 md:p-5 h-full transition-all"
+                  style={{ boxShadow: hoveredPillar === i ? `0 8px 40px ${p.color}30` : '0 4px 20px rgba(0,0,0,0.2)' }}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `linear-gradient(135deg, ${p.color}, ${p.color}cc)` }}>
+                      <div className="text-white scale-75"><p.icon /></div>
+                    </div>
+                    <span className="text-xs font-bold text-neutral-500">{i + 1}</span>
+                  </div>
+                  <h3 className="text-white font-bold text-sm mb-1">{p.title}</h3>
+                  <p className="text-neutral-500 text-xs mb-2">{p.subtitle}</p>
+                  <p className="text-neutral-400 text-xs leading-relaxed">{p.desc}</p>
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: hoveredPillar === i ? 'auto' : 0, opacity: hoveredPillar === i ? 1 : 0 }}
+                    className="overflow-hidden">
+                    <div className="pt-3 mt-3 border-t border-neutral-700">
+                      <p className="text-xs" style={{ color: p.color }}>{p.example}</p>
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 4: Brand Case Study - Detailed brand breakdown
+    const BrandCaseStudySlide = ({ data }) => {
+      const brands = {
+        patagonia: {
+          name: 'Patagonia',
+          tagline: 'The Environmental Movement',
+          logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Patagonia-Logo.wine.png',
+          color: '#059669',
+          values: 'Save the planet',
+          language: '"Don\'t Buy This Jacket"',
+          rituals: 'Repair, reuse, activism',
+          enemy: 'Wasteful fast fashion',
+          insight: 'Patagonia customers are MEMBERS of an environmental movement.'
+        },
+        apple: {
+          name: 'Apple',
+          tagline: 'The Creative Rebellion Universe',
+          logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/apple-logo-transparent.png',
+          color: '#6b7280',
+          values: 'Innovation, simplicity, creativity',
+          language: '"Think Different"',
+          rituals: 'Product launches as cultural events',
+          enemy: 'Corporate conformity',
+          insight: 'Apple customers tattoo the logo on their bodies. That\'s identity.'
+        },
+        nike: {
+          name: 'Nike',
+          tagline: 'The Athletic Excellence Universe',
+          logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Nike-Logo.png',
+          color: '#ea580c',
+          values: 'Athletic excellence, pushing limits',
+          language: '"Just Do It"',
+          rituals: 'Marathon culture, running clubs',
+          enemy: 'Mediocrity, laziness, excuses',
+          insight: 'Nike customers see themselves as athletes, even if they never compete.'
+        }
+      };
+      const brand = brands[data.brand];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8 max-w-4xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-center gap-4 mb-6">
+            <img src={brand.logo} alt={brand.name} className="h-12 md:h-16 object-contain" />
+            <div>
+              <span className="px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: brand.color }}>Case Study</span>
+              <h2 className="slide-title text-xl md:text-2xl text-black">{brand.tagline}</h2>
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            {[
+              { label: 'Values', value: brand.values, icon: Icons.Heart },
+              { label: 'Language', value: brand.language, icon: Icons.MessageCircle },
+              { label: 'Rituals', value: brand.rituals, icon: Icons.RefreshCw },
+              { label: 'Enemy', value: brand.enemy, icon: Icons.Skull }
+            ].map((item, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="text-white opacity-60"><item.icon /></div>
+                  <span className="text-xs font-bold text-neutral-500 uppercase">{item.label}</span>
+                </div>
+                <p className="text-white text-sm font-medium">{item.value}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            className="rounded-xl p-5 text-center" style={{ background: `linear-gradient(135deg, ${brand.color}, ${brand.color}cc)` }}>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Icons.Zap />
+              <span className="text-white/80 text-xs uppercase font-bold">Key Insight</span>
+            </div>
+            <p className="text-white font-medium">{brand.insight}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 5: Tribal Language - Word cloud visualization
+    const TribalLanguageSlide = () => {
+      const [activePhrase, setActivePhrase] = useState(0);
+      const phrases = [
+        { brand: 'Nike', phrase: '"Just Do It"', meaning: 'Action over excuses' },
+        { brand: 'Apple', phrase: '"Think Different"', meaning: 'Reject conformity' },
+        { brand: 'Liquid Death', phrase: '"Murder Your Thirst"', meaning: 'Aggressive hydration' },
+        { brand: 'Quantum Scale', phrase: '"Builders, not learners"', meaning: 'Action over consumption' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActivePhrase(p => (p + 1) % phrases.length), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">Tribal Language</motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-neutral-500 text-center mb-8 max-w-lg">Words and phrases that separate insiders from outsiders. Language creates belonging.</motion.p>
+
+          <div className="relative w-full max-w-2xl h-64 md:h-72 mb-6">
+            {phrases.map((p, i) => {
+              const positions = [
+                { top: '10%', left: '20%' },
+                { top: '15%', right: '15%' },
+                { bottom: '20%', left: '10%' },
+                { bottom: '10%', right: '20%' }
+              ];
+              const isActive = i === activePhrase;
+              return (
+                <motion.div key={i} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: isActive ? 1 : 0.4, scale: isActive ? 1.1 : 0.9 }}
+                  className="absolute cursor-pointer" style={positions[i]} onClick={() => setActivePhrase(i)}>
+                  <div className={`px-4 py-3 rounded-xl transition-all ${isActive ? 'bg-gradient-to-br from-neutral-900 to-neutral-800' : 'bg-neutral-100'}`}
+                    style={{ boxShadow: isActive ? '0 8px 30px rgba(0,0,0,0.3)' : 'none' }}>
+                    <span className={`text-lg md:text-xl font-bold ${isActive ? 'text-white' : 'text-neutral-400'}`}>{p.phrase}</span>
+                    {isActive && <p className="text-xs text-neutral-400 mt-1">{p.brand}</p>}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-5 max-w-md text-center">
+            <p className="text-white text-sm"><span className="font-bold" style={{ color: 'var(--accent)' }}>{phrases[activePhrase].brand}:</span> {phrases[activePhrase].meaning}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 6: Membership Transform - Customer → Member transformation
+    const MembershipTransformSlide = () => {
+      const [transformed, setTransformed] = useState(false);
+
+      useEffect(() => {
+        const timer = setInterval(() => setTransformed(p => !p), 3000);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-4">The Identity Shift</motion.h2>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-neutral-500 text-center mb-10 max-w-lg">When done right, customers stop being "buyers" and become "members."</motion.p>
+
+          <div className="flex items-center gap-6 md:gap-12 mb-10">
+            <motion.div animate={{ opacity: transformed ? 0.4 : 1, scale: transformed ? 0.9 : 1 }}
+              className="flex flex-col items-center">
+              <div className={`w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center transition-all ${transformed ? 'bg-neutral-200' : 'bg-gradient-to-br from-neutral-200 to-neutral-300'}`}>
+                <Icons.Users />
+              </div>
+              <span className="mt-3 font-bold text-neutral-900">CUSTOMER</span>
+              <span className="text-xs text-neutral-500">Transactional</span>
+            </motion.div>
+
+            <motion.div animate={{ rotate: transformed ? 0 : 360 }} transition={{ duration: 1, ease: 'easeInOut' }}
+              className="text-neutral-300">
+              <Icons.ArrowRight />
+            </motion.div>
+
+            <motion.div animate={{ opacity: transformed ? 1 : 0.4, scale: transformed ? 1 : 0.9 }}
+              className="flex flex-col items-center">
+              <div className={`w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center transition-all`}
+                style={{ background: transformed ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : '#e5e5e5', boxShadow: transformed ? '0 0 40px rgba(14, 165, 233, 0.4)' : 'none' }}>
+                <div className="text-white"><Icons.Crown /></div>
+              </div>
+              <span className="mt-3 font-bold text-neutral-900">MEMBER</span>
+              <span className="text-xs text-neutral-500">Identity-Based</span>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+            className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-5 max-w-lg text-center">
+            <p className="text-neutral-300 text-sm">{transformed
+              ? '"I AM a Patagonia person. I AM an Apple user. It\'s my identity."'
+              : '"I bought a jacket from Patagonia." - Just a transaction.'}</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // UNIQUE SLIDE 7: Universe Builder - 4-step action process
+    const UniverseBuilderSlide = () => {
+      const [activeStep, setActiveStep] = useState(0);
+      const steps = [
+        { num: 1, title: 'Define Your Core Value', desc: 'What does your brand STAND for beyond the product?', prompt: 'Not "quality" - everyone says that. What belief drives everything you do?' },
+        { num: 2, title: 'Create Tribal Language', desc: 'Give your customers words that separate them from outsiders.', prompt: 'Nike: "Just Do It." What\'s YOURS?' },
+        { num: 3, title: 'Design Rituals', desc: 'What repeated behaviors reinforce belonging?', prompt: 'Starbucks has the morning routine. Apple has launch events. What\'s YOURS?' },
+        { num: 4, title: 'Identify the Enemy', desc: 'What ideology do your customers reject?', prompt: 'What does YOUR tribe stand AGAINST?' }
+      ];
+
+      useEffect(() => {
+        const timer = setInterval(() => setActiveStep(p => (p + 1) % 4), 3500);
+        return () => clearInterval(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8 max-w-4xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">Build YOUR Brand Universe</motion.h2>
+
+          <div className="grid md:grid-cols-4 gap-3 mb-6">
+            {steps.map((s, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                className={`rounded-xl p-4 cursor-pointer transition-all ${activeStep === i ? 'ring-2 ring-offset-2' : ''}`}
+                style={{
+                  background: activeStep === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'white',
+                  border: activeStep !== i ? '2px solid #e5e5e5' : 'none',
+                  ringColor: 'var(--accent)'
+                }}
+                onClick={() => setActiveStep(i)}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
+                  style={{ background: activeStep === i ? 'linear-gradient(135deg, var(--accent), var(--accent-dark))' : '#f5f5f5' }}>
+                  <span className={`text-sm font-bold ${activeStep === i ? 'text-white' : 'text-neutral-400'}`}>{s.num}</span>
+                </div>
+                <h3 className={`font-bold text-sm mb-1 ${activeStep === i ? 'text-white' : 'text-neutral-900'}`}>{s.title}</h3>
+                <p className={`text-xs ${activeStep === i ? 'text-neutral-400' : 'text-neutral-500'}`}>{s.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div key={activeStep} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-br from-neutral-900 to-neutral-800 rounded-xl p-6 text-center">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Icons.Lightbulb />
+              <span className="text-white/60 text-xs uppercase font-bold">Step {steps[activeStep].num} Prompt</span>
+            </div>
+            <p className="text-white text-lg font-medium">{steps[activeStep].prompt}</p>
+          </motion.div>
+        </div>
+      );
+    };
 
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
@@ -422,9 +648,9 @@
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Globe /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand how to build a brand universe. Stop selling products. Start building worlds with values, language, rituals, and enemies.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-6 max-w-md leading-relaxed">You now understand how to build a brand universe. Stop selling products. Start building worlds.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-sky-50 border border-sky-200 rounded-xl p-4 mb-6 max-w-md w-full">
-          <p className="text-sky-800 text-sm font-medium flex items-center gap-2"><Icons.Globe className="flex-shrink-0" /><span>Action: Define your core value, create tribal language, design ONE ritual, and identify your enemy.</span></p>
+          <p className="text-sky-800 text-sm font-medium flex items-center gap-2"><Icons.Target className="flex-shrink-0" /><span>Action: Define your core value, create tribal language, design ONE ritual, and identify your enemy.</span></p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
@@ -434,6 +660,7 @@
       </div>
     );
 
+    // ============ MAIN APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -447,14 +674,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -486,11 +707,13 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'split': return <SplitSlide data={slide} />;
+          case 'universe-orbit': return <UniverseOrbitSlide />;
+          case 'evolution-stack': return <EvolutionStackSlide />;
+          case 'four-pillars': return <FourPillarsSlide />;
+          case 'brand-case-study': return <BrandCaseStudySlide data={slide} />;
+          case 'tribal-language': return <TribalLanguageSlide />;
+          case 'membership-transform': return <MembershipTransformSlide />;
+          case 'universe-builder': return <UniverseBuilderSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;

@@ -55,25 +55,17 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
       if (e.data?.type === 'ADMIN_STATUS') {
         __isAdmin = e.data.isAdmin;
       }
     });
-
-    // Request admin status on load
     if (window.parent !== window) {
       window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
     }
 
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -93,22 +85,10 @@
           onClick={handleReport}
           title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
           style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
+            position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px',
+            borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white',
+            border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center',
+            justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s',
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
           }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
@@ -128,152 +108,830 @@
     };
     // ============ END ADMIN REPORTER SYSTEM ============
 
-
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
-
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
-
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    // PREMIUM ANIMATION COMPONENTS
-
-    const AnimatedNumber = ({ value, suffix = '', prefix = '' }) => {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      const [current, setCurrent] = useState(0);
-
-      useEffect(() => {
-        if (!isInView) return;
-
-        const duration = 1500;
-        const steps = 60;
-        const increment = value / steps;
-        let step = 0;
-
-        const timer = setInterval(() => {
-          step++;
-          setCurrent(Math.min(Math.floor(increment * step), value));
-          if (step >= steps) clearInterval(timer);
-        }, duration / steps);
-
-        return () => clearInterval(timer);
-      }, [value, isInView]);
-
-      return <span ref={ref}>{prefix}{current.toLocaleString()}{suffix}</span>;
-    };
-
-    const TypingText = ({ text, speed = 40 }) => {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      const [displayed, setDisplayed] = useState('');
-
-      useEffect(() => {
-        if (!isInView) return;
-
-        let i = 0;
-        setDisplayed('');
-        const timer = setInterval(() => {
-          if (i < text.length) {
-            setDisplayed(text.substring(0, i + 1));
-            i++;
-          } else {
-            clearInterval(timer);
-          }
-        }, speed);
-        return () => clearInterval(timer);
-      }, [text, isInView, speed]);
-
-      return <span ref={ref}>{displayed}<span style={{ opacity: displayed.length < text.length ? 1 : 0 }} className="animate-pulse">|</span></span>;
-    };
-
-    const BarChart = ({ data, accentColor, darkMode = false }) => {
-      const ref = useRef(null);
-      const isInView = useInView(ref, { once: true, margin: "-50px" });
-      const textColor = darkMode ? '#ffffff' : '#171717';
-      const bgColor = darkMode ? 'rgba(255,255,255,0.1)' : '#e5e5e5';
-
-      return (
-        <div ref={ref} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          {data.map((item, i) => (
-            <motion.div key={i}
-              initial={{ opacity: 0, x: -20 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ delay: i * 0.15, duration: 0.5 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', marginBottom: '6px', color: textColor }}>
-                <span>{item.label}</span>
-                <span style={{ fontWeight: 'bold', color: accentColor }}>{item.value}</span>
-              </div>
-              <div style={{ height: '14px', background: bgColor, borderRadius: '999px', overflow: 'hidden' }}>
-                <motion.div
-                  style={{ height: '100%', borderRadius: '999px', background: `linear-gradient(90deg, ${accentColor}, ${accentColor}dd)` }}
-                  initial={{ width: 0 }}
-                  animate={isInView ? { width: `${item.percentage}%` } : { width: 0 }}
-                  transition={{ delay: i * 0.15 + 0.2, duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      );
-    };
-
-    const slides = [
-      { type: 'welcome', learningGoals: [
-        'Why context determines perceived value (not quality)',
-        'The $32 violinist experiment and what it reveals',
-        'How to choose premium ad placements for your online store'
-      ]},
-      { type: 'hook', headline: 'A $3.5 million violin. A world-renowned musician. And $32.', subtext: 'Joshua Bell, one of the world\'s greatest violinists, played his $3.5M Stradivarius in a metro station during rush hour. 1,097 people walked past. Only 7 stopped. He made just $32. Two days earlier, he sold out a Boston concert at $100/ticket average. What changed? The context.', image: 'images/violinist-concert.png' , brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Subway%20Choicemark_thumbnail.png', brandName: 'Subway'},
-      { type: 'visualContrast', title: 'Same Music. Different Context.', leftImage: 'images/violinist-concert.png', rightImage: 'images/subway-station.png', leftLabel: 'Concert Hall — $100/ticket', rightLabel: 'Metro Station — $32 total' },
-      { type: 'typingReveal', text: 'Same product. Different value.' },
-      { type: 'stats', title: 'The Attention Gap', data: [
-        { value: 1097, label: 'People Passed', subtext: 'In metro station during rush hour' },
-        { value: 7, label: 'People Stopped', subtext: 'Less than 1% noticed the performance' },
-        { value: 32, label: 'Total Earned', subtext: 'From one of the world\'s best violinists', prefix: '$' }
-      ]},
-      { type: 'barChart', title: 'Context Changes Everything', data: [
-        { label: 'High-Context Placement (Concert Hall)', value: '89%', percentage: 89 },
-        { label: 'Low-Context Placement (Metro Station)', value: '23%', percentage: 23 }
-      ]},
-      { type: 'content', title: 'The Brain Doesn\'t Evaluate in a Vacuum', body: 'Here\'s the uncomfortable truth: Your brain doesn\'t assess quality objectively. It uses context as a shortcut. Concert hall = valuable. Subway = ignore. The music was identical. The musician was identical. But the environment completely rewired how people perceived the value. This isn\'t about music. It\'s about YOUR products.' },
-      { type: 'priceComparison', before: { amount: 32, context: 'Metro Station' }, after: { amount: 100, context: 'Concert Hall' } },
-      { type: 'cards', title: 'Context Signals for eCommerce', items: [
-        { title: 'Meme Pages = Cheap', description: 'High reach, low value perception. Your product becomes a gag gift. Avoid unless you\'re selling novelty items.' },
-        { title: 'Micro-Influencers = Premium', description: 'Niche authority validates your product. Their audience trusts their taste. Your product inherits that trust.' },
-        { title: 'Lifestyle Content = Aspirational', description: 'Place your product in the life people want. Not the content they scroll mindlessly. Context creates desire.' },
-        { title: 'Expert Reviews = Credible', description: 'Industry experts signal quality. Their context transfers authority to your brand. Choose wisely.' }
-      ]},
-      { type: 'example', scenario: 'Fitness Apparel Store', before: { label: 'Volume Strategy', text: 'Run ads on 10 general fitness pages with 500K+ followers each' }, after: { label: 'Context Strategy', text: 'Partner with 3 specialized trainers (50K followers) known for quality recommendations' }, insight: 'Same budget, 6x higher conversion rate, 2.3x higher average order value' },
-      { type: 'visualTakeaways', title: 'Key Takeaways', image: 'images/context-premium.png', items: [
-        { icon: '🎯', title: 'Audit Placements', description: 'Review every influencer and ad placement for context quality' },
-        { icon: '💎', title: 'Premium Context', description: 'Does this make your product look premium or cheap?' },
-        { icon: '👥', title: 'Audience Fit', description: 'Does the creator\'s audience match your ideal customer?' },
-        { icon: '🚫', title: 'Kill Bad Fits', description: 'If any answer is no, cut the placement immediately' }
-      ], characterVideo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_taking_notes_furiously_pencil_flying_across_pa_05ef64dd-3e45-44ef-a3d0-9c5ad185cb8a_3.mp4', characterPosition: 'right'},
-      { type: 'quiz', question: 'Why did Joshua Bell make only $32 in the metro station while selling out concert halls?', options: ['People were rushing and didn\'t have time to stop', 'The acoustics in metro stations are terrible', 'Context determines perceived value - subway signals "ignore" while concert hall signals "valuable"', 'He wasn\'t playing his best pieces in the metro'], correctIndex: 2, feedback: { correct: 'Exactly! The brain uses context as a shortcut to determine value. Same music, same musician - different environment, different perceived worth. Apply this to your ad placements.', incorrect: 'Not quite. While people were busy, the real insight is deeper: context determines value. The brain categorized "subway performance" as ignorable and "concert hall" as premium - even with identical quality.' }},
-      { type: 'completion' }
-    ];
-
+    // ICONS
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
       X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Music: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>,
+      Users: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      DollarSign: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Crown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M4 19h16"/></svg>,
+      MapPin: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>,
+      Eye: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      EyeOff: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      Star: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4.95 11.95L8 15h8l.95-1.05A7 7 0 0 0 12 2z"/></svg>,
+      AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
     };
+
+    // AnimatedCounter with full features
+    const AnimatedCounter = ({ value, prefix = '', suffix = '', decimals = 0, useCommas = false }) => {
+      const ref = useRef(null);
+      const isInView = useInView(ref, { once: true, margin: "-50px" });
+      const [current, setCurrent] = useState(0);
+
+      useEffect(() => {
+        if (!isInView) return;
+        const duration = 1500;
+        const steps = 60;
+        const increment = value / steps;
+        let step = 0;
+        const timer = setInterval(() => {
+          step++;
+          const newValue = Math.min(increment * step, value);
+          setCurrent(decimals > 0 ? parseFloat(newValue.toFixed(decimals)) : Math.floor(newValue));
+          if (step >= steps) clearInterval(timer);
+        }, duration / steps);
+        return () => clearInterval(timer);
+      }, [value, isInView, decimals]);
+
+      const formatted = useCommas ? current.toLocaleString() : (decimals > 0 ? current.toFixed(decimals) : current);
+      return <span ref={ref}>{prefix}{formatted}{suffix}</span>;
+    };
+
+    const slides = [
+      { type: 'welcome', learningGoals: [
+        'Why context determines perceived value (not quality)',
+        'The $32 violinist experiment and what it reveals',
+        'How to choose premium ad placements for your store'
+      ]},
+      { type: 'hook', headline: 'A $3.5 million violin. A world-renowned musician. And $32.', subtext: 'Joshua Bell, one of the world\'s greatest violinists, played his $3.5M Stradivarius in a metro station during rush hour. 1,097 people walked past. Only 7 stopped. He made just $32. Two days earlier, he sold out a Boston concert at $100/ticket average. What changed? The context.' },
+      { type: 'experiment-reveal', title: 'The Same Musician. Two Realities.', concert: { price: 100, label: 'Concert Hall', soldOut: true }, subway: { price: 32, label: 'Metro Station', people: 1097, stopped: 7 } },
+      { type: 'attention-gap', title: 'The Attention Gap', stats: { passersby: 1097, stopped: 7, earned: 32, stoppedPercent: 0.6 } },
+      { type: 'context-brain', title: 'Your Brain Uses Context as a Shortcut', comparisons: [
+        { signal: 'Concert Hall', perception: 'This is valuable, pay attention', icon: 'Crown' },
+        { signal: 'Subway', perception: 'Background noise, ignore it', icon: 'EyeOff' },
+        { signal: 'Premium Website', perception: 'Quality brand, worth the price', icon: 'Star' },
+        { signal: 'Meme Page Ad', perception: 'Cheap product, scroll past', icon: 'AlertTriangle' }
+      ]},
+      { type: 'placement-spectrum', title: 'Ad Placement Spectrum', placements: [
+        { name: 'Meme Pages', signal: 'Cheap/Gimmick', color: '#ef4444', score: 2 },
+        { name: 'General Influencers', signal: 'Average', color: '#f59e0b', score: 5 },
+        { name: 'Niche Micro-Influencers', signal: 'Trusted', color: '#22c55e', score: 8 },
+        { name: 'Expert/Authority Figures', signal: 'Premium', color: '#06b6d4', score: 10 }
+      ]},
+      { type: 'ecommerce-application', title: 'Context Signals for Your Store', signals: [
+        { context: 'Meme Pages', result: 'High reach, low value perception. Your product becomes a gag gift.', icon: 'AlertTriangle', quality: 'low' },
+        { context: 'Micro-Influencers', result: 'Niche authority validates your product. Their audience trusts their taste.', icon: 'Target', quality: 'high' },
+        { context: 'Lifestyle Content', result: 'Place your product in the life people want. Context creates desire.', icon: 'Star', quality: 'high' },
+        { context: 'Expert Reviews', result: 'Industry experts signal quality. Their context transfers authority.', icon: 'Crown', quality: 'high' }
+      ]},
+      { type: 'case-study', title: 'Fitness Apparel Store', before: { label: 'Volume Strategy', text: 'Run ads on 10 general fitness pages with 500K+ followers each', result: '2% conversion rate' }, after: { label: 'Context Strategy', text: 'Partner with 3 specialized trainers (50K followers) known for quality recommendations', result: '12% conversion rate' }, insight: '6x higher conversion, 2.3x higher AOV' },
+      { type: 'impact-stats', title: 'Context Impact on Conversion', stats: [
+        { value: 89, suffix: '%', label: 'High-Context Conversion', description: 'Premium placement performance' },
+        { value: 23, suffix: '%', label: 'Low-Context Conversion', description: 'Cheap placement performance' },
+        { value: 6, suffix: 'x', label: 'Difference', description: 'Context multiplier effect' }
+      ]},
+      { type: 'elite-insight', title: 'The Context Paradox', quote: 'Your product is only as valuable as the context in which it appears. Premium environments create premium customers.', actions: [
+        { icon: 'Target', text: 'Audit every influencer placement for context quality' },
+        { icon: 'Eye', text: 'Ask: Does this make my product look premium or cheap?' },
+        { icon: 'Users', text: 'Match creator\'s audience to your ideal customer' }
+      ]},
+      { type: 'quiz', question: 'Why did Joshua Bell make only $32 in the metro station while selling out concert halls?', options: ['People were rushing and didn\'t have time to stop', 'The acoustics in metro stations are terrible', 'Context determines perceived value - subway signals "ignore" while concert hall signals "valuable"', 'He wasn\'t playing his best pieces in the metro'], correctIndex: 2, feedback: { correct: 'Exactly! The brain uses context as a shortcut to determine value. Same music, same musician - different environment, different perceived worth. Apply this to your ad placements.', incorrect: 'Not quite. While people were busy, the real insight is deeper: context determines value. The brain categorized "subway performance" as ignorable and "concert hall" as premium - even with identical quality.' }},
+      { type: 'completion' }
+    ];
+
+    // ============ UNIQUE CUSTOM SLIDE COMPONENTS ============
+
+    // 1. ExperimentRevealSlide - Side by side concert vs subway
+    const ExperimentRevealSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '24px', background: 'white' }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ fontFamily: 'Fraunces, serif', fontSize: '28px', fontWeight: 900, color: '#171717', marginBottom: '40px', textAlign: 'center' }}
+          >
+            {data.title}
+          </motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '32px', maxWidth: '800px', width: '100%' }}>
+            {/* Concert Hall */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '20px',
+                padding: '32px',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.2)'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(34, 197, 94, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#22c55e' }}>
+                  <Icons.Crown />
+                </div>
+                <span style={{ color: '#22c55e', fontWeight: 700, fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{data.concert.label}</span>
+              </div>
+              <div style={{ fontSize: '56px', fontWeight: 900, color: 'white', marginBottom: '8px' }}>
+                $<AnimatedCounter value={data.concert.price} />
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}>Per Ticket</p>
+              <div style={{ marginTop: '16px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px', padding: '8px 12px', display: 'inline-block' }}>
+                <span style={{ color: '#22c55e', fontWeight: 600, fontSize: '12px' }}>SOLD OUT</span>
+              </div>
+            </motion.div>
+
+            {/* Metro Station */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '20px',
+                padding: '32px',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: '0 20px 50px rgba(0,0,0,0.2)'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                  <Icons.MapPin />
+                </div>
+                <span style={{ color: '#ef4444', fontWeight: 700, fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{data.subway.label}</span>
+              </div>
+              <div style={{ fontSize: '56px', fontWeight: 900, color: 'white', marginBottom: '8px' }}>
+                $<AnimatedCounter value={data.subway.price} />
+              </div>
+              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}>Total Earned</p>
+              <div style={{ marginTop: '16px', display: 'flex', gap: '12px' }}>
+                <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderRadius: '8px', padding: '8px 12px' }}>
+                  <span style={{ color: '#ef4444', fontWeight: 600, fontSize: '12px' }}><AnimatedCounter value={data.subway.people} useCommas /> walked by</span>
+                </div>
+                <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderRadius: '8px', padding: '8px 12px' }}>
+                  <span style={{ color: '#ef4444', fontWeight: 600, fontSize: '12px' }}>{data.subway.stopped} stopped</span>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Revelation */}
+          <AnimatePresence>
+            {showWinner && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                style={{
+                  marginTop: '32px',
+                  background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))',
+                  borderRadius: '12px',
+                  padding: '16px 32px',
+                  boxShadow: '0 10px 40px rgba(6, 182, 212, 0.3)'
+                }}
+              >
+                <p style={{ color: 'white', fontWeight: 700, fontSize: '18px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <Icons.Music />
+                  Same music. Same musician. Different context.
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // 2. AttentionGapSlide - Visual gap demonstration
+    const AttentionGapSlide = ({ data }) => {
+      const [activePhase, setActivePhase] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActivePhase(prev => (prev + 1) % 4);
+        }, 2000);
+        return () => clearInterval(timer);
+      }, []);
+
+      const phases = [
+        { label: 'Walked By', value: data.stats.passersby, suffix: '', color: '#94a3b8' },
+        { label: 'Stopped', value: data.stats.stopped, suffix: '', color: '#f59e0b' },
+        { label: 'Stop Rate', value: data.stats.stoppedPercent, suffix: '%', color: '#ef4444' },
+        { label: 'Total Earned', value: data.stats.earned, suffix: '', prefix: '$', color: '#ef4444' }
+      ];
+
+      return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '24px', background: 'white' }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ fontFamily: 'Fraunces, serif', fontSize: '28px', fontWeight: 900, color: '#171717', marginBottom: '40px', textAlign: 'center' }}
+          >
+            {data.title}
+          </motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', maxWidth: '900px', width: '100%' }}>
+            {phases.map((phase, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.15 }}
+                style={{
+                  background: i === activePhase ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.03)',
+                  borderRadius: '20px',
+                  padding: '28px 20px',
+                  textAlign: 'center',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transform: i === activePhase ? 'scale(1.05)' : 'scale(1)',
+                  transition: 'all 0.4s ease',
+                  boxShadow: i === activePhase ? '0 20px 50px rgba(0,0,0,0.2)' : 'none'
+                }}
+              >
+                {i === activePhase && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: `linear-gradient(90deg, transparent, ${phase.color}, transparent)` }} />
+                )}
+                <div style={{
+                  fontSize: '42px',
+                  fontWeight: 900,
+                  color: i === activePhase ? 'white' : '#171717',
+                  marginBottom: '8px'
+                }}>
+                  {phase.prefix || ''}<AnimatedCounter value={phase.value} decimals={phase.suffix === '%' ? 1 : 0} useCommas />{phase.suffix}
+                </div>
+                <p style={{ fontSize: '14px', color: i === activePhase ? 'rgba(255,255,255,0.7)' : '#6b7280', fontWeight: 500 }}>{phase.label}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            style={{
+              marginTop: '40px',
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderRadius: '16px',
+              padding: '20px 40px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '16px'
+            }}
+          >
+            <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+              <Icons.EyeOff />
+            </div>
+            <p style={{ color: 'white', fontSize: '16px' }}>
+              <span style={{ fontWeight: 700 }}>99.4%</span> of people ignored world-class talent because of context
+            </p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // 3. ContextBrainSlide - How brain processes context
+    const ContextBrainSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % data.comparisons.length);
+        }, 2500);
+        return () => clearInterval(timer);
+      }, [data.comparisons.length]);
+
+      const getIcon = (iconName) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
+      };
+
+      return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '24px', background: 'white' }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ fontFamily: 'Fraunces, serif', fontSize: '28px', fontWeight: 900, color: '#171717', marginBottom: '40px', textAlign: 'center' }}
+          >
+            {data.title}
+          </motion.h2>
+
+          <div style={{ display: 'grid', gap: '16px', maxWidth: '700px', width: '100%' }}>
+            {data.comparisons.map((comp, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                style={{
+                  background: i === activeIndex ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.02)',
+                  borderRadius: '16px',
+                  padding: '20px 24px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '20px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transform: i === activeIndex ? 'scale(1.02)' : 'scale(1)',
+                  transition: 'all 0.4s ease',
+                  boxShadow: i === activeIndex ? '0 15px 40px rgba(0,0,0,0.15)' : 'none'
+                }}
+              >
+                {i === activeIndex && (
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+                )}
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '12px',
+                  background: i === activeIndex ? 'rgba(6, 182, 212, 0.2)' : 'rgba(0,0,0,0.05)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: i === activeIndex ? 'var(--accent)' : '#6b7280',
+                  flexShrink: 0
+                }}>
+                  {getIcon(comp.icon)}
+                </div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ fontWeight: 700, fontSize: '16px', color: i === activeIndex ? 'white' : '#171717', marginBottom: '4px' }}>{comp.signal}</p>
+                  <p style={{ fontSize: '14px', color: i === activeIndex ? 'rgba(255,255,255,0.7)' : '#6b7280' }}>{comp.perception}</p>
+                </div>
+                {i === activeIndex && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    style={{
+                      background: 'var(--accent)',
+                      borderRadius: '8px',
+                      padding: '6px 12px'
+                    }}
+                  >
+                    <span style={{ color: 'white', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase' }}>Processing</span>
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // 4. PlacementSpectrumSlide - Visual quality spectrum
+    const PlacementSpectrumSlide = ({ data }) => {
+      const [hoveredIndex, setHoveredIndex] = useState(null);
+
+      return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '24px', background: 'white' }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ fontFamily: 'Fraunces, serif', fontSize: '28px', fontWeight: 900, color: '#171717', marginBottom: '48px', textAlign: 'center' }}
+          >
+            {data.title}
+          </motion.h2>
+
+          <div style={{ maxWidth: '800px', width: '100%' }}>
+            {/* Spectrum bar */}
+            <div style={{ display: 'flex', height: '12px', borderRadius: '6px', overflow: 'hidden', marginBottom: '40px' }}>
+              <div style={{ flex: 1, background: 'linear-gradient(90deg, #ef4444, #f59e0b, #22c55e, #06b6d4)' }} />
+            </div>
+
+            {/* Placement cards */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px' }}>
+              {data.placements.map((placement, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  onMouseEnter={() => setHoveredIndex(i)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  style={{
+                    background: hoveredIndex === i ? 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' : 'rgba(0,0,0,0.02)',
+                    borderRadius: '16px',
+                    padding: '24px 16px',
+                    textAlign: 'center',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    transform: hoveredIndex === i ? 'translateY(-8px)' : 'translateY(0)',
+                    transition: 'all 0.3s ease',
+                    boxShadow: hoveredIndex === i ? '0 20px 50px rgba(0,0,0,0.15)' : 'none'
+                  }}
+                >
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '4px',
+                    background: placement.color
+                  }} />
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '50%',
+                    background: `${placement.color}20`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 16px',
+                    fontSize: '20px',
+                    fontWeight: 900,
+                    color: placement.color
+                  }}>
+                    {placement.score}
+                  </div>
+                  <p style={{ fontWeight: 700, fontSize: '14px', color: hoveredIndex === i ? 'white' : '#171717', marginBottom: '8px' }}>{placement.name}</p>
+                  <p style={{ fontSize: '12px', color: hoveredIndex === i ? 'rgba(255,255,255,0.6)' : '#6b7280' }}>{placement.signal}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Labels */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px', padding: '0 16px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#ef4444' }}>CHEAP PERCEPTION</span>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#06b6d4' }}>PREMIUM PERCEPTION</span>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // 5. EcommerceApplicationSlide - Context signals grid
+    const EcommerceApplicationSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % data.signals.length);
+        }, 3000);
+        return () => clearInterval(timer);
+      }, [data.signals.length]);
+
+      const getIcon = (iconName) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
+      };
+
+      return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '24px', background: 'white' }}>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ fontFamily: 'Fraunces, serif', fontSize: '28px', fontWeight: 900, color: '#171717', marginBottom: '40px', textAlign: 'center' }}
+          >
+            {data.title}
+          </motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', maxWidth: '800px', width: '100%' }}>
+            {data.signals.map((signal, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.1 }}
+                style={{
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '20px',
+                  padding: '24px',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  boxShadow: i === activeIndex ? '0 0 40px rgba(6, 182, 212, 0.3)' : '0 10px 30px rgba(0,0,0,0.1)',
+                  transform: i === activeIndex ? 'scale(1.02)' : 'scale(1)',
+                  transition: 'all 0.4s ease'
+                }}
+              >
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '4px',
+                  background: signal.quality === 'high'
+                    ? 'linear-gradient(90deg, transparent, #22c55e, transparent)'
+                    : 'linear-gradient(90deg, transparent, #ef4444, transparent)'
+                }} />
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '12px',
+                    background: signal.quality === 'high' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: signal.quality === 'high' ? '#22c55e' : '#ef4444',
+                    flexShrink: 0
+                  }}>
+                    {getIcon(signal.icon)}
+                  </div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                      <p style={{ fontWeight: 700, fontSize: '16px', color: 'white' }}>{signal.context}</p>
+                      <span style={{
+                        background: signal.quality === 'high' ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)',
+                        color: signal.quality === 'high' ? '#22c55e' : '#ef4444',
+                        fontSize: '10px',
+                        fontWeight: 700,
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        textTransform: 'uppercase'
+                      }}>
+                        {signal.quality === 'high' ? 'Good' : 'Avoid'}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>{signal.result}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // 6. CaseStudySlide - Before/After with results
+    const CaseStudySlide = ({ data }) => {
+      const [showInsight, setShowInsight] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setShowInsight(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '24px', background: 'white' }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{
+              background: 'rgba(6, 182, 212, 0.1)',
+              borderRadius: '8px',
+              padding: '8px 16px',
+              marginBottom: '16px'
+            }}
+          >
+            <span style={{ color: 'var(--accent)', fontWeight: 700, fontSize: '12px', textTransform: 'uppercase' }}>Real Example</span>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ fontFamily: 'Fraunces, serif', fontSize: '28px', fontWeight: 900, color: '#171717', marginBottom: '40px', textAlign: 'center' }}
+          >
+            {data.title}
+          </motion.h2>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px', maxWidth: '800px', width: '100%' }}>
+            {/* Before */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                background: 'rgba(239, 68, 68, 0.05)',
+                border: '2px solid rgba(239, 68, 68, 0.2)',
+                borderRadius: '20px',
+                padding: '28px',
+                position: 'relative'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                  <Icons.X />
+                </div>
+                <span style={{ fontWeight: 700, color: '#dc2626', fontSize: '14px' }}>{data.before.label}</span>
+              </div>
+              <p style={{ color: '#374151', fontSize: '15px', lineHeight: 1.6, marginBottom: '16px' }}>"{data.before.text}"</p>
+              <div style={{ background: 'rgba(239, 68, 68, 0.1)', borderRadius: '8px', padding: '12px', textAlign: 'center' }}>
+                <span style={{ color: '#dc2626', fontWeight: 700, fontSize: '18px' }}>{data.before.result}</span>
+              </div>
+            </motion.div>
+
+            {/* After */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              style={{
+                background: 'rgba(34, 197, 94, 0.05)',
+                border: '2px solid rgba(34, 197, 94, 0.2)',
+                borderRadius: '20px',
+                padding: '28px',
+                position: 'relative'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#22c55e', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                  <Icons.Check />
+                </div>
+                <span style={{ fontWeight: 700, color: '#16a34a', fontSize: '14px' }}>{data.after.label}</span>
+              </div>
+              <p style={{ color: '#374151', fontSize: '15px', lineHeight: 1.6, marginBottom: '16px' }}>"{data.after.text}"</p>
+              <div style={{ background: 'rgba(34, 197, 94, 0.1)', borderRadius: '8px', padding: '12px', textAlign: 'center' }}>
+                <span style={{ color: '#16a34a', fontWeight: 700, fontSize: '18px' }}>{data.after.result}</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Insight */}
+          <AnimatePresence>
+            {showInsight && (
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  marginTop: '32px',
+                  background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderRadius: '16px',
+                  padding: '20px 32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '16px',
+                  boxShadow: '0 15px 40px rgba(0,0,0,0.15)'
+                }}
+              >
+                <div style={{ color: 'var(--accent)' }}>
+                  <Icons.TrendingUp />
+                </div>
+                <p style={{ color: 'white', fontWeight: 600, fontSize: '16px' }}>{data.insight}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // 7. ImpactStatsSlide - Stats with animated counters
+    const ImpactStatsSlide = ({ data }) => (
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '24px', background: 'white' }}>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          style={{ fontFamily: 'Fraunces, serif', fontSize: '28px', fontWeight: 900, color: '#171717', marginBottom: '48px', textAlign: 'center' }}
+        >
+          {data.title}
+        </motion.h2>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', maxWidth: '800px', width: '100%' }}>
+          {data.stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.15 }}
+              style={{
+                background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                borderRadius: '20px',
+                padding: '32px 24px',
+                textAlign: 'center',
+                position: 'relative',
+                overflow: 'hidden',
+                boxShadow: '0 15px 40px rgba(0,0,0,0.15)'
+              }}
+            >
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '4px',
+                background: i === 2
+                  ? 'linear-gradient(90deg, transparent, var(--accent), transparent)'
+                  : i === 0
+                    ? 'linear-gradient(90deg, transparent, #22c55e, transparent)'
+                    : 'linear-gradient(90deg, transparent, #ef4444, transparent)'
+              }} />
+              <div style={{
+                fontSize: '52px',
+                fontWeight: 900,
+                color: i === 2 ? 'var(--accent)' : i === 0 ? '#22c55e' : '#ef4444',
+                marginBottom: '8px'
+              }}>
+                <AnimatedCounter value={stat.value} />{stat.suffix}
+              </div>
+              <p style={{ fontWeight: 700, color: 'white', fontSize: '16px', marginBottom: '4px' }}>{stat.label}</p>
+              <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>{stat.description}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // 8. EliteInsightSlide - Quote with action items
+    const EliteInsightSlide = ({ data }) => {
+      const getIcon = (iconName) => {
+        const IconComponent = Icons[iconName];
+        return IconComponent ? <IconComponent /> : null;
+      };
+
+      return (
+        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '24px', background: 'white' }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            style={{
+              background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+              borderRadius: '24px',
+              padding: '40px',
+              maxWidth: '700px',
+              width: '100%',
+              position: 'relative',
+              overflow: 'hidden',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.2)'
+            }}
+          >
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              height: '4px',
+              background: 'linear-gradient(90deg, transparent, var(--accent), transparent)'
+            }} />
+
+            <div style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              background: 'rgba(6, 182, 212, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--accent)'
+            }}>
+              <Icons.Lightbulb />
+            </div>
+
+            <h3 style={{ fontFamily: 'Fraunces, serif', fontSize: '24px', fontWeight: 900, color: 'white', marginBottom: '20px' }}>{data.title}</h3>
+
+            <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.9)', lineHeight: 1.7, marginBottom: '32px', fontStyle: 'italic' }}>
+              "{data.quote}"
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {data.actions.map((action, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    background: 'rgba(255,255,255,0.05)',
+                    borderRadius: '12px',
+                    padding: '16px'
+                  }}
+                >
+                  <div style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    background: 'rgba(6, 182, 212, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'var(--accent)',
+                    flexShrink: 0
+                  }}>
+                    {getIcon(action.icon)}
+                  </div>
+                  <p style={{ color: 'rgba(255,255,255,0.9)', fontSize: '15px' }}>{action.text}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ STANDARD SLIDE COMPONENTS ============
 
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
@@ -316,271 +974,6 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    
-    const TypingRevealSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-8 md:px-16 max-w-3xl mx-auto">
-        <motion.h2 initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} className="slide-title text-4xl md:text-5xl lg:text-6xl text-black text-center">
-          <TypingText text={data.text} speed={50} />
-        </motion.h2>
-      </div>
-    );
-
-    const VisualContrastSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 max-w-5xl mx-auto py-8 slide-scroll overflow-y-auto">
-        {data.title && (
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        )}
-        <div className="grid md:grid-cols-2 gap-4 md:gap-6 w-full">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1, type: 'spring', stiffness: 100 }}
-            className="relative rounded-2xl overflow-hidden"
-            style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}
-          >
-            <img src={data.leftImage} alt={data.leftLabel} className="w-full h-48 md:h-56 object-cover" />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-              <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-green-400"></span>
-                {data.leftLabel}
-              </span>
-            </div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
-            className="relative rounded-2xl overflow-hidden"
-            style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.12)' }}
-          >
-            <img src={data.rightImage} alt={data.rightLabel} className="w-full h-48 md:h-56 object-cover" />
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-              <span className="text-white font-semibold text-sm md:text-base flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-red-400"></span>
-                {data.rightLabel}
-              </span>
-            </div>
-          </motion.div>
-        </div>
-        {data.caption && (
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-5 text-center text-base md:text-lg text-neutral-500 font-medium">{data.caption}</motion.p>
-        )}
-      </div>
-    );
-
-    const StatsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-3 gap-4">
-          {data.data.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: i * 0.12, type: 'spring', stiffness: 100 }}
-              whileHover={{ scale: 1.02, y: -4 }}
-              className="bg-neutral-900 rounded-2xl p-6 text-center relative overflow-hidden"
-              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl" style={{ background: `linear-gradient(90deg, var(--accent), var(--accent-dark))` }}></div>
-              <div className="text-4xl md:text-5xl font-bold mb-2 text-white">
-                <AnimatedNumber value={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix || ''} />
-              </div>
-              <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-              <div className="text-xs text-neutral-400">{stat.subtext}</div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const BarChartSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
-          className="bg-neutral-900 rounded-2xl p-8 relative overflow-hidden"
-          style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.15)' }}
-        >
-          <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '32px 32px' }}></div>
-          <div className="relative z-10">
-            <BarChart data={data.data} accentColor="var(--accent)" darkMode={true} />
-          </div>
-        </motion.div>
-      </div>
-    );
-
-    const PriceComparisonSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-8">
-          <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="flex flex-col items-center justify-center">
-            <div className="text-6xl font-bold text-neutral-400 mb-4">
-              $<AnimatedNumber value={data.before.amount} />
-            </div>
-            <div className="text-sm uppercase tracking-wider text-neutral-500 mb-2">{data.before.context}</div>
-            <div className="text-xs text-neutral-400">Perceived as cheap</div>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="flex flex-col items-center justify-center">
-            <div className="text-6xl font-bold mb-4" style={{ color: 'var(--accent)' }}>
-              $<AnimatedNumber value={data.after.amount} />
-            </div>
-            <div className="text-sm uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--accent)' }}>{data.after.context}</div>
-            <div className="text-xs text-neutral-600">Perceived as premium</div>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="text-center mt-8">
-          <p className="text-xl font-bold text-black"><TypingText text="Same music. Different context." speed={50} /></p>
-        </motion.div>
-      </div>
-    );
-
-    const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6 relative z-10">{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed relative z-10">{data.body}</motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none`}
-            style={{ height: '35%', maxHeight: '280px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    const CardsSlide = ({ data }) => {
-      const getCardStyle = (i) => {
-        const styles = [
-          { bg: 'bg-neutral-900', text: 'text-white', desc: 'text-neutral-300', accent: true },
-          { bg: 'bg-white border border-neutral-200', text: 'text-neutral-900', desc: 'text-neutral-600', accent: false },
-          { bg: 'bg-white border border-neutral-200', text: 'text-neutral-900', desc: 'text-neutral-600', accent: false },
-          { bg: 'bg-neutral-900', text: 'text-white', desc: 'text-neutral-300', accent: true }
-        ];
-        return styles[i % 4];
-      };
-      return (
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {data.items.map((item, i) => {
-              const style = getCardStyle(i);
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 100 }}
-                  whileHover={{ scale: 1.02, y: -3 }}
-                  className={`${style.bg} rounded-2xl p-5 relative overflow-hidden`}
-                  style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.1)' }}
-                >
-                  {style.accent && <div className="absolute top-0 right-0 w-20 h-20 rounded-full opacity-20" style={{ background: 'var(--accent)', filter: 'blur(25px)', transform: 'translate(30%, -30%)' }}></div>}
-                  <h3 className={`font-bold mb-2 text-base ${style.text}`}>{item.title}</h3>
-                  <p className={`text-sm leading-relaxed ${style.desc}`}>{item.description}</p>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      );
-    };
-
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6 relative z-10">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6 relative z-10">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
-
-    const ActionableSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="space-y-3">
-          {data.points.map((point, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }} className="flex items-center gap-4 bg-white rounded-xl p-4" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
-              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold" style={{ background: 'var(--accent)' }}>{i + 1}</div>
-              <p className="text-sm md:text-base text-neutral-700">{point}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const VisualTakeawaysSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          {data.items.map((item, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: i * 0.1, type: 'spring', stiffness: 100 }}
-              className="bg-neutral-900 rounded-2xl p-5 flex items-start gap-4"
-              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.12)' }}
-            >
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl" style={{ background: 'rgba(var(--accent-rgb), 0.15)' }}>
-                {item.icon}
-              </div>
-              <div>
-                <h4 className="text-white font-semibold text-base mb-1">{item.title}</h4>
-                <p className="text-neutral-400 text-sm leading-relaxed">{item.description}</p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        {data.image && (
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-6 rounded-2xl overflow-hidden"
-            style={{ boxShadow: '0 12px 40px rgba(0,0,0,0.1)' }}
-          >
-            <img src={data.image} alt="Takeaway visualization" className="w-full h-auto max-h-48 object-cover" />
-          </motion.div>
-        )}
       </div>
     );
 
@@ -645,6 +1038,8 @@
       </div>
     );
 
+    // ============ MAIN APP ============
+
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
@@ -658,7 +1053,6 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -697,16 +1091,14 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'visualContrast': return <VisualContrastSlide data={slide} />;
-          case 'typingReveal': return <TypingRevealSlide data={slide} />;
-          case 'stats': return <StatsSlide data={slide} />;
-          case 'barChart': return <BarChartSlide data={slide} />;
-          case 'priceComparison': return <PriceComparisonSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'actionable': return <ActionableSlide data={slide} />;
-          case 'visualTakeaways': return <VisualTakeawaysSlide data={slide} />;
+          case 'experiment-reveal': return <ExperimentRevealSlide data={slide} />;
+          case 'attention-gap': return <AttentionGapSlide data={slide} />;
+          case 'context-brain': return <ContextBrainSlide data={slide} />;
+          case 'placement-spectrum': return <PlacementSpectrumSlide data={slide} />;
+          case 'ecommerce-application': return <EcommerceApplicationSlide data={slide} />;
+          case 'case-study': return <CaseStudySlide data={slide} />;
+          case 'impact-stats': return <ImpactStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
@@ -746,7 +1138,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

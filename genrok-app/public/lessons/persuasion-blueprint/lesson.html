@@ -12,35 +12,13 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #f59e0b;
-      --accent-dark: #d97706;
-      --accent-light: #fbbf24;
-      --accent-rgb: 245, 158, 11;
-    }
+    :root { --accent: #f59e0b; --accent-dark: #d97706; --accent-light: #fbbf24; --accent-rgb: 245, 158, 11; }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: transparent;
-      -webkit-font-smoothing: antialiased;
-    }
-    .title-font {
-      font-family: 'Fraunces', serif;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-    h1, h2, h3, .slide-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
     ::selection { background: var(--accent); color: white; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
@@ -53,23 +31,17 @@
     const { motion, AnimatePresence } = window.Motion;
     const { useState, useEffect, useCallback, useMemo } = React;
 
-    // ============================================
-    // GET USER NAME FROM URL PARAM
-    // ============================================
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
       return params.get('userName') || 'Builder';
     };
 
-    // ============================================
-    // LESSON CONFIGURATION
-    // ============================================
     const LESSON_CONFIG = {
       id: 'persuasion-blueprint',
       title: 'The Persuasion Blueprint',
       description: 'The 5-step system that turns chaos into conversions.',
       accentColor: '#f59e0b',
-      duration: '5 min',
+      duration: '7 min',
       nextLesson: {
         id: 'persuasion-stack',
         title: 'The Persuasion Stack',
@@ -77,252 +49,126 @@
       }
     };
 
+    // ============ 5-STEP BLUEPRINT CONFIG ============
+    const BLUEPRINT_STEPS = [
+      { num: '1', title: 'Rule of One', subtitle: 'FOCUS', description: 'One Big Idea. One Target Reader. One Core Promise. One Clear Offer.', color: '#f59e0b' },
+      { num: '2', title: 'Define Avatar', subtitle: 'IDENTITY', description: 'Who are they today? Who do they want to become? The gap is your opportunity.', color: '#f97316' },
+      { num: '3', title: 'Awareness Level', subtitle: 'MATCH', description: 'Meet them where they are. Wrong match = zero conversions.', color: '#ef4444' },
+      { num: '4', title: '3-Phase Campaign', subtitle: 'STRUCTURE', description: 'Curiosity → Enlightenment → Commitment. Each phase has one job.', color: '#8b5cf6' },
+      { num: '5', title: 'Polish Craft', subtitle: 'CLARITY', description: 'Write like you talk. Edit ruthlessly. If it doesn\'t sell, cut it.', color: '#3b82f6' }
+    ];
+
+    // ============ AWARENESS LEVELS CONFIG ============
+    const AWARENESS_LEVELS = [
+      { level: 'Most Aware', desc: 'Ready to buy NOW', width: 100, color: '#f59e0b' },
+      { level: 'Product Aware', desc: 'Know YOUR solution', width: 80, color: '#f97316' },
+      { level: 'Solution Aware', desc: 'Know solutions exist', width: 60, color: '#ef4444' },
+      { level: 'Problem Aware', desc: 'Know the problem', width: 40, color: '#8b5cf6' },
+      { level: 'Unaware', desc: "Don't know problem exists", width: 20, color: '#6b7280' }
+    ];
+
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
-
-    // Listen for admin status from parent
     window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
+      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
     });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
         e.stopPropagation();
         e.preventDefault();
         if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
         }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }} onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // ============================================
-    // TIME-BASED WELCOME ANIMATIONS (GIF + Greeting pairs)
-    // Each time slot has matched GIF + greeting combinations
-    // ============================================
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4', // Victory Dance
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4', // Jump Celebration
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4', // Air Guitar
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4', // Running Man
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4', // Standing Ovation
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4', // Fast Clap
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4', // Clap Above Head
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4' // Slow to Fast Clap
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4'
     ];
-
-    const getRandomCelebrationGif = () => {
-      return celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-    };
-
-    // ============================================
-    // EMPATHY GIFS (Quiz Incorrect Answer)
-    // Same settings as celebration GIFs: 60% height, bottom, behind content
-    // ============================================
     const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4', // Thumbs Down
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4', // Sad Head Shake
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4', // Facepalm
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4', // Looking Down Sad
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4', // Tear Wipe
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4', // Sad Sigh
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4', // Disappointed Slouch
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4', // Hand on Forehead Sad
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4' // Slow Sad Nod
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const getRandomEmpathyGif = () => {
-      return empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
-    };
-
-    // ============================================
-    // SLIDE DATA - ECOMMERCE FOCUSED
-    // ============================================
     const slides = [
       { type: 'welcome', learningGoals: [
         'Why 97% of store owners write "tossed salad" marketing that converts nobody',
         'The 5-step blueprint used by every high-converting Shopify store',
         'How to turn random tactics into a structured system that prints money'
       ]},
-      { type: 'hook', title: 'Most Marketing is Random', body: 'Random messages. Random people. Random timing. You post on Instagram because everyone else does. You write product descriptions that "sound good." You run ads hoping something sticks.', punchline: 'Random inputs = Random results. Always.' },
-      { type: 'content', subtitle: 'The Problem', title: 'What Chaos Looks Like', body: 'Without a system, your marketing is a guessing game. You throw tactics at the wall. Sometimes something works. Usually nothing does. And you never know why.', callout: 'The difference between $3K/month and $30K/month? Structure.' },
-      { type: 'visual', visualType: 'blueprint' },
-      { type: 'content', subtitle: 'Step 1', title: 'The Rule of One', body: 'One Big Idea. One Target Reader. One Core Promise. One Clear Offer. The moment you try to say everything, you say nothing. Focus creates power. Dilution creates confusion.', highlight: { label: 'The Law', text: 'If your customer can\'t repeat your message in 5 words, you lost them.' }},
-      { type: 'example', subtitle: 'Rule of One in Action', bad: { label: 'Unfocused', text: '"Our software helps with marketing, sales, operations, customer service, and reporting"' }, good: { label: 'One Promise', text: '"Double your Shopify sales in 30 days or get your money back"' }, insight: 'One clear promise beats five vague benefits every single time.' },
-      { type: 'content', subtitle: 'Step 2', title: 'Define Your Avatar', body: 'Who are they TODAY? Who do they WANT to become? Call them what THEY call themselves. Speak their language. Understand their fears, dreams, and the gap between where they are and where they want to be.', callout: 'The gap between Current Identity and Ideal Identity is where your product lives.' },
-      { type: 'example', subtitle: 'Avatar Journey', bad: { label: 'Generic', text: '"For entrepreneurs who want to grow their business"' }, good: { label: 'Specific Identity', text: '"For exhausted Shopify owners working 80-hour weeks who dream of hitting $50K months while working 20 hours"' }, insight: 'Specificity creates resonance. Generic language creates indifference.' },
-      { type: 'visual', visualType: 'awareness' },
-      { type: 'content', subtitle: 'Step 3', title: 'The 5 Awareness Levels', body: 'Eugene Schwartz nailed this decades ago. Your customer is at ONE of these levels: Unaware, Problem Aware, Solution Aware, Product Aware, or Most Aware. Your copy MUST meet them where they are.', highlight: { label: 'The Mistake', text: 'Writing "Most Aware" copy for "Problem Aware" audiences kills conversions.' }, personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eugene-schwartz.webp', personName: 'Eugene Schwartz' },
-      { type: 'content', subtitle: 'Step 4', title: 'The 3-Phase Campaign', body: 'Think of your funnel as a house. Phase 1: Curiosity (Front Steps) - Stop them scrolling. Phase 2: Enlightenment (Porch) - Educate and build trust. Phase 3: Commitment (Door) - Make the offer irresistible.', callout: 'Ad → Landing Page → Checkout. Each phase has a different job.' },
-      { type: 'cards', title: 'Campaign Architecture', subtitle: 'The three phases that convert:', cards: [
-        { icon: 'curiosity', title: 'Curiosity', desc: 'Stop the scroll. Create a pattern interrupt. Make them look.' },
-        { icon: 'enlighten', title: 'Enlightenment', desc: 'Educate them. Show the transformation. Build trust.' },
-        { icon: 'commit', title: 'Commitment', desc: 'Remove risk. Create urgency. Make buying easy.' }
-      ]},
-      { type: 'content', subtitle: 'Step 5', title: 'Polish the Craft', body: 'Write like you talk to a smart friend. 6th-8th grade reading level. Short sentences punch harder. Edit ruthlessly - if a word doesn\'t sell, cut it. Read aloud. If you stumble, your reader will too.', highlight: { label: 'The Rule', text: '"Edit as though your reader has to pee. If a sentence isn\'t compelling enough to make them hold it, delete it."' }},
-      { type: 'example', subtitle: 'Craft Example', bad: { label: 'Complex', text: '"Our comprehensive solution leverages cutting-edge technology to optimize your workflow efficiency through advanced automation capabilities"' }, good: { label: 'Clear', text: '"Get 4 hours back every day. We automate the boring stuff so you can focus on making money"' }, insight: 'Clarity beats cleverness. Simple beats sophisticated. Every time.' },
-      { type: 'cards', title: 'The Blueprint in Action', subtitle: 'Real stores using this:', cards: [
-        { icon: 'store1', title: '$8K to $47K/month', desc: 'Applied Rule of One. Focused on exhausted moms. 5.9X growth in 90 days.' },
-        { icon: 'store2', title: '1.2% to 6.7% conversion', desc: 'Matched awareness level. Rewrote entire funnel. 5.6X conversion rate.' },
-        { icon: 'store3', title: '$120K saved in ad spend', desc: 'Fixed campaign architecture. Same traffic, 4X more sales.' }
-      ]},
+      { type: 'hook', headline: 'Most Marketing is Random Chaos', subtext: 'Random messages. Random people. Random timing. You post on Instagram because everyone else does. You write product descriptions that "sound good." You run ads hoping something sticks. Random inputs = Random results. Always.' },
+      { type: 'chaos-vs-system' },
+      { type: 'blueprint-overview' },
+      { type: 'rule-of-one' },
+      { type: 'rule-of-one-example' },
+      { type: 'avatar-identity' },
+      { type: 'awareness-levels' },
+      { type: 'campaign-phases' },
+      { type: 'craft-principles' },
+      { type: 'case-studies' },
       { type: 'quiz', question: 'What\'s the biggest mistake store owners make with their marketing?', options: ['Not spending enough on ads', 'Trying to say everything to everyone instead of one thing to one person', 'Using the wrong social media platforms', 'Not having professional product photos'], correctIndex: 1, feedback: { correct: 'Exactly. The Rule of One is the foundation. Focus on ONE reader, ONE promise, ONE offer. Everything else is noise. That\'s why 97% of stores struggle - they dilute their message trying to appeal to everyone.', incorrect: 'The answer is focus. The Rule of One: One reader, one promise, one offer. The moment you try to say everything to everyone, you say nothing to anyone. Dilution kills conversion.' }},
+      { type: 'impact-stats' },
+      { type: 'elite-insight' },
       { type: 'completion' }
     ];
 
-    // ============================================
-    // ICONS (Minimalist SVG)
-    // ============================================
     const Icons = {
-      ArrowLeft: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
-      ArrowRight: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
-      Clock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      Sparkles: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
-      Curiosity: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>,
-      Enlighten: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.947 12.65a4 4 0 0 0-5.925-3.18 4 4 0 0 0-2.58 3.6c0 1.24.48 2.38 1.27 3.25.79.87 1.27 2.01 1.27 3.23v.5"/><circle cx="12" cy="19" r="2"/></svg>,
-      Commit: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
-      Store1: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-      Store2: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>,
-      Store3: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Target: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      User: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+      Brain: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Layers: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+      Edit: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+      Shuffle: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>,
+      Zap: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      TrendingUp: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      DollarSign: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      Eye: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>,
+      Lock: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      FileText: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
     };
 
-    // ============================================
-    // VISUAL COMPONENTS (25% larger)
-    // ============================================
-    const BlueprintVisual = () => {
-      const steps = [
-        { num: '1', label: 'Rule of One', color: 'bg-amber-600' },
-        { num: '2', label: 'Avatar', color: 'bg-amber-500' },
-        { num: '3', label: 'Awareness', color: 'bg-amber-400' },
-        { num: '4', label: 'Campaign', color: 'bg-amber-300' },
-        { num: '5', label: 'Craft', color: 'bg-amber-200' }
-      ];
-      return (
-        <div className="w-full h-full flex items-center justify-center p-8">
-          <div className="bg-neutral-900 rounded-3xl p-8 md:p-12 w-full max-w-xl">
-            <p className="text-center text-neutral-500 text-sm mb-8 uppercase tracking-widest">The 5-Step System</p>
-            <div className="grid grid-cols-5 gap-4">
-              {steps.map((step, i) => (
-                <motion.div key={step.num} initial={{ opacity: 0, scale: 0.8, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1, duration: 0.4, type: 'spring' }} className="text-center">
-                  <div className={`w-16 h-16 mx-auto ${step.color} rounded-2xl flex items-center justify-center mb-3`} style={{ boxShadow: `0 4px 20px rgba(var(--accent-rgb), 0.3)` }}>
-                    <div className="text-2xl font-bold text-neutral-900">{step.num}</div>
-                  </div>
-                  <div className="text-xs text-neutral-400 font-medium">{step.label}</div>
-                </motion.div>
-              ))}
-            </div>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="text-center text-neutral-600 text-sm mt-8">
-              Each step builds on the last. Skip one, the system breaks.
-            </motion.p>
-          </div>
-        </div>
-      );
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, duration = 2000, suffix = '', prefix = '' }) => {
+      const [count, setCount] = useState(0);
+      const numericValue = parseFloat(value.toString().replace(/[^0-9.]/g, ''));
+
+      useEffect(() => {
+        let startTime;
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.floor(eased * numericValue));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [numericValue, duration]);
+
+      return <span>{prefix}{count}{suffix}</span>;
     };
 
-    const AwarenessVisual = () => {
-      const levels = [
-        { level: 'Most Aware', desc: 'Ready to buy NOW', width: '100%', color: 'bg-amber-600' },
-        { level: 'Product Aware', desc: 'Know YOUR solution', width: '80%', color: 'bg-amber-500' },
-        { level: 'Solution Aware', desc: 'Know solutions exist', width: '60%', color: 'bg-amber-400' },
-        { level: 'Problem Aware', desc: 'Know the problem', width: '40%', color: 'bg-amber-300' },
-        { level: 'Unaware', desc: "Don't know problem exists", width: '20%', color: 'bg-neutral-600' }
-      ];
-      return (
-        <div className="w-full h-full flex items-center justify-center p-8">
-          <div className="w-full max-w-3xl">
-            <p className="text-center text-neutral-400 text-sm mb-8 uppercase tracking-widest">Eugene Schwartz's Framework</p>
-            <div className="space-y-3">
-              {levels.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.1 }} className="flex items-center gap-4">
-                  <div className="w-32 text-right">
-                    <span className="text-sm font-semibold text-neutral-700">{item.level}</span>
-                  </div>
-                  <div className="flex-1">
-                    <motion.div className={`h-12 ${item.color} rounded-xl flex items-center px-4`} initial={{ width: 0 }} animate={{ width: item.width }} transition={{ duration: 0.8, delay: 0.3 + i * 0.1 }}>
-                      <span className="text-white text-sm font-medium">{item.desc}</span>
-                    </motion.div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} className="text-center text-neutral-500 text-sm mt-8">
-              Match your message to their awareness level. Wrong match = zero conversions.
-            </motion.p>
-          </div>
-        </div>
-      );
-    };
-
-    // ============================================
-    // SLIDE COMPONENTS (25% larger content)
-    // ============================================
-
-    // Welcome Slide - GIF rendered at app level
+    // ============ WELCOME SLIDE ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
 
-      // Show GIF on mount, hide on unmount
       useEffect(() => {
         onShowGif(welcomeData.gif, '65%', gifSide);
         return () => onHideGif();
@@ -330,22 +176,10 @@
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          {/* Main content - centered, z-20 to stay above GIF */}
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            {/* Lesson Title */}
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
-              {LESSON_CONFIG.title}
-            </motion.h1>
-
-            {/* Personalized greeting */}
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
             <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3">
-              <Icons.Clock />
-              <span>{LESSON_CONFIG.duration}</span>
-            </motion.div>
-
-            {/* In This Lesson - 15% bigger */}
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
               <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
               <ul className="space-y-1.5 md:space-y-2">
@@ -357,17 +191,13 @@
                 ))}
               </ul>
             </motion.div>
-
-            {/* Button - 10% bigger, no glow */}
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              Let's Go
-            </motion.button>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
           </div>
         </div>
       );
     };
 
-    // Hook Slide (25% larger)
+    // ============ HOOK SLIDE ============
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -377,72 +207,534 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-    
-    const VisualSlide = ({ data }) => (
-      <div className="h-full flex items-center justify-center">
-        {data.visualType === 'blueprint' && <BlueprintVisual />}
-        {data.visualType === 'awareness' && <AwarenessVisual />}
-      
-        {data.characterVideo && (
+    // ============ CHAOS VS SYSTEM SLIDE ============
+    const ChaosVsSystemSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>The Problem</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">What's Killing Your Conversions</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Chaos */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="relative overflow-hidden rounded-2xl p-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
+                <Icons.Shuffle style={{ color: '#ef4444' }} />
+              </div>
+              <span className="text-red-400 font-semibold">Random Chaos</span>
+            </div>
+            <div className="space-y-3 mb-4">
+              {['Random messages to random people', 'Posting because everyone else does', 'Hoping something sticks', 'No idea what works or why'].map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="flex items-start gap-2">
+                  <Icons.X style={{ color: '#ef4444', flexShrink: 0, marginTop: 2 }} />
+                  <span className="text-neutral-300 text-sm">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+            <div className="mt-4 pt-4 border-t border-neutral-700 text-center">
+              <span className="text-red-400 text-2xl font-bold">$3K/mo</span>
+              <p className="text-neutral-500 text-xs mt-1">Stuck, frustrated, burning out</p>
+            </div>
           </motion.div>
-        )}
+
+          {/* System */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="relative overflow-hidden rounded-2xl p-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                <Icons.Layers style={{ color: '#f59e0b' }} />
+              </div>
+              <span className="text-amber-400 font-semibold">Structured System</span>
+            </div>
+            <div className="space-y-3 mb-4">
+              {['One message to one person', 'Each step builds on the last', 'Know exactly what works', 'Predictable, scalable results'].map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-start gap-2">
+                  <Icons.Check style={{ color: '#f59e0b', flexShrink: 0, marginTop: 2 }} />
+                  <span className="text-neutral-300 text-sm">{item}</span>
+                </motion.div>
+              ))}
+            </div>
+            <div className="mt-4 pt-4 border-t border-neutral-700 text-center">
+              <span className="text-amber-400 text-2xl font-bold">$30K/mo</span>
+              <p className="text-amber-400/70 text-xs mt-1 font-semibold">10X growth with a system</p>
+            </div>
+          </motion.div>
+        </div>
       </div>
     );
 
-    // Cards Slide (25% larger)
-    const CardsSlide = ({ data }) => {
-      const getIcon = (iconName) => {
-        const icons = { curiosity: Icons.Curiosity, enlighten: Icons.Enlighten, commit: Icons.Commit, store1: Icons.Store1, store2: Icons.Store2, store3: Icons.Store3 };
-        const IconComp = icons[iconName];
-        return IconComp ? <IconComp /> : null;
-      };
+    // ============ BLUEPRINT OVERVIEW SLIDE ============
+    const BlueprintOverviewSlide = () => {
+      const [activeStep, setActiveStep] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % 5);
+        }, 2500);
+        return () => clearInterval(interval);
+      }, []);
+
       return (
-        <div className="h-full flex flex-col justify-center px-8 md:px-12 slide-scroll overflow-y-auto py-10">
-          <div className="text-center mb-6">
-            {data.subtitle && <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-neutral-500 text-sm mb-2">{data.subtitle}</motion.p>}
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="slide-title text-2xl md:text-3xl text-black">{data.title}</motion.h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
-            {data.cards.map((card, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.08 }} className="bg-neutral-50 rounded-xl p-5 border border-neutral-100">
-                <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: `linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), rgba(var(--accent-rgb), 0.05))`, color: 'var(--accent)' }}>{getIcon(card.icon)}</div>
-                <h4 className="font-semibold text-black text-base mb-2">{card.title}</h4>
-                <p className="text-neutral-500 text-sm leading-relaxed">{card.desc}</p>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>The System</span>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">The 5-Step Persuasion Blueprint</h2>
+          </motion.div>
+
+          {/* Steps Flow */}
+          <div className="grid grid-cols-5 gap-2 md:gap-4 mb-6">
+            {BLUEPRINT_STEPS.map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                className="relative rounded-xl p-3 md:p-4 text-center cursor-pointer transition-all duration-500"
+                style={{
+                  background: activeStep === i ? `linear-gradient(135deg, ${step.color}20, ${step.color}40)` : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  border: activeStep === i ? `2px solid ${step.color}` : '2px solid transparent',
+                  transform: activeStep === i ? 'scale(1.05)' : 'scale(1)',
+                }}
+                onClick={() => setActiveStep(i)}
+              >
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center mx-auto mb-2 text-white font-bold text-sm md:text-base" style={{ background: step.color }}>
+                  {step.num}
+                </div>
+                <div className="text-white font-semibold text-[10px] md:text-xs">{step.title}</div>
+                <div className="text-[8px] md:text-[10px] font-medium mt-1" style={{ color: step.color }}>{step.subtitle}</div>
               </motion.div>
             ))}
           </div>
+
+          {/* Active Step Details */}
+          <motion.div
+            key={activeStep}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl p-6 text-center"
+            style={{
+              background: 'linear-gradient(135deg, #0a0a0a, #1a1a1a)',
+              border: `1px solid ${BLUEPRINT_STEPS[activeStep].color}40`
+            }}
+          >
+            <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl" style={{ background: BLUEPRINT_STEPS[activeStep].color }}>
+              {BLUEPRINT_STEPS[activeStep].num}
+            </div>
+            <h3 className="text-white text-xl font-bold mb-2">{BLUEPRINT_STEPS[activeStep].title}</h3>
+            <p className="text-neutral-300 max-w-lg mx-auto">{BLUEPRINT_STEPS[activeStep].description}</p>
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }} className="text-center text-neutral-500 text-sm mt-6">
+            Each step builds on the last. Skip one, the system breaks.
+          </motion.p>
         </div>
       );
     };
 
-    // Quiz Slide - GIF rendered at app level on answer (celebration or empathy)
+    // ============ RULE OF ONE SLIDE ============
+    const RuleOfOneSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b' }}>Step 1</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">The Rule of One</h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="relative overflow-hidden rounded-2xl p-8"
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 40px rgba(245, 158, 11, 0.2)' }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              { num: '1', title: 'One Big Idea', desc: 'The single concept that drives everything' },
+              { num: '1', title: 'One Target Reader', desc: 'The specific person you\'re writing to' },
+              { num: '1', title: 'One Core Promise', desc: 'The transformation you deliver' },
+              { num: '1', title: 'One Clear Offer', desc: 'The action you want them to take' }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + i * 0.1 }}
+                className="flex items-start gap-4"
+              >
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold flex-shrink-0" style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: 'white' }}>
+                  {item.num}
+                </div>
+                <div>
+                  <h3 className="text-white font-bold mb-1">{item.title}</h3>
+                  <p className="text-neutral-400 text-sm">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="mt-8 pt-6 border-t border-neutral-700 text-center"
+          >
+            <p className="text-amber-400 font-semibold">"If your customer can't repeat your message in 5 words, you lost them."</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ RULE OF ONE EXAMPLE SLIDE ============
+    const RuleOfOneExampleSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>Real Example</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Rule of One in Action</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Before */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="relative overflow-hidden rounded-2xl p-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold bg-red-500/20 text-red-400">
+              UNFOCUSED
+            </div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
+                <Icons.X style={{ color: '#ef4444' }} />
+              </div>
+              <span className="text-red-400 font-semibold">Diluted Message</span>
+            </div>
+            <div className="bg-neutral-800/50 rounded-lg p-4 mb-4">
+              <p className="text-neutral-300 text-sm italic">"Our software helps with marketing, sales, operations, customer service, and reporting"</p>
+            </div>
+            <p className="text-neutral-500 text-xs">Tries to appeal to everyone. Appeals to no one.</p>
+          </motion.div>
+
+          {/* After */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="relative overflow-hidden rounded-2xl p-6"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div className="absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-400">
+              FOCUSED
+            </div>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                <Icons.Target style={{ color: '#10b981' }} />
+              </div>
+              <span className="text-green-400 font-semibold">One Promise</span>
+            </div>
+            <div className="bg-green-500/10 rounded-lg p-4 mb-4 border border-green-500/20">
+              <p className="text-white text-sm font-medium">"Double your Shopify sales in 30 days or get your money back"</p>
+            </div>
+            <p className="text-green-400 text-xs font-semibold">One promise. One outcome. Impossible to ignore.</p>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mt-6 text-center"
+        >
+          <span className="inline-block px-4 py-2 rounded-full text-sm font-bold" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white' }}>
+            One clear promise beats five vague benefits every time
+          </span>
+        </motion.div>
+      </div>
+    );
+
+    // ============ AVATAR IDENTITY SLIDE ============
+    const AvatarIdentitySlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(249, 115, 22, 0.1)', color: '#f97316' }}>Step 2</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">Define Your Avatar</h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="relative overflow-hidden rounded-2xl p-6"
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #f97316, transparent)' }} />
+
+          <div className="grid md:grid-cols-3 gap-4 items-center">
+            {/* Current Identity */}
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="text-center">
+              <div className="w-16 h-16 rounded-full bg-neutral-700 flex items-center justify-center mx-auto mb-3">
+                <Icons.User style={{ color: '#94a3b8', width: 32, height: 32 }} />
+              </div>
+              <h3 className="text-white font-bold mb-2">Current Identity</h3>
+              <p className="text-neutral-400 text-sm">Who are they TODAY?</p>
+              <div className="mt-3 bg-neutral-800/50 rounded-lg p-3">
+                <p className="text-xs text-neutral-500">"Exhausted Shopify owner working 80-hour weeks"</p>
+              </div>
+            </motion.div>
+
+            {/* The Gap */}
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }} className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-3">
+                <div className="h-px w-8 bg-orange-500" />
+                <div className="w-20 h-20 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #f97316, #ea580c)', boxShadow: '0 0 30px rgba(249, 115, 22, 0.4)' }}>
+                  <span className="text-white font-bold text-xs">THE GAP</span>
+                </div>
+                <div className="h-px w-8 bg-orange-500" />
+              </div>
+              <p className="text-orange-400 font-semibold text-sm">Your Product Lives Here</p>
+              <p className="text-neutral-500 text-xs mt-1">Bridge between where they are and where they want to be</p>
+            </motion.div>
+
+            {/* Ideal Identity */}
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }} className="text-center">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3" style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                <Icons.TrendingUp style={{ color: 'white', width: 32, height: 32 }} />
+              </div>
+              <h3 className="text-white font-bold mb-2">Ideal Identity</h3>
+              <p className="text-neutral-400 text-sm">Who do they WANT to become?</p>
+              <div className="mt-3 bg-green-500/10 rounded-lg p-3 border border-green-500/20">
+                <p className="text-xs text-green-400">"Hitting $50K months while working 20 hours"</p>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-center text-neutral-500 text-sm mt-6">
+          Specificity creates resonance. Generic language creates indifference.
+        </motion.p>
+      </div>
+    );
+
+    // ============ AWARENESS LEVELS SLIDE ============
+    const AwarenessLevelsSlide = () => {
+      const [activeLevel, setActiveLevel] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveLevel(prev => (prev + 1) % 5);
+        }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444' }}>Step 3</span>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">Eugene Schwartz's 5 Awareness Levels</h2>
+          </motion.div>
+
+          <div className="space-y-3">
+            {AWARENESS_LEVELS.map((level, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 + i * 0.1 }}
+                className="flex items-center gap-4"
+              >
+                <div className="w-28 text-right">
+                  <span className="text-sm font-semibold" style={{ color: activeLevel === i ? level.color : '#6b7280' }}>{level.level}</span>
+                </div>
+                <div className="flex-1">
+                  <motion.div
+                    className="h-10 rounded-lg flex items-center px-4 transition-all duration-500"
+                    style={{
+                      background: activeLevel === i ? level.color : `${level.color}40`,
+                      width: `${level.width}%`,
+                      boxShadow: activeLevel === i ? `0 0 20px ${level.color}40` : 'none'
+                    }}
+                  >
+                    <span className="text-white text-xs font-medium">{level.desc}</span>
+                  </motion.div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            className="mt-8 rounded-xl p-4 text-center"
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          >
+            <p className="text-amber-400 text-sm font-semibold">
+              "Writing 'Most Aware' copy for 'Problem Aware' audiences kills conversions."
+            </p>
+            <p className="text-neutral-500 text-xs mt-2">Match your message to their awareness level. Wrong match = zero conversions.</p>
+          </motion.div>
+        </div>
+      );
+    };
+
+    // ============ CAMPAIGN PHASES SLIDE ============
+    const CampaignPhasesSlide = () => {
+      const phases = [
+        { num: '1', title: 'Curiosity', subtitle: 'FRONT STEPS', desc: 'Stop them scrolling. Create a pattern interrupt. Make them look.', icon: Icons.Eye, color: '#8b5cf6' },
+        { num: '2', title: 'Enlightenment', subtitle: 'PORCH', desc: 'Educate them. Show the transformation. Build trust.', icon: Icons.Lightbulb, color: '#f59e0b' },
+        { num: '3', title: 'Commitment', subtitle: 'DOOR', desc: 'Remove risk. Create urgency. Make buying easy.', icon: Icons.Lock, color: '#10b981' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6' }}>Step 4</span>
+            <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">The 3-Phase Campaign</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {phases.map((phase, i) => {
+              const Icon = phase.icon;
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.15 }}
+                  className="relative overflow-hidden rounded-2xl p-6"
+                  style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${phase.color}, transparent)` }} />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${phase.color}20` }}>
+                      <Icon style={{ color: phase.color }} />
+                    </div>
+                    <div>
+                      <span className="text-white font-bold">{phase.title}</span>
+                      <p className="text-[10px]" style={{ color: phase.color }}>{phase.subtitle}</p>
+                    </div>
+                  </div>
+                  <p className="text-neutral-400 text-sm leading-relaxed">{phase.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="text-center text-neutral-500 text-sm mt-6">
+            Ad → Landing Page → Checkout. Each phase has a different job.
+          </motion.p>
+        </div>
+      );
+    };
+
+    // ============ CRAFT PRINCIPLES SLIDE ============
+    const CraftPrinciplesSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>Step 5</span>
+          <h2 className="slide-title text-2xl md:text-3xl lg:text-4xl text-black">Polish the Craft</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          {[
+            { title: 'Write Like You Talk', desc: 'To a smart friend. 6th-8th grade level.' },
+            { title: 'Short Sentences Punch', desc: 'Long sentences meander. Short ones hit.' },
+            { title: 'Edit Ruthlessly', desc: 'If a word doesn\'t sell, cut it.' },
+            { title: 'Read Aloud', desc: 'If you stumble, your reader will too.' }
+          ].map((principle, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + i * 0.1 }}
+              className="relative overflow-hidden rounded-xl p-5"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+            >
+              <div className="flex items-start gap-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                  <Icons.Edit style={{ color: '#3b82f6', width: 16, height: 16 }} />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-sm mb-1">{principle.title}</h3>
+                  <p className="text-neutral-400 text-xs">{principle.desc}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-6 rounded-xl p-4 text-center"
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '1px solid #3b82f640' }}
+        >
+          <p className="text-blue-400 text-sm font-semibold italic">
+            "Edit as though your reader has to pee. If a sentence isn't compelling enough to make them hold it, delete it."
+          </p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ CASE STUDIES SLIDE ============
+    const CaseStudiesSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>Results</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">The Blueprint in Action</h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { title: '$8K to $47K/mo', multiplier: '5.9X', desc: 'Applied Rule of One. Focused on exhausted moms.', period: '90 days' },
+            { title: '1.2% to 6.7% CVR', multiplier: '5.6X', desc: 'Matched awareness level. Rewrote entire funnel.', period: '60 days' },
+            { title: '$120K Saved', multiplier: '4X', desc: 'Fixed campaign architecture. Same traffic, 4X more sales.', period: 'Immediately' }
+          ].map((study, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + i * 0.15 }}
+              className="relative overflow-hidden rounded-2xl p-6"
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+            >
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+              <div className="text-center mb-4">
+                <div className="text-3xl font-bold text-green-400">{study.title}</div>
+                <div className="inline-block px-2 py-1 rounded-full text-xs font-bold bg-green-500/20 text-green-400 mt-2">
+                  {study.multiplier} Growth
+                </div>
+              </div>
+              <p className="text-neutral-400 text-sm text-center mb-3">{study.desc}</p>
+              <p className="text-neutral-500 text-xs text-center">Timeline: {study.period}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -452,25 +744,16 @@
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === data.correctIndex;
 
-      // Show GIF when answer selected (celebration for correct, empathy for incorrect)
       useEffect(() => {
         if (showFeedback) {
-          if (isCorrect) {
-            onShowGif(celebrationGif, '60%', gifSide);
-          } else {
-            onShowGif(empathyGif, '60%', gifSide);
-          }
+          if (isCorrect) { onShowGif(celebrationGif, '60%', gifSide); } else { onShowGif(empathyGif, '60%', gifSide); }
         }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      }, [showFeedback, isCorrect]);
 
-      // Hide GIF on unmount
-      useEffect(() => {
-        return () => onHideGif();
-      }, [onHideGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
         <div className="h-full w-full relative overflow-hidden">
-          {/* Quiz content - z-30 to stay above GIF (z-15) */}
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
               <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
@@ -483,7 +766,7 @@
                     <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
                       {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span className="text-neutral-700 text-base">{option}</span>
+                    <span className="text-neutral-700 text-sm md:text-base">{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -500,12 +783,73 @@
       );
     };
 
-    // Completion Slide (25% larger)
+    // ============ IMPACT STATS SLIDE ============
+    const ImpactStatsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">The Blueprint Impact</motion.h2>
+        <div className="grid md:grid-cols-3 gap-4">
+          {[
+            { value: 97, suffix: '%', label: 'Miss This', subtext: 'Stores without a system', color: '#ef4444' },
+            { value: 5, suffix: ' Steps', label: 'To Master', subtext: 'Complete framework', color: '#f59e0b' },
+            { value: 10, suffix: 'X', label: 'Growth Potential', subtext: 'With structured approach', color: '#10b981' }
+          ].map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative overflow-hidden rounded-2xl p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}>
+              <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+              <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color }}>
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} duration={1800} />
+              </div>
+              <div className="text-white font-semibold mb-1">{stat.label}</div>
+              <div className="text-neutral-400 text-xs">{stat.subtext}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative overflow-hidden rounded-2xl p-8 text-center"
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', boxShadow: '0 0 60px rgba(245, 158, 11, 0.2)' }}
+        >
+          <div className="absolute top-0 left-0 right-0 h-1" style={{ background: 'linear-gradient(90deg, transparent, #f59e0b, transparent)' }} />
+
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring' }}
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
+            style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
+          >
+            <Icons.FileText style={{ color: 'white', width: 32, height: 32 }} />
+          </motion.div>
+
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <span className="text-amber-400 text-sm font-semibold">Elite Insight</span>
+          </div>
+
+          <h3 className="text-white text-2xl md:text-3xl font-bold mb-6">The Blueprint Paradox</h3>
+
+          <p className="text-neutral-300 text-base md:text-lg leading-relaxed mb-6">
+            Most stores fail not because they lack tactics, but because they have too many. Random A/B tests. Scattered campaigns. Disconnected messages. Activity without architecture.
+          </p>
+
+          <p className="text-amber-400 text-base md:text-lg leading-relaxed font-medium">
+            The paradox: constraints create conversion. By forcing yourself through five specific steps in order, you eliminate the chaos that kills 97% of stores. Structure doesn't limit creativity - it channels it into results.
+          </p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = () => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
         <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now have the blueprint. Five steps. One system. No more random tactics. Time to build a store that converts.</motion.p>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now have the blueprint. Five steps. One system. No more random tactics. Rule of One → Avatar → Awareness → Campaign → Craft.</motion.p>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
           <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
           <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
@@ -514,37 +858,22 @@
       </div>
     );
 
-    // ============================================
-    // MAIN APP
-    // ============================================
-    const App = () => {
+    // ============ LESSON APP ============
+    const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
-      const [direction, setDirection] = useState(0);
+      const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
 
-      // GIF state - managed at app level so it can render outside slide area
-      const [gifConfig, setGifConfig] = useState(null); // { url, height, side }
-      const [isAnimating, setIsAnimating] = useState(false); // Prevent rapid clicks during animation
-
-      const showGif = useCallback((url, height, side) => {
-        setGifConfig({ url, height, side });
-      }, []);
-
-      const hideGif = useCallback(() => {
-        setGifConfig(null);
-      }, []);
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -576,11 +905,18 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
+          case 'chaos-vs-system': return <ChaosVsSystemSlide />;
+          case 'blueprint-overview': return <BlueprintOverviewSlide />;
+          case 'rule-of-one': return <RuleOfOneSlide />;
+          case 'rule-of-one-example': return <RuleOfOneExampleSlide />;
+          case 'avatar-identity': return <AvatarIdentitySlide />;
+          case 'awareness-levels': return <AwarenessLevelsSlide />;
+          case 'campaign-phases': return <CampaignPhasesSlide />;
+          case 'craft-principles': return <CraftPrinciplesSlide />;
+          case 'case-studies': return <CaseStudiesSlide />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'impact-stats': return <ImpactStatsSlide />;
+          case 'elite-insight': return <EliteInsightSlide />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }
@@ -606,26 +942,10 @@
               {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
             </div>
           </div>
-
-          {/* GIF - absolute positioned at bottom, z-15 to cover separator line */}
           <AnimatePresence>
             {gifConfig && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
-                transition={{ type: 'spring', stiffness: 100 }}
-                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`}
-                style={{ zIndex: 15, height: gifConfig.height }}
-              >
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="h-full w-auto object-contain object-bottom"
-                  style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
-                >
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
@@ -635,7 +955,7 @@
       );
     };
 
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    ReactDOM.render(<LessonApp />, document.getElementById('root'));
   </script>
 </body>
 </html>

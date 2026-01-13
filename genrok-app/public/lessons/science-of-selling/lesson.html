@@ -12,9 +12,6 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { --accent: #6366f1; --accent-dark: #4f46e5; --accent-light: #818cf8; --accent-rgb: 99, 102, 241; }
@@ -47,150 +44,54 @@
     };
 
     // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
     let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') { __isAdmin = e.data.isAdmin; } });
+    if (window.parent !== window) { window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*'); }
 
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
     const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
       const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
+        e.stopPropagation(); e.preventDefault();
+        if (window.parent !== window) { window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*'); }
       };
-
       return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
+          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }}
           onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
+          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
         </button>
       );
     };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4'
     ];
     const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
-    const slides = [
-      { type: 'welcome', learningGoals: ['Why "creative" marketing often fails while "boring" wins', 'The 5 Awareness Stages - where your customer really is', 'The Rule of One - the secret to copy that converts'] },
-      { type: 'hook', headline: 'In 1996, Nissan won every advertising award. Their sales dropped 37%.', subtext: 'Meanwhile, Toyota ran a "boring" commercial. No fancy transitions. No clever metaphors. Just a clear message about what the car does. Result? 350,000 additional units sold. This is the $100 million lesson: Clarity beats creativity. Every. Single. Time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys' },
-      { type: 'visual', title: 'The $100 Million Lesson', visualType: 'comparison', data: {
-        left: { label: 'Award Winner', value: '-37%', result: 'Nissan\'s "creative" campaign', color: '#ef4444' },
-        right: { label: 'Clear & Simple', value: '+350K', result: 'Toyota\'s "boring" ad', color: '#22c55e' },
-        center: { label: 'Lesson', value: 'Clarity', result: 'Always beats creativity', color: '#6366f1' }
-      }},
-      { type: 'content', title: 'Your Ad Has One Job: Sell', body: 'Entertainment is a bonus. Memorability without conversion is just an expensive brand exercise. The most beautiful, award-winning ad in the world is worthless if nobody buys. Before you write a single word, ask yourself: "Will this make my customer click, call, or buy?" If the answer is "no" or "maybe," kill it.' },
-      { type: 'content', title: 'The 5 Stages of Awareness', body: 'Eugene Schwartz revolutionized copywriting with a simple insight: your prospect exists somewhere on a spectrum of awareness. The fatal mistake most marketers make is assuming everyone is ready to buy. They jump to features and pricing when the audience hasn\'t even acknowledged the problem.', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eugene-schwartz.webp', personName: 'Eugene Schwartz' },
-      { type: 'cards', title: 'Where Is Your Customer?', items: [
-        { title: '1. Unaware', description: 'They don\'t know they have a problem. Your job: Pattern-interrupt. Show them a symptom they recognize but never named.' },
-        { title: '2. Problem Aware', description: 'They feel the pain but don\'t know solutions exist. Your job: Articulate their pain better than they can.' },
-        { title: '3. Solution Aware', description: 'They\'re comparing options. Your job: Explain WHY your solution works when others fail.' },
-        { title: '4. Product Aware', description: 'They know you exist. Something stopped them. Your job: Handle objections. Stack proof.' },
-        { title: '5. Most Aware', description: 'They\'re ready to buy. Your job: Make it easy. Clear CTA, strong guarantee, remove friction.' }
-      ]},
-      { type: 'example', scenario: 'Skincare Store - Awareness Mismatch', before: { label: 'Wrong Stage (Product Aware)', text: '"Our Advanced Retinol Serum uses 0.5% encapsulated retinol with hyaluronic acid. Save 20% today!"' }, after: { label: 'Right Stage (Problem Aware)', text: '"Waking up to new wrinkles? You\'re not aging faster than your friends. You\'re just missing ONE ingredient that 94% of dermatologists recommend."' }, insight: 'Match your message to their awareness. Most visitors are at Stage 2-3, not 4-5.' },
-      { type: 'content', title: 'The Rule of One', body: 'The most powerful principle in direct response copywriting is counterintuitive: less is exponentially more. Every additional idea, offer, or call-to-action dilutes your message. When you try to say everything, you say nothing. When you offer everything, they choose nothing.' },
-      { type: 'cards', title: 'The Three Sacred Rules', items: [
-        { title: 'One Reader', description: 'Write to a single specific person. Not a demographic. One human with a name and a problem that keeps them awake at 3 AM.' },
-        { title: 'One Big Idea', description: 'Your copy needs one dominant thought. Not three good ideas. One concept so compelling it demands attention and can\'t be ignored.' },
-        { title: 'One Clear Offer', description: 'Give them one path forward. Multiple CTAs create confusion and kill conversions. One action, one button, one decision.' }
-      ]},
-      { type: 'example', scenario: 'Fitness Equipment Store', before: { label: 'Multiple Offers (Confusion)', text: '"Shop our collection: Dumbbells, Resistance Bands, Yoga Mats, Kettlebells. Buy 2 get 1 free OR subscribe for 15% off OR bundle and save!"' }, after: { label: 'One Clear Offer', text: '"Build Your Dream Home Gym in One Click. This 5-piece starter kit has everything you need for full-body workouts. One price. Free shipping. 30-day money-back guarantee."' }, insight: 'One offer = clarity. Multiple offers = paralysis. Make the decision easy.' },
-      { type: 'visual', title: 'Focus Drives Conversions', visualType: 'stats', data: [
-        { value: '3x', label: 'more conversions', subtext: 'Single CTA vs. multiple CTAs' },
-        { value: '47%', label: 'bounce reduction', subtext: 'When message matches awareness' },
-        { value: '1', label: 'is the magic number', subtext: 'Reader, Idea, Offer' }
-      ]},
-      { type: 'content', title: 'The Million-Dollar Question', body: '"What does my customer lie awake at 3 AM thinking about?" This single question is worth more than any marketing course. Your customer doesn\'t care about your features or awards. They care about their problem and whether you can solve it. Your answer to this question becomes every headline, every hook, and every CTA.' },
-      { type: 'example', scenario: 'Pet Products Store', before: { label: '3 AM Answer: "Is my dog sick?"', text: '"Premium dog food with balanced nutrition and quality ingredients."' }, after: { label: '3 AM Answer Applied', text: '"Is your dog scratching until they bleed? It\'s probably not allergies. The real culprit is hiding in the ingredient list of your current food. (And yes, even the \'premium\' brands are guilty.)"' }, insight: 'When you articulate their 3 AM worry, they think: "This person GETS me."' },
-      { type: 'content', title: 'Stop Guessing. Start Knowing.', body: 'Here\'s the brutal truth: 94% of marketing decisions are based on guesses. Store owners change colors, buttons, headlines - based purely on what they THINK will work. But what if you could know EXACTLY what triggered every purchase? What almost stopped them? What made them finally click "Buy"? The answer isn\'t in your analytics. Analytics show what happened. You need to know WHY.' },
-      { type: 'implementation', title: 'The #1 Tool for Finding Your 3 AM Answer', intro: "Stop guessing what your customers want. Here\'s how to get the truth:", steps: [
-        { step: 1, title: 'Set up post-purchase surveys', description: 'Apps like Grapevine show a short survey right after checkout - when customers are most honest about why they bought.' },
-        { step: 2, title: 'Ask the right questions', description: '"How did you hear about us?" "What almost stopped you from buying?" "What made you choose us?" - These reveal your real audience.' },
-        { step: 3, title: 'Collect 50-100 responses', description: 'After about 100 responses, clear patterns emerge. You\'ll often find 80%+ saying the same unexpected thing.' },
-        { step: 4, title: 'Update your messaging', description: 'Use exact customer language in your ads and pages. Stop guessing - start knowing.' }
-      ], toolUrl: 'https://apps.shopify.com/grapevine?mref=lsbqcbva', cta: 'Get Started Free' },
-      { type: 'quiz', question: 'According to the Science of Selling, what\'s the #1 reason "creative" ads often fail?', options: ['They\'re too expensive to produce', 'They focus on entertainment over clarity', 'They use the wrong colors and fonts', 'They don\'t run long enough'], correctIndex: 1, feedback: { correct: 'Exactly! Creativity that doesn\'t convert is just an expensive brand exercise. The Nissan example proves it: they won every award but lost 37% of sales. Clarity always beats creativity.', incorrect: 'Not quite. The core lesson is that creative ads often prioritize entertainment over clarity. Remember Nissan\'s award-winning campaign that dropped sales 37%? They entertained but didn\'t sell. Clarity beats creativity every time.' }},
-      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
-    ];
+    // ============ ANIMATED COUNTER ============
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', decimals = 0, duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{decimals > 0 ? count.toFixed(decimals) : Math.round(count)}{suffix}</span>;
+    };
 
+    // ============ ICONS ============
     const Icons = {
       Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
       Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
@@ -200,8 +101,49 @@
       Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
       ExternalLink: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
       Link: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Trophy: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      TrendingUp: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+      TrendingDown: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>,
+      Users: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+      Target: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Brain: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>,
+      Lightbulb: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Eye: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      MousePointer: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>,
+      MessageCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"/></svg>,
+      AlertCircle: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
     };
 
+    // ============ AWARENESS STAGES DATA ============
+    const AWARENESS_STAGES = [
+      { stage: 1, name: 'Unaware', description: 'Don\'t know they have a problem', action: 'Pattern-interrupt. Show a symptom they recognize.', color: '#ef4444', width: '100%' },
+      { stage: 2, name: 'Problem Aware', description: 'Feel pain but don\'t know solutions exist', action: 'Articulate their pain better than they can.', color: '#f97316', width: '80%' },
+      { stage: 3, name: 'Solution Aware', description: 'Comparing options in the market', action: 'Explain WHY your solution works when others fail.', color: '#eab308', width: '60%' },
+      { stage: 4, name: 'Product Aware', description: 'Know you exist, something stopped them', action: 'Handle objections. Stack proof.', color: '#22c55e', width: '40%' },
+      { stage: 5, name: 'Most Aware', description: 'Ready to buy right now', action: 'Clear CTA. Strong guarantee. Remove friction.', color: '#6366f1', width: '20%' }
+    ];
+
+    // ============ SLIDES ============
+    const slides = [
+      { type: 'welcome', learningGoals: ['Why "creative" marketing often fails while "boring" wins', 'The 5 Awareness Stages - where your customer really is', 'The Rule of One - the secret to copy that converts', 'The 3 AM Question that reveals what your customer truly wants'] },
+      { type: 'hook', headline: 'In 1996, Nissan won every advertising award. Their sales dropped 37%.', subtext: 'Meanwhile, Toyota ran a "boring" commercial. No fancy transitions. No clever metaphors. Just a clear message about what the car does. Result? 350,000 additional units sold. This is the $100 million lesson: Clarity beats creativity. Every. Single. Time.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/CP2bp6uL9YoDEAE=.webp', brandName: 'Grapevine Surveys' },
+      { type: 'nissan-vs-toyota', title: 'The $100 Million Lesson', subtitle: 'Same year. Same industry. Opposite results.' },
+      { type: 'one-job', title: 'Your Ad Has One Job: Sell', subtitle: 'Entertainment is a bonus. Memorability without conversion is worthless.' },
+      { type: 'awareness-funnel', title: 'The 5 Stages of Awareness', subtitle: 'Eugene Schwartz\'s revolutionary insight', personImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/eugene-schwartz.webp', personName: 'Eugene Schwartz' },
+      { type: 'awareness-detail', title: 'Match Your Message to Their Stage', subtitle: 'The fatal mistake: assuming everyone is ready to buy' },
+      { type: 'awareness-example', title: 'Awareness Mismatch in Action', subtitle: 'Skincare Store Example' },
+      { type: 'rule-of-one', title: 'The Rule of One', subtitle: 'The most powerful principle in direct response copywriting' },
+      { type: 'three-rules', title: 'The Three Sacred Rules', subtitle: 'One Reader. One Idea. One Offer.' },
+      { type: 'rule-example', title: 'One Offer vs. Multiple Offers', subtitle: 'Fitness Equipment Store Example' },
+      { type: 'focus-stats', title: 'Focus Drives Conversions', subtitle: 'The data proves: less is exponentially more' },
+      { type: 'three-am-question', title: 'The Million-Dollar Question', subtitle: 'What does your customer lie awake at 3 AM thinking about?' },
+      { type: 'three-am-example', title: 'The 3 AM Question Applied', subtitle: 'Pet Products Store Example' },
+      { type: 'elite-insight', quote: 'Stop guessing what your customers want. The answer isn\'t in your analytics. Analytics show what happened. You need to know WHY.', author: 'The Science of Selling', insight: 'Post-purchase surveys reveal the truth. Apps like Grapevine show a short survey right after checkout, when customers are most honest about why they bought.' },
+      { type: 'quiz', question: 'According to the Science of Selling, what\'s the #1 reason "creative" ads often fail?', options: ['They\'re too expensive to produce', 'They focus on entertainment over clarity', 'They use the wrong colors and fonts', 'They don\'t run long enough'], correctIndex: 1, feedback: { correct: 'Exactly! Creativity that doesn\'t convert is just an expensive brand exercise. The Nissan example proves it: they won every award but lost 37% of sales. Clarity always beats creativity.', incorrect: 'Not quite. The core lesson is that creative ads often prioritize entertainment over clarity. Remember Nissan\'s award-winning campaign that dropped sales 37%? They entertained but didn\'t sell. Clarity beats creativity every time.' }},
+      { type: 'completion', sources: [{ name: 'Grapevine Post-Purchase Surveys', url: 'https://apps.shopify.com/grapevine?mref=lsbqcbva' }] }
+    ];
+
+    // ============ WELCOME SLIDE ============
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
@@ -230,6 +172,7 @@
       );
     };
 
+    // ============ HOOK SLIDE ============
     const HookSlide = ({ data }) => (
       <div className="h-full relative overflow-hidden">
         <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
@@ -239,159 +182,557 @@
           </motion.div>
           <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
         {data.brandImage && (
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
             className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 0.9 }} />
           </motion.div>
         )}
       </div>
     );
 
-    
-    const ContentSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10 relative z-10">
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">{data.title}</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">{data.body}</motion.p>
-        </div>
-        {data.personImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-[5%] z-0 pointer-events-none" style={{ height: '45%', maxHeight: '350px' }}>
-            <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
-          </motion.div>
-        )}
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
+    // ============ NISSAN VS TOYOTA SLIDE ============
+    const NissanVsToyotaSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => { const timer = setTimeout(() => setShowWinner(true), 1500); return () => clearTimeout(timer); }, []);
 
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div><span className="font-semibold text-red-700 text-sm">{data.before.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.before.text}</p>
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3"><div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div><span className="font-semibold text-green-700 text-sm">{data.after.label}</span></div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">{data.after.text}</p>
-          </motion.div>
-        </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
-      </div>
-    );
 
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'comparison') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid grid-cols-3 gap-3 md:gap-6">
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.left.color }}>{data.data.left.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.left.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="rounded-xl p-4 md:p-6 text-center transform scale-105 shadow-lg" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">{data.data.center.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-white/90 mb-2">{data.data.center.label}</div>
-                <div className="text-[10px] md:text-xs text-white/70">{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-100 rounded-xl p-4 md:p-6 text-center">
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: data.data.right.color }}>{data.data.right.value}</div>
-                <div className="text-xs md:text-sm font-semibold text-neutral-700 mb-2">{data.data.right.label}</div>
-                <div className="text-[10px] md:text-xs text-neutral-500">{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        );
-      }
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-6 text-center">
-                  <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: 'var(--accent)' }}>{stat.value}</div>
-                  <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
-                  <div className="text-xs text-neutral-400">{stat.subtext}</div>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            {/* Nissan Card */}
+            <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+              className="rounded-2xl p-6">
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444' }} className="w-10 h-10 rounded-lg flex items-center justify-center">
+                  <Icons.Trophy />
+                </div>
+                <div>
+                  <span className="text-neutral-400 text-xs uppercase tracking-wider">Award Winner</span>
+                  <h3 className="text-white font-bold">Nissan</h3>
+                </div>
+              </div>
+              <div className="text-center py-6">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: 'spring' }}
+                  className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#ef4444' }}>
+                  -<AnimatedCounter value={37} suffix="%" />
                 </motion.div>
-              ))}
-            </div>
-          </div>
-        );
-      }
-      return null;
-    };
-
-    const CardsSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-        <div className={`grid gap-3 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
-          {data.items.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 transition-colors">
-              <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-              <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    );
-
-    const ImplementationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-4">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2 bg-emerald-100 text-emerald-700">How To Do It</span>
-          <h2 className="slide-title text-2xl md:text-3xl text-black">{data.title}</h2>
-        </motion.div>
-        {data.intro && <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="text-neutral-600 text-sm md:text-base text-center mb-6">{data.intro}</motion.p>}
-        <div className="space-y-3">
-          {data.steps && data.steps.map((step, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="flex gap-4 bg-white border border-neutral-200 rounded-xl p-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>{step.step}</div>
-              <div className="flex-1">
-                <h4 className="font-semibold text-neutral-900 text-sm mb-1">{step.title}</h4>
-                <p className="text-neutral-600 text-xs leading-relaxed">{step.description}</p>
+                <p className="text-neutral-400 text-sm">Sales dropped</p>
+              </div>
+              <div className="flex items-center gap-2 text-neutral-500 text-xs mt-4">
+                <Icons.TrendingDown />
+                <span>"Creative" campaign won awards, lost customers</span>
               </div>
             </motion.div>
-          ))}
+
+            {/* Toyota Card */}
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+              className="rounded-2xl p-6">
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+              <div className="flex items-center gap-3 mb-4">
+                <div style={{ background: 'rgba(34, 197, 94, 0.2)', color: '#22c55e' }} className="w-10 h-10 rounded-lg flex items-center justify-center">
+                  <Icons.Target />
+                </div>
+                <div>
+                  <span className="text-neutral-400 text-xs uppercase tracking-wider">Clear & Simple</span>
+                  <h3 className="text-white font-bold">Toyota</h3>
+                </div>
+              </div>
+              <div className="text-center py-6">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6, type: 'spring' }}
+                  className="text-5xl md:text-6xl font-bold mb-2" style={{ color: '#22c55e' }}>
+                  +<AnimatedCounter value={350} suffix="K" />
+                </motion.div>
+                <p className="text-neutral-400 text-sm">Units sold</p>
+              </div>
+              <div className="flex items-center gap-2 text-neutral-500 text-xs mt-4">
+                <Icons.TrendingUp />
+                <span>"Boring" ad focused on clarity, won sales</span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Winner reveal */}
+          <AnimatePresence>
+            {showWinner && (
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
+                <div style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))', boxShadow: '0 0 40px rgba(99, 102, 241, 0.3)' }}
+                  className="inline-flex items-center gap-3 px-6 py-3 rounded-full text-white font-bold">
+                  <Icons.Lightbulb />
+                  <span>Clarity Always Beats Creativity</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-        {data.toolUrl && <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mt-6 text-center">
-          <a href={data.toolUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium text-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}>
-            {data.cta || 'Get Started'} <Icons.ExternalLink />
-          </a>
-        </motion.div>}
+      );
+    };
+
+    // ============ ONE JOB SLIDE ============
+    const OneJobSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-4xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+          className="rounded-2xl p-8 md:p-10 text-center max-w-2xl mx-auto">
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: 'spring' }}
+            className="w-20 h-20 rounded-2xl mx-auto mb-6 flex items-center justify-center"
+            style={{ background: 'rgba(99, 102, 241, 0.2)' }}>
+            <Icons.MousePointer />
+          </motion.div>
+
+          <h3 className="text-white text-xl md:text-2xl font-bold mb-4">Before You Write a Single Word, Ask:</h3>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+            className="text-2xl md:text-3xl font-bold mb-6" style={{ color: 'var(--accent)' }}>
+            "Will this make my customer click, call, or buy?"
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+            className="flex items-center justify-center gap-4 text-neutral-400 text-sm">
+            <span className="flex items-center gap-2"><Icons.X /> "Maybe" = Kill it</span>
+            <span className="flex items-center gap-2"><Icons.X /> "No" = Kill it</span>
+            <span className="flex items-center gap-2" style={{ color: '#22c55e' }}><Icons.Check /> "Yes" = Ship it</span>
+          </motion.div>
+        </motion.div>
       </div>
     );
 
+    // ============ AWARENESS FUNNEL SLIDE ============
+    const AwarenessFunnelSlide = ({ data }) => {
+      const [activeStage, setActiveStage] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => { setActiveStage(prev => (prev + 1) % 5); }, 2000);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="flex flex-col items-center gap-2 mb-6">
+            {AWARENESS_STAGES.map((stage, i) => (
+              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
+                onClick={() => setActiveStage(i)}
+                style={{
+                  width: stage.width,
+                  background: activeStage === i ? `linear-gradient(135deg, ${stage.color}, ${stage.color}dd)` : 'linear-gradient(135deg, #1a1a1a, #2d2d2d)',
+                  borderLeft: `4px solid ${stage.color}`,
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease'
+                }}
+                className="rounded-lg p-3 md:p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+                      style={{ background: stage.color }}>{stage.stage}</span>
+                    <div>
+                      <span className="text-white font-semibold text-sm">{stage.name}</span>
+                      <p className="text-neutral-400 text-xs">{stage.description}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          {data.personImage && (
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}
+              className="absolute bottom-0 right-[5%] z-0 pointer-events-none hidden md:block" style={{ height: '35%', maxHeight: '250px' }}>
+              <img src={data.personImage} alt={data.personName || ''} className="h-full w-auto object-contain object-bottom" />
+            </motion.div>
+          )}
+        </div>
+      );
+    };
+
+    // ============ AWARENESS DETAIL SLIDE ============
+    const AwarenessDetailSlide = ({ data }) => {
+      const [activeStage, setActiveStage] = useState(0);
+      useEffect(() => {
+        const interval = setInterval(() => { setActiveStage(prev => (prev + 1) % 5); }, 3000);
+        return () => clearInterval(interval);
+      }, []);
+      const stage = AWARENESS_STAGES[activeStage];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          {/* Stage selector */}
+          <div className="flex justify-center gap-2 mb-6">
+            {AWARENESS_STAGES.map((s, i) => (
+              <button key={i} onClick={() => setActiveStage(i)}
+                className="w-10 h-10 rounded-lg font-bold text-sm transition-all"
+                style={{
+                  background: activeStage === i ? s.color : 'rgba(0,0,0,0.1)',
+                  color: activeStage === i ? 'white' : '#666'
+                }}>
+                {s.stage}
+              </button>
+            ))}
+          </div>
+
+          {/* Active stage detail */}
+          <AnimatePresence mode="wait">
+            <motion.div key={activeStage} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+              style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+              className="rounded-2xl p-6 md:p-8">
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stage.color}, transparent)` }} />
+
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center text-2xl font-bold text-white"
+                  style={{ background: stage.color }}>{stage.stage}</div>
+                <div>
+                  <h3 className="text-white text-xl font-bold">{stage.name}</h3>
+                  <p className="text-neutral-400">{stage.description}</p>
+                </div>
+              </div>
+
+              <div style={{ background: 'rgba(255,255,255,0.05)' }} className="rounded-xl p-4">
+                <span className="text-neutral-500 text-xs uppercase tracking-wider">Your Job</span>
+                <p className="text-white font-medium mt-1">{stage.action}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // ============ AWARENESS EXAMPLE SLIDE ============
+    const AwarenessExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-5">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-400 text-sm">Wrong Stage (Product Aware)</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">"Our Advanced Retinol Serum uses 0.5% encapsulated retinol with hyaluronic acid. Save 20% today!"</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-5">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-green-400 text-sm">Right Stage (Problem Aware)</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">"Waking up to new wrinkles? You're not aging faster than your friends. You're just missing ONE ingredient that 94% of dermatologists recommend."</p>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}
+          className="rounded-xl p-4 text-center">
+          <p className="text-white text-sm flex items-center justify-center gap-2">
+            <Icons.Lightbulb />
+            Match your message to their awareness. Most visitors are at Stage 2-3, not 4-5.
+          </p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ RULE OF ONE SLIDE ============
+    const RuleOfOneSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+          <h2 className="slide-title text-2xl md:text-4xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+          className="rounded-2xl p-8 text-center">
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <p className="text-neutral-400 mb-6">The counterintuitive truth:</p>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.4 }}
+              className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-red-400 mb-2">Many Ideas</div>
+              <div className="text-neutral-500 text-sm">= Say Nothing</div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+              className="text-3xl text-neutral-600">vs</motion.div>
+
+            <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8 }}
+              className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-green-400 mb-2">One Idea</div>
+              <div className="text-neutral-500 text-sm">= Say Everything</div>
+            </motion.div>
+          </div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
+            className="text-neutral-300 text-sm max-w-lg mx-auto">
+            Every additional idea, offer, or call-to-action dilutes your message. When you try to say everything, you say nothing. When you offer everything, they choose nothing.
+          </motion.p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ THREE RULES SLIDE ============
+    const ThreeRulesSlide = ({ data }) => {
+      const rules = [
+        { title: 'One Reader', description: 'Write to a single specific person. Not a demographic. One human with a name and a problem that keeps them awake at 3 AM.', icon: Icons.Users, color: '#ef4444' },
+        { title: 'One Big Idea', description: 'Your copy needs one dominant thought. Not three good ideas. One concept so compelling it demands attention.', icon: Icons.Lightbulb, color: '#eab308' },
+        { title: 'One Clear Offer', description: 'Give them one path forward. Multiple CTAs create confusion and kill conversions. One action, one button, one decision.', icon: Icons.MousePointer, color: '#22c55e' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {rules.map((rule, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+                className="rounded-xl p-5">
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${rule.color}, transparent)` }} />
+                <div className="w-12 h-12 rounded-xl mb-4 flex items-center justify-center" style={{ background: `${rule.color}20`, color: rule.color }}>
+                  <rule.icon />
+                </div>
+                <h3 className="text-white font-bold mb-2">{rule.title}</h3>
+                <p className="text-neutral-400 text-sm leading-relaxed">{rule.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ RULE EXAMPLE SLIDE ============
+    const RuleExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-5">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-400 text-sm">Multiple Offers (Confusion)</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">"Shop our collection: Dumbbells, Resistance Bands, Yoga Mats, Kettlebells. Buy 2 get 1 free OR subscribe for 15% off OR bundle and save!"</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-5">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-green-400 text-sm">One Clear Offer</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">"Build Your Dream Home Gym in One Click. This 5-piece starter kit has everything you need for full-body workouts. One price. Free shipping. 30-day money-back guarantee."</p>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}
+          className="rounded-xl p-4 text-center">
+          <p className="text-white text-sm flex items-center justify-center gap-2">
+            <Icons.Lightbulb />
+            One offer = clarity. Multiple offers = paralysis. Make the decision easy.
+          </p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ FOCUS STATS SLIDE ============
+    const FocusStatsSlide = ({ data }) => {
+      const stats = [
+        { value: 3, suffix: 'x', label: 'more conversions', subtext: 'Single CTA vs. multiple CTAs', color: '#22c55e' },
+        { value: 47, suffix: '%', label: 'bounce reduction', subtext: 'When message matches awareness', color: '#6366f1' },
+        { value: 1, suffix: '', label: 'is the magic number', subtext: 'Reader, Idea, Offer', color: '#eab308' }
+      ];
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+            <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
+                style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden', boxShadow: `0 0 40px ${stat.color}20` }}
+                className="rounded-2xl p-6 text-center">
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${stat.color}, transparent)` }} />
+                <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: stat.color }}>
+                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                </div>
+                <div className="text-white font-semibold text-sm mb-1">{stat.label}</div>
+                <div className="text-neutral-500 text-xs">{stat.subtext}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // ============ THREE AM QUESTION SLIDE ============
+    const ThreeAMQuestionSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <h2 className="slide-title text-2xl md:text-3xl text-black mb-2">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+          className="rounded-2xl p-8 text-center max-w-2xl mx-auto">
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4, type: 'spring' }}
+            className="text-6xl md:text-8xl font-bold mb-4" style={{ color: 'var(--accent)' }}>
+            3:00 AM
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
+            className="text-xl md:text-2xl text-white font-bold mb-4">
+            What does your customer lie awake thinking about?
+          </motion.p>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
+            className="text-neutral-400 text-sm max-w-lg mx-auto">
+            This single question is worth more than any marketing course. Your customer doesn't care about your features or awards. They care about their problem and whether you can solve it.
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }}
+            className="mt-6 flex items-center justify-center gap-2 text-sm" style={{ color: 'var(--accent)' }}>
+            <Icons.Lightbulb />
+            <span>Your answer becomes every headline, hook, and CTA</span>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ THREE AM EXAMPLE SLIDE ============
+    const ThreeAMExampleSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: 'rgba(var(--accent-rgb), 0.1)', color: 'var(--accent)' }}>Real Example</span>
+          <h2 className="slide-title text-xl md:text-2xl text-black">{data.title}</h2>
+          <p className="text-neutral-500 text-sm">{data.subtitle}</p>
+        </motion.div>
+
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+          style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-dark))' }}
+          className="rounded-xl p-4 text-center mb-4">
+          <p className="text-white text-sm font-medium">3 AM Answer: "Is my dog sick?"</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-5">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #ef4444, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
+              <span className="font-semibold text-red-400 text-sm">Ignoring the 3 AM Answer</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">"Premium dog food with balanced nutrition and quality ingredients."</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
+            style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden' }}
+            className="rounded-xl p-5">
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #22c55e, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
+              <span className="font-semibold text-green-400 text-sm">3 AM Answer Applied</span>
+            </div>
+            <p className="text-neutral-300 text-sm leading-relaxed italic">"Is your dog scratching until they bleed? It's probably not allergies. The real culprit is hiding in the ingredient list of your current food."</p>
+          </motion.div>
+        </div>
+
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)' }}
+          className="rounded-xl p-4 text-center">
+          <p className="text-neutral-300 text-sm flex items-center justify-center gap-2">
+            <Icons.Brain />
+            When you articulate their 3 AM worry, they think: "This person GETS me."
+          </p>
+        </motion.div>
+      </div>
+    );
+
+    // ============ ELITE INSIGHT SLIDE ============
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}
+          style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', position: 'relative', overflow: 'hidden', boxShadow: '0 0 60px rgba(99, 102, 241, 0.2)' }}
+          className="rounded-2xl p-8 md:p-10">
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, var(--accent), transparent)' }} />
+
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }}
+            className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center"
+            style={{ background: 'rgba(99, 102, 241, 0.2)', color: 'var(--accent)' }}>
+            <Icons.Brain />
+          </motion.div>
+
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="text-xl md:text-2xl text-white font-medium text-center mb-6 leading-relaxed">
+            "{data.quote}"
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            className="text-center mb-6">
+            <span className="text-neutral-500 text-sm">— {data.author}</span>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+            style={{ background: 'rgba(99, 102, 241, 0.1)', borderLeft: '3px solid var(--accent)' }}
+            className="rounded-lg p-4">
+            <p className="text-neutral-300 text-sm leading-relaxed">{data.insight}</p>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+
+    // ============ QUIZ SLIDE ============
     const QuizSlide = ({ data, onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
@@ -435,6 +776,7 @@
       );
     };
 
+    // ============ COMPLETION SLIDE ============
     const CompletionSlide = ({ data }) => (
       <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-8">
         <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-16 h-16 rounded-xl flex items-center justify-center mb-4 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
@@ -461,6 +803,7 @@
       </div>
     );
 
+    // ============ LESSON APP ============
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(getInitialSlide());
       const [direction, setDirection] = useState(1);
@@ -474,14 +817,8 @@
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
       useEffect(() => {
-        window.parent.postMessage({
-          type: 'LESSON_SLIDE_UPDATE',
-          slideIndex: currentSlide,
-          slideType: slides[currentSlide]?.type,
-          lessonSlug: LESSON_CONFIG.id
-        }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
@@ -513,11 +850,18 @@
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide data={slide} />;
-          case 'content': return <ContentSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
-          case 'cards': return <CardsSlide data={slide} />;
-          case 'implementation': return <ImplementationSlide data={slide} />;
+          case 'nissan-vs-toyota': return <NissanVsToyotaSlide data={slide} />;
+          case 'one-job': return <OneJobSlide data={slide} />;
+          case 'awareness-funnel': return <AwarenessFunnelSlide data={slide} />;
+          case 'awareness-detail': return <AwarenessDetailSlide data={slide} />;
+          case 'awareness-example': return <AwarenessExampleSlide data={slide} />;
+          case 'rule-of-one': return <RuleOfOneSlide data={slide} />;
+          case 'three-rules': return <ThreeRulesSlide data={slide} />;
+          case 'rule-example': return <RuleExampleSlide data={slide} />;
+          case 'focus-stats': return <FocusStatsSlide data={slide} />;
+          case 'three-am-question': return <ThreeAMQuestionSlide data={slide} />;
+          case 'three-am-example': return <ThreeAMExampleSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
           case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide data={slide} />;
           default: return null;
@@ -557,7 +901,8 @@
       );
     };
 
-    ReactDOM.render(<LessonApp />, document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<LessonApp />);
   </script>
 </body>
 </html>

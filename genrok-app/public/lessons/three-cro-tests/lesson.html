@@ -1,573 +1,700 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The 3 CRO Tests That Generated $2.8M</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #FFFFFF;
-            color: #111827;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 24px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 8px 16px;
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            color: white;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-bottom: 24px;
-        }
-
-        h1 {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 24px;
-            color: #000000;
-        }
-
-        .subtitle {
-            font-size: 20px;
-            color: #6B7280;
-            margin-bottom: 48px;
-            line-height: 1.6;
-        }
-
-        .section {
-            margin: 80px 0;
-        }
-
-        h2 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: #000000;
-        }
-
-        p {
-            font-size: 18px;
-            color: #374151;
-            margin-bottom: 24px;
-            line-height: 1.8;
-        }
-
-        .highlight {
-            background: linear-gradient(120deg, #D1FAE5 0%, #A7F3D0 100%);
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin: 60px 0;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-            border-radius: 20px;
-            padding: 32px;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 36px;
-            font-weight: 800;
-            color: #10B981;
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 4px;
-        }
-
-        .stat-subtext {
-            font-size: 12px;
-            color: #9CA3AF;
-        }
-
-        .test-card {
-            background: white;
-            border: 3px solid #E5E7EB;
-            border-radius: 24px;
-            padding: 40px;
-            margin: 40px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .test-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background: linear-gradient(90deg, #10B981 0%, #059669 100%);
-        }
-
-        .test-number {
-            display: inline-block;
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            color: white;
-            border-radius: 12px;
-            font-size: 24px;
-            font-weight: 800;
-            text-align: center;
-            line-height: 48px;
-            margin-bottom: 20px;
-        }
-
-        .test-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 16px;
-            color: #000000;
-        }
-
-        .test-result {
-            display: inline-block;
-            padding: 8px 16px;
-            background: #D1FAE5;
-            color: #059669;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin: 40px 0;
-        }
-
-        .comparison-card {
-            background: white;
-            border-radius: 20px;
-            padding: 32px;
-            border: 2px solid #E5E7EB;
-        }
-
-        .comparison-card.bad {
-            border-color: #FCA5A5;
-            background: #FEF2F2;
-        }
-
-        .comparison-card.good {
-            border-color: #86EFAC;
-            background: #F0FDF4;
-        }
-
-        .comparison-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            margin-bottom: 16px;
-        }
-
-        .comparison-card.bad .comparison-icon {
-            background: #FEE2E2;
-        }
-
-        .comparison-card.good .comparison-icon {
-            background: #D1FAE5;
-        }
-
-        .comparison-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .comparison-card.bad .comparison-title {
-            color: #DC2626;
-        }
-
-        .comparison-card.good .comparison-title {
-            color: #059669;
-        }
-
-        .comparison-list {
-            list-style: none;
-            margin-bottom: 16px;
-        }
-
-        .comparison-list li {
-            font-size: 15px;
-            color: #374151;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .comparison-insight {
-            font-size: 14px;
-            font-style: italic;
-            color: #6B7280;
-        }
-
-        .holy-shit {
-            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-            border-radius: 24px;
-            padding: 60px 40px;
-            margin: 80px 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            color: white;
-        }
-
-        .holy-shit::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        .holy-shit-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .holy-shit h2 {
-            color: white;
-            font-size: 36px;
-            margin-bottom: 24px;
-        }
-
-        .holy-shit p {
-            color: rgba(255,255,255,0.9);
-            font-size: 20px;
-            line-height: 1.8;
-        }
-
-        .callout {
-            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
-            border-left: 4px solid #10B981;
-            border-radius: 12px;
-            padding: 32px;
-            margin: 40px 0;
-        }
-
-        .callout-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #065F46;
-            margin-bottom: 12px;
-        }
-
-        .callout-text {
-            font-size: 17px;
-            color: #064E3B;
-            line-height: 1.7;
-        }
-
-        .badge-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin: 40px 0;
-        }
-
-        .badge-item {
-            background: white;
-            border: 2px solid #E5E7EB;
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .badge-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-            border-color: #10B981;
-        }
-
-        .badge-name {
-            font-size: 18px;
-            font-weight: 800;
-            color: #10B981;
-            margin-bottom: 8px;
-        }
-
-        .badge-desc {
-            font-size: 14px;
-            color: #6B7280;
-            line-height: 1.5;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 36px;
-            }
-
-            h2 {
-                font-size: 28px;
-            }
-
-            .stats-grid,
-            .comparison-grid,
-            .badge-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 40px 20px;
-            }
-        }
-
-        .fade-up {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .visible {
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.8s cubic-bezier(0.25, 0.4, 0.25, 1);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 3 CRO Tests That Generated $2.8M | Quantum Scale</title>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" defer></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" defer></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js" defer></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js" defer></script>
+  <script src="../shared/greetings.js" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --accent: #10b981; --accent-dark: #059669; --accent-light: #34d399; --accent-rgb: 16, 185, 129; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: transparent; -webkit-font-smoothing: antialiased; }
+    .title-font { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    h1, h2, h3, .slide-title { font-family: 'Fraunces', serif; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; }
+    ::selection { background: var(--accent); color: white; }
+    .slide-scroll::-webkit-scrollbar { display: none; }
+    .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="fade-up">
-            <span class="badge">Conversion Optimization</span>
-            <h1>The 3 CRO Tests That Generated $2.8M</h1>
-            <p class="subtitle">Three simple changes that compound into massive revenue. The Oodie implemented these exact tests and the results were staggering.</p>
-        </div>
+  <div id="root"></div>
 
-        <div class="stats-grid fade-up">
-            <div class="stat-card">
-                <div class="stat-value">$1.73M</div>
-                <div class="stat-label">Floating Add-to-Cart</div>
-                <div class="stat-subtext">CTA always visible</div>
+  <script type="text/babel">
+    const { motion, AnimatePresence } = window.Motion;
+    const { useState, useEffect, useCallback, useMemo } = React;
+
+    const getUserName = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('userName') || 'Builder';
+    };
+
+    const LESSON_CONFIG = {
+      id: 'three-cro-tests',
+      title: 'The 3 CRO Tests That Generated $2.8M',
+      description: 'Three simple changes that compound into massive revenue.',
+      accentColor: '#10b981',
+      duration: '6 min',
+      nextLesson: { id: 'three-growth-levers', title: 'The Three Growth Levers', teaser: 'The only three ways to grow any business - and which one to focus on first.' }
+    };
+
+    let __isAdmin = false;
+    window.addEventListener('message', function(e) { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      const handleReport = (e) => {
+        e.stopPropagation(); e.preventDefault();
+        if (window.parent !== window) window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
+      };
+      return (
+        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1} (${slideType})`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s', boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }} onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/><path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/><path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/></svg>
+        </button>
+      );
+    };
+
+    const celebrationGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
+    ];
+    const empathyGifs = [
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4'
+    ];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+
+    const slides = [
+      { type: 'welcome', learningGoals: ['The floating CTA that generated $1.73M extra revenue', 'Why social proof placement matters more than you think', 'The badge psychology that added $1.1M to The Oodie'] },
+      { type: 'hook', headline: 'The Oodie implemented three simple changes. Less than one day of work. The result? $2.8 million in additional revenue.', subtext: 'These are not complex A/B tests. Not expensive redesigns. Just three friction-removal tactics that compound into massive results.', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/The_Oodie_logo.png', brandName: 'The Oodie' },
+      { type: 'revenue-reveal', title: 'The $2.8M Breakdown', tests: [
+        { name: 'Floating Add-to-Cart', revenue: '1.73', suffix: 'M', desc: 'CTA always visible' },
+        { name: 'Novelty Badges', revenue: '1.1', suffix: 'M', desc: 'NEW & BESTSELLER tags' },
+        { name: 'Social Proof Move', revenue: '+', suffix: 'Trust', desc: 'Reviews under title' }
+      ]},
+      { type: 'friction-reveal', title: 'The Problem: Invisible Friction', frictionTypes: [
+        { icon: 'Eye', label: 'Action Friction', desc: 'The buy button disappears when they scroll' },
+        { icon: 'Shield', label: 'Trust Friction', desc: 'Reviews are buried at the bottom' },
+        { icon: 'Target', label: 'Attention Friction', desc: 'All products look identical' }
+      ]},
+      { type: 'test-detail', testNum: 1, title: 'The Floating Add-to-Cart', revenue: '1.73M', problem: 'When customers scroll down to read descriptions, check reviews, or view more images...', disaster: 'The buy button disappears.', solution: 'Make the "Add to Cart" button float. Always visible. Always one tap away.', insight: 'That 2-second delay of scrolling back up? That is where conversions die.' },
+      { type: 'button-comparison', title: 'Static vs Floating', staticFlow: ['Customer scrolls to read reviews', 'Button disappears from view', 'Decision moment passes', 'Must scroll back up to buy'], floatingFlow: ['Customer scrolls freely', 'Button follows along bottom', 'Decision moment = action moment', 'Zero friction between want and buy'] },
+      { type: 'test-detail', testNum: 2, title: 'Strategic Social Proof Placement', revenue: 'Trust', problem: 'Most stores put reviews at the bottom of the page.', disaster: 'By the time customers scroll there, they have already decided - or left.', solution: 'Move star rating and review count directly under product title. Before price. Before features.', insight: '"4.8 stars from 2,847 reviews" frames everything that follows.' },
+      { type: 'test-detail', testNum: 3, title: 'Novelty & Urgency Badges', revenue: '1.1M', problem: 'In a sea of identical product images...', disaster: 'Nothing stands out. No pattern interrupts. No urgency.', solution: 'Simple badges on product images: NEW, BESTSELLER, LIMITED, BACK IN STOCK.', insight: 'Your brain is wired to notice what is different. Badges signal: "This one is special."' },
+      { type: 'badge-grid', title: 'Badge Psychology', badges: [
+        { name: 'NEW', desc: 'Triggers curiosity and FOMO', color: '#10b981' },
+        { name: 'BESTSELLER', desc: 'Social proof in two words', color: '#3b82f6' },
+        { name: 'LIMITED', desc: 'Scarcity trigger', color: '#f59e0b' },
+        { name: 'BACK IN STOCK', desc: 'Implies previous demand', color: '#8b5cf6' },
+        { name: 'STAFF PICK', desc: 'Insider recommendation', color: '#ec4899' },
+        { name: 'TRENDING', desc: 'Real-time social proof', color: '#ef4444' }
+      ]},
+      { type: 'friction-map', title: 'Why These Three Work Together', frictions: [
+        { type: 'action', test: 'Floating CTA', removes: 'I want to buy, but the button is gone', icon: 'MousePointer' },
+        { type: 'trust', test: 'Social Proof', removes: 'Is this actually good?', icon: 'Shield' },
+        { type: 'attention', test: 'Badges', removes: 'Which product should I look at?', icon: 'Target' }
+      ]},
+      { type: 'compound-effect', title: 'The Compound Effect', equation: { floating: '+$1.73M', badges: '+$1.1M', total: '$2.8M' }, insight: 'Three simple tests. Less than one day to implement. The compound effect is real.' },
+      { type: 'impact-stats', title: 'The Numbers', stats: [
+        { value: '2.8', prefix: '$', suffix: 'M', label: 'Total Revenue', desc: 'From 3 simple tests' },
+        { value: '1', suffix: ' Day', label: 'Implementation', desc: 'Less than a day of work' },
+        { value: '3', suffix: '', label: 'Friction Types', desc: 'Action, Trust, Attention' }
+      ]},
+      { type: 'elite-insight', quote: 'Big revenue gains do not require big changes. Three simple tests generated $2.8M for The Oodie.', author: 'The Oodie Case Study', actions: ['Start with floating CTAs (highest impact)', 'Move reviews under product title', 'Add NEW/BESTSELLER badges to top products'] },
+      { type: 'run-your-tests' },
+      { type: 'quiz', question: 'Which CRO test generated the most additional revenue for The Oodie?', options: ['Social proof placement under title', 'Floating add-to-cart button ($1.73M)', 'Novelty badges on product images', 'All three tests equally'], correctIndex: 1, feedback: { correct: 'The floating add-to-cart button alone generated $1.73M in additional revenue. When customers scroll and the buy button stays visible, decision moments become action moments instantly.', incorrect: 'The floating add-to-cart button generated the most - $1.73M. By keeping the buy button always visible, The Oodie eliminated the friction between "I want this" and "I bought this."' }},
+      { type: 'completion' }
+    ];
+
+    const Icons = {
+      ArrowLeft: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
+      ArrowRight: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
+      Clock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Eye: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>,
+      Shield: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+      Target: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      MousePointer: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 3 7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/><path d="m13 13 6 6"/></svg>,
+      DollarSign: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+      TrendingUp: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+      XCircle: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>,
+      CheckCircle: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>,
+      Zap: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      AlertTriangle: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+      Lightbulb: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Quote: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>,
+      Plus: () => <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    };
+
+    const AnimatedCounter = ({ value, duration = 2000, prefix = '', suffix = '', decimals = 0 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const end = parseFloat(value);
+        const incrementTime = duration / 60;
+        const step = end / 60;
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= end) { setCount(end); clearInterval(timer); }
+          else { setCount(start); }
+        }, incrementTime);
+        return () => clearInterval(timer);
+      }, [value, duration]);
+      return <span>{prefix}{count.toFixed(decimals)}{suffix}</span>;
+    };
+
+    // ============================================
+    // ELITE CUSTOM SLIDE COMPONENTS
+    // ============================================
+
+    // 1. Revenue Reveal Slide - $2.8M breakdown with AnimatedCounter
+    const RevenueRevealSlide = ({ data }) => {
+      const [showTotal, setShowTotal] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowTotal(true), 2500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl w-full mb-8">
+            {data.tests.map((test, i) => (
+              <motion.div key={test.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '28px', textAlign: 'center', position: 'relative', boxShadow: '0 0 30px rgba(16, 185, 129, 0.15)' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', borderRadius: '20px 20px 0 0' }} />
+                <div style={{ fontSize: '42px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: '#10b981', lineHeight: 1 }}>{test.revenue === '+' ? <span>+{test.suffix}</span> : <span>$<AnimatedCounter value={test.revenue} decimals={2} duration={2000} />{test.suffix}</span>}</div>
+                <p className="text-white font-semibold mt-2">{test.name}</p>
+                <p className="text-neutral-400 text-sm mt-1">{test.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+          <AnimatePresence>
+            {showTotal && (
+              <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '16px', padding: '20px 40px', boxShadow: '0 0 40px rgba(16, 185, 129, 0.4)' }}>
+                <span style={{ fontSize: '32px', fontWeight: '900', color: 'white' }}>= $2.8M Total</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    // 2. Friction Reveal Slide - 3 friction types
+    const FrictionRevealSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % data.frictionTypes.length);
+        }, 2500);
+        return () => clearInterval(timer);
+      }, [data.frictionTypes.length]);
+
+      const IconComponents = { Eye: Icons.Eye, Shield: Icons.Shield, Target: Icons.Target };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto w-full">
+            {data.frictionTypes.map((friction, i) => {
+              const isActive = i === activeIndex;
+              const IconComp = IconComponents[friction.icon];
+              return (
+                <motion.div key={friction.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.1 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', boxShadow: isActive ? '0 0 40px rgba(239, 68, 68, 0.3)' : 'none', transition: 'box-shadow 0.3s' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: isActive ? 'linear-gradient(90deg, transparent, #ef4444, transparent)' : 'linear-gradient(90deg, transparent, #555, transparent)', borderRadius: '16px 16px 0 0', transition: 'background 0.3s' }} />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div style={{ color: isActive ? '#ef4444' : '#666', transition: 'color 0.3s' }}>{IconComp && <IconComp />}</div>
+                    <h3 className="text-white font-bold">{friction.label}</h3>
+                  </div>
+                  <p className="text-neutral-400 text-sm">{friction.desc}</p>
+                  {isActive && (
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} style={{ position: 'absolute', top: '-8px', right: '-8px', background: '#ef4444', color: 'white', padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: '600' }}>FRICTION</motion.div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 3. Test Detail Slide - Individual test with problem/solution
+    const TestDetailSlide = ({ data }) => {
+      const [showSolution, setShowSolution] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowSolution(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <div className="max-w-3xl mx-auto w-full">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-3 mb-4">
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '20px', fontWeight: 'bold' }}>{data.testNum}</div>
+              <div style={{ background: '#10b981', color: 'white', padding: '4px 12px', borderRadius: '8px', fontSize: '12px', fontWeight: '600' }}>+${data.revenue}</div>
+            </motion.div>
+            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="slide-title text-2xl md:text-3xl text-black mb-6">{data.title}</motion.h2>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} style={{ background: '#fef2f2', border: '2px solid #fecaca', borderRadius: '16px', padding: '20px', marginBottom: '16px' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <div style={{ color: '#ef4444' }}><Icons.AlertTriangle /></div>
+                <span style={{ color: '#ef4444', fontSize: '12px', fontWeight: '600', textTransform: 'uppercase' }}>The Problem</span>
+              </div>
+              <p className="text-neutral-600">{data.problem}</p>
+              <p className="text-red-600 font-semibold mt-2">{data.disaster}</p>
+            </motion.div>
+            <AnimatePresence>
+              {showSolution && (
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative', boxShadow: '0 0 30px rgba(16, 185, 129, 0.25)' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', borderRadius: '16px 16px 0 0' }} />
+                  <div className="flex items-center gap-2 mb-2">
+                    <div style={{ color: '#10b981' }}><Icons.CheckCircle /></div>
+                    <span style={{ color: '#10b981', fontSize: '12px', fontWeight: '600', textTransform: 'uppercase' }}>The Solution</span>
+                  </div>
+                  <p className="text-white mb-3">{data.solution}</p>
+                  <p className="text-neutral-400 text-sm italic">{data.insight}</p>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5 }} style={{ position: 'absolute', top: '-10px', right: '-10px', background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', fontWeight: '700', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)' }}>FIX</motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    // 4. Button Comparison Slide - Static vs Floating
+    const ButtonComparisonSlide = ({ data }) => {
+      const [showWinner, setShowWinner] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowWinner(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} style={{ background: '#fef2f2', border: '2px solid #fecaca', borderRadius: '16px', padding: '24px' }}>
+              <div className="flex items-center gap-2 mb-4">
+                <div style={{ color: '#ef4444' }}><Icons.XCircle /></div>
+                <span style={{ color: '#ef4444', fontSize: '14px', fontWeight: '600' }}>Static Button</span>
+              </div>
+              <div className="space-y-3">
+                {data.staticFlow.map((step, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: '#fecaca', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', fontSize: '12px', fontWeight: '700' }}>{i + 1}</div>
+                    <span className="text-neutral-600 text-sm">{step}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px', position: 'relative', boxShadow: showWinner ? '0 0 40px rgba(16, 185, 129, 0.3)' : 'none', transition: 'box-shadow 0.3s' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', borderRadius: '16px 16px 0 0' }} />
+              <div className="flex items-center gap-2 mb-4">
+                <div style={{ color: '#10b981' }}><Icons.CheckCircle /></div>
+                <span style={{ color: '#10b981', fontSize: '14px', fontWeight: '600' }}>Floating Button</span>
+              </div>
+              <div className="space-y-3">
+                {data.floatingFlow.map((step, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10b981', fontSize: '12px', fontWeight: '700' }}>{i + 1}</div>
+                    <span className="text-neutral-300 text-sm">{step}</span>
+                  </div>
+                ))}
+              </div>
+              {showWinner && (
+                <motion.div initial={{ scale: 0, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} style={{ position: 'absolute', top: '-12px', right: '-12px', background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white', padding: '6px 14px', borderRadius: '12px', fontSize: '12px', fontWeight: '700', boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)' }}>+$1.73M</motion.div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      );
+    };
+
+    // 5. Badge Grid Slide - 6 badges with auto-cycling
+    const BadgeGridSlide = ({ data }) => {
+      const [activeIndex, setActiveIndex] = useState(0);
+      useEffect(() => {
+        const timer = setInterval(() => {
+          setActiveIndex(prev => (prev + 1) % data.badges.length);
+        }, 2000);
+        return () => clearInterval(timer);
+      }, [data.badges.length]);
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto w-full">
+            {data.badges.map((badge, i) => (
+              <motion.div key={badge.name} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', textAlign: 'center', position: 'relative', boxShadow: i === activeIndex ? `0 0 30px ${badge.color}40` : 'none', transition: 'box-shadow 0.3s' }}>
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: i === activeIndex ? `linear-gradient(90deg, transparent, ${badge.color}, transparent)` : 'transparent', borderRadius: '16px 16px 0 0', transition: 'background 0.3s' }} />
+                <div style={{ background: badge.color, color: 'white', padding: '6px 14px', borderRadius: '8px', fontSize: '14px', fontWeight: '700', display: 'inline-block', marginBottom: '12px' }}>{badge.name}</div>
+                <p className="text-neutral-400 text-sm">{badge.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      );
+    };
+
+    // 6. Friction Map Slide - 3 tests mapped to 3 frictions
+    const FrictionMapSlide = ({ data }) => {
+      const IconComponents = { MousePointer: Icons.MousePointer, Shield: Icons.Shield, Target: Icons.Target };
+      const colors = { action: '#10b981', trust: '#3b82f6', attention: '#f59e0b' };
+
+      return (
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-8">{data.title}</motion.h2>
+          <div className="space-y-4 max-w-2xl mx-auto w-full">
+            {data.frictions.map((friction, i) => {
+              const IconComp = IconComponents[friction.icon];
+              const color = colors[friction.type];
+              return (
+                <motion.div key={friction.test} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '20px', position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: `linear-gradient(90deg, transparent, ${color}, transparent)`, borderRadius: '16px 16px 0 0' }} />
+                  <div className="flex items-center gap-4">
+                    <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: `${color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: color, flexShrink: 0 }}>{IconComp && <IconComp />}</div>
+                    <div className="flex-1">
+                      <div style={{ color: color, fontSize: '12px', fontWeight: '600', textTransform: 'uppercase', marginBottom: '4px' }}>{friction.test}</div>
+                      <p className="text-white font-medium">Removes: "{friction.removes}"</p>
+                    </div>
+                    <div style={{ color: '#10b981' }}><Icons.CheckCircle /></div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    };
+
+    // 7. Compound Effect Slide - Equation visualization
+    const CompoundEffectSlide = ({ data }) => {
+      const [showTotal, setShowTotal] = useState(false);
+      useEffect(() => {
+        const timer = setTimeout(() => setShowTotal(true), 2000);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">{data.title}</motion.h2>
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="flex items-center gap-4 md:gap-6 flex-wrap justify-center">
+            <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px 32px', textAlign: 'center' }}>
+              <div style={{ color: '#10b981', fontSize: '28px', fontWeight: '900' }}>{data.equation.floating}</div>
+              <p className="text-neutral-400 text-sm mt-1">Floating CTA</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-value">$1.1M</div>
-                <div class="stat-label">Novelty Badges</div>
-                <div class="stat-subtext">NEW & BESTSELLER tags</div>
+            <div style={{ color: '#10b981', fontSize: '32px', fontWeight: '700' }}><Icons.Plus /></div>
+            <div style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '16px', padding: '24px 32px', textAlign: 'center' }}>
+              <div style={{ color: '#10b981', fontSize: '28px', fontWeight: '900' }}>{data.equation.badges}</div>
+              <p className="text-neutral-400 text-sm mt-1">Badges</p>
             </div>
-            <div class="stat-card">
-                <div class="stat-value">3</div>
-                <div class="stat-label">Simple Tests</div>
-                <div class="stat-subtext">Less than 1 day to implement</div>
+            <AnimatePresence>
+              {showTotal && (
+                <>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} style={{ color: '#10b981', fontSize: '32px', fontWeight: '700' }}>=</motion.div>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3 }} style={{ background: 'linear-gradient(135deg, #10b981, #059669)', borderRadius: '16px', padding: '24px 40px', textAlign: 'center', boxShadow: '0 0 40px rgba(16, 185, 129, 0.4)' }}>
+                    <div style={{ color: 'white', fontSize: '36px', fontWeight: '900' }}>{data.equation.total}</div>
+                    <p className="text-green-100 text-sm mt-1">Total Revenue</p>
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="text-neutral-500 text-center max-w-md mt-8">{data.insight}</motion.p>
+        </div>
+      );
+    };
+
+    // 8. Impact Stats Slide
+    const ImpactStatsSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-10">{data.title}</motion.h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full">
+          {data.stats.map((stat, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '20px', padding: '32px', textAlign: 'center', position: 'relative', boxShadow: '0 0 30px rgba(16, 185, 129, 0.15)' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', borderRadius: '20px 20px 0 0' }} />
+              <div style={{ fontSize: '48px', fontWeight: '900', fontFamily: 'Fraunces, serif', color: '#10b981', lineHeight: 1 }}><AnimatedCounter value={stat.value} prefix={stat.prefix || ''} suffix={stat.suffix} decimals={stat.value.includes('.') ? 1 : 0} duration={2000} /></div>
+              <p className="text-white font-semibold mt-2">{stat.label}</p>
+              <p className="text-neutral-400 text-sm mt-1">{stat.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+
+    // 9. Elite Insight Slide
+    const EliteInsightSlide = ({ data }) => (
+      <div className="h-full flex flex-col justify-center items-center px-6 md:px-12 py-8">
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', borderRadius: '24px', padding: '40px', maxWidth: '600px', width: '100%', position: 'relative', boxShadow: '0 0 60px rgba(16, 185, 129, 0.2)' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)', borderRadius: '24px 24px 0 0' }} />
+          <div className="flex justify-center mb-6">
+            <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}><Icons.Quote /></div>
+          </div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-white text-xl md:text-2xl text-center leading-relaxed mb-4">"{data.quote}"</motion.p>
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} style={{ color: '#10b981' }} className="text-center font-semibold">— {data.author}</motion.p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="mt-8 pt-6 border-t border-neutral-700">
+            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-4 text-center">Your Action Items</p>
+            <div className="space-y-3">
+              {data.actions.map((action, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: 'linear-gradient(135deg, #10b981, #059669)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontSize: '12px', fontWeight: '700' }}>{i + 1}</div>
+                  <span className="text-neutral-300 text-sm">{action}</span>
+                </div>
+              ))}
             </div>
-        </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
 
-        <div class="section fade-up">
-            <h2>The Problem: Friction Hides in Plain Sight</h2>
-            <p>Your product page looks fine. Your checkout works. But <span class="highlight">invisible friction is bleeding conversions</span>.</p>
-            <p>Every scroll that hides the buy button. Every review section buried at the bottom. Every product that looks identical to competitors.</p>
-            <p>These micro-frictions compound. And the worst part? You never see them because they seem "normal."</p>
-        </div>
+    // ============================================
+    // STANDARD SLIDE COMPONENTS
+    // ============================================
 
-        <div class="test-card fade-up">
-            <div class="test-number">1</div>
-            <div class="test-title">The Floating Add-to-Cart</div>
-            <div class="test-result">+$1.73M Revenue</div>
-            <p>When customers scroll down your product page to read descriptions, check reviews, or view more images, something terrible happens.</p>
-            <p><strong>The buy button disappears.</strong></p>
-            <p>They are interested. They are learning. They might be ready to buy. But the action is now hidden. They have to scroll back up. Find the button. Remember they wanted to buy.</p>
-            <p>That 2-second delay? That is where conversions die.</p>
-            <p>The fix is brutally simple: <span class="highlight">Make the "Add to Cart" button float. Always visible. Always one tap away.</span></p>
-        </div>
+    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      useEffect(() => { onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
-        <div class="comparison-grid fade-up">
-            <div class="comparison-card bad">
-                <div class="comparison-icon">✗</div>
-                <div class="comparison-title">Static Button</div>
-                <ul class="comparison-list">
-                    <li>Customer scrolls to read reviews</li>
-                    <li>Button disappears from view</li>
-                    <li>Decision moment passes</li>
-                    <li>Must scroll back up to buy</li>
-                </ul>
-                <p class="comparison-insight">Every scroll away is a chance to lose them</p>
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">{LESSON_CONFIG.title}</motion.h1>
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3"><Icons.Clock /><span>{LESSON_CONFIG.duration}</span></motion.div>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
+              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
+              <ul className="space-y-1.5 md:space-y-2">
+                {data.learningGoals.map((goal, i) => (
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
+                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
+                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>Let's Go</motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    const HookSlide = ({ data }) => (
+      <div className="h-full relative overflow-hidden">
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
+            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
+          </motion.div>
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+        </div>
+        {data.brandImage && (
+          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }} className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
+            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
+          </motion.div>
+        )}
+      </div>
+    );
+
+    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
+      const isCorrect = selected === data.correctIndex;
+
+      useEffect(() => { if (showFeedback) onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+
+      return (
+        <div className="h-full w-full relative overflow-hidden">
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
+              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+            </motion.div>
+            <div className="space-y-3 mb-6">
+              {data.options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
+                  <div className="flex items-center gap-3">
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>{showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}</span>
+                    <span className="text-neutral-700 text-base">{option}</span>
+                  </div>
+                </motion.button>
+              ))}
             </div>
-            <div class="comparison-card good">
-                <div class="comparison-icon">✓</div>
-                <div class="comparison-title">Floating Button</div>
-                <ul class="comparison-list">
-                    <li>Customer scrolls freely</li>
-                    <li>Button follows along bottom</li>
-                    <li>Decision moment = action moment</li>
-                    <li>Zero friction between want and buy</li>
-                </ul>
-                <p class="comparison-insight">The Oodie made $1.73M extra from this single change</p>
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
+                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      );
+    };
+
+    const RunYourTestsSlide = () => (
+      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
+          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>How To Do It</span>
+          <h2 className="slide-title text-2xl md:text-3xl text-black">Run These Tests On Your Store</h2>
+          <p className="text-neutral-500 text-sm mt-2">Start testing today - see what works for YOUR audience</p>
+        </motion.div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-xl p-5 bg-neutral-50 border border-neutral-200">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg bg-neutral-200 flex items-center justify-center text-neutral-500"><Icons.Clock /></div>
+              <span className="font-semibold text-neutral-400 text-sm">Manual Testing</span>
             </div>
-        </div>
-
-        <div class="test-card fade-up">
-            <div class="test-number">2</div>
-            <div class="test-title">Strategic Social Proof Placement</div>
-            <div class="test-result">Instant Trust Signal</div>
-            <p>Most stores put reviews at the bottom of the page. By the time customers scroll there, they have either already decided or left.</p>
-            <p>The psychology is backwards. <span class="highlight">Social proof should appear BEFORE the decision point, not after.</span></p>
-            <p>Move your star rating and review count directly under your product title. This is the first thing customers see. Before price. Before features. Before anything else.</p>
-            <p><strong>"4.8 stars from 2,847 reviews"</strong> creates instant credibility. It frames everything that follows.</p>
-        </div>
-
-        <div class="callout fade-up">
-            <div class="callout-title">💡 The Psychology</div>
-            <div class="callout-text">Social proof works best when it shapes first impressions. When reviews appear immediately under the title, customers process all other information through that lens of credibility. At the bottom? Too late to influence their decision.</div>
-        </div>
-
-        <div class="test-card fade-up">
-            <div class="test-number">3</div>
-            <div class="test-title">Novelty & Urgency Badges</div>
-            <div class="test-result">+$1.1M Revenue</div>
-            <p>Your brain is wired to notice what is different. In a sea of identical product images, badges like <strong>"NEW"</strong> or <strong>"BESTSELLER"</strong> create instant pattern interrupts.</p>
-            <p>They signal: <span class="highlight">"This one is special. Pay attention here."</span></p>
-            <p>The Oodie tested simple badges on product images. Not flashy. Not overwhelming. Just small, tasteful indicators that certain products were new arrivals or top performers.</p>
-        </div>
-
-        <div class="section fade-up">
-            <h2>Badge Psychology at Work</h2>
-        </div>
-
-        <div class="badge-grid fade-up">
-            <div class="badge-item">
-                <div class="badge-name">NEW</div>
-                <div class="badge-desc">Triggers curiosity and FOMO. "What did I miss? What is fresh?"</div>
+            <ul className="space-y-2 text-sm text-neutral-400">
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Guess which variation wins</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>No statistical significance</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Can't run multiple tests at once</li>
+              <li className="flex items-start gap-2"><span className="text-neutral-300 mt-0.5">•</span>Risk making wrong decisions</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-200">
+              <span className="text-xs text-neutral-400">Risk: Implement losing variations</span>
             </div>
-            <div class="badge-item">
-                <div class="badge-name">BESTSELLER</div>
-                <div class="badge-desc">Social proof in two words. "If everyone wants it, maybe I should too."</div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-xl p-5 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #1a1a1a, #2d2d2d)', border: '2px solid #10b981', boxShadow: '0 0 30px rgba(16, 185, 129, 0.15)' }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, transparent, #10b981, transparent)' }} />
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: '#10b981', color: 'white' }}><Icons.Target /></div>
+              <span className="font-semibold text-white text-sm">A/B Test with Data</span>
             </div>
-            <div class="badge-item">
-                <div class="badge-name">LIMITED</div>
-                <div class="badge-desc">Scarcity trigger. Creates urgency without being pushy or fake.</div>
+            <ul className="space-y-2 text-sm text-neutral-300">
+              <li className="flex items-start gap-2"><span style={{ color: '#10b981' }}>✓</span>Statistical significance built-in</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#10b981' }}>✓</span>Test CTAs, badges, copy at once</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#10b981' }}>✓</span>See revenue impact per test</li>
+              <li className="flex items-start gap-2"><span style={{ color: '#10b981' }}>✓</span>Auto-pick winners confidently</li>
+            </ul>
+            <div className="mt-4 pt-3 border-t border-neutral-700">
+              <a href="https://apps.shopify.com/ab-convert" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-opacity hover:opacity-80" style={{ background: '#10b981', color: 'white' }}>
+                Try ABConvert <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
             </div>
-            <div class="badge-item">
-                <div class="badge-name">BACK IN STOCK</div>
-                <div class="badge-desc">Implies previous demand. "It sold out? Must be good."</div>
-            </div>
-            <div class="badge-item">
-                <div class="badge-name">STAFF PICK</div>
-                <div class="badge-desc">Insider recommendation. Creates trust through curation.</div>
-            </div>
-            <div class="badge-item">
-                <div class="badge-name">TRENDING</div>
-                <div class="badge-desc">Real-time social proof. "Others are buying this right now."</div>
-            </div>
+          </motion.div>
         </div>
+      </div>
+    );
 
-        <div class="holy-shit fade-up">
-            <div class="holy-shit-content">
-                <h2>Why These Three Work Together</h2>
-                <p>Each test removes a different type of friction.</p>
-                <p><strong>Floating CTA</strong> removes action friction (I want to buy, but the button is gone).</p>
-                <p><strong>Social proof placement</strong> removes trust friction (Is this actually good?).</p>
-                <p><strong>Badges</strong> remove attention friction (Which product should I look at?).</p>
-                <p>Combined, they create a frictionless path from landing to purchase.</p>
-            </div>
-        </div>
+    const CompletionSlide = () => (
+      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
+        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
+        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
+        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now know the three CRO tests that generated $2.8M. Start with floating CTAs - it has the highest impact.</motion.p>
+        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
+          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
+          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+        </motion.div>
+      </div>
+    );
 
-        <div class="section fade-up">
-            <h2>Measuring What Actually Works</h2>
-            <p>Here is the problem most stores miss: you implement these CRO changes, revenue goes up, and you think you found a winner. But did the change actually cause that lift?</p>
-            <p><span class="highlight">Meta's attribution can be off by 30-40%.</span> That means the CRO test you think worked might have done nothing—while the "failed" test was actually your best performer.</p>
-            <p>External attribution tools track 100% of conversions, not just the ones Meta can see. When you run CRO tests, you need accurate data to know what is working.</p>
-        </div>
+    // ============================================
+    // MAIN APP
+    // ============================================
+    const App = () => {
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [direction, setDirection] = useState(0);
+      const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = React.useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
 
-        <div class="callout fade-up" style="background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%); border-left-color: #0EA5E9;">
-            <div class="callout-title" style="color: #0369A1;">📊 Implementation: Accurate CRO Measurement</div>
-            <div class="callout-text" style="color: #0C4A6E;">Before running CRO tests: Install external attribution to see true conversion data. During tests: Compare Meta's reported results vs external data. After tests: Make decisions based on actual performance, not Meta's guesses. <a href="https://www.triplewhale.com/" target="_blank" rel="noopener" style="color: #0EA5E9; text-decoration: underline;">Triple Whale</a> tracks every purchase your CRO tests generate—even the 33% Meta misses.</div>
-        </div>
+      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
+      const hideGif = useCallback(() => setGifConfig(null), []);
 
-        <div class="callout fade-up" style="background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%); border-left-color: #8B5CF6;">
-            <div class="callout-title" style="color: #5B21B6;">🧪 Implementation: Running Your CRO Tests</div>
-            <div class="callout-text" style="color: #4C1D95;">
-                The psychology is clear: implementing CRO changes without testing is just guessing. Here is how to actually validate these improvements work for YOUR store:
-                <br><br>
-                <strong>Step 1:</strong> Start with one test at a time. Pick the floating add-to-cart button first—it has the highest potential impact and is easy to implement.
-                <br><br>
-                <strong>Step 2:</strong> Set up a proper A/B test. Run the control (no floating button) against the variant (floating button) with 50/50 traffic split. Wait for statistical significance before declaring a winner.
-                <br><br>
-                <strong>Step 3:</strong> Measure actual revenue, not just click rates. A change that increases clicks but decreases purchases is a net negative. Track purchases per visitor, not just button clicks.
-                <br><br>
-                <strong>Step 4:</strong> Once you find a winner, lock it in and move to the next test. Stack your wins—the compound effect of multiple 10-15% improvements is what creates $2.8M results.
-                <br><br>
-                <span style="font-size: 13px; color: #7C3AED;">Tool: <a href="https://apps.shopify.com/a-b-convert-price-a-b-test?mref=aviv-azriel" target="_blank" rel="noopener" style="color: #8B5CF6; text-decoration: underline;">ABConvert</a> — A/B test any element including pricing. Use code LASERCRO for 10% off.</span>
-            </div>
-        </div>
+      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-        <div class="callout fade-up" style="background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%); border-left-color: #10B981;">
-            <div class="callout-title" style="color: #065F46;">💡 The Lesson</div>
-            <div class="callout-text" style="color: #064E3B;">Big revenue gains do not require big changes. Three simple tests—implemented in less than a day—generated $2.8M for The Oodie. Start with floating CTAs. Measure with accurate attribution. The compound effect is real.</div>
-        </div>
-    </div>
+      useEffect(() => {
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
+      }, [currentSlide]);
 
-    <script>
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+      const goToSlide = useCallback((newSlide) => {
+        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+        setIsAnimating(true);
+        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(newSlide);
+      }, [isAnimating]);
+
+      const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
+      const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+          if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
         };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [nextSlide, prevSlide]);
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+      const slideVariants = { enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }), center: { x: 0, opacity: 1 }, exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 }) };
 
-        document.querySelectorAll('.fade-up').forEach(el => {
-            observer.observe(el);
-        });
-    </script>
-    <script>
-        // Send page load message to parent for admin issue tracking (static article)
-        document.addEventListener('DOMContentLoaded', function() {
-            window.parent.postMessage({
-                type: 'LESSON_SLIDE_UPDATE',
-                slideIndex: 0,
-                slideType: 'article',
-                lessonSlug: 'three-cro-tests'
-            }, '*');
-        });
-    </script>
+      const renderSlide = (slide) => {
+        switch (slide.type) {
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide data={slide} />;
+          case 'revenue-reveal': return <RevenueRevealSlide data={slide} />;
+          case 'friction-reveal': return <FrictionRevealSlide data={slide} />;
+          case 'test-detail': return <TestDetailSlide data={slide} />;
+          case 'button-comparison': return <ButtonComparisonSlide data={slide} />;
+          case 'badge-grid': return <BadgeGridSlide data={slide} />;
+          case 'friction-map': return <FrictionMapSlide data={slide} />;
+          case 'compound-effect': return <CompoundEffectSlide data={slide} />;
+          case 'impact-stats': return <ImpactStatsSlide data={slide} />;
+          case 'elite-insight': return <EliteInsightSlide data={slide} />;
+          case 'run-your-tests': return <RunYourTestsSlide />;
+          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'completion': return <CompletionSlide />;
+          default: return null;
+        }
+      };
+
+      const showPrev = currentSlide > 0;
+      const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
+
+      return (
+        <div className="w-full h-screen bg-white flex flex-col relative">
+          <div className="flex-1 relative overflow-hidden z-20">
+            <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
+                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
+              </motion.div>
+            </AnimatePresence>
+            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+          </div>
+          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
+            <div className="flex items-center justify-center gap-2.5">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+            </div>
+          </div>
+          <AnimatePresence>
+            {gifConfig && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}><source src={gifConfig.url} type="video/mp4" /></video>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
 </body>
 </html>
