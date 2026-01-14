@@ -41,6 +41,7 @@ import { useAuthStore } from '@/store/auth';
 import { useBookmarksStore } from '@/store/bookmarks';
 import { signOut } from '@/lib/supabase';
 import { BookmarkModal } from '@/components/BookmarkModal';
+import ChatbotWidget from '@/components/ChatbotWidget';
 
 interface SubNavItem {
   title: string;
@@ -532,6 +533,9 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
           {children}
         </main>
       </div>
+
+      {/* AI Chatbot Widget - Floating on all pages */}
+      <ChatbotWidget userName={userName?.split(' ')[0] || 'Builder'} />
     </div>
   );
 }
