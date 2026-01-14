@@ -224,6 +224,15 @@ const freeCheatCodes = [
     description: 'AI SMS agent that feels human. Recovers 82% of abandoned carts through conversational texts. Trained on 50M+ conversations. Money-back guarantee.',
     url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva',
   },
+  {
+    id: 'geoconvert',
+    name: 'Geo Convert',
+    category: 'Geo Targeting',
+    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Geo%20Convert.jpg',
+    description: 'Location-based purchasing power discounts. Proven 60-70% conversion lift. The easiest conversion cheat code that actually works.',
+    url: 'https://geo-convert.com/',
+    badge: 'Paid',
+  },
 ];
 
 export default function DashboardPage() {
@@ -595,8 +604,10 @@ export default function DashboardPage() {
                           target.style.display = 'none';
                         }}
                       />
-                      {/* FREE Badge */}
-                      <div className="cheatcode-free-badge">FREE</div>
+                      {/* Badge - FREE or Paid */}
+                      <div className={`cheatcode-free-badge ${cheat.badge === 'Paid' ? 'paid' : ''}`}>
+                        {cheat.badge || 'FREE'}
+                      </div>
                     </div>
                     <div className="cheatcode-content">
                       <div className="cheatcode-header">
