@@ -199,7 +199,8 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
     if (user?.id && !isInitialized) {
       initialize(user.id);
     }
-  }, [user?.id, initialize, isInitialized]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   const userEmail = user?.email || '';

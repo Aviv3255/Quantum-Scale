@@ -34,7 +34,8 @@ export function BookmarksInitializer() {
       reset();
       lastUserId.current = null;
     }
-  }, [user?.id, authLoading, initialize, reset, isInitialized]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id, authLoading]);
 
   // This component doesn't render anything
   return null;

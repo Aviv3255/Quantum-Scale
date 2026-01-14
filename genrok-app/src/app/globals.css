@@ -1846,8 +1846,8 @@ h4, .text-h4 {
 }
 
 .sidebar-subitem-card.active {
-  background: var(--primary);
-  border-color: var(--primary);
+  background: rgba(136, 218, 28, 0.2);
+  border-color: rgba(136, 218, 28, 0.4);
 }
 
 .sidebar-subitem-card.active .sidebar-subitem-icon,
@@ -2067,9 +2067,7 @@ body.sidebar-gradient .nav-item.active {
   background: var(--primary);
   color: #000000;
   border-color: var(--primary);
-  box-shadow:
-    0 0 20px rgba(163, 230, 53, 0.3),
-    0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 body.sidebar-gradient .nav-item.active svg {
@@ -2231,10 +2229,10 @@ body.sidebar-gradient .profile-card {
       #000000 65%,
       #000000 100%
     ),
-    /* Top highlight glow - matching sidebar */
+    /* Top highlight glow - matching sidebar intensity */
     radial-gradient(
       ellipse 60% 40% at 5% 10%,
-      rgba(34, 197, 94, 0.10) 0%,
+      rgba(34, 197, 94, 0.12) 0%,
       transparent 50%
     ),
     /* Center ambient glow - matching sidebar */
@@ -2243,23 +2241,23 @@ body.sidebar-gradient .profile-card {
       rgba(16, 185, 129, 0.06) 0%,
       transparent 55%
     ),
-    /* Bottom accent glow - matching sidebar */
+    /* Bottom accent glow - matching sidebar intensity */
     radial-gradient(
       ellipse 70% 50% at 10% 90%,
-      rgba(5, 150, 105, 0.06) 0%,
+      rgba(5, 150, 105, 0.08) 0%,
       transparent 45%
     ),
-    /* Base diagonal gradient - SAME 165deg angle as sidebar, continuing its pattern */
+    /* Base diagonal gradient - SAME 165deg angle as sidebar, matching start color */
     linear-gradient(
       165deg,
-      #061512 0%,       /* Sidebar right edge top color (after 250px at 165deg) */
-      #051210 10%,
-      #040f0c 25%,      /* Darker as we continue down */
-      #030c0a 40%,
-      #030a08 55%,
-      #020807 70%,
-      #020706 85%,
-      #010504 100%      /* Sidebar gradient end color zone */
+      #0a1f1a 0%,       /* Match sidebar start color exactly */
+      #081815 15%,
+      #061512 30%,
+      #051210 45%,
+      #040f0c 60%,
+      #030a08 75%,
+      #020706 90%,
+      #010504 100%
     ) !important;
   border: none !important;
 }
@@ -5304,6 +5302,184 @@ body.sidebar-gradient .profile-card {
 .peak-label {
   font-size: 12px;
   color: var(--text-muted);
+}
+
+/* Statistics Chart - Premium Area Chart */
+.statistics-chart-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.statistics-chart-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.statistics-chart-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.statistics-period-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.statistics-period-tab {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.statistics-period-tab:hover {
+  color: var(--text-secondary);
+}
+
+.statistics-period-tab.active {
+  background: #000000;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.statistics-chart-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statistics-chart-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart-area {
+  opacity: 1;
+}
+
+.chart-line {
+  filter: drop-shadow(0 2px 4px rgba(136, 218, 28, 0.3));
+}
+
+.chart-dot-outer {
+  filter: drop-shadow(0 0 8px rgba(136, 218, 28, 0.6));
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.statistics-chart-labels {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+.statistics-chart-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: lowercase;
+}
+
+.statistics-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.statistics-summary-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statistics-total-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.statistics-total-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.statistics-total-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.statistics-change {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.statistics-change.positive {
+  color: #22c55e;
+}
+
+.statistics-change.negative {
+  color: #ef4444;
+}
+
+.statistics-summary-percent {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.statistics-trend-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.statistics-trend-icon.positive {
+  color: #22c55e;
+}
+
+.statistics-trend-icon.negative {
+  color: #ef4444;
+}
+
+.statistics-percent-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.statistics-percent-value.positive {
+  color: #22c55e;
+}
+
+.statistics-percent-value.negative {
+  color: #ef4444;
 }
 
 /* Promo Card */

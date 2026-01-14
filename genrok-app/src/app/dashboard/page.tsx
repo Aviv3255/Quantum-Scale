@@ -20,6 +20,7 @@ import { useLessonProgressStore } from '@/store/lessonProgress';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import LessonModal from '@/components/LessonModal';
 import { BookmarkButton } from '@/components/BookmarkButton';
+import { StatisticsChart } from '@/components/StatisticsChart';
 import { getAllCourses } from '@/data/courses';
 import { metaAdTemplates } from '@/data/meta-ad-templates';
 import {
@@ -254,7 +255,7 @@ export default function DashboardPage() {
   const [currentGif, setCurrentGif] = useState<string>('');
   const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
   const [customThumbnails, setCustomThumbnails] = useState<Record<string, string>>({});
-  const courses = getAllCourses();
+  const courses = useMemo(() => getAllCourses(), []);
 
   // User's niche - default to mens-fashion (can be extended to fetch from profile)
   const userCategory = 'mens-fashion';
@@ -712,29 +713,11 @@ export default function DashboardPage() {
           </div>
 
           {/* Learning Progress Chart */}
-          <div className="chart-card">
-            <div className="chart-header">
-              <h3>Your Statistics</h3>
-            </div>
-            <div className="chart-placeholder">
-              <div className="mini-chart">
-                {weeklyData.map(({ day, value, heightPercent }) => (
-                  <div key={day} className="chart-bar-wrapper">
-                    <div
-                      className="chart-bar"
-                      style={{ height: `${heightPercent}%` }}
-                      title={`${value} lesson${value !== 1 ? 's' : ''} completed`}
-                    />
-                    <span className="chart-label">{day.toLowerCase()}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="chart-peak">
-                <span className="peak-value">{completedLessonsCount}/{totalLessons}</span>
-                <span className="peak-label">Lessons Progress</span>
-              </div>
-            </div>
-          </div>
+          <StatisticsChart
+            getDataByDays={getLessonsCompletedByDay}
+            totalCompleted={completedLessonsCount}
+            totalLessons={totalLessons}
+          />
 
           {/* Monkey Assistant - Private Agent Connection */}
           <PrivateAgentAssistant userName={userName?.split(' ')[0] || 'there'} />
