@@ -406,6 +406,7 @@ export default function LearnPage() {
   const [userName, setUserName] = useState<string>('Builder');
   const [activeLessonCategory, setActiveLessonCategory] = useState<string>('all');
   const [customThumbnails, setCustomThumbnails] = useState<Record<string, string>>({});
+  const [thumbnailsLoaded, setThumbnailsLoaded] = useState(false);
 
   // Fetch custom thumbnails from database
   useEffect(() => {
@@ -426,6 +427,8 @@ export default function LearnPage() {
         }
       } catch (error) {
         console.error('Failed to fetch custom thumbnails:', error);
+      } finally {
+        setThumbnailsLoaded(true);
       }
     }
     fetchThumbnails();
@@ -624,6 +627,7 @@ export default function LearnPage() {
                       categories={meta.categories}
                       onLessonClick={openLesson}
                       customThumbnail={customThumbnails[slug]}
+                      thumbnailsLoaded={thumbnailsLoaded}
                       showPremiumButton={index < 6}
                     />
                   </motion.div>
@@ -868,13 +872,13 @@ interface LessonCardProps {
   categories: LessonCategory[];
   onLessonClick: (slug: string) => void;
   customThumbnail?: string;
+  thumbnailsLoaded?: boolean;
   showPremiumButton?: boolean;
 }
 
-function LessonCard({ slug, title, description, categories, onLessonClick, customThumbnail, showPremiumButton = false }: LessonCardProps) {
-  // Default thumbnail path based on slug
-  const defaultThumbnail = `/images/lessons/${slug}.png`;
-  const thumbnailSrc = customThumbnail || defaultThumbnail;
+function LessonCard({ slug, title, description, categories, onLessonClick, customThumbnail, thumbnailsLoaded = false, showPremiumButton = false }: LessonCardProps) {
+  // Only use Supabase thumbnail - no local fallback to prevent old images flashing
+  const thumbnailSrc = customThumbnail;
 
   // Get progress from store
   const getProgressPercentage = useLessonProgressStore((s) => s.getProgressPercentage);
@@ -915,18 +919,26 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
       >
         {/* Thumbnail */}
         <div className="relative aspect-[3/2] overflow-hidden bg-[var(--bg-secondary)]">
-          <Image
-            src={thumbnailSrc}
-            alt={title}
-            fill
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-            }}
-          />
+          {/* Show image only if Supabase thumbnail exists, otherwise show placeholder */}
+          {thumbnailSrc ? (
+            <Image
+              src={thumbnailSrc}
+              alt={title}
+              fill
+              loading="lazy"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+              }}
+            />
+          ) : (
+            /* Placeholder when no Supabase thumbnail - shows gradient background with icon */
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a]">
+              <BookOpen size={40} className="text-[var(--accent-primary)] opacity-30" />
+            </div>
+          )}
 
           {/* Progress indicators */}
           {progress > 0 && (
@@ -939,11 +951,11 @@ function LessonCard({ slug, title, description, categories, onLessonClick, custo
                 />
               </div>
 
-              {/* Progress badge */}
+              {/* Progress badge - Completed: accent text on black | In progress: black text on accent */}
               {isCompleted ? (
-                <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500 text-white text-xs font-semibold shadow-lg">
+                <div className="absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black text-[var(--accent-primary)] text-xs font-semibold shadow-lg">
                   <CheckCircle2 size={12} />
-                  Done
+                  Completed
                 </div>
               ) : (
                 <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-[var(--accent-primary)] text-black text-xs font-semibold shadow-lg">

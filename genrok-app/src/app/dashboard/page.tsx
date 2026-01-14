@@ -242,7 +242,13 @@ const freeCheatCodes = [
 export default function DashboardPage() {
   const router = useRouter();
   const { user, isLoading } = useAuthStore();
-  const lessonProgressStore = useLessonProgressStore();
+  // Subscribe to the progress object directly for proper hydration reactivity
+  const lessonProgress = useLessonProgressStore((state) => state.progress);
+  const getProgress = useLessonProgressStore((state) => state.getProgress);
+  const getProgressPercentage = useLessonProgressStore((state) => state.getProgressPercentage);
+  const isLessonCompleted = useLessonProgressStore((state) => state.isLessonCompleted);
+  const getCompletedLessonsCount = useLessonProgressStore((state) => state.getCompletedLessonsCount);
+  const getLessonsCompletedByDay = useLessonProgressStore((state) => state.getLessonsCompletedByDay);
   const [activeTab, setActiveTab] = useState<ContentTab>('courses');
   const [checklistProgressMap, setChecklistProgressMap] = useState<Record<string, number>>({});
   const [currentGif, setCurrentGif] = useState<string>('');
@@ -303,13 +309,13 @@ export default function DashboardPage() {
   // Sort lessons: in-progress first, then not started - EXCLUDE completed lessons
   const sortedLessons = useMemo(() => {
     const withProgress = allLessons.map((lesson) => {
-      const progress = lessonProgressStore.getProgress(lesson.slug);
-      const percentage = lessonProgressStore.getProgressPercentage(lesson.slug);
-      const isCompleted = lessonProgressStore.isLessonCompleted(lesson.slug);
+      const progress = getProgress(lesson.slug);
+      const percentage = getProgressPercentage(lesson.slug);
+      const completed = isLessonCompleted(lesson.slug);
       return {
         ...lesson,
         progress: percentage,
-        isCompleted,
+        isCompleted: completed,
         isStarted: (progress?.completedSlides?.length || 0) > 0,
       };
     });
@@ -323,10 +329,13 @@ export default function DashboardPage() {
       if (!a.isStarted && b.isStarted) return 1;
       return 0;
     });
-  }, [lessonProgressStore]);
+  }, [lessonProgress, getProgress, getProgressPercentage, isLessonCompleted]);
 
   // Stats for the sidebar - using real data from stores (must be before early return)
-  const completedLessons = lessonProgressStore.getCompletedLessonsCount();
+  // Depends on lessonProgress for reactivity after hydration
+  const completedLessonsCount = useMemo(() => {
+    return getCompletedLessonsCount();
+  }, [lessonProgress, getCompletedLessonsCount]);
   const totalLessons = allLessons.length;
 
   // Completed courses from checklist data (synced with useChecklist hook)
@@ -338,12 +347,12 @@ export default function DashboardPage() {
   // Weekly progress data for chart - shows cumulative lessons completed over past 7 days
   // MUST be called before early return to maintain consistent hook order
   const weeklyData = useMemo(() => {
-    const dailyProgress = lessonProgressStore.getLessonsCompletedByDay(7);
+    const dailyProgress = getLessonsCompletedByDay(7);
     return dailyProgress.map((d) => ({
       day: d.day,
       value: d.cumulative, // Cumulative total lessons completed up to this day
     }));
-  }, [lessonProgressStore]);
+  }, [lessonProgress, getLessonsCompletedByDay]);
 
   // Early return for loading state - AFTER all hooks
   if (isLoading || !user) {
@@ -688,7 +697,7 @@ export default function DashboardPage() {
           <div className="stats-card">
             <div className="stats-row">
               <div className="stat-item">
-                <span className="stat-number">{completedLessons}</span>
+                <span className="stat-number">{completedLessonsCount}</span>
                 <span className="stat-label-small">Lessons<br/>Completed</span>
               </div>
               <div className="stat-item">
@@ -716,7 +725,7 @@ export default function DashboardPage() {
                 ))}
               </div>
               <div className="chart-peak">
-                <span className="peak-value">{completedLessons}/{totalLessons}</span>
+                <span className="peak-value">{completedLessonsCount}/{totalLessons}</span>
                 <span className="peak-label">Lessons Progress</span>
               </div>
             </div>
