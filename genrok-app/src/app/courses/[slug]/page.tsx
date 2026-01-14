@@ -66,20 +66,29 @@ type TabType = 'content' | 'bonuses' | 'faq';
 interface GetAccessBarProps {
   price: number;
   originalPrice?: number;
+  isFree?: boolean;
   onCheckout: () => void;
 }
 
-const GetAccessBar = ({ price, originalPrice, onCheckout }: GetAccessBarProps) => (
+const GetAccessBar = ({ price, originalPrice, isFree, onCheckout }: GetAccessBarProps) => (
   <div className="w-full bg-white border-b border-[#eee] py-4 px-6 lg:px-10 sticky top-0 z-40">
     <div className="max-w-6xl mx-auto flex items-center justify-between">
       <div className="flex items-center gap-4">
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold text-[#111]">${price}</span>
+          {isFree || price === 0 ? (
+            <span className="text-2xl font-bold text-green-600">FREE</span>
+          ) : (
+            <span className="text-2xl font-bold text-[#111]">${price}</span>
+          )}
           {originalPrice && (
             <span className="text-sm line-through text-[#999]">${originalPrice}</span>
           )}
         </div>
-        {originalPrice && (
+        {(isFree || price === 0) ? (
+          <span className="text-xs font-medium px-2 py-1 rounded-full bg-green-600 text-white">
+            100% Free
+          </span>
+        ) : originalPrice && (
           <span className="text-xs font-medium px-2 py-1 rounded-full bg-[#111] text-white">
             Save {Math.round((1 - price / originalPrice) * 100)}%
           </span>
@@ -88,10 +97,10 @@ const GetAccessBar = ({ price, originalPrice, onCheckout }: GetAccessBarProps) =
       <button
         onClick={onCheckout}
         className="flex items-center justify-center gap-2 py-3 px-8 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02]"
-        style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
+        style={{ background: isFree || price === 0 ? 'linear-gradient(150deg, #16a34a 0%, #16a34a 30%, #22c55e 50%, #16a34a 70%, #16a34a 100%)' : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
       >
-        <ShoppingCart size={18} />
-        Get Access - ${price}
+        <Zap size={18} />
+        {isFree || price === 0 ? 'Get Free Access' : `Get Access - $${price}`}
       </button>
     </div>
   </div>
@@ -102,16 +111,21 @@ interface StickyCartProps {
   title: string;
   price: number;
   originalPrice?: number;
+  isFree?: boolean;
   onCheckout: () => void;
 }
 
-const StickyCart = ({ title, price, originalPrice, onCheckout }: StickyCartProps) => (
+const StickyCart = ({ title, price, originalPrice, isFree, onCheckout }: StickyCartProps) => (
   <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#eee] shadow-lg py-4 px-6" style={{ marginLeft: 'var(--sidebar-width, 260px)' }}>
     <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
       <div className="flex-1 min-w-0">
         <p className="font-semibold text-[#111] truncate">{title}</p>
         <div className="flex items-baseline gap-2 mt-1">
-          <span className="text-xl font-bold text-[#111]">${price}</span>
+          {isFree || price === 0 ? (
+            <span className="text-xl font-bold text-green-600">FREE</span>
+          ) : (
+            <span className="text-xl font-bold text-[#111]">${price}</span>
+          )}
           {originalPrice && (
             <span className="text-sm line-through text-[#999]">${originalPrice}</span>
           )}
@@ -120,10 +134,10 @@ const StickyCart = ({ title, price, originalPrice, onCheckout }: StickyCartProps
       <button
         onClick={onCheckout}
         className="flex items-center justify-center gap-2 py-3 px-8 rounded-xl font-medium text-white transition-all hover:opacity-90 hover:scale-[1.02] flex-shrink-0"
-        style={{ background: 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
+        style={{ background: isFree || price === 0 ? 'linear-gradient(150deg, #16a34a 0%, #16a34a 30%, #22c55e 50%, #16a34a 70%, #16a34a 100%)' : 'linear-gradient(150deg, #000 0%, #000 30%, #3a3a3a 50%, #000 70%, #000 100%)' }}
       >
-        <ShoppingCart size={18} />
-        Get Access - ${price}
+        <Zap size={18} />
+        {isFree || price === 0 ? 'Get Free Access' : `Get Access - $${price}`}
       </button>
     </div>
   </div>
@@ -5856,67 +5870,67 @@ export default function CourseDetailPage() {
         {/* Alternative Layouts - Priority: 1. localStorage, 2. code HTML blocks, 3. React components */}
         {useAlternativeLayout && (getStoredHTMLBlock(slug) || getCourseHTML(slug)) ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
             <div className="pb-24">
               <RawHTMLRenderer html={(getStoredHTMLBlock(slug) || getCourseHTML(slug))!} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'ai-photographer' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
             <div className="pb-24">
               <AIPhotographerAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'ad-copy-templates' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
             <div className="pb-24">
               <AdCopyTemplatesAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'meta-ad-templates' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
             <div className="pb-24">
               <MetaAdTemplatesAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'subconscious-trap' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
             <div className="pb-24">
               <SubconsciousTrapAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'ltv-system' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
             <div className="pb-24">
               <LTVSystemAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'email-marketing' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
             <div className="pb-24">
               <EmailMarketingAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
           </>
         ) : slug === 'abandoned-checkout' && useAlternativeLayout ? (
           <>
-            <GetAccessBar price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <GetAccessBar price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
             <div className="pb-24">
               <AbandonedCheckoutAlternativeLayout course={course} onCheckout={handleGetAccess} />
             </div>
-            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} onCheckout={handleGetAccess} />
+            <StickyCart title={course.title} price={course.price} originalPrice={course.originalPrice} isFree={course.isFree} onCheckout={handleGetAccess} />
           </>
         ) : (
           <>

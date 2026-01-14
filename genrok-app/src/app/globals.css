@@ -431,6 +431,33 @@ body {
   min-height: -webkit-fill-available;
 }
 
+/* ==========================================================================
+   GLOBAL CLICKABILITY FIX
+   Ensures all interactive elements are always clickable regardless of overlays
+   ========================================================================== */
+
+/* All interactive elements MUST be clickable */
+a, button, [role="button"], [type="button"], [type="submit"],
+input, select, textarea, label[for], summary,
+.nav-item, .btn, .btn-primary, .btn-secondary, .btn-course-view,
+.see-all-link, .content-tab, .course-row, .lesson-card-mini,
+[onclick], [href], .cursor-pointer {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto !important;
+}
+
+/* Ensure Link components from Next.js are clickable */
+a[href] {
+  cursor: pointer;
+  pointer-events: auto !important;
+}
+
+/* Fix for any potential invisible overlay */
+.main-area, .dashboard-layout, .dashboard-main, .page-wrapper {
+  isolation: isolate;
+}
+
 /* ===== TYPOGRAPHY ===== */
 
 /* Display - Hero text */
