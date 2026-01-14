@@ -19,17 +19,27 @@ interface MetricDashboardProps {
   metrics: Metric[];
   title?: string;
   columns?: 2 | 3 | 4;
+  variant?: 'dark' | 'light';
 }
 
 /**
  * MetricDashboard - Multiple metrics in a grid
- * White slide background with dark rounded block
+ * Dark: White slide background with dark rounded block
+ * Light: White background, no dark container
  */
 export function MetricDashboard({
   metrics,
   title,
   columns = 4,
+  variant = 'dark',
 }: MetricDashboardProps) {
+  const isDark = variant === 'dark';
+
+  // Color variables based on variant
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const cardBg = isDark ? 'bg-white/5' : 'bg-black/5';
+
   const gridCols = {
     2: 'grid-cols-2',
     3: 'grid-cols-2 md:grid-cols-3',
@@ -48,69 +58,86 @@ export function MetricDashboard({
     neutral: '#666666',
   };
 
-  return (
-    <div className="bg-white p-8">
-      <div className="bg-black rounded-2xl p-8">
-        {title && (
-          <h3 className="text-xl font-bold text-white mb-6">{title}</h3>
-        )}
+  const content = (
+    <>
+      {title && (
+        <h3 className={`text-xl font-bold ${textColor} mb-6`}>{title}</h3>
+      )}
 
-        <div className={`grid ${gridCols[columns]} gap-4`}>
-          {metrics.map((metric, index) => {
-            const Icon = metric.icon;
-            const ChangeIcon = metric.change ? TrendIcon[metric.change.direction] : null;
+      <div className={`grid ${gridCols[columns]} gap-4`}>
+        {metrics.map((metric, index) => {
+          const Icon = metric.icon;
+          const ChangeIcon = metric.change ? TrendIcon[metric.change.direction] : null;
 
-            return (
+          return (
+            <motion.div
+              key={index}
+              className={`${cardBg} rounded-xl p-5 ${
+                metric.highlight ? 'ring-2 ring-[#88da1c]/50' : ''
+              }`}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              {/* Header with icon */}
+              <div className="flex items-center justify-between mb-3">
+                <span className={`text-xs font-medium uppercase tracking-wider ${mutedColor}`}>
+                  {metric.label}
+                </span>
+                {Icon && (
+                  <Icon size={16} className={mutedColor} />
+                )}
+              </div>
+
+              {/* Value */}
               <motion.div
-                key={index}
-                className={`bg-white/5 rounded-xl p-5 ${
-                  metric.highlight ? 'ring-2 ring-[#88da1c]/50' : ''
-                }`}
-                initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
+                className={`text-3xl font-bold ${metric.highlight ? 'text-[#88da1c]' : textColor} mb-2`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 + index * 0.1 }}
               >
-                {/* Header with icon */}
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-medium uppercase tracking-wider text-white/50">
-                    {metric.label}
-                  </span>
-                  {Icon && (
-                    <Icon size={16} className="text-white/50" />
-                  )}
-                </div>
+                {typeof metric.value === 'number' ? metric.value.toLocaleString() : metric.value}
+              </motion.div>
 
-                {/* Value */}
+              {/* Change indicator */}
+              {metric.change && ChangeIcon && (
                 <motion.div
-                  className={`text-3xl font-bold ${metric.highlight ? 'text-[#88da1c]' : 'text-white'} mb-2`}
+                  className="flex items-center gap-1"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 + index * 0.1 }}
+                  transition={{ delay: 0.3 + index * 0.1 }}
                 >
-                  {typeof metric.value === 'number' ? metric.value.toLocaleString() : metric.value}
-                </motion.div>
-
-                {/* Change indicator */}
-                {metric.change && ChangeIcon && (
-                  <motion.div
-                    className="flex items-center gap-1"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
+                  <ChangeIcon size={14} style={{ color: trendColor[metric.change.direction] }} />
+                  <span
+                    className="text-sm font-medium"
+                    style={{ color: trendColor[metric.change.direction] }}
                   >
-                    <ChangeIcon size={14} style={{ color: trendColor[metric.change.direction] }} />
-                    <span
-                      className="text-sm font-medium"
-                      style={{ color: trendColor[metric.change.direction] }}
-                    >
-                      {metric.change.value}
-                    </span>
-                  </motion.div>
-                )}
-              </motion.div>
-            );
-          })}
+                    {metric.change.value}
+                  </span>
+                </motion.div>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </>
+  );
+
+  if (isDark) {
+    return (
+      <div className="bg-white p-8">
+        <div className="bg-black rounded-2xl p-8">
+          {content}
         </div>
+      </div>
+    );
+  }
+
+  // Light variant
+  return (
+    <div className="bg-white p-8">
+      <div className="p-8">
+        {content}
       </div>
     </div>
   );

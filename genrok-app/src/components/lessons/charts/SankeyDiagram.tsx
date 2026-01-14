@@ -19,6 +19,7 @@ interface SankeyDiagramProps {
   links: SankeyLink[];
   title?: string;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 export function SankeyDiagram({
@@ -26,7 +27,12 @@ export function SankeyDiagram({
   links,
   title,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: SankeyDiagramProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)';
+
   const width = 550;
   const height = 350;
   const padding = 40;
@@ -115,76 +121,92 @@ export function SankeyDiagram({
     `;
   };
 
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
+
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {/* Links */}
+        {links.map((link, i) => {
+          const sourceNode = nodes.find(n => n.id === link.source);
+          const nodeIndex = nodes.findIndex(n => n.id === link.source);
+          const color = sourceNode?.color || colors[nodeIndex % colors.length];
+
+          return (
+            <motion.path
+              key={`link-${i}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              transition={{ delay: 0.3 + i * 0.05 }}
+              d={createLinkPath(link, i)}
+              fill={color}
+            />
+          );
+        })}
+
+        {/* Nodes */}
+        {nodes.map((node, i) => {
+          const pos = nodePositions.get(node.id);
+          if (!pos) return null;
+
+          const color = node.color || colors[i % colors.length];
+
+          return (
+            <motion.g key={node.id}>
+              <motion.rect
+                initial={{ scaleY: 0 }}
+                animate={{ scaleY: 1 }}
+                transition={{ delay: 0.1 + i * 0.03 }}
+                x={pos.x}
+                y={pos.y}
+                width={nodeWidth}
+                height={pos.height}
+                fill={color}
+                rx="4"
+                style={{ transformOrigin: `${pos.x}px ${pos.y}px` }}
+              />
+              <motion.text
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 + i * 0.03 }}
+                x={pos.x < width / 2 ? pos.x - 5 : pos.x + nodeWidth + 5}
+                y={pos.y + pos.height / 2 + 4}
+                textAnchor={pos.x < width / 2 ? 'end' : 'start'}
+                fill={mutedColor}
+                fontSize="11"
+              >
+                {node.label}
+              </motion.text>
+            </motion.g>
+          );
+        })}
+      </svg>
+    </>
+  );
+
+  if (isDark) {
+    return (
+      <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
+        <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-6"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
-        )}
-
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {/* Links */}
-          {links.map((link, i) => {
-            const sourceNode = nodes.find(n => n.id === link.source);
-            const nodeIndex = nodes.findIndex(n => n.id === link.source);
-            const color = sourceNode?.color || colors[nodeIndex % colors.length];
-
-            return (
-              <motion.path
-                key={`link-${i}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.4 }}
-                transition={{ delay: 0.3 + i * 0.05 }}
-                d={createLinkPath(link, i)}
-                fill={color}
-              />
-            );
-          })}
-
-          {/* Nodes */}
-          {nodes.map((node, i) => {
-            const pos = nodePositions.get(node.id);
-            if (!pos) return null;
-
-            const color = node.color || colors[i % colors.length];
-
-            return (
-              <motion.g key={node.id}>
-                <motion.rect
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{ delay: 0.1 + i * 0.03 }}
-                  x={pos.x}
-                  y={pos.y}
-                  width={nodeWidth}
-                  height={pos.height}
-                  fill={color}
-                  rx="4"
-                  style={{ transformOrigin: `${pos.x}px ${pos.y}px` }}
-                />
-                <motion.text
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 + i * 0.03 }}
-                  x={pos.x < width / 2 ? pos.x - 5 : pos.x + nodeWidth + 5}
-                  y={pos.y + pos.height / 2 + 4}
-                  textAnchor={pos.x < width / 2 ? 'end' : 'start'}
-                  fill="rgba(255,255,255,0.8)"
-                  fontSize="11"
-                >
-                  {node.label}
-                </motion.text>
-              </motion.g>
-            );
-          })}
-        </svg>
+      <div className="w-full max-w-2xl">
+        {content}
       </div>
     </div>
   );

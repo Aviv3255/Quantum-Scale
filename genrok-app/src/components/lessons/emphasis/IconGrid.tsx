@@ -19,6 +19,7 @@ interface IconGridProps {
   title?: string;
   columns?: 2 | 3 | 4;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 // Icon map for string-based icon names
@@ -39,75 +40,100 @@ const iconMap: Record<string, LucideIcon> = {
 
 /**
  * IconGrid - Grid of icons with labels
- * White slide background with dark rounded block
+ * Dark: White slide background with dark rounded block
+ * Light: White background only
  */
 export function IconGrid({
   items,
   title,
   columns = 3,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: IconGridProps) {
+  const isDark = variant === 'dark';
+
+  // Color variables
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/60' : 'text-black/60';
+  const itemBg = isDark ? 'bg-white/5 hover:bg-white/10' : 'bg-black/5 hover:bg-black/10';
+
   const gridCols = {
     2: 'grid-cols-2',
     3: 'grid-cols-2 md:grid-cols-3',
     4: 'grid-cols-2 md:grid-cols-4',
   };
 
-  return (
-    <div className="bg-white p-8">
-      <div className="bg-black rounded-2xl p-8">
-        {title && (
-          <h3 className="text-xl font-bold text-white mb-8 text-center">{title}</h3>
-        )}
+  // Content
+  const content = (
+    <>
+      {title && (
+        <h3 className={`text-xl font-bold ${textColor} mb-8 text-center`}>{title}</h3>
+      )}
 
-        <div className={`grid ${gridCols[columns]} gap-4`}>
-          {items.map((item, index) => {
-            const Icon = item.icon || (item.iconName ? iconMap[item.iconName.toLowerCase()] : Sparkles);
+      <div className={`grid ${gridCols[columns]} gap-4`}>
+        {items.map((item, index) => {
+          const Icon = item.icon || (item.iconName ? iconMap[item.iconName.toLowerCase()] : Sparkles);
 
-            return (
+          return (
+            <motion.div
+              key={index}
+              className={`${itemBg} rounded-xl p-6 text-center transition-colors`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.08 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              {/* Icon */}
               <motion.div
-                key={index}
-                className="bg-white/5 rounded-xl p-6 text-center hover:bg-white/10 transition-colors"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.08 }}
-                whileHover={{ scale: 1.02 }}
+                className="mb-4 flex justify-center"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{
+                  delay: 0.2 + index * 0.08,
+                  type: 'spring',
+                  stiffness: 200,
+                }}
               >
-                {/* Icon */}
-                <motion.div
-                  className="mb-4 flex justify-center"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{
-                    delay: 0.2 + index * 0.08,
-                    type: 'spring',
-                    stiffness: 200,
-                  }}
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: `${accentColor}20` }}
                 >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
-                    style={{ backgroundColor: `${accentColor}20` }}
-                  >
-                    <Icon size={24} style={{ color: accentColor }} />
-                  </div>
-                </motion.div>
-
-                {/* Label */}
-                <h4 className="font-semibold text-white mb-1">
-                  {item.label}
-                </h4>
-
-                {/* Description */}
-                {item.description && (
-                  <p className="text-sm text-white/60">
-                    {item.description}
-                  </p>
-                )}
+                  <Icon size={24} style={{ color: accentColor }} />
+                </div>
               </motion.div>
-            );
-          })}
+
+              {/* Label */}
+              <h4 className={`font-semibold ${textColor} mb-1`}>
+                {item.label}
+              </h4>
+
+              {/* Description */}
+              {item.description && (
+                <p className={`text-sm ${mutedColor}`}>
+                  {item.description}
+                </p>
+              )}
+            </motion.div>
+          );
+        })}
+      </div>
+    </>
+  );
+
+  // Conditional rendering based on variant
+  if (isDark) {
+    return (
+      <div className="bg-white p-8">
+        <div className="bg-black rounded-2xl p-8">
+          {content}
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="bg-white p-8">
+      {content}
     </div>
   );
 }

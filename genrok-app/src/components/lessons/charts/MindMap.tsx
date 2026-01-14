@@ -12,13 +12,19 @@ interface MindMapProps {
   data: MindMapNode;
   title?: string;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 export function MindMap({
   data,
   title,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: MindMapProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const width = 550;
   const height = 400;
   const cx = width / 2;
@@ -84,76 +90,84 @@ export function MindMap({
     return `M ${from.x} ${from.y} Q ${midX + perpX} ${midY + perpY} ${to.x} ${to.y}`;
   };
 
-  return (
-    <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-4"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-4`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
+
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {/* Connections */}
+        {positions.map((pos, i) =>
+          pos.parent ? (
+            <motion.path
+              key={`path-${i}`}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: pos.level * 0.15, duration: 0.5 }}
+              d={createCurvedPath(pos.parent, pos)}
+              fill="none"
+              stroke={pos.color}
+              strokeWidth="2"
+              strokeOpacity="0.6"
+            />
+          ) : null
         )}
 
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {/* Connections */}
-          {positions.map((pos, i) =>
-            pos.parent ? (
-              <motion.path
-                key={`path-${i}`}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ delay: pos.level * 0.15, duration: 0.5 }}
-                d={createCurvedPath(pos.parent, pos)}
-                fill="none"
-                stroke={pos.color}
-                strokeWidth="2"
-                strokeOpacity="0.6"
+        {/* Nodes */}
+        {positions.map((pos, i) => {
+          const isCenter = pos.level === 0;
+          const nodeWidth = isCenter ? 100 : 70;
+          const nodeHeight = isCenter ? 40 : 28;
+
+          return (
+            <motion.g key={`node-${i}`}>
+              <motion.rect
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: pos.level * 0.1 + 0.1, type: 'spring' }}
+                x={pos.x - nodeWidth / 2}
+                y={pos.y - nodeHeight / 2}
+                width={nodeWidth}
+                height={nodeHeight}
+                rx={nodeHeight / 2}
+                fill={pos.color}
+                style={{ transformOrigin: `${pos.x}px ${pos.y}px` }}
               />
-            ) : null
-          )}
+              <motion.text
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: pos.level * 0.1 + 0.2 }}
+                x={pos.x}
+                y={pos.y + (isCenter ? 5 : 4)}
+                textAnchor="middle"
+                fill={isCenter ? 'black' : 'white'}
+                fontSize={isCenter ? 13 : 10}
+                fontWeight="bold"
+              >
+                {pos.label}
+              </motion.text>
+            </motion.g>
+          );
+        })}
+      </svg>
+    </>
+  );
 
-          {/* Nodes */}
-          {positions.map((pos, i) => {
-            const isCenter = pos.level === 0;
-            const nodeWidth = isCenter ? 100 : 70;
-            const nodeHeight = isCenter ? 40 : 28;
-
-            return (
-              <motion.g key={`node-${i}`}>
-                <motion.rect
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: pos.level * 0.1 + 0.1, type: 'spring' }}
-                  x={pos.x - nodeWidth / 2}
-                  y={pos.y - nodeHeight / 2}
-                  width={nodeWidth}
-                  height={nodeHeight}
-                  rx={nodeHeight / 2}
-                  fill={pos.color}
-                  style={{ transformOrigin: `${pos.x}px ${pos.y}px` }}
-                />
-                <motion.text
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: pos.level * 0.1 + 0.2 }}
-                  x={pos.x}
-                  y={pos.y + (isCenter ? 5 : 4)}
-                  textAnchor="middle"
-                  fill={isCenter ? 'black' : 'white'}
-                  fontSize={isCenter ? 13 : 10}
-                  fontWeight="bold"
-                >
-                  {pos.label}
-                </motion.text>
-              </motion.g>
-            );
-          })}
-        </svg>
-      </div>
+  return (
+    <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
+      {isDark ? (
+        <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">{content}</div>
+      ) : (
+        <div className="w-full max-w-2xl">{content}</div>
+      )}
     </div>
   );
 }

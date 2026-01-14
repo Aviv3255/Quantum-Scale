@@ -16,12 +16,13 @@ interface QuizSlideProps {
     correct: string;
     incorrect: string;
   };
-  darkMode?: boolean;
+  variant?: 'dark' | 'light';
 }
 
 /**
  * QuizSlide - Fixed template for ALL lessons (end-of-lesson quiz)
  * Premium design with celebration animation on correct answer
+ * Supports dark/light variants
  */
 export function QuizSlide({
   question,
@@ -30,16 +31,16 @@ export function QuizSlide({
     correct: 'Excellent! You got it right.',
     incorrect: 'Not quite. Review the lesson and try again.',
   },
-  darkMode = false,
+  variant = 'dark',
 }: QuizSlideProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
 
-  const bgClass = darkMode ? 'bg-black' : 'bg-white';
-  const textClass = darkMode ? 'text-white' : 'text-black';
-  const mutedClass = darkMode ? 'text-white/60' : 'text-[#666666]';
-  const cardBg = darkMode ? 'bg-white/5' : 'bg-[#F8F9FA]';
-  const cardBorder = darkMode ? 'border-white/10' : 'border-[#E5E5E5]';
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const cardBg = isDark ? 'bg-white/5' : 'bg-[#F8F9FA]';
+  const cardBorder = isDark ? 'border-white/10' : 'border-[#E5E5E5]';
 
   const isCorrect = selectedIndex !== null && options[selectedIndex]?.correct;
 
@@ -49,8 +50,8 @@ export function QuizSlide({
     setTimeout(() => setShowFeedback(true), 300);
   };
 
-  return (
-    <div className={`min-h-[600px] ${bgClass} p-12 flex flex-col items-center justify-center`}>
+  const content = (
+    <div className={`min-h-[600px] ${isDark ? 'bg-black' : ''} p-12 flex flex-col items-center justify-center`}>
       {/* Quiz Container */}
       <div className="w-full max-w-2xl">
         {/* Question */}
@@ -64,7 +65,7 @@ export function QuizSlide({
             Knowledge Check
           </span>
           <h2
-            className={`text-3xl font-bold ${textClass} tracking-tight`}
+            className={`text-3xl font-bold ${textColor} tracking-tight`}
             style={{ fontFamily: "'General Sans', sans-serif" }}
           >
             {question}
@@ -99,7 +100,7 @@ export function QuizSlide({
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-lg font-medium ${showFeedback && isSelected ? '' : textClass}`}>
+                  <span className={`text-lg font-medium ${showFeedback && isSelected ? '' : textColor}`}>
                     {option.text}
                   </span>
                   {showFeedback && isSelected && (
@@ -145,10 +146,10 @@ export function QuizSlide({
                   )}
                 </span>
                 <div>
-                  <h3 className={`text-xl font-bold mb-2 ${textClass}`}>
+                  <h3 className={`text-xl font-bold mb-2 ${textColor}`}>
                     {isCorrect ? 'Correct!' : 'Not Quite'}
                   </h3>
-                  <p className={mutedClass}>
+                  <p className={mutedColor}>
                     {isCorrect ? feedback.correct : feedback.incorrect}
                   </p>
                 </div>
@@ -191,6 +192,24 @@ export function QuizSlide({
           </motion.div>
         )}
       </div>
+    </div>
+  );
+
+  // Dark variant: wrap in white background with black rounded container
+  // Light variant: just white background, no container
+  if (isDark) {
+    return (
+      <div className="bg-white p-8">
+        <div className="rounded-3xl overflow-hidden">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white">
+      {content}
     </div>
   );
 }

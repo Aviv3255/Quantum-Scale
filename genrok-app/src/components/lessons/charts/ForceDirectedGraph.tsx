@@ -21,6 +21,7 @@ interface ForceDirectedGraphProps {
   edges: GraphEdge[];
   title?: string;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 // Seeded random for deterministic initial positions
@@ -34,7 +35,12 @@ export function ForceDirectedGraph({
   edges,
   title,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: ForceDirectedGraphProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)';
+
   const width = 500;
   const height = 400;
 
@@ -131,68 +137,84 @@ export function ForceDirectedGraph({
 
   const colors = ['#88da1c', '#22C55E', '#3B82F6', '#A855F7', '#F59E0B', '#EF4444'];
 
-  return (
-    <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-6"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
-        )}
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
 
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {/* Edges */}
-          {edges.map((edge, i) => (
-            <motion.line
-              key={`edge-${i}`}
-              initial={{ opacity: 0 }}
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {/* Edges */}
+        {edges.map((edge, i) => (
+          <motion.line
+            key={`edge-${i}`}
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: 0.3,
+              x1: positions[edge.source]?.x || 0,
+              y1: positions[edge.source]?.y || 0,
+              x2: positions[edge.target]?.x || 0,
+              y2: positions[edge.target]?.y || 0,
+            }}
+            transition={{ duration: 0.1 }}
+            stroke={accentColor}
+            strokeWidth={edge.strength || 2}
+          />
+        ))}
+
+        {/* Nodes */}
+        {nodes.map((node, i) => (
+          <motion.g key={node.id}>
+            <motion.circle
+              initial={{ scale: 0 }}
               animate={{
-                opacity: 0.3,
-                x1: positions[edge.source]?.x || 0,
-                y1: positions[edge.source]?.y || 0,
-                x2: positions[edge.target]?.x || 0,
-                y2: positions[edge.target]?.y || 0,
+                scale: 1,
+                cx: positions[node.id]?.x || 0,
+                cy: positions[node.id]?.y || 0,
+              }}
+              transition={{ duration: 0.1, scale: { delay: 0.1 + i * 0.05, type: 'spring' } }}
+              r={node.size || 15}
+              fill={node.color || colors[i % colors.length]}
+            />
+            <motion.text
+              animate={{
+                x: positions[node.id]?.x || 0,
+                y: (positions[node.id]?.y || 0) + (node.size || 15) + 15,
               }}
               transition={{ duration: 0.1 }}
-              stroke={accentColor}
-              strokeWidth={edge.strength || 2}
-            />
-          ))}
+              textAnchor="middle"
+              fill={mutedColor}
+              fontSize="10"
+            >
+              {node.label}
+            </motion.text>
+          </motion.g>
+        ))}
+      </svg>
+    </>
+  );
 
-          {/* Nodes */}
-          {nodes.map((node, i) => (
-            <motion.g key={node.id}>
-              <motion.circle
-                initial={{ scale: 0 }}
-                animate={{
-                  scale: 1,
-                  cx: positions[node.id]?.x || 0,
-                  cy: positions[node.id]?.y || 0,
-                }}
-                transition={{ duration: 0.1, scale: { delay: 0.1 + i * 0.05, type: 'spring' } }}
-                r={node.size || 15}
-                fill={node.color || colors[i % colors.length]}
-              />
-              <motion.text
-                animate={{
-                  x: positions[node.id]?.x || 0,
-                  y: (positions[node.id]?.y || 0) + (node.size || 15) + 15,
-                }}
-                transition={{ duration: 0.1 }}
-                textAnchor="middle"
-                fill="rgba(255,255,255,0.8)"
-                fontSize="10"
-              >
-                {node.label}
-              </motion.text>
-            </motion.g>
-          ))}
-        </svg>
+  if (isDark) {
+    return (
+      <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
+        <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
+      <div className="w-full max-w-2xl">
+        {content}
       </div>
     </div>
   );

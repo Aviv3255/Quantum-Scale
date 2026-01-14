@@ -13,6 +13,7 @@ interface WordCloudProps {
   words: WordCloudWord[];
   title?: string;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 // Seeded random for deterministic positions
@@ -25,7 +26,11 @@ export function WordCloud({
   words,
   title,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: WordCloudProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+
   const width = 500;
   const height = 350;
   const cx = width / 2;
@@ -69,45 +74,57 @@ export function WordCloud({
     return result;
   }, [sortedWords, cx, cy]);
 
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
+
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {placements.map((p, i) => (
+          <motion.text
+            key={i}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.05 + i * 0.03, type: 'spring' }}
+            x={p.x}
+            y={p.y}
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill={p.word.color || colors[i % colors.length]}
+            fontSize={p.fontSize}
+            fontWeight={p.fontSize > 25 ? 'bold' : 'normal'}
+            transform={`rotate(${p.rotation}, ${p.x}, ${p.y})`}
+            style={{
+              transformOrigin: `${p.x}px ${p.y}px`,
+              fontFamily: "'General Sans', sans-serif",
+            }}
+          >
+            {p.word.text}
+          </motion.text>
+        ))}
+      </svg>
+    </>
+  );
+
   return (
     <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-6"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
-        )}
-
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {placements.map((p, i) => (
-            <motion.text
-              key={i}
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.05 + i * 0.03, type: 'spring' }}
-              x={p.x}
-              y={p.y}
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill={p.word.color || colors[i % colors.length]}
-              fontSize={p.fontSize}
-              fontWeight={p.fontSize > 25 ? 'bold' : 'normal'}
-              transform={`rotate(${p.rotation}, ${p.x}, ${p.y})`}
-              style={{
-                transformOrigin: `${p.x}px ${p.y}px`,
-                fontFamily: "'General Sans', sans-serif",
-              }}
-            >
-              {p.word.text}
-            </motion.text>
-          ))}
-        </svg>
-      </div>
+      {isDark ? (
+        <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
+          {content}
+        </div>
+      ) : (
+        <div className="w-full max-w-2xl">
+          {content}
+        </div>
+      )}
     </div>
   );
 }

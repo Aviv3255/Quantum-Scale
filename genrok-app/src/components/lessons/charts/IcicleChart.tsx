@@ -14,6 +14,7 @@ interface IcicleChartProps {
   title?: string;
   orientation?: 'horizontal' | 'vertical';
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 export function IcicleChart({
@@ -21,7 +22,13 @@ export function IcicleChart({
   title,
   orientation = 'vertical',
   accentColor = '#88da1c',
+  variant = 'dark',
 }: IcicleChartProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+  const strokeColor = isDark ? 'black' : 'white';
   const width = 500;
   const height = 350;
   const padding = 20;
@@ -101,64 +108,72 @@ export function IcicleChart({
 
   calculateRects(data, 0, 0, 1, 0);
 
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
+
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {rects.map((rect, i) => (
+          <motion.g key={i}>
+            <motion.rect
+              initial={{
+                scaleX: orientation === 'vertical' ? 0 : 1,
+                scaleY: orientation === 'horizontal' ? 0 : 1,
+                opacity: 0
+              }}
+              animate={{ scaleX: 1, scaleY: 1, opacity: 1 }}
+              transition={{ delay: rect.level * 0.15 + i * 0.01 }}
+              x={rect.x}
+              y={rect.y}
+              width={Math.max(rect.w, 0)}
+              height={Math.max(rect.h, 0)}
+              fill={rect.color}
+              stroke={strokeColor}
+              strokeWidth="1"
+              rx="2"
+              style={{
+                transformOrigin: orientation === 'vertical'
+                  ? `${rect.x}px ${rect.y + rect.h / 2}px`
+                  : `${rect.x + rect.w / 2}px ${rect.y}px`
+              }}
+            />
+            {rect.w > 40 && rect.h > 15 && (
+              <motion.text
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: rect.level * 0.15 + 0.2 }}
+                x={rect.x + rect.w / 2}
+                y={rect.y + rect.h / 2 + 4}
+                textAnchor="middle"
+                fill="white"
+                fontSize={Math.min(10, rect.w / 5, rect.h / 2)}
+                fontWeight="bold"
+              >
+                {rect.name}
+              </motion.text>
+            )}
+          </motion.g>
+        ))}
+      </svg>
+    </>
+  );
+
   return (
     <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-6"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
-        )}
-
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {rects.map((rect, i) => (
-            <motion.g key={i}>
-              <motion.rect
-                initial={{
-                  scaleX: orientation === 'vertical' ? 0 : 1,
-                  scaleY: orientation === 'horizontal' ? 0 : 1,
-                  opacity: 0
-                }}
-                animate={{ scaleX: 1, scaleY: 1, opacity: 1 }}
-                transition={{ delay: rect.level * 0.15 + i * 0.01 }}
-                x={rect.x}
-                y={rect.y}
-                width={Math.max(rect.w, 0)}
-                height={Math.max(rect.h, 0)}
-                fill={rect.color}
-                stroke="black"
-                strokeWidth="1"
-                rx="2"
-                style={{
-                  transformOrigin: orientation === 'vertical'
-                    ? `${rect.x}px ${rect.y + rect.h / 2}px`
-                    : `${rect.x + rect.w / 2}px ${rect.y}px`
-                }}
-              />
-              {rect.w > 40 && rect.h > 15 && (
-                <motion.text
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: rect.level * 0.15 + 0.2 }}
-                  x={rect.x + rect.w / 2}
-                  y={rect.y + rect.h / 2 + 4}
-                  textAnchor="middle"
-                  fill="white"
-                  fontSize={Math.min(10, rect.w / 5, rect.h / 2)}
-                  fontWeight="bold"
-                >
-                  {rect.name}
-                </motion.text>
-              )}
-            </motion.g>
-          ))}
-        </svg>
-      </div>
+      {isDark ? (
+        <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">{content}</div>
+      ) : (
+        <div className="w-full max-w-2xl">{content}</div>
+      )}
     </div>
   );
 }

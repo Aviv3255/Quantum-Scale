@@ -9,12 +9,13 @@ interface WelcomeSlideProps {
   learningGoals: string[];
   duration: string;
   heroImage?: string;
-  darkMode?: boolean;
+  variant?: 'dark' | 'light';
 }
 
 /**
  * WelcomeSlide - Fixed template for ALL lessons
  * Premium design with animated learning goals
+ * Supports dark/light variants
  */
 export function WelcomeSlide({
   title,
@@ -22,14 +23,14 @@ export function WelcomeSlide({
   learningGoals,
   duration,
   heroImage,
-  darkMode = false,
+  variant = 'dark',
 }: WelcomeSlideProps) {
-  const bgClass = darkMode ? 'bg-black' : 'bg-white';
-  const textClass = darkMode ? 'text-white' : 'text-black';
-  const mutedClass = darkMode ? 'text-white/60' : 'text-[#666666]';
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
 
-  return (
-    <div className={`min-h-[600px] ${bgClass} p-12 flex`}>
+  const content = (
+    <div className={`min-h-[600px] ${isDark ? 'bg-black' : ''} p-12 flex`}>
       {/* Left Content */}
       <div className="flex-1 flex flex-col justify-center pr-12">
         {/* Duration Badge */}
@@ -50,7 +51,7 @@ export function WelcomeSlide({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className={`text-5xl font-bold ${textClass} mb-4 tracking-tight leading-tight`}
+          className={`text-5xl font-bold ${textColor} mb-4 tracking-tight leading-tight`}
           style={{ fontFamily: "'General Sans', sans-serif" }}
         >
           {title}
@@ -62,7 +63,7 @@ export function WelcomeSlide({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className={`text-xl ${mutedClass} mb-8 leading-relaxed`}
+            className={`text-xl ${mutedColor} mb-8 leading-relaxed`}
           >
             {subtitle}
           </motion.p>
@@ -75,7 +76,7 @@ export function WelcomeSlide({
           transition={{ duration: 0.5, delay: 0.2 }}
           className="space-y-4"
         >
-          <h3 className={`text-sm font-semibold uppercase tracking-widest ${mutedClass}`}>
+          <h3 className={`text-sm font-semibold uppercase tracking-widest ${mutedColor}`}>
             What you'll learn
           </h3>
           <ul className="space-y-3">
@@ -90,7 +91,7 @@ export function WelcomeSlide({
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#88da1c] flex items-center justify-center mt-0.5">
                   <Check size={14} className="text-black" strokeWidth={3} />
                 </span>
-                <span className={`text-lg ${textClass}`}>{goal}</span>
+                <span className={`text-lg ${textColor}`}>{goal}</span>
               </motion.li>
             ))}
           </ul>
@@ -116,6 +117,24 @@ export function WelcomeSlide({
           </div>
         </motion.div>
       )}
+    </div>
+  );
+
+  // Dark variant: wrap in white background with black rounded container
+  // Light variant: just white background, no container
+  if (isDark) {
+    return (
+      <div className="bg-white p-8">
+        <div className="rounded-3xl overflow-hidden">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white">
+      {content}
     </div>
   );
 }

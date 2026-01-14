@@ -8,6 +8,7 @@ interface RunChartProps {
   showMedian?: boolean;
   showRuns?: boolean;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 export function RunChart({
@@ -16,7 +17,15 @@ export function RunChart({
   showMedian = true,
   showRuns = true,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: RunChartProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+  const axisColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
+  const dataLineColor = isDark ? 'white' : 'black';
+
   const width = 500;
   const height = 300;
   const padding = 50;
@@ -54,141 +63,157 @@ export function RunChart({
     }
   });
 
-  return (
-    <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-6"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
-        )}
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
 
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {/* Grid */}
-          {[0, 25, 50, 75, 100].map((pct, i) => (
-            <motion.line
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {/* Grid */}
+        {[0, 25, 50, 75, 100].map((pct, i) => (
+          <motion.line
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.05 * i }}
+            x1={padding}
+            y1={padding + ((height - 2 * padding) * pct) / 100}
+            x2={width - padding}
+            y2={padding + ((height - 2 * padding) * pct) / 100}
+            stroke={gridColor}
+          />
+        ))}
+
+        {/* Run zones */}
+        {showRuns &&
+          runs.map((run, i) => (
+            <motion.rect
               key={i}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.05 * i }}
-              x1={padding}
-              y1={padding + ((height - 2 * padding) * pct) / 100}
-              x2={width - padding}
-              y2={padding + ((height - 2 * padding) * pct) / 100}
-              stroke="rgba(255,255,255,0.1)"
+              transition={{ delay: 0.3 + i * 0.05 }}
+              x={scaleX(run.start) - 5}
+              y={run.above ? padding : scaleY(median)}
+              width={scaleX(run.end) - scaleX(run.start) + 10}
+              height={(height - 2 * padding) / 2}
+              fill={run.above ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'}
+              rx="4"
             />
           ))}
 
-          {/* Run zones */}
-          {showRuns &&
-            runs.map((run, i) => (
-              <motion.rect
-                key={i}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 + i * 0.05 }}
-                x={scaleX(run.start) - 5}
-                y={run.above ? padding : scaleY(median)}
-                width={scaleX(run.end) - scaleX(run.start) + 10}
-                height={(height - 2 * padding) / 2}
-                fill={run.above ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)'}
-                rx="4"
-              />
-            ))}
-
-          {/* Median line */}
-          {showMedian && (
-            <motion.line
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
-              x1={padding}
-              y1={scaleY(median)}
-              x2={width - padding}
-              y2={scaleY(median)}
-              stroke={accentColor}
-              strokeWidth="2"
-              strokeDasharray="8,4"
-            />
-          )}
-
-          {/* Axes */}
-          <line
-            x1={padding}
-            y1={height - padding}
-            x2={width - padding}
-            y2={height - padding}
-            stroke="rgba(255,255,255,0.3)"
-            strokeWidth="2"
-          />
-          <line
-            x1={padding}
-            y1={padding}
-            x2={padding}
-            y2={height - padding}
-            stroke="rgba(255,255,255,0.3)"
-            strokeWidth="2"
-          />
-
-          {/* Data line */}
-          <motion.path
+        {/* Median line */}
+        {showMedian && (
+          <motion.line
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ duration: 1.5, delay: 0.3 }}
-            d={path}
-            fill="none"
-            stroke="white"
+            transition={{ delay: 0.2, duration: 0.5 }}
+            x1={padding}
+            y1={scaleY(median)}
+            x2={width - padding}
+            y2={scaleY(median)}
+            stroke={accentColor}
             strokeWidth="2"
+            strokeDasharray="8,4"
           />
+        )}
 
-          {/* Data points */}
-          {data.map((d, i) => (
-            <motion.circle
-              key={i}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.4 + i * 0.03 }}
-              cx={scaleX(i)}
-              cy={scaleY(d.value)}
-              r="4"
-              fill={d.value > median ? '#22C55E' : '#EF4444'}
-            />
-          ))}
+        {/* Axes */}
+        <line
+          x1={padding}
+          y1={height - padding}
+          x2={width - padding}
+          y2={height - padding}
+          stroke={axisColor}
+          strokeWidth="2"
+        />
+        <line
+          x1={padding}
+          y1={padding}
+          x2={padding}
+          y2={height - padding}
+          stroke={axisColor}
+          strokeWidth="2"
+        />
 
-          {/* Median label */}
-          {showMedian && (
-            <text
-              x={width - padding + 5}
-              y={scaleY(median) + 4}
-              fill={accentColor}
-              fontSize="10"
-            >
-              Median
-            </text>
-          )}
-        </svg>
+        {/* Data line */}
+        <motion.path
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.5, delay: 0.3 }}
+          d={path}
+          fill="none"
+          stroke={dataLineColor}
+          strokeWidth="2"
+        />
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8 }}
-          className="flex justify-center gap-8 mt-4"
-        >
-          <div className="text-center">
-            <p className="text-white/50 text-xs">Median</p>
-            <p className="text-white font-bold">{median.toFixed(1)}</p>
-          </div>
-          <div className="text-center">
-            <p className="text-white/50 text-xs">Total Runs</p>
-            <p className="text-white font-bold">{runs.length}</p>
-          </div>
-        </motion.div>
+        {/* Data points */}
+        {data.map((d, i) => (
+          <motion.circle
+            key={i}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.4 + i * 0.03 }}
+            cx={scaleX(i)}
+            cy={scaleY(d.value)}
+            r="4"
+            fill={d.value > median ? '#22C55E' : '#EF4444'}
+          />
+        ))}
+
+        {/* Median label */}
+        {showMedian && (
+          <text
+            x={width - padding + 5}
+            y={scaleY(median) + 4}
+            fill={accentColor}
+            fontSize="10"
+          >
+            Median
+          </text>
+        )}
+      </svg>
+
+      {/* Stats */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="flex justify-center gap-8 mt-4"
+      >
+        <div className="text-center">
+          <p className={`${mutedColor} text-xs`}>Median</p>
+          <p className={`${textColor} font-bold`}>{median.toFixed(1)}</p>
+        </div>
+        <div className="text-center">
+          <p className={`${mutedColor} text-xs`}>Total Runs</p>
+          <p className={`${textColor} font-bold`}>{runs.length}</p>
+        </div>
+      </motion.div>
+    </>
+  );
+
+  if (isDark) {
+    return (
+      <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
+        <div className="bg-black rounded-2xl p-8 w-full max-w-2xl">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
+      <div className="w-full max-w-2xl">
+        {content}
       </div>
     </div>
   );

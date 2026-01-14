@@ -11,26 +11,27 @@ interface CompletionSlideProps {
     description: string;
     slug: string;
   };
-  darkMode?: boolean;
+  variant?: 'dark' | 'light';
 }
 
 /**
  * CompletionSlide - Fixed template for ALL lessons
  * Premium celebration with key takeaways and next lesson preview
+ * Supports dark/light variants
  */
 export function CompletionSlide({
   lessonTitle,
   keyTakeaways,
   nextLesson,
-  darkMode = false,
+  variant = 'dark',
 }: CompletionSlideProps) {
-  const bgClass = darkMode ? 'bg-black' : 'bg-white';
-  const textClass = darkMode ? 'text-white' : 'text-black';
-  const mutedClass = darkMode ? 'text-white/60' : 'text-[#666666]';
-  const cardBg = darkMode ? 'bg-white/5' : 'bg-[#F8F9FA]';
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const cardBg = isDark ? 'bg-white/5' : 'bg-[#F8F9FA]';
 
-  return (
-    <div className={`min-h-[600px] ${bgClass} p-12 flex flex-col items-center justify-center`}>
+  const content = (
+    <div className={`min-h-[600px] ${isDark ? 'bg-black' : ''} p-12 flex flex-col items-center justify-center`}>
       {/* Success Animation */}
       <motion.div
         initial={{ scale: 0 }}
@@ -67,12 +68,12 @@ export function CompletionSlide({
         className="text-center mb-10"
       >
         <h2
-          className={`text-4xl font-bold ${textClass} mb-3`}
+          className={`text-4xl font-bold ${textColor} mb-3`}
           style={{ fontFamily: "'General Sans', sans-serif" }}
         >
           Lesson Complete!
         </h2>
-        <p className={`text-lg ${mutedClass}`}>
+        <p className={`text-lg ${mutedColor}`}>
           You've finished "{lessonTitle}"
         </p>
       </motion.div>
@@ -86,7 +87,7 @@ export function CompletionSlide({
       >
         <div className="flex items-center gap-3 mb-6">
           <Trophy size={20} className="text-[#88da1c]" />
-          <h3 className={`text-lg font-bold ${textClass}`}>Key Takeaways</h3>
+          <h3 className={`text-lg font-bold ${textColor}`}>Key Takeaways</h3>
         </div>
         <ul className="space-y-4">
           {keyTakeaways.map((takeaway, index) => (
@@ -100,7 +101,7 @@ export function CompletionSlide({
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#88da1c]/20 flex items-center justify-center mt-0.5">
                 <Star size={12} className="text-[#88da1c]" fill="currentColor" />
               </span>
-              <span className={textClass}>{takeaway}</span>
+              <span className={textColor}>{takeaway}</span>
             </motion.li>
           ))}
         </ul>
@@ -114,7 +115,7 @@ export function CompletionSlide({
           transition={{ delay: 0.5 }}
           className="w-full max-w-xl"
         >
-          <p className={`text-sm font-semibold uppercase tracking-widest ${mutedClass} mb-4`}>
+          <p className={`text-sm font-semibold uppercase tracking-widest ${mutedColor} mb-4`}>
             Up Next
           </p>
           <a
@@ -123,10 +124,10 @@ export function CompletionSlide({
           >
             <div className="flex items-center justify-between">
               <div>
-                <h4 className={`text-xl font-bold ${textClass} mb-2 group-hover:text-[#88da1c] transition-colors`}>
+                <h4 className={`text-xl font-bold ${textColor} mb-2 group-hover:text-[#88da1c] transition-colors`}>
                   {nextLesson.title}
                 </h4>
-                <p className={mutedClass}>{nextLesson.description}</p>
+                <p className={mutedColor}>{nextLesson.description}</p>
               </div>
               <motion.span
                 whileHover={{ x: 5 }}
@@ -138,6 +139,24 @@ export function CompletionSlide({
           </a>
         </motion.div>
       )}
+    </div>
+  );
+
+  // Dark variant: wrap in white background with black rounded container
+  // Light variant: just white background, no container
+  if (isDark) {
+    return (
+      <div className="bg-white p-8">
+        <div className="rounded-3xl overflow-hidden">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white">
+      {content}
     </div>
   );
 }

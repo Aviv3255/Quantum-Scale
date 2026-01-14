@@ -13,11 +13,12 @@ interface AreaChartProps {
   subtitle?: string;
   accentColor?: string;
   showGrid?: boolean;
+  variant?: 'dark' | 'light';
 }
 
 /**
  * AreaChart - Animated area chart with gradient fill
- * White slide background with dark rounded block
+ * Supports dark (black container) and light (pure white) variants
  */
 export function AreaChart({
   data,
@@ -25,7 +26,10 @@ export function AreaChart({
   subtitle,
   accentColor = '#88da1c',
   showGrid = true,
+  variant = 'dark',
 }: AreaChartProps) {
+  const isDark = variant === 'dark';
+
   // Chart dimensions
   const width = 600;
   const height = 280;
@@ -79,114 +83,138 @@ export function AreaChart({
     Math.round((maxValue / (gridLines - 1)) * i)
   );
 
+  // Colors based on variant
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+  const fillClass = isDark ? 'fill-white/50' : 'fill-black/50';
+  const pointFill = isDark ? '#000' : '#fff';
+
+  const gradientId = `areaGrad-${variant}-${accentColor.replace('#', '')}`;
+  const glowId = `areaGlow-${variant}`;
+
+  const content = (
+    <>
+      {/* Header */}
+      {(title || subtitle) && (
+        <div className="mb-6">
+          {title && <h3 className={`text-xl font-bold ${textColor} mb-1`}>{title}</h3>}
+          {subtitle && <p className={`text-sm ${mutedColor}`}>{subtitle}</p>}
+        </div>
+      )}
+
+      {/* Chart */}
+      <svg width="100%" viewBox={`0 0 ${width} ${height}`} className="overflow-visible">
+        <defs>
+          {/* Gradient fill */}
+          <linearGradient id={gradientId} x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={accentColor} stopOpacity="0.4" />
+            <stop offset="50%" stopColor={accentColor} stopOpacity="0.15" />
+            <stop offset="100%" stopColor={accentColor} stopOpacity="0" />
+          </linearGradient>
+          {/* Glow */}
+          <filter id={glowId}>
+            <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Grid lines */}
+        {showGrid && yValues.map((value, i) => {
+          const y = padding.top + chartHeight - (value / maxValue) * chartHeight;
+          return (
+            <g key={i}>
+              <line
+                x1={padding.left}
+                y1={y}
+                x2={padding.left + chartWidth}
+                y2={y}
+                stroke={gridColor}
+                strokeDasharray="4 4"
+              />
+              <text
+                x={padding.left - 10}
+                y={y + 4}
+                textAnchor="end"
+                className={`text-xs ${fillClass}`}
+              >
+                {value}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* X-axis labels */}
+        {points.map((p, i) => (
+          <text
+            key={i}
+            x={p.x}
+            y={height - 15}
+            textAnchor="middle"
+            className={`text-xs ${fillClass}`}
+          >
+            {p.label}
+          </text>
+        ))}
+
+        {/* Animated area fill */}
+        <motion.path
+          d={areaPath}
+          fill={`url(#${gradientId})`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        />
+
+        {/* Animated line */}
+        <motion.path
+          d={linePath}
+          fill="none"
+          stroke={accentColor}
+          strokeWidth={3}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          filter={`url(#${glowId})`}
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        />
+
+        {/* Data points */}
+        {points.map((point, i) => (
+          <motion.circle
+            key={i}
+            cx={point.x}
+            cy={point.y}
+            r={5}
+            fill={pointFill}
+            stroke={accentColor}
+            strokeWidth={2.5}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.8 + i * 0.08, type: 'spring', stiffness: 200 }}
+          />
+        ))}
+      </svg>
+    </>
+  );
+
+  if (isDark) {
+    return (
+      <div className="bg-white p-8">
+        <div className="bg-black rounded-2xl p-8">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-8">
-      <div className="bg-black rounded-2xl p-8">
-        {/* Header */}
-        {(title || subtitle) && (
-          <div className="mb-6">
-            {title && <h3 className="text-xl font-bold text-white mb-1">{title}</h3>}
-            {subtitle && <p className="text-sm text-white/50">{subtitle}</p>}
-          </div>
-        )}
-
-        {/* Chart */}
-        <svg width="100%" viewBox={`0 0 ${width} ${height}`} className="overflow-visible">
-          <defs>
-            {/* Gradient fill */}
-            <linearGradient id={`areaGrad-${accentColor.replace('#', '')}`} x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor={accentColor} stopOpacity="0.4" />
-              <stop offset="50%" stopColor={accentColor} stopOpacity="0.15" />
-              <stop offset="100%" stopColor={accentColor} stopOpacity="0" />
-            </linearGradient>
-            {/* Glow */}
-            <filter id="areaGlow">
-              <feGaussianBlur stdDeviation="4" result="coloredBlur" />
-              <feMerge>
-                <feMergeNode in="coloredBlur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          {/* Grid lines */}
-          {showGrid && yValues.map((value, i) => {
-            const y = padding.top + chartHeight - (value / maxValue) * chartHeight;
-            return (
-              <g key={i}>
-                <line
-                  x1={padding.left}
-                  y1={y}
-                  x2={padding.left + chartWidth}
-                  y2={y}
-                  stroke="rgba(255,255,255,0.06)"
-                  strokeDasharray="4 4"
-                />
-                <text
-                  x={padding.left - 10}
-                  y={y + 4}
-                  textAnchor="end"
-                  className="text-xs fill-white/50"
-                >
-                  {value}
-                </text>
-              </g>
-            );
-          })}
-
-          {/* X-axis labels */}
-          {points.map((p, i) => (
-            <text
-              key={i}
-              x={p.x}
-              y={height - 15}
-              textAnchor="middle"
-              className="text-xs fill-white/50"
-            >
-              {p.label}
-            </text>
-          ))}
-
-          {/* Animated area fill */}
-          <motion.path
-            d={areaPath}
-            fill={`url(#areaGrad-${accentColor.replace('#', '')})`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          />
-
-          {/* Animated line */}
-          <motion.path
-            d={linePath}
-            fill="none"
-            stroke={accentColor}
-            strokeWidth={3}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            filter="url(#areaGlow)"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          />
-
-          {/* Data points */}
-          {points.map((point, i) => (
-            <motion.circle
-              key={i}
-              cx={point.x}
-              cy={point.y}
-              r={5}
-              fill="#000"
-              stroke={accentColor}
-              strokeWidth={2.5}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.8 + i * 0.08, type: 'spring', stiffness: 200 }}
-            />
-          ))}
-        </svg>
-      </div>
+      {content}
     </div>
   );
 }

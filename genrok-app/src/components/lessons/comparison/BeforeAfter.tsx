@@ -13,17 +13,26 @@ interface BeforeAfterProps {
     items: string[];
   };
   headline?: string;
+  variant?: 'dark' | 'light';
 }
 
 /**
  * BeforeAfter - Side-by-side comparison with red/green accent
- * White slide background with dark rounded block
+ * Supports dark (black container) and light (white background) variants
  */
 export function BeforeAfter({
   before,
   after,
   headline,
+  variant = 'dark',
 }: BeforeAfterProps) {
+  const isDark = variant === 'dark';
+
+  // Color variables
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/70' : 'text-black/70';
+  const cardBg = isDark ? 'bg-white/5' : 'bg-black/5';
+
   const CardSection = ({
     type,
     title,
@@ -44,7 +53,7 @@ export function BeforeAfter({
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay }}
-        className="bg-white/5 rounded-2xl overflow-hidden"
+        className={`${cardBg} rounded-2xl overflow-hidden`}
       >
         {/* Accent bar */}
         <div
@@ -65,7 +74,7 @@ export function BeforeAfter({
                 strokeWidth={3}
               />
             </span>
-            <h3 className="text-xl font-bold text-white">
+            <h3 className={`text-xl font-bold ${textColor}`}>
               {title || (isBefore ? 'Before' : 'After')}
             </h3>
           </div>
@@ -90,7 +99,7 @@ export function BeforeAfter({
                     strokeWidth={3}
                   />
                 </span>
-                <span className="text-white/70">{item}</span>
+                <span className={mutedColor}>{item}</span>
               </motion.li>
             ))}
           </ul>
@@ -99,36 +108,54 @@ export function BeforeAfter({
     );
   };
 
+  // Content to render
+  const content = (
+    <>
+      {/* Headline */}
+      {headline && (
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-3xl font-bold ${textColor} text-center mb-10`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {headline}
+        </motion.h2>
+      )}
+
+      {/* Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <CardSection
+          type="before"
+          title={before.title}
+          items={before.items}
+          delay={0}
+        />
+        <CardSection
+          type="after"
+          title={after.title}
+          items={after.items}
+          delay={0.15}
+        />
+      </div>
+    </>
+  );
+
+  // Conditional rendering based on variant
+  if (isDark) {
+    return (
+      <div className="bg-white p-8">
+        <div className="bg-black rounded-2xl p-12">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-8">
-      <div className="bg-black rounded-2xl p-12">
-        {/* Headline */}
-        {headline && (
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl font-bold text-white text-center mb-10"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {headline}
-          </motion.h2>
-        )}
-
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <CardSection
-            type="before"
-            title={before.title}
-            items={before.items}
-            delay={0}
-          />
-          <CardSection
-            type="after"
-            title={after.title}
-            items={after.items}
-            delay={0.15}
-          />
-        </div>
+      <div className="p-12">
+        {content}
       </div>
     </div>
   );

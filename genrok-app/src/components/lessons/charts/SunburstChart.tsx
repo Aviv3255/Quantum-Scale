@@ -13,13 +13,21 @@ interface SunburstChartProps {
   data: SunburstNode;
   title?: string;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 export function SunburstChart({
   data,
   title,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: SunburstChartProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+  const strokeColor = isDark ? 'black' : 'white';
+  const centerTextFill = isDark ? 'white' : 'black';
   const width = 400;
   const height = 400;
   const cx = width / 2;
@@ -121,52 +129,60 @@ export function SunburstChart({
     `;
   };
 
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
+
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {arcs.map((arc, i) => (
+          <motion.path
+            key={i}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: arc.depth * 0.1 + i * 0.02 }}
+            d={createArcPath(arc)}
+            fill={arc.color}
+            stroke={strokeColor}
+            strokeWidth="1"
+            style={{ transformOrigin: `${cx}px ${cy}px` }}
+          />
+        ))}
+
+        {/* Center label */}
+        <motion.text
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          x={cx}
+          y={cy}
+          textAnchor="middle"
+          dominantBaseline="middle"
+          fill={centerTextFill}
+          fontSize="14"
+          fontWeight="bold"
+        >
+          {data.name}
+        </motion.text>
+      </svg>
+    </>
+  );
+
   return (
     <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-lg">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-6"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
-        )}
-
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {arcs.map((arc, i) => (
-            <motion.path
-              key={i}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: arc.depth * 0.1 + i * 0.02 }}
-              d={createArcPath(arc)}
-              fill={arc.color}
-              stroke="black"
-              strokeWidth="1"
-              style={{ transformOrigin: `${cx}px ${cy}px` }}
-            />
-          ))}
-
-          {/* Center label */}
-          <motion.text
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            x={cx}
-            y={cy}
-            textAnchor="middle"
-            dominantBaseline="middle"
-            fill="white"
-            fontSize="14"
-            fontWeight="bold"
-          >
-            {data.name}
-          </motion.text>
-        </svg>
-      </div>
+      {isDark ? (
+        <div className="bg-black rounded-2xl p-8 w-full max-w-lg">{content}</div>
+      ) : (
+        <div className="w-full max-w-lg">{content}</div>
+      )}
     </div>
   );
 }

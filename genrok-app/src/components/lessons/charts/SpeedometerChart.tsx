@@ -11,6 +11,7 @@ interface SpeedometerChartProps {
   zones?: { min: number; max: number; color: string; label?: string }[];
   title?: string;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 export function SpeedometerChart({
@@ -22,7 +23,18 @@ export function SpeedometerChart({
   zones,
   title,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: SpeedometerChartProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const svgTextFill = isDark ? 'white' : 'black';
+  const svgMutedFill = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
+  const svgMutedFill40 = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+  const bgArc = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+  const needleStroke = isDark ? 'white' : 'black';
+  const needleCenterFill = isDark ? 'white' : 'black';
+  const needleInnerFill = isDark ? 'black' : 'white';
+
   const width = 400;
   const height = 280;
   const cx = width / 2;
@@ -60,127 +72,139 @@ export function SpeedometerChart({
     return `M ${startPoint.x} ${startPoint.y} A ${r} ${r} 0 ${largeArc} 1 ${endPoint.x} ${endPoint.y}`;
   };
 
-  return (
-    <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-lg">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-4"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
-        )}
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-4`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
 
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {/* Background arc */}
-          <motion.path
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.5 }}
-            d={createArcPath(startAngle, endAngle, radius)}
-            fill="none"
-            stroke="rgba(255,255,255,0.1)"
-            strokeWidth="30"
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {/* Background arc */}
+        <motion.path
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.5 }}
+          d={createArcPath(startAngle, endAngle, radius)}
+          fill="none"
+          stroke={bgArc}
+          strokeWidth="30"
+          strokeLinecap="round"
+        />
+
+        {/* Zone arcs */}
+        {effectiveZones.map((zone, i) => {
+          const zoneStartAngle = valueToAngle(zone.min);
+          const zoneEndAngle = valueToAngle(zone.max);
+
+          return (
+            <motion.path
+              key={i}
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
+              d={createArcPath(zoneStartAngle, zoneEndAngle, radius)}
+              fill="none"
+              stroke={zone.color}
+              strokeWidth="30"
+              strokeLinecap="butt"
+              opacity="0.6"
+            />
+          );
+        })}
+
+        {/* Needle */}
+        <motion.g
+          initial={{ rotate: startAngle }}
+          animate={{ rotate: valueAngle }}
+          transition={{ delay: 0.8, duration: 0.8, type: 'spring' }}
+          style={{ transformOrigin: `${cx}px ${cy}px` }}
+        >
+          <line
+            x1={cx}
+            y1={cy}
+            x2={cx}
+            y2={cy - radius + 40}
+            stroke={needleStroke}
+            strokeWidth="4"
             strokeLinecap="round"
           />
+          <circle cx={cx} cy={cy} r="12" fill={needleCenterFill} />
+          <circle cx={cx} cy={cy} r="6" fill={needleInnerFill} />
+        </motion.g>
 
-          {/* Zone arcs */}
-          {effectiveZones.map((zone, i) => {
-            const zoneStartAngle = valueToAngle(zone.min);
-            const zoneEndAngle = valueToAngle(zone.max);
+        {/* Value display */}
+        <motion.text
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          x={cx}
+          y={cy + 50}
+          textAnchor="middle"
+          fill={svgTextFill}
+          fontSize="32"
+          fontWeight="bold"
+        >
+          {value}
+          {unit && <tspan fontSize="16" fill={svgMutedFill}> {unit}</tspan>}
+        </motion.text>
 
-            return (
-              <motion.path
-                key={i}
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                d={createArcPath(zoneStartAngle, zoneEndAngle, radius)}
-                fill="none"
-                stroke={zone.color}
-                strokeWidth="30"
-                strokeLinecap="butt"
-                opacity="0.6"
-              />
-            );
-          })}
-
-          {/* Needle */}
-          <motion.g
-            initial={{ rotate: startAngle }}
-            animate={{ rotate: valueAngle }}
-            transition={{ delay: 0.8, duration: 0.8, type: 'spring' }}
-            style={{ transformOrigin: `${cx}px ${cy}px` }}
-          >
-            <line
-              x1={cx}
-              y1={cy}
-              x2={cx}
-              y2={cy - radius + 40}
-              stroke="white"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-            <circle cx={cx} cy={cy} r="12" fill="white" />
-            <circle cx={cx} cy={cy} r="6" fill="black" />
-          </motion.g>
-
-          {/* Value display */}
+        {/* Label */}
+        {label && (
           <motion.text
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            transition={{ delay: 1.1 }}
             x={cx}
-            y={cy + 50}
+            y={cy + 80}
             textAnchor="middle"
-            fill="white"
-            fontSize="32"
-            fontWeight="bold"
+            fill={svgMutedFill}
+            fontSize="14"
           >
-            {value}
-            {unit && <tspan fontSize="16" fill="rgba(255,255,255,0.5)"> {unit}</tspan>}
+            {label}
           </motion.text>
+        )}
 
-          {/* Label */}
-          {label && (
-            <motion.text
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1 }}
-              x={cx}
-              y={cy + 80}
-              textAnchor="middle"
-              fill="rgba(255,255,255,0.5)"
-              fontSize="14"
-            >
-              {label}
-            </motion.text>
-          )}
+        {/* Min/Max labels */}
+        <text
+          x={cx - radius - 10}
+          y={cy + 20}
+          textAnchor="end"
+          fill={svgMutedFill40}
+          fontSize="12"
+        >
+          {minValue}
+        </text>
+        <text
+          x={cx + radius + 10}
+          y={cy + 20}
+          textAnchor="start"
+          fill={svgMutedFill40}
+          fontSize="12"
+        >
+          {maxValue}
+        </text>
+      </svg>
+    </>
+  );
 
-          {/* Min/Max labels */}
-          <text
-            x={cx - radius - 10}
-            y={cy + 20}
-            textAnchor="end"
-            fill="rgba(255,255,255,0.4)"
-            fontSize="12"
-          >
-            {minValue}
-          </text>
-          <text
-            x={cx + radius + 10}
-            y={cy + 20}
-            textAnchor="start"
-            fill="rgba(255,255,255,0.4)"
-            fontSize="12"
-          >
-            {maxValue}
-          </text>
-        </svg>
-      </div>
+  return (
+    <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
+      {isDark ? (
+        <div className="bg-black rounded-2xl p-8 w-full max-w-lg">
+          {content}
+        </div>
+      ) : (
+        <div className="w-full max-w-lg">
+          {content}
+        </div>
+      )}
     </div>
   );
 }

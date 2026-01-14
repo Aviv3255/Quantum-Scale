@@ -11,13 +11,19 @@ interface ChordDiagramProps {
   data: ChordData;
   title?: string;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 export function ChordDiagram({
   data,
   title,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: ChordDiagramProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)';
+
   const width = 450;
   const height = 450;
   const cx = width / 2;
@@ -112,64 +118,80 @@ export function ChordDiagram({
     });
   });
 
+  const content = (
+    <>
+      {title && (
+        <motion.h3
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          style={{ fontFamily: "'General Sans', sans-serif" }}
+        >
+          {title}
+        </motion.h3>
+      )}
+
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
+        {/* Chords */}
+        {chords.map((chord, i) => (
+          <motion.path
+            key={`chord-${i}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: chord.opacity }}
+            transition={{ delay: 0.3 + i * 0.02 }}
+            d={chord.path}
+            fill={chord.color}
+          />
+        ))}
+
+        {/* Arcs */}
+        {arcData.map((arc, i) => (
+          <motion.g key={`arc-${i}`}>
+            {/* Outer arc */}
+            <motion.path
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ delay: 0.1 + i * 0.05, duration: 0.5 }}
+              d={createArcPath(arc.startAngle, arc.endAngle, outerRadius)}
+              fill="none"
+              stroke={arc.color}
+              strokeWidth="20"
+            />
+
+            {/* Label */}
+            <motion.text
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 + i * 0.05 }}
+              x={cx + (outerRadius + 25) * Math.cos((arc.startAngle + arc.endAngle) / 2 - Math.PI / 2)}
+              y={cy + (outerRadius + 25) * Math.sin((arc.startAngle + arc.endAngle) / 2 - Math.PI / 2)}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fill={mutedColor}
+              fontSize="10"
+            >
+              {arc.label}
+            </motion.text>
+          </motion.g>
+        ))}
+      </svg>
+    </>
+  );
+
+  if (isDark) {
+    return (
+      <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
+        <div className="bg-black rounded-2xl p-8 w-full max-w-lg">
+          {content}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white p-8 min-h-[500px] flex items-center justify-center">
-      <div className="bg-black rounded-2xl p-8 w-full max-w-lg">
-        {title && (
-          <motion.h3
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl font-bold text-white text-center mb-6"
-            style={{ fontFamily: "'General Sans', sans-serif" }}
-          >
-            {title}
-          </motion.h3>
-        )}
-
-        <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
-          {/* Chords */}
-          {chords.map((chord, i) => (
-            <motion.path
-              key={`chord-${i}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: chord.opacity }}
-              transition={{ delay: 0.3 + i * 0.02 }}
-              d={chord.path}
-              fill={chord.color}
-            />
-          ))}
-
-          {/* Arcs */}
-          {arcData.map((arc, i) => (
-            <motion.g key={`arc-${i}`}>
-              {/* Outer arc */}
-              <motion.path
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ delay: 0.1 + i * 0.05, duration: 0.5 }}
-                d={createArcPath(arc.startAngle, arc.endAngle, outerRadius)}
-                fill="none"
-                stroke={arc.color}
-                strokeWidth="20"
-              />
-
-              {/* Label */}
-              <motion.text
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 + i * 0.05 }}
-                x={cx + (outerRadius + 25) * Math.cos((arc.startAngle + arc.endAngle) / 2 - Math.PI / 2)}
-                y={cy + (outerRadius + 25) * Math.sin((arc.startAngle + arc.endAngle) / 2 - Math.PI / 2)}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="rgba(255,255,255,0.8)"
-                fontSize="10"
-              >
-                {arc.label}
-              </motion.text>
-            </motion.g>
-          ))}
-        </svg>
+      <div className="w-full max-w-lg">
+        {content}
       </div>
     </div>
   );

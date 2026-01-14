@@ -12,6 +12,7 @@ interface WaterfallChartProps {
   data: WaterfallItem[];
   title?: string;
   valuePrefix?: string;
+  variant?: 'dark' | 'light';
 }
 
 /**
@@ -22,7 +23,13 @@ export function WaterfallChart({
   data,
   title,
   valuePrefix = '',
+  variant = 'dark',
 }: WaterfallChartProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const connectorColor = isDark ? 'bg-white/20' : 'bg-black/20';
+
   // Calculate running totals
   let runningTotal = 0;
   const processedData = data.map((item, index) => {
@@ -40,77 +47,87 @@ export function WaterfallChart({
   const range = maxValue - minValue;
   const barHeight = 280;
 
+  const content = (
+    <>
+      {title && (
+        <h3 className={`text-xl font-bold ${textColor} mb-6`}>{title}</h3>
+      )}
+
+      <div className="flex items-end justify-between gap-2" style={{ height: barHeight + 40 }}>
+        {processedData.map((item, index) => {
+          const y1 = ((maxValue - item.start) / range) * barHeight;
+          const y2 = ((maxValue - item.end) / range) * barHeight;
+          const top = Math.min(y1, y2);
+          const height = Math.abs(y2 - y1);
+          const isPositive = item.value >= 0;
+          const isFirst = index === 0;
+
+          return (
+            <motion.div
+              key={index}
+              className="flex-1 flex flex-col items-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              {/* Value label */}
+              <motion.div
+                className={`text-sm font-bold mb-2 ${
+                  item.isTotal ? 'text-[#88da1c]' : isPositive ? textColor : 'text-red-400'
+                }`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 + index * 0.1 }}
+              >
+                {!isFirst && !item.isTotal && (isPositive ? '+' : '')}
+                {valuePrefix}{item.value.toLocaleString()}
+              </motion.div>
+
+              {/* Bar container */}
+              <div className="relative w-full" style={{ height: barHeight }}>
+                {/* Connector line */}
+                {index > 0 && !item.isTotal && (
+                  <div
+                    className={`absolute w-full h-px ${connectorColor}`}
+                    style={{ top: y1 }}
+                  />
+                )}
+
+                {/* Bar */}
+                <motion.div
+                  className="absolute w-full rounded-sm"
+                  style={{
+                    top,
+                    backgroundColor: item.isTotal ? '#88da1c' : isPositive ? '#3B82F6' : '#EF4444',
+                  }}
+                  initial={{ height: 0 }}
+                  animate={{ height }}
+                  transition={{
+                    duration: 0.6,
+                    delay: 0.2 + index * 0.1,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                />
+              </div>
+
+              {/* Label */}
+              <span className={`text-xs ${mutedColor} mt-2 text-center`}>{item.label}</span>
+            </motion.div>
+          );
+        })}
+      </div>
+    </>
+  );
+
   return (
     <div className="bg-white p-8">
-      <div className="bg-black rounded-2xl p-8">
-        {title && (
-          <h3 className="text-xl font-bold text-white mb-6">{title}</h3>
-        )}
-
-        <div className="flex items-end justify-between gap-2" style={{ height: barHeight + 40 }}>
-          {processedData.map((item, index) => {
-            const y1 = ((maxValue - item.start) / range) * barHeight;
-            const y2 = ((maxValue - item.end) / range) * barHeight;
-            const top = Math.min(y1, y2);
-            const height = Math.abs(y2 - y1);
-            const isPositive = item.value >= 0;
-            const isFirst = index === 0;
-
-            return (
-              <motion.div
-                key={index}
-                className="flex-1 flex flex-col items-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                {/* Value label */}
-                <motion.div
-                  className={`text-sm font-bold mb-2 ${
-                    item.isTotal ? 'text-[#88da1c]' : isPositive ? 'text-white' : 'text-red-400'
-                  }`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.5 + index * 0.1 }}
-                >
-                  {!isFirst && !item.isTotal && (isPositive ? '+' : '')}
-                  {valuePrefix}{item.value.toLocaleString()}
-                </motion.div>
-
-                {/* Bar container */}
-                <div className="relative w-full" style={{ height: barHeight }}>
-                  {/* Connector line */}
-                  {index > 0 && !item.isTotal && (
-                    <div
-                      className="absolute w-full h-px bg-white/20"
-                      style={{ top: y1 }}
-                    />
-                  )}
-
-                  {/* Bar */}
-                  <motion.div
-                    className="absolute w-full rounded-sm"
-                    style={{
-                      top,
-                      backgroundColor: item.isTotal ? '#88da1c' : isPositive ? '#3B82F6' : '#EF4444',
-                    }}
-                    initial={{ height: 0 }}
-                    animate={{ height }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 0.2 + index * 0.1,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  />
-                </div>
-
-                {/* Label */}
-                <span className="text-xs text-white/50 mt-2 text-center">{item.label}</span>
-              </motion.div>
-            );
-          })}
+      {isDark ? (
+        <div className="bg-black rounded-2xl p-8">
+          {content}
         </div>
-      </div>
+      ) : (
+        content
+      )}
     </div>
   );
 }

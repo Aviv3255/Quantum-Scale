@@ -13,11 +13,13 @@ interface SplitContentProps {
   };
   reversed?: boolean;
   accentColor?: string;
+  variant?: 'dark' | 'light';
 }
 
 /**
  * SplitContent - 50/50 split layout with text and media
- * White slide background with dark rounded block
+ * Dark: White slide background with dark rounded block
+ * Light: Just white background, no dark container
  */
 export function SplitContent({
   title,
@@ -25,7 +27,12 @@ export function SplitContent({
   media,
   reversed = false,
   accentColor = '#88da1c',
+  variant = 'dark',
 }: SplitContentProps) {
+  const isDark = variant === 'dark';
+  const textColor = isDark ? 'text-white' : 'text-black';
+  const mutedColor = isDark ? 'text-white/70' : 'text-black/70';
+
   const textContent = (
     <motion.div
       initial={{ opacity: 0, x: reversed ? 30 : -30 }}
@@ -40,16 +47,16 @@ export function SplitContent({
       />
 
       <h2
-        className="text-4xl font-bold text-white mb-6 tracking-tight leading-tight"
+        className={`text-4xl font-bold ${textColor} mb-6 tracking-tight leading-tight`}
         style={{ fontFamily: "'General Sans', sans-serif" }}
       >
         {title}
       </h2>
 
       {typeof content === 'string' ? (
-        <p className="text-lg text-white/70 leading-relaxed">{content}</p>
+        <p className={`text-lg ${mutedColor} leading-relaxed`}>{content}</p>
       ) : (
-        <div className="text-lg text-white/70 leading-relaxed">{content}</div>
+        <div className={`text-lg ${mutedColor} leading-relaxed`}>{content}</div>
       )}
     </motion.div>
   );
@@ -84,18 +91,32 @@ export function SplitContent({
     </motion.div>
   );
 
-  return (
-    <div className="bg-white p-8">
-      <div className="bg-black rounded-2xl p-12 min-h-[500px]">
-        <div
-          className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-            reversed ? 'lg:flex-row-reverse' : ''
-          }`}
-          style={{ direction: reversed ? 'rtl' : 'ltr' }}
-        >
-          <div style={{ direction: 'ltr' }}>{reversed ? mediaContent : textContent}</div>
-          <div style={{ direction: 'ltr' }}>{reversed ? textContent : mediaContent}</div>
+  const gridContent = (
+    <div
+      className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+        reversed ? 'lg:flex-row-reverse' : ''
+      }`}
+      style={{ direction: reversed ? 'rtl' : 'ltr' }}
+    >
+      <div style={{ direction: 'ltr' }}>{reversed ? mediaContent : textContent}</div>
+      <div style={{ direction: 'ltr' }}>{reversed ? textContent : mediaContent}</div>
+    </div>
+  );
+
+  if (isDark) {
+    return (
+      <div className="bg-white p-8">
+        <div className="bg-black rounded-2xl p-12 min-h-[500px]">
+          {gridContent}
         </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white p-8 min-h-[500px]">
+      <div className="p-4">
+        {gridContent}
       </div>
     </div>
   );
