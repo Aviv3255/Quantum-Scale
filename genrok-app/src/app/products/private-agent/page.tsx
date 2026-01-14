@@ -1,190 +1,348 @@
 'use client';
 
-import React, { useState } from 'react';
-import { ExternalLink, CheckCircle, Truck, Package, DollarSign, MessageCircle, Globe, Zap, ShoppingBag, CreditCard, Box, TrendingUp, ChevronDown, ArrowRight, LucideIcon } from 'lucide-react';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  ExternalLink,
+  CheckCircle,
+  Truck,
+  Package,
+  DollarSign,
+  MessageCircle,
+  Globe,
+  Zap,
+  ShoppingBag,
+  CreditCard,
+  Box,
+  TrendingUp,
+  ChevronDown,
+  Clock,
+  Shield,
+  Users,
+  BarChart3,
+  Sparkles,
+} from 'lucide-react';
 
-interface ComparisonRow {
-  criterion: string;
-  agent: string;
-  aliexpress: string;
-  icon: LucideIcon;
-}
+// Factory images
+const FACTORY_IMAGES = [
+  'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/19%20(1).jpg',
+  'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/21.jpg',
+  'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/24.jpg',
+];
 
-interface Step {
-  number: number;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-}
+const HYPERSKU_LINK = 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq';
 
-interface FAQ {
-  q: string;
-  a: string;
-}
-
-interface Benefit {
-  icon: LucideIcon;
-  title: string;
-  color: string;
-}
-
-export default function PrivateAgent() {
+export default function PrivateAgentPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState<'overview' | 'comparison' | 'how-it-works'>('overview');
 
-  const comparisonData: ComparisonRow[] = [
-    { criterion: 'Shipping Time', agent: '5-7 days worldwide', aliexpress: '15-45 days average', icon: Truck },
-    { criterion: 'Product Quality', agent: 'Manual inspection before shipping', aliexpress: 'No oversight, potential issues', icon: CheckCircle },
-    { criterion: 'Customer Service', agent: 'Personal WhatsApp rep 24/7', aliexpress: 'Limited support', icon: MessageCircle },
-    { criterion: 'Package Branding', agent: 'Branded with your logo (optional)', aliexpress: 'Generic Chinese packages', icon: Box },
-    { criterion: 'Pricing', agent: 'Usually cheaper', aliexpress: '15-40% more expensive', icon: DollarSign },
-    { criterion: 'Inventory', agent: 'Private inventory option', aliexpress: 'No control', icon: Package },
-    { criterion: 'Consolidation', agent: 'One package for all items', aliexpress: 'Separate shipments', icon: ShoppingBag },
-    { criterion: 'Scalability', agent: '1-50,000 orders/day', aliexpress: 'Collapses under pressure', icon: TrendingUp }
+  const stats = [
+    { label: 'Delivery Time', value: '5-7', unit: 'days', sublabel: 'Worldwide', icon: Truck },
+    { label: 'Daily Capacity', value: '50K', unit: 'orders', sublabel: 'Scalable', icon: BarChart3 },
+    { label: 'Support', value: '24/7', unit: '', sublabel: 'WhatsApp', icon: MessageCircle },
+    { label: 'Quality Check', value: '100%', unit: '', sublabel: 'Inspected', icon: Shield },
   ];
 
-  const steps: Step[] = [
-    { number: 1, title: 'Install the Shopify App', description: 'Connect your store with HyperSKU. All orders sync automatically.', icon: ShoppingBag },
-    { number: 2, title: 'Orders Sync Automatically', description: 'Every order appears instantly in your dashboard.', icon: Zap },
-    { number: 3, title: 'Product Pricing (Real Time)', description: 'Get exact sourcing prices within 2 hours.', icon: DollarSign },
-    { number: 4, title: 'Choose Shipping', description: 'Select delivery method with full tracking.', icon: Truck },
-    { number: 5, title: 'Complete Payment', description: 'Pay securely via credit card or PayPal.', icon: CreditCard },
-    { number: 6, title: 'Fulfillment & Branding', description: 'Items are inspected, branded, and shipped.', icon: Package },
-    { number: 7, title: 'Real-Time Tracking', description: 'Monitor every order in real-time.', icon: Globe }
+  const benefits = [
+    { icon: Truck, title: '5-7 Day Worldwide Shipping', desc: 'Fast delivery to any country' },
+    { icon: Package, title: 'Custom Branding', desc: 'Your logo on every package' },
+    { icon: DollarSign, title: 'Lower Costs', desc: 'Better margins than AliExpress' },
+    { icon: ShoppingBag, title: 'Order Consolidation', desc: 'Multiple items, one package' },
+    { icon: Box, title: 'Private Inventory', desc: 'Stock your bestsellers' },
+    { icon: MessageCircle, title: 'Personal Support', desc: 'Dedicated WhatsApp rep' },
   ];
 
-  const faqs: FAQ[] = [
-    { q: 'Does it cost money?', a: 'No. Opening an account is completely free. No subscription fees, no commitment. You only pay for orders placed.' },
-    { q: 'How long until I receive shipments?', a: 'In most countries (US, Europe), shipments arrive within 5-7 days typically.' },
-    { q: 'How do I communicate with the agent?', a: 'Directly on WhatsApp. After registering, a personal representative will contact you.' },
-    { q: 'Can I brand my products?', a: 'Absolutely. Add logo, branded packaging, personal notes, and full customer experience branding.' },
-    { q: 'How is it more profitable than AliExpress?', a: 'Cheaper prices, fewer errors, fast shipping, reduced complaints, branding options, everything in one package.' },
-    { q: 'Do I have to stop working with AliExpress?', a: "No. You can use both, but most entrepreneurs don't go back after seeing the efficiency." }
+  const comparisonData = [
+    { criterion: 'Shipping Time', agent: '5-7 days worldwide', aliexpress: '15-45 days', winner: 'agent' },
+    { criterion: 'Quality Control', agent: 'Manual inspection', aliexpress: 'No oversight', winner: 'agent' },
+    { criterion: 'Customer Service', agent: 'Personal WhatsApp 24/7', aliexpress: 'Limited support', winner: 'agent' },
+    { criterion: 'Branding', agent: 'Full customization', aliexpress: 'Generic packaging', winner: 'agent' },
+    { criterion: 'Pricing', agent: 'Usually cheaper', aliexpress: '15-40% more', winner: 'agent' },
+    { criterion: 'Scalability', agent: 'Up to 50K orders/day', aliexpress: 'Crashes under load', winner: 'agent' },
   ];
 
-  const benefits: Benefit[] = [
-    { icon: Truck, title: 'Shipments in 5-8 days worldwide', color: '#3B82F6' },
-    { icon: Package, title: 'Full package branding (optional)', color: '#8B5CF6' },
-    { icon: ShoppingBag, title: 'Combine shipments into one package', color: '#06B6D4' },
-    { icon: DollarSign, title: 'Lower prices = higher profit', color: '#10B981' },
-    { icon: Box, title: 'Private inventory option', color: '#F59E0B' },
-    { icon: MessageCircle, title: 'Personal WhatsApp support', color: '#EC4899' }
+  const steps = [
+    { num: 1, title: 'Install App', desc: 'Connect your Shopify store with HyperSKU', icon: ShoppingBag },
+    { num: 2, title: 'Auto-Sync Orders', desc: 'Every order appears instantly', icon: Zap },
+    { num: 3, title: 'Get Pricing', desc: 'Real-time sourcing quotes in 2 hours', icon: DollarSign },
+    { num: 4, title: 'Select Shipping', desc: 'Choose method with full tracking', icon: Truck },
+    { num: 5, title: 'Pay Securely', desc: 'Credit card or PayPal', icon: CreditCard },
+    { num: 6, title: 'Fulfillment', desc: 'Inspect, brand, and ship', icon: Package },
+  ];
+
+  const faqs = [
+    { q: 'Is there a signup cost?', a: 'No. Opening an account is completely free. No subscription fees, no commitment. You only pay for orders placed.' },
+    { q: 'What are the shipping times?', a: 'Most countries receive shipments within 5-7 days, including USA, Europe, Australia, and more.' },
+    { q: 'How do I communicate?', a: 'Directly on WhatsApp. After registering, a personal representative will contact you.' },
+    { q: 'Can I brand my products?', a: 'Yes! Add your logo, custom packaging, thank you cards, and create a premium unboxing experience.' },
+    { q: 'Is it better than AliExpress?', a: 'Significantly. Lower prices, faster shipping, quality control, and dedicated support mean happier customers and better margins.' },
   ];
 
   return (
-    <div className="min-h-screen" style={{ background: '#F9FAFB' }}>
-      <div className="max-w-7xl mx-auto p-6">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6" style={{ background: '#EFF6FF', border: '1px solid #DBEAFE' }}>
-            <Truck className="w-4 h-4" style={{ color: '#3B82F6' }} />
-            <span className="text-sm font-semibold" style={{ color: '#3B82F6' }}>PREMIUM FULFILLMENT</span>
+    <div className="main-content">
+      <div className="page-wrapper" style={{ maxWidth: '1400px' }}>
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+              <Globe className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-[var(--text-primary)]">Private Fulfillment Agent</h1>
+              <p className="text-sm text-[var(--text-muted)]">Premium worldwide fulfillment partner</p>
+            </div>
           </div>
-          <h1 className="text-5xl font-bold mb-4" style={{ color: '#1E1E1E', fontFamily: 'Poppins, sans-serif', letterSpacing: '-0.02em' }}>Your Personal Fulfillment Partner</h1>
-          <p className="text-xl mb-3" style={{ color: '#6B7280', maxWidth: '800px', margin: '0 auto 12px' }}>Premium fulfillment partner with 5-7 day delivery to USA</p>
-          <p className="text-lg mb-10" style={{ color: '#6B7280', maxWidth: '900px', margin: '0 auto 40px' }}>Partnership with China's largest logistics company, working exclusively with dropshippers. From 1 order/month to 50,000 orders/day.</p>
-          <a href="https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 rounded-xl font-bold text-lg transition-all hover:-translate-y-0.5" style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)', color: '#FFFFFF', boxShadow: '0 8px 24px rgba(59, 130, 246, 0.3)' }}>
-            Connect Your Agent <ExternalLink className="w-5 h-5" />
-          </a>
-          <p className="mt-4 text-sm" style={{ color: '#6B7280' }}>Register through our link and receive personal WhatsApp support</p>
-        </div>
+        </motion.div>
 
-        {/* Benefits Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {benefits.map((benefit, idx) => (
-            <div key={idx} className="p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${benefit.color}15`, border: `1px solid ${benefit.color}30` }}>
-                  <benefit.icon className="w-6 h-6" style={{ color: benefit.color }} />
+        {/* Stats Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+        >
+          {stats.map((stat, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-xl p-5 border border-[#e5e5e5]"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="w-10 h-10 rounded-lg bg-[#f5f5f5] flex items-center justify-center">
+                  <stat.icon size={20} className="text-[var(--text-secondary)]" />
                 </div>
-                <h3 className="font-semibold" style={{ color: '#1E1E1E' }}>{benefit.title}</h3>
+                <span className="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide">
+                  {stat.sublabel}
+                </span>
               </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-[var(--text-primary)]">{stat.value}</span>
+                <span className="text-lg text-[var(--text-muted)]">{stat.unit}</span>
+              </div>
+              <p className="text-sm text-[var(--text-muted)] mt-1">{stat.label}</p>
             </div>
           ))}
-        </div>
+        </motion.div>
 
-        {/* Comparison Table */}
-        <div className="p-8 rounded-2xl mb-16" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
-          <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: '#1E1E1E', fontFamily: 'Poppins, sans-serif' }}>Private Agent vs AliExpress</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr style={{ borderBottom: '2px solid #E5E7EB' }}>
-                  <th className="text-left p-4 font-bold" style={{ color: '#6B7280' }}>Criterion</th>
-                  <th className="text-left p-4 font-bold" style={{ color: '#10B981' }}>Private Agent</th>
-                  <th className="text-left p-4 font-bold" style={{ color: '#EF4444' }}>AliExpress</th>
-                </tr>
-              </thead>
-              <tbody>
-                {comparisonData.map((row, idx) => (
-                  <tr key={idx} style={{ borderBottom: '1px solid #F3F4F6' }}>
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: '#F9FAFB', border: '1px solid #E5E7EB' }}>
-                          <row.icon className="w-5 h-5" style={{ color: '#3B82F6' }} />
-                        </div>
-                        <span style={{ color: '#1E1E1E', fontWeight: 600 }}>{row.criterion}</span>
-                      </div>
-                    </td>
-                    <td className="p-4" style={{ color: '#10B981', fontWeight: 500 }}>{row.agent}</td>
-                    <td className="p-4" style={{ color: '#6B7280' }}>{row.aliexpress}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* How It Works Timeline */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: '#1E1E1E', fontFamily: 'Poppins, sans-serif' }}>How the System Works</h2>
-          <div className="relative max-w-4xl mx-auto">
-            <div className="absolute left-8 top-0 bottom-0 w-0.5" style={{ background: '#E5E7EB' }} />
-            <div className="space-y-6">
-              {steps.map((step, idx) => (
-                <div key={idx} className="ml-20 p-6 rounded-xl relative" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
-                  <div className="absolute -left-[72px] top-1/2 transform -translate-y-1/2 w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg" style={{ background: 'linear-gradient(135deg, #3B82F6, #2563EB)', color: '#FFFFFF', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)', border: '4px solid #F9FAFB' }}>{step.number}</div>
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#EFF6FF', border: '1px solid #DBEAFE' }}>
-                      <step.icon className="w-6 h-6" style={{ color: '#3B82F6' }} />
+        {/* Main Content Grid */}
+        <div className="grid lg:grid-cols-3 gap-6 mb-8">
+          {/* Left Column - Factory Images */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-1"
+          >
+            <div className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
+              <div className="p-4 border-b border-[#e5e5e5]">
+                <h3 className="font-semibold text-[var(--text-primary)]">Our Facility</h3>
+                <p className="text-xs text-[var(--text-muted)]">State-of-the-art fulfillment center</p>
+              </div>
+              <div className="p-4 space-y-3">
+                {FACTORY_IMAGES.map((img, idx) => (
+                  <div key={idx} className="relative rounded-lg overflow-hidden aspect-video">
+                    <img
+                      src={img}
+                      alt={`Facility ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                    <div className="absolute bottom-2 left-2 flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                      <span className="text-xs text-white font-medium">Live Operations</span>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-lg mb-2" style={{ color: '#1E1E1E' }}>{step.title}</h3>
-                      <p style={{ color: '#6B7280' }}>{step.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column - Tabs Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className="lg:col-span-2"
+          >
+            {/* Tab Navigation */}
+            <div className="flex gap-2 mb-4">
+              {[
+                { id: 'overview', label: 'Overview' },
+                { id: 'comparison', label: 'vs AliExpress' },
+                { id: 'how-it-works', label: 'How It Works' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as typeof activeTab)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                    activeTab === tab.id
+                      ? 'bg-black text-white'
+                      : 'bg-white border border-[#e5e5e5] text-[var(--text-secondary)] hover:border-black'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Tab Content */}
+            <div className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden">
+              {activeTab === 'overview' && (
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Key Benefits</h3>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {benefits.map((benefit, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-4 rounded-lg bg-[#fafafa] border border-[#f0f0f0]"
+                      >
+                        <div className="w-10 h-10 rounded-lg bg-white border border-[#e5e5e5] flex items-center justify-center flex-shrink-0">
+                          <benefit.icon size={18} className="text-[var(--primary)]" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-[var(--text-primary)] text-sm">{benefit.title}</h4>
+                          <p className="text-xs text-[var(--text-muted)]">{benefit.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* CTA */}
+                  <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-[#f8f8f8] to-[#f0f0f0] border border-[#e5e5e5]">
+                    <div className="flex items-center justify-between flex-wrap gap-4">
+                      <div>
+                        <h4 className="font-semibold text-[var(--text-primary)]">Ready to upgrade your fulfillment?</h4>
+                        <p className="text-sm text-[var(--text-muted)]">Free to sign up, personal WhatsApp support included</p>
+                      </div>
+                      <a
+                        href={HYPERSKU_LINK}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-primary flex items-center gap-2"
+                      >
+                        Connect Agent
+                        <ExternalLink size={16} />
+                      </a>
                     </div>
                   </div>
                 </div>
-              ))}
+              )}
+
+              {activeTab === 'comparison' && (
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">Private Agent vs AliExpress</h3>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-[#e5e5e5]">
+                          <th className="text-left py-3 px-4 text-sm font-medium text-[var(--text-muted)]">Feature</th>
+                          <th className="text-left py-3 px-4 text-sm font-medium text-green-600">Private Agent</th>
+                          <th className="text-left py-3 px-4 text-sm font-medium text-[var(--text-muted)]">AliExpress</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {comparisonData.map((row, idx) => (
+                          <tr key={idx} className="border-b border-[#f5f5f5]">
+                            <td className="py-3 px-4 text-sm font-medium text-[var(--text-primary)]">{row.criterion}</td>
+                            <td className="py-3 px-4">
+                              <div className="flex items-center gap-2">
+                                <CheckCircle size={16} className="text-green-500" />
+                                <span className="text-sm text-green-600 font-medium">{row.agent}</span>
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 text-sm text-[var(--text-muted)]">{row.aliexpress}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'how-it-works' && (
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-4">How It Works</h3>
+                  <div className="space-y-4">
+                    {steps.map((step, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-4 p-4 rounded-lg bg-[#fafafa] border border-[#f0f0f0]"
+                      >
+                        <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold text-sm flex-shrink-0">
+                          {step.num}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <step.icon size={16} className="text-[var(--primary)]" />
+                            <h4 className="font-medium text-[var(--text-primary)]">{step.title}</h4>
+                          </div>
+                          <p className="text-sm text-[var(--text-muted)]">{step.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* FAQ Accordion */}
-        <div className="p-8 rounded-2xl mb-12" style={{ background: '#FFFFFF', border: '1px solid #E5E7EB', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
-          <h2 className="text-3xl font-bold mb-8 text-center" style={{ color: '#1E1E1E', fontFamily: 'Poppins, sans-serif' }}>Frequently Asked Questions</h2>
-          <div className="space-y-3 max-w-3xl mx-auto">
+        {/* FAQ Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-white rounded-xl border border-[#e5e5e5] overflow-hidden mb-8"
+        >
+          <div className="p-4 border-b border-[#e5e5e5]">
+            <h3 className="font-semibold text-[var(--text-primary)]">Frequently Asked Questions</h3>
+          </div>
+          <div className="divide-y divide-[#f5f5f5]">
             {faqs.map((faq, idx) => (
-              <div key={idx} className="rounded-xl overflow-hidden transition-all" style={{ background: openFaq === idx ? '#EFF6FF' : '#F9FAFB', border: '1px solid ' + (openFaq === idx ? '#3B82F6' : '#E5E7EB') }}>
-                <button onClick={() => setOpenFaq(openFaq === idx ? null : idx)} className="w-full p-5 flex items-center justify-between text-left">
-                  <div className="flex items-center gap-3 flex-1">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#EFF6FF', border: '1px solid #DBEAFE' }}>
-                      <CheckCircle className="w-5 h-5" style={{ color: '#3B82F6' }} />
-                    </div>
-                    <h3 className="font-bold" style={{ color: '#1E1E1E' }}>{faq.q}</h3>
-                  </div>
-                  <ChevronDown className="w-6 h-6 transition-transform" style={{ color: '#3B82F6', transform: openFaq === idx ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+              <div key={idx}>
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full p-4 flex items-center justify-between text-left hover:bg-[#fafafa] transition-colors"
+                >
+                  <span className="font-medium text-[var(--text-primary)] text-sm">{faq.q}</span>
+                  <ChevronDown
+                    size={18}
+                    className={`text-[var(--text-muted)] transition-transform ${openFaq === idx ? 'rotate-180' : ''}`}
+                  />
                 </button>
-                {openFaq === idx && <div className="px-5 pb-5 pt-0"><p className="pl-11" style={{ color: '#6B7280' }}>{faq.a}</p></div>}
+                {openFaq === idx && (
+                  <div className="px-4 pb-4">
+                    <p className="text-sm text-[var(--text-muted)]">{faq.a}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* Final CTA */}
-        <div className="text-center">
-          <a href="https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-10 py-5 text-xl font-bold rounded-xl transition-all hover:-translate-y-0.5" style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)', color: '#FFFFFF', boxShadow: '0 8px 24px rgba(59, 130, 246, 0.3)' }}>
-            Connect Your Agent Now <ExternalLink className="w-6 h-6" />
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="text-center"
+        >
+          <a
+            href={HYPERSKU_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-black text-white rounded-xl font-semibold hover:bg-gray-900 transition-colors"
+          >
+            Connect Your Private Agent
+            <ExternalLink size={18} />
           </a>
-        </div>
+          <p className="text-sm text-[var(--text-muted)] mt-3">
+            Free registration • Personal WhatsApp support included
+          </p>
+        </motion.div>
       </div>
     </div>
   );

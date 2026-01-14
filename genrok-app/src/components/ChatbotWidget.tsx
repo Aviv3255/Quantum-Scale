@@ -674,7 +674,7 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="text-sm text-gray-800 font-medium leading-relaxed"
+                className="text-[15px] text-black font-semibold leading-snug"
               >
                 {greeting}
               </motion.p>
