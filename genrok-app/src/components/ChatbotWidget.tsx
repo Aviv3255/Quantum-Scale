@@ -988,19 +988,19 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
             className="relative bg-white rounded-2xl shadow-2xl overflow-hidden"
             style={{
               width: '340px',
-              height: '420px',
+              height: '450px',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1)',
             }}
           >
-            {/* Landing Animation Overlay - Big GIF that shrinks (stays inside box) */}
+            {/* Landing Animation Overlay - Big GIF that shrinks */}
             <AnimatePresence>
               {showLandingAnimation && (
                 <motion.div
                   className="absolute z-50 flex items-center justify-center pointer-events-none"
                   initial={{
-                    width: 200,
-                    height: 200,
-                    top: '40%',
+                    width: 280,
+                    height: 280,
+                    top: '45%',
                     left: '50%',
                     x: '-50%',
                     y: '-50%',
@@ -1009,9 +1009,9 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                   animate={
                     animationPhase === 'big'
                       ? {
-                          width: 200,
-                          height: 200,
-                          top: '40%',
+                          width: 280,
+                          height: 280,
+                          top: '45%',
                           left: '50%',
                           x: '-50%',
                           y: '-50%',
@@ -1021,7 +1021,7 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                         ? {
                             width: 80,
                             height: 80,
-                            top: 24,
+                            top: 0,
                             left: '50%',
                             x: '-50%',
                             y: 0,
@@ -1030,7 +1030,7 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                         : {
                             width: 80,
                             height: 80,
-                            top: 24,
+                            top: 0,
                             left: '50%',
                             x: '-50%',
                             y: 0,
@@ -1050,36 +1050,36 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                     autoPlay
                     muted
                     playsInline
-                    className="w-full h-full object-contain rounded-full"
+                    className="w-full h-full object-contain"
                   />
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Main Chat UI */}
+            {/* Main Chat UI - Hidden during landing animation */}
             <motion.div
               className="flex flex-col h-full"
               animate={{
-                opacity: showLandingAnimation ? 0.3 : 1,
+                opacity: showLandingAnimation ? 0 : 1,
               }}
               transition={{ duration: 0.3 }}
             >
-              {/* Header with GIF at top center */}
-              <div className="relative pt-6 pb-3 flex flex-col items-center">
+              {/* Header with GIF at top center - no padding, sticks to top */}
+              <div className="relative flex flex-col items-center">
                 {/* Minimize Button */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleMinimize();
                   }}
-                  className="absolute top-3 right-3 z-10 w-7 h-7 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
+                  className="absolute top-2 right-2 z-10 w-7 h-7 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
                   aria-label="Minimize chat"
                 >
                   <X size={16} className="text-gray-600" />
                 </button>
 
-                {/* Monkey GIF - 20% bigger (80px instead of 64px) */}
-                <div className="w-20 h-20 rounded-full overflow-hidden shadow-lg">
+                {/* Monkey GIF - 80px, no shadow/border, sticks to top */}
+                <div className="w-20 h-20 overflow-hidden">
                   <video
                     src={MONKEY_GIF_URL}
                     autoPlay
