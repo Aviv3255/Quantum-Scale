@@ -355,13 +355,13 @@ export default function LearnV2Page() {
               </div>
             </motion.div>
           ) : (
-            // Default Hero - The Billionaire's Theater, black background, flush with sidebar
+            // Default Hero - The Billionaire's Theater, responds to sidebar gradient theme
             <motion.div
               key="default-hero"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="relative overflow-hidden w-full"
+              className="relative overflow-hidden w-full learn-v2-hero-gradient"
               style={{
                 height: '420px',
                 backgroundColor: '#000000'

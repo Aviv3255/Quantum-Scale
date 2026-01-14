@@ -42,6 +42,7 @@ import { useBookmarksStore } from '@/store/bookmarks';
 import { signOut } from '@/lib/supabase';
 import { BookmarkModal } from '@/components/BookmarkModal';
 import ChatbotWidget from '@/components/ChatbotWidget';
+import { useThemeStore, ACCENT_COLORS, applyTheme } from '@/store/theme';
 
 interface SubNavItem {
   title: string;
@@ -162,6 +163,14 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
   const [searchQuery, setSearchQuery] = useState('');
   const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false);
   const bookmarkButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Theme store
+  const { accentColor, sidebarStyle, setAccentColor, setSidebarStyle } = useThemeStore();
+
+  // Apply theme on mount and when theme changes
+  useEffect(() => {
+    applyTheme(accentColor, sidebarStyle);
+  }, [accentColor, sidebarStyle]);
 
   // Initialize bookmarks when user is available
   useEffect(() => {
@@ -419,6 +428,46 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
             {navigationItems.map((item, idx) => renderNavItem(item, idx, false))}
           </div>
         </nav>
+
+        {/* Theme Customization - Only show when sidebar is expanded */}
+        {!sidebarCollapsed && (
+          <div className="sidebar-theme-section">
+            {/* Sidebar Style Toggle */}
+            <div className="sidebar-style-toggle">
+              <span className="sidebar-style-toggle-label">Theme</span>
+              <div className="sidebar-style-toggle-buttons">
+                <button
+                  className={`sidebar-style-btn ${sidebarStyle === 'black' ? 'active' : ''}`}
+                  onClick={() => setSidebarStyle('black')}
+                >
+                  Black
+                </button>
+                <button
+                  className={`sidebar-style-btn ${sidebarStyle === 'gradient' ? 'active' : ''}`}
+                  onClick={() => setSidebarStyle('gradient')}
+                >
+                  Gradient
+                </button>
+              </div>
+            </div>
+
+            {/* Accent Color Picker */}
+            <div className="accent-color-picker">
+              <span className="accent-color-picker-label">Accent</span>
+              <div className="accent-color-options">
+                {ACCENT_COLORS.map((color) => (
+                  <button
+                    key={color.id}
+                    className={`accent-color-btn ${accentColor === color.id ? 'active' : ''}`}
+                    style={{ backgroundColor: color.value }}
+                    onClick={() => setAccentColor(color.id)}
+                    title={color.label}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Profile Settings Block */}
         <div className="sidebar-profile-block">
