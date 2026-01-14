@@ -747,6 +747,9 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
   const [showLandingAnimation, setShowLandingAnimation] = useState(false);
   const [animationPhase, setAnimationPhase] = useState<'big' | 'shrinking' | 'settled'>('settled');
 
+  // Track if landing video finished first play (then switch to resting GIF)
+  const [landingVideoFinished, setLandingVideoFinished] = useState(false);
+
   // Typewriter effect state
   const [conversationOpener, setConversationOpener] = useState('');
   const [displayedText, setDisplayedText] = useState('');
@@ -805,6 +808,9 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
     const newOpener = getRandomConversationOpener(userName);
     setConversationOpener(newOpener);
     setDisplayedText('');
+
+    // Reset landing video state for fresh animation
+    setLandingVideoFinished(false);
 
     // Start landing animation sequence
     // Video is 5 seconds: at 1s monkey takes off, between 1-4s moving up, at 4.2s lands
@@ -1081,13 +1087,16 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                 </button>
 
                 {/* Monkey GIF - 80px, no shadow/border, sticks to top */}
+                {/* After landing video plays once, seamlessly switch to resting GIF */}
                 <div className="w-20 h-20 overflow-hidden">
                   <video
-                    src={LANDING_GIF_URL}
+                    key={landingVideoFinished ? 'resting' : 'landing'}
+                    src={landingVideoFinished ? MONKEY_GIF_URL : LANDING_GIF_URL}
                     autoPlay
-                    loop
+                    loop={landingVideoFinished}
                     muted
                     playsInline
+                    onEnded={() => setLandingVideoFinished(true)}
                     className="w-full h-full object-cover"
                   />
                 </div>
