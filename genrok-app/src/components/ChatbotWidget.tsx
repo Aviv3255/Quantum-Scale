@@ -738,12 +738,12 @@ interface ChatbotWidgetProps {
 }
 
 export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetProps) {
-  // Core state
-  const [isExpanded, setIsExpanded] = useState(false);
+  // View state: 'preview' (rectangle), 'minimized' (circle), 'chat' (full chat)
+  const [viewState, setViewState] = useState<'preview' | 'minimized' | 'chat'>('preview');
   const [greeting, setGreeting] = useState('');
   const [isHovered, setIsHovered] = useState(false);
 
-  // Landing animation state
+  // Landing animation state (only for chat view)
   const [showLandingAnimation, setShowLandingAnimation] = useState(false);
   const [animationPhase, setAnimationPhase] = useState<'big' | 'shrinking' | 'settled'>('settled');
 
@@ -761,16 +761,16 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
     setGreeting(getRandomGreeting(userName));
   }, [userName]);
 
-  // Rotate greeting every 45 seconds when minimized
+  // Rotate greeting every 45 seconds when in preview mode
   useEffect(() => {
-    if (isExpanded) return;
+    if (viewState !== 'preview') return;
 
     const interval = setInterval(() => {
       setGreeting(getRandomGreeting(userName));
     }, 45000);
 
     return () => clearInterval(interval);
-  }, [isExpanded, userName]);
+  }, [viewState, userName]);
 
   // Typewriter effect
   useEffect(() => {
@@ -799,7 +799,7 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
     };
   }, [isTyping, conversationOpener]);
 
-  // Handle opening the chat with landing animation
+  // Handle opening the chat with landing animation (from preview or minimized)
   const handleOpenChat = useCallback(() => {
     // Get a new conversation opener
     const newOpener = getRandomConversationOpener(userName);
@@ -809,7 +809,7 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
     // Start landing animation sequence
     setShowLandingAnimation(true);
     setAnimationPhase('big');
-    setIsExpanded(true);
+    setViewState('chat');
 
     // After 1 second, start shrinking
     setTimeout(() => {
@@ -824,9 +824,9 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
     }, 1500);
   }, [userName]);
 
-  // Handle closing the chat
-  const handleCloseChat = useCallback(() => {
-    setIsExpanded(false);
+  // Handle minimizing to circle
+  const handleMinimize = useCallback(() => {
+    setViewState('minimized');
     setShowLandingAnimation(false);
     setAnimationPhase('settled');
     setIsTyping(false);
@@ -836,32 +836,171 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
     }
   }, []);
 
+  // Handle expanding from circle to preview rectangle
+  const handleExpand = useCallback(() => {
+    setViewState('preview');
+  }, []);
+
   return (
     <div className="fixed bottom-6 right-6 z-[9999]">
       <AnimatePresence mode="wait">
-        {isExpanded ? (
-          // Expanded State - Chat box with landing animation
+        {/* ============================================
+            PREVIEW STATE - Rectangle with greeting (DEFAULT)
+            ============================================ */}
+        {viewState === 'preview' && (
           <motion.div
-            key="expanded"
+            key="preview"
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="relative bg-white rounded-2xl shadow-2xl overflow-visible"
+            className="relative flex items-stretch bg-white rounded-2xl shadow-2xl overflow-hidden cursor-pointer"
+            style={{
+              minWidth: '340px',
+              maxWidth: '400px',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1)',
+            }}
+            onClick={handleOpenChat}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {/* Minimize Button */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleMinimize();
+              }}
+              className="absolute top-2 right-2 z-10 w-6 h-6 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
+              aria-label="Minimize"
+            >
+              <X size={14} className="text-gray-600" />
+            </button>
+
+            {/* Left Side - Text Content */}
+            <div className="flex-1 p-4 pr-2 flex flex-col justify-center">
+              <motion.p
+                key={greeting}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="text-[15px] text-black font-semibold leading-snug"
+              >
+                {greeting}
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isHovered ? 1 : 0.7 }}
+                className="mt-2.5 flex items-center gap-1.5"
+              >
+                <span className="text-xs font-medium text-gray-500">Click to chat with the Monkey</span>
+                <motion.span
+                  animate={{ x: isHovered ? 3 : 0 }}
+                  className="text-gray-500"
+                >
+                  →
+                </motion.span>
+              </motion.div>
+            </div>
+
+            {/* Right Side - Monkey GIF */}
+            <div className="w-24 h-24 flex-shrink-0 relative overflow-hidden">
+              <video
+                src={MONKEY_GIF_URL}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+                style={{ objectPosition: 'center' }}
+              />
+            </div>
+
+            {/* Hover Glow Effect */}
+            <motion.div
+              className="absolute inset-0 pointer-events-none rounded-2xl"
+              animate={{
+                boxShadow: isHovered
+                  ? 'inset 0 0 0 2px rgba(136, 218, 28, 0.6)'
+                  : 'inset 0 0 0 0px rgba(136, 218, 28, 0)',
+              }}
+              transition={{ duration: 0.2 }}
+            />
+          </motion.div>
+        )}
+
+        {/* ============================================
+            MINIMIZED STATE - Circle with just the GIF
+            ============================================ */}
+        {viewState === 'minimized' && (
+          <motion.button
+            key="minimized"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+            onClick={handleExpand}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="relative w-16 h-16 rounded-full overflow-hidden shadow-2xl"
+            style={{
+              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(0, 0, 0, 0.1)',
+            }}
+            aria-label="Expand chat"
+          >
+            <video
+              src={MONKEY_GIF_URL}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+
+            {/* Pulse ring animation */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: '2px solid var(--primary)' }}
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.6, 0, 0.6],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          </motion.button>
+        )}
+
+        {/* ============================================
+            CHAT STATE - Full chat with landing animation
+            ============================================ */}
+        {viewState === 'chat' && (
+          <motion.div
+            key="chat"
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className="relative bg-white rounded-2xl shadow-2xl overflow-hidden"
             style={{
               width: '340px',
+              height: '420px',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1)',
             }}
           >
-            {/* Landing Animation Overlay - Big GIF that shrinks */}
+            {/* Landing Animation Overlay - Big GIF that shrinks (stays inside box) */}
             <AnimatePresence>
               {showLandingAnimation && (
                 <motion.div
                   className="absolute z-50 flex items-center justify-center pointer-events-none"
                   initial={{
-                    width: 250,
-                    height: 250,
-                    top: '50%',
+                    width: 200,
+                    height: 200,
+                    top: '40%',
                     left: '50%',
                     x: '-50%',
                     y: '-50%',
@@ -870,9 +1009,9 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                   animate={
                     animationPhase === 'big'
                       ? {
-                          width: 250,
-                          height: 250,
-                          top: '50%',
+                          width: 200,
+                          height: 200,
+                          top: '40%',
                           left: '50%',
                           x: '-50%',
                           y: '-50%',
@@ -880,18 +1019,18 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                         }
                       : animationPhase === 'shrinking'
                         ? {
-                            width: 64,
-                            height: 64,
-                            top: 16,
+                            width: 80,
+                            height: 80,
+                            top: 24,
                             left: '50%',
                             x: '-50%',
                             y: 0,
                             opacity: 1,
                           }
                         : {
-                            width: 64,
-                            height: 64,
-                            top: 16,
+                            width: 80,
+                            height: 80,
+                            top: 24,
                             left: '50%',
                             x: '-50%',
                             y: 0,
@@ -919,28 +1058,28 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
 
             {/* Main Chat UI */}
             <motion.div
-              className="flex flex-col"
+              className="flex flex-col h-full"
               animate={{
                 opacity: showLandingAnimation ? 0.3 : 1,
               }}
               transition={{ duration: 0.3 }}
             >
               {/* Header with GIF at top center */}
-              <div className="relative pt-4 pb-2 flex flex-col items-center">
-                {/* Close Button */}
+              <div className="relative pt-6 pb-3 flex flex-col items-center">
+                {/* Minimize Button */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleCloseChat();
+                    handleMinimize();
                   }}
-                  className="absolute top-2 right-2 z-10 w-6 h-6 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
+                  className="absolute top-3 right-3 z-10 w-7 h-7 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
                   aria-label="Minimize chat"
                 >
-                  <X size={14} className="text-gray-600" />
+                  <X size={16} className="text-gray-600" />
                 </button>
 
-                {/* Monkey GIF - Small at top */}
-                <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
+                {/* Monkey GIF - 20% bigger (80px instead of 64px) */}
+                <div className="w-20 h-20 rounded-full overflow-hidden shadow-lg">
                   <video
                     src={MONKEY_GIF_URL}
                     autoPlay
@@ -953,74 +1092,27 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
               </div>
 
               {/* Conversation opener with typewriter effect */}
-              <div className="px-5 pb-5 pt-2 text-center">
-                <p className="text-[15px] text-black font-semibold leading-relaxed min-h-[48px]">
+              <div className="px-6 pt-4 text-center flex-1">
+                <p className="text-[16px] text-black font-semibold leading-relaxed">
                   {displayedText}
                   {isTyping && (
                     <motion.span
                       animate={{ opacity: [1, 0] }}
                       transition={{ duration: 0.5, repeat: Infinity }}
-                      className="inline-block w-0.5 h-4 bg-black ml-0.5 align-middle"
+                      className="inline-block w-0.5 h-5 bg-black ml-0.5 align-middle"
                     />
                   )}
                 </p>
               </div>
+
+              {/* Future: Chat input area would go here */}
+              <div className="p-4 border-t border-gray-100">
+                <div className="bg-gray-50 rounded-xl px-4 py-3 text-gray-400 text-sm">
+                  Type a message...
+                </div>
+              </div>
             </motion.div>
-
-            {/* Hover Glow Effect */}
-            <motion.div
-              className="absolute inset-0 pointer-events-none rounded-2xl"
-              animate={{
-                boxShadow: isHovered
-                  ? 'inset 0 0 0 2px rgba(136, 218, 28, 0.6)'
-                  : 'inset 0 0 0 0px rgba(136, 218, 28, 0)',
-              }}
-              transition={{ duration: 0.2 }}
-            />
           </motion.div>
-        ) : (
-          // Minimized State - Circle with just the GIF
-          <motion.button
-            key="minimized"
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            onClick={handleOpenChat}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className="relative w-16 h-16 rounded-full overflow-hidden shadow-2xl"
-            style={{
-              boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(0, 0, 0, 0.1)',
-            }}
-            aria-label="Open chat"
-          >
-            <video
-              src={MONKEY_GIF_URL}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            />
-
-            {/* Pulse ring animation */}
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              style={{ border: '2px solid var(--primary)' }}
-              animate={{
-                scale: [1, 1.3, 1],
-                opacity: [0.6, 0, 0.6],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-            />
-          </motion.button>
         )}
       </AnimatePresence>
     </div>
