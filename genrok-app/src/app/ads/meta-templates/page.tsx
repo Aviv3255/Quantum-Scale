@@ -28,7 +28,7 @@ export default function MetaTemplatesPage() {
               Meta Ad Templates
             </h1>
             <p className="text-[var(--text-muted)] text-lg">
-              {metaAdTemplates.length} ready-to-use templates. Hover to preview, click to edit in Canva.
+              Ready-to-use templates. Hover to preview, click to edit in Canva.
             </p>
           </motion.div>
 

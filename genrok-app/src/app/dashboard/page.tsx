@@ -25,6 +25,7 @@ import {
   PRODUCT_CATEGORIES,
   type AffiliateProduct,
 } from '@/data/aliexpress-products';
+import { lessonMeta, getTotalLessonsCount } from '@/data/lessons';
 
 // Category labels for display
 const categoryLabels: Record<string, string> = {
@@ -88,21 +89,14 @@ function getTimeBasedGif(): string {
   return gifs[randomIndex];
 }
 
-// All available lessons with metadata
-const allLessons = [
-  { slug: 'familiar-surprise-secret', title: 'The Familiar Surprise Secret', description: 'Master the MAYA principle', category: 'Copywriting', totalSlides: 12 },
-  { slug: 'red-button-effect', title: 'The Red Button Effect', description: 'Understanding psychological reactance', category: 'Psychology', totalSlides: 10 },
-  { slug: 'fred-method', title: 'The F.R.E.D. Method', description: 'A framework for audience psychology', category: 'Copywriting', totalSlides: 15 },
-  { slug: 'emotion-decides', title: 'Emotion Decides, Logic Justifies', description: 'How emotions drive purchases', category: 'Psychology', totalSlides: 11 },
-  { slug: 'gatekeeper-method', title: 'The Gatekeeper Method', description: "Bypass the brain's attention filter", category: 'Copywriting', totalSlides: 9 },
-  { slug: 'three-second-rule', title: 'The 3-Second Rule', description: 'The critical window to capture attention', category: 'Copywriting', totalSlides: 8 },
-  { slug: 'autopilot-sale', title: 'The Autopilot Sale', description: 'How mental shortcuts make customers buy', category: 'Psychology', totalSlides: 14 },
-  { slug: 'borrowed-trust', title: 'Borrowed Trust', description: 'Authority principles that bypass skepticism', category: 'Psychology', totalSlides: 10 },
-  { slug: 'herd-instinct', title: 'The Herd Instinct', description: 'Social proof creates buying pressure', category: 'Psychology', totalSlides: 12 },
-  { slug: 'anchor-moments', title: 'Anchor Moments', description: 'Create memorable brand touchpoints', category: 'Marketing', totalSlides: 11 },
-  { slug: 'anti-sell-mastery', title: 'Anti-Sell Mastery', description: 'Sell without being salesy', category: 'Copywriting', totalSlides: 13 },
-  { slug: 'architecture-of-belief', title: 'Architecture of Belief', description: 'Build trust through storytelling', category: 'Psychology', totalSlides: 16 },
-];
+// All available lessons with metadata - generated from real lessons data
+const allLessons = Object.entries(lessonMeta).map(([slug, meta]) => ({
+  slug,
+  title: meta.title,
+  description: meta.description,
+  category: meta.categories[0] ? meta.categories[0].charAt(0).toUpperCase() + meta.categories[0].slice(1).replace('-', ' ') : 'General',
+  totalSlides: 12, // Default slide count
+}));
 
 function getTimeBasedGreeting(userName: string) {
   const hour = new Date().getHours();
@@ -504,7 +498,6 @@ export default function DashboardPage() {
                         </span>
                       </div>
                     </div>
-                    <span className="creative-badge">#{template.id}</span>
                   </a>
                 ))}
               </div>
