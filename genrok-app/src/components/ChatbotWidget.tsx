@@ -807,21 +807,22 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
     setDisplayedText('');
 
     // Start landing animation sequence
+    // Video is 5 seconds: at 1s monkey takes off, between 1-4s moving up, at 4.2s lands
     setShowLandingAnimation(true);
     setAnimationPhase('big');
     setViewState('chat');
 
-    // After 1 second, start shrinking
+    // At 1 second: monkey takes off cloud, start shrinking animation
     setTimeout(() => {
       setAnimationPhase('shrinking');
     }, 1000);
 
-    // After shrink animation completes, settle and start typing
+    // At 4.2 seconds: monkey lands on cloud again, settle and start typing
     setTimeout(() => {
       setAnimationPhase('settled');
       setShowLandingAnimation(false);
       setIsTyping(true);
-    }, 1500);
+    }, 4200);
   }, [userName]);
 
   // Handle minimizing to circle
@@ -1040,8 +1041,9 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                   exit={{ opacity: 0 }}
                   transition={{
                     type: 'spring',
-                    stiffness: 200,
-                    damping: 20,
+                    stiffness: 50,
+                    damping: 15,
+                    duration: 3.2,
                   }}
                 >
                   <video
