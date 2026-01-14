@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface ChartDataPoint {
   date: string;
@@ -26,24 +25,6 @@ export function StatisticsChart({ getDataByDays, totalCompleted, totalLessons }:
     const days = period === 'week' ? 7 : period === 'month' ? 30 : 90;
     return getDataByDays(days);
   }, [period, getDataByDays]);
-
-  // Calculate stats
-  const stats = useMemo(() => {
-    if (chartData.length < 2) {
-      return { change: 0, changePercent: 0, isPositive: true };
-    }
-
-    const firstValue = chartData[0].cumulative;
-    const lastValue = chartData[chartData.length - 1].cumulative;
-    const change = lastValue - firstValue;
-    const changePercent = firstValue > 0 ? ((change / firstValue) * 100) : (change > 0 ? 100 : 0);
-
-    return {
-      change,
-      changePercent: Math.abs(changePercent),
-      isPositive: change >= 0,
-    };
-  }, [chartData]);
 
   // Generate SVG path for the area chart
   const { linePath, areaPath, points } = useMemo(() => {
@@ -133,7 +114,7 @@ export function StatisticsChart({ getDataByDays, totalCompleted, totalLessons }:
     <div className="statistics-chart-card">
       {/* Header with title and period tabs */}
       <div className="statistics-chart-header">
-        <h3 className="statistics-chart-title">Your Statistics</h3>
+        <h3 className="statistics-chart-title">Lessons Completed</h3>
         <div className="statistics-period-tabs">
           <button
             className={`statistics-period-tab ${period === 'week' ? 'active' : ''}`}
@@ -242,28 +223,9 @@ export function StatisticsChart({ getDataByDays, totalCompleted, totalLessons }:
       </div>
 
       {/* Summary stats */}
-      <div className="statistics-summary">
-        <div className="statistics-summary-main">
-          <span className="statistics-total-label">Total Lessons</span>
-          <div className="statistics-total-row">
-            <span className="statistics-total-value">{totalCompleted}</span>
-            {stats.change !== 0 && (
-              <span className={`statistics-change ${stats.isPositive ? 'positive' : 'negative'}`}>
-                {stats.isPositive ? '+' : '-'}{Math.abs(stats.change)}
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="statistics-summary-percent">
-          {stats.isPositive ? (
-            <TrendingUp size={16} className="statistics-trend-icon positive" />
-          ) : (
-            <TrendingDown size={16} className="statistics-trend-icon negative" />
-          )}
-          <span className={`statistics-percent-value ${stats.isPositive ? 'positive' : 'negative'}`}>
-            {stats.changePercent.toFixed(1)}%
-          </span>
-        </div>
+      <div className="statistics-summary-simple">
+        <span className="statistics-progress-value">{totalCompleted}/{totalLessons}</span>
+        <span className="statistics-progress-label">lessons completed</span>
       </div>
     </div>
   );
