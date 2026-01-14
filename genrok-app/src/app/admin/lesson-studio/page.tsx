@@ -204,7 +204,7 @@ export default function LessonStudioPage() {
                     </p>
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-[var(--text-muted)]">
-                        {component.props.length} props
+                        {component.category}
                       </span>
                       <ArrowRight
                         size={16}

@@ -19,8 +19,6 @@ import {
   X,
   ChevronDown,
   ChevronUp,
-  ChevronLeft,
-  ChevronRight,
   ExternalLink,
   GraduationCap,
   Server,
@@ -435,20 +433,6 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
             className={sidebarCollapsed ? "w-10 h-10 object-contain" : "w-16 h-16 object-contain"}
           />
         </div>
-
-        {/* Collapse Toggle (Desktop only) */}
-        <button
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="hidden md:flex absolute top-6 -right-3.5 w-7 h-7 rounded-full items-center justify-center transition-all z-50"
-          style={{
-            background: 'var(--primary)',
-            border: 'none',
-            color: '#000000',
-            boxShadow: '0 2px 8px rgba(136, 218, 28, 0.3)'
-          }}
-        >
-          {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-        </button>
 
         {/* Navigation */}
         <nav className="sidebar-nav">
