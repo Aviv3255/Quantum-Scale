@@ -156,6 +156,7 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false);
   const bookmarkButtonRef = useRef<HTMLButtonElement>(null);
@@ -223,38 +224,51 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
       const isExpanded = expandedCategory === item.title;
       const hasActiveChild = hasCategoryActiveItem(item);
 
-      // Collapsed sidebar - show only icon with hover tooltip
+      // Collapsed sidebar - show only icon with hover dropdown using React state
       if (sidebarCollapsed && !isMobile) {
+        const isHovered = hoveredCategory === item.title;
         return (
-          <div key={index} className="relative group">
+          <div
+            key={index}
+            className="relative"
+            onMouseEnter={() => setHoveredCategory(item.title)}
+            onMouseLeave={() => setHoveredCategory(null)}
+          >
             <div
               className={`nav-item justify-center ${hasActiveChild ? 'active' : ''}`}
               title={item.title}
             >
               <Icon size={18} strokeWidth={1.5} className="text-white/70" />
             </div>
-            {/* Hover dropdown for collapsed state */}
-            <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
-                 style={{
-                   background: '#000000',
-                   border: '1px solid rgba(136, 218, 28, 0.2)',
-                   borderRadius: '12px',
-                   boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
-                 }}>
-              <div className="p-2 space-y-1">
-                {item.subItems?.map((subItem, subIdx) => (
-                  <Link
-                    key={subIdx}
-                    href={subItem.href}
-                    className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
-                      isSubItemActive(subItem) ? 'text-black bg-[var(--primary)] font-medium' : 'text-white/70 hover:bg-white/10 hover:text-white'
-                    }`}
-                  >
-                    {subItem.title}
-                  </Link>
-                ))}
+            {/* Hover dropdown for collapsed state - uses React state to stay visible */}
+            {isHovered && (
+              <div
+                className="absolute left-full top-0 ml-2 z-50 min-w-[200px]"
+                style={{
+                  background: '#000000',
+                  border: '1px solid rgba(136, 218, 28, 0.2)',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+                }}
+                onMouseEnter={() => setHoveredCategory(item.title)}
+                onMouseLeave={() => setHoveredCategory(null)}
+              >
+                <div className="p-2 space-y-1">
+                  {item.subItems?.map((subItem, subIdx) => (
+                    <Link
+                      key={subIdx}
+                      href={subItem.href}
+                      className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                        isSubItemActive(subItem) ? 'text-black bg-[var(--primary)] font-medium' : 'text-white/70 hover:bg-white/10 hover:text-white'
+                      }`}
+                      onClick={() => setHoveredCategory(null)}
+                    >
+                      {subItem.title}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
       }

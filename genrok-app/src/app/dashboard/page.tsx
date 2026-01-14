@@ -20,7 +20,24 @@ import { useLessonProgressStore } from '@/store/lessonProgress';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
 import { metaAdTemplates } from '@/data/meta-ad-templates';
-import { products, getRandomProducts, nicheLabels, type Product, type ProductNiche } from '@/data/products';
+import {
+  aliexpressProducts,
+  PRODUCT_CATEGORIES,
+  type AffiliateProduct,
+} from '@/data/aliexpress-products';
+
+// Category labels for display
+const categoryLabels: Record<string, string> = {
+  'home': 'Home Decor',
+  'mens-fashion': "Men's Fashion",
+  'womens-fashion': "Women's Fashion",
+  'kids': 'Kids',
+  'electronics': 'Electronics',
+  'beauty': 'Beauty',
+  'toys': 'Toys & Games',
+  'sports': 'Sports & Outdoors',
+  'other': 'Other',
+};
 import { getDefaultChecklist, hasChecklist } from '@/data/course-checklists';
 
 // Timezone-based GIFs - randomly selected from each time period
@@ -114,20 +131,20 @@ function getTimeBasedGreeting(userName: string) {
   }
 }
 
-// Get daily randomized products from products data (filtered by niche)
-function getDailyProducts(count: number = 20, userNiche?: ProductNiche): Product[] {
+// Get daily randomized products from AliExpress products data (filtered by category)
+function getDailyProducts(count: number = 20, userCategory?: string): AffiliateProduct[] {
   // Use date as seed for consistent daily rotation
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 
-  // Filter by niche if provided, otherwise use all products
-  let productPool = userNiche
-    ? products.filter(p => p.niche === userNiche)
-    : products;
+  // Filter by category if provided, otherwise use all products
+  let productPool = userCategory
+    ? aliexpressProducts.filter(p => p.category === userCategory)
+    : aliexpressProducts;
 
-  // If not enough products in niche, add some from other niches
+  // If not enough products in category, add some from other categories
   if (productPool.length < count) {
-    const otherProducts = products.filter(p => p.niche !== userNiche);
+    const otherProducts = aliexpressProducts.filter(p => p.category !== userCategory);
     productPool = [...productPool, ...otherProducts];
   }
 
@@ -179,10 +196,10 @@ export default function DashboardPage() {
   const courses = getAllCourses();
 
   // User's niche - default to mens-fashion (can be extended to fetch from profile)
-  const userNiche: ProductNiche = 'mens-fashion';
+  const userCategory = 'mens-fashion';
 
-  // Get daily randomized products based on user's niche
-  const dailyProducts = useMemo(() => getDailyProducts(20, userNiche), [userNiche]);
+  // Get daily randomized products based on user's category
+  const dailyProducts = useMemo(() => getDailyProducts(20, userCategory), [userCategory]);
 
   // Set timezone-based GIF on mount (random selection from time period)
   useEffect(() => {
@@ -465,7 +482,18 @@ export default function DashboardPage() {
                     className="creative-card"
                   >
                     <div className="creative-card-image">
-                      <div className="creative-placeholder">
+                      {template.coverImage ? (
+                        <img
+                          src={template.coverImage}
+                          alt={template.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                            (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                      ) : null}
+                      <div className={`creative-placeholder ${template.coverImage ? 'hidden' : ''}`}>
                         <Play size={24} />
                       </div>
                       <div className="creative-overlay">
@@ -557,19 +585,29 @@ export default function DashboardPage() {
   );
 }
 
-// Dashboard Product Card Component - Using real products data
-function DashboardProductCard({ product }: { product: Product }) {
+// Dashboard Product Card Component - Using AliExpress products data
+function DashboardProductCard({ product }: { product: AffiliateProduct }) {
   const [imageError, setImageError] = useState(false);
+
+  // Get partner badge info
+  const partnerBadge = {
+    mate: { color: 'bg-blue-500', text: 'Mate' },
+    hypersku: { color: 'bg-purple-500', text: 'HyperSKU' },
+    aliexpress: { color: 'bg-orange-500', text: 'AliExpress' },
+  };
+  const badge = partnerBadge[product.partner] || partnerBadge.aliexpress;
 
   return (
     <div className="product-card">
-      <Link
-        href="/products/sell-these"
+      <a
+        href={product.affiliate_link}
+        target="_blank"
+        rel="noopener noreferrer"
         className="product-image-wrapper"
       >
         {!imageError ? (
           <img
-            src={product.imageUrl}
+            src={product.image_url}
             alt={product.name}
             className="product-image"
             loading="lazy"
@@ -580,19 +618,13 @@ function DashboardProductCard({ product }: { product: Product }) {
             <span className="product-placeholder-text">{product.name.charAt(0)}</span>
           </div>
         )}
-        {/* Trending badge */}
-        {product.trending && (
-          <div className="product-trending-badge">
-            Trending
-          </div>
-        )}
-        {/* Profit badge */}
-        <div className="product-profit-badge">
-          +${product.profit.toFixed(0)} profit
+        {/* Partner badge */}
+        <div className={`product-trending-badge ${badge.color}`}>
+          {badge.text}
         </div>
-      </Link>
+      </a>
       <p className="product-name">{product.name}</p>
-      <p className="product-niche">{nicheLabels[product.niche]}</p>
+      <p className="product-niche">{categoryLabels[product.category] || product.category}</p>
     </div>
   );
 }
