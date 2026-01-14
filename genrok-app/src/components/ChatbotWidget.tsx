@@ -680,13 +680,13 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
               </motion.p>
               <motion.div
                 initial={{ opacity: 0 }}
-                animate={{ opacity: isHovered ? 1 : 0.6 }}
+                animate={{ opacity: isHovered ? 1 : 0.7 }}
                 className="mt-2.5 flex items-center gap-1.5"
               >
-                <span className="text-xs font-medium text-[var(--primary)]">Click to chat with the Monkey</span>
+                <span className="text-xs font-medium text-gray-500">Click to chat with the Monkey</span>
                 <motion.span
                   animate={{ x: isHovered ? 3 : 0 }}
-                  className="text-[var(--primary)]"
+                  className="text-gray-500"
                 >
                   →
                 </motion.span>

@@ -1593,6 +1593,8 @@ h4, .text-h4 {
   text-decoration: none;
   transition: all 0.2s ease;
   cursor: pointer;
+  position: relative;
+  z-index: 2;
 }
 
 .nav-item:hover {
@@ -1683,74 +1685,140 @@ h4, .text-h4 {
 }
 
 /* ==========================================================================
-   GRADIENT SIDEBAR THEME - Premium Dark Green
-   Activated when body has class 'sidebar-gradient'
+   GRADIENT SIDEBAR THEME - Ultra Premium Glass Effect
+   Inspired by AeuxGlobal - Activated when body has class 'sidebar-gradient'
    ========================================================================== */
 
-/* Gradient Sidebar - Deep forest green with premium depth */
+/* Gradient Sidebar - Premium glass with layered depth */
 body.sidebar-gradient .sidebar {
-  background: linear-gradient(
-    180deg,
-    #0D3D2E 0%,
-    #0A2E23 25%,
-    #071F18 50%,
-    #051710 75%,
-    #030F0A 100%
-  );
-  border-right: 1px solid rgba(136, 218, 28, 0.15);
+  background:
+    /* Top highlight glow */
+    radial-gradient(
+      ellipse 80% 50% at 20% 0%,
+      rgba(34, 197, 94, 0.12) 0%,
+      transparent 50%
+    ),
+    /* Center ambient glow */
+    radial-gradient(
+      ellipse 60% 40% at 50% 30%,
+      rgba(16, 185, 129, 0.06) 0%,
+      transparent 60%
+    ),
+    /* Bottom accent */
+    radial-gradient(
+      ellipse 100% 60% at 80% 100%,
+      rgba(5, 150, 105, 0.08) 0%,
+      transparent 50%
+    ),
+    /* Base gradient - ultra dark with subtle green undertones */
+    linear-gradient(
+      165deg,
+      #0a1f1a 0%,
+      #061512 20%,
+      #040f0c 50%,
+      #030a08 80%,
+      #020706 100%
+    );
+  border-right: 1px solid rgba(34, 197, 94, 0.1);
   box-shadow:
-    inset -1px 0 0 rgba(255, 255, 255, 0.03),
-    4px 0 20px rgba(0, 0, 0, 0.3);
+    /* Inner glass highlight */
+    inset 1px 1px 0 rgba(255, 255, 255, 0.02),
+    inset 0 0 60px rgba(34, 197, 94, 0.03),
+    /* Outer shadow for depth */
+    4px 0 24px rgba(0, 0, 0, 0.5);
 }
 
-/* Subtle inner glow on gradient sidebar */
+/* Glass reflection overlay */
 body.sidebar-gradient .sidebar::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 200px;
-  background: radial-gradient(
-    ellipse at top left,
-    rgba(136, 218, 28, 0.08) 0%,
-    transparent 60%
+  bottom: 0;
+  background:
+    /* Top glass shine */
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 15%
+    ),
+    /* Subtle noise texture simulation */
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(34, 197, 94, 0.05) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(16, 185, 129, 0.04) 0%,
+      transparent 25%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Second overlay for glass depth */
+body.sidebar-gradient .sidebar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 100%
   );
   pointer-events: none;
   z-index: 0;
 }
 
-/* Nav items in gradient mode */
+/* Nav items in gradient mode - glass card style */
 body.sidebar-gradient .nav-item {
-  background: transparent;
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(4px);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
 }
 
 body.sidebar-gradient .nav-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(136, 218, 28, 0.1);
+  background: rgba(34, 197, 94, 0.08);
+  border-color: rgba(34, 197, 94, 0.15);
+  box-shadow:
+    0 0 20px rgba(34, 197, 94, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform: translateX(2px);
 }
 
 body.sidebar-gradient .nav-item.active {
   background: linear-gradient(
     135deg,
-    rgba(136, 218, 28, 0.15) 0%,
-    rgba(136, 218, 28, 0.08) 100%
+    rgba(34, 197, 94, 0.15) 0%,
+    rgba(16, 185, 129, 0.08) 100%
   );
-  border-color: rgba(136, 218, 28, 0.3);
-  box-shadow: 0 0 20px rgba(136, 218, 28, 0.1);
+  border-color: rgba(34, 197, 94, 0.25);
+  box-shadow:
+    0 0 30px rgba(34, 197, 94, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-/* Profile card in gradient mode */
+/* Profile card in gradient mode - premium glass */
 body.sidebar-gradient .profile-card {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 100%
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 100%
   );
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 /* Theme section container */

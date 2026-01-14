@@ -383,9 +383,10 @@ export default function LearnV2Page() {
               <div className="absolute left-0 top-0 bottom-0 flex flex-col justify-center pl-12 pr-4 max-w-2xl">
                 {/* Heading with fancy font - BIGGER and WHITE */}
                 <h1
-                  className="text-7xl font-bold mb-5"
+                  className="font-bold mb-5"
                   style={{
                     fontFamily: "'Playfair Display', 'Georgia', serif",
+                    fontSize: '90px',
                     letterSpacing: '-0.02em',
                     textShadow: '0 2px 8px rgba(0,0,0,0.4)',
                     color: '#FFFFFF'

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
@@ -42,7 +42,7 @@ import { useBookmarksStore } from '@/store/bookmarks';
 import { signOut } from '@/lib/supabase';
 import { BookmarkModal } from '@/components/BookmarkModal';
 import ChatbotWidget from '@/components/ChatbotWidget';
-import { useThemeStore, ACCENT_COLORS, applyTheme } from '@/store/theme';
+import { useThemeStore, applyTheme } from '@/store/theme';
 
 interface SubNavItem {
   title: string;
@@ -153,7 +153,6 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children, hideHeader = false }: DashboardLayoutProps) {
   const pathname = usePathname();
-  const router = useRouter();
   const { user } = useAuthStore();
   const { counts, initialize, isInitialized } = useBookmarksStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -165,12 +164,12 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
   const bookmarkButtonRef = useRef<HTMLButtonElement>(null);
 
   // Theme store
-  const { accentColor, sidebarStyle, setAccentColor, setSidebarStyle } = useThemeStore();
+  const { sidebarStyle, setSidebarStyle } = useThemeStore();
 
   // Apply theme on mount and when theme changes
   useEffect(() => {
-    applyTheme(accentColor, sidebarStyle);
-  }, [accentColor, sidebarStyle]);
+    applyTheme('lime', sidebarStyle); // Always use lime accent
+  }, [sidebarStyle]);
 
   // Initialize bookmarks when user is available
   useEffect(() => {
@@ -266,21 +265,16 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
               >
                 <div className="p-2 space-y-1">
                   {item.subItems?.map((subItem, subIdx) => (
-                    <button
+                    <Link
                       key={subIdx}
-                      type="button"
+                      href={subItem.href}
                       className={`block w-full text-left px-4 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem) ? 'text-black bg-[var(--primary)] font-medium' : 'text-white/70 hover:bg-white/10 hover:text-white'
                       }`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setHoveredCategory(null);
-                        router.push(subItem.href);
-                      }}
+                      onClick={() => setHoveredCategory(null)}
                     >
                       {subItem.title}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </div>
@@ -317,23 +311,18 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
               >
                 <div className="pl-8 space-y-1 py-1">
                   {item.subItems?.map((subItem, subIdx) => (
-                    <button
+                    <Link
                       key={subIdx}
-                      type="button"
+                      href={subItem.href}
                       className={`block w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem)
                           ? 'text-black bg-[var(--primary)] font-medium'
                           : 'text-white/80 hover:bg-white/10 hover:text-white'
                       }`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (isMobile) setSidebarOpen(false);
-                        router.push(subItem.href);
-                      }}
+                      onClick={() => isMobile && setSidebarOpen(false)}
                     >
                       {subItem.title}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               </motion.div>
@@ -448,22 +437,6 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
                 >
                   Gradient
                 </button>
-              </div>
-            </div>
-
-            {/* Accent Color Picker */}
-            <div className="accent-color-picker">
-              <span className="accent-color-picker-label">Accent</span>
-              <div className="accent-color-options">
-                {ACCENT_COLORS.map((color) => (
-                  <button
-                    key={color.id}
-                    className={`accent-color-btn ${accentColor === color.id ? 'active' : ''}`}
-                    style={{ backgroundColor: color.value }}
-                    onClick={() => setAccentColor(color.id)}
-                    title={color.label}
-                  />
-                ))}
               </div>
             </div>
           </div>
