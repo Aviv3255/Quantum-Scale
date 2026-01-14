@@ -224,8 +224,7 @@ export function StatisticsChart({ getDataByDays, totalCompleted, totalLessons }:
 
       {/* Summary stats */}
       <div className="statistics-summary-simple">
-        <span className="statistics-progress-value">{totalCompleted}/{totalLessons}</span>
-        <span className="statistics-progress-label">lessons completed</span>
+        <span className="statistics-progress-text">{totalCompleted}/{totalLessons} lessons completed</span>
       </div>
     </div>
   );
