@@ -28,6 +28,7 @@ import {
   type AffiliateProduct,
 } from '@/data/aliexpress-products';
 import { lessonMeta, getTotalLessonsCount } from '@/data/lessons';
+import { supabase } from '@/lib/supabase';
 
 // Category labels for display
 const categoryLabels: Record<string, string> = {
@@ -154,11 +155,14 @@ function getDailyProducts(count: number = 20, userCategory?: string): AffiliateP
   return shuffled.slice(0, count);
 }
 
-// Helper to get checklist progress from localStorage (synced with Courses page)
-function getChecklistProgressForCourse(userId: string, courseSlug: string): number {
+// Helper to get checklist progress from localStorage (must match useChecklist hook key)
+const CHECKLIST_STORAGE_PREFIX = 'course_checklist_progress_';
+
+function getChecklistProgressForCourse(courseSlug: string): number {
   if (typeof window === 'undefined') return 0;
   try {
-    const storageKey = `checklist-${courseSlug}-${userId}`;
+    // Use same key format as useChecklist hook: course_checklist_progress_${courseSlug}
+    const storageKey = `${CHECKLIST_STORAGE_PREFIX}${courseSlug}`;
     const stored = localStorage.getItem(storageKey);
     if (!stored) return 0;
     const completedItems = JSON.parse(stored) as string[];
@@ -172,10 +176,10 @@ function getChecklistProgressForCourse(userId: string, courseSlug: string): numb
 }
 
 // Calculate total completed courses from checklist data
-function getCompletedCoursesFromChecklists(userId: string, courseSlugs: string[]): number {
+function getCompletedCoursesFromChecklists(courseSlugs: string[]): number {
   if (typeof window === 'undefined') return 0;
   return courseSlugs.filter(slug => {
-    const progress = getChecklistProgressForCourse(userId, slug);
+    const progress = getChecklistProgressForCourse(slug);
     return progress >= 100;
   }).length;
 }
@@ -243,6 +247,7 @@ export default function DashboardPage() {
   const [checklistProgressMap, setChecklistProgressMap] = useState<Record<string, number>>({});
   const [currentGif, setCurrentGif] = useState<string>('');
   const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
+  const [customThumbnails, setCustomThumbnails] = useState<Record<string, string>>({});
   const courses = getAllCourses();
 
   // User's niche - default to mens-fashion (can be extended to fetch from profile)
@@ -256,22 +261,44 @@ export default function DashboardPage() {
     setCurrentGif(getTimeBasedGif());
   }, []);
 
+  // Fetch custom thumbnails from Supabase for lessons tab
+  useEffect(() => {
+    async function fetchThumbnails() {
+      try {
+        const { data } = await (supabase
+          .from('lesson_thumbnails') as ReturnType<typeof supabase.from>)
+          .select('slug, thumbnail_url');
+
+        if (data && Array.isArray(data)) {
+          const thumbnailMap: Record<string, string> = {};
+          data.forEach((item: { slug: string; thumbnail_url: string | null }) => {
+            if (item.thumbnail_url) {
+              thumbnailMap[item.slug] = item.thumbnail_url;
+            }
+          });
+          setCustomThumbnails(thumbnailMap);
+        }
+      } catch (error) {
+        console.error('Failed to fetch custom thumbnails:', error);
+      }
+    }
+    fetchThumbnails();
+  }, []);
+
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
     }
   }, [user, isLoading, router]);
 
-  // Load checklist progress for all courses (synced with Courses page)
+  // Load checklist progress for all courses (synced with useChecklist hook localStorage key)
   useEffect(() => {
-    if (user?.id) {
-      const progressMap: Record<string, number> = {};
-      courses.forEach(course => {
-        progressMap[course.slug] = getChecklistProgressForCourse(user.id, course.slug);
-      });
-      setChecklistProgressMap(progressMap);
-    }
-  }, [user?.id, courses]);
+    const progressMap: Record<string, number> = {};
+    courses.forEach(course => {
+      progressMap[course.slug] = getChecklistProgressForCourse(course.slug);
+    });
+    setChecklistProgressMap(progressMap);
+  }, [courses]);
 
   // Sort lessons: in-progress first, then not started - EXCLUDE completed lessons
   const sortedLessons = useMemo(() => {
@@ -302,12 +329,11 @@ export default function DashboardPage() {
   const completedLessons = lessonProgressStore.getCompletedLessonsCount();
   const totalLessons = allLessons.length;
 
-  // Completed courses from checklist data (synced with Courses page)
+  // Completed courses from checklist data (synced with useChecklist hook)
   // MUST be called before early return to maintain consistent hook order
   const completedCourses = useMemo(() => {
-    if (!user?.id) return 0;
-    return getCompletedCoursesFromChecklists(user.id, courses.map(c => c.slug));
-  }, [user?.id, courses, checklistProgressMap]);
+    return getCompletedCoursesFromChecklists(courses.map(c => c.slug));
+  }, [courses, checklistProgressMap]);
 
   // Weekly progress data for chart - shows cumulative lessons completed over past 7 days
   // MUST be called before early return to maintain consistent hook order
@@ -487,7 +513,10 @@ export default function DashboardPage() {
             {/* Lessons Tab - 3x3 Grid with progress (completed lessons filtered out) */}
             {activeTab === 'lessons' && (
               <div className="lessons-grid">
-                {sortedLessons.slice(0, 9).map((lesson) => (
+                {sortedLessons.slice(0, 9).map((lesson) => {
+                  // Use Supabase thumbnail if available, otherwise fallback to local
+                  const thumbnailUrl = customThumbnails[lesson.slug] || `/images/lessons/${lesson.slug}.png`;
+                  return (
                   <div
                     key={lesson.slug}
                     className="lesson-card-mini cursor-pointer"
@@ -495,7 +524,7 @@ export default function DashboardPage() {
                   >
                     <div className="lesson-card-thumbnail">
                       <Image
-                        src={`/images/lessons/${lesson.slug}.png`}
+                        src={thumbnailUrl}
                         alt={lesson.title}
                         fill
                         className="object-cover"
@@ -513,7 +542,7 @@ export default function DashboardPage() {
                           title={lesson.title}
                           sourceUrl={`/learn?lesson=${lesson.slug}`}
                           description={lesson.description}
-                          thumbnailUrl={`/images/lessons/${lesson.slug}.png`}
+                          thumbnailUrl={thumbnailUrl}
                           size="sm"
                         />
                       </div>
@@ -538,7 +567,8 @@ export default function DashboardPage() {
                       <p className="lesson-card-desc">{lesson.description}</p>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
 
@@ -706,7 +736,7 @@ export default function DashboardPage() {
           description={lessonMeta[selectedLesson].description}
           userName={userName}
           onClose={() => setSelectedLesson(null)}
-          thumbnailUrl={`/images/lessons/${selectedLesson}.png`}
+          thumbnailUrl={customThumbnails[selectedLesson] || `/images/lessons/${selectedLesson}.png`}
         />
       )}
     </DashboardLayout>
