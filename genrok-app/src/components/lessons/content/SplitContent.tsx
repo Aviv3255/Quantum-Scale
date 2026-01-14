@@ -12,26 +12,20 @@ interface SplitContentProps {
     alt?: string;
   };
   reversed?: boolean;
-  darkMode?: boolean;
   accentColor?: string;
 }
 
 /**
  * SplitContent - 50/50 split layout with text and media
- * Premium design with clean typography and subtle animations
+ * White slide background with dark rounded block
  */
 export function SplitContent({
   title,
   content,
   media,
   reversed = false,
-  darkMode = false,
   accentColor = '#88da1c',
 }: SplitContentProps) {
-  const bgClass = darkMode ? 'bg-black' : 'bg-white';
-  const textClass = darkMode ? 'text-white' : 'text-black';
-  const mutedClass = darkMode ? 'text-white/70' : 'text-[#666666]';
-
   const textContent = (
     <motion.div
       initial={{ opacity: 0, x: reversed ? 30 : -30 }}
@@ -46,16 +40,16 @@ export function SplitContent({
       />
 
       <h2
-        className={`text-4xl font-bold ${textClass} mb-6 tracking-tight leading-tight`}
+        className="text-4xl font-bold text-white mb-6 tracking-tight leading-tight"
         style={{ fontFamily: "'General Sans', sans-serif" }}
       >
         {title}
       </h2>
 
       {typeof content === 'string' ? (
-        <p className={`text-lg ${mutedClass} leading-relaxed`}>{content}</p>
+        <p className="text-lg text-white/70 leading-relaxed">{content}</p>
       ) : (
-        <div className={`text-lg ${mutedClass} leading-relaxed`}>{content}</div>
+        <div className="text-lg text-white/70 leading-relaxed">{content}</div>
       )}
     </motion.div>
   );
@@ -91,15 +85,17 @@ export function SplitContent({
   );
 
   return (
-    <div className={`min-h-[500px] ${bgClass} p-12`}>
-      <div
-        className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-          reversed ? 'lg:flex-row-reverse' : ''
-        }`}
-        style={{ direction: reversed ? 'rtl' : 'ltr' }}
-      >
-        <div style={{ direction: 'ltr' }}>{reversed ? mediaContent : textContent}</div>
-        <div style={{ direction: 'ltr' }}>{reversed ? textContent : mediaContent}</div>
+    <div className="bg-white p-8">
+      <div className="bg-black rounded-2xl p-12 min-h-[500px]">
+        <div
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
+            reversed ? 'lg:flex-row-reverse' : ''
+          }`}
+          style={{ direction: reversed ? 'rtl' : 'ltr' }}
+        >
+          <div style={{ direction: 'ltr' }}>{reversed ? mediaContent : textContent}</div>
+          <div style={{ direction: 'ltr' }}>{reversed ? textContent : mediaContent}</div>
+        </div>
       </div>
     </div>
   );

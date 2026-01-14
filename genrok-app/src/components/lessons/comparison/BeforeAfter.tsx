@@ -7,43 +7,32 @@ interface BeforeAfterProps {
   before: {
     title?: string;
     items: string[];
-    image?: string;
   };
   after: {
     title?: string;
     items: string[];
-    image?: string;
   };
   headline?: string;
-  darkMode?: boolean;
 }
 
 /**
  * BeforeAfter - Side-by-side comparison with red/green accent
- * Premium design with clear visual distinction
+ * White slide background with dark rounded block
  */
 export function BeforeAfter({
   before,
   after,
   headline,
-  darkMode = false,
 }: BeforeAfterProps) {
-  const bgClass = darkMode ? 'bg-black' : 'bg-white';
-  const textClass = darkMode ? 'text-white' : 'text-black';
-  const mutedClass = darkMode ? 'text-white/70' : 'text-[#666666]';
-  const cardBg = darkMode ? 'bg-white/5' : 'bg-[#F8F9FA]';
-
   const CardSection = ({
     type,
     title,
     items,
-    image,
     delay,
   }: {
     type: 'before' | 'after';
     title?: string;
     items: string[];
-    image?: string;
     delay: number;
   }) => {
     const isBefore = type === 'before';
@@ -55,7 +44,7 @@ export function BeforeAfter({
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay }}
-        className={`${cardBg} rounded-2xl overflow-hidden`}
+        className="bg-white/5 rounded-2xl overflow-hidden"
       >
         {/* Accent bar */}
         <div
@@ -76,17 +65,10 @@ export function BeforeAfter({
                 strokeWidth={3}
               />
             </span>
-            <h3 className={`text-xl font-bold ${textClass}`}>
+            <h3 className="text-xl font-bold text-white">
               {title || (isBefore ? 'Before' : 'After')}
             </h3>
           </div>
-
-          {/* Image */}
-          {image && (
-            <div className="mb-6 rounded-xl overflow-hidden">
-              <img src={image} alt="" className="w-full h-48 object-cover" />
-            </div>
-          )}
 
           {/* Items */}
           <ul className="space-y-4">
@@ -108,7 +90,7 @@ export function BeforeAfter({
                     strokeWidth={3}
                   />
                 </span>
-                <span className={mutedClass}>{item}</span>
+                <span className="text-white/70">{item}</span>
               </motion.li>
             ))}
           </ul>
@@ -118,35 +100,35 @@ export function BeforeAfter({
   };
 
   return (
-    <div className={`${bgClass} p-12`}>
-      {/* Headline */}
-      {headline && (
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className={`text-3xl font-bold ${textClass} text-center mb-10`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
-        >
-          {headline}
-        </motion.h2>
-      )}
+    <div className="bg-white p-8">
+      <div className="bg-black rounded-2xl p-12">
+        {/* Headline */}
+        {headline && (
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-3xl font-bold text-white text-center mb-10"
+            style={{ fontFamily: "'General Sans', sans-serif" }}
+          >
+            {headline}
+          </motion.h2>
+        )}
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        <CardSection
-          type="before"
-          title={before.title}
-          items={before.items}
-          image={before.image}
-          delay={0}
-        />
-        <CardSection
-          type="after"
-          title={after.title}
-          items={after.items}
-          image={after.image}
-          delay={0.15}
-        />
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <CardSection
+            type="before"
+            title={before.title}
+            items={before.items}
+            delay={0}
+          />
+          <CardSection
+            type="after"
+            title={after.title}
+            items={after.items}
+            delay={0.15}
+          />
+        </div>
       </div>
     </div>
   );

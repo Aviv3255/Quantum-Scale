@@ -4,17 +4,11 @@ import { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
-  Sun,
-  Moon,
   Maximize2,
   Minimize2,
   Check,
   X,
   Copy,
-  Zap,
-  Target,
-  Shield,
-  Globe,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -290,85 +284,77 @@ const SAMPLE_DATA = {
   },
 };
 
-// Component renderer - explicitly typed for each component
-const ComponentPreview = ({ componentId, darkMode }: { componentId: string; darkMode: boolean }) => {
+// Component renderer - all components now have white bg with dark blocks
+const ComponentPreview = ({ componentId }: { componentId: string }) => {
   switch (componentId) {
-    // Fixed Slides
+    // Fixed Slides (these still support darkMode prop)
     case 'WelcomeSlide':
-      return <WelcomeSlide {...SAMPLE_DATA.WelcomeSlide} darkMode={darkMode} />;
+      return <WelcomeSlide {...SAMPLE_DATA.WelcomeSlide} />;
     case 'QuizSlide':
-      return <QuizSlide {...SAMPLE_DATA.QuizSlide} darkMode={darkMode} />;
+      return <QuizSlide {...SAMPLE_DATA.QuizSlide} />;
     case 'CompletionSlide':
-      return <CompletionSlide {...SAMPLE_DATA.CompletionSlide} darkMode={darkMode} />;
+      return <CompletionSlide {...SAMPLE_DATA.CompletionSlide} />;
 
-    // Content
+    // Content (now use white bg with dark blocks)
     case 'SplitContent':
-      return <SplitContent {...SAMPLE_DATA.SplitContent} darkMode={darkMode} />;
+      return <SplitContent {...SAMPLE_DATA.SplitContent} />;
     case 'FullWidthMedia':
-      return <FullWidthMedia {...SAMPLE_DATA.FullWidthMedia} darkMode={darkMode} />;
+      return <FullWidthMedia {...SAMPLE_DATA.FullWidthMedia} />;
     case 'TextBlock':
-      return <TextBlock {...SAMPLE_DATA.TextBlock} darkMode={darkMode} />;
+      return <TextBlock {...SAMPLE_DATA.TextBlock} />;
 
     // Data Stats
     case 'StatCard':
-      return (
-        <div className={`${darkMode ? 'bg-black' : 'bg-white'} p-12 flex justify-center`}>
-          <div className="w-80">
-            <StatCard {...SAMPLE_DATA.StatCard} darkMode={darkMode} />
-          </div>
-        </div>
-      );
+      return <StatCard {...SAMPLE_DATA.StatCard} />;
     case 'StatRow':
-      return <StatRow {...SAMPLE_DATA.StatRow} darkMode={darkMode} />;
+      return <StatRow {...SAMPLE_DATA.StatRow} />;
     case 'MetricDashboard':
-      return <MetricDashboard {...SAMPLE_DATA.MetricDashboard} darkMode={darkMode} />;
+      return <MetricDashboard {...SAMPLE_DATA.MetricDashboard} />;
 
     // Comparison
     case 'BeforeAfter':
-      return <BeforeAfter {...SAMPLE_DATA.BeforeAfter} darkMode={darkMode} />;
+      return <BeforeAfter {...SAMPLE_DATA.BeforeAfter} />;
     case 'ComparisonBars':
-      return <ComparisonBars {...SAMPLE_DATA.ComparisonBars} darkMode={darkMode} />;
+      return <ComparisonBars {...SAMPLE_DATA.ComparisonBars} />;
 
     // Charts
     case 'LineChart':
-      return <LineChart {...SAMPLE_DATA.LineChart} darkMode={darkMode} />;
+      return <LineChart {...SAMPLE_DATA.LineChart} />;
     case 'BarChart':
-      return <BarChart {...SAMPLE_DATA.BarChart} darkMode={darkMode} />;
+      return <BarChart {...SAMPLE_DATA.BarChart} />;
     case 'AreaChart':
-      return <AreaChart {...SAMPLE_DATA.AreaChart} darkMode={darkMode} />;
+      return <AreaChart {...SAMPLE_DATA.AreaChart} />;
     case 'DonutChart':
-      return <DonutChart {...SAMPLE_DATA.DonutChart} darkMode={darkMode} />;
+      return <DonutChart {...SAMPLE_DATA.DonutChart} />;
     case 'FunnelChart':
-      return <FunnelChart {...SAMPLE_DATA.FunnelChart} darkMode={darkMode} />;
+      return <FunnelChart {...SAMPLE_DATA.FunnelChart} />;
     case 'RadarChart':
-      return <RadarChart {...SAMPLE_DATA.RadarChart} darkMode={darkMode} />;
+      return <RadarChart {...SAMPLE_DATA.RadarChart} />;
     case 'ProgressRing':
-      return (
-        <div className={`${darkMode ? 'bg-black' : 'bg-white'} p-8 flex justify-center`}>
-          <ProgressRing {...SAMPLE_DATA.ProgressRing} darkMode={darkMode} />
-        </div>
-      );
+      return <ProgressRing {...SAMPLE_DATA.ProgressRing} />;
     case 'Heatmap':
-      return <Heatmap {...SAMPLE_DATA.Heatmap} darkMode={darkMode} />;
+      return <Heatmap {...SAMPLE_DATA.Heatmap} />;
 
     // Sequential
     case 'Timeline':
-      return <Timeline {...SAMPLE_DATA.Timeline} darkMode={darkMode} />;
+      return <Timeline {...SAMPLE_DATA.Timeline} />;
     case 'ProcessSteps':
-      return <ProcessSteps {...SAMPLE_DATA.ProcessSteps} darkMode={darkMode} />;
+      return <ProcessSteps {...SAMPLE_DATA.ProcessSteps} />;
 
     // Emphasis
     case 'QuoteBlock':
-      return <QuoteBlock {...SAMPLE_DATA.QuoteBlock} darkMode={darkMode} />;
+      return <QuoteBlock {...SAMPLE_DATA.QuoteBlock} />;
     case 'SocialProof':
-      return <SocialProof {...SAMPLE_DATA.SocialProof} darkMode={darkMode} />;
+      return <SocialProof {...SAMPLE_DATA.SocialProof} />;
     case 'IconGrid':
-      return <IconGrid {...SAMPLE_DATA.IconGrid} darkMode={darkMode} />;
+      return <IconGrid {...SAMPLE_DATA.IconGrid} />;
 
     default:
       return (
-        <div className={`p-12 text-center ${darkMode ? 'bg-black text-white/50' : 'text-[var(--text-muted)]'}`}>
-          Component preview not available
+        <div className="p-12 text-center bg-white">
+          <div className="bg-black rounded-2xl p-8 text-white/50">
+            Component preview not available
+          </div>
         </div>
       );
   }
@@ -379,7 +365,6 @@ function ComponentBrowserContent() {
   const initialView = searchParams.get('view');
 
   const [selectedComponent, setSelectedComponent] = useState<string | null>(initialView);
-  const [darkMode, setDarkMode] = useState(true); // Default to dark for elite design
   const [fullscreen, setFullscreen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -421,17 +406,6 @@ function ComponentBrowserContent() {
 
           {/* Controls */}
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className={`p-3 rounded-xl transition-all ${
-                darkMode
-                  ? 'bg-black text-white'
-                  : 'bg-white border border-[#E5E5E5] text-black hover:border-black'
-              }`}
-              title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
             {selectedComponent && (
               <>
                 <button
@@ -515,13 +489,9 @@ function ComponentBrowserContent() {
                       {allComponents.find(c => c.id === selectedComponent)?.description}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      darkMode ? 'bg-black text-white' : 'bg-[#F8F9FA] text-black'
-                    }`}>
-                      {darkMode ? 'Dark Mode' : 'Light Mode'}
-                    </span>
-                  </div>
+                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-black text-white">
+                    White bg + Dark blocks
+                  </span>
                 </div>
 
                 {/* Preview Content */}
@@ -530,16 +500,13 @@ function ComponentBrowserContent() {
                 >
                   <AnimatePresence mode="wait">
                     <motion.div
-                      key={`${selectedComponent}-${darkMode}`}
+                      key={selectedComponent}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <ComponentPreview
-                        componentId={selectedComponent}
-                        darkMode={darkMode}
-                      />
+                      <ComponentPreview componentId={selectedComponent} />
                     </motion.div>
                   </AnimatePresence>
                 </div>
@@ -554,7 +521,7 @@ function ComponentBrowserContent() {
                 </h3>
                 <p className="text-[var(--text-muted)] max-w-md">
                   Choose a component from the list to see a live preview.
-                  Default is dark mode for elite design preview.
+                  All components use white slide backgrounds with dark rounded blocks.
                 </p>
               </div>
             )}

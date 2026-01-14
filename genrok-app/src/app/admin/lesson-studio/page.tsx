@@ -11,10 +11,15 @@ import {
   Eye,
   CheckCircle,
   Sparkles,
+  Grid3X3,
+  Type,
+  ListOrdered,
+  Quote,
 } from 'lucide-react';
 import Link from 'next/link';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllComponents, LESSON_COMPONENTS } from '@/components/lessons';
+import { getAllLayouts, LAYOUT_TEMPLATES } from '@/components/lessons/layouts';
 
 // Category icons and colors
 const CATEGORY_CONFIG = {
@@ -27,6 +32,7 @@ const CATEGORY_CONFIG = {
 export default function LessonStudioPage() {
   const [filter, setFilter] = useState<string>('all');
   const allComponents = getAllComponents();
+  const allLayouts = getAllLayouts();
 
   const filteredComponents = filter === 'all'
     ? allComponents
@@ -36,6 +42,7 @@ export default function LessonStudioPage() {
 
   const stats = {
     total: allComponents.length,
+    layouts: allLayouts.length,
     slides: LESSON_COMPONENTS.slides.length,
     content: LESSON_COMPONENTS.content.length,
     data: LESSON_COMPONENTS.data.length,
@@ -69,10 +76,11 @@ export default function LessonStudioPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8"
+          className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8"
         >
           {[
-            { label: 'Total Components', value: stats.total, color: '#000' },
+            { label: 'Components', value: stats.total, color: '#000' },
+            { label: 'Layouts', value: stats.layouts, color: '#EC4899' },
             { label: 'Fixed Slides', value: stats.slides, color: '#88da1c' },
             { label: 'Content', value: stats.content, color: '#3B82F6' },
             { label: 'Data', value: stats.data, color: '#8B5CF6' },
@@ -211,30 +219,57 @@ export default function LessonStudioPage() {
         </motion.div>
 
         {/* Quick Actions */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mt-12 p-8 bg-black rounded-2xl"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-xl font-bold text-white mb-2">
-                Ready to preview all components?
-              </h3>
-              <p className="text-white/60">
-                View live interactive demos of every component in the library
-              </p>
+        <div className="mt-12 grid md:grid-cols-2 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="p-8 bg-black rounded-2xl"
+          >
+            <div className="flex flex-col h-full">
+              <div className="flex-1 mb-6">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Component Browser
+                </h3>
+                <p className="text-white/60">
+                  View live interactive demos of every component in the library
+                </p>
+              </div>
+              <Link
+                href="/admin/lesson-studio/components"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#88da1c] text-black font-semibold hover:bg-[#7BC615] transition-colors"
+              >
+                <Eye size={18} />
+                Open Components ({stats.total})
+              </Link>
             </div>
-            <Link
-              href="/admin/lesson-studio/components"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#88da1c] text-black font-semibold hover:bg-[#7BC615] transition-colors"
-            >
-              <Eye size={18} />
-              Open Component Browser
-            </Link>
-          </div>
-        </motion.div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="p-8 bg-gradient-to-br from-[#EC4899] to-[#DB2777] rounded-2xl"
+          >
+            <div className="flex flex-col h-full">
+              <div className="flex-1 mb-6">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Layout Templates
+                </h3>
+                <p className="text-white/80">
+                  Pre-built slide layouts combining multiple components
+                </p>
+              </div>
+              <Link
+                href="/admin/lesson-studio/layouts"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition-colors"
+              >
+                <Grid3X3 size={18} />
+                Open Layouts ({stats.layouts})
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </DashboardLayout>
   );
