@@ -1,11 +1,138 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MessageCircle } from 'lucide-react';
+import { X } from 'lucide-react';
 
-// Monkey Genie GIF URL
+// Monkey Genie GIF URL (resting/sitting state)
 const MONKEY_GIF_URL = 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_a_Genie_sitting_on_a_cloud_pure_blank_100_whit_8387780b-cd4e-4151-91b0-6e4cebebf077_1.mp4';
+
+// Landing animation GIF URL (jumping/landing on cloud)
+const LANDING_GIF_URL = 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_a_Genie_sitting_on_a_cloud_pure_blank_100_whit_8387780b-cd4e-4151-91b0-6e4cebebf077_3.mp4';
+
+// =============================================================================
+// 100 CONVERSATION-OPENING GREETINGS
+// These ASK what the user needs help with (displayed with typewriter effect)
+// {NAME} will be replaced with the user's actual name
+// =============================================================================
+
+const conversationOpeners = [
+  // Direct Help Offers (20)
+  "Hey {NAME}! What are we building today?",
+  "{NAME}, I'm ready to help. What's on your mind?",
+  "What challenge can I help you crush today, {NAME}?",
+  "Let's make something happen, {NAME}. What do you need?",
+  "{NAME}! The genie is at your service. What's your wish?",
+  "Ready to help you win, {NAME}. What's the mission?",
+  "What can I help you figure out today, {NAME}?",
+  "{NAME}, let's solve something together. What's up?",
+  "Your success sidekick is here, {NAME}. How can I help?",
+  "What's the one thing I can help you with right now, {NAME}?",
+  "{NAME}! Let's get you some wins. Where do we start?",
+  "I'm all yours, {NAME}. What do you want to tackle?",
+  "Hey {NAME}, let's move the needle. What needs attention?",
+  "{NAME}, what problem can we solve together today?",
+  "I've got answers, {NAME}. What are your questions?",
+  "Let's make progress, {NAME}. What's the focus?",
+  "{NAME}! Your genie awaits. What do you need help with?",
+  "Ready to brainstorm, {NAME}? What's on the agenda?",
+  "What's the biggest thing I can help you with today, {NAME}?",
+  "{NAME}, I'm here to help you level up. What's first?",
+
+  // Curiosity/Discovery (20)
+  "{NAME}, what's the biggest roadblock you're facing right now?",
+  "Tell me what's been on your mind, {NAME}...",
+  "What part of your business needs the most attention, {NAME}?",
+  "{NAME}, what would make today a huge win for you?",
+  "If you could fix ONE thing right now, what would it be, {NAME}?",
+  "{NAME}, what's been the trickiest part of your journey lately?",
+  "What's keeping you from hitting your goals, {NAME}?",
+  "{NAME}, I'm curious - what's your biggest opportunity right now?",
+  "What would change everything for your business, {NAME}?",
+  "{NAME}, what area do you wish you had more clarity on?",
+  "Tell me about your biggest challenge right now, {NAME}...",
+  "{NAME}, what's the one thing you keep putting off?",
+  "Where are you feeling stuck, {NAME}? Let's figure it out.",
+  "{NAME}, what would make your life 10x easier right now?",
+  "What's the gap between where you are and where you want to be, {NAME}?",
+  "{NAME}, what's been frustrating you lately? I want to help.",
+  "If I could wave a magic wand for you, {NAME}, what would you wish for?",
+  "{NAME}, what's the elephant in the room you've been avoiding?",
+  "What question have you been dying to ask, {NAME}?",
+  "{NAME}, what's one thing you wish someone would just explain?",
+
+  // Action-Oriented (20)
+  "Ready to make some moves, {NAME}? What's first?",
+  "Let's get you to the next level, {NAME}. Where do we start?",
+  "{NAME}, what's the ONE thing that would change everything?",
+  "Time to take action, {NAME}! What's the priority?",
+  "Let's crush a goal today, {NAME}. Which one?",
+  "{NAME}, what's the first domino we need to knock down?",
+  "Ready to execute, {NAME}? What's the game plan?",
+  "Let's build something great, {NAME}. What are we making?",
+  "{NAME}, what needs to happen for you to win this week?",
+  "Let's turn ideas into action, {NAME}. What's the move?",
+  "{NAME}, what would make you feel unstoppable today?",
+  "Ready to level up, {NAME}? Let's do this.",
+  "What's the first step we need to take, {NAME}?",
+  "{NAME}, let's solve this once and for all. What is it?",
+  "Let's make some magic happen, {NAME}. What's the spell?",
+  "{NAME}, I'm here to help you execute. What's the target?",
+  "Ready to move fast, {NAME}? What's urgent?",
+  "Let's break through that wall, {NAME}. What's in the way?",
+  "{NAME}, what quick win can we get you today?",
+  "Action time, {NAME}! What are we tackling?",
+
+  // Supportive/Friendly (20)
+  "I'm here for you, {NAME}. What do you need?",
+  "No question is too small, {NAME}. What's up?",
+  "Your success is my mission, {NAME}. How can I help today?",
+  "{NAME}, whatever it is, we'll figure it out together.",
+  "I've got your back, {NAME}. What's going on?",
+  "Hey {NAME}, let's talk. What's on your mind?",
+  "{NAME}, I'm listening. What do you want to share?",
+  "You're not alone in this, {NAME}. How can I support you?",
+  "Let's work through this together, {NAME}. What's happening?",
+  "{NAME}, tell me what you need. I'm here to help.",
+  "Whatever challenge you're facing, {NAME}, we've got this.",
+  "{NAME}, how are things going? What can I do for you?",
+  "I'm in your corner, {NAME}. What do you want to chat about?",
+  "{NAME}, let's make sure you get what you need today.",
+  "Here to help you succeed, {NAME}. What's the situation?",
+  "{NAME}, nothing is impossible. What do you want to achieve?",
+  "Let's turn your questions into answers, {NAME}. Fire away!",
+  "{NAME}, I believe in you. What can we accomplish together?",
+  "Your journey matters, {NAME}. How can I help you today?",
+  "{NAME}, let's make progress. What's your biggest question?",
+
+  // Time-Based Contextual (20)
+  "Morning hustle time, {NAME}! What's the priority?",
+  "Afternoon check-in, {NAME}! What can we knock out?",
+  "Evening grind session, {NAME}? I'm with you. What's the task?",
+  "Late night warrior, {NAME}! What are we working on?",
+  "{NAME}, perfect timing! What do you need help with?",
+  "Good to see you, {NAME}! What brings you here today?",
+  "{NAME}! Glad you stopped by. What can I do for you?",
+  "Hey {NAME}, you caught me at the perfect time. What's up?",
+  "The genie's ready, {NAME}! What's your wish today?",
+  "{NAME}, let's make the most of this moment. What do you need?",
+  "Perfect time to chat, {NAME}! What's the focus?",
+  "{NAME}, your timing is impeccable. How can I help?",
+  "Hey {NAME}! The monkey's been waiting for you. What's new?",
+  "Great timing, {NAME}! I was just thinking about how to help you.",
+  "{NAME}, you're here! Let's make something awesome happen.",
+  "Welcome back, {NAME}! What's on the agenda today?",
+  "{NAME}! Let's dive in. What do you want to explore?",
+  "The floor is yours, {NAME}. What would you like to discuss?",
+  "{NAME}, I'm pumped to help! What's the challenge?",
+  "Let's go, {NAME}! What are we conquering today?",
+];
+
+// Get a random conversation opener
+function getRandomConversationOpener(name: string): string {
+  const randomIndex = Math.floor(Math.random() * conversationOpeners.length);
+  return conversationOpeners[randomIndex].replace('{NAME}', name);
+}
 
 // =============================================================================
 // 500 DOPAMINE-INDUCING GREETINGS
@@ -611,18 +738,32 @@ interface ChatbotWidgetProps {
 }
 
 export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  // Core state
+  const [isExpanded, setIsExpanded] = useState(false);
   const [greeting, setGreeting] = useState('');
   const [isHovered, setIsHovered] = useState(false);
+
+  // Landing animation state
+  const [showLandingAnimation, setShowLandingAnimation] = useState(false);
+  const [animationPhase, setAnimationPhase] = useState<'big' | 'shrinking' | 'settled'>('settled');
+
+  // Typewriter effect state
+  const [conversationOpener, setConversationOpener] = useState('');
+  const [displayedText, setDisplayedText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+
+  // Refs
+  const landingVideoRef = useRef<HTMLVideoElement>(null);
+  const typewriterTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Get personalized greeting on mount and when user name changes
   useEffect(() => {
     setGreeting(getRandomGreeting(userName));
   }, [userName]);
 
-  // Rotate greeting every 45 seconds when expanded
+  // Rotate greeting every 45 seconds when minimized
   useEffect(() => {
-    if (!isExpanded) return;
+    if (isExpanded) return;
 
     const interval = setInterval(() => {
       setGreeting(getRandomGreeting(userName));
@@ -631,80 +772,200 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
     return () => clearInterval(interval);
   }, [isExpanded, userName]);
 
+  // Typewriter effect
+  useEffect(() => {
+    if (!isTyping || !conversationOpener) return;
+
+    let currentIndex = 0;
+    setDisplayedText('');
+
+    const typeNextChar = () => {
+      if (currentIndex < conversationOpener.length) {
+        setDisplayedText(conversationOpener.slice(0, currentIndex + 1));
+        currentIndex++;
+        typewriterTimeoutRef.current = setTimeout(typeNextChar, 30 + Math.random() * 20);
+      } else {
+        setIsTyping(false);
+      }
+    };
+
+    // Start typing after a small delay
+    typewriterTimeoutRef.current = setTimeout(typeNextChar, 100);
+
+    return () => {
+      if (typewriterTimeoutRef.current) {
+        clearTimeout(typewriterTimeoutRef.current);
+      }
+    };
+  }, [isTyping, conversationOpener]);
+
+  // Handle opening the chat with landing animation
+  const handleOpenChat = useCallback(() => {
+    // Get a new conversation opener
+    const newOpener = getRandomConversationOpener(userName);
+    setConversationOpener(newOpener);
+    setDisplayedText('');
+
+    // Start landing animation sequence
+    setShowLandingAnimation(true);
+    setAnimationPhase('big');
+    setIsExpanded(true);
+
+    // After 1 second, start shrinking
+    setTimeout(() => {
+      setAnimationPhase('shrinking');
+    }, 1000);
+
+    // After shrink animation completes, settle and start typing
+    setTimeout(() => {
+      setAnimationPhase('settled');
+      setShowLandingAnimation(false);
+      setIsTyping(true);
+    }, 1500);
+  }, [userName]);
+
+  // Handle closing the chat
+  const handleCloseChat = useCallback(() => {
+    setIsExpanded(false);
+    setShowLandingAnimation(false);
+    setAnimationPhase('settled');
+    setIsTyping(false);
+    setDisplayedText('');
+    if (typewriterTimeoutRef.current) {
+      clearTimeout(typewriterTimeoutRef.current);
+    }
+  }, []);
+
   return (
     <div className="fixed bottom-6 right-6 z-[9999]">
       <AnimatePresence mode="wait">
         {isExpanded ? (
-          // Expanded State - Rectangle with GIF and text
+          // Expanded State - Chat box with landing animation
           <motion.div
             key="expanded"
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-            className="relative flex items-stretch bg-white rounded-2xl shadow-2xl overflow-hidden cursor-pointer"
+            className="relative bg-white rounded-2xl shadow-2xl overflow-visible"
             style={{
-              minWidth: '340px',
-              maxWidth: '400px',
+              width: '340px',
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1)',
             }}
-            onClick={() => {
-              // In the future, this will open the chat
-              console.log('Open chat');
-            }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
           >
-            {/* Close/Minimize Button */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsExpanded(false);
-              }}
-              className="absolute top-2 right-2 z-10 w-6 h-6 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
-              aria-label="Minimize chat"
-            >
-              <X size={14} className="text-gray-600" />
-            </button>
-
-            {/* Left Side - Text Content */}
-            <div className="flex-1 p-4 pr-2 flex flex-col justify-center">
-              <motion.p
-                key={greeting}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="text-[15px] text-black font-semibold leading-snug"
-              >
-                {greeting}
-              </motion.p>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isHovered ? 1 : 0.7 }}
-                className="mt-2.5 flex items-center gap-1.5"
-              >
-                <span className="text-xs font-medium text-gray-500">Click to chat with the Monkey</span>
-                <motion.span
-                  animate={{ x: isHovered ? 3 : 0 }}
-                  className="text-gray-500"
+            {/* Landing Animation Overlay - Big GIF that shrinks */}
+            <AnimatePresence>
+              {showLandingAnimation && (
+                <motion.div
+                  className="absolute z-50 flex items-center justify-center pointer-events-none"
+                  initial={{
+                    width: 250,
+                    height: 250,
+                    top: '50%',
+                    left: '50%',
+                    x: '-50%',
+                    y: '-50%',
+                    opacity: 1,
+                  }}
+                  animate={
+                    animationPhase === 'big'
+                      ? {
+                          width: 250,
+                          height: 250,
+                          top: '50%',
+                          left: '50%',
+                          x: '-50%',
+                          y: '-50%',
+                          opacity: 1,
+                        }
+                      : animationPhase === 'shrinking'
+                        ? {
+                            width: 64,
+                            height: 64,
+                            top: 16,
+                            left: '50%',
+                            x: '-50%',
+                            y: 0,
+                            opacity: 1,
+                          }
+                        : {
+                            width: 64,
+                            height: 64,
+                            top: 16,
+                            left: '50%',
+                            x: '-50%',
+                            y: 0,
+                            opacity: 0,
+                          }
+                  }
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 20,
+                  }}
                 >
-                  →
-                </motion.span>
-              </motion.div>
-            </div>
+                  <video
+                    ref={landingVideoRef}
+                    src={LANDING_GIF_URL}
+                    autoPlay
+                    muted
+                    playsInline
+                    className="w-full h-full object-contain rounded-full"
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            {/* Right Side - Monkey GIF */}
-            <div className="w-24 h-24 flex-shrink-0 relative overflow-hidden">
-              <video
-                src={MONKEY_GIF_URL}
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover"
-                style={{ objectPosition: 'center' }}
-              />
-            </div>
+            {/* Main Chat UI */}
+            <motion.div
+              className="flex flex-col"
+              animate={{
+                opacity: showLandingAnimation ? 0.3 : 1,
+              }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Header with GIF at top center */}
+              <div className="relative pt-4 pb-2 flex flex-col items-center">
+                {/* Close Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCloseChat();
+                  }}
+                  className="absolute top-2 right-2 z-10 w-6 h-6 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors"
+                  aria-label="Minimize chat"
+                >
+                  <X size={14} className="text-gray-600" />
+                </button>
+
+                {/* Monkey GIF - Small at top */}
+                <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
+                  <video
+                    src={MONKEY_GIF_URL}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Conversation opener with typewriter effect */}
+              <div className="px-5 pb-5 pt-2 text-center">
+                <p className="text-[15px] text-black font-semibold leading-relaxed min-h-[48px]">
+                  {displayedText}
+                  {isTyping && (
+                    <motion.span
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ duration: 0.5, repeat: Infinity }}
+                      className="inline-block w-0.5 h-4 bg-black ml-0.5 align-middle"
+                    />
+                  )}
+                </p>
+              </div>
+            </motion.div>
 
             {/* Hover Glow Effect */}
             <motion.div
@@ -727,7 +988,9 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            onClick={() => setIsExpanded(true)}
+            onClick={handleOpenChat}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             className="relative w-16 h-16 rounded-full overflow-hidden shadow-2xl"
             style={{
               boxShadow: '0 10px 40px rgba(0, 0, 0, 0.2), 0 4px 15px rgba(0, 0, 0, 0.1)',
