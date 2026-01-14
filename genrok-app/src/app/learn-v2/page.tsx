@@ -386,10 +386,11 @@ export default function LearnV2Page() {
                   className="font-bold mb-5"
                   style={{
                     fontFamily: "'Playfair Display', 'Georgia', serif",
-                    fontSize: '90px',
+                    fontSize: '56px',
                     letterSpacing: '-0.02em',
                     textShadow: '0 2px 8px rgba(0,0,0,0.4)',
-                    color: '#FFFFFF'
+                    color: '#FFFFFF',
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   The Billionaire&apos;s Theater

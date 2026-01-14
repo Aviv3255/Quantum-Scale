@@ -18,6 +18,8 @@ import Image from 'next/image';
 import { useAuthStore } from '@/store/auth';
 import { useLessonProgressStore } from '@/store/lessonProgress';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import LessonModal from '@/components/LessonModal';
+import { BookmarkButton } from '@/components/BookmarkButton';
 import { getAllCourses } from '@/data/courses';
 import { metaAdTemplates } from '@/data/meta-ad-templates';
 import {
@@ -178,7 +180,51 @@ function getCompletedCoursesFromChecklists(userId: string, courseSlugs: string[]
   }).length;
 }
 
-type ContentTab = 'courses' | 'lessons' | 'creatives';
+type ContentTab = 'courses' | 'lessons' | 'creatives' | 'cheatcodes';
+
+// Free Cheat Codes - Essential tools that are completely free
+const freeCheatCodes = [
+  {
+    id: 'mate',
+    name: 'Mate',
+    category: 'Private Agent',
+    logo: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/COag0vSJxoUDEAE=.png',
+    description: 'Your primary fulfillment weapon. 5-7 day worldwide shipping that crushes AliExpress. Cheaper prices, personal WhatsApp support, quality-checked products.',
+    url: 'https://erp.matedropshipping.com/login?invite_id=915',
+  },
+  {
+    id: 'hypersku',
+    name: 'HyperSKU',
+    category: 'Backup Agent',
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T115639.885.png?v=1760086613',
+    description: 'Smart sellers never rely on one source. 5-8 day shipping, WhatsApp support, quality inspection. Compare prices per order—always pick the winner.',
+    url: 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq',
+  },
+  {
+    id: 'keepcart',
+    name: 'KeepCart',
+    category: 'Profit Protection',
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-10T122003.978.png?v=1760088020',
+    description: 'Blocks 150+ coupon extensions like Honey from stealing your margins. Stops leaked discount codes dead. Saves 12% coupon abuse + 10-15% extra revenue.',
+    url: 'https://apps.shopify.com/keepcart?mref=lsbqcbva',
+  },
+  {
+    id: 'datadrew',
+    name: 'DataDrew',
+    category: 'Customer Intelligence',
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Satoshi_3.jpg?v=1761567329',
+    description: 'Know your customer LTV instantly. Target your top 10% spenders who drop $500+. Find the golden nuggets hiding in your ad data. Pure analytics power.',
+    url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva',
+  },
+  {
+    id: 'txtcart',
+    name: 'TxtCart',
+    category: 'Cart Recovery',
+    logo: 'https://cdn.shopify.com/s/files/1/0682/3202/0061/files/2025-10-12T140826.947.png?v=1760267314',
+    description: 'AI SMS agent that feels human. Recovers 82% of abandoned carts through conversational texts. Trained on 50M+ conversations. Money-back guarantee.',
+    url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva',
+  },
+];
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -187,6 +233,7 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<ContentTab>('courses');
   const [checklistProgressMap, setChecklistProgressMap] = useState<Record<string, number>>({});
   const [currentGif, setCurrentGif] = useState<string>('');
+  const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
   const courses = getAllCourses();
 
   // User's niche - default to mens-fashion (can be extended to fetch from profile)
@@ -217,7 +264,7 @@ export default function DashboardPage() {
     }
   }, [user?.id, courses]);
 
-  // Sort lessons: in-progress first, then not started
+  // Sort lessons: in-progress first, then not started - EXCLUDE completed lessons
   const sortedLessons = useMemo(() => {
     const withProgress = allLessons.map((lesson) => {
       const progress = lessonProgressStore.getProgress(lesson.slug);
@@ -231,12 +278,13 @@ export default function DashboardPage() {
       };
     });
 
-    // Sort: in-progress (started but not completed) first, then not started, completed last
-    return withProgress.sort((a, b) => {
-      if (a.isCompleted && !b.isCompleted) return 1;
-      if (!a.isCompleted && b.isCompleted) return -1;
-      if (a.isStarted && !a.isCompleted && (!b.isStarted || b.isCompleted)) return -1;
-      if (b.isStarted && !b.isCompleted && (!a.isStarted || a.isCompleted)) return 1;
+    // Filter out completed lessons (100% progress) - they don't show on dashboard
+    const incomplete = withProgress.filter((lesson) => !lesson.isCompleted);
+
+    // Sort: in-progress (started but not completed) first, then not started
+    return incomplete.sort((a, b) => {
+      if (a.isStarted && !b.isStarted) return -1;
+      if (!a.isStarted && b.isStarted) return 1;
       return 0;
     });
   }, [lessonProgressStore]);
@@ -356,13 +404,21 @@ export default function DashboardPage() {
                 >
                   Creatives
                 </button>
+                <button
+                  className={`content-tab ${activeTab === 'cheatcodes' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('cheatcodes')}
+                >
+                  Free Cheat Codes
+                </button>
               </div>
-              <Link
-                href={activeTab === 'courses' ? '/courses' : activeTab === 'lessons' ? '/learn' : '/ads/meta-templates'}
-                className="see-all-link"
-              >
-                See all <ChevronRight size={14} />
-              </Link>
+              {activeTab !== 'cheatcodes' && (
+                <Link
+                  href={activeTab === 'courses' ? '/courses' : activeTab === 'lessons' ? '/learn' : '/ads/meta-templates'}
+                  className="see-all-link"
+                >
+                  See all <ChevronRight size={14} />
+                </Link>
+              )}
             </div>
 
             {/* Courses Tab - synced with Courses page checklist progress */}
@@ -419,14 +475,14 @@ export default function DashboardPage() {
               </div>
             )}
 
-            {/* Lessons Tab - 3x3 Grid with progress */}
+            {/* Lessons Tab - 3x3 Grid with progress (completed lessons filtered out) */}
             {activeTab === 'lessons' && (
               <div className="lessons-grid">
                 {sortedLessons.slice(0, 9).map((lesson) => (
-                  <Link
+                  <div
                     key={lesson.slug}
-                    href={`/learn?lesson=${lesson.slug}`}
-                    className={`lesson-card-mini ${lesson.isCompleted ? 'completed' : ''}`}
+                    className="lesson-card-mini cursor-pointer"
+                    onClick={() => setSelectedLesson(lesson.slug)}
                   >
                     <div className="lesson-card-thumbnail">
                       <Image
@@ -440,14 +496,20 @@ export default function DashboardPage() {
                           target.style.display = 'none';
                         }}
                       />
-                      {/* Completed overlay */}
-                      {lesson.isCompleted && (
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                          <CheckCircle2 size={32} className="text-[var(--primary)]" />
-                        </div>
-                      )}
-                      {/* Progress bar at bottom */}
-                      {lesson.isStarted && !lesson.isCompleted && (
+                      {/* Bookmark button */}
+                      <div className="absolute top-2 right-2 z-10">
+                        <BookmarkButton
+                          itemType="lesson"
+                          itemId={lesson.slug}
+                          title={lesson.title}
+                          sourceUrl={`/learn?lesson=${lesson.slug}`}
+                          description={lesson.description}
+                          thumbnailUrl={`/images/lessons/${lesson.slug}.png`}
+                          size="sm"
+                        />
+                      </div>
+                      {/* Progress bar at bottom for in-progress lessons */}
+                      {lesson.isStarted && (
                         <div className="lesson-progress-bar">
                           <div
                             className="lesson-progress-fill"
@@ -459,17 +521,14 @@ export default function DashboardPage() {
                     <div className="lesson-card-content">
                       <div className="lesson-card-header">
                         <span className="lesson-card-category">{lesson.category}</span>
-                        {lesson.isStarted && !lesson.isCompleted && (
+                        {lesson.isStarted && (
                           <span className="lesson-progress-badge">{lesson.progress}%</span>
-                        )}
-                        {lesson.isCompleted && (
-                          <span className="lesson-completed-badge">Done</span>
                         )}
                       </div>
                       <h4 className="lesson-card-title">{lesson.title}</h4>
                       <p className="lesson-card-desc">{lesson.description}</p>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             )}
@@ -511,6 +570,46 @@ export default function DashboardPage() {
                 ))}
               </div>
             )}
+
+            {/* Free Cheat Codes Tab */}
+            {activeTab === 'cheatcodes' && (
+              <div className="cheatcodes-grid">
+                {freeCheatCodes.map((cheat) => (
+                  <a
+                    key={cheat.id}
+                    href={cheat.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cheatcode-card"
+                  >
+                    <div className="cheatcode-logo-wrapper">
+                      <img
+                        src={cheat.logo}
+                        alt={cheat.name}
+                        className="cheatcode-logo"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                      {/* FREE Badge */}
+                      <div className="cheatcode-free-badge">FREE</div>
+                    </div>
+                    <div className="cheatcode-content">
+                      <div className="cheatcode-header">
+                        <h4 className="cheatcode-name">{cheat.name}</h4>
+                        <span className="cheatcode-category">{cheat.category}</span>
+                      </div>
+                      <p className="cheatcode-desc">{cheat.description}</p>
+                      <div className="cheatcode-cta">
+                        <span>Get Started</span>
+                        <ExternalLink size={14} />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
           </motion.section>
 
           {/* New Products to Test Block */}
@@ -522,7 +621,7 @@ export default function DashboardPage() {
           >
             <div className="section-header-row">
               <div>
-                <h2 className="section-title-left">Products to Test</h2>
+                <h2 className="section-title-left">Products to Test Today</h2>
                 <p className="section-subtitle">Curated for your niche. High profit margins, proven sellers.</p>
               </div>
               <Link href="/products/sell-these" className="see-all-link">
@@ -584,6 +683,18 @@ export default function DashboardPage() {
 
         </div>
       </div>
+
+      {/* Lesson Modal */}
+      {selectedLesson && lessonMeta[selectedLesson] && (
+        <LessonModal
+          slug={selectedLesson}
+          title={lessonMeta[selectedLesson].title}
+          description={lessonMeta[selectedLesson].description}
+          userName={userName}
+          onClose={() => setSelectedLesson(null)}
+          thumbnailUrl={`/images/lessons/${selectedLesson}.png`}
+        />
+      )}
     </DashboardLayout>
   );
 }
