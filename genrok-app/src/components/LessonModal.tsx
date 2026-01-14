@@ -92,13 +92,15 @@ export default function LessonModal({
         onClick={onClose}
       />
 
-      {/* Floating Lesson Card - 90% of total screen with 3D light rays */}
+      {/* Floating Lesson Card - centered in content area (accounting for sidebar) */}
       <div
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-3xl overflow-hidden flex flex-col"
+        className="fixed top-1/2 -translate-y-1/2 bg-white rounded-3xl overflow-hidden flex flex-col"
         style={{
-          width: '90vw',
+          left: 'calc(50% + 125px)', /* Offset by half of sidebar width (250px / 2) */
+          transform: 'translateX(-50%)',
+          width: 'calc(90vw - 280px)', /* Subtract sidebar width + padding */
           height: '90vh',
-          maxWidth: '1600px',
+          maxWidth: '1400px',
           maxHeight: '950px',
           boxShadow: `
             0 0 0 1px rgba(255, 255, 255, 0.1),

@@ -209,8 +209,10 @@ export default function BookmarksPage() {
                   style={{ padding: 0 }}
                   data-testid="bookmark-card"
                 >
-                  {/* Thumbnail */}
-                  {bookmark.thumbnail_url ? (
+                  {/* Thumbnail - For lesson slides, show iframe preview of actual slide */}
+                  {bookmark.item_type === 'lesson_slide' ? (
+                    <SlidePreview bookmark={bookmark} />
+                  ) : bookmark.thumbnail_url ? (
                     <div className="aspect-[16/10] bg-[var(--bg-secondary)] overflow-hidden">
                       <img
                         src={bookmark.thumbnail_url}
@@ -267,5 +269,39 @@ export default function BookmarksPage() {
         </AnimatePresence>
       </div>
     </DashboardLayout>
+  );
+}
+
+/**
+ * SlidePreview - Renders an iframe preview of a bookmarked lesson slide
+ * Extracts slug and slide index from bookmark.item_id format: "{slug}:{slideIndex}"
+ */
+function SlidePreview({ bookmark }: { bookmark: BookmarkType }) {
+  // Parse item_id to get slug and slide number
+  const [slug, slideStr] = bookmark.item_id.split(':');
+  const slideIndex = parseInt(slideStr, 10) || 0;
+
+  // Generate the lesson URL with the specific slide
+  const lessonUrl = `/lessons/${slug}/lesson.html?slide=${slideIndex}&preview=true`;
+
+  return (
+    <div className="aspect-[16/10] bg-[var(--bg-secondary)] overflow-hidden relative">
+      {/* Scaled iframe preview - non-interactive */}
+      <div className="absolute inset-0 overflow-hidden">
+        <iframe
+          src={lessonUrl}
+          title={bookmark.title}
+          className="w-[200%] h-[200%] border-0 pointer-events-none"
+          style={{
+            transform: 'scale(0.5)',
+            transformOrigin: 'top left',
+          }}
+          loading="lazy"
+          sandbox="allow-scripts allow-same-origin"
+        />
+      </div>
+      {/* Overlay to prevent interaction */}
+      <div className="absolute inset-0" />
+    </div>
   );
 }
