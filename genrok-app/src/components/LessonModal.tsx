@@ -15,6 +15,7 @@ interface LessonModalProps {
   userName: string;
   onClose: () => void;
   initialSlide?: number | null;
+  thumbnailUrl?: string;
 }
 
 export default function LessonModal({
@@ -24,6 +25,7 @@ export default function LessonModal({
   userName,
   onClose,
   initialSlide,
+  thumbnailUrl,
 }: LessonModalProps) {
   // Track the current slide from iframe postMessage
   const [currentSlide, setCurrentSlide] = useState(initialSlide ?? 0);
@@ -136,6 +138,7 @@ export default function LessonModal({
               title={title}
               description={description}
               currentSlide={currentSlide}
+              thumbnailUrl={thumbnailUrl}
             />
             <button
               onClick={onClose}
@@ -167,9 +170,10 @@ interface SlideBookmarkButtonProps {
   title: string;
   description: string;
   currentSlide: number;
+  thumbnailUrl?: string;
 }
 
-function SlideBookmarkButton({ slug, title, description, currentSlide }: SlideBookmarkButtonProps) {
+function SlideBookmarkButton({ slug, title, description, currentSlide, thumbnailUrl }: SlideBookmarkButtonProps) {
   const { user } = useAuthStore();
   const { isBookmarked, toggleBookmark } = useBookmarksStore();
   const [isAnimating, setIsAnimating] = useState(false);
@@ -192,12 +196,13 @@ function SlideBookmarkButton({ slug, title, description, currentSlide }: SlideBo
         title: `${title} - Slide ${currentSlide + 1}`,
         source_url: `/learn?lesson=${slug}&slide=${currentSlide}`,
         description,
+        thumbnail_url: thumbnailUrl || `/images/lessons/${slug}.png`,
       };
 
       await toggleBookmark(user.id, input);
       setTimeout(() => setIsAnimating(false), 300);
     },
-    [user?.id, isAnimating, itemId, title, currentSlide, slug, description, toggleBookmark]
+    [user?.id, isAnimating, itemId, title, currentSlide, slug, description, thumbnailUrl, toggleBookmark]
   );
 
   if (!user) return null;

@@ -427,17 +427,26 @@ export default function DashboardPage() {
                     key={lesson.slug}
                     href={`/learn?lesson=${lesson.slug}`}
                     className={`lesson-card-mini ${lesson.isCompleted ? 'completed' : ''}`}
-                    data-category={lesson.category}
                   >
                     <div className="lesson-card-thumbnail">
-                      <div className="lesson-thumb-icon">
-                        {lesson.isCompleted ? (
-                          <CheckCircle2 size={24} className="text-[var(--primary)]" />
-                        ) : (
-                          <BookOpen size={24} />
-                        )}
-                      </div>
-                      {/* Progress indicator */}
+                      <Image
+                        src={`/images/lessons/${lesson.slug}.png`}
+                        alt={lesson.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 50vw, 33vw"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                      {/* Completed overlay */}
+                      {lesson.isCompleted && (
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                          <CheckCircle2 size={32} className="text-[var(--primary)]" />
+                        </div>
+                      )}
+                      {/* Progress bar at bottom */}
                       {lesson.isStarted && !lesson.isCompleted && (
                         <div className="lesson-progress-bar">
                           <div

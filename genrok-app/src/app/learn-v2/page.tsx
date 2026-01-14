@@ -545,6 +545,7 @@ export default function LearnV2Page() {
           userName={userName}
           onClose={closeLesson}
           initialSlide={initialSlide}
+          thumbnailUrl={customThumbnails[selectedLesson] || `/images/lessons/${selectedLesson}.png`}
         />
       )}
     </DashboardLayout>
