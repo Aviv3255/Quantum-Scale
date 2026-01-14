@@ -348,9 +348,13 @@ export default function DashboardPage() {
   // MUST be called before early return to maintain consistent hook order
   const weeklyData = useMemo(() => {
     const dailyProgress = getLessonsCompletedByDay(7);
+    // Find max cumulative value for scaling the chart bars
+    const maxValue = Math.max(...dailyProgress.map((d) => d.cumulative), 1);
     return dailyProgress.map((d) => ({
       day: d.day,
-      value: d.cumulative, // Cumulative total lessons completed up to this day
+      value: d.cumulative,
+      // Scale bar height as percentage of max value (min 15% for visibility)
+      heightPercent: d.cumulative > 0 ? Math.max(15, (d.cumulative / maxValue) * 100) : 5,
     }));
   }, [lessonProgress, getLessonsCompletedByDay]);
 
@@ -714,11 +718,12 @@ export default function DashboardPage() {
             </div>
             <div className="chart-placeholder">
               <div className="mini-chart">
-                {weeklyData.map(({ day, value }) => (
+                {weeklyData.map(({ day, value, heightPercent }) => (
                   <div key={day} className="chart-bar-wrapper">
                     <div
                       className="chart-bar"
-                      style={{ height: `${Math.max(10, value)}%` }}
+                      style={{ height: `${heightPercent}%` }}
+                      title={`${value} lesson${value !== 1 ? 's' : ''} completed`}
                     />
                     <span className="chart-label">{day.toLowerCase()}</span>
                   </div>

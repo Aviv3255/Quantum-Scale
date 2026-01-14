@@ -1789,6 +1789,79 @@ h4, .text-h4 {
   cursor: pointer;
 }
 
+/* ==========================================================================
+   SIDEBAR SUB-ITEM CARDS - 2-column grid with icons
+   ========================================================================== */
+
+.sidebar-subitem-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 30;
+  pointer-events: auto !important;
+  min-height: 70px;
+}
+
+.sidebar-subitem-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.sidebar-subitem-card.active {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.sidebar-subitem-card.active .sidebar-subitem-icon,
+.sidebar-subitem-card.active .sidebar-subitem-title {
+  color: #000000;
+}
+
+.sidebar-subitem-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+}
+
+.sidebar-subitem-card:hover .sidebar-subitem-icon {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.sidebar-subitem-card.active .sidebar-subitem-icon {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-subitem-title {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  line-height: 1.2;
+  transition: color 0.2s ease;
+}
+
+.sidebar-subitem-card:hover .sidebar-subitem-title {
+  color: rgba(255, 255, 255, 1);
+}
+
 /* Sidebar Collapsed State */
 .sidebar.collapsed {
   width: 80px;
@@ -2108,10 +2181,10 @@ body.sidebar-gradient .profile-card {
 }
 
 /* ==========================================================================
-   LEARN V2 GRADIENT HERO - Seamless with gradient sidebar
+   LEARN V2 GRADIENT HERO - Always applies gradient regardless of sidebar theme
    ========================================================================== */
 
-body.sidebar-gradient .learn-v2-hero-gradient {
+.learn-v2-hero-gradient {
   /* Ultra smooth gradient starting from #071914 → pure black by 60% */
   background: linear-gradient(
     90deg,
@@ -2130,7 +2203,7 @@ body.sidebar-gradient .learn-v2-hero-gradient {
 }
 
 /* Subtle ambient glow overlay for premium feel - only on left portion */
-body.sidebar-gradient .learn-v2-hero-gradient::before {
+.learn-v2-hero-gradient::before {
   content: '';
   position: absolute;
   top: 0;
@@ -4267,7 +4340,7 @@ body.sidebar-gradient .learn-v2-hero-gradient::before {
 }
 
 .see-all-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 13px;
@@ -4276,9 +4349,10 @@ body.sidebar-gradient .learn-v2-hero-gradient::before {
   text-decoration: none;
   transition: gap 0.2s ease;
   position: relative;
-  z-index: 10;
+  z-index: 50;
   cursor: pointer;
   flex-shrink: 0;
+  pointer-events: auto !important;
 }
 
 .see-all-link:hover {
@@ -4398,6 +4472,9 @@ body.sidebar-gradient .learn-v2-hero-gradient::before {
 
 /* Black Gradient Course Button */
 .btn-course-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   padding: 10px 20px;
   font-size: 13px;
@@ -4410,6 +4487,10 @@ body.sidebar-gradient .learn-v2-hero-gradient::before {
   overflow: hidden;
   box-shadow: 0 2px 0 #000000, 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: all 0.15s ease;
+  cursor: pointer;
+  z-index: 10;
+  pointer-events: auto !important;
+  flex-shrink: 0;
 }
 
 .btn-course-view::before {

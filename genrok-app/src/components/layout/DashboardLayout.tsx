@@ -35,6 +35,26 @@ import {
   User,
   Tag,
   Bookmark,
+  Calculator,
+  Map,
+  Store,
+  Truck,
+  Gift,
+  Sparkles,
+  Zap,
+  AppWindow,
+  ShoppingCart,
+  DollarSign,
+  Target,
+  LayoutGrid,
+  Paintbrush,
+  Lightbulb,
+  TestTube,
+  PlayCircle,
+  CreditCard,
+  FileText,
+  Headphones,
+  BadgeCheck,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
@@ -47,6 +67,7 @@ import { useThemeStore, applyTheme } from '@/store/theme';
 interface SubNavItem {
   title: string;
   href: string;
+  icon?: LucideIcon;
 }
 
 interface NavItem {
@@ -69,10 +90,10 @@ const navigationItems: NavItem[] = [
     icon: Server,
     isCategory: true,
     subItems: [
-      { title: "Dream Team", href: "/backend/dream-team" },
-      { title: "Secret Apps", href: "/apps/secret" },
-      { title: "Discounted Shopify Apps", href: "/apps/shopify" },
-      { title: "Private Agent", href: "/products/private-agent" }
+      { title: "Dream Team", href: "/backend/dream-team", icon: Users },
+      { title: "Secret Apps", href: "/apps/secret", icon: Sparkles },
+      { title: "Shopify Apps", href: "/apps/shopify", icon: AppWindow },
+      { title: "Private Agent", href: "/products/private-agent", icon: Truck }
     ]
   },
   {
@@ -80,9 +101,9 @@ const navigationItems: NavItem[] = [
     icon: ShoppingBag,
     isCategory: true,
     subItems: [
-      { title: "Private Agent", href: "/products/private-agent" },
-      { title: "AliExpress Stores", href: "/products/aliexpress" },
-      { title: "Sell These Products", href: "/products/sell-these" }
+      { title: "Private Agent", href: "/products/private-agent", icon: Truck },
+      { title: "AliExpress Stores", href: "/products/aliexpress", icon: Store },
+      { title: "Sell These", href: "/products/sell-these", icon: Gift }
     ]
   },
   {
@@ -90,10 +111,12 @@ const navigationItems: NavItem[] = [
     icon: Megaphone,
     isCategory: true,
     subItems: [
-      { title: "$6,000 TikTok Ads Credit", href: "/tiktok-credits" },
-      { title: "AI Image Ads", href: "/ads/ai-image" },
-      { title: "AI Video Ads", href: "/ads/ai-video" },
-      { title: "Meta Ad Templates", href: "/ads/meta-templates" }
+      { title: "TikTok Credits", href: "/tiktok-credits", icon: CreditCard },
+      { title: "AI Image Ads", href: "/ads/ai-image", icon: Image },
+      { title: "AI Video Ads", href: "/ads/ai-video", icon: Video },
+      { title: "Meta Templates", href: "/ads/meta-templates", icon: Target },
+      { title: "Ad Copy", href: "/ads/ad-copy-templates", icon: FileText },
+      { title: "Negative Keywords", href: "/ads/google-negative-keywords", icon: Tag }
     ]
   },
   {
@@ -101,8 +124,8 @@ const navigationItems: NavItem[] = [
     icon: Briefcase,
     isCategory: true,
     subItems: [
-      { title: "Calculators & Forecasts", href: "/calculators" },
-      { title: "$100K Blueprint", href: "/blueprint" }
+      { title: "Calculators", href: "/calculators", icon: Calculator },
+      { title: "$100K Blueprint", href: "/blueprint", icon: Map }
     ]
   },
   {
@@ -110,13 +133,13 @@ const navigationItems: NavItem[] = [
     icon: Palette,
     isCategory: true,
     subItems: [
-      { title: "Reference Store", href: "/design/reference" },
-      { title: "Web UI Inspiration", href: "/design/web" },
-      { title: "Sections Inspiration", href: "/design/sections" },
-      { title: "Image Inspiration", href: "/design/images" },
-      { title: "AI Tools", href: "/design/ai-tools" },
-      { title: "Shrine Theme", href: "/design/shrine-theme" },
-      { title: "A/B Test Results", href: "/design/ab-tests" }
+      { title: "Reference Store", href: "/design/reference", icon: Store },
+      { title: "Web UI", href: "/design/web", icon: LayoutGrid },
+      { title: "Sections", href: "/design/sections", icon: Layers },
+      { title: "Images", href: "/design/images", icon: Image },
+      { title: "AI Tools", href: "/design/ai-tools", icon: Sparkles },
+      { title: "Shrine Theme", href: "/design/shrine-theme", icon: Paintbrush },
+      { title: "A/B Tests", href: "/design/ab-tests", icon: TestTube }
     ]
   },
   {
@@ -124,10 +147,10 @@ const navigationItems: NavItem[] = [
     icon: BookOpen,
     isCategory: true,
     subItems: [
-      { title: "Lessons", href: "/learn" },
-      { title: "Lessons V2", href: "/learn-v2" },
-      { title: "The Quantum Podcast", href: "/podcast" },
-      { title: "Learning Cards", href: "/learning-cards" }
+      { title: "Lessons", href: "/learn", icon: BookOpen },
+      { title: "Lessons V2", href: "/learn-v2", icon: PlayCircle },
+      { title: "Podcast", href: "/podcast", icon: Headphones },
+      { title: "Cards", href: "/learning-cards", icon: Layers }
     ]
   },
   {
@@ -135,8 +158,8 @@ const navigationItems: NavItem[] = [
     icon: GraduationCap,
     isCategory: true,
     subItems: [
-      { title: "Explore Courses", href: "/courses" },
-      { title: "My Courses", href: "/my-courses" }
+      { title: "Explore", href: "/courses", icon: GraduationCap },
+      { title: "My Courses", href: "/my-courses", icon: BadgeCheck }
     ]
   },
   {
@@ -250,32 +273,42 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
             >
               <Icon size={18} strokeWidth={1.5} className="text-white/70" />
             </div>
-            {/* Hover dropdown for collapsed state - uses React state to stay visible */}
+            {/* Hover dropdown for collapsed state - 2-column grid with icons */}
             {isHovered && (
               <div
-                className="absolute left-full top-0 ml-2 z-50 min-w-[200px]"
+                className="absolute left-full top-0 ml-2 z-50"
                 style={{
                   background: '#000000',
                   border: '1px solid rgba(136, 218, 28, 0.2)',
                   borderRadius: '12px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.5)'
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                  width: '240px'
                 }}
                 onMouseEnter={() => setHoveredCategory(item.title)}
                 onMouseLeave={() => setHoveredCategory(null)}
               >
-                <div className="p-2 space-y-1">
-                  {item.subItems?.map((subItem, subIdx) => (
-                    <Link
-                      key={subIdx}
-                      href={subItem.href}
-                      className={`block w-full text-left px-4 py-2 text-sm rounded-lg transition-colors ${
-                        isSubItemActive(subItem) ? 'text-black bg-[var(--primary)] font-medium' : 'text-white/70 hover:bg-white/10 hover:text-white'
-                      }`}
-                      onClick={() => setHoveredCategory(null)}
-                    >
-                      {subItem.title}
-                    </Link>
-                  ))}
+                <div className="p-2 text-xs font-semibold text-white/50 uppercase tracking-wider mb-1 px-2">
+                  {item.title}
+                </div>
+                <div className="grid grid-cols-2 gap-2 p-2">
+                  {item.subItems?.map((subItem, subIdx) => {
+                    const SubIcon = subItem.icon;
+                    return (
+                      <Link
+                        key={subIdx}
+                        href={subItem.href}
+                        className={`sidebar-subitem-card ${
+                          isSubItemActive(subItem) ? 'active' : ''
+                        }`}
+                        onClick={() => setHoveredCategory(null)}
+                      >
+                        <div className="sidebar-subitem-icon">
+                          {SubIcon && <SubIcon size={18} strokeWidth={1.5} />}
+                        </div>
+                        <span className="sidebar-subitem-title">{subItem.title}</span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -309,21 +342,26 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="pl-8 space-y-1 py-1">
-                  {item.subItems?.map((subItem, subIdx) => (
-                    <Link
-                      key={subIdx}
-                      href={subItem.href}
-                      className={`block w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${
-                        isSubItemActive(subItem)
-                          ? 'text-black bg-[var(--primary)] font-medium'
-                          : 'text-white/80 hover:bg-white/10 hover:text-white'
-                      }`}
-                      onClick={() => isMobile && setSidebarOpen(false)}
-                    >
-                      {subItem.title}
-                    </Link>
-                  ))}
+                {/* 2-column grid layout for sub-items with icons */}
+                <div className="grid grid-cols-2 gap-2 px-2 py-2">
+                  {item.subItems?.map((subItem, subIdx) => {
+                    const SubIcon = subItem.icon;
+                    return (
+                      <Link
+                        key={subIdx}
+                        href={subItem.href}
+                        className={`sidebar-subitem-card ${
+                          isSubItemActive(subItem) ? 'active' : ''
+                        }`}
+                        onClick={() => isMobile && setSidebarOpen(false)}
+                      >
+                        <div className="sidebar-subitem-icon">
+                          {SubIcon && <SubIcon size={18} strokeWidth={1.5} />}
+                        </div>
+                        <span className="sidebar-subitem-title">{subItem.title}</span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </motion.div>
             )}

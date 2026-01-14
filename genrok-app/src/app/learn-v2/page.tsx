@@ -145,10 +145,10 @@ export default function LearnV2Page() {
     setExpandedLesson(null);
   }, []);
 
-  // Handle clicking a lesson card (expand it in hero)
+  // Handle clicking a lesson card - open modal directly
   const handleLessonCardClick = useCallback((slug: string) => {
-    setExpandedLesson(slug);
-  }, []);
+    openLesson(slug);
+  }, [openLesson]);
 
   // Close expanded lesson
   const closeExpandedLesson = useCallback(() => {
@@ -637,11 +637,11 @@ function LessonCard({
             </div>
           )}
 
-          {/* Completed badge */}
+          {/* Completed badge - accent text on black background */}
           {isCompleted && (
-            <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-full bg-green-500 text-white text-xs font-semibold">
+            <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black text-xs font-semibold shadow-lg" style={{ color: 'var(--accent-primary, var(--primary))' }}>
               <CheckCircle2 size={12} />
-              Done
+              Completed
             </div>
           )}
 
@@ -668,10 +668,24 @@ function LessonCard({
 
         {/* Content */}
         <div className="p-4">
-          {/* Duration */}
-          <div className="flex items-center gap-1.5 text-gray-500 mb-2">
-            <Clock size={14} />
-            <span className="text-xs font-medium">{duration}</span>
+          {/* Duration + Bookmark Row */}
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5 text-gray-500">
+              <Clock size={14} />
+              <span className="text-xs font-medium">{duration}</span>
+            </div>
+            {/* Bookmark Button */}
+            <div onClick={(e) => e.stopPropagation()}>
+              <BookmarkButton
+                itemType="lesson"
+                itemId={slug}
+                title={title}
+                sourceUrl={`/learn-v2?lesson=${slug}`}
+                description={description}
+                thumbnailUrl={thumbnailSrc}
+                size="sm"
+              />
+            </div>
           </div>
 
           {/* Title */}
