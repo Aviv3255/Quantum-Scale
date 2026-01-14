@@ -536,7 +536,10 @@ export default function DashboardPage() {
             {/* Creatives Tab - 3x3 Grid */}
             {activeTab === 'creatives' && (
               <div className="creatives-grid">
-                {metaAdTemplates.slice(0, 9).map((template) => (
+                {/* Specific curated templates: 25, 28, 30, 49, 54, 67, 76, 84, 106 */}
+                {metaAdTemplates
+                  .filter((t) => [25, 28, 30, 49, 54, 67, 76, 84, 106].includes(t.id))
+                  .map((template) => (
                   <a
                     key={template.id}
                     href={template.canvaLink}

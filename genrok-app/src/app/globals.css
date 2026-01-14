@@ -1835,6 +1835,8 @@ h4, .text-h4 {
 
 /* Gradient Sidebar - Premium glass with layered depth */
 body.sidebar-gradient .sidebar {
+  /* Create proper stacking context for pseudo-elements */
+  isolation: isolate;
   background:
     /* Top highlight glow */
     radial-gradient(
@@ -1919,6 +1921,19 @@ body.sidebar-gradient .sidebar::after {
   z-index: 0;
 }
 
+/* Ensure sidebar-nav is above pseudo-elements in gradient mode */
+body.sidebar-gradient .sidebar-nav {
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
+}
+
+/* Ensure nav container is properly positioned */
+body.sidebar-gradient .sidebar-nav .space-y-1 {
+  position: relative;
+  z-index: 15;
+}
+
 /* Nav items in gradient mode - glass card style */
 body.sidebar-gradient .nav-item {
   background: rgba(255, 255, 255, 0.02);
@@ -1926,9 +1941,19 @@ body.sidebar-gradient .nav-item {
   backdrop-filter: blur(4px);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  z-index: 10;
+  z-index: 20;
   pointer-events: auto !important;
   cursor: pointer;
+}
+
+/* Ensure link elements are fully clickable */
+body.sidebar-gradient .nav-item a,
+body.sidebar-gradient a.nav-item {
+  position: relative;
+  z-index: 25;
+  pointer-events: auto !important;
+  display: flex;
+  width: 100%;
 }
 
 body.sidebar-gradient .nav-item:hover {
