@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { ExternalLink, Search, ShoppingCart } from 'lucide-react';
+import { ExternalLink, Search, ShoppingCart, Package } from 'lucide-react';
 import { motion } from 'framer-motion';
 import {
   aliexpressProducts,
@@ -13,26 +13,50 @@ import {
 const MATE_LINK = 'https://erp.matedropshipping.com/login?invite_id=915';
 const HYPERSKU_LINK = 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq';
 
+// Product source options
+type ProductSource = 'all' | 'aliexpress' | 'mate-hypersku';
+
 export default function SellTheseProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [activeSource, setActiveSource] = useState<ProductSource>('all');
 
-  // Filter products based on search and category
+  // Filter products based on search, category, and source
   const filteredProducts = useMemo(() => {
     return aliexpressProducts.filter((product) => {
       const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = activeCategory === 'all' || product.category === activeCategory;
-      return matchesSearch && matchesCategory;
+      const matchesSource =
+        activeSource === 'all' ||
+        (activeSource === 'aliexpress' && product.partner === 'aliexpress') ||
+        (activeSource === 'mate-hypersku' && (product.partner === 'mate' || product.partner === 'hypersku'));
+      return matchesSearch && matchesCategory && matchesSource;
     });
-  }, [searchQuery, activeCategory]);
+  }, [searchQuery, activeCategory, activeSource]);
 
-  // Get category counts
+  // Get category counts (based on current source filter)
   const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: aliexpressProducts.length };
-    aliexpressProducts.forEach((p) => {
+    const sourceFiltered = aliexpressProducts.filter((p) =>
+      activeSource === 'all' ||
+      (activeSource === 'aliexpress' && p.partner === 'aliexpress') ||
+      (activeSource === 'mate-hypersku' && (p.partner === 'mate' || p.partner === 'hypersku'))
+    );
+    const counts: Record<string, number> = { all: sourceFiltered.length };
+    sourceFiltered.forEach((p) => {
       counts[p.category] = (counts[p.category] || 0) + 1;
     });
     return counts;
+  }, [activeSource]);
+
+  // Get source counts
+  const sourceCounts = useMemo(() => {
+    const aliexpressCount = aliexpressProducts.filter((p) => p.partner === 'aliexpress').length;
+    const mateHyperskuCount = aliexpressProducts.filter((p) => p.partner === 'mate' || p.partner === 'hypersku').length;
+    return {
+      all: aliexpressProducts.length,
+      aliexpress: aliexpressCount,
+      'mate-hypersku': mateHyperskuCount,
+    };
   }, []);
 
   return (
@@ -47,15 +71,60 @@ export default function SellTheseProductsPage() {
           <h1>Sell These Products</h1>
           <p className="mt-2 text-[var(--text-muted)]">
             {aliexpressProducts.length.toLocaleString()} winning products ready to sell. Click any
-            product to get the affiliate link.
+            product to view details and start selling.
           </p>
         </motion.div>
 
-        {/* Partner Buttons */}
+        {/* Product Source Tabs */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 }}
+          className="mb-6"
+        >
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => setActiveSource('all')}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                activeSource === 'all'
+                  ? 'bg-black text-white'
+                  : 'bg-white border border-[#e5e5e5] text-[var(--text-secondary)] hover:border-black'
+              }`}
+            >
+              <Package size={16} />
+              All Products
+              <span className="opacity-70">({sourceCounts.all.toLocaleString()})</span>
+            </button>
+            <button
+              onClick={() => setActiveSource('aliexpress')}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                activeSource === 'aliexpress'
+                  ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
+                  : 'bg-white border border-[#e5e5e5] text-[var(--text-secondary)] hover:border-orange-400'
+              }`}
+            >
+              AliExpress Products
+              <span className="opacity-70">({sourceCounts.aliexpress.toLocaleString()})</span>
+            </button>
+            <button
+              onClick={() => setActiveSource('mate-hypersku')}
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                activeSource === 'mate-hypersku'
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                  : 'bg-white border border-[#e5e5e5] text-[var(--text-secondary)] hover:border-blue-400'
+              }`}
+            >
+              Mate & HyperSKU
+              <span className="opacity-70">({sourceCounts['mate-hypersku'].toLocaleString()})</span>
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Partner Signup Links */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08 }}
           className="mb-6 flex flex-wrap gap-3"
         >
           <a
@@ -170,7 +239,7 @@ export default function SellTheseProductsPage() {
           className="mt-12 text-center"
         >
           <p className="text-sm text-[var(--text-muted)]">
-            Click on any product to open the AliExpress affiliate link. Sign up with our partners
+            Click on any product to view it on the supplier website. Sign up with our fulfillment partners
             above to fulfill orders.
           </p>
         </motion.div>
