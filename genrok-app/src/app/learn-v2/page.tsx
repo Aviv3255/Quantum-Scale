@@ -242,8 +242,7 @@ export default function LearnV2Page() {
         className="min-h-screen"
         style={{
           background: '#FAFAFA',
-          marginTop: '-40px',
-          overflowX: 'clip'
+          overflowX: 'hidden'
         }}
       >
 
@@ -256,12 +255,9 @@ export default function LearnV2Page() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="relative overflow-hidden"
+              className="relative overflow-hidden w-full"
               style={{
-                height: '75vh',
-                marginLeft: '-48px',
-                marginRight: '-48px',
-                width: 'calc(100% + 96px)'
+                height: '75vh'
               }}
             >
               {/* Background Image - show full top, minimal cut */}
@@ -365,13 +361,10 @@ export default function LearnV2Page() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="relative overflow-hidden"
+              className="relative overflow-hidden w-full"
               style={{
                 height: '420px',
-                backgroundColor: '#000000',
-                marginLeft: '-48px',
-                marginRight: '-48px',
-                width: 'calc(100% + 96px)'
+                backgroundColor: '#000000'
               }}
             >
               {/* Character GIF - Right Side (bigger and more centered) */}
@@ -429,8 +422,8 @@ export default function LearnV2Page() {
           )}
         </AnimatePresence>
 
-        {/* Main Content Area */}
-        <div className="px-12 py-10">
+        {/* Main Content Area - with padding for content */}
+        <div className="py-10" style={{ paddingLeft: '48px', paddingRight: '48px' }}>
           {/* Search Bar */}
           <div className="mb-8">
             <div className="relative max-w-md">

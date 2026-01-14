@@ -1,22 +1,26 @@
 'use client';
 
-import { useState } from 'react';
-import { ExternalLink, Search } from 'lucide-react';
+import { useState, useMemo } from 'react';
+import { ExternalLink, Search, TrendingUp, DollarSign, Star, ShoppingCart, Filter } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { metaAdTemplates } from '@/data/meta-ad-templates';
+import { products, allNiches, nicheLabels, type ProductNiche, type Product } from '@/data/products';
 
-export default function MetaAdTemplatesPage() {
+export default function SellTheseProductsPage() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+  const [selectedNiche, setSelectedNiche] = useState<ProductNiche | 'all'>('all');
+  const [showTrendingOnly, setShowTrendingOnly] = useState(false);
 
-  // Filter templates based on search
-  const filteredTemplates = metaAdTemplates.filter((template) =>
-    template.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const handleImageLoad = (id: number) => {
-    setLoadedImages((prev) => new Set(prev).add(id));
-  };
+  // Filter products based on search and filters
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => {
+      const matchesSearch =
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesNiche = selectedNiche === 'all' || product.niche === selectedNiche;
+      const matchesTrending = !showTrendingOnly || product.trending;
+      return matchesSearch && matchesNiche && matchesTrending;
+    });
+  }, [searchQuery, selectedNiche, showTrendingOnly]);
 
   return (
     <div className="main-content">
@@ -27,19 +31,20 @@ export default function MetaAdTemplatesPage() {
           animate={{ opacity: 1, y: 0 }}
           className="page-header mb-8"
         >
-          <h1>Meta Ad Templates</h1>
+          <h1>Sell These Products</h1>
           <p className="mt-2 text-[var(--text-muted)]">
-            {metaAdTemplates.length} ready-to-use ad templates. Click to edit in Canva.
+            {products.length} winning products ready to sell. High profit margins, proven sellers.
           </p>
         </motion.div>
 
-        {/* Search Bar */}
+        {/* Search and Filters */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-8"
+          className="mb-8 space-y-4"
         >
+          {/* Search Bar */}
           <div className="relative max-w-md">
             <Search
               size={20}
@@ -47,92 +52,81 @@ export default function MetaAdTemplatesPage() {
             />
             <input
               type="text"
-              placeholder="Search templates..."
+              placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#e5e5e5] bg-white text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#007DFF] focus:border-transparent transition-all"
+              className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#e5e5e5] bg-white text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
             />
+          </div>
+
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap gap-2">
+            {/* Trending Toggle */}
+            <button
+              onClick={() => setShowTrendingOnly(!showTrendingOnly)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                showTrendingOnly
+                  ? 'bg-[var(--primary)] text-black'
+                  : 'bg-white border border-[#e5e5e5] text-[var(--text-secondary)] hover:border-[var(--primary)]'
+              }`}
+            >
+              <TrendingUp size={16} />
+              Trending Only
+            </button>
+
+            {/* Niche Filter */}
+            <button
+              onClick={() => setSelectedNiche('all')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                selectedNiche === 'all'
+                  ? 'bg-black text-white'
+                  : 'bg-white border border-[#e5e5e5] text-[var(--text-secondary)] hover:border-black'
+              }`}
+            >
+              All Niches
+            </button>
+            {allNiches.map((niche) => (
+              <button
+                key={niche}
+                onClick={() => setSelectedNiche(niche)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  selectedNiche === niche
+                    ? 'bg-black text-white'
+                    : 'bg-white border border-[#e5e5e5] text-[var(--text-secondary)] hover:border-black'
+                }`}
+              >
+                {nicheLabels[niche]}
+              </button>
+            ))}
           </div>
         </motion.div>
 
-        {/* Templates Grid */}
+        {/* Results Count */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.15 }}
+          className="mb-6 flex items-center justify-between"
+        >
+          <p className="text-sm text-[var(--text-muted)]">
+            Showing {filteredProducts.length} products
+          </p>
+        </motion.div>
+
+        {/* Products Grid */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
         >
-          {filteredTemplates.map((template, index) => (
-            <motion.div
-              key={template.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: index * 0.02, duration: 0.3 }}
-              className="group relative"
-            >
-              {/* Card */}
-              <div className="relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-all duration-300 group-hover:shadow-xl group-hover:border-[#007DFF]">
-                {/* Cover Image (Slide 1) */}
-                {template.coverImage ? (
-                  <>
-                    <img
-                      src={template.coverImage}
-                      alt={template.name}
-                      className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-                      onLoad={() => handleImageLoad(template.id)}
-                    />
-                    {/* Hover Image (Slide 2) */}
-                    {template.hoverImage && (
-                      <img
-                        src={template.hoverImage}
-                        alt={`${template.name} - Editable`}
-                        className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                      />
-                    )}
-                  </>
-                ) : (
-                  /* Placeholder with Canva embed preview */
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
-                    <div className="text-center p-4">
-                      <div className="w-12 h-12 mx-auto mb-2 rounded-lg bg-[#007DFF]/10 flex items-center justify-center">
-                        <ExternalLink size={24} className="text-[#007DFF]" />
-                      </div>
-                      <span className="text-xs text-[var(--text-muted)]">
-                        {template.name}
-                      </span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Hover Overlay with Button */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <a
-                    href={template.canvaLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-white text-sm font-semibold transition-all duration-200 transform scale-90 group-hover:scale-100"
-                    style={{
-                      background: '#007DFF',
-                      boxShadow: '0 4px 12px rgba(0, 125, 255, 0.4)',
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <ExternalLink size={16} />
-                    Edit on Canva
-                  </a>
-                </div>
-              </div>
-
-              {/* Template Number Badge */}
-              <div className="absolute top-2 left-2 px-2 py-1 rounded-md bg-black/60 text-white text-xs font-medium backdrop-blur-sm">
-                #{template.id}
-              </div>
-            </motion.div>
+          {filteredProducts.map((product, index) => (
+            <ProductCard key={product.id} product={product} index={index} />
           ))}
         </motion.div>
 
         {/* Empty State */}
-        {filteredTemplates.length === 0 && (
+        {filteredProducts.length === 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -142,10 +136,10 @@ export default function MetaAdTemplatesPage() {
               <Search size={32} className="text-[var(--text-muted)]" />
             </div>
             <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
-              No templates found
+              No products found
             </h3>
             <p className="text-[var(--text-muted)]">
-              Try adjusting your search query
+              Try adjusting your search or filters
             </p>
           </motion.div>
         )}
@@ -158,10 +152,98 @@ export default function MetaAdTemplatesPage() {
           className="mt-12 text-center"
         >
           <p className="text-sm text-[var(--text-muted)]">
-            Hover over a template to preview the editable version. Click "Edit on Canva" to customize.
+            All profit margins are estimated. Actual profits may vary based on shipping and marketing costs.
           </p>
         </motion.div>
       </div>
     </div>
+  );
+}
+
+// Product Card Component
+function ProductCard({ product, index }: { product: Product; index: number }) {
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: index * 0.02, duration: 0.3 }}
+      className="group relative"
+    >
+      <div className="relative rounded-xl overflow-hidden bg-white border border-[#e5e5e5] transition-all duration-300 group-hover:shadow-xl group-hover:border-[var(--primary)]">
+        {/* Image */}
+        <div className="relative aspect-square bg-[#f5f5f5]">
+          {!imageError ? (
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
+              <ShoppingCart size={48} className="text-[var(--text-muted)]" />
+            </div>
+          )}
+
+          {/* Trending Badge */}
+          {product.trending && (
+            <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-1 rounded-md bg-[var(--primary)] text-black text-xs font-semibold">
+              <TrendingUp size={12} />
+              Trending
+            </div>
+          )}
+
+          {/* Niche Badge */}
+          <div className="absolute top-3 right-3 px-2 py-1 rounded-md bg-black/60 text-white text-xs font-medium backdrop-blur-sm">
+            {nicheLabels[product.niche]}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-4">
+          {/* Name */}
+          <h3 className="font-semibold text-[var(--text-primary)] text-sm line-clamp-2 mb-2 group-hover:text-black transition-colors">
+            {product.name}
+          </h3>
+
+          {/* Description */}
+          <p className="text-xs text-[var(--text-muted)] line-clamp-2 mb-3">
+            {product.description}
+          </p>
+
+          {/* Price Info */}
+          <div className="space-y-1">
+            <div className="flex justify-between items-center text-xs">
+              <span className="text-[var(--text-muted)]">Cost:</span>
+              <span className="font-medium text-[var(--text-primary)]">${product.price.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center text-xs">
+              <span className="text-[var(--text-muted)]">Sell for:</span>
+              <span className="font-medium text-[var(--text-primary)]">${product.suggestedRetail.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm pt-1 border-t border-[#e5e5e5]">
+              <span className="text-[var(--text-muted)] flex items-center gap-1">
+                <DollarSign size={14} />
+                Profit:
+              </span>
+              <span className="font-bold text-green-600">${product.profit.toFixed(2)}</span>
+            </div>
+          </div>
+
+          {/* Rating */}
+          {product.rating && (
+            <div className="flex items-center gap-1 mt-3 text-xs text-[var(--text-muted)]">
+              <Star size={12} className="text-yellow-500 fill-yellow-500" />
+              <span>{product.rating}</span>
+              {product.orders && (
+                <span className="ml-2">({product.orders.toLocaleString()} orders)</span>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </motion.div>
   );
 }

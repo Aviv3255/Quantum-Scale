@@ -20,6 +20,7 @@ import { useLessonProgressStore } from '@/store/lessonProgress';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { getAllCourses } from '@/data/courses';
 import { metaAdTemplates } from '@/data/meta-ad-templates';
+import { products, getRandomProducts, nicheLabels, type Product, type ProductNiche } from '@/data/products';
 import { getDefaultChecklist, hasChecklist } from '@/data/course-checklists';
 
 // Timezone-based GIFs - randomly selected from each time period
@@ -113,29 +114,31 @@ function getTimeBasedGreeting(userName: string) {
   }
 }
 
-// Get daily randomized products from metaAdTemplates
-function getDailyProducts(count: number = 20) {
+// Get daily randomized products from products data (filtered by niche)
+function getDailyProducts(count: number = 20, userNiche?: ProductNiche): Product[] {
   // Use date as seed for consistent daily rotation
   const today = new Date();
   const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 
-  // Simple seeded shuffle
-  const templates = [...metaAdTemplates];
-  for (let i = templates.length - 1; i > 0; i--) {
-    const j = Math.floor((Math.sin(seed + i) * 10000 + seed) % (i + 1));
-    [templates[i], templates[j]] = [templates[j], templates[i]];
+  // Filter by niche if provided, otherwise use all products
+  let productPool = userNiche
+    ? products.filter(p => p.niche === userNiche)
+    : products;
+
+  // If not enough products in niche, add some from other niches
+  if (productPool.length < count) {
+    const otherProducts = products.filter(p => p.niche !== userNiche);
+    productPool = [...productPool, ...otherProducts];
   }
 
-  return templates.slice(0, count).map((template, idx) => ({
-    id: String(template.id),
-    name: template.name,
-    image: template.coverImage || '/images/placeholder.png',
-    canvaLink: template.canvaLink,
-    cheaperOn: idx % 2 === 0 ? 'mate' as const : 'hypersku' as const,
-    cheaperUrl: idx % 2 === 0
-      ? 'https://erp.matedropshipping.com/login?invite_id=915'
-      : 'https://www.hypersku.com/campaign/optimize-dropshipping/?ref=nmmwogq',
-  }));
+  // Simple seeded shuffle
+  const shuffled = [...productPool];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor((Math.sin(seed + i) * 10000 + seed) % (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled.slice(0, count);
 }
 
 // Helper to get checklist progress from localStorage (synced with Courses page)
@@ -175,8 +178,11 @@ export default function DashboardPage() {
   const [currentGif, setCurrentGif] = useState<string>('');
   const courses = getAllCourses();
 
-  // Get daily randomized products (memoized to prevent re-shuffling on every render)
-  const dailyProducts = useMemo(() => getDailyProducts(20), []);
+  // User's niche - default to mens-fashion (can be extended to fetch from profile)
+  const userNiche: ProductNiche = 'mens-fashion';
+
+  // Get daily randomized products based on user's niche
+  const dailyProducts = useMemo(() => getDailyProducts(20, userNiche), [userNiche]);
 
   // Set timezone-based GIF on mount (random selection from time period)
   useEffect(() => {
@@ -485,8 +491,8 @@ export default function DashboardPage() {
           >
             <div className="section-header-row">
               <div>
-                <h2 className="section-title-left">New Products to Test</h2>
-                <p className="section-subtitle">Fresh templates daily. Edit in Canva to create winning ads.</p>
+                <h2 className="section-title-left">Products to Test</h2>
+                <p className="section-subtitle">Curated for your niche. High profit margins, proven sellers.</p>
               </div>
               <Link href="/products/sell-these" className="see-all-link">
                 See all <ChevronRight size={14} />
@@ -495,7 +501,7 @@ export default function DashboardPage() {
             <div className="products-scroll-container">
               <div className="products-scroll">
                 {dailyProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                  <DashboardProductCard key={product.id} product={product} />
                 ))}
               </div>
             </div>
@@ -551,55 +557,42 @@ export default function DashboardPage() {
   );
 }
 
-// Product Card Component - Using metaAdTemplates
-function ProductCard({ product }: { product: { id: string; name: string; image: string; canvaLink: string; cheaperOn: 'mate' | 'hypersku'; cheaperUrl: string } }) {
-  const [showBadge, setShowBadge] = useState(false);
+// Dashboard Product Card Component - Using real products data
+function DashboardProductCard({ product }: { product: Product }) {
+  const [imageError, setImageError] = useState(false);
 
   return (
     <div className="product-card">
-      <a
-        href={product.canvaLink}
-        target="_blank"
-        rel="noopener noreferrer"
+      <Link
+        href="/products/sell-these"
         className="product-image-wrapper"
       >
-        <img
-          src={product.image}
-          alt={product.name}
-          className="product-image"
-          loading="lazy"
-        />
-        {/* Info button and badge container */}
-        <div
-          className="product-info-container"
-          onMouseEnter={() => setShowBadge(true)}
-          onMouseLeave={() => setShowBadge(false)}
-        >
-          <button
-            className="product-info-btn"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setShowBadge(!showBadge);
-            }}
-          >
-            <Info size={14} />
-          </button>
-          {showBadge && (
-            <a
-              href={product.cheaperUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`product-badge ${product.cheaperOn === 'mate' ? 'badge-mate' : 'badge-hypersku'}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              Cheaper on {product.cheaperOn === 'mate' ? 'Mate' : 'HyperSKU'}
-              <ExternalLink size={10} />
-            </a>
-          )}
+        {!imageError ? (
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="product-image"
+            loading="lazy"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="product-image product-placeholder">
+            <span className="product-placeholder-text">{product.name.charAt(0)}</span>
+          </div>
+        )}
+        {/* Trending badge */}
+        {product.trending && (
+          <div className="product-trending-badge">
+            Trending
+          </div>
+        )}
+        {/* Profit badge */}
+        <div className="product-profit-badge">
+          +${product.profit.toFixed(0)} profit
         </div>
-      </a>
+      </Link>
       <p className="product-name">{product.name}</p>
+      <p className="product-niche">{nicheLabels[product.niche]}</p>
     </div>
   );
 }
