@@ -17,9 +17,6 @@ export interface LessonMeta {
 // Complete lesson metadata
 export const lessonMeta: Record<string, LessonMeta> = {
   'familiar-surprise-secret': { title: 'The Familiar Surprise Secret', description: 'Master the MAYA principle', categories: ['copywriting'], duration: '8 min' },
-  'familiar-surprise-secret-v2': { title: 'The Familiar Surprise Secret (V2)', description: 'Premium redesign - MAYA principle', categories: ['copywriting'], duration: '8 min' },
-  'familiar-surprise-secret-v3': { title: 'The Familiar Surprise Secret (V3)', description: 'Linear-style professional design', categories: ['copywriting'], duration: '8 min' },
-  'familiar-surprise-secret-v4': { title: 'The Familiar Surprise Secret (V4)', description: 'Premium dark accent design', categories: ['copywriting'], duration: '8 min' },
   'red-button-effect': { title: 'The Red Button Effect', description: 'Understanding psychological reactance', categories: ['copywriting', 'psychology'], duration: '6 min' },
   'fred-method': { title: 'The F.R.E.D. Method', description: 'A framework for audience psychology', categories: ['copywriting'], duration: '10 min' },
   'emotion-decides': { title: 'Emotion Decides, Logic Justifies', description: 'How emotions drive purchases', categories: ['copywriting', 'psychology'], duration: '7 min' },
