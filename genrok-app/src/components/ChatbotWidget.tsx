@@ -1083,7 +1083,7 @@ export default function ChatbotWidget({ userName = 'Builder' }: ChatbotWidgetPro
                 {/* Monkey GIF - 80px, no shadow/border, sticks to top */}
                 <div className="w-20 h-20 overflow-hidden">
                   <video
-                    src={MONKEY_GIF_URL}
+                    src={LANDING_GIF_URL}
                     autoPlay
                     loop
                     muted
