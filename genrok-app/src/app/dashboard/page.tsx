@@ -433,6 +433,7 @@ export default function DashboardPage() {
                     key={lesson.slug}
                     href={`/learn?lesson=${lesson.slug}`}
                     className={`lesson-card-mini ${lesson.isCompleted ? 'completed' : ''}`}
+                    data-category={lesson.category}
                   >
                     <div className="lesson-card-thumbnail">
                       <div className="lesson-thumb-icon">
@@ -486,10 +487,10 @@ export default function DashboardPage() {
                         <img
                           src={template.coverImage}
                           alt={template.name}
-                          className="w-full h-full object-cover"
                           onError={(e) => {
                             (e.target as HTMLImageElement).style.display = 'none';
-                            (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                            const placeholder = (e.target as HTMLImageElement).nextElementSibling;
+                            if (placeholder) placeholder.classList.remove('hidden');
                           }}
                         />
                       ) : null}

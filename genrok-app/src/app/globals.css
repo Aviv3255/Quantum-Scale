@@ -1631,6 +1631,16 @@ h4, .text-h4 {
   z-index: 10;
   display: block;
   cursor: pointer;
+  pointer-events: auto !important;
+}
+
+/* Ensure expanded dropdown sub-items are clickable */
+.sidebar-nav .space-y-1 > div > div a,
+.sidebar-nav .overflow-hidden a {
+  position: relative;
+  z-index: 20;
+  pointer-events: auto !important;
+  cursor: pointer;
 }
 
 /* Sidebar Collapsed State */
@@ -4014,14 +4024,36 @@ h4, .text-h4 {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: linear-gradient(135deg, var(--gradient-1) 0%, var(--gradient-5) 100%);
+  background: linear-gradient(135deg, #88DA1C 0%, #5FA812 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+/* Category-based gradient backgrounds */
+.lesson-card-mini[data-category="copywriting"] .lesson-card-thumbnail {
+  background: linear-gradient(135deg, #88DA1C 0%, #5FA812 100%);
+}
+.lesson-card-mini[data-category="psychology"] .lesson-card-thumbnail {
+  background: linear-gradient(135deg, #9B59B6 0%, #6C3483 100%);
+}
+.lesson-card-mini[data-category="branding"] .lesson-card-thumbnail {
+  background: linear-gradient(135deg, #E74C3C 0%, #B03A2E 100%);
+}
+.lesson-card-mini[data-category="meta-ads"] .lesson-card-thumbnail {
+  background: linear-gradient(135deg, #3498DB 0%, #2471A3 100%);
+}
+.lesson-card-mini[data-category="google-ads"] .lesson-card-thumbnail {
+  background: linear-gradient(135deg, #F39C12 0%, #D68910 100%);
+}
+.lesson-card-mini[data-category="business"] .lesson-card-thumbnail {
+  background: linear-gradient(135deg, #1ABC9C 0%, #148F77 100%);
 }
 
 .lesson-thumb-icon {
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .lesson-card-content {
@@ -4115,11 +4147,24 @@ h4, .text-h4 {
 .creative-card-image {
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 1 / 1;
   background: linear-gradient(135deg, #f0f0f0 0%, #e5e5e5 100%);
+  overflow: hidden;
+}
+
+.creative-card-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .creative-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   display: flex;

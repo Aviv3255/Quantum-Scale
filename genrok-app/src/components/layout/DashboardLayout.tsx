@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Home,
@@ -151,6 +151,7 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children, hideHeader = false }: DashboardLayoutProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { user } = useAuthStore();
   const { counts, initialize, isInitialized } = useBookmarksStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -255,16 +256,21 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
               >
                 <div className="p-2 space-y-1">
                   {item.subItems?.map((subItem, subIdx) => (
-                    <Link
+                    <button
                       key={subIdx}
-                      href={subItem.href}
-                      className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
+                      type="button"
+                      className={`block w-full text-left px-4 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem) ? 'text-black bg-[var(--primary)] font-medium' : 'text-white/70 hover:bg-white/10 hover:text-white'
                       }`}
-                      onClick={() => setHoveredCategory(null)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setHoveredCategory(null);
+                        router.push(subItem.href);
+                      }}
                     >
                       {subItem.title}
-                    </Link>
+                    </button>
                   ))}
                 </div>
               </div>
@@ -301,18 +307,23 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
               >
                 <div className="pl-8 space-y-1 py-1">
                   {item.subItems?.map((subItem, subIdx) => (
-                    <Link
+                    <button
                       key={subIdx}
-                      href={subItem.href}
-                      className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
+                      type="button"
+                      className={`block w-full text-left px-3 py-2 text-sm rounded-lg transition-colors ${
                         isSubItemActive(subItem)
                           ? 'text-black bg-[var(--primary)] font-medium'
                           : 'text-white/80 hover:bg-white/10 hover:text-white'
                       }`}
-                      onClick={() => isMobile && setSidebarOpen(false)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (isMobile) setSidebarOpen(false);
+                        router.push(subItem.href);
+                      }}
                     >
                       {subItem.title}
-                    </Link>
+                    </button>
                   ))}
                 </div>
               </motion.div>
