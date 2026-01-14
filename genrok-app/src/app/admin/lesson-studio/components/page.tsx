@@ -124,35 +124,33 @@ const SAMPLE_DATA = {
   },
 };
 
-// Component renderer
+// Component renderer - explicitly typed for each component
 const ComponentPreview = ({ componentId, darkMode }: { componentId: string; darkMode: boolean }) => {
-  const props = { ...SAMPLE_DATA[componentId as keyof typeof SAMPLE_DATA], darkMode };
-
   switch (componentId) {
     case 'WelcomeSlide':
-      return <WelcomeSlide {...props} />;
+      return <WelcomeSlide {...SAMPLE_DATA.WelcomeSlide} darkMode={darkMode} />;
     case 'QuizSlide':
-      return <QuizSlide {...props} />;
+      return <QuizSlide {...SAMPLE_DATA.QuizSlide} darkMode={darkMode} />;
     case 'CompletionSlide':
-      return <CompletionSlide {...props} />;
+      return <CompletionSlide {...SAMPLE_DATA.CompletionSlide} darkMode={darkMode} />;
     case 'SplitContent':
-      return <SplitContent {...props} />;
+      return <SplitContent {...SAMPLE_DATA.SplitContent} darkMode={darkMode} />;
     case 'FullWidthMedia':
-      return <FullWidthMedia {...props} />;
+      return <FullWidthMedia {...SAMPLE_DATA.FullWidthMedia} darkMode={darkMode} />;
     case 'TextBlock':
-      return <TextBlock {...props} />;
+      return <TextBlock {...SAMPLE_DATA.TextBlock} darkMode={darkMode} />;
     case 'StatCard':
       return (
         <div className={`${darkMode ? 'bg-black' : 'bg-white'} p-12 flex justify-center`}>
           <div className="w-80">
-            <StatCard {...props} />
+            <StatCard {...SAMPLE_DATA.StatCard} darkMode={darkMode} />
           </div>
         </div>
       );
     case 'StatRow':
-      return <StatRow {...props} />;
+      return <StatRow {...SAMPLE_DATA.StatRow} darkMode={darkMode} />;
     case 'BeforeAfter':
-      return <BeforeAfter {...props} />;
+      return <BeforeAfter {...SAMPLE_DATA.BeforeAfter} darkMode={darkMode} />;
     default:
       return (
         <div className="p-12 text-center text-[var(--text-muted)]">
