@@ -9,9 +9,9 @@ import {
   Check,
   X,
   Copy,
+  Grid3X3,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import {
   WelcomeSlide,
@@ -284,40 +284,31 @@ const SAMPLE_DATA = {
   },
 };
 
-// Component renderer - all components now have white bg with dark blocks
+// Component renderer
 const ComponentPreview = ({ componentId }: { componentId: string }) => {
   switch (componentId) {
-    // Fixed Slides (these still support darkMode prop)
     case 'WelcomeSlide':
       return <WelcomeSlide {...SAMPLE_DATA.WelcomeSlide} />;
     case 'QuizSlide':
       return <QuizSlide {...SAMPLE_DATA.QuizSlide} />;
     case 'CompletionSlide':
       return <CompletionSlide {...SAMPLE_DATA.CompletionSlide} />;
-
-    // Content (now use white bg with dark blocks)
     case 'SplitContent':
       return <SplitContent {...SAMPLE_DATA.SplitContent} />;
     case 'FullWidthMedia':
       return <FullWidthMedia {...SAMPLE_DATA.FullWidthMedia} />;
     case 'TextBlock':
       return <TextBlock {...SAMPLE_DATA.TextBlock} />;
-
-    // Data Stats
     case 'StatCard':
       return <StatCard {...SAMPLE_DATA.StatCard} />;
     case 'StatRow':
       return <StatRow {...SAMPLE_DATA.StatRow} />;
     case 'MetricDashboard':
       return <MetricDashboard {...SAMPLE_DATA.MetricDashboard} />;
-
-    // Comparison
     case 'BeforeAfter':
       return <BeforeAfter {...SAMPLE_DATA.BeforeAfter} />;
     case 'ComparisonBars':
       return <ComparisonBars {...SAMPLE_DATA.ComparisonBars} />;
-
-    // Charts
     case 'LineChart':
       return <LineChart {...SAMPLE_DATA.LineChart} />;
     case 'BarChart':
@@ -334,21 +325,16 @@ const ComponentPreview = ({ componentId }: { componentId: string }) => {
       return <ProgressRing {...SAMPLE_DATA.ProgressRing} />;
     case 'Heatmap':
       return <Heatmap {...SAMPLE_DATA.Heatmap} />;
-
-    // Sequential
     case 'Timeline':
       return <Timeline {...SAMPLE_DATA.Timeline} />;
     case 'ProcessSteps':
       return <ProcessSteps {...SAMPLE_DATA.ProcessSteps} />;
-
-    // Emphasis
     case 'QuoteBlock':
       return <QuoteBlock {...SAMPLE_DATA.QuoteBlock} />;
     case 'SocialProof':
       return <SocialProof {...SAMPLE_DATA.SocialProof} />;
     case 'IconGrid':
       return <IconGrid {...SAMPLE_DATA.IconGrid} />;
-
     default:
       return (
         <div className="p-12 text-center bg-white">
@@ -360,12 +346,19 @@ const ComponentPreview = ({ componentId }: { componentId: string }) => {
   }
 };
 
-function ComponentBrowserContent() {
-  const searchParams = useSearchParams();
-  const initialView = searchParams.get('view');
+// Category colors
+const CATEGORY_COLORS: Record<string, string> = {
+  'Fixed Slides': '#88da1c',
+  'Content': '#3B82F6',
+  'Data Stats': '#8B5CF6',
+  'Comparison': '#F59E0B',
+  'Charts': '#EF4444',
+  'Sequential': '#EC4899',
+  'Emphasis': '#06B6D4',
+};
 
-  const [selectedComponent, setSelectedComponent] = useState<string | null>(initialView);
-  const [fullscreen, setFullscreen] = useState(false);
+function ComponentBrowserContent() {
+  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const allComponents = getAllComponents();
@@ -399,87 +392,85 @@ function ComponentBrowserContent() {
             <div>
               <h1 className="text-2xl font-bold text-black">Component Browser</h1>
               <p className="text-[var(--text-muted)]">
-                {allComponents.length} premium components • Elite design system
+                {allComponents.length} premium components • Click to preview
               </p>
             </div>
           </div>
-
-          {/* Controls */}
-          <div className="flex items-center gap-3">
-            {selectedComponent && (
-              <>
-                <button
-                  onClick={handleCopyConfig}
-                  className="p-3 rounded-xl bg-white border border-[#E5E5E5] hover:border-black transition-all"
-                  title="Copy config JSON"
-                >
-                  {copied ? (
-                    <Check size={18} className="text-[#88da1c]" />
-                  ) : (
-                    <Copy size={18} />
-                  )}
-                </button>
-                <button
-                  onClick={() => setFullscreen(!fullscreen)}
-                  className="p-3 rounded-xl bg-white border border-[#E5E5E5] hover:border-black transition-all"
-                  title={fullscreen ? 'Exit fullscreen' : 'Fullscreen preview'}
-                >
-                  {fullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
-                </button>
-              </>
-            )}
+          <div className="flex items-center gap-2 px-4 py-2 bg-[var(--bg-secondary)] rounded-xl">
+            <Grid3X3 size={16} className="text-[var(--text-muted)]" />
+            <span className="text-sm font-medium">Grid View</span>
           </div>
         </motion.header>
 
-        <div className={`grid ${fullscreen ? '' : 'lg:grid-cols-[320px_1fr]'} gap-6`}>
-          {/* Sidebar - Component List */}
-          {!fullscreen && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-2xl border border-[#E5E5E5] p-4 h-fit sticky top-4 max-h-[calc(100vh-120px)] overflow-y-auto"
+        {/* 4-Column Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+        >
+          {allComponents.map((component, index) => (
+            <motion.button
+              key={component.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.02 }}
+              onClick={() => setSelectedComponent(component.id)}
+              className="group relative bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden hover:border-[#88da1c] hover:shadow-lg transition-all text-left"
             >
-              <h3 className="text-sm font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-4 px-2">
-                Components ({allComponents.length})
-              </h3>
-              <div className="space-y-1">
-                {allComponents.map((component) => (
-                  <button
-                    key={component.id}
-                    onClick={() => setSelectedComponent(component.id)}
-                    className={`w-full text-left px-4 py-3 rounded-xl transition-all ${
-                      selectedComponent === component.id
-                        ? 'bg-[#88da1c] text-black font-medium'
-                        : 'hover:bg-[var(--bg-secondary)]'
-                    }`}
-                  >
-                    <div className="font-medium text-sm">{component.name}</div>
-                    <div
-                      className={`text-xs ${
-                        selectedComponent === component.id
-                          ? 'text-black/60'
-                          : 'text-[var(--text-muted)]'
-                      }`}
-                    >
-                      {component.category}
-                    </div>
-                  </button>
-                ))}
+              {/* Preview Thumbnail */}
+              <div className="h-40 bg-[#FAFAFA] overflow-hidden relative">
+                <div className="transform scale-[0.35] origin-top-left w-[285%] h-[285%] pointer-events-none">
+                  <ComponentPreview componentId={component.id} />
+                </div>
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <div className="px-4 py-2 bg-black rounded-full text-white text-sm font-medium">
+                    Click to Preview
+                  </div>
+                </div>
               </div>
-            </motion.div>
-          )}
 
-          {/* Preview Area */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden ${
-              fullscreen ? 'fixed inset-4 z-50' : ''
-            }`}
-          >
-            {selectedComponent ? (
-              <>
-                {/* Preview Header */}
+              {/* Component Info */}
+              <div className="p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <h3 className="font-semibold text-black text-sm">{component.name}</h3>
+                    <p className="text-xs text-[var(--text-muted)] mt-0.5 line-clamp-1">
+                      {component.description}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <span
+                    className="inline-block px-2 py-1 rounded-md text-xs font-medium text-white"
+                    style={{ backgroundColor: CATEGORY_COLORS[component.category] || '#666' }}
+                  >
+                    {component.category}
+                  </span>
+                </div>
+              </div>
+            </motion.button>
+          ))}
+        </motion.div>
+
+        {/* Full Preview Modal */}
+        <AnimatePresence>
+          {selectedComponent && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+              onClick={() => setSelectedComponent(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E5E5]">
                   <div>
                     <h2 className="text-lg font-bold text-black">
@@ -489,54 +480,35 @@ function ComponentBrowserContent() {
                       {allComponents.find(c => c.id === selectedComponent)?.description}
                     </p>
                   </div>
-                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-black text-white">
-                    White bg + Dark blocks
-                  </span>
-                </div>
-
-                {/* Preview Content */}
-                <div
-                  className={`overflow-auto ${fullscreen ? 'h-[calc(100%-80px)]' : 'max-h-[700px]'}`}
-                >
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={selectedComponent}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleCopyConfig}
+                      className="p-2 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
+                      title="Copy config JSON"
                     >
-                      <ComponentPreview componentId={selectedComponent} />
-                    </motion.div>
-                  </AnimatePresence>
+                      {copied ? (
+                        <Check size={18} className="text-[#88da1c]" />
+                      ) : (
+                        <Copy size={18} />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => setSelectedComponent(null)}
+                      className="p-2 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
                 </div>
-              </>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-96 text-center p-8">
-                <div className="w-16 h-16 rounded-2xl bg-[var(--bg-secondary)] flex items-center justify-center mb-4">
-                  <Maximize2 size={32} className="text-[var(--text-muted)]" />
-                </div>
-                <h3 className="text-xl font-bold text-black mb-2">
-                  Select a component
-                </h3>
-                <p className="text-[var(--text-muted)] max-w-md">
-                  Choose a component from the list to see a live preview.
-                  All components use white slide backgrounds with dark rounded blocks.
-                </p>
-              </div>
-            )}
-          </motion.div>
-        </div>
 
-        {/* Fullscreen close button */}
-        {fullscreen && (
-          <button
-            onClick={() => setFullscreen(false)}
-            className="fixed top-8 right-8 z-[60] p-3 rounded-xl bg-white shadow-lg border border-[#E5E5E5] hover:border-black transition-all"
-          >
-            <X size={20} />
-          </button>
-        )}
+                {/* Modal Content */}
+                <div className="overflow-auto max-h-[calc(90vh-80px)]">
+                  <ComponentPreview componentId={selectedComponent} />
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </DashboardLayout>
   );

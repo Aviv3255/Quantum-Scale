@@ -4,11 +4,10 @@ import { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
-  Maximize2,
-  Minimize2,
   Copy,
   Check,
   X,
+  Grid3X3,
   Layout,
   Type,
   BarChart3,
@@ -17,7 +16,6 @@ import {
   Quote,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import {
   getAllLayouts,
@@ -448,11 +446,7 @@ const LayoutPreview = ({ layoutId }: { layoutId: string }) => {
 };
 
 function LayoutBrowserContent() {
-  const searchParams = useSearchParams();
-  const initialView = searchParams.get('view');
-
-  const [selectedLayout, setSelectedLayout] = useState<string | null>(initialView);
-  const [fullscreen, setFullscreen] = useState(false);
+  const [selectedLayout, setSelectedLayout] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [filter, setFilter] = useState<string>('all');
 
@@ -474,6 +468,14 @@ function LayoutBrowserContent() {
     }
   };
 
+  // Get category for a layout
+  const getLayoutCategory = (layoutId: string) => {
+    const entry = Object.entries(LAYOUT_TEMPLATES).find(
+      ([, layouts]) => layouts.some(l => l.id === layoutId)
+    );
+    return entry ? entry[0] : 'hero';
+  };
+
   return (
     <DashboardLayout>
       <div className="page-wrapper">
@@ -493,35 +495,13 @@ function LayoutBrowserContent() {
             <div>
               <h1 className="text-2xl font-bold text-black">Layout Templates</h1>
               <p className="text-[var(--text-muted)]">
-                {allLayouts.length} pre-built slide layouts
+                {allLayouts.length} pre-built slide layouts • Click to preview
               </p>
             </div>
           </div>
-
-          {/* Controls */}
-          <div className="flex items-center gap-3">
-            {selectedLayout && (
-              <>
-                <button
-                  onClick={handleCopyConfig}
-                  className="p-3 rounded-xl bg-white border border-[#E5E5E5] hover:border-black transition-all"
-                  title="Copy config JSON"
-                >
-                  {copied ? (
-                    <Check size={18} className="text-[#88da1c]" />
-                  ) : (
-                    <Copy size={18} />
-                  )}
-                </button>
-                <button
-                  onClick={() => setFullscreen(!fullscreen)}
-                  className="p-3 rounded-xl bg-white border border-[#E5E5E5] hover:border-black transition-all"
-                  title={fullscreen ? 'Exit fullscreen' : 'Fullscreen preview'}
-                >
-                  {fullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
-                </button>
-              </>
-            )}
+          <div className="flex items-center gap-2 px-4 py-2 bg-[var(--bg-secondary)] rounded-xl">
+            <Grid3X3 size={16} className="text-[var(--text-muted)]" />
+            <span className="text-sm font-medium">Grid View</span>
           </div>
         </motion.header>
 
@@ -565,62 +545,80 @@ function LayoutBrowserContent() {
           })}
         </motion.div>
 
-        <div className={`grid ${fullscreen ? '' : 'lg:grid-cols-[320px_1fr]'} gap-6`}>
-          {/* Sidebar */}
-          {!fullscreen && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-white rounded-2xl border border-[#E5E5E5] p-4 h-fit sticky top-4 max-h-[calc(100vh-200px)] overflow-y-auto"
-            >
-              <h3 className="text-sm font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-4 px-2">
-                Layouts ({filteredLayouts.length})
-              </h3>
-              <div className="space-y-1">
-                {filteredLayouts.map((layout) => {
-                  const categoryKey = Object.entries(LAYOUT_TEMPLATES).find(
-                    ([, layouts]) => layouts.some(l => l.id === layout.id)
-                  )?.[0] || 'hero';
-                  const config = CATEGORY_CONFIG[categoryKey as keyof typeof CATEGORY_CONFIG];
+        {/* 4-Column Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
+        >
+          {filteredLayouts.map((layout, index) => {
+            const categoryKey = getLayoutCategory(layout.id);
+            const config = CATEGORY_CONFIG[categoryKey as keyof typeof CATEGORY_CONFIG];
 
-                  return (
-                    <button
-                      key={layout.id}
-                      onClick={() => setSelectedLayout(layout.id)}
-                      className={`w-full text-left px-4 py-3 rounded-xl transition-all ${
-                        selectedLayout === layout.id
-                          ? 'bg-[#88da1c] text-black font-medium'
-                          : 'hover:bg-[var(--bg-secondary)]'
-                      }`}
+            return (
+              <motion.button
+                key={layout.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.02 }}
+                onClick={() => setSelectedLayout(layout.id)}
+                className="group relative bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden hover:border-[#88da1c] hover:shadow-lg transition-all text-left"
+              >
+                {/* Preview Thumbnail */}
+                <div className="h-40 bg-[#FAFAFA] overflow-hidden relative">
+                  <div className="transform scale-[0.35] origin-top-left w-[285%] h-[285%] pointer-events-none">
+                    <LayoutPreview layoutId={layout.id} />
+                  </div>
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                    <div className="px-4 py-2 bg-black rounded-full text-white text-sm font-medium">
+                      Click to Preview
+                    </div>
+                  </div>
+                </div>
+
+                {/* Layout Info */}
+                <div className="p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h3 className="font-semibold text-black text-sm">{layout.name}</h3>
+                      <p className="text-xs text-[var(--text-muted)] mt-0.5 line-clamp-1">
+                        {layout.description}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <span
+                      className="inline-block px-2 py-1 rounded-md text-xs font-medium text-white"
+                      style={{ backgroundColor: config.color }}
                     >
-                      <div className="font-medium text-sm">{layout.name}</div>
-                      <div
-                        className={`text-xs ${
-                          selectedLayout === layout.id
-                            ? 'text-black/60'
-                            : 'text-[var(--text-muted)]'
-                        }`}
-                      >
-                        {config.label}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </motion.div>
-          )}
+                      {config.label}
+                    </span>
+                  </div>
+                </div>
+              </motion.button>
+            );
+          })}
+        </motion.div>
 
-          {/* Preview Area */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`bg-white rounded-2xl border border-[#E5E5E5] overflow-hidden ${
-              fullscreen ? 'fixed inset-4 z-50' : ''
-            }`}
-          >
-            {selectedLayout ? (
-              <>
-                {/* Preview Header */}
+        {/* Full Preview Modal */}
+        <AnimatePresence>
+          {selectedLayout && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+              onClick={() => setSelectedLayout(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-[#E5E5E5]">
                   <div>
                     <h2 className="text-lg font-bold text-black">
@@ -630,51 +628,35 @@ function LayoutBrowserContent() {
                       {allLayouts.find(l => l.id === selectedLayout)?.description}
                     </p>
                   </div>
-                </div>
-
-                {/* Preview Content */}
-                <div
-                  className={`overflow-auto ${fullscreen ? 'h-[calc(100%-80px)]' : 'max-h-[700px]'}`}
-                >
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={selectedLayout}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleCopyConfig}
+                      className="p-2 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
+                      title="Copy config JSON"
                     >
-                      <LayoutPreview layoutId={selectedLayout} />
-                    </motion.div>
-                  </AnimatePresence>
+                      {copied ? (
+                        <Check size={18} className="text-[#88da1c]" />
+                      ) : (
+                        <Copy size={18} />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => setSelectedLayout(null)}
+                      className="p-2 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
                 </div>
-              </>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-96 text-center p-8">
-                <div className="w-16 h-16 rounded-2xl bg-[var(--bg-secondary)] flex items-center justify-center mb-4">
-                  <Layout size={32} className="text-[var(--text-muted)]" />
-                </div>
-                <h3 className="text-xl font-bold text-black mb-2">
-                  Select a layout
-                </h3>
-                <p className="text-[var(--text-muted)] max-w-md">
-                  Choose a layout from the list to see a live preview.
-                  All layouts use dark blocks on white backgrounds.
-                </p>
-              </div>
-            )}
-          </motion.div>
-        </div>
 
-        {/* Fullscreen close button */}
-        {fullscreen && (
-          <button
-            onClick={() => setFullscreen(false)}
-            className="fixed top-8 right-8 z-[60] p-3 rounded-xl bg-white shadow-lg border border-[#E5E5E5] hover:border-black transition-all"
-          >
-            <X size={20} />
-          </button>
-        )}
+                {/* Modal Content */}
+                <div className="overflow-auto max-h-[calc(90vh-80px)]">
+                  <LayoutPreview layoutId={selectedLayout} />
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </DashboardLayout>
   );
