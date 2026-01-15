@@ -142,11 +142,13 @@ export default function CustomSectionsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
 
+  // Auth bypass for local development - TODO: remove before production
+  const isDev = process.env.NODE_ENV === 'development';
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!isDev && !isLoading && !user) {
       router.push('/login');
     }
-  }, [user, isLoading, router]);
+  }, [user, isLoading, router, isDev]);
 
   // Initialize field values when section is selected
   useEffect(() => {
@@ -198,7 +200,8 @@ export default function CustomSectionsPage() {
     setFieldValues({});
   };
 
-  if (isLoading || !user) {
+  // Skip loading check in development
+  if (!isDev && (isLoading || !user)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />

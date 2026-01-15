@@ -4,617 +4,651 @@ import { Section } from './types';
 const uid = (prefix: string) => `qs-${prefix}`;
 
 export const sectionsData: Section[] = [
-  // ========== ANNOUNCEMENT BARS / MARQUEES (Premium Scrolling Text) ==========
+  // ========== PREMIUM ANNOUNCEMENT BARS / MARQUEES ==========
   {
-    id: 'marquee-gold',
-    name: 'Marquee - Gold Luxe',
+    id: 'marquee-gold-shimmer',
+    name: 'Marquee - Gold Shimmer',
     category: 'Announcement',
-    description: 'Premium scrolling text with gold gradient on black',
+    description: 'Luxurious gold gradient with animated shimmer effect',
     thumbnail: '',
     fields: [
       { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'FREE SHIPPING ON ORDERS $100+' },
       { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'PREMIUM QUALITY GUARANTEED' },
       { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'EASY 30-DAY RETURNS' },
-      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '20' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '25' },
     ],
-    generateHtml: (v) => `<div class="${uid('mgold')}" style="background:#000;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('mgshim')}" style="background:linear-gradient(180deg,#000 0%,#0a0a0a 100%);overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;position:relative;">
   <style>
-    .${uid('mgold')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('mgold')}-track { display: flex; animation: ${uid('mgold')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('mgold')}-track:hover { animation-play-state: paused; }
-    .${uid('mgold')}-item { display: flex; align-items: center; gap: 48px; padding: 14px 48px; white-space: nowrap; }
-    .${uid('mgold')}-item span { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .${uid('mgold')}-item::after { content: '✦'; font-size: 8px; background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    @keyframes ${uid('mgold')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .${uid('mgshim')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('mgshim')}::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(191,149,63,0.3), transparent); }
+    .${uid('mgshim')}::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(191,149,63,0.2), transparent); }
+    .${uid('mgshim')}-track { display: flex; animation: ${uid('mgshim')}-scroll ${v.speed}s linear infinite; width: max-content; }
+    .${uid('mgshim')}-track:hover { animation-play-state: paused; }
+    .${uid('mgshim')}-item { display: flex; align-items: center; gap: 40px; padding: 16px 40px; white-space: nowrap; }
+    .${uid('mgshim')}-item span {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+      background: linear-gradient(90deg, #BF953F, #FCF6BA, #FBF5B7, #AA771C, #BF953F);
+      background-size: 200% 100%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: ${uid('mgshim')}-shimmer 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(191,149,63,0.3);
+    }
+    .${uid('mgshim')}-sep { color: rgba(191,149,63,0.4); font-size: 6px; }
+    @keyframes ${uid('mgshim')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes ${uid('mgshim')}-shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
   </style>
-  <div class="${uid('mgold')}-track">
-    <div class="${uid('mgold')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mgold')}-item"><span>${v.text3}</span></div>
+  <div class="${uid('mgshim')}-track">
+    <div class="${uid('mgshim')}-item"><span>${v.text1}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text2}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text3}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text1}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text2}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text3}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text1}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text2}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text3}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text1}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text2}</span><span class="${uid('mgshim')}-sep">✦</span></div>
+    <div class="${uid('mgshim')}-item"><span>${v.text3}</span><span class="${uid('mgshim')}-sep">✦</span></div>
   </div>
 </div>`
   },
   {
-    id: 'marquee-silver',
-    name: 'Marquee - Platinum',
+    id: 'marquee-platinum-shine',
+    name: 'Marquee - Platinum Shine',
     category: 'Announcement',
-    description: 'Elegant scrolling text with silver/platinum gradient',
+    description: 'Sophisticated platinum with light sweep animation',
     thumbnail: '',
     fields: [
-      { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'COMPLIMENTARY SHIPPING WORLDWIDE' },
+      { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'COMPLIMENTARY WORLDWIDE SHIPPING' },
       { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'HANDCRAFTED WITH PRECISION' },
-      { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'LIFETIME WARRANTY' },
-      { id: 'bgColor', label: 'Background', type: 'color', defaultValue: '#0a0a0a' },
-      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '25' },
+      { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'LIFETIME WARRANTY INCLUDED' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '28' },
     ],
-    generateHtml: (v) => `<div class="${uid('msilv')}" style="background:${v.bgColor};overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('mplat')}" style="background:#050505;overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;">
   <style>
-    .${uid('msilv')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('msilv')}-track { display: flex; animation: ${uid('msilv')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('msilv')}-item { display: flex; align-items: center; gap: 40px; padding: 12px 40px; white-space: nowrap; }
-    .${uid('msilv')}-item span { font-size: 10px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; background: linear-gradient(135deg, #C0C0C0, #FFFFFF, #A8A8A8, #E8E8E8, #B0B0B0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .${uid('msilv')}-item::after { content: '—'; padding: 0 20px; background: linear-gradient(135deg, #C0C0C0, #FFFFFF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    @keyframes ${uid('msilv')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .${uid('mplat')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('mplat')}::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
+    .${uid('mplat')}-track { display: flex; animation: ${uid('mplat')}-scroll ${v.speed}s linear infinite; width: max-content; }
+    .${uid('mplat')}-item { display: flex; align-items: center; gap: 48px; padding: 14px 48px; white-space: nowrap; position: relative; }
+    .${uid('mplat')}-item span {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase;
+      background: linear-gradient(90deg, #888, #fff, #ccc, #fff, #888);
+      background-size: 200% 100%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: ${uid('mplat')}-shine 4s ease-in-out infinite;
+    }
+    .${uid('mplat')}-dot { width: 3px; height: 3px; background: linear-gradient(135deg, #666, #aaa); border-radius: 50%; opacity: 0.6; }
+    @keyframes ${uid('mplat')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes ${uid('mplat')}-shine { 0%, 100% { background-position: 200% 50%; } 50% { background-position: 0% 50%; } }
   </style>
-  <div class="${uid('msilv')}-track">
-    <div class="${uid('msilv')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('msilv')}-item"><span>${v.text3}</span></div>
+  <div class="${uid('mplat')}-track">
+    <div class="${uid('mplat')}-item"><span>${v.text1}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text2}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text3}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text1}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text2}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text3}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text1}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text2}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text3}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text1}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text2}</span><span class="${uid('mplat')}-dot"></span></div>
+    <div class="${uid('mplat')}-item"><span>${v.text3}</span><span class="${uid('mplat')}-dot"></span></div>
   </div>
 </div>`
   },
   {
-    id: 'marquee-rose',
-    name: 'Marquee - Rose Gold',
+    id: 'marquee-rose-luxe',
+    name: 'Marquee - Rose Gold Luxe',
     category: 'Announcement',
-    description: 'Luxurious rose gold gradient scrolling text',
+    description: 'Elegant rose gold with soft glow effect',
     thumbnail: '',
     fields: [
-      { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'NEW COLLECTION NOW LIVE' },
-      { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'EXCLUSIVE MEMBERS RECEIVE 15% OFF' },
-      { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'FREE EXPRESS SHIPPING' },
-      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '22' },
+      { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'NEW COLLECTION NOW AVAILABLE' },
+      { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'EXCLUSIVE MEMBERS GET 15% OFF' },
+      { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'FREE EXPRESS DELIVERY' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '24' },
     ],
-    generateHtml: (v) => `<div class="${uid('mrose')}" style="background:#1a1a1a;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('mrose2')}" style="background:linear-gradient(180deg,#1a1516 0%,#120f10 100%);overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;">
   <style>
-    .${uid('mrose')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('mrose')}-track { display: flex; animation: ${uid('mrose')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('mrose')}-item { display: flex; align-items: center; gap: 36px; padding: 13px 36px; white-space: nowrap; }
-    .${uid('mrose')}-item span { font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; background: linear-gradient(135deg, #B76E79, #E8B4B8, #DDA0A0, #F5D0D0, #C9A0A0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .${uid('mrose')}-item::after { content: '◆'; font-size: 6px; background: linear-gradient(135deg, #B76E79, #E8B4B8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    @keyframes ${uid('mrose')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .${uid('mrose2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('mrose2')}::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(183,110,121,0.4), transparent); }
+    .${uid('mrose2')}-track { display: flex; animation: ${uid('mrose2')}-scroll ${v.speed}s linear infinite; width: max-content; }
+    .${uid('mrose2')}-item { display: flex; align-items: center; gap: 36px; padding: 15px 36px; white-space: nowrap; }
+    .${uid('mrose2')}-item span {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+      background: linear-gradient(90deg, #B76E79, #E8B4B8, #F5D0D0, #E8B4B8, #B76E79);
+      background-size: 200% 100%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: ${uid('mrose2')}-glow 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 8px rgba(183,110,121,0.3));
+    }
+    .${uid('mrose2')}-sep { color: rgba(183,110,121,0.5); font-size: 8px; }
+    @keyframes ${uid('mrose2')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes ${uid('mrose2')}-glow { 0%, 100% { background-position: 0% 50%; filter: drop-shadow(0 0 8px rgba(183,110,121,0.3)); } 50% { background-position: 100% 50%; filter: drop-shadow(0 0 12px rgba(183,110,121,0.5)); } }
   </style>
-  <div class="${uid('mrose')}-track">
-    <div class="${uid('mrose')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mrose')}-item"><span>${v.text3}</span></div>
+  <div class="${uid('mrose2')}-track">
+    <div class="${uid('mrose2')}-item"><span>${v.text1}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text2}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text3}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text1}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text2}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text3}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text1}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text2}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text3}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text1}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text2}</span><span class="${uid('mrose2')}-sep">◇</span></div>
+    <div class="${uid('mrose2')}-item"><span>${v.text3}</span><span class="${uid('mrose2')}-sep">◇</span></div>
   </div>
 </div>`
   },
   {
-    id: 'marquee-bronze',
-    name: 'Marquee - Bronze',
+    id: 'marquee-emerald',
+    name: 'Marquee - Emerald Elite',
     category: 'Announcement',
-    description: 'Rich bronze gradient on deep brown background',
+    description: 'Rich emerald green with premium glow',
     thumbnail: '',
     fields: [
-      { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'ARTISAN CRAFTSMANSHIP' },
-      { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'SUSTAINABLE MATERIALS' },
-      { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'HERITAGE SINCE 1985' },
-      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '24' },
+      { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'SUSTAINABLE LUXURY' },
+      { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'ETHICALLY SOURCED' },
+      { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'CARBON NEUTRAL SHIPPING' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '26' },
     ],
-    generateHtml: (v) => `<div class="${uid('mbrnz')}" style="background:#1c1410;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('memer')}" style="background:linear-gradient(180deg,#0a0f0a 0%,#050805 100%);overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;">
   <style>
-    .${uid('mbrnz')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('mbrnz')}-track { display: flex; animation: ${uid('mbrnz')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('mbrnz')}-item { display: flex; align-items: center; gap: 44px; padding: 14px 44px; white-space: nowrap; }
-    .${uid('mbrnz')}-item span { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; background: linear-gradient(135deg, #CD7F32, #E6BE8A, #B87333, #DAA06D, #8B4513); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .${uid('mbrnz')}-item::after { content: '●'; font-size: 5px; background: linear-gradient(135deg, #CD7F32, #E6BE8A); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    @keyframes ${uid('mbrnz')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .${uid('memer')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('memer')}::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(80,200,120,0.3), transparent); }
+    .${uid('memer')}-track { display: flex; animation: ${uid('memer')}-scroll ${v.speed}s linear infinite; width: max-content; }
+    .${uid('memer')}-item { display: flex; align-items: center; gap: 44px; padding: 15px 44px; white-space: nowrap; }
+    .${uid('memer')}-item span {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase;
+      background: linear-gradient(90deg, #2E8B57, #50C878, #98FB98, #50C878, #2E8B57);
+      background-size: 200% 100%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: ${uid('memer')}-pulse 4s ease-in-out infinite;
+    }
+    .${uid('memer')}-leaf { color: rgba(80,200,120,0.4); font-size: 10px; }
+    @keyframes ${uid('memer')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes ${uid('memer')}-pulse { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
   </style>
-  <div class="${uid('mbrnz')}-track">
-    <div class="${uid('mbrnz')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mbrnz')}-item"><span>${v.text3}</span></div>
+  <div class="${uid('memer')}-track">
+    <div class="${uid('memer')}-item"><span>${v.text1}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text2}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text3}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text1}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text2}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text3}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text1}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text2}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text3}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text1}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text2}</span><span class="${uid('memer')}-leaf">❖</span></div>
+    <div class="${uid('memer')}-item"><span>${v.text3}</span><span class="${uid('memer')}-leaf">❖</span></div>
   </div>
 </div>`
   },
   {
-    id: 'marquee-minimal',
-    name: 'Marquee - Clean White',
+    id: 'marquee-minimal-clean',
+    name: 'Marquee - Clean Minimal',
     category: 'Announcement',
-    description: 'Minimal white bar with elegant black text',
+    description: 'Ultra-minimal white on white with subtle animation',
     thumbnail: '',
     fields: [
       { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'FREE SHIPPING OVER $150' },
-      { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'EASY RETURNS' },
+      { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'HASSLE-FREE RETURNS' },
       { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'SECURE CHECKOUT' },
-      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '30' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '35' },
     ],
-    generateHtml: (v) => `<div class="${uid('mmin')}" style="background:#fff;border-bottom:1px solid #eee;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('mclean')}" style="background:#fafafa;border-bottom:1px solid #f0f0f0;overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('mmin')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('mmin')}-track { display: flex; animation: ${uid('mmin')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('mmin')}-item { display: flex; align-items: center; gap: 48px; padding: 10px 48px; white-space: nowrap; }
-    .${uid('mmin')}-item span { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: #1a1a1a; }
-    .${uid('mmin')}-item::after { content: '·'; font-size: 16px; color: #ccc; }
-    @keyframes ${uid('mmin')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .${uid('mclean')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('mclean')}-track { display: flex; animation: ${uid('mclean')}-scroll ${v.speed}s linear infinite; width: max-content; }
+    .${uid('mclean')}-item { display: flex; align-items: center; gap: 56px; padding: 12px 56px; white-space: nowrap; }
+    .${uid('mclean')}-item span { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: #1a1a1a; }
+    .${uid('mclean')}-sep { width: 4px; height: 4px; background: #e0e0e0; border-radius: 50%; }
+    @keyframes ${uid('mclean')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   </style>
-  <div class="${uid('mmin')}-track">
-    <div class="${uid('mmin')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text3}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text1}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text2}</span></div>
-    <div class="${uid('mmin')}-item"><span>${v.text3}</span></div>
+  <div class="${uid('mclean')}-track">
+    <div class="${uid('mclean')}-item"><span>${v.text1}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text2}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text3}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text1}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text2}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text3}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text1}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text2}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text3}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text1}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text2}</span><span class="${uid('mclean')}-sep"></span></div>
+    <div class="${uid('mclean')}-item"><span>${v.text3}</span><span class="${uid('mclean')}-sep"></span></div>
   </div>
 </div>`
   },
   {
-    id: 'marquee-reverse',
-    name: 'Marquee - Dual Direction',
+    id: 'marquee-dual-luxe',
+    name: 'Marquee - Dual Direction Luxe',
     category: 'Announcement',
-    description: 'Two rows scrolling in opposite directions',
+    description: 'Two rows scrolling opposite with premium styling',
     thumbnail: '',
     fields: [
-      { id: 'text1', label: 'Row 1 Text', type: 'text', defaultValue: 'PREMIUM QUALITY ✦ HANDCRAFTED ✦ SUSTAINABLE ✦ TIMELESS DESIGN ✦' },
-      { id: 'text2', label: 'Row 2 Text', type: 'text', defaultValue: 'FREE SHIPPING ✦ EASY RETURNS ✦ SECURE CHECKOUT ✦ 24/7 SUPPORT ✦' },
-      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '15' },
+      { id: 'text1', label: 'Row 1', type: 'text', defaultValue: 'PREMIUM QUALITY  ✦  HANDCRAFTED  ✦  SUSTAINABLE  ✦  TIMELESS' },
+      { id: 'text2', label: 'Row 2', type: 'text', defaultValue: 'FREE SHIPPING  ✦  EASY RETURNS  ✦  SECURE CHECKOUT  ✦  24/7 SUPPORT' },
+      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '20' },
     ],
-    generateHtml: (v) => `<div class="${uid('mdual')}" style="background:#000;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('mdual2')}" style="background:#000;overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('mdual')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('mdual')}-row { display: flex; width: max-content; padding: 8px 0; }
-    .${uid('mdual')}-row:first-child { animation: ${uid('mdual')}-left ${v.speed}s linear infinite; border-bottom: 1px solid #222; }
-    .${uid('mdual')}-row:last-child { animation: ${uid('mdual')}-right ${v.speed}s linear infinite; }
-    .${uid('mdual')}-row span { font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #888; padding: 0 16px; white-space: nowrap; }
-    @keyframes ${uid('mdual')}-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    @keyframes ${uid('mdual')}-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+    .${uid('mdual2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('mdual2')}-row { display: flex; width: max-content; padding: 10px 0; }
+    .${uid('mdual2')}-row:first-child { animation: ${uid('mdual2')}-left ${v.speed}s linear infinite; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .${uid('mdual2')}-row:last-child { animation: ${uid('mdual2')}-right ${v.speed}s linear infinite; }
+    .${uid('mdual2')}-row span {
+      font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); padding: 0 24px; white-space: nowrap;
+      transition: color 0.3s;
+    }
+    .${uid('mdual2')}-row:hover span { color: rgba(255,255,255,0.7); }
+    @keyframes ${uid('mdual2')}-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes ${uid('mdual2')}-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
   </style>
-  <div class="${uid('mdual')}-row"><span>${v.text1}</span><span>${v.text1}</span><span>${v.text1}</span><span>${v.text1}</span><span>${v.text1}</span><span>${v.text1}</span></div>
-  <div class="${uid('mdual')}-row"><span>${v.text2}</span><span>${v.text2}</span><span>${v.text2}</span><span>${v.text2}</span><span>${v.text2}</span><span>${v.text2}</span></div>
+  <div class="${uid('mdual2')}-row"><span>${v.text1}</span><span>${v.text1}</span><span>${v.text1}</span><span>${v.text1}</span><span>${v.text1}</span><span>${v.text1}</span></div>
+  <div class="${uid('mdual2')}-row"><span>${v.text2}</span><span>${v.text2}</span><span>${v.text2}</span><span>${v.text2}</span><span>${v.text2}</span><span>${v.text2}</span></div>
 </div>`
   },
 
-  // ========== STATIC ANNOUNCEMENT BARS ==========
+  // ========== PREMIUM TRUST & SOCIAL PROOF ==========
   {
-    id: 'bar-gradient',
-    name: 'Bar - Gradient Accent',
-    category: 'Announcement',
-    description: 'Static announcement with subtle gradient border',
-    thumbnail: '',
-    fields: [
-      { id: 'text', label: 'Announcement Text', type: 'text', defaultValue: 'Use code WELCOME15 for 15% off your first order' },
-      { id: 'linkText', label: 'Link Text', type: 'text', defaultValue: 'Shop Now' },
-      { id: 'linkUrl', label: 'Link URL', type: 'url', defaultValue: '#' },
-    ],
-    generateHtml: (v) => `<div class="${uid('bgrad')}" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <style>
-    .${uid('bgrad')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('bgrad')}-wrap { background: linear-gradient(90deg, #000, #1a1a1a, #000); padding: 12px 24px; display: flex; justify-content: center; align-items: center; gap: 16px; border-bottom: 1px solid; border-image: linear-gradient(90deg, transparent, #333, transparent) 1; }
-    .${uid('bgrad')}-wrap span { font-size: 13px; color: #fff; letter-spacing: 0.02em; }
-    .${uid('bgrad')}-wrap a { font-size: 13px; color: #fff; text-decoration: underline; text-underline-offset: 3px; font-weight: 500; transition: opacity 0.2s; }
-    .${uid('bgrad')}-wrap a:hover { opacity: 0.7; }
-  </style>
-  <div class="${uid('bgrad')}-wrap">
-    <span>${v.text}</span>
-    <a href="${v.linkUrl}">${v.linkText}</a>
-  </div>
-</div>`
-  },
-
-  // ========== TRUST & SOCIAL PROOF ==========
-  {
-    id: 'trust-logos',
-    name: 'Trust - Featured In',
+    id: 'trust-logos-premium',
+    name: 'Trust - Featured In Premium',
     category: 'Trust',
-    description: 'Premium "As Seen In" logo showcase',
+    description: 'Elegant "As Featured In" with refined styling',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'AS FEATURED IN' },
-      { id: 'logo1', label: 'Logo 1 URL', type: 'image', defaultValue: '' },
-      { id: 'logo2', label: 'Logo 2 URL', type: 'image', defaultValue: '' },
-      { id: 'logo3', label: 'Logo 3 URL', type: 'image', defaultValue: '' },
-      { id: 'logo4', label: 'Logo 4 URL', type: 'image', defaultValue: '' },
-      { id: 'logo5', label: 'Logo 5 URL', type: 'image', defaultValue: '' },
+      { id: 'logo1Text', label: 'Brand 1', type: 'text', defaultValue: 'VOGUE' },
+      { id: 'logo2Text', label: 'Brand 2', type: 'text', defaultValue: 'FORBES' },
+      { id: 'logo3Text', label: 'Brand 3', type: 'text', defaultValue: 'ELLE' },
+      { id: 'logo4Text', label: 'Brand 4', type: 'text', defaultValue: 'GQ' },
+      { id: 'logo5Text', label: 'Brand 5', type: 'text', defaultValue: 'HYPEBEAST' },
     ],
-    generateHtml: (v) => `<div class="${uid('tlogo')}" style="background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('tlogop')}" style="background:linear-gradient(180deg,#fafafa 0%,#f5f5f5 100%);font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('tlogo')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('tlogo')}-wrap { max-width: 1200px; margin: 0 auto; padding: 48px 40px; text-align: center; }
-    .${uid('tlogo')} h3 { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; color: #999; margin-bottom: 32px; }
-    .${uid('tlogo')}-logos { display: flex; justify-content: center; align-items: center; gap: 48px; flex-wrap: wrap; }
-    .${uid('tlogo')}-logos img { height: 24px; width: auto; opacity: 0.4; filter: grayscale(100%); transition: all 0.3s; }
-    .${uid('tlogo')}-logos img:hover { opacity: 0.8; }
-    @media (max-width: 768px) { .${uid('tlogo')}-logos { gap: 32px; } .${uid('tlogo')}-logos img { height: 20px; } }
+    .${uid('tlogop')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tlogop')}-wrap { max-width: 1200px; margin: 0 auto; padding: 56px 48px; text-align: center; }
+    .${uid('tlogop')} h3 { font-size: 10px; font-weight: 500; letter-spacing: 0.3em; color: #999; margin-bottom: 40px; }
+    .${uid('tlogop')}-logos { display: flex; justify-content: center; align-items: center; gap: 64px; flex-wrap: wrap; }
+    .${uid('tlogop')}-logos span {
+      font-size: 14px; font-weight: 600; letter-spacing: 0.15em; color: #bbb;
+      transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+      cursor: default;
+    }
+    .${uid('tlogop')}-logos span:hover { color: #666; transform: scale(1.05); }
+    @media (max-width: 768px) { .${uid('tlogop')}-logos { gap: 40px; } }
   </style>
-  <div class="${uid('tlogo')}-wrap">
+  <div class="${uid('tlogop')}-wrap">
     <h3>${v.headline}</h3>
-    <div class="${uid('tlogo')}-logos">
-      ${v.logo1 ? `<img src="${v.logo1}" alt="Featured">` : '<span style="color:#ccc;font-size:11px;letter-spacing:0.1em;">VOGUE</span>'}
-      ${v.logo2 ? `<img src="${v.logo2}" alt="Featured">` : '<span style="color:#ccc;font-size:11px;letter-spacing:0.1em;">FORBES</span>'}
-      ${v.logo3 ? `<img src="${v.logo3}" alt="Featured">` : '<span style="color:#ccc;font-size:11px;letter-spacing:0.1em;">ELLE</span>'}
-      ${v.logo4 ? `<img src="${v.logo4}" alt="Featured">` : '<span style="color:#ccc;font-size:11px;letter-spacing:0.1em;">GQ</span>'}
-      ${v.logo5 ? `<img src="${v.logo5}" alt="Featured">` : '<span style="color:#ccc;font-size:11px;letter-spacing:0.1em;">HYPEBEAST</span>'}
+    <div class="${uid('tlogop')}-logos">
+      <span>${v.logo1Text}</span>
+      <span>${v.logo2Text}</span>
+      <span>${v.logo3Text}</span>
+      <span>${v.logo4Text}</span>
+      <span>${v.logo5Text}</span>
     </div>
   </div>
 </div>`
   },
   {
-    id: 'trust-stats',
-    name: 'Trust - Stats Bar',
+    id: 'trust-stats-premium',
+    name: 'Trust - Stats Elegant',
     category: 'Trust',
-    description: 'Clean statistics display with numbers',
+    description: 'Premium statistics display with refined typography',
     thumbnail: '',
     fields: [
       { id: 'stat1Num', label: 'Stat 1 Number', type: 'text', defaultValue: '50K+' },
       { id: 'stat1Label', label: 'Stat 1 Label', type: 'text', defaultValue: 'Happy Customers' },
       { id: 'stat2Num', label: 'Stat 2 Number', type: 'text', defaultValue: '4.9' },
       { id: 'stat2Label', label: 'Stat 2 Label', type: 'text', defaultValue: 'Average Rating' },
-      { id: 'stat3Num', label: 'Stat 3 Number', type: 'text', defaultValue: '12' },
+      { id: 'stat3Num', label: 'Stat 3 Number', type: 'text', defaultValue: '50+' },
       { id: 'stat3Label', label: 'Stat 3 Label', type: 'text', defaultValue: 'Countries' },
       { id: 'stat4Num', label: 'Stat 4 Number', type: 'text', defaultValue: '100%' },
       { id: 'stat4Label', label: 'Stat 4 Label', type: 'text', defaultValue: 'Satisfaction' },
     ],
-    generateHtml: (v) => `<div class="${uid('tstats')}" style="background:#fff;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('tstatsp')}" style="background:#fff;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('tstats')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('tstats')}-wrap { max-width: 1000px; margin: 0 auto; padding: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
-    .${uid('tstats')}-item strong { display: block; font-size: 32px; font-weight: 700; color: #1a1a1a; letter-spacing: -0.02em; }
-    .${uid('tstats')}-item span { font-size: 12px; color: #888; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 4px; display: block; }
-    @media (max-width: 768px) { .${uid('tstats')}-wrap { grid-template-columns: repeat(2, 1fr); gap: 24px; } .${uid('tstats')}-item strong { font-size: 24px; } }
+    .${uid('tstatsp')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tstatsp')}-wrap { max-width: 1100px; margin: 0 auto; padding: 56px 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+    .${uid('tstatsp')}-item { text-align: center; position: relative; }
+    .${uid('tstatsp')}-item:not(:last-child)::after { content: ''; position: absolute; right: -20px; top: 50%; transform: translateY(-50%); width: 1px; height: 40px; background: linear-gradient(180deg, transparent, #e5e5e5, transparent); }
+    .${uid('tstatsp')}-item strong { display: block; font-size: 36px; font-weight: 300; color: #1a1a1a; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .${uid('tstatsp')}-item span { font-size: 11px; font-weight: 500; color: #888; letter-spacing: 0.1em; text-transform: uppercase; }
+    @media (max-width: 768px) { .${uid('tstatsp')}-wrap { grid-template-columns: repeat(2, 1fr); } .${uid('tstatsp')}-item::after { display: none; } .${uid('tstatsp')}-item strong { font-size: 28px; } }
   </style>
-  <div class="${uid('tstats')}-wrap">
-    <div class="${uid('tstats')}-item"><strong>${v.stat1Num}</strong><span>${v.stat1Label}</span></div>
-    <div class="${uid('tstats')}-item"><strong>${v.stat2Num}</strong><span>${v.stat2Label}</span></div>
-    <div class="${uid('tstats')}-item"><strong>${v.stat3Num}</strong><span>${v.stat3Label}</span></div>
-    <div class="${uid('tstats')}-item"><strong>${v.stat4Num}</strong><span>${v.stat4Label}</span></div>
+  <div class="${uid('tstatsp')}-wrap">
+    <div class="${uid('tstatsp')}-item"><strong>${v.stat1Num}</strong><span>${v.stat1Label}</span></div>
+    <div class="${uid('tstatsp')}-item"><strong>${v.stat2Num}</strong><span>${v.stat2Label}</span></div>
+    <div class="${uid('tstatsp')}-item"><strong>${v.stat3Num}</strong><span>${v.stat3Label}</span></div>
+    <div class="${uid('tstatsp')}-item"><strong>${v.stat4Num}</strong><span>${v.stat4Label}</span></div>
   </div>
 </div>`
   },
   {
-    id: 'trust-badges',
-    name: 'Trust - Icon Badges',
+    id: 'trust-review-elegant',
+    name: 'Trust - Review Elegant',
     category: 'Trust',
-    description: 'Minimalist trust badges with clean icons',
-    thumbnail: '',
-    fields: [
-      { id: 'badge1', label: 'Badge 1 Text', type: 'text', defaultValue: 'Free Shipping' },
-      { id: 'badge2', label: 'Badge 2 Text', type: 'text', defaultValue: 'Secure Payment' },
-      { id: 'badge3', label: 'Badge 3 Text', type: 'text', defaultValue: '30-Day Returns' },
-      { id: 'badge4', label: 'Badge 4 Text', type: 'text', defaultValue: '24/7 Support' },
-    ],
-    generateHtml: (v) => `<div class="${uid('tbadge')}" style="background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <style>
-    .${uid('tbadge')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('tbadge')}-wrap { max-width: 1200px; margin: 0 auto; padding: 48px 40px; display: flex; justify-content: center; gap: 64px; flex-wrap: wrap; }
-    .${uid('tbadge')}-item { display: flex; align-items: center; gap: 12px; }
-    .${uid('tbadge')}-icon { width: 40px; height: 40px; border: 1px solid #e5e5e5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-    .${uid('tbadge')}-item span { font-size: 13px; font-weight: 500; color: #1a1a1a; }
-    @media (max-width: 768px) { .${uid('tbadge')}-wrap { gap: 32px; } }
-  </style>
-  <div class="${uid('tbadge')}-wrap">
-    <div class="${uid('tbadge')}-item"><div class="${uid('tbadge')}-icon">🚚</div><span>${v.badge1}</span></div>
-    <div class="${uid('tbadge')}-item"><div class="${uid('tbadge')}-icon">🔒</div><span>${v.badge2}</span></div>
-    <div class="${uid('tbadge')}-item"><div class="${uid('tbadge')}-icon">↩️</div><span>${v.badge3}</span></div>
-    <div class="${uid('tbadge')}-item"><div class="${uid('tbadge')}-icon">💬</div><span>${v.badge4}</span></div>
-  </div>
-</div>`
-  },
-  {
-    id: 'trust-reviews-count',
-    name: 'Trust - Review Summary',
-    category: 'Trust',
-    description: 'Elegant review count with star rating',
+    description: 'Sophisticated review summary with gold stars',
     thumbnail: '',
     fields: [
       { id: 'rating', label: 'Rating', type: 'text', defaultValue: '4.9' },
       { id: 'count', label: 'Review Count', type: 'text', defaultValue: '2,847' },
-      { id: 'platform', label: 'Platform', type: 'text', defaultValue: 'Based on verified reviews' },
+      { id: 'platform', label: 'Subtitle', type: 'text', defaultValue: 'Based on verified customer reviews' },
     ],
-    generateHtml: (v) => `<div class="${uid('trev')}" style="background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('treview')}" style="background:linear-gradient(180deg,#fafafa 0%,#f7f7f7 100%);font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('trev')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('trev')}-wrap { padding: 32px 40px; display: flex; justify-content: center; align-items: center; gap: 24px; }
-    .${uid('trev')}-stars { color: #1a1a1a; font-size: 18px; letter-spacing: 2px; }
-    .${uid('trev')}-info { display: flex; flex-direction: column; gap: 2px; }
-    .${uid('trev')}-rating { font-size: 24px; font-weight: 700; color: #1a1a1a; }
-    .${uid('trev')}-rating span { font-size: 14px; font-weight: 400; color: #666; }
-    .${uid('trev')}-platform { font-size: 11px; color: #999; letter-spacing: 0.05em; }
+    .${uid('treview')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('treview')}-wrap { padding: 40px; display: flex; justify-content: center; align-items: center; gap: 32px; flex-wrap: wrap; }
+    .${uid('treview')}-stars {
+      font-size: 20px; letter-spacing: 4px;
+      background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .${uid('treview')}-info { text-align: left; }
+    .${uid('treview')}-rating { font-size: 28px; font-weight: 300; color: #1a1a1a; letter-spacing: -0.01em; }
+    .${uid('treview')}-rating span { font-size: 15px; font-weight: 400; color: #666; }
+    .${uid('treview')}-platform { font-size: 11px; color: #999; letter-spacing: 0.05em; margin-top: 4px; }
   </style>
-  <div class="${uid('trev')}-wrap">
-    <div class="${uid('trev')}-stars">★★★★★</div>
-    <div class="${uid('trev')}-info">
-      <div class="${uid('trev')}-rating">${v.rating} <span>/ 5 from ${v.count} reviews</span></div>
-      <div class="${uid('trev')}-platform">${v.platform}</div>
+  <div class="${uid('treview')}-wrap">
+    <div class="${uid('treview')}-stars">★★★★★</div>
+    <div class="${uid('treview')}-info">
+      <div class="${uid('treview')}-rating">${v.rating} <span>/ 5 from ${v.count} reviews</span></div>
+      <div class="${uid('treview')}-platform">${v.platform}</div>
     </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'trust-guarantees',
+    name: 'Trust - Guarantees Bar',
+    category: 'Trust',
+    description: 'Minimal guarantee badges with icons',
+    thumbnail: '',
+    fields: [
+      { id: 'item1', label: 'Guarantee 1', type: 'text', defaultValue: 'Free Shipping' },
+      { id: 'item2', label: 'Guarantee 2', type: 'text', defaultValue: 'Secure Checkout' },
+      { id: 'item3', label: 'Guarantee 3', type: 'text', defaultValue: '30-Day Returns' },
+      { id: 'item4', label: 'Guarantee 4', type: 'text', defaultValue: 'Quality Guarantee' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tguar')}" style="background:#000;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('tguar')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tguar')}-wrap { max-width: 1200px; margin: 0 auto; padding: 20px 40px; display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; }
+    .${uid('tguar')}-item { display: flex; align-items: center; gap: 10px; }
+    .${uid('tguar')}-item::before { content: '✓'; font-size: 10px; color: rgba(191,149,63,0.8); }
+    .${uid('tguar')}-item span { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); letter-spacing: 0.05em; }
+    @media (max-width: 768px) { .${uid('tguar')}-wrap { gap: 32px; } }
+  </style>
+  <div class="${uid('tguar')}-wrap">
+    <div class="${uid('tguar')}-item"><span>${v.item1}</span></div>
+    <div class="${uid('tguar')}-item"><span>${v.item2}</span></div>
+    <div class="${uid('tguar')}-item"><span>${v.item3}</span></div>
+    <div class="${uid('tguar')}-item"><span>${v.item4}</span></div>
   </div>
 </div>`
   },
 
-  // ========== FEATURES ==========
+  // ========== PREMIUM FEATURES ==========
   {
-    id: 'features-minimal',
-    name: 'Features - Minimal Grid',
+    id: 'features-numbered',
+    name: 'Features - Numbered Premium',
     category: 'Features',
-    description: 'Clean 3-column feature grid with numbers',
+    description: 'Elegant numbered features with refined typography',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Section Title', type: 'text', defaultValue: 'Why Choose Us' },
-      { id: 'feature1Title', label: 'Feature 1 Title', type: 'text', defaultValue: 'Premium Materials' },
-      { id: 'feature1Desc', label: 'Feature 1 Description', type: 'textarea', defaultValue: 'Sourced from the finest suppliers worldwide, each piece meets our exacting standards.' },
-      { id: 'feature2Title', label: 'Feature 2 Title', type: 'text', defaultValue: 'Expert Craftsmanship' },
-      { id: 'feature2Desc', label: 'Feature 2 Description', type: 'textarea', defaultValue: 'Handcrafted by skilled artisans with decades of experience in their craft.' },
-      { id: 'feature3Title', label: 'Feature 3 Title', type: 'text', defaultValue: 'Timeless Design' },
-      { id: 'feature3Desc', label: 'Feature 3 Description', type: 'textarea', defaultValue: 'Classic aesthetics that transcend trends, designed to last for generations.' },
+      { id: 'f1Title', label: 'Feature 1 Title', type: 'text', defaultValue: 'Premium Materials' },
+      { id: 'f1Desc', label: 'Feature 1 Description', type: 'textarea', defaultValue: 'Sourced from the finest suppliers worldwide, each piece meets our exacting standards for quality and durability.' },
+      { id: 'f2Title', label: 'Feature 2 Title', type: 'text', defaultValue: 'Expert Craftsmanship' },
+      { id: 'f2Desc', label: 'Feature 2 Description', type: 'textarea', defaultValue: 'Handcrafted by skilled artisans with decades of experience, ensuring every detail is perfect.' },
+      { id: 'f3Title', label: 'Feature 3 Title', type: 'text', defaultValue: 'Timeless Design' },
+      { id: 'f3Desc', label: 'Feature 3 Description', type: 'textarea', defaultValue: 'Classic aesthetics that transcend trends, designed to remain relevant for generations.' },
     ],
-    generateHtml: (v) => `<div class="${uid('fmin')}" style="background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('fnump')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('fmin')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('fmin')}-wrap { max-width: 1100px; margin: 0 auto; padding: 80px 40px; }
-    .${uid('fmin')} h2 { font-size: 32px; font-weight: 600; text-align: center; margin-bottom: 64px; color: #1a1a1a; letter-spacing: -0.02em; }
-    .${uid('fmin')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
-    .${uid('fmin')}-item { text-align: center; }
-    .${uid('fmin')}-num { font-size: 48px; font-weight: 200; color: #e5e5e5; margin-bottom: 16px; }
-    .${uid('fmin')}-item h3 { font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px; }
-    .${uid('fmin')}-item p { font-size: 14px; line-height: 1.7; color: #666; }
-    @media (max-width: 768px) { .${uid('fmin')}-grid { grid-template-columns: 1fr; gap: 40px; } }
+    .${uid('fnump')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fnump')}-wrap { max-width: 1100px; margin: 0 auto; padding: 100px 48px; }
+    .${uid('fnump')} h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; text-align: center; color: #999; margin-bottom: 72px; }
+    .${uid('fnump')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 64px; }
+    .${uid('fnump')}-item { text-align: center; }
+    .${uid('fnump')}-num { font-size: 64px; font-weight: 200; color: #f0f0f0; line-height: 1; margin-bottom: 20px; }
+    .${uid('fnump')}-item h3 { font-size: 18px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; letter-spacing: -0.01em; }
+    .${uid('fnump')}-item p { font-size: 14px; line-height: 1.7; color: #666; }
+    @media (max-width: 768px) { .${uid('fnump')}-grid { grid-template-columns: 1fr; gap: 48px; } }
   </style>
-  <div class="${uid('fmin')}-wrap">
+  <div class="${uid('fnump')}-wrap">
     <h2>${v.headline}</h2>
-    <div class="${uid('fmin')}-grid">
-      <div class="${uid('fmin')}-item"><div class="${uid('fmin')}-num">01</div><h3>${v.feature1Title}</h3><p>${v.feature1Desc}</p></div>
-      <div class="${uid('fmin')}-item"><div class="${uid('fmin')}-num">02</div><h3>${v.feature2Title}</h3><p>${v.feature2Desc}</p></div>
-      <div class="${uid('fmin')}-item"><div class="${uid('fmin')}-num">03</div><h3>${v.feature3Title}</h3><p>${v.feature3Desc}</p></div>
+    <div class="${uid('fnump')}-grid">
+      <div class="${uid('fnump')}-item"><div class="${uid('fnump')}-num">01</div><h3>${v.f1Title}</h3><p>${v.f1Desc}</p></div>
+      <div class="${uid('fnump')}-item"><div class="${uid('fnump')}-num">02</div><h3>${v.f2Title}</h3><p>${v.f2Desc}</p></div>
+      <div class="${uid('fnump')}-item"><div class="${uid('fnump')}-num">03</div><h3>${v.f3Title}</h3><p>${v.f3Desc}</p></div>
     </div>
   </div>
 </div>`
   },
   {
-    id: 'features-split',
-    name: 'Features - Split Layout',
+    id: 'features-split-premium',
+    name: 'Features - Split Elegant',
     category: 'Features',
-    description: 'Large headline with stacked features on the right',
+    description: 'Large headline with stacked features',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Designed for Excellence' },
-      { id: 'subheadline', label: 'Subheadline', type: 'textarea', defaultValue: 'Every detail matters. From concept to creation, we obsess over quality.' },
-      { id: 'feature1', label: 'Feature 1', type: 'text', defaultValue: 'Precision Engineering' },
-      { id: 'feature2', label: 'Feature 2', type: 'text', defaultValue: 'Sustainable Materials' },
-      { id: 'feature3', label: 'Feature 3', type: 'text', defaultValue: 'Lifetime Warranty' },
-      { id: 'feature4', label: 'Feature 4', type: 'text', defaultValue: 'Global Shipping' },
+      { id: 'subheadline', label: 'Subheadline', type: 'textarea', defaultValue: 'Every detail matters. From concept to creation, we obsess over quality to deliver products that exceed expectations.' },
+      { id: 'f1', label: 'Feature 1', type: 'text', defaultValue: 'Precision Engineering' },
+      { id: 'f2', label: 'Feature 2', type: 'text', defaultValue: 'Sustainable Materials' },
+      { id: 'f3', label: 'Feature 3', type: 'text', defaultValue: 'Lifetime Warranty' },
+      { id: 'f4', label: 'Feature 4', type: 'text', defaultValue: 'Global Shipping' },
     ],
-    generateHtml: (v) => `<div class="${uid('fsplit')}" style="background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('fsplitp')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('fsplit')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('fsplit')}-wrap { max-width: 1200px; margin: 0 auto; padding: 100px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .${uid('fsplit')} h2 { font-size: 48px; font-weight: 600; color: #1a1a1a; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 24px; }
-    .${uid('fsplit')}-left p { font-size: 16px; line-height: 1.7; color: #666; }
-    .${uid('fsplit')}-list { display: flex; flex-direction: column; gap: 20px; }
-    .${uid('fsplit')}-list li { display: flex; align-items: center; gap: 16px; font-size: 16px; color: #1a1a1a; padding: 20px 24px; background: #fff; border-radius: 8px; }
-    .${uid('fsplit')}-list li::before { content: '→'; color: #999; }
-    @media (max-width: 768px) { .${uid('fsplit')}-wrap { grid-template-columns: 1fr; gap: 48px; } .${uid('fsplit')} h2 { font-size: 36px; } }
+    .${uid('fsplitp')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fsplitp')}-wrap { max-width: 1200px; margin: 0 auto; padding: 100px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+    .${uid('fsplitp')} h2 { font-size: 44px; font-weight: 600; color: #1a1a1a; line-height: 1.15; letter-spacing: -0.025em; margin-bottom: 24px; }
+    .${uid('fsplitp')}-left p { font-size: 16px; line-height: 1.7; color: #666; }
+    .${uid('fsplitp')}-list { display: flex; flex-direction: column; gap: 16px; }
+    .${uid('fsplitp')}-list li { display: flex; align-items: center; gap: 20px; font-size: 16px; color: #1a1a1a; padding: 20px 28px; background: #fff; border-radius: 12px; border: 1px solid #eee; transition: all 0.3s; }
+    .${uid('fsplitp')}-list li:hover { border-color: #ddd; transform: translateX(4px); }
+    .${uid('fsplitp')}-list li::before { content: '→'; color: #bbb; font-size: 14px; }
+    @media (max-width: 768px) { .${uid('fsplitp')}-wrap { grid-template-columns: 1fr; gap: 48px; } .${uid('fsplitp')} h2 { font-size: 32px; } }
   </style>
-  <div class="${uid('fsplit')}-wrap">
-    <div class="${uid('fsplit')}-left">
-      <h2>${v.headline}</h2>
-      <p>${v.subheadline}</p>
-    </div>
-    <ul class="${uid('fsplit')}-list">
-      <li>${v.feature1}</li>
-      <li>${v.feature2}</li>
-      <li>${v.feature3}</li>
-      <li>${v.feature4}</li>
+  <div class="${uid('fsplitp')}-wrap">
+    <div class="${uid('fsplitp')}-left"><h2>${v.headline}</h2><p>${v.subheadline}</p></div>
+    <ul class="${uid('fsplitp')}-list">
+      <li>${v.f1}</li>
+      <li>${v.f2}</li>
+      <li>${v.f3}</li>
+      <li>${v.f4}</li>
     </ul>
   </div>
 </div>`
   },
   {
-    id: 'features-icons',
-    name: 'Features - Icon Row',
+    id: 'features-bar-dark',
+    name: 'Features - Dark Bar',
     category: 'Features',
-    description: 'Horizontal row of features with subtle icons',
+    description: 'Sleek dark bar with gold accents',
     thumbnail: '',
     fields: [
-      { id: 'feature1', label: 'Feature 1', type: 'text', defaultValue: 'Free Shipping' },
-      { id: 'feature2', label: 'Feature 2', type: 'text', defaultValue: 'Easy Returns' },
-      { id: 'feature3', label: 'Feature 3', type: 'text', defaultValue: 'Secure Checkout' },
-      { id: 'feature4', label: 'Feature 4', type: 'text', defaultValue: 'Quality Guarantee' },
+      { id: 'f1', label: 'Feature 1', type: 'text', defaultValue: 'Free Shipping' },
+      { id: 'f2', label: 'Feature 2', type: 'text', defaultValue: 'Easy Returns' },
+      { id: 'f3', label: 'Feature 3', type: 'text', defaultValue: 'Secure Checkout' },
+      { id: 'f4', label: 'Feature 4', type: 'text', defaultValue: 'Premium Quality' },
     ],
-    generateHtml: (v) => `<div class="${uid('ficon')}" style="background:#000;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('fbardark')}" style="background:linear-gradient(180deg,#0a0a0a 0%,#000 100%);font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('ficon')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('ficon')}-wrap { max-width: 1200px; margin: 0 auto; padding: 24px 40px; display: flex; justify-content: center; gap: 48px; flex-wrap: wrap; }
-    .${uid('ficon')}-item { display: flex; align-items: center; gap: 10px; color: #fff; font-size: 13px; font-weight: 500; letter-spacing: 0.02em; }
-    .${uid('ficon')}-item::before { content: '✓'; font-size: 11px; opacity: 0.6; }
-    @media (max-width: 768px) { .${uid('ficon')}-wrap { gap: 24px; } .${uid('ficon')}-item { font-size: 12px; } }
+    .${uid('fbardark')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fbardark')}-wrap { max-width: 1200px; margin: 0 auto; padding: 28px 48px; display: flex; justify-content: center; gap: 64px; flex-wrap: wrap; }
+    .${uid('fbardark')}-item { display: flex; align-items: center; gap: 12px; }
+    .${uid('fbardark')}-item::before {
+      content: '✓'; font-size: 10px;
+      background: linear-gradient(135deg, #BF953F, #FCF6BA);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .${uid('fbardark')}-item span { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.85); letter-spacing: 0.03em; }
+    @media (max-width: 768px) { .${uid('fbardark')}-wrap { gap: 32px; } }
   </style>
-  <div class="${uid('ficon')}-wrap">
-    <div class="${uid('ficon')}-item">${v.feature1}</div>
-    <div class="${uid('ficon')}-item">${v.feature2}</div>
-    <div class="${uid('ficon')}-item">${v.feature3}</div>
-    <div class="${uid('ficon')}-item">${v.feature4}</div>
+  <div class="${uid('fbardark')}-wrap">
+    <div class="${uid('fbardark')}-item"><span>${v.f1}</span></div>
+    <div class="${uid('fbardark')}-item"><span>${v.f2}</span></div>
+    <div class="${uid('fbardark')}-item"><span>${v.f3}</span></div>
+    <div class="${uid('fbardark')}-item"><span>${v.f4}</span></div>
   </div>
 </div>`
   },
 
-  // ========== TESTIMONIALS ==========
+  // ========== PREMIUM TESTIMONIALS ==========
   {
-    id: 'testimonial-single',
-    name: 'Testimonial - Elegant Single',
+    id: 'testimonial-elegant',
+    name: 'Testimonial - Elegant Center',
     category: 'Testimonials',
-    description: 'Large centered testimonial with refined typography',
+    description: 'Large centered quote with refined styling',
     thumbnail: '',
     fields: [
-      { id: 'quote', label: 'Quote', type: 'textarea', defaultValue: 'The attention to detail is remarkable. Every piece feels like it was made specifically for me. This is what luxury should feel like.' },
+      { id: 'quote', label: 'Quote', type: 'textarea', defaultValue: 'The attention to detail is remarkable. Every piece feels like it was made specifically for me. This is what true luxury should feel like.' },
       { id: 'name', label: 'Customer Name', type: 'text', defaultValue: 'Alexandra Chen' },
       { id: 'title', label: 'Title', type: 'text', defaultValue: 'Verified Buyer' },
     ],
-    generateHtml: (v) => `<div class="${uid('tsing')}" style="background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('testi1')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('tsing')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('tsing')}-wrap { max-width: 800px; margin: 0 auto; padding: 100px 40px; text-align: center; }
-    .${uid('tsing')}-quote { font-size: 11px; letter-spacing: 0.2em; color: #999; margin-bottom: 32px; }
-    .${uid('tsing')} blockquote { font-size: 28px; line-height: 1.5; color: #1a1a1a; font-weight: 300; margin-bottom: 40px; font-style: italic; }
-    .${uid('tsing')}-author { font-size: 14px; }
-    .${uid('tsing')}-name { font-weight: 600; color: #1a1a1a; }
-    .${uid('tsing')}-title { color: #888; margin-top: 4px; }
-    @media (max-width: 768px) { .${uid('tsing')} blockquote { font-size: 22px; } }
+    .${uid('testi1')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('testi1')}-wrap { max-width: 800px; margin: 0 auto; padding: 100px 48px; text-align: center; }
+    .${uid('testi1')}-stars {
+      font-size: 14px; letter-spacing: 6px; margin-bottom: 36px;
+      background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .${uid('testi1')} blockquote { font-size: 26px; line-height: 1.5; color: #1a1a1a; font-weight: 300; margin-bottom: 40px; font-style: italic; letter-spacing: -0.01em; }
+    .${uid('testi1')}-author { font-size: 14px; }
+    .${uid('testi1')}-name { font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+    .${uid('testi1')}-title { color: #888; font-size: 12px; letter-spacing: 0.05em; }
+    @media (max-width: 768px) { .${uid('testi1')} blockquote { font-size: 20px; } }
   </style>
-  <div class="${uid('tsing')}-wrap">
-    <div class="${uid('tsing')}-quote">★★★★★</div>
+  <div class="${uid('testi1')}-wrap">
+    <div class="${uid('testi1')}-stars">★★★★★</div>
     <blockquote>"${v.quote}"</blockquote>
-    <div class="${uid('tsing')}-author">
-      <div class="${uid('tsing')}-name">${v.name}</div>
-      <div class="${uid('tsing')}-title">${v.title}</div>
+    <div class="${uid('testi1')}-author">
+      <div class="${uid('testi1')}-name">${v.name}</div>
+      <div class="${uid('testi1')}-title">${v.title}</div>
     </div>
   </div>
 </div>`
   },
   {
-    id: 'testimonial-cards',
-    name: 'Testimonial - Card Grid',
+    id: 'testimonial-cards-premium',
+    name: 'Testimonial - Cards Premium',
     category: 'Testimonials',
     description: 'Three elegant testimonial cards',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Section Title', type: 'text', defaultValue: 'What Our Customers Say' },
-      { id: 'quote1', label: 'Quote 1', type: 'textarea', defaultValue: 'Exceptional quality and fast shipping. Exceeded all expectations.' },
-      { id: 'name1', label: 'Name 1', type: 'text', defaultValue: 'Michael R.' },
-      { id: 'quote2', label: 'Quote 2', type: 'textarea', defaultValue: 'The best purchase I\'ve made this year. Worth every penny.' },
-      { id: 'name2', label: 'Name 2', type: 'text', defaultValue: 'Sarah L.' },
-      { id: 'quote3', label: 'Quote 3', type: 'textarea', defaultValue: 'Customer service was incredible. They truly care about their customers.' },
-      { id: 'name3', label: 'Name 3', type: 'text', defaultValue: 'James K.' },
+      { id: 'q1', label: 'Quote 1', type: 'textarea', defaultValue: 'Exceptional quality and fast shipping. This exceeded all my expectations.' },
+      { id: 'n1', label: 'Name 1', type: 'text', defaultValue: 'Michael R.' },
+      { id: 'q2', label: 'Quote 2', type: 'textarea', defaultValue: 'The best purchase I have made this year. Worth every single penny.' },
+      { id: 'n2', label: 'Name 2', type: 'text', defaultValue: 'Sarah L.' },
+      { id: 'q3', label: 'Quote 3', type: 'textarea', defaultValue: 'Customer service was incredible. They truly care about their customers.' },
+      { id: 'n3', label: 'Name 3', type: 'text', defaultValue: 'James K.' },
     ],
-    generateHtml: (v) => `<div class="${uid('tcard')}" style="background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('testi2')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('tcard')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('tcard')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 40px; }
-    .${uid('tcard')} h2 { font-size: 32px; font-weight: 600; text-align: center; margin-bottom: 56px; color: #1a1a1a; }
-    .${uid('tcard')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .${uid('tcard')}-item { background: #fff; padding: 32px; border-radius: 12px; border: 1px solid #eee; }
-    .${uid('tcard')}-stars { color: #1a1a1a; font-size: 12px; letter-spacing: 4px; margin-bottom: 20px; }
-    .${uid('tcard')}-item p { font-size: 15px; line-height: 1.7; color: #444; margin-bottom: 24px; }
-    .${uid('tcard')}-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
-    @media (max-width: 768px) { .${uid('tcard')}-grid { grid-template-columns: 1fr; } }
+    .${uid('testi2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('testi2')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 48px; }
+    .${uid('testi2')} h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; text-align: center; color: #999; margin-bottom: 56px; }
+    .${uid('testi2')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .${uid('testi2')}-card { background: #fff; padding: 36px; border-radius: 16px; border: 1px solid #eee; transition: all 0.3s; }
+    .${uid('testi2')}-card:hover { border-color: #ddd; transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); }
+    .${uid('testi2')}-stars { color: #1a1a1a; font-size: 11px; letter-spacing: 4px; margin-bottom: 20px; }
+    .${uid('testi2')}-card p { font-size: 15px; line-height: 1.7; color: #444; margin-bottom: 24px; font-style: italic; }
+    .${uid('testi2')}-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    @media (max-width: 768px) { .${uid('testi2')}-grid { grid-template-columns: 1fr; } }
   </style>
-  <div class="${uid('tcard')}-wrap">
+  <div class="${uid('testi2')}-wrap">
     <h2>${v.headline}</h2>
-    <div class="${uid('tcard')}-grid">
-      <div class="${uid('tcard')}-item"><div class="${uid('tcard')}-stars">★★★★★</div><p>"${v.quote1}"</p><div class="${uid('tcard')}-name">${v.name1}</div></div>
-      <div class="${uid('tcard')}-item"><div class="${uid('tcard')}-stars">★★★★★</div><p>"${v.quote2}"</p><div class="${uid('tcard')}-name">${v.name2}</div></div>
-      <div class="${uid('tcard')}-item"><div class="${uid('tcard')}-stars">★★★★★</div><p>"${v.quote3}"</p><div class="${uid('tcard')}-name">${v.name3}</div></div>
+    <div class="${uid('testi2')}-grid">
+      <div class="${uid('testi2')}-card"><div class="${uid('testi2')}-stars">★★★★★</div><p>"${v.q1}"</p><div class="${uid('testi2')}-name">${v.n1}</div></div>
+      <div class="${uid('testi2')}-card"><div class="${uid('testi2')}-stars">★★★★★</div><p>"${v.q2}"</p><div class="${uid('testi2')}-name">${v.n2}</div></div>
+      <div class="${uid('testi2')}-card"><div class="${uid('testi2')}-stars">★★★★★</div><p>"${v.q3}"</p><div class="${uid('testi2')}-name">${v.n3}</div></div>
     </div>
   </div>
 </div>`
   },
   {
     id: 'testimonial-marquee',
-    name: 'Testimonial - Scrolling Reviews',
+    name: 'Testimonial - Scrolling',
     category: 'Testimonials',
-    description: 'Auto-scrolling testimonial marquee',
+    description: 'Auto-scrolling review marquee',
     thumbnail: '',
     fields: [
-      { id: 'quote1', label: 'Review 1', type: 'text', defaultValue: '"Absolutely love it!" — Sarah M.' },
-      { id: 'quote2', label: 'Review 2', type: 'text', defaultValue: '"Best purchase ever" — Mike R.' },
-      { id: 'quote3', label: 'Review 3', type: 'text', defaultValue: '"Exceptional quality" — Emma L.' },
-      { id: 'quote4', label: 'Review 4', type: 'text', defaultValue: '"Highly recommend" — James K.' },
-      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '30' },
+      { id: 'r1', label: 'Review 1', type: 'text', defaultValue: '"Absolutely love it!" — Sarah M.' },
+      { id: 'r2', label: 'Review 2', type: 'text', defaultValue: '"Best purchase ever" — Mike R.' },
+      { id: 'r3', label: 'Review 3', type: 'text', defaultValue: '"Exceptional quality" — Emma L.' },
+      { id: 'r4', label: 'Review 4', type: 'text', defaultValue: '"Highly recommend" — James K.' },
+      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '35' },
     ],
-    generateHtml: (v) => `<div class="${uid('tmarq')}" style="background:#000;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('tmarq2')}" style="background:#000;overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('tmarq')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('tmarq')}-track { display: flex; animation: ${uid('tmarq')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('tmarq')}-item { padding: 16px 40px; white-space: nowrap; display: flex; align-items: center; gap: 32px; }
-    .${uid('tmarq')}-item span { font-size: 14px; color: #fff; font-style: italic; }
-    .${uid('tmarq')}-item::after { content: '★'; font-size: 10px; color: #444; }
-    @keyframes ${uid('tmarq')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .${uid('tmarq2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tmarq2')}-track { display: flex; animation: ${uid('tmarq2')}-scroll ${v.speed}s linear infinite; width: max-content; }
+    .${uid('tmarq2')}-item { padding: 18px 48px; white-space: nowrap; display: flex; align-items: center; gap: 40px; }
+    .${uid('tmarq2')}-item span { font-size: 14px; color: rgba(255,255,255,0.7); font-style: italic; letter-spacing: 0.02em; }
+    .${uid('tmarq2')}-sep {
+      font-size: 8px;
+      background: linear-gradient(135deg, #BF953F, #FCF6BA);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    @keyframes ${uid('tmarq2')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   </style>
-  <div class="${uid('tmarq')}-track">
-    <div class="${uid('tmarq')}-item"><span>${v.quote1}</span></div>
-    <div class="${uid('tmarq')}-item"><span>${v.quote2}</span></div>
-    <div class="${uid('tmarq')}-item"><span>${v.quote3}</span></div>
-    <div class="${uid('tmarq')}-item"><span>${v.quote4}</span></div>
-    <div class="${uid('tmarq')}-item"><span>${v.quote1}</span></div>
-    <div class="${uid('tmarq')}-item"><span>${v.quote2}</span></div>
-    <div class="${uid('tmarq')}-item"><span>${v.quote3}</span></div>
-    <div class="${uid('tmarq')}-item"><span>${v.quote4}</span></div>
+  <div class="${uid('tmarq2')}-track">
+    <div class="${uid('tmarq2')}-item"><span>${v.r1}</span><span class="${uid('tmarq2')}-sep">★</span></div>
+    <div class="${uid('tmarq2')}-item"><span>${v.r2}</span><span class="${uid('tmarq2')}-sep">★</span></div>
+    <div class="${uid('tmarq2')}-item"><span>${v.r3}</span><span class="${uid('tmarq2')}-sep">★</span></div>
+    <div class="${uid('tmarq2')}-item"><span>${v.r4}</span><span class="${uid('tmarq2')}-sep">★</span></div>
+    <div class="${uid('tmarq2')}-item"><span>${v.r1}</span><span class="${uid('tmarq2')}-sep">★</span></div>
+    <div class="${uid('tmarq2')}-item"><span>${v.r2}</span><span class="${uid('tmarq2')}-sep">★</span></div>
+    <div class="${uid('tmarq2')}-item"><span>${v.r3}</span><span class="${uid('tmarq2')}-sep">★</span></div>
+    <div class="${uid('tmarq2')}-item"><span>${v.r4}</span><span class="${uid('tmarq2')}-sep">★</span></div>
   </div>
 </div>`
   },
 
-  // ========== CTA & NEWSLETTER ==========
+  // ========== PREMIUM CTA & NEWSLETTER ==========
   {
-    id: 'cta-minimal',
-    name: 'CTA - Minimal Newsletter',
+    id: 'cta-newsletter-minimal',
+    name: 'CTA - Newsletter Minimal',
     category: 'CTA',
-    description: 'Clean email signup with elegant styling',
+    description: 'Clean minimal email signup',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Stay in the Know' },
       { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Subscribe for exclusive access to new releases and special offers.' },
-      { id: 'placeholder', label: 'Input Placeholder', type: 'text', defaultValue: 'Enter your email' },
+      { id: 'placeholder', label: 'Placeholder', type: 'text', defaultValue: 'Enter your email' },
       { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Subscribe' },
     ],
-    generateHtml: (v) => `<div class="${uid('ctamin')}" style="background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('ctanews')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('ctamin')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('ctamin')}-wrap { max-width: 600px; margin: 0 auto; padding: 80px 40px; text-align: center; }
-    .${uid('ctamin')} h2 { font-size: 28px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px; }
-    .${uid('ctamin')} p { font-size: 15px; color: #666; margin-bottom: 32px; }
-    .${uid('ctamin')}-form { display: flex; gap: 12px; max-width: 440px; margin: 0 auto; }
-    .${uid('ctamin')}-form input { flex: 1; padding: 16px 20px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; background: #fff; }
-    .${uid('ctamin')}-form input:focus { outline: none; border-color: #1a1a1a; }
-    .${uid('ctamin')}-form button { padding: 16px 32px; background: #1a1a1a; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-    .${uid('ctamin')}-form button:hover { background: #333; }
-    @media (max-width: 480px) { .${uid('ctamin')}-form { flex-direction: column; } }
+    .${uid('ctanews')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ctanews')}-wrap { max-width: 560px; margin: 0 auto; padding: 80px 48px; text-align: center; }
+    .${uid('ctanews')} h2 { font-size: 28px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px; letter-spacing: -0.02em; }
+    .${uid('ctanews')} p { font-size: 15px; color: #666; margin-bottom: 32px; line-height: 1.6; }
+    .${uid('ctanews')}-form { display: flex; gap: 12px; }
+    .${uid('ctanews')}-form input { flex: 1; padding: 16px 20px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; background: #fff; transition: border-color 0.2s; }
+    .${uid('ctanews')}-form input:focus { outline: none; border-color: #1a1a1a; }
+    .${uid('ctanews')}-form button { padding: 16px 32px; background: #1a1a1a; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .${uid('ctanews')}-form button:hover { background: #333; }
+    @media (max-width: 480px) { .${uid('ctanews')}-form { flex-direction: column; } }
   </style>
-  <div class="${uid('ctamin')}-wrap">
+  <div class="${uid('ctanews')}-wrap">
     <h2>${v.headline}</h2>
     <p>${v.subheadline}</p>
-    <form class="${uid('ctamin')}-form" onsubmit="return false;">
+    <form class="${uid('ctanews')}-form" onsubmit="return false;">
       <input type="email" placeholder="${v.placeholder}" required>
       <button type="submit">${v.buttonText}</button>
     </form>
@@ -622,35 +656,40 @@ export const sectionsData: Section[] = [
 </div>`
   },
   {
-    id: 'cta-dark',
-    name: 'CTA - Dark Luxe',
+    id: 'cta-dark-gold',
+    name: 'CTA - Dark Gold Luxe',
     category: 'CTA',
-    description: 'Premium dark CTA with gold accents',
+    description: 'Premium dark CTA with gold button',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Join the Inner Circle' },
-      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Be first to know about exclusive drops and members-only offers.' },
-      { id: 'placeholder', label: 'Input Placeholder', type: 'text', defaultValue: 'Your email address' },
+      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Be the first to know about exclusive drops and members-only offers.' },
+      { id: 'placeholder', label: 'Placeholder', type: 'text', defaultValue: 'Your email address' },
       { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Get Access' },
     ],
-    generateHtml: (v) => `<div class="${uid('ctadark')}" style="background:#0a0a0a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('ctadg')}" style="background:linear-gradient(180deg,#0a0a0a 0%,#000 100%);font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('ctadark')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('ctadark')}-wrap { max-width: 600px; margin: 0 auto; padding: 100px 40px; text-align: center; }
-    .${uid('ctadark')} h2 { font-size: 32px; font-weight: 600; color: #fff; margin-bottom: 16px; letter-spacing: -0.01em; }
-    .${uid('ctadark')} p { font-size: 15px; color: #888; margin-bottom: 40px; }
-    .${uid('ctadark')}-form { display: flex; gap: 12px; max-width: 480px; margin: 0 auto; }
-    .${uid('ctadark')}-form input { flex: 1; padding: 18px 24px; border: 1px solid #333; border-radius: 4px; font-size: 14px; background: transparent; color: #fff; }
-    .${uid('ctadark')}-form input:focus { outline: none; border-color: #666; }
-    .${uid('ctadark')}-form input::placeholder { color: #666; }
-    .${uid('ctadark')}-form button { padding: 18px 36px; background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728); color: #000; border: none; border-radius: 4px; font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; transition: opacity 0.2s; }
-    .${uid('ctadark')}-form button:hover { opacity: 0.9; }
-    @media (max-width: 480px) { .${uid('ctadark')}-form { flex-direction: column; } }
+    .${uid('ctadg')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ctadg')}-wrap { max-width: 560px; margin: 0 auto; padding: 100px 48px; text-align: center; }
+    .${uid('ctadg')} h2 { font-size: 32px; font-weight: 600; color: #fff; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .${uid('ctadg')} p { font-size: 15px; color: rgba(255,255,255,0.6); margin-bottom: 40px; line-height: 1.6; }
+    .${uid('ctadg')}-form { display: flex; gap: 12px; }
+    .${uid('ctadg')}-form input { flex: 1; padding: 18px 24px; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 14px; background: transparent; color: #fff; transition: border-color 0.2s; }
+    .${uid('ctadg')}-form input:focus { outline: none; border-color: rgba(255,255,255,0.4); }
+    .${uid('ctadg')}-form input::placeholder { color: rgba(255,255,255,0.4); }
+    .${uid('ctadg')}-form button {
+      padding: 18px 36px; border: none; border-radius: 6px; font-size: 13px; font-weight: 700; cursor: pointer;
+      letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.3s;
+      background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728);
+      color: #000;
+    }
+    .${uid('ctadg')}-form button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(191,149,63,0.3); }
+    @media (max-width: 480px) { .${uid('ctadg')}-form { flex-direction: column; } }
   </style>
-  <div class="${uid('ctadark')}-wrap">
+  <div class="${uid('ctadg')}-wrap">
     <h2>${v.headline}</h2>
     <p>${v.subheadline}</p>
-    <form class="${uid('ctadark')}-form" onsubmit="return false;">
+    <form class="${uid('ctadg')}-form" onsubmit="return false;">
       <input type="email" placeholder="${v.placeholder}" required>
       <button type="submit">${v.buttonText}</button>
     </form>
@@ -658,119 +697,125 @@ export const sectionsData: Section[] = [
 </div>`
   },
   {
-    id: 'cta-split',
+    id: 'cta-split-premium',
     name: 'CTA - Split Banner',
     category: 'CTA',
-    description: 'Two-column CTA with bold typography',
+    description: 'Two-column CTA with elegant styling',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Ready to elevate your style?' },
       { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Shop Now' },
       { id: 'buttonUrl', label: 'Button URL', type: 'url', defaultValue: '#' },
     ],
-    generateHtml: (v) => `<div class="${uid('ctasplit')}" style="background:#1a1a1a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('ctasplit2')}" style="background:#1a1a1a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('ctasplit')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('ctasplit')}-wrap { max-width: 1200px; margin: 0 auto; padding: 60px 40px; display: flex; justify-content: space-between; align-items: center; gap: 40px; }
-    .${uid('ctasplit')} h2 { font-size: 32px; font-weight: 600; color: #fff; letter-spacing: -0.01em; }
-    .${uid('ctasplit')} a { display: inline-block; padding: 18px 48px; border: 1px solid #fff; color: #fff; text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.2s; }
-    .${uid('ctasplit')} a:hover { background: #fff; color: #1a1a1a; }
-    @media (max-width: 768px) { .${uid('ctasplit')}-wrap { flex-direction: column; text-align: center; } .${uid('ctasplit')} h2 { font-size: 24px; } }
+    .${uid('ctasplit2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ctasplit2')}-wrap { max-width: 1200px; margin: 0 auto; padding: 64px 48px; display: flex; justify-content: space-between; align-items: center; gap: 48px; }
+    .${uid('ctasplit2')} h2 { font-size: 32px; font-weight: 500; color: #fff; letter-spacing: -0.02em; }
+    .${uid('ctasplit2')} a {
+      display: inline-block; padding: 18px 48px; border: 1px solid rgba(255,255,255,0.3); color: #fff;
+      text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .${uid('ctasplit2')} a:hover { background: #fff; color: #1a1a1a; border-color: #fff; }
+    @media (max-width: 768px) { .${uid('ctasplit2')}-wrap { flex-direction: column; text-align: center; } .${uid('ctasplit2')} h2 { font-size: 24px; } }
   </style>
-  <div class="${uid('ctasplit')}-wrap">
+  <div class="${uid('ctasplit2')}-wrap">
     <h2>${v.headline}</h2>
     <a href="${v.buttonUrl}">${v.buttonText}</a>
   </div>
 </div>`
   },
 
-  // ========== FAQ ==========
+  // ========== PREMIUM FAQ ==========
   {
-    id: 'faq-minimal',
-    name: 'FAQ - Minimal Accordion',
+    id: 'faq-accordion-premium',
+    name: 'FAQ - Premium Accordion',
     category: 'FAQ',
-    description: 'Clean expandable FAQ with smooth animations',
+    description: 'Elegant expandable FAQ',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Section Title', type: 'text', defaultValue: 'Frequently Asked Questions' },
       { id: 'q1', label: 'Question 1', type: 'text', defaultValue: 'What is your shipping policy?' },
-      { id: 'a1', label: 'Answer 1', type: 'textarea', defaultValue: 'We offer free standard shipping on all orders over $100. Express shipping is available for an additional fee. All orders are processed within 1-2 business days.' },
+      { id: 'a1', label: 'Answer 1', type: 'textarea', defaultValue: 'We offer complimentary standard shipping on all orders over $100. Express shipping is available for an additional fee. All orders are processed within 1-2 business days.' },
       { id: 'q2', label: 'Question 2', type: 'text', defaultValue: 'What is your return policy?' },
-      { id: 'a2', label: 'Answer 2', type: 'textarea', defaultValue: 'We accept returns within 30 days of purchase. Items must be unworn, unwashed, and in original packaging. Contact our support team to initiate a return.' },
+      { id: 'a2', label: 'Answer 2', type: 'textarea', defaultValue: 'We accept returns within 30 days of purchase. Items must be unworn, unwashed, and in original packaging with all tags attached.' },
       { id: 'q3', label: 'Question 3', type: 'text', defaultValue: 'How can I track my order?' },
-      { id: 'a3', label: 'Answer 3', type: 'textarea', defaultValue: 'Once your order ships, you\'ll receive an email with tracking information. You can also track your order through your account dashboard.' },
+      { id: 'a3', label: 'Answer 3', type: 'textarea', defaultValue: 'Once your order ships, you will receive an email with tracking information. You can also track your order through your account dashboard.' },
       { id: 'q4', label: 'Question 4', type: 'text', defaultValue: 'Do you ship internationally?' },
-      { id: 'a4', label: 'Answer 4', type: 'textarea', defaultValue: 'Yes, we ship to over 50 countries worldwide. International shipping rates and delivery times vary by location. Duties and taxes may apply.' },
+      { id: 'a4', label: 'Answer 4', type: 'textarea', defaultValue: 'Yes, we ship to over 50 countries worldwide. International shipping rates and delivery times vary by location.' },
     ],
-    generateHtml: (v) => `<div class="${uid('faqmin')}" style="background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('faqacc')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('faqmin')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('faqmin')}-wrap { max-width: 800px; margin: 0 auto; padding: 80px 40px; }
-    .${uid('faqmin')} h2 { font-size: 32px; font-weight: 600; text-align: center; margin-bottom: 56px; color: #1a1a1a; }
-    .${uid('faqmin')}-item { border-bottom: 1px solid #eee; }
-    .${uid('faqmin')}-q { padding: 24px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-    .${uid('faqmin')}-q h3 { font-size: 16px; font-weight: 500; color: #1a1a1a; }
-    .${uid('faqmin')}-q span { font-size: 20px; color: #999; transition: transform 0.3s; }
-    .${uid('faqmin')}-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
-    .${uid('faqmin')}-a p { padding: 0 0 24px; font-size: 15px; line-height: 1.7; color: #666; }
-    .${uid('faqmin')}-item.open .${uid('faqmin')}-q span { transform: rotate(45deg); }
-    .${uid('faqmin')}-item.open .${uid('faqmin')}-a { max-height: 200px; }
+    .${uid('faqacc')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('faqacc')}-wrap { max-width: 800px; margin: 0 auto; padding: 80px 48px; }
+    .${uid('faqacc')} h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; text-align: center; color: #999; margin-bottom: 56px; }
+    .${uid('faqacc')}-item { border-bottom: 1px solid #f0f0f0; }
+    .${uid('faqacc')}-q { padding: 28px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: color 0.2s; }
+    .${uid('faqacc')}-q:hover { color: #666; }
+    .${uid('faqacc')}-q h3 { font-size: 16px; font-weight: 500; color: inherit; letter-spacing: -0.01em; }
+    .${uid('faqacc')}-q span { font-size: 18px; color: #ccc; transition: transform 0.3s; }
+    .${uid('faqacc')}-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+    .${uid('faqacc')}-a p { padding: 0 0 28px; font-size: 15px; line-height: 1.7; color: #666; }
+    .${uid('faqacc')}-item.open .${uid('faqacc')}-q span { transform: rotate(45deg); }
+    .${uid('faqacc')}-item.open .${uid('faqacc')}-a { max-height: 300px; }
   </style>
-  <div class="${uid('faqmin')}-wrap">
+  <div class="${uid('faqacc')}-wrap">
     <h2>${v.headline}</h2>
-    <div class="${uid('faqmin')}-item"><div class="${uid('faqmin')}-q" onclick="this.parentElement.classList.toggle('open')"><h3>${v.q1}</h3><span>+</span></div><div class="${uid('faqmin')}-a"><p>${v.a1}</p></div></div>
-    <div class="${uid('faqmin')}-item"><div class="${uid('faqmin')}-q" onclick="this.parentElement.classList.toggle('open')"><h3>${v.q2}</h3><span>+</span></div><div class="${uid('faqmin')}-a"><p>${v.a2}</p></div></div>
-    <div class="${uid('faqmin')}-item"><div class="${uid('faqmin')}-q" onclick="this.parentElement.classList.toggle('open')"><h3>${v.q3}</h3><span>+</span></div><div class="${uid('faqmin')}-a"><p>${v.a3}</p></div></div>
-    <div class="${uid('faqmin')}-item"><div class="${uid('faqmin')}-q" onclick="this.parentElement.classList.toggle('open')"><h3>${v.q4}</h3><span>+</span></div><div class="${uid('faqmin')}-a"><p>${v.a4}</p></div></div>
+    <div class="${uid('faqacc')}-item"><div class="${uid('faqacc')}-q" onclick="this.parentElement.classList.toggle('open')"><h3>${v.q1}</h3><span>+</span></div><div class="${uid('faqacc')}-a"><p>${v.a1}</p></div></div>
+    <div class="${uid('faqacc')}-item"><div class="${uid('faqacc')}-q" onclick="this.parentElement.classList.toggle('open')"><h3>${v.q2}</h3><span>+</span></div><div class="${uid('faqacc')}-a"><p>${v.a2}</p></div></div>
+    <div class="${uid('faqacc')}-item"><div class="${uid('faqacc')}-q" onclick="this.parentElement.classList.toggle('open')"><h3>${v.q3}</h3><span>+</span></div><div class="${uid('faqacc')}-a"><p>${v.a3}</p></div></div>
+    <div class="${uid('faqacc')}-item"><div class="${uid('faqacc')}-q" onclick="this.parentElement.classList.toggle('open')"><h3>${v.q4}</h3><span>+</span></div><div class="${uid('faqacc')}-a"><p>${v.a4}</p></div></div>
   </div>
 </div>`
   },
   {
-    id: 'faq-cards',
+    id: 'faq-grid-premium',
     name: 'FAQ - Card Grid',
     category: 'FAQ',
-    description: 'FAQ displayed in a clean card layout',
+    description: 'FAQ in elegant card layout',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Section Title', type: 'text', defaultValue: 'Common Questions' },
-      { id: 'q1', label: 'Question 1', type: 'text', defaultValue: 'Shipping' },
-      { id: 'a1', label: 'Answer 1', type: 'textarea', defaultValue: 'Free shipping on orders over $100. Standard delivery 3-5 business days.' },
-      { id: 'q2', label: 'Question 2', type: 'text', defaultValue: 'Returns' },
-      { id: 'a2', label: 'Answer 2', type: 'textarea', defaultValue: '30-day hassle-free returns on all unworn items in original packaging.' },
-      { id: 'q3', label: 'Question 3', type: 'text', defaultValue: 'Sizing' },
-      { id: 'a3', label: 'Answer 3', type: 'textarea', defaultValue: 'Check our detailed size guide or contact us for personalized recommendations.' },
-      { id: 'q4', label: 'Question 4', type: 'text', defaultValue: 'Support' },
-      { id: 'a4', label: 'Answer 4', type: 'textarea', defaultValue: '24/7 customer support via chat, email, or phone. We\'re here to help.' },
+      { id: 'q1', label: 'Card 1 Title', type: 'text', defaultValue: 'Shipping' },
+      { id: 'a1', label: 'Card 1 Text', type: 'textarea', defaultValue: 'Complimentary shipping on orders over $100. Standard delivery takes 3-5 business days.' },
+      { id: 'q2', label: 'Card 2 Title', type: 'text', defaultValue: 'Returns' },
+      { id: 'a2', label: 'Card 2 Text', type: 'textarea', defaultValue: '30-day hassle-free returns on all unworn items in original packaging.' },
+      { id: 'q3', label: 'Card 3 Title', type: 'text', defaultValue: 'Sizing' },
+      { id: 'a3', label: 'Card 3 Text', type: 'textarea', defaultValue: 'Check our detailed size guide or contact us for personalized recommendations.' },
+      { id: 'q4', label: 'Card 4 Title', type: 'text', defaultValue: 'Support' },
+      { id: 'a4', label: 'Card 4 Text', type: 'textarea', defaultValue: '24/7 customer support via chat, email, or phone. We are here to help.' },
     ],
-    generateHtml: (v) => `<div class="${uid('faqcard')}" style="background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('faqgrid')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('faqcard')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('faqcard')}-wrap { max-width: 1000px; margin: 0 auto; padding: 80px 40px; }
-    .${uid('faqcard')} h2 { font-size: 32px; font-weight: 600; text-align: center; margin-bottom: 48px; color: #1a1a1a; }
-    .${uid('faqcard')}-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-    .${uid('faqcard')}-item { background: #fff; padding: 28px; border-radius: 12px; border: 1px solid #eee; }
-    .${uid('faqcard')}-item h3 { font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px; }
-    .${uid('faqcard')}-item p { font-size: 14px; line-height: 1.6; color: #666; }
-    @media (max-width: 768px) { .${uid('faqcard')}-grid { grid-template-columns: 1fr; } }
+    .${uid('faqgrid')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('faqgrid')}-wrap { max-width: 1000px; margin: 0 auto; padding: 80px 48px; }
+    .${uid('faqgrid')} h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; text-align: center; color: #999; margin-bottom: 56px; }
+    .${uid('faqgrid')}-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .${uid('faqgrid')}-card { background: #fff; padding: 32px; border-radius: 16px; border: 1px solid #eee; transition: all 0.3s; }
+    .${uid('faqgrid')}-card:hover { border-color: #ddd; transform: translateY(-2px); }
+    .${uid('faqgrid')}-card h3 { font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px; }
+    .${uid('faqgrid')}-card p { font-size: 14px; line-height: 1.6; color: #666; }
+    @media (max-width: 768px) { .${uid('faqgrid')}-grid { grid-template-columns: 1fr; } }
   </style>
-  <div class="${uid('faqcard')}-wrap">
+  <div class="${uid('faqgrid')}-wrap">
     <h2>${v.headline}</h2>
-    <div class="${uid('faqcard')}-grid">
-      <div class="${uid('faqcard')}-item"><h3>${v.q1}</h3><p>${v.a1}</p></div>
-      <div class="${uid('faqcard')}-item"><h3>${v.q2}</h3><p>${v.a2}</p></div>
-      <div class="${uid('faqcard')}-item"><h3>${v.q3}</h3><p>${v.a3}</p></div>
-      <div class="${uid('faqcard')}-item"><h3>${v.q4}</h3><p>${v.a4}</p></div>
+    <div class="${uid('faqgrid')}-grid">
+      <div class="${uid('faqgrid')}-card"><h3>${v.q1}</h3><p>${v.a1}</p></div>
+      <div class="${uid('faqgrid')}-card"><h3>${v.q2}</h3><p>${v.a2}</p></div>
+      <div class="${uid('faqgrid')}-card"><h3>${v.q3}</h3><p>${v.a3}</p></div>
+      <div class="${uid('faqgrid')}-card"><h3>${v.q4}</h3><p>${v.a4}</p></div>
     </div>
   </div>
 </div>`
   },
 
-  // ========== HERO SECTIONS (Only 3 - 10% of total) ==========
+  // ========== PREMIUM HERO (Limited - 10% of total) ==========
   {
-    id: 'hero-minimal',
+    id: 'hero-minimal-premium',
     name: 'Hero - Minimal Text',
     category: 'Hero',
-    description: 'Ultra-clean hero with large typography, no image',
+    description: 'Ultra-clean typography-focused hero',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Elevate Your Everyday' },
@@ -778,17 +823,21 @@ export const sectionsData: Section[] = [
       { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Explore Collection' },
       { id: 'buttonUrl', label: 'Button URL', type: 'url', defaultValue: '#' },
     ],
-    generateHtml: (v) => `<div class="${uid('heromin')}" style="background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('heromin2')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('heromin')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('heromin')}-wrap { max-width: 900px; margin: 0 auto; padding: 120px 40px; text-align: center; }
-    .${uid('heromin')} h1 { font-size: 64px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 24px; }
-    .${uid('heromin')} p { font-size: 18px; color: #666; margin-bottom: 40px; }
-    .${uid('heromin')} a { display: inline-block; padding: 18px 48px; background: #1a1a1a; color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; transition: background 0.2s; }
-    .${uid('heromin')} a:hover { background: #333; }
-    @media (max-width: 768px) { .${uid('heromin')} h1 { font-size: 40px; } .${uid('heromin')}-wrap { padding: 80px 24px; } }
+    .${uid('heromin2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('heromin2')}-wrap { max-width: 900px; margin: 0 auto; padding: 140px 48px; text-align: center; }
+    .${uid('heromin2')} h1 { font-size: 56px; font-weight: 500; color: #1a1a1a; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 24px; }
+    .${uid('heromin2')} p { font-size: 18px; color: #666; margin-bottom: 48px; letter-spacing: 0.01em; }
+    .${uid('heromin2')} a {
+      display: inline-block; padding: 18px 52px; background: #1a1a1a; color: #fff; text-decoration: none;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: all 0.3s; border-radius: 4px;
+    }
+    .${uid('heromin2')} a:hover { background: #000; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    @media (max-width: 768px) { .${uid('heromin2')} h1 { font-size: 36px; } .${uid('heromin2')}-wrap { padding: 100px 32px; } }
   </style>
-  <div class="${uid('heromin')}-wrap">
+  <div class="${uid('heromin2')}-wrap">
     <h1>${v.headline}</h1>
     <p>${v.subheadline}</p>
     <a href="${v.buttonUrl}">${v.buttonText}</a>
@@ -796,7 +845,7 @@ export const sectionsData: Section[] = [
 </div>`
   },
   {
-    id: 'hero-split',
+    id: 'hero-split-premium',
     name: 'Hero - Split Image',
     category: 'Hero',
     description: 'Clean split layout with image',
@@ -808,129 +857,97 @@ export const sectionsData: Section[] = [
       { id: 'buttonUrl', label: 'Button URL', type: 'url', defaultValue: '#' },
       { id: 'image', label: 'Image URL', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=1000&fit=crop' },
     ],
-    generateHtml: (v) => `<div class="${uid('herosplit')}" style="background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('herosplit2')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('herosplit')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('herosplit')}-wrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 600px; }
-    .${uid('herosplit')}-content { display: flex; flex-direction: column; justify-content: center; padding: 80px; }
-    .${uid('herosplit')} h1 { font-size: 52px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.02em; margin-bottom: 24px; }
-    .${uid('herosplit')} p { font-size: 16px; line-height: 1.7; color: #666; margin-bottom: 40px; max-width: 420px; }
-    .${uid('herosplit')} a { display: inline-block; padding: 18px 40px; background: #1a1a1a; color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; transition: background 0.2s; align-self: flex-start; }
-    .${uid('herosplit')} a:hover { background: #333; }
-    .${uid('herosplit')}-img { background-image: url('${v.image}'); background-size: cover; background-position: center; }
-    @media (max-width: 768px) { .${uid('herosplit')}-wrap { grid-template-columns: 1fr; } .${uid('herosplit')}-content { padding: 60px 24px; } .${uid('herosplit')} h1 { font-size: 36px; } .${uid('herosplit')}-img { min-height: 400px; } }
+    .${uid('herosplit2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('herosplit2')}-wrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 600px; }
+    .${uid('herosplit2')}-content { display: flex; flex-direction: column; justify-content: center; padding: 80px; }
+    .${uid('herosplit2')} h1 { font-size: 48px; font-weight: 500; color: #1a1a1a; letter-spacing: -0.02em; margin-bottom: 24px; line-height: 1.1; }
+    .${uid('herosplit2')} p { font-size: 16px; line-height: 1.7; color: #666; margin-bottom: 40px; max-width: 420px; }
+    .${uid('herosplit2')} a {
+      display: inline-block; padding: 18px 44px; background: #1a1a1a; color: #fff; text-decoration: none;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; align-self: flex-start;
+      transition: all 0.3s;
+    }
+    .${uid('herosplit2')} a:hover { background: #000; }
+    .${uid('herosplit2')}-img { background-image: url('${v.image}'); background-size: cover; background-position: center; }
+    @media (max-width: 768px) { .${uid('herosplit2')}-wrap { grid-template-columns: 1fr; } .${uid('herosplit2')}-content { padding: 64px 32px; } .${uid('herosplit2')} h1 { font-size: 36px; } .${uid('herosplit2')}-img { min-height: 400px; } }
   </style>
-  <div class="${uid('herosplit')}-wrap">
-    <div class="${uid('herosplit')}-content">
+  <div class="${uid('herosplit2')}-wrap">
+    <div class="${uid('herosplit2')}-content">
       <h1>${v.headline}</h1>
       <p>${v.subheadline}</p>
       <a href="${v.buttonUrl}">${v.buttonText}</a>
     </div>
-    <div class="${uid('herosplit')}-img"></div>
-  </div>
-</div>`
-  },
-  {
-    id: 'hero-fullwidth',
-    name: 'Hero - Full Width Image',
-    category: 'Hero',
-    description: 'Full-width hero with centered text overlay',
-    thumbnail: '',
-    fields: [
-      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Summer Collection' },
-      { id: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Explore the season\'s most coveted pieces' },
-      { id: 'buttonText', label: 'Button Text', type: 'text', defaultValue: 'Shop Now' },
-      { id: 'buttonUrl', label: 'Button URL', type: 'url', defaultValue: '#' },
-      { id: 'image', label: 'Background Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=900&fit=crop' },
-      { id: 'overlay', label: 'Overlay Opacity (0-100)', type: 'number', defaultValue: '30' },
-    ],
-    generateHtml: (v) => `<div class="${uid('herofull')}" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
-  <style>
-    .${uid('herofull')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('herofull')}-wrap { position: relative; min-height: 600px; display: flex; align-items: center; justify-content: center; background-image: url('${v.image}'); background-size: cover; background-position: center; }
-    .${uid('herofull')}-overlay { position: absolute; inset: 0; background: rgba(0,0,0,${parseInt(v.overlay)/100}); }
-    .${uid('herofull')}-content { position: relative; z-index: 1; text-align: center; padding: 40px; color: #fff; }
-    .${uid('herofull')} h1 { font-size: 56px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 16px; }
-    .${uid('herofull')} p { font-size: 18px; opacity: 0.9; margin-bottom: 40px; }
-    .${uid('herofull')} a { display: inline-block; padding: 18px 48px; background: #fff; color: #1a1a1a; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.2s; }
-    .${uid('herofull')} a:hover { background: #1a1a1a; color: #fff; }
-    @media (max-width: 768px) { .${uid('herofull')} h1 { font-size: 36px; } .${uid('herofull')}-wrap { min-height: 500px; } }
-  </style>
-  <div class="${uid('herofull')}-wrap">
-    <div class="${uid('herofull')}-overlay"></div>
-    <div class="${uid('herofull')}-content">
-      <h1>${v.headline}</h1>
-      <p>${v.subheadline}</p>
-      <a href="${v.buttonUrl}">${v.buttonText}</a>
-    </div>
+    <div class="${uid('herosplit2')}-img"></div>
   </div>
 </div>`
   },
 
-  // ========== BRAND / ABOUT ==========
+  // ========== PREMIUM BRAND ==========
   {
-    id: 'brand-statement',
+    id: 'brand-statement-premium',
     name: 'Brand - Statement',
     category: 'Brand',
-    description: 'Large brand statement with elegant typography',
+    description: 'Large elegant brand statement',
     thumbnail: '',
     fields: [
       { id: 'statement', label: 'Statement', type: 'textarea', defaultValue: 'We believe in the power of simplicity. Every piece is designed with intention, crafted with care, and made to last a lifetime.' },
     ],
-    generateHtml: (v) => `<div class="${uid('brandst')}" style="background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('brandst2')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('brandst')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('brandst')}-wrap { max-width: 900px; margin: 0 auto; padding: 120px 40px; text-align: center; }
-    .${uid('brandst')} p { font-size: 32px; line-height: 1.5; color: #1a1a1a; font-weight: 300; letter-spacing: -0.01em; }
-    @media (max-width: 768px) { .${uid('brandst')} p { font-size: 24px; } .${uid('brandst')}-wrap { padding: 80px 24px; } }
+    .${uid('brandst2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('brandst2')}-wrap { max-width: 900px; margin: 0 auto; padding: 120px 48px; text-align: center; }
+    .${uid('brandst2')} p { font-size: 32px; line-height: 1.5; color: #1a1a1a; font-weight: 300; letter-spacing: -0.01em; }
+    @media (max-width: 768px) { .${uid('brandst2')} p { font-size: 24px; } .${uid('brandst2')}-wrap { padding: 80px 32px; } }
   </style>
-  <div class="${uid('brandst')}-wrap">
+  <div class="${uid('brandst2')}-wrap">
     <p>${v.statement}</p>
   </div>
 </div>`
   },
   {
-    id: 'brand-values',
+    id: 'brand-values-premium',
     name: 'Brand - Values',
     category: 'Brand',
-    description: 'Three-column brand values display',
+    description: 'Three-column brand values',
     thumbnail: '',
     fields: [
       { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Our Values' },
-      { id: 'value1Title', label: 'Value 1 Title', type: 'text', defaultValue: 'Quality' },
-      { id: 'value1Desc', label: 'Value 1 Description', type: 'textarea', defaultValue: 'We source only the finest materials and work with skilled artisans who share our commitment to excellence.' },
-      { id: 'value2Title', label: 'Value 2 Title', type: 'text', defaultValue: 'Sustainability' },
-      { id: 'value2Desc', label: 'Value 2 Description', type: 'textarea', defaultValue: 'Every decision we make considers our impact on the planet. From materials to packaging, we choose responsibly.' },
-      { id: 'value3Title', label: 'Value 3 Title', type: 'text', defaultValue: 'Timelessness' },
-      { id: 'value3Desc', label: 'Value 3 Description', type: 'textarea', defaultValue: 'We design pieces that transcend trends. Classic aesthetics that look as relevant today as they will in decades.' },
+      { id: 'v1Title', label: 'Value 1 Title', type: 'text', defaultValue: 'Quality' },
+      { id: 'v1Desc', label: 'Value 1 Description', type: 'textarea', defaultValue: 'We source only the finest materials and work with skilled artisans who share our commitment to excellence.' },
+      { id: 'v2Title', label: 'Value 2 Title', type: 'text', defaultValue: 'Sustainability' },
+      { id: 'v2Desc', label: 'Value 2 Description', type: 'textarea', defaultValue: 'Every decision we make considers our impact on the planet. From materials to packaging, we choose responsibly.' },
+      { id: 'v3Title', label: 'Value 3 Title', type: 'text', defaultValue: 'Timelessness' },
+      { id: 'v3Desc', label: 'Value 3 Description', type: 'textarea', defaultValue: 'We design pieces that transcend trends. Classic aesthetics that look as relevant today as they will in decades.' },
     ],
-    generateHtml: (v) => `<div class="${uid('brandval')}" style="background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('brandval2')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('brandval')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('brandval')}-wrap { max-width: 1100px; margin: 0 auto; padding: 100px 40px; }
-    .${uid('brandval')} h2 { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; text-align: center; color: #888; margin-bottom: 64px; }
-    .${uid('brandval')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
-    .${uid('brandval')}-item h3 { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; }
-    .${uid('brandval')}-item p { font-size: 15px; line-height: 1.7; color: #666; }
-    @media (max-width: 768px) { .${uid('brandval')}-grid { grid-template-columns: 1fr; gap: 40px; } }
+    .${uid('brandval2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('brandval2')}-wrap { max-width: 1100px; margin: 0 auto; padding: 100px 48px; }
+    .${uid('brandval2')} h2 { font-size: 11px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; text-align: center; color: #999; margin-bottom: 72px; }
+    .${uid('brandval2')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; }
+    .${uid('brandval2')}-item h3 { font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; letter-spacing: -0.01em; }
+    .${uid('brandval2')}-item p { font-size: 15px; line-height: 1.7; color: #666; }
+    @media (max-width: 768px) { .${uid('brandval2')}-grid { grid-template-columns: 1fr; gap: 40px; } }
   </style>
-  <div class="${uid('brandval')}-wrap">
+  <div class="${uid('brandval2')}-wrap">
     <h2>${v.headline}</h2>
-    <div class="${uid('brandval')}-grid">
-      <div class="${uid('brandval')}-item"><h3>${v.value1Title}</h3><p>${v.value1Desc}</p></div>
-      <div class="${uid('brandval')}-item"><h3>${v.value2Title}</h3><p>${v.value2Desc}</p></div>
-      <div class="${uid('brandval')}-item"><h3>${v.value3Title}</h3><p>${v.value3Desc}</p></div>
+    <div class="${uid('brandval2')}-grid">
+      <div class="${uid('brandval2')}-item"><h3>${v.v1Title}</h3><p>${v.v1Desc}</p></div>
+      <div class="${uid('brandval2')}-item"><h3>${v.v2Title}</h3><p>${v.v2Desc}</p></div>
+      <div class="${uid('brandval2')}-item"><h3>${v.v3Title}</h3><p>${v.v3Desc}</p></div>
     </div>
   </div>
 </div>`
   },
 
-  // ========== PRODUCT HIGHLIGHT ==========
+  // ========== PREMIUM PRODUCT ==========
   {
-    id: 'product-spotlight',
+    id: 'product-spotlight-premium',
     name: 'Product - Spotlight',
     category: 'Product',
-    description: 'Single product feature with large image',
+    description: 'Single product feature',
     thumbnail: '',
     fields: [
       { id: 'tagline', label: 'Tagline', type: 'text', defaultValue: 'Featured' },
@@ -941,79 +958,81 @@ export const sectionsData: Section[] = [
       { id: 'buttonUrl', label: 'Button URL', type: 'url', defaultValue: '#' },
       { id: 'image', label: 'Product Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&h=600&fit=crop' },
     ],
-    generateHtml: (v) => `<div class="${uid('prodspot')}" style="background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('prodspot2')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('prodspot')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('prodspot')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .${uid('prodspot')}-img img { width: 100%; height: auto; border-radius: 8px; }
-    .${uid('prodspot')}-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #888; margin-bottom: 16px; }
-    .${uid('prodspot')} h2 { font-size: 40px; font-weight: 600; color: #1a1a1a; letter-spacing: -0.02em; margin-bottom: 20px; }
-    .${uid('prodspot')} p { font-size: 16px; line-height: 1.7; color: #666; margin-bottom: 24px; }
-    .${uid('prodspot')}-price { font-size: 24px; font-weight: 600; color: #1a1a1a; margin-bottom: 32px; }
-    .${uid('prodspot')} a { display: inline-block; padding: 16px 40px; background: #1a1a1a; color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; transition: background 0.2s; }
-    .${uid('prodspot')} a:hover { background: #333; }
-    @media (max-width: 768px) { .${uid('prodspot')}-wrap { grid-template-columns: 1fr; gap: 40px; } .${uid('prodspot')} h2 { font-size: 32px; } }
+    .${uid('prodspot2')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('prodspot2')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .${uid('prodspot2')}-img img { width: 100%; height: auto; border-radius: 12px; }
+    .${uid('prodspot2')}-tag { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: #888; margin-bottom: 16px; }
+    .${uid('prodspot2')} h2 { font-size: 40px; font-weight: 500; color: #1a1a1a; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .${uid('prodspot2')} p { font-size: 16px; line-height: 1.7; color: #666; margin-bottom: 24px; }
+    .${uid('prodspot2')}-price { font-size: 24px; font-weight: 500; color: #1a1a1a; margin-bottom: 32px; }
+    .${uid('prodspot2')} a {
+      display: inline-block; padding: 18px 44px; background: #1a1a1a; color: #fff; text-decoration: none;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.3s;
+    }
+    .${uid('prodspot2')} a:hover { background: #000; }
+    @media (max-width: 768px) { .${uid('prodspot2')}-wrap { grid-template-columns: 1fr; gap: 40px; } .${uid('prodspot2')} h2 { font-size: 32px; } }
   </style>
-  <div class="${uid('prodspot')}-wrap">
-    <div class="${uid('prodspot')}-img"><img src="${v.image}" alt="Product"></div>
-    <div class="${uid('prodspot')}-content">
-      <div class="${uid('prodspot')}-tag">${v.tagline}</div>
+  <div class="${uid('prodspot2')}-wrap">
+    <div class="${uid('prodspot2')}-img"><img src="${v.image}" alt="Product"></div>
+    <div class="${uid('prodspot2')}-content">
+      <div class="${uid('prodspot2')}-tag">${v.tagline}</div>
       <h2>${v.headline}</h2>
       <p>${v.description}</p>
-      <div class="${uid('prodspot')}-price">${v.price}</div>
+      <div class="${uid('prodspot2')}-price">${v.price}</div>
       <a href="${v.buttonUrl}">${v.buttonText}</a>
     </div>
   </div>
 </div>`
   },
 
-  // ========== DIVIDERS ==========
+  // ========== PREMIUM DIVIDERS ==========
   {
-    id: 'divider-line',
-    name: 'Divider - Simple Line',
+    id: 'divider-elegant',
+    name: 'Divider - Elegant Line',
     category: 'Divider',
-    description: 'Minimal horizontal line divider',
+    description: 'Minimal gradient line divider',
     thumbnail: '',
     fields: [
-      { id: 'color', label: 'Line Color', type: 'color', defaultValue: '#e5e5e5' },
-      { id: 'width', label: 'Width (%)', type: 'number', defaultValue: '100' },
-      { id: 'spacing', label: 'Vertical Spacing (px)', type: 'number', defaultValue: '48' },
+      { id: 'spacing', label: 'Vertical Spacing (px)', type: 'number', defaultValue: '64' },
     ],
-    generateHtml: (v) => `<div style="padding:${v.spacing}px 40px;background:#fff;">
-  <hr style="border:none;border-top:1px solid ${v.color};width:${v.width}%;margin:0 auto;">
+    generateHtml: (v) => `<div style="padding:${v.spacing}px 48px;background:#fff;">
+  <div style="max-width:400px;margin:0 auto;height:1px;background:linear-gradient(90deg,transparent,#e0e0e0,transparent);"></div>
 </div>`
   },
   {
-    id: 'divider-text',
+    id: 'divider-text-premium',
     name: 'Divider - With Text',
     category: 'Divider',
-    description: 'Divider line with centered text',
+    description: 'Line divider with centered text',
     thumbnail: '',
     fields: [
       { id: 'text', label: 'Text', type: 'text', defaultValue: 'Featured Products' },
-      { id: 'spacing', label: 'Vertical Spacing (px)', type: 'number', defaultValue: '48' },
+      { id: 'spacing', label: 'Vertical Spacing (px)', type: 'number', defaultValue: '56' },
     ],
-    generateHtml: (v) => `<div class="${uid('divtext')}" style="padding:${v.spacing}px 40px;background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+    generateHtml: (v) => `<div class="${uid('divtext2')}" style="padding:${v.spacing}px 48px;background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
-    .${uid('divtext')}-wrap { display: flex; align-items: center; gap: 24px; max-width: 800px; margin: 0 auto; }
-    .${uid('divtext')}-line { flex: 1; height: 1px; background: #e5e5e5; }
-    .${uid('divtext')}-text { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #888; white-space: nowrap; }
+    .${uid('divtext2')}-wrap { display: flex; align-items: center; gap: 32px; max-width: 800px; margin: 0 auto; }
+    .${uid('divtext2')}-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, #e0e0e0); }
+    .${uid('divtext2')}-line:last-child { background: linear-gradient(90deg, #e0e0e0, transparent); }
+    .${uid('divtext2')}-text { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: #999; white-space: nowrap; }
   </style>
-  <div class="${uid('divtext')}-wrap">
-    <div class="${uid('divtext')}-line"></div>
-    <span class="${uid('divtext')}-text">${v.text}</span>
-    <div class="${uid('divtext')}-line"></div>
+  <div class="${uid('divtext2')}-wrap">
+    <div class="${uid('divtext2')}-line"></div>
+    <span class="${uid('divtext2')}-text">${v.text}</span>
+    <div class="${uid('divtext2')}-line"></div>
   </div>
 </div>`
   },
   {
-    id: 'spacer',
+    id: 'spacer-premium',
     name: 'Spacer - Empty Space',
     category: 'Divider',
     description: 'Configurable empty vertical space',
     thumbnail: '',
     fields: [
-      { id: 'height', label: 'Height (px)', type: 'number', defaultValue: '64' },
+      { id: 'height', label: 'Height (px)', type: 'number', defaultValue: '80' },
       { id: 'bgColor', label: 'Background Color', type: 'color', defaultValue: '#ffffff' },
     ],
     generateHtml: (v) => `<div style="height:${v.height}px;background:${v.bgColor};"></div>`
