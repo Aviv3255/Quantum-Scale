@@ -2,10 +2,10 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { ChevronLeft, ChevronRight, TrendingUp, Rocket, RefreshCw, Check, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, TrendingUp, Rocket, RefreshCw, Check, X, Loader2 } from 'lucide-react';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // MONKEY VIDEO STATES - 18 levels
@@ -32,6 +32,83 @@ const MONKEY_VIDEOS = [
 ];
 
 const PROFIT_THRESHOLDS = [0, 0, 10000, 20000, 25000, 35000, 50000, 75000, 100000, 150000, 200000, 300000, 450000, 650000, 900000, 1200000, 1500000, 2000000];
+
+// Video preloading cache for instant transitions
+const videoCache = new Map<string, HTMLVideoElement>();
+
+function preloadVideo(url: string): Promise<void> {
+  if (videoCache.has(url)) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.preload = 'auto';
+    video.muted = true;
+    video.playsInline = true;
+
+    const handleLoad = () => {
+      videoCache.set(url, video);
+      resolve();
+    };
+
+    video.addEventListener('canplaythrough', handleLoad, { once: true });
+    video.addEventListener('error', () => resolve(), { once: true }); // Resolve anyway on error
+
+    // Set timeout to prevent infinite loading
+    setTimeout(() => resolve(), 5000);
+
+    video.src = url;
+    video.load();
+  });
+}
+
+// Hook to preload adjacent monkey videos
+function useVideoPreloader(currentState: number) {
+  const preloadedRef = useRef<Set<number>>(new Set());
+
+  useEffect(() => {
+    // Preload current, adjacent, and nearby states
+    const statesToPreload = [
+      currentState,
+      currentState - 1,
+      currentState + 1,
+      currentState - 2,
+      currentState + 2,
+      currentState - 3,
+      currentState + 3,
+    ].filter(s => s >= 1 && s <= 18 && !preloadedRef.current.has(s));
+
+    // Preload in priority order (current first)
+    statesToPreload.forEach((state, index) => {
+      const video = MONKEY_VIDEOS[state - 1];
+      if (video) {
+        // Stagger preloads to avoid network congestion
+        setTimeout(() => {
+          preloadVideo(video.url).then(() => {
+            preloadedRef.current.add(state);
+          });
+        }, index * 100);
+      }
+    });
+  }, [currentState]);
+
+  // Preload all videos on initial mount (low priority)
+  useEffect(() => {
+    const preloadAll = async () => {
+      // Wait for page to be interactive
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      for (const video of MONKEY_VIDEOS) {
+        if (!videoCache.has(video.url)) {
+          await preloadVideo(video.url);
+          // Small delay between preloads
+          await new Promise(resolve => setTimeout(resolve, 200));
+        }
+      }
+    };
+
+    preloadAll();
+  }, []);
+}
 
 function calculateMonkeyState(futureMonthlyProfitUSD: number): number {
   if (!isFinite(futureMonthlyProfitUSD) || isNaN(futureMonthlyProfitUSD) || futureMonthlyProfitUSD < 0) return 1;
@@ -192,8 +269,12 @@ export default function CalculatorsPage() {
   const [activeSlide, setActiveSlide] = useState(0);
   const [currentMonkeyState, setCurrentMonkeyState] = useState(5);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [exchangeRates, setExchangeRates] = useState<Record<string, number>>(DEFAULT_RATES);
+
+  // Preload adjacent videos for instant transitions
+  useVideoPreloader(currentMonkeyState);
   const [ratesLoading, setRatesLoading] = useState(false);
   const [lastRateUpdate, setLastRateUpdate] = useState<Date | null>(null);
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
@@ -250,6 +331,22 @@ export default function CalculatorsPage() {
 
   useEffect(() => { if (!isLoading && !user) router.push('/login'); }, [user, isLoading, router]);
 
+  // Fallback timeout for loading state (in case events don't fire)
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsVideoLoading(false);
+    }, 3000);
+    return () => clearTimeout(timeout);
+  }, [currentMonkeyState]);
+
+  // Preload initial video immediately on mount
+  useEffect(() => {
+    const initialVideo = MONKEY_VIDEOS[currentMonkeyState - 1];
+    if (initialVideo) {
+      preloadVideo(initialVideo.url);
+    }
+  }, []);
+
   if (isLoading || !user) {
     return <div className="h-screen w-screen flex items-center justify-center bg-white"><div className="animate-spin w-8 h-8 border-2 border-black border-t-transparent rounded-full" /></div>;
   }
@@ -264,6 +361,15 @@ export default function CalculatorsPage() {
     if (key === 'currency') handleCurrencyChange(value as string);
     else setInputs(prev => ({ ...prev, [key]: typeof value === 'string' ? (Number(value) || 0) : value }));
   };
+
+  // Handle video load events
+  const handleVideoLoad = useCallback(() => {
+    setIsVideoLoading(false);
+  }, []);
+
+  const handleVideoLoadStart = useCallback(() => {
+    setIsVideoLoading(true);
+  }, []);
 
   return (
     <DashboardLayout>
@@ -282,6 +388,22 @@ export default function CalculatorsPage() {
           {/* Video Section - Natural aspect ratio, full height */}
           <div className="flex-1 relative flex items-center justify-center bg-white">
             <div className="h-full flex items-center justify-center p-3">
+              {/* Loading indicator */}
+              <AnimatePresence>
+                {(isVideoLoading || isTransitioning) && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-10"
+                  >
+                    <div className="flex flex-col items-center gap-2">
+                      <Loader2 className="w-8 h-8 text-neutral-400 animate-spin" />
+                      <span className="text-xs text-neutral-500">Loading...</span>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <motion.div
                 animate={{ opacity: isTransitioning ? 0 : 1 }}
                 transition={{ duration: 0.3 }}
@@ -291,6 +413,10 @@ export default function CalculatorsPage() {
                   ref={videoRef}
                   key={currentMonkey?.url}
                   autoPlay loop muted playsInline
+                  preload="auto"
+                  onLoadStart={handleVideoLoadStart}
+                  onCanPlayThrough={handleVideoLoad}
+                  onLoadedData={handleVideoLoad}
                   className="h-full w-auto object-contain rounded-xl"
                 >
                   <source src={currentMonkey?.url} type="video/mp4" />

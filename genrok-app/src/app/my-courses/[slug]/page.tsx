@@ -26,6 +26,7 @@ import {
 import Link from 'next/link';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { BookmarkButton } from '@/components/BookmarkButton';
 import {
   hasPurchasedCourse,
   getCourseFiles,
@@ -273,6 +274,17 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
 
         {/* Controls */}
         <div className="flex items-center gap-2">
+          {/* Bookmark current page */}
+          <BookmarkButton
+            itemType="course_page"
+            itemId={`${courseSlug}:${file.id}:${currentPageRef.current}`}
+            title={`${file.title} - Page ${currentPageRef.current}`}
+            sourceUrl={`/my-courses/${courseSlug}?file=${file.id}&page=${currentPageRef.current}`}
+            description={file.description || undefined}
+            size="md"
+            className="bg-[#333] hover:bg-[#444] border-[#444]"
+          />
+          <div className="w-px h-6 bg-[#333] mx-2" />
           <button
             onClick={handleZoomOut}
             className="p-2 rounded-lg hover:bg-[#333] transition-colors text-white"

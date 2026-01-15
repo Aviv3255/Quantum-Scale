@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 interface App {
   id: number;

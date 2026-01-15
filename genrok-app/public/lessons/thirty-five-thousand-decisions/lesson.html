@@ -579,7 +579,8 @@
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
       useEffect(() => {
-        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE',
+          totalSlides: slides.length, slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
       }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {

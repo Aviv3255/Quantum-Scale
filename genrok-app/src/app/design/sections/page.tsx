@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ExternalLink, Eye, Sparkles } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 const sections = [
   // Shoffi sections
@@ -304,18 +305,34 @@ export default function SectionsPage() {
         {/* Sections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sections.map((section, idx) => (
-            <a
+            <div
               key={idx}
-              href={section.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group overflow-hidden transition-all duration-300 rounded-2xl hover:-translate-y-1"
+              className="group overflow-hidden transition-all duration-300 rounded-2xl hover:-translate-y-1 relative"
               style={{
                 background: '#FFFFFF',
                 border: '1px solid #E5E7EB',
                 boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
               }}
             >
+              {/* Bookmark Button */}
+              <div className="absolute top-3 right-3 z-20">
+                <BookmarkButton
+                  itemType="section"
+                  itemId={String(idx)}
+                  title={section.name}
+                  sourceUrl={section.url}
+                  description={section.description}
+                  thumbnailUrl={section.image}
+                  size="sm"
+                />
+              </div>
+
+              <a
+                href={section.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
               <div className="relative overflow-hidden" style={{ height: '240px', background: '#F9FAFB' }}>
                 <img
                   src={section.image}
@@ -348,7 +365,8 @@ export default function SectionsPage() {
                   Click to view
                 </div>
               </div>
-            </a>
+              </a>
+            </div>
           ))}
         </div>
       </div>

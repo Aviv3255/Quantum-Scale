@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { TrendingUp, ExternalLink, ArrowRight, Sparkles } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 interface App {
   name: string;
@@ -230,14 +231,27 @@ export default function ABTestResultsPage() {
         {/* Test Results */}
         <div className="space-y-8">
           {tests.map((test, idx) => (
-            <div key={idx} className="rounded-2xl overflow-hidden" style={{
+            <div key={idx} className="rounded-2xl overflow-hidden relative" style={{
               background: '#FFFFFF',
               border: '1px solid #E5E7EB',
               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
             }}>
+              {/* Bookmark Button */}
+              <div className="absolute top-4 right-4 z-10">
+                <BookmarkButton
+                  itemType="ab_test"
+                  itemId={String(idx)}
+                  title={test.title}
+                  sourceUrl={`/design/ab-tests#test-${idx}`}
+                  description={`${test.result} - ${test.insight.slice(0, 100)}...`}
+                  thumbnailUrl={test.image || undefined}
+                  size="md"
+                />
+              </div>
+
               <div className="grid lg:grid-cols-2 gap-0">
                 {/* Content Column */}
-                <div className="p-8">
+                <div className="p-8 pr-16">
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold mb-3" style={{ color: '#1E1E1E' }}>

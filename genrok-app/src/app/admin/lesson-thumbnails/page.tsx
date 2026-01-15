@@ -1587,36 +1587,69 @@ Keep the red background, make it feel like IMMINENT DISASTER.
 
   'pain-escalation-ladder': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183640.png',
-    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Show a STAIRCASE made of PAIN LEVELS going upward:
-- Step 1 (bottom): "Mild annoyance" - small flame
-- Step 2: "Frustration" - medium flame
-- Step 3: "Burning problem" - large flame
-- Step 4 (top): "URGENT PAIN" - EXPLOSION of fire
-- At the top of the stairs: a door labeled "SOLUTION" with golden light behind it
-- Money flows MORE as pain increases - pain = purchase urgency
-- Our monkey mascot (attached) guiding someone UP the stairs with a torch
+    referenceImage: 'Screenshot 2026-01-08 182912.png',
+    concept: `Create a PREMIUM NETFLIX DOCUMENTARY THUMBNAIL:
 
-Make it feel STRATEGIC. Escalate pain, provide relief.
-16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.monkey],
+SCENE: A dramatic dark staircase ascending into flames. Each step represents escalating pain levels.
+
+COMPOSITION:
+- Ultra-wide cinematic framing (2.39:1 feel within 16:10)
+- Pure black background with volumetric fog/smoke
+- Stone steps ascending from bottom-left to top-right
+- Each step GLOWS with increasing intensity: blue → yellow → orange → red → WHITE HOT
+
+THE STEPS (subtle text on each):
+Step 1: "Mild Irritation" - cool blue glow
+Step 2: "Frustration" - warm amber
+Step 3: "Desperation" - burning orange
+Step 4: "CRISIS" - engulfed in flames, price tags floating: $5K, $10K, $50K
+
+FOCAL POINT: A silhouette stands at the bottom, looking up at the inferno. Their shadow stretches dramatically.
+
+TYPOGRAPHY:
+- "THE PAIN LADDER" - Bold condensed sans-serif, slight 3D depth, positioned top-center
+- Subtitle: "Why desperate customers pay 100x more" - smaller, elegant, below
+
+LIGHTING: Cinematic rim lighting from the flames above. God rays piercing through smoke.
+
+MOOD: Like a Netflix true crime documentary poster. Dark. Revelatory. Unsettling truth being exposed.
+
+TECHNICAL: 16:10 ratio. 1600x1000px. No watermarks. No timestamp. Photorealistic quality.`,
+    images: [],
   },
 
   'telescope-flip': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183707.png',
-    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Show a TELESCOPE being FLIPPED/ROTATED in the center - dramatic rotation motion
-- Left: "WRONG WAY" - person looking through small end, sees TINY blurry world, looks confused
-- Right: "RIGHT WAY" - our monkey mascot (attached) looking through big end, sees MASSIVE opportunity/treasure
-- Arrow showing the 180° flip
-- Text: "97% HOLD IT WRONG"
-- The correct side shows GOLD and opportunity, the wrong side shows confusion
+    referenceImage: 'Screenshot 2026-01-08 183014.png',
+    concept: `Create a PREMIUM NETFLIX SERIES THUMBNAIL:
 
-Make it feel like a REVELATION. The simple flip changes everything.
-16:10 ratio. Don't put the time block.`,
-    images: [imageAssets.monkey],
+SCENE: A single magnificent brass telescope floating in dramatic space - but it's positioned WRONG. The revelation moment.
+
+COMPOSITION:
+- Center-focused hero shot
+- Luxurious antique brass telescope with intricate engravings, gold trim, leather grip
+- The telescope is being ROTATED mid-air (motion blur trail showing the flip)
+- One end shows a TINY keyhole of light (wrong way)
+- Other end EXPLODES with golden light, stars, galaxies pouring out (right way)
+
+VISUAL STORY:
+- Left side of frame: dark, cold, confined - representing limited vision
+- Right side: warm golden explosion of possibility - representing infinite opportunity
+- The telescope bridges both worlds, caught mid-rotation
+
+BACKGROUND: Deep space black with subtle star field. Nebula colors (purple/blue) on the dark side, warm gold dust on the light side.
+
+TYPOGRAPHY:
+- "THE TELESCOPE FLIP" - Premium serif font (like Playfair Display), white with subtle gold gradient
+- "97% of marketers see it backwards" - Clean sans-serif subtitle below
+- Text positioned in upper third, leaving space for the dramatic visual
+
+LIGHTING: Dramatic chiaroscuro. The "wrong end" side is almost silhouette dark. The "right end" erupts with volumetric golden light rays.
+
+MOOD: Like a Netflix limited series about a hidden truth that changes everything. Elegant. Mysterious. The moment of revelation.
+
+TECHNICAL: 16:10 ratio. 1600x1000px. No watermarks. No timestamp. Photorealistic cinematic quality.`,
+    images: [],
   },
 
   'trust-blueprint': {
@@ -2136,30 +2169,56 @@ Make it feel like EVERY MILLISECOND COSTS YOU MONEY.
 
   'imperceptible-nudge': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183541.png',
-    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Show Amazon's ORANGE "Add to Cart" button GLOWING with power
-- Text at top: "THE $200 MILLION COLOR"
-- Color psychology spectrum showing orange = urgency + action
-- Amazon logo (attached)
-- The button looks like it's RADIATING money/conversions
+    referenceImage: 'Screenshot 2026-01-08 185309.png',
+    concept: `Create a NETFLIX-QUALITY thumbnail with these elements:
 
-Keep the minimal word + icon style, the clean impact.
-16:10 ratio. Don't put the time block.`,
+MAIN VISUAL: A single glowing ORANGE button floating in darkness
+- The button is Amazon's iconic "Add to Cart" orange (#FF9900)
+- It RADIATES with power - subtle golden rays emanating outward
+- Money/dollar signs subtly floating in the glow like particles
+- The button casts a warm orange reflection on a glossy black surface below
+
+COMPOSITION: Ultra-minimal. 80% negative space (pure black). The button is the HERO.
+The orange should POP against the darkness like a beacon.
+
+TEXT: "$200 MILLION" in massive white numbers at top
+Subtitle: "The Color That Changed Everything" in smaller elegant text
+
+STYLE: Apple product photography meets Netflix documentary.
+Think: single product on black, dramatic lighting, premium feel.
+The button should look like it's worth $200 million.
+
+16:10 ratio (1600x1000px). No timestamp. Ultra-premium, minimal, powerful.`,
     images: [imageAssets.amazon],
   },
 
   'cognitive-load-trap': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 183933.png',
-    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Left brain: TANGLED, complex pathways - red, stressed, overloaded, "TOO HARD" label
-- Right brain: SMOOTH, simple pathways - green, calm, flowing, "EASY" label
-- Arrow showing customers choosing the EASY path every time
-- Text at top: "COMPLEXITY KILLS CONVERSIONS"
+    referenceImage: 'Screenshot 2026-01-08 185649.png',
+    concept: `Create a NETFLIX-QUALITY thumbnail with these elements:
 
-Keep the brain MRI style, the scientific look.
-16:10 ratio. Don't put the time block.`,
+MAIN VISUAL: Two brains side by side, floating in darkness with dramatic lighting
+- LEFT BRAIN: Chaotic, tangled neural pathways glowing RED/ORANGE
+  - Sparks and static, overloaded circuits
+  - Small "X" symbols scattered around it
+  - Labeled "COMPLEX" in small text below
+
+- RIGHT BRAIN: Smooth, flowing neural pathways glowing GREEN/BLUE
+  - Clean highways, organized flow
+  - Checkmark symbols and money flowing toward it
+  - Labeled "SIMPLE" in small text below
+
+VISUAL EFFECT: Customers (tiny silhouettes) walking TOWARD the simple brain
+A subtle arrow or flow showing the choice.
+
+TEXT: "THE EASY BRAIN WINS" in bold white, clean sans-serif
+Subtitle: "Why Simplicity Always Converts"
+
+STYLE: Medical/scientific meets premium documentary.
+Think: brain MRI scan aesthetic but more artistic and dramatic.
+Dark background, the brains are the glowing focal points.
+
+16:10 ratio (1600x1000px). No timestamp. Scientific yet cinematic.`,
     images: [],
   },
 
@@ -2169,16 +2228,29 @@ Keep the brain MRI style, the scientific look.
 
   'placebo-product': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191421.png',
-    concept: `Hey! Create me this EXACT same YouTube thumbnail, but with these changes:
-- Change the headline to "YOUR PRODUCT IS A PLACEBO"
-- Show a premium golden PILL floating in a spotlight
-- Reality-bending visual around it - the pill is CHANGING perception
-- Text: "Perception becomes reality"
-- The pill is glowing with belief/expectation energy
+    referenceImage: 'Screenshot 2026-01-08 182406.png',
+    concept: `Create a NETFLIX-QUALITY thumbnail with these elements:
 
-Keep the dark luxury style, the secretive elite feel.
-16:10 ratio. Don't put the time block.`,
+MAIN VISUAL: A premium GOLDEN PILL floating in a spotlight beam
+- The pill is hyper-realistic, pharmaceutical grade, but made of PURE GOLD
+- It hovers in a beam of light against pure darkness
+- Around it: subtle reality-distortion effect (like heat waves or a subtle glow)
+- The pill casts a perfect shadow below, sitting on a reflective black surface
+
+PSYCHOLOGICAL ELEMENT: Faint brain/neural patterns visible INSIDE the pill
+Showing that the "medicine" is actually just BELIEF.
+
+TEXT: "YOUR PRODUCT IS A PLACEBO" in elegant white serif font
+Subtitle: "And That's Your Greatest Advantage" in smaller gold text
+
+STYLE: Luxury pharmaceutical meets high-end documentary.
+Think: perfume ad meets medical thriller meets Netflix docuseries.
+Ultra-dark background, single dramatic light source from above.
+The gold should gleam with premium quality.
+
+MOOD: Mysterious, revelatory, like discovering a secret the elite know.
+
+16:10 ratio (1600x1000px). No timestamp. Luxury, mysterious, powerful.`,
     images: [],
   },
 

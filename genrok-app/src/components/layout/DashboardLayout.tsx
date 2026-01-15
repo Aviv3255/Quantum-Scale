@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,8 +19,6 @@ import {
   X,
   ChevronDown,
   ChevronUp,
-  ChevronLeft,
-  ChevronRight,
   ExternalLink,
   GraduationCap,
   Server,
@@ -31,15 +29,41 @@ import {
   Podcast,
   Layers,
   Database,
+  Settings,
+  User,
+  Tag,
+  Bookmark,
+  Calculator,
+  Map,
+  Store,
+  Truck,
+  Gift,
+  Sparkles,
+  Zap,
+  AppWindow,
+  ShoppingCart,
+  DollarSign,
+  Target,
+  LayoutGrid,
+  Paintbrush,
+  Lightbulb,
+  TestTube,
+  PlayCircle,
+  CreditCard,
+  FileText,
+  Headphones,
+  BadgeCheck,
   type LucideIcon,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
+import { useBookmarksStore } from '@/store/bookmarks';
 import { signOut } from '@/lib/supabase';
 import { UserDropdown } from './UserDropdown';
 
 interface SubNavItem {
   title: string;
   href: string;
+  icon?: LucideIcon;
 }
 
 interface NavItem {
@@ -73,9 +97,9 @@ const navigationItems: NavItem[] = [
     icon: ShoppingBag,
     isCategory: true,
     subItems: [
-      { title: "Private Agent", href: "/products/private-agent" },
-      { title: "AliExpress Stores", href: "/products/aliexpress" },
-      { title: "Sell These Products", href: "/products/sell-these" }
+      { title: "Private Agent", href: "/products/private-agent", icon: Truck },
+      { title: "AliExpress Stores", href: "/products/aliexpress", icon: Store },
+      { title: "Sell These", href: "/products/sell-these", icon: Gift }
     ]
   },
   {
@@ -97,8 +121,8 @@ const navigationItems: NavItem[] = [
     icon: Briefcase,
     isCategory: true,
     subItems: [
-      { title: "Calculators & Forecasts", href: "/calculators" },
-      { title: "$100K Blueprint", href: "/blueprint" }
+      { title: "Calculators", href: "/calculators", icon: Calculator },
+      { title: "$100K Blueprint", href: "/blueprint", icon: Map }
     ]
   },
   {
@@ -106,13 +130,13 @@ const navigationItems: NavItem[] = [
     icon: Palette,
     isCategory: true,
     subItems: [
-      { title: "Reference Store", href: "/design/reference" },
-      { title: "Web UI Inspiration", href: "/design/web" },
-      { title: "Sections Inspiration", href: "/design/sections" },
-      { title: "Image Inspiration", href: "/design/images" },
-      { title: "AI Tools", href: "/design/ai-tools" },
-      { title: "Shrine Theme", href: "/design/shrine-theme" },
-      { title: "A/B Test Results", href: "/design/ab-tests" }
+      { title: "Reference Store", href: "/design/reference", icon: Store },
+      { title: "Web UI", href: "/design/web", icon: LayoutGrid },
+      { title: "Sections", href: "/design/sections", icon: Layers },
+      { title: "Images", href: "/design/images", icon: Image },
+      { title: "AI Tools", href: "/design/ai-tools", icon: Sparkles },
+      { title: "Shrine Theme", href: "/design/shrine-theme", icon: Paintbrush },
+      { title: "A/B Tests", href: "/design/ab-tests", icon: TestTube }
     ]
   },
   {
@@ -120,9 +144,10 @@ const navigationItems: NavItem[] = [
     icon: BookOpen,
     isCategory: true,
     subItems: [
-      { title: "Lessons", href: "/learn" },
-      { title: "The Quantum Podcast", href: "/podcast" },
-      { title: "Learning Cards", href: "/learning-cards" }
+      { title: "Lessons", href: "/learn", icon: BookOpen },
+      { title: "Lessons V2", href: "/learn-v2", icon: PlayCircle },
+      { title: "Podcast", href: "/podcast", icon: Headphones },
+      { title: "Cards", href: "/learning-cards", icon: Layers }
     ]
   },
   {
@@ -130,8 +155,8 @@ const navigationItems: NavItem[] = [
     icon: GraduationCap,
     isCategory: true,
     subItems: [
-      { title: "Explore Courses", href: "/courses" },
-      { title: "My Courses", href: "/my-courses" }
+      { title: "Explore", href: "/courses", icon: GraduationCap },
+      { title: "My Courses", href: "/my-courses", icon: BadgeCheck }
     ]
   },
   {
@@ -141,13 +166,38 @@ const navigationItems: NavItem[] = [
   },
 ];
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+interface DashboardLayoutProps {
+  children: React.ReactNode;
+  hideHeader?: boolean;
+}
+
+export default function DashboardLayout({ children, hideHeader = false }: DashboardLayoutProps) {
   const pathname = usePathname();
   const { user } = useAuthStore();
+  const { counts, initialize, isInitialized } = useBookmarksStore();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [bookmarkModalOpen, setBookmarkModalOpen] = useState(false);
+  const bookmarkButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Theme store
+  const { sidebarStyle, setSidebarStyle } = useThemeStore();
+
+  // Apply theme on mount and when theme changes
+  useEffect(() => {
+    applyTheme('lime', sidebarStyle); // Always use lime accent
+  }, [sidebarStyle]);
+
+  // Initialize bookmarks when user is available
+  useEffect(() => {
+    if (user?.id && !isInitialized) {
+      initialize(user.id);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
   const userEmail = user?.email || '';
@@ -205,38 +255,61 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       const isExpanded = expandedCategory === item.title;
       const hasActiveChild = hasCategoryActiveItem(item);
 
-      // Collapsed sidebar - show only icon with hover tooltip
+      // Collapsed sidebar - show only icon with hover dropdown using React state
       if (sidebarCollapsed && !isMobile) {
+        const isHovered = hoveredCategory === item.title;
         return (
-          <div key={index} className="relative group">
+          <div
+            key={index}
+            className="relative"
+            onMouseEnter={() => setHoveredCategory(item.title)}
+            onMouseLeave={() => setHoveredCategory(null)}
+          >
             <div
               className={`nav-item justify-center ${hasActiveChild ? 'active' : ''}`}
               title={item.title}
             >
-              <Icon size={18} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
+              <Icon size={18} strokeWidth={1.5} className="text-white/70" />
             </div>
-            {/* Hover dropdown for collapsed state */}
-            <div className="absolute left-full top-0 ml-2 hidden group-hover:block z-50 min-w-[200px]"
-                 style={{
-                   background: 'var(--bg-sidebar)',
-                   border: '1px solid var(--border-subtle)',
-                   borderRadius: '12px',
-                   boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-                 }}>
-              <div className="p-2 space-y-1">
-                {item.subItems?.map((subItem, subIdx) => (
-                  <Link
-                    key={subIdx}
-                    href={subItem.href}
-                    className={`block px-4 py-2 text-sm rounded-lg transition-colors ${
-                      isSubItemActive(subItem) ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium' : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
-                    }`}
-                  >
-                    {subItem.title}
-                  </Link>
-                ))}
+            {/* Hover dropdown for collapsed state - 2-column grid with icons */}
+            {isHovered && (
+              <div
+                className="absolute left-full top-0 ml-2 z-50"
+                style={{
+                  background: '#000000',
+                  border: '1px solid rgba(136, 218, 28, 0.2)',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.5)',
+                  width: '240px'
+                }}
+                onMouseEnter={() => setHoveredCategory(item.title)}
+                onMouseLeave={() => setHoveredCategory(null)}
+              >
+                <div className="p-2 text-xs font-semibold text-white/50 uppercase tracking-wider mb-1 px-2">
+                  {item.title}
+                </div>
+                <div className="grid grid-cols-2 gap-2 p-2">
+                  {item.subItems?.map((subItem, subIdx) => {
+                    const SubIcon = subItem.icon;
+                    return (
+                      <Link
+                        key={subIdx}
+                        href={subItem.href}
+                        className={`sidebar-subitem-card ${
+                          isSubItemActive(subItem) ? 'active' : ''
+                        }`}
+                        onClick={() => setHoveredCategory(null)}
+                      >
+                        <div className="sidebar-subitem-icon">
+                          {SubIcon && <SubIcon size={18} strokeWidth={1.5} />}
+                        </div>
+                        <span className="sidebar-subitem-title">{subItem.title}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
       }
@@ -252,7 +325,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             style={{ textAlign: 'left' }}
           >
             <div className="flex items-center gap-2.5 flex-1">
-              <Icon size={18} strokeWidth={1.5} className="text-[var(--text-tertiary)] flex-shrink-0" />
+              <Icon size={18} strokeWidth={1.5} className="text-white/70 flex-shrink-0" />
               <span className="text-left">{item.title}</span>
             </div>
             {isExpanded ? <ChevronUp size={14} className="flex-shrink-0" /> : <ChevronDown size={14} className="flex-shrink-0" />}
@@ -267,21 +340,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
               >
-                <div className="pl-8 space-y-1 py-1">
-                  {item.subItems?.map((subItem, subIdx) => (
-                    <Link
-                      key={subIdx}
-                      href={subItem.href}
-                      className={`block px-3 py-2 text-sm rounded-lg transition-colors ${
-                        isSubItemActive(subItem)
-                          ? 'text-[var(--text-primary)] bg-[var(--bg-active)] font-medium'
-                          : 'text-[var(--text-tertiary)] hover:bg-[var(--bg-hover)]'
-                      }`}
-                      onClick={() => isMobile && setSidebarOpen(false)}
-                    >
-                      {subItem.title}
-                    </Link>
-                  ))}
+                {/* 2-column grid layout for sub-items with icons */}
+                <div className="grid grid-cols-2 gap-2 px-2 py-2">
+                  {item.subItems?.map((subItem, subIdx) => {
+                    const SubIcon = subItem.icon;
+                    return (
+                      <Link
+                        key={subIdx}
+                        href={subItem.href}
+                        className={`sidebar-subitem-card ${
+                          isSubItemActive(subItem) ? 'active' : ''
+                        }`}
+                        onClick={() => isMobile && setSidebarOpen(false)}
+                      >
+                        <div className="sidebar-subitem-icon">
+                          {SubIcon && <SubIcon size={18} strokeWidth={1.5} />}
+                        </div>
+                        <span className="sidebar-subitem-title">{subItem.title}</span>
+                      </Link>
+                    );
+                  })}
                 </div>
               </motion.div>
             )}
@@ -302,11 +380,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           title={sidebarCollapsed && !isMobile ? item.title : undefined}
           onClick={() => isMobile && setSidebarOpen(false)}
         >
-          <Icon size={20} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
+          <Icon size={20} strokeWidth={1.5} className="text-white/70" />
           {(!sidebarCollapsed || isMobile) && (
             <>
               <span className="flex-1">{item.title}</span>
-              <ExternalLink size={14} className="opacity-50" />
+              <ExternalLink size={14} className="text-white/50" />
             </>
           )}
         </a>
@@ -323,7 +401,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         title={sidebarCollapsed && !isMobile ? item.title : undefined}
         onClick={() => isMobile && setSidebarOpen(false)}
       >
-        <Icon size={18} strokeWidth={1.5} className="text-[var(--text-tertiary)]" />
+        <Icon size={18} strokeWidth={1.5} className="text-white/70" />
         {(!sidebarCollapsed || isMobile) && <span>{item.title}</span>}
       </Link>
     );
@@ -349,25 +427,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Logo */}
         <div className="sidebar-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', padding: '12px 0' }}>
           <img
-            src="https://cdn.shopify.com/s/files/1/0682/3202/0061/files/Quantum_Scale_logo_6.jpg?v=1765196126"
+            src="https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Quantum%20Scale%20logo%20(16).png"
             alt="Quantum Scale"
-            className={sidebarCollapsed ? "w-10 h-10 rounded-xl object-cover" : "w-20 h-20 rounded-xl object-cover"}
+            className={sidebarCollapsed ? "w-10 h-10 object-contain" : "w-16 h-16 object-contain"}
           />
         </div>
-
-        {/* Collapse Toggle (Desktop only) */}
-        <button
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="hidden md:flex absolute top-6 -right-3.5 w-7 h-7 rounded-full items-center justify-center transition-all z-50"
-          style={{
-            background: 'var(--bg-card)',
-            border: '1px solid var(--border-light)',
-            color: 'var(--text-tertiary)',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-          }}
-        >
-          {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-        </button>
 
         {/* Navigation */}
         <nav className="sidebar-nav">
@@ -376,55 +440,95 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </nav>
 
-        {/* User Section */}
-        <div className="sidebar-user">
-          {!sidebarCollapsed ? (
-            <>
-              <div className="sidebar-user-avatar">{userInitials}</div>
-              <div className="sidebar-user-info">
-                <div className="sidebar-user-name">{userName}</div>
-                <div className="sidebar-user-email">{userEmail}</div>
+        {/* Theme Customization - Only show when sidebar is expanded */}
+        {!sidebarCollapsed && (
+          <div className="sidebar-theme-section">
+            {/* Sidebar Style Toggle */}
+            <div className="sidebar-style-toggle">
+              <span className="sidebar-style-toggle-label">Theme</span>
+              <div className="sidebar-style-toggle-buttons">
+                <button
+                  className={`sidebar-style-btn ${sidebarStyle === 'black' ? 'active' : ''}`}
+                  onClick={() => setSidebarStyle('black')}
+                >
+                  Black
+                </button>
+                <button
+                  className={`sidebar-style-btn ${sidebarStyle === 'gradient' ? 'active' : ''}`}
+                  onClick={() => setSidebarStyle('gradient')}
+                >
+                  Gradient
+                </button>
               </div>
-            </>
+            </div>
+          </div>
+        )}
+
+        {/* Profile Settings Block */}
+        <div className="sidebar-profile-block">
+          {!sidebarCollapsed ? (
+            <div className="profile-card">
+              <div className="profile-header">
+                <div className="profile-avatar">{userInitials}</div>
+                <div className="profile-info">
+                  <div className="profile-name">{userName}</div>
+                  <div className="profile-email">{userEmail}</div>
+                </div>
+              </div>
+              <div className="profile-meta">
+                <div className="profile-niche">
+                  <Tag size={12} className="text-[var(--primary)]" />
+                  <span>Men&apos;s Fashion</span>
+                </div>
+              </div>
+              <div className="profile-actions">
+                <Link href="/bookmarks" className="profile-settings-btn" title="Bookmarks">
+                  <Bookmark size={14} />
+                </Link>
+                <Link href="/settings" className="profile-settings-btn">
+                  <Settings size={14} />
+                  <span>Settings</span>
+                </Link>
+              </div>
+            </div>
           ) : (
-            <div className="sidebar-user-avatar mx-auto" title={userName}>{userInitials}</div>
+            <div className="profile-collapsed">
+              <div className="profile-avatar-sm" title={userName}>{userInitials}</div>
+              <Link href="/settings" className="profile-settings-btn-sm" title="Settings">
+                <Settings size={16} />
+              </Link>
+            </div>
           )}
-          <button
-            onClick={handleSignOut}
-            className="btn-icon"
-            title="Sign out"
-          >
-            <LogOut size={18} strokeWidth={1.5} />
-          </button>
         </div>
       </aside>
 
       {/* Main Area */}
       <div className={`main-area ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-        {/* Top Bar */}
-        <header className="topbar">
-          <div className="topbar-left">
-            {/* Mobile Menu Button */}
-            <button
-              className="btn-icon md:hidden"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
+        {/* Top Bar - conditionally rendered */}
+        {!hideHeader && (
+          <header className="topbar">
+            <div className="topbar-left">
+              {/* Mobile Menu Button */}
+              <button
+                className="btn-icon md:hidden"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+              >
+                {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
 
-            {/* Search */}
-            <div className="search-input hidden md:block">
-              <Search className="search-input-icon" size={18} strokeWidth={1.5} />
-              <input
-                type="text"
-                placeholder="Search anything..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="input w-64"
-                style={{ paddingLeft: '44px', height: '40px' }}
-              />
+              {/* Search */}
+              <div className="search-input hidden md:block">
+                <Search className="search-input-icon" size={18} strokeWidth={1.5} />
+                <input
+                  type="text"
+                  placeholder="Search anything..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="input w-64"
+                  style={{ paddingLeft: '44px', height: '40px' }}
+                />
+              </div>
             </div>
-          </div>
 
           <div className="topbar-right">
             {/* Notifications */}
@@ -441,10 +545,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </header>
 
         {/* Main Content */}
-        <main className="main-content">
+        <main className={`main-content ${hideHeader ? 'no-header' : ''}`}>
           {children}
         </main>
       </div>
+
+      {/* AI Chatbot Widget - Floating on all pages */}
+      <ChatbotWidget userName={userName?.split(' ')[0] || 'Builder'} />
     </div>
   );
 }

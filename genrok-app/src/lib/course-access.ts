@@ -68,33 +68,13 @@ export interface IPCheckResult {
 }
 
 // Check if user has purchased a course
+// NOTE: All courses are now FREE - every authenticated user has access
 export const hasPurchasedCourse = async (userId: string, courseSlug: string): Promise<boolean> => {
-  // Get course ID from slug
-  const { data: course } = await supabase
-    .from('courses')
-    .select('id')
-    .eq('slug', courseSlug)
-    .single();
-
-  if (!course) return false;
-
-  const courseData = course as { id: string };
-
-  // Check if user has purchased this course
-  const { data, error } = await supabase
-    .from('user_purchases')
-    .select('id')
-    .eq('user_id', userId)
-    .eq('course_id', courseData.id)
-    .eq('status', 'completed')
-    .single();
-
-  if (error && error.code !== 'PGRST116') {
-    console.error('Error checking purchase:', error);
-    return false;
+  // All courses are FREE - any authenticated user has access
+  if (userId) {
+    return true;
   }
-
-  return !!data;
+  return false;
 };
 
 // Get user's purchased courses

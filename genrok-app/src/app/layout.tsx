@@ -36,13 +36,36 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
         {/* Preconnect to font sources */}
+        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* Inter font for all text */}
+        {/* General Sans font for all text */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap"
           rel="stylesheet"
+        />
+
+        {/* Playfair Display for luxury headings */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
+          rel="stylesheet"
+        />
+
+        {/* Load accent color before paint to prevent flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var accent = localStorage.getItem('accent-color');
+                  if (accent && ['lime', 'mint', 'forest', 'sage', 'neon', 'gold', 'blue', 'purple', 'coral', 'teal'].includes(accent)) {
+                    document.documentElement.setAttribute('data-accent', accent);
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
         />
       </head>
       <body className="font-sans antialiased bg-white text-[var(--text-secondary)]">

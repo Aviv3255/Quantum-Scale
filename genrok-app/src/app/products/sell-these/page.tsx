@@ -1541,3 +1541,78 @@ export default function SellTheseProductsPage() {
     </DashboardLayout>
   );
 }
+
+// Product Card Component
+function ProductCard({ product, index }: { product: AffiliateProduct; index: number }) {
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Get partner badge color
+  const partnerBadge = {
+    mate: { bg: 'bg-blue-500', text: 'Mate' },
+    hypersku: { bg: 'bg-purple-500', text: 'HyperSKU' },
+    aliexpress: { bg: 'bg-orange-500', text: 'AliExpress' },
+  };
+
+  const badge = partnerBadge[product.partner] || partnerBadge.aliexpress;
+
+  return (
+    <motion.a
+      href={product.affiliate_link}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: Math.min(index * 0.01, 0.5), duration: 0.2 }}
+      className="group block"
+    >
+      <div className="relative rounded-xl overflow-hidden bg-white border border-[#e5e5e5] transition-all duration-300 group-hover:shadow-xl group-hover:border-black group-hover:scale-105">
+        {/* Image */}
+        <div className="relative aspect-square bg-[#f5f5f5]">
+          {!imageError ? (
+            <>
+              {!imageLoaded && (
+                <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]" />
+              )}
+              <img
+                src={product.image_url}
+                alt={product.name}
+                className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-110 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageError(true)}
+                loading="lazy"
+              />
+            </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
+              <ShoppingCart size={32} className="text-[var(--text-muted)]" />
+            </div>
+          )}
+
+          {/* Partner Badge */}
+          <div
+            className={`absolute top-2 right-2 px-2 py-0.5 rounded-md ${badge.bg} text-white text-[10px] font-semibold`}
+          >
+            {badge.text}
+          </div>
+
+          {/* Hover Overlay */}
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white rounded-full p-2 shadow-lg">
+              <ExternalLink size={20} className="text-black" />
+            </div>
+          </div>
+        </div>
+
+        {/* Product Name */}
+        <div className="p-3">
+          <p className="text-xs text-[var(--text-secondary)] line-clamp-2 font-medium">
+            {product.name}
+          </p>
+        </div>
+      </div>
+    </motion.a>
+  );
+}

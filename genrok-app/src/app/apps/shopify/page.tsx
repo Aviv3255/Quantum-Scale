@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { BookmarkButton } from '@/components/BookmarkButton';
 
 const categories = [
   { id: 'all', name: 'All Apps', icon: AppWindow },
@@ -228,7 +229,20 @@ export default function ShopifyAppsPage() {
           >
             {filteredApps.map((app) => (
               <motion.div key={app.id} variants={itemVariants} className="h-full">
-                <div className="card card-hover overflow-hidden h-full flex flex-col" style={{ padding: 0 }}>
+                <div className="card card-hover overflow-hidden h-full flex flex-col relative" style={{ padding: 0 }}>
+                  {/* Bookmark Button */}
+                  <div className="absolute top-3 right-3 z-10">
+                    <BookmarkButton
+                      itemType="shopify_app"
+                      itemId={String(app.id)}
+                      title={app.name}
+                      sourceUrl={app.url}
+                      description={app.description}
+                      thumbnailUrl={app.logo}
+                      size="sm"
+                    />
+                  </div>
+
                   {/* Header */}
                   <div className="p-6 pb-4">
                     <div className="flex items-start gap-4">
@@ -240,7 +254,7 @@ export default function ShopifyAppsPage() {
                           className="object-cover"
                         />
                       </div>
-                      <div className="flex-1 min-w-0">
+                      <div className="flex-1 min-w-0 pr-8">
                         <h3 className="font-semibold text-lg text-[var(--text-primary)] truncate">
                           {app.name}
                         </h3>

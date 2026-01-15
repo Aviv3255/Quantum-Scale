@@ -128,8 +128,8 @@ export default function ChecklistPage() {
         <header className="page-header">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1>Store Setup Checklist</h1>
-              <p>Follow each step to activate your full earning potential and launch with confidence.</p>
+              <h1>The Launch Protocol</h1>
+              <p>250 steps between you and your first million. Let&apos;s move.</p>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-secondary)]">
               <Sparkles size={16} className="text-[var(--text-primary)]" strokeWidth={1.5} />

@@ -32,6 +32,7 @@ export interface Course {
   description: string;
   price: number;
   originalPrice: number;
+  isFree: boolean; // All courses are now free
   image: string;
   heroImage?: string;
   badge?: string;

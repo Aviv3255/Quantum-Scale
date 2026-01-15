@@ -84,44 +84,20 @@ export function AdminReportButton() {
 
   return (
     <>
-      {/* Floating Report Button */}
+      {/* Minimalistic Side-Sticking Report Tab */}
       <button
         onClick={() => {
           console.log('[AdminReportButton] Button clicked! Opening modal...');
           setIsModalOpen(true);
         }}
-        style={{
-          position: 'fixed',
-          bottom: '24px',
-          right: '24px',
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
-          backgroundColor: '#ef4444',
-          color: 'white',
-          border: 'none',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 99999,
-          boxShadow: '0 4px 12px rgba(239, 68, 68, 0.4)',
-          transition: 'transform 0.2s, box-shadow 0.2s',
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.1)';
-          e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.5)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)';
-          e.currentTarget.style.boxShadow = '0 4px 12px rgba(239, 68, 68, 0.4)';
-        }}
+        className="report-bug-tab"
         title={lessonContext
           ? `Report issue for Slide ${lessonContext.slideIndex + 1} (${lessonContext.slideType})`
-          : 'Report an issue on this page'
+          : 'Report an issue'
         }
       >
-        <Bug style={{ width: '24px', height: '24px' }} />
+        <Bug size={14} />
+        <span>Bug</span>
       </button>
 
       {/* Report Modal */}

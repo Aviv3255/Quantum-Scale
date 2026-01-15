@@ -12,528 +12,1233 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #58CC02;
-      --primary-dark: #4CAD02;
-      --primary-light: #89E219;
-      --secondary: #1CB0F6;
-      --warning: #FF9600;
-      --error: #FF4B4B;
-      --text-dark: #3C3C3C;
-      --text-medium: #777777;
-      --text-light: #AFAFAF;
-      --border: #E5E5E5;
-      --bg-gray: #F7F7F7;
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #FFFFFF;
-      color: var(--text-dark);
-      -webkit-font-smoothing: antialiased;
-    }
-    h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
-    ::selection { background: var(--primary); color: white; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #fff; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    ::selection { background: #88da1c; color: #000; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 0.2; } 100% { transform: scale(0.8); opacity: 0.5; } }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
-    const { motion, AnimatePresence } = window.Motion;
+    const { motion, AnimatePresence, useMotionValue, useTransform, animate } = window.Motion;
     const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
-    const getUserName = () => {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'there';
-    };
-
-    const AnimatedNumber = ({ value, suffix = '' }) => {
-      const [display, setDisplay] = useState(0);
-      const numValue = parseInt(value) || 0;
-      useEffect(() => {
-        let start = 0;
-        const duration = 1000;
-        const startTime = Date.now();
-        const animate = () => {
-          const progress = Math.min((Date.now() - startTime) / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          setDisplay(Math.round(numValue * eased));
-          if (progress < 1) requestAnimationFrame(animate);
-        };
-        requestAnimationFrame(animate);
-      }, [numValue]);
-      return <span>{display}{suffix}</span>;
-    };
+    // ============================================
+    // CONFIG
+    // ============================================
+    const getUserName = () => new URLSearchParams(window.location.search).get('userName') || 'Builder';
 
     const LESSON_CONFIG = {
       id: 'familiar-surprise-secret-v2',
       title: 'The Familiar Surprise Secret',
-      duration: '5 min',
-      nextLesson: { id: 'red-button-effect', title: 'The Red Button Effect', teaser: 'Why "don\'t click" makes people click more.' }
+      duration: '8 min',
+      nextLesson: { id: 'red-button-effect', title: 'The Red Button Effect', teaser: 'How to create irresistible CTAs that customers cannot ignore.' }
     };
-
-    // Admin reporter
-    let __isAdmin = false;
-    window.addEventListener('message', (e) => { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
-    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-
-    const AdminReportButton = ({ slideIndex, slideType }) => (
-      <button onClick={(e) => { e.stopPropagation(); window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id }, '*'); }}
-        className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-red-500/80 hover:bg-red-500 text-white flex items-center justify-center z-50 opacity-50 hover:opacity-100 transition-opacity">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-      </button>
-    );
 
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
-    const getRandomGif = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+    // Admin Reporter
+    let __isAdmin = false;
+    window.addEventListener('message', (e) => { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+
+    const AdminReportButton = ({ slideIndex, slideType }) => (
+      <button onClick={(e) => { e.stopPropagation(); window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id }, '*'); }} style={{ position: 'absolute', top: 12, right: 12, width: 32, height: 32, borderRadius: 8, backgroundColor: 'rgba(239,68,68,0.9)', color: '#fff', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.5 }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0.5}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </button>
+    );
+
+    // ============================================
+    // ICONS (SVG Only)
+    // ============================================
     const Icons = {
-      Check: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowRight: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>,
-      ArrowLeft: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>,
-      Clock: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Clock: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: ({ size = 24, strokeWidth = 3 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth}><polyline points="20 6 9 17 4 12"/></svg>,
+      X: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      ArrowUpRight: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>,
+      Zap: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Brain: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Target: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Lightbulb: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Trophy: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      Sparkles: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>,
+      TrendingUp: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+      TrendingDown: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>,
+      Eye: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Music: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>,
+      Play: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+      Star: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Circle: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/></svg>,
+      CheckCircle: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+      AlertTriangle: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
     };
 
+    // ============================================
+    // PREMIUM ANIMATED COMPONENTS
+    // ============================================
+
+    // Animated Counter with spring physics
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000, delay = 0, className = '', style = {} }) => {
+      const [displayValue, setDisplayValue] = useState(0);
+      const [hasStarted, setHasStarted] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setHasStarted(true), delay);
+        return () => clearTimeout(timer);
+      }, [delay]);
+
+      useEffect(() => {
+        if (!hasStarted) return;
+        const startTime = Date.now();
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setDisplayValue(Math.floor(eased * value));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [hasStarted, value, duration]);
+
+      return <span className={className} style={style}>{prefix}{displayValue}{suffix}</span>;
+    };
+
+    // Large Progress Ring with glow
+    const ProgressRing = ({ value, maxValue = 100, size = 200, thickness = 16, color = '#88da1c', delay = 0, children }) => {
+      const radius = (size - thickness) / 2;
+      const circumference = 2 * Math.PI * radius;
+      const percentage = (value / maxValue) * 100;
+      const [offset, setOffset] = useState(circumference);
+
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          setOffset(circumference - (percentage / 100) * circumference);
+        }, delay);
+        return () => clearTimeout(timer);
+      }, [circumference, percentage, delay]);
+
+      return (
+        <div className="relative" style={{ width: size, height: size }}>
+          <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+            <defs>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={thickness} />
+            <circle
+              cx={size/2} cy={size/2} r={radius} fill="none" stroke={color} strokeWidth={thickness} strokeLinecap="round"
+              strokeDasharray={circumference} strokeDashoffset={offset}
+              style={{ transition: 'stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1)', filter: 'url(#glow)' }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            {children}
+          </div>
+        </div>
+      );
+    };
+
+    // Premium Stat Card
+    const StatCard = ({ value, suffix = '', label, icon: Icon, delay = 0, color = '#88da1c' }) => (
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ delay, duration: 0.6, type: 'spring', stiffness: 100 }}
+        className="relative p-8 rounded-3xl overflow-hidden"
+        style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
+      >
+        <motion.div
+          className="absolute -top-8 -right-8 w-32 h-32 rounded-full"
+          style={{ backgroundColor: `${color}10`, filter: 'blur(40px)' }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        />
+        <div className="relative">
+          <div className="w-14 h-14 rounded-2xl mb-6 flex items-center justify-center" style={{ backgroundColor: `${color}20` }}>
+            <Icon size={28} style={{ color }} />
+          </div>
+          <div className="text-5xl md:text-6xl font-black mb-3" style={{ color }}>
+            <AnimatedCounter value={value} suffix={suffix} delay={delay * 1000 + 200} />
+          </div>
+          <div className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>{label}</div>
+        </div>
+      </motion.div>
+    );
+
+    // Animated Spectrum Bar
+    const SpectrumBar = ({ delay = 0 }) => {
+      const [animated, setAnimated] = useState(false);
+      useEffect(() => { const t = setTimeout(() => setAnimated(true), delay); return () => clearTimeout(t); }, [delay]);
+
+      return (
+        <div className="relative w-full max-w-2xl mx-auto">
+          {/* Main spectrum bar */}
+          <div className="relative h-20 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+            <motion.div
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: animated ? 1 : 0 }}
+              transition={{ duration: 1 }}
+              style={{
+                background: 'linear-gradient(90deg, #6B7280 0%, #EF4444 25%, #88da1c 50%, #F59E0B 75%, #6B7280 100%)',
+              }}
+            />
+            {/* Sweet spot highlight */}
+            <motion.div
+              className="absolute top-0 bottom-0 rounded-full"
+              style={{ left: '40%', width: '20%', backgroundColor: '#88da1c', boxShadow: '0 0 40px #88da1c' }}
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: animated ? 0.8 : 0, scaleY: animated ? 1 : 0 }}
+              transition={{ delay: 0.8, duration: 0.6, type: 'spring' }}
+            />
+            {/* Needle */}
+            <motion.div
+              className="absolute top-1/2 w-2 h-28 -mt-14 rounded-full"
+              style={{ backgroundColor: '#fff', boxShadow: '0 0 20px rgba(255,255,255,0.5)' }}
+              initial={{ left: '10%' }}
+              animate={{ left: animated ? '50%' : '10%' }}
+              transition={{ delay: 0.5, duration: 1.5, type: 'spring', stiffness: 50 }}
+            />
+          </div>
+
+          {/* Labels */}
+          <div className="flex justify-between mt-4 px-4">
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Boring</span>
+            <motion.span
+              className="text-sm font-bold"
+              style={{ color: '#88da1c' }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: animated ? 1 : 0, y: animated ? 0 : 10 }}
+              transition={{ delay: 1.5 }}
+            >
+              70/30 Sweet Spot
+            </motion.span>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Scary</span>
+          </div>
+        </div>
+      );
+    };
+
+    // Giant Percentage Display
+    const GiantPercentage = ({ value, label, sublabel, delay = 0, color = '#88da1c' }) => (
+      <motion.div
+        className="text-center"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay, duration: 0.8, type: 'spring', stiffness: 80 }}
+      >
+        <div className="relative inline-block">
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{ backgroundColor: color, filter: 'blur(80px)', opacity: 0.3 }}
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
+          <span className="relative text-[120px] md:text-[180px] font-black leading-none" style={{ color, textShadow: `0 0 60px ${color}50` }}>
+            <AnimatedCounter value={value} suffix="%" delay={delay * 1000} duration={2500} />
+          </span>
+        </div>
+        <motion.p
+          className="text-2xl md:text-3xl font-bold mt-4"
+          style={{ color: '#fff' }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: delay + 0.5 }}
+        >
+          {label}
+        </motion.p>
+        {sublabel && (
+          <motion.p
+            className="text-base mt-2"
+            style={{ color: 'rgba(255,255,255,0.5)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: delay + 0.7 }}
+          >
+            {sublabel}
+          </motion.p>
+        )}
+      </motion.div>
+    );
+
+    // ============================================
+    // SLIDES DATA
+    // ============================================
     const slides = [
       { type: 'welcome' },
       { type: 'hook' },
       { type: 'revelation' },
-      { type: 'maya-visual' },
-      { type: 'why-matters' },
-      { type: 'example-1' },
-      { type: 'formula' },
-      { type: 'example-2' },
+      { type: 'principle' },
+      { type: 'spectrum' },
       { type: 'brain-science' },
       { type: 'application' },
-      { type: 'example-3' },
+      { type: 'example-1' },
+      { type: 'example-2' },
+      { type: 'formula' },
       { type: 'checklist' },
       { type: 'quiz' },
       { type: 'completion' }
     ];
 
-    // ==================== SLIDES ====================
+    // ============================================
+    // SLIDE COMPONENTS
+    // ============================================
 
+    // 1. WELCOME - Premium Hero
     const WelcomeSlide = ({ onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => typeof getTimeBasedWelcome === 'function' ? getTimeBasedWelcome() : { greeting: 'Hey {name}!', gif: null }, []);
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      useEffect(() => { if (welcomeData.gif) onShowGif(welcomeData.gif, '50%', gifSide); return () => onHideGif(); }, []);
 
-      const goals = [
-        'The MAYA Principle that makes products irresistible',
-        'Why 100% unique products fail on Shopify',
-        'The 70/30 formula top stores use to convert'
-      ];
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '55%', gifSide);
+        return () => onHideGif();
+      }, []);
+
+      const goals = ['The "MAYA Principle" that makes products irresistible', 'Why 100% unique products fail on Shopify', 'The 70/30 formula top stores use to convert'];
 
       return (
-        <div className="h-full flex flex-col items-center justify-center px-6 text-center">
-          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-[var(--text-medium)] text-base mb-4"
-            dangerouslySetInnerHTML={{ __html: typeof formatGreeting === 'function' ? formatGreeting(welcomeData.greeting, `<span class="font-semibold text-[var(--text-dark)]">${userName}</span>`) : `Hey <span class="font-semibold text-[var(--text-dark)]">${userName}</span>!` }} />
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-8">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+                <Icons.Sparkles size={14} />
+                <span>COPYWRITING</span>
+              </div>
+            </motion.div>
 
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--text-dark)] mb-3 leading-tight">
-            {LESSON_CONFIG.title}
-          </motion.h1>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-6xl font-black mb-6" style={{ color: '#000', letterSpacing: '-0.04em', lineHeight: 1.05 }}>
+              {LESSON_CONFIG.title}
+            </motion.h1>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="flex items-center gap-2 text-[var(--text-light)] text-sm mb-8">
-            <Icons.Clock />
-            <span>{LESSON_CONFIG.duration}</span>
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-base mb-2" style={{ color: '#666' }} dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<strong style="color:#000">${userName}</strong>`) }} />
+
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="flex items-center gap-2 mb-8" style={{ color: '#999' }}>
+              <Icons.Clock size={14} /><span className="text-sm">{LESSON_CONFIG.duration}</span>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6 mb-8 w-full max-w-md" style={{ backgroundColor: '#000' }}>
+              <p className="text-[10px] uppercase tracking-[0.2em] mb-5" style={{ color: 'rgba(255,255,255,0.35)' }}>What you'll learn</p>
+              <div className="space-y-4">
+                {goals.map((goal, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#88da1c' }}>
+                      <span className="text-xs font-bold" style={{ color: '#000' }}>{i + 1}</span>
+                    </div>
+                    <span className="text-sm text-left leading-relaxed" style={{ color: 'rgba(255,255,255,0.8)' }}>{goal}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-8 py-4 rounded-xl font-bold text-base flex items-center gap-2" style={{ backgroundColor: '#88da1c', color: '#000' }}>
+              Start Learning
+              <Icons.ArrowRight />
+            </motion.button>
+          </div>
+        </div>
+      );
+    };
+
+    // 2. HOOK - Massive Typography Hero
+    const HookSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full p-4 md:p-6">
+          <div className="h-full rounded-[32px] relative overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#000' }}>
+            {/* Background glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(136,218,28,0.08) 0%, transparent 70%)' }} />
+
+            <div className="relative z-10 max-w-4xl mx-auto px-8 text-center">
+              {/* Spotify badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-10"
+                style={{ backgroundColor: '#1DB954', boxShadow: '0 0 40px rgba(29,185,84,0.4)' }}
+              >
+                <Icons.Music size={20} style={{ color: '#fff' }} />
+                <span className="font-bold text-sm" style={{ color: '#fff' }}>SPOTIFY CASE STUDY</span>
+              </motion.div>
+
+              {/* Massive headline */}
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8, type: 'spring', stiffness: 80 }}
+                className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] mb-8"
+                style={{ color: '#fff', letterSpacing: '-0.04em' }}
+              >
+                They almost{' '}
+                <span className="relative">
+                  <span style={{ color: '#EF4444' }}>destroyed</span>
+                  <motion.svg
+                    className="absolute -bottom-2 left-0 w-full"
+                    viewBox="0 0 200 12"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ delay: 0.8, duration: 0.8 }}
+                  >
+                    <motion.path d="M0 8 Q100 0, 200 8" fill="none" stroke="#EF4444" strokeWidth="4" strokeLinecap="round" />
+                  </motion.svg>
+                </span>
+                {' '}their best feature.
+              </motion.h1>
+
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+                className="text-xl md:text-2xl max-w-2xl mx-auto"
+                style={{ color: 'rgba(255,255,255,0.6)' }}
+              >
+                Their "Discover Weekly" playlist served users{' '}
+                <span style={{ color: '#fff', fontWeight: 700 }}>100% new music</span>
+                . Songs they'd never heard. Artists they'd never seen.
+              </motion.p>
+
+              {/* Result card */}
+              <motion.div
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.8, duration: 0.6, type: 'spring' }}
+                className="mt-12 inline-flex items-center gap-4 px-8 py-5 rounded-2xl"
+                style={{ backgroundColor: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Icons.TrendingDown size={32} style={{ color: '#EF4444' }} />
+                </motion.div>
+                <div className="text-left">
+                  <p className="text-lg font-bold" style={{ color: '#fff' }}>Engagement collapsed</p>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Users stopped clicking entirely</p>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // 3. REVELATION - Giant Stats
+    const RevelationSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full p-4 md:p-6">
+          <div className="h-full rounded-[32px] flex flex-col items-center justify-center px-8 py-12" style={{ backgroundColor: '#000' }}>
+            {/* Light bulb icon with glow */}
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, type: 'spring', stiffness: 150 }}
+              className="relative mb-10"
+            >
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{ backgroundColor: '#88da1c', filter: 'blur(30px)', width: 100, height: 100, margin: -10 }}
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <div className="w-20 h-20 rounded-2xl flex items-center justify-center relative" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb size={40} style={{ color: '#000' }} />
+              </div>
+            </motion.div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-4xl md:text-5xl font-black text-center mb-4"
+              style={{ color: '#fff', letterSpacing: '-0.03em' }}
+            >
+              The Fix That Changed Everything
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-lg md:text-xl text-center mb-16 max-w-xl"
+              style={{ color: 'rgba(255,255,255,0.6)' }}
+            >
+              Spotify added just <span style={{ color: '#88da1c', fontWeight: 700 }}>30% familiar songs</span>
+            </motion.p>
+
+            {/* Stats grid */}
+            <div className="grid md:grid-cols-3 gap-6 w-full max-w-4xl">
+              <StatCard value={40} suffix="%" label="More engagement" icon={Icons.TrendingUp} delay={0.6} />
+              <StatCard value={3} suffix="x" label="More saves" icon={Icons.Star} delay={0.75} color="#F59E0B" />
+              <StatCard value={2} suffix="x" label="Return rate" icon={Icons.ArrowUpRight} delay={0.9} color="#3B82F6" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // 4. THE PRINCIPLE - Name reveal
+    const PrincipleSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full flex flex-col items-center justify-center px-8 py-12">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <motion.p
+              className="text-sm font-semibold uppercase tracking-[0.3em] mb-8"
+              style={{ color: '#999' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              Introducing
+            </motion.p>
+
+            {/* Giant MAYA text */}
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.8, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8, type: 'spring', stiffness: 80 }}
+              className="text-[80px] md:text-[140px] lg:text-[180px] font-black leading-none mb-6"
+              style={{
+                color: '#000',
+                letterSpacing: '-0.05em',
+                textShadow: '0 20px 60px rgba(0,0,0,0.1)'
+              }}
+            >
+              MAYA
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="text-xl md:text-2xl font-medium"
+              style={{ color: '#666' }}
+            >
+              <span style={{ color: '#88da1c', fontWeight: 700 }}>M</span>ost{' '}
+              <span style={{ color: '#88da1c', fontWeight: 700 }}>A</span>dvanced{' '}
+              <span style={{ color: '#88da1c', fontWeight: 700 }}>Y</span>et{' '}
+              <span style={{ color: '#88da1c', fontWeight: 700 }}>A</span>cceptable
+            </motion.p>
+
+            {/* Quote */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1 }}
+              className="mt-12 max-w-lg mx-auto p-6 rounded-2xl"
+              style={{ backgroundColor: '#f8f9fa' }}
+            >
+              <p className="text-base italic" style={{ color: '#444' }}>
+                "To sell something surprising, make it familiar. To sell something familiar, make it surprising."
+              </p>
+              <p className="text-sm font-semibold mt-3" style={{ color: '#88da1c' }}>
+                - Raymond Loewy, Industrial Designer
+              </p>
+            </motion.div>
           </motion.div>
+        </div>
+      </div>
+    );
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-[var(--bg-gray)] rounded-2xl p-6 mb-8 w-full max-w-md">
-            <p className="text-xs font-bold uppercase tracking-wider text-[var(--text-light)] mb-4">What you'll learn</p>
-            <div className="space-y-3">
-              {goals.map((goal, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-start gap-3 text-left">
-                  <div className="w-7 h-7 rounded-lg bg-[var(--primary)] text-white text-sm font-bold flex items-center justify-center flex-shrink-0">{i + 1}</div>
-                  <span className="text-[var(--text-dark)] text-sm leading-relaxed pt-0.5">{goal}</span>
+    // 5. SPECTRUM - Visual slider
+    const SpectrumSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full p-4 md:p-6">
+          <div className="h-full rounded-[32px] flex flex-col items-center justify-center px-8 py-12" style={{ backgroundColor: '#000' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-4" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+                The Formula
+              </div>
+              <h2 className="text-3xl md:text-5xl font-black" style={{ color: '#fff', letterSpacing: '-0.03em' }}>
+                Find The Sweet Spot
+              </h2>
+            </motion.div>
+
+            <SpectrumBar delay={400} />
+
+            {/* The formula */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2 }}
+              className="mt-16 grid md:grid-cols-3 gap-4 max-w-3xl w-full"
+            >
+              <div className="p-6 rounded-2xl text-center" style={{ backgroundColor: 'rgba(136,218,28,0.1)', border: '1px solid rgba(136,218,28,0.2)' }}>
+                <div className="text-4xl font-black mb-2" style={{ color: '#88da1c' }}>70%</div>
+                <div className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>Familiar foundation</div>
+              </div>
+              <div className="p-6 rounded-2xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.03)' }}>
+                <span className="text-3xl font-black" style={{ color: 'rgba(255,255,255,0.3)' }}>+</span>
+              </div>
+              <div className="p-6 rounded-2xl text-center" style={{ backgroundColor: 'rgba(136,218,28,0.1)', border: '1px solid rgba(136,218,28,0.2)' }}>
+                <div className="text-4xl font-black mb-2" style={{ color: '#88da1c' }}>30%</div>
+                <div className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>Novel twist</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // 6. BRAIN SCIENCE - Progress rings
+    const BrainScienceSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full p-4 md:p-6">
+          <div className="h-full rounded-[32px] flex flex-col items-center justify-center px-8 py-12" style={{ backgroundColor: '#000' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <div className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: 'rgba(136,218,28,0.15)' }}>
+                <Icons.Brain size={32} style={{ color: '#88da1c' }} />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                Why It Works
+              </h2>
+              <p className="text-base mt-2" style={{ color: 'rgba(255,255,255,0.4)' }}>The neuroscience behind MAYA</p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl">
+              {[
+                { value: 40, label: 'Faster Processing', desc: 'Brain handles familiar patterns 40% faster', color: '#88da1c' },
+                { value: 0, label: 'Zero Excitement', desc: 'Pure familiarity creates no dopamine spike', color: '#6B7280' },
+                { value: 200, label: 'More Attention', desc: 'Novel-familiar mix doubles engagement', color: '#3B82F6', suffix: '%' }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.2, type: 'spring', stiffness: 100 }}
+                  className="text-center"
+                >
+                  <ProgressRing value={item.value > 100 ? 100 : item.value} size={140} thickness={10} color={item.color} delay={300 + i * 200}>
+                    <span className="text-3xl font-black" style={{ color: item.color }}>
+                      <AnimatedCounter value={item.value} suffix={item.suffix || '%'} delay={400 + i * 200} />
+                    </span>
+                  </ProgressRing>
+                  <h3 className="text-lg font-bold mt-6 mb-2" style={{ color: '#fff' }}>{item.label}</h3>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>{item.desc}</p>
                 </motion.div>
               ))}
             </div>
-          </motion.div>
-
-          <motion.button initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
-            className="bg-[var(--primary)] hover:bg-[var(--primary-dark)] text-white font-bold text-lg px-10 py-4 rounded-2xl shadow-lg shadow-[var(--primary)]/30 transition-colors">
-            START
-          </motion.button>
-        </div>
-      );
-    };
-
-    const HookSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center px-6 text-center">
-        <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} className="w-20 h-20 rounded-full bg-[#1DB954] flex items-center justify-center mb-8">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-        </motion.div>
-
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[var(--text-dark)] mb-6 leading-tight max-w-lg">
-          Spotify almost killed their biggest feature.
-        </motion.h2>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="max-w-md space-y-4 text-[var(--text-medium)] text-lg">
-          <p>Their "Discover Weekly" served <span className="font-bold text-[var(--text-dark)]">100% new music</span>.</p>
-          <p>The result? <span className="font-bold text-[var(--error)]">Engagement tanked.</span></p>
-          <p className="text-[var(--text-dark)] font-semibold pt-2">Until they discovered the secret...</p>
-        </motion.div>
-      </div>
-    );
-
-    const RevelationSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center px-6 text-center">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-extrabold text-[var(--text-dark)] mb-8">
-          The Fix That Changed Everything
-        </motion.h2>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-[var(--bg-gray)] rounded-2xl p-6 mb-8 max-w-lg w-full">
-          <p className="text-[var(--text-medium)] mb-6">When Spotify added <span className="font-bold text-[var(--text-dark)]">30% familiar songs</span>:</p>
-          <div className="grid grid-cols-3 gap-4">
-            {[{ val: 40, suf: '%', label: 'Engagement' }, { val: 3, suf: 'x', label: 'Save rate' }, { val: 2, suf: 'x', label: 'Returns' }].map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }} className="text-center">
-                <div className="text-3xl font-extrabold text-[var(--primary)]"><AnimatedNumber value={s.val} suffix={s.suf} /></div>
-                <div className="text-xs text-[var(--text-light)] font-medium mt-1">{s.label}</div>
-              </motion.div>
-            ))}
           </div>
-        </motion.div>
-
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-xl font-bold text-[var(--text-dark)] max-w-sm">
-          They wanted <span className="text-[var(--primary)]">new wrapped in familiar</span>.
-        </motion.p>
+        </div>
       </div>
     );
 
-    const MayaVisualSlide = () => {
-      const [active, setActive] = useState(1);
-      const zones = [
-        { label: 'Too Familiar', sub: '100% Known', emoji: '😴', title: 'They scroll past', desc: '"I\'ve seen this before." No interest.' },
-        { label: 'MAYA Zone', sub: '70/30 Mix', emoji: '🎯', title: 'They BUY', desc: 'Trust + excitement = conversion.' },
-        { label: 'Too Novel', sub: '100% New', emoji: '😰', title: 'They back away', desc: '"Too risky." Brain says no.' }
-      ];
-
-      return (
-        <div className="h-full flex flex-col items-center justify-center px-6">
-          <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl md:text-3xl font-extrabold text-[var(--text-dark)] mb-2 text-center">
-            The MAYA Principle
-          </motion.h2>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-[var(--text-light)] text-sm mb-8">
-            Most Advanced Yet Acceptable
-          </motion.p>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex gap-2 mb-6">
-            {zones.map((z, i) => (
-              <button key={i} onClick={() => setActive(i)}
-                className={`px-4 py-3 rounded-xl font-semibold text-sm transition-all ${active === i
-                  ? i === 1 ? 'bg-[var(--primary)] text-white' : 'bg-[var(--text-dark)] text-white'
-                  : 'bg-[var(--bg-gray)] text-[var(--text-medium)] hover:bg-[var(--border)]'}`}>
-                {z.label}
-              </button>
-            ))}
+    // 7. APPLICATION - Visual comparison
+    const ApplicationSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-5xl mx-auto py-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-5xl font-black" style={{ color: '#000', letterSpacing: '-0.03em' }}>
+              The Danger Zones
+            </h2>
+            <p className="text-lg mt-2" style={{ color: '#666' }}>Where most stores fail</p>
           </motion.div>
 
-          <AnimatePresence mode="wait">
-            <motion.div key={active} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-              className={`rounded-2xl p-8 text-center w-full max-w-sm ${active === 1 ? 'bg-[var(--primary)]/10 border-2 border-[var(--primary)]' : 'bg-[var(--bg-gray)]'}`}>
-              <div className="text-5xl mb-4">{zones[active].emoji}</div>
-              <h3 className={`text-xl font-bold mb-2 ${active === 1 ? 'text-[var(--primary)]' : 'text-[var(--text-dark)]'}`}>{zones[active].title}</h3>
-              <p className="text-[var(--text-medium)]">{zones[active].desc}</p>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Too Familiar */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="relative p-8 rounded-3xl overflow-hidden"
+              style={{ backgroundColor: '#fef2f2', border: '2px solid #fecaca' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1.5" style={{ backgroundColor: '#EF4444' }} />
+              <div className="w-16 h-16 rounded-2xl mb-6 flex items-center justify-center" style={{ backgroundColor: '#EF4444' }}>
+                <Icons.Eye size={32} style={{ color: '#fff' }} />
+              </div>
+              <h3 className="text-2xl font-black mb-3" style={{ color: '#991B1B' }}>TOO Familiar</h3>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#7F1D1D' }}>
+                "I've seen this before"
+              </p>
+              <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(239,68,68,0.1)' }}>
+                <p className="text-sm font-medium" style={{ color: '#991B1B' }}>
+                  They scroll past without a second thought
+                </p>
+              </div>
             </motion.div>
-          </AnimatePresence>
+
+            {/* Too Novel */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, type: 'spring' }}
+              className="relative p-8 rounded-3xl overflow-hidden"
+              style={{ backgroundColor: '#fffbeb', border: '2px solid #fde68a' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1.5" style={{ backgroundColor: '#F59E0B' }} />
+              <div className="w-16 h-16 rounded-2xl mb-6 flex items-center justify-center" style={{ backgroundColor: '#F59E0B' }}>
+                <Icons.AlertTriangle size={32} style={{ color: '#fff' }} />
+              </div>
+              <h3 className="text-2xl font-black mb-3" style={{ color: '#92400E' }}>TOO Novel</h3>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#78350F' }}>
+                "This seems risky..."
+              </p>
+              <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(245,158,11,0.1)' }}>
+                <p className="text-sm font-medium" style={{ color: '#92400E' }}>
+                  Brain flags it as uncertain - they hesitate and leave
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* The sweet spot */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="p-8 rounded-3xl"
+            style={{ backgroundColor: '#000' }}
+          >
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Target size={32} style={{ color: '#000' }} />
+              </div>
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>The Sweet Spot</p>
+                <p className="text-xl font-bold" style={{ color: '#fff' }}>
+                  <span style={{ color: '#88da1c' }}>70% familiar</span> to build trust, then{' '}
+                  <span style={{ color: '#88da1c' }}>30% novel</span> to create desire
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
-      );
-    };
-
-    const WhyMattersSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center px-6 text-center">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-extrabold text-[var(--text-dark)] mb-8">
-          Why This Matters for Your Store
-        </motion.h2>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-4 max-w-md">
-          <div className="bg-[var(--bg-gray)] rounded-xl p-4 text-left">
-            <span className="text-[var(--error)] font-bold">Too familiar →</span>
-            <span className="text-[var(--text-medium)]"> "I've seen this before"</span>
-          </div>
-          <div className="bg-[var(--bg-gray)] rounded-xl p-4 text-left">
-            <span className="text-[var(--warning)] font-bold">Too new →</span>
-            <span className="text-[var(--text-medium)]"> Brain flags it as risky</span>
-          </div>
-          <div className="bg-[var(--primary)]/10 border-2 border-[var(--primary)] rounded-xl p-4 text-left">
-            <span className="text-[var(--primary)] font-bold">70/30 mix →</span>
-            <span className="text-[var(--text-dark)] font-medium"> They trust AND want it</span>
-          </div>
-        </motion.div>
       </div>
     );
 
-    const ExampleSlide = ({ scenario, bad, good, insight }) => (
-      <div className="h-full flex flex-col items-center justify-center px-6">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-[var(--secondary)]/10 text-[var(--secondary)] mb-2">EXAMPLE</span>
-          <h2 className="text-xl md:text-2xl font-extrabold text-[var(--text-dark)]">{scenario}</h2>
-        </motion.div>
-
-        <div className="w-full max-w-2xl grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }} className="bg-[var(--error)]/5 border-2 border-[var(--error)]/20 rounded-2xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-full bg-[var(--error)] flex items-center justify-center text-white"><Icons.X /></div>
-              <span className="font-bold text-[var(--error)] text-sm">{bad.label}</span>
+    // 8. EXAMPLE 1 - Side by side comparison
+    const Example1Slide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-10"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+              Case Study
             </div>
-            <p className="text-[var(--text-medium)] text-sm italic">"{bad.text}"</p>
+            <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#000', letterSpacing: '-0.02em' }}>
+              Posture Corrector Store
+            </h2>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 }} className="bg-[var(--primary)]/5 border-2 border-[var(--primary)]/20 rounded-2xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-white"><Icons.Check /></div>
-              <span className="font-bold text-[var(--primary)] text-sm">{good.label}</span>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Before */}
+            <motion.div
+              initial={{ opacity: 0, x: -30, rotateY: -10 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 0.1, type: 'spring' }}
+              className="rounded-3xl overflow-hidden"
+              style={{ border: '2px solid #fecaca' }}
+            >
+              <div className="px-6 py-5 flex items-center gap-3" style={{ backgroundColor: '#EF4444' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                  <Icons.X size={20} style={{ color: '#fff' }} />
+                </div>
+                <span className="font-bold" style={{ color: '#fff' }}>Too Generic</span>
+              </div>
+              <div className="p-8" style={{ backgroundColor: '#fef2f2' }}>
+                <p className="text-lg italic leading-relaxed" style={{ color: '#7F1D1D' }}>
+                  "Fix your posture with our back brace. Comfortable and adjustable."
+                </p>
+              </div>
+            </motion.div>
+
+            {/* After */}
+            <motion.div
+              initial={{ opacity: 0, x: 30, rotateY: 10 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="rounded-3xl overflow-hidden"
+              style={{ border: '2px solid rgba(136,218,28,0.4)', boxShadow: '0 20px 60px rgba(136,218,28,0.15)' }}
+            >
+              <div className="px-6 py-5 flex items-center gap-3" style={{ backgroundColor: '#88da1c' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.15)' }}>
+                  <Icons.Check size={20} strokeWidth={3} style={{ color: '#000' }} />
+                </div>
+                <span className="font-bold" style={{ color: '#000' }}>MAYA Applied</span>
+              </div>
+              <div className="p-8" style={{ backgroundColor: 'rgba(136,218,28,0.08)' }}>
+                <p className="text-lg italic leading-relaxed" style={{ color: '#166534' }}>
+                  "The posture fix that works while you're sitting at your desk - no awkward straps visible under your shirt."
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Breakdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 p-6 rounded-2xl"
+            style={{ backgroundColor: '#000' }}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb size={24} style={{ color: '#000' }} />
+              </div>
+              <div>
+                <p className="text-sm font-medium" style={{ color: '#fff' }}>
+                  <span style={{ color: '#88da1c' }}>Familiar problem</span> (bad posture) +{' '}
+                  <span style={{ color: '#88da1c' }}>Novel twist</span> (invisible, works while sitting)
+                </p>
+              </div>
             </div>
-            <p className="text-[var(--text-medium)] text-sm italic">"{good.text}"</p>
           </motion.div>
         </div>
-
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-[var(--text-dark)] rounded-xl px-5 py-3 max-w-lg">
-          <p className="text-white text-sm font-medium flex items-center gap-2"><Icons.Zap />{insight}</p>
-        </motion.div>
       </div>
     );
 
+    // 9. EXAMPLE 2
+    const Example2Slide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-10"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+              Case Study
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#000', letterSpacing: '-0.02em' }}>
+              Pet Products Store
+            </h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Before */}
+            <motion.div
+              initial={{ opacity: 0, x: -30, rotateY: -10 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 0.1, type: 'spring' }}
+              className="rounded-3xl overflow-hidden"
+              style={{ border: '2px solid #fde68a' }}
+            >
+              <div className="px-6 py-5 flex items-center gap-3" style={{ backgroundColor: '#F59E0B' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                  <Icons.X size={20} style={{ color: '#fff' }} />
+                </div>
+                <span className="font-bold" style={{ color: '#fff' }}>Too Novel</span>
+              </div>
+              <div className="p-8" style={{ backgroundColor: '#fffbeb' }}>
+                <p className="text-lg italic leading-relaxed" style={{ color: '#78350F' }}>
+                  "Revolutionary AI-powered smart collar with biometric sensors and cloud connectivity."
+                </p>
+              </div>
+            </motion.div>
+
+            {/* After */}
+            <motion.div
+              initial={{ opacity: 0, x: 30, rotateY: 10 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="rounded-3xl overflow-hidden"
+              style={{ border: '2px solid rgba(136,218,28,0.4)', boxShadow: '0 20px 60px rgba(136,218,28,0.15)' }}
+            >
+              <div className="px-6 py-5 flex items-center gap-3" style={{ backgroundColor: '#88da1c' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.15)' }}>
+                  <Icons.Check size={20} strokeWidth={3} style={{ color: '#000' }} />
+                </div>
+                <span className="font-bold" style={{ color: '#000' }}>MAYA Applied</span>
+              </div>
+              <div className="p-8" style={{ backgroundColor: 'rgba(136,218,28,0.08)' }}>
+                <p className="text-lg italic leading-relaxed" style={{ color: '#166534' }}>
+                  "Finally - a collar that tells you when your dog needs a vet visit. Before they even show symptoms."
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Breakdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 p-6 rounded-2xl"
+            style={{ backgroundColor: '#000' }}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb size={24} style={{ color: '#000' }} />
+              </div>
+              <div>
+                <p className="text-sm font-medium" style={{ color: '#fff' }}>
+                  <span style={{ color: '#88da1c' }}>Familiar product</span> (collar) +{' '}
+                  <span style={{ color: '#88da1c' }}>Familiar concern</span> (vet visits) +{' '}
+                  <span style={{ color: '#88da1c' }}>Novel benefit</span> (early detection)
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // 10. FORMULA - Step by step
     const FormulaSlide = () => {
       const steps = [
-        { n: '1', title: 'Their Language', desc: 'Use their exact words. "My back kills me" not "lumbar discomfort."' },
-        { n: '2', title: 'Known Problems', desc: 'Anchor to struggles they recognize instantly.' },
-        { n: '3', title: 'The Twist', desc: 'Once they\'re nodding, reveal your unique angle.' },
-        { n: '4', title: 'Bridge', desc: 'Connect your novel solution to their familiar goal.' }
+        { num: 1, title: 'Their Language', desc: 'Use exact words customers use', example: '"My back kills me" not "lumbar discomfort"' },
+        { num: 2, title: 'Known Problems', desc: 'Anchor to struggles they recognize', example: 'Get them nodding before you pitch' },
+        { num: 3, title: 'The Twist', desc: 'Reveal your unique angle', example: 'After comfort, add the surprise' },
+        { num: 4, title: 'Bridge It', desc: 'Connect novel to familiar goal', example: 'Link your mechanism to their desire' }
       ];
+
       return (
-        <div className="h-full flex flex-col items-center justify-center px-6">
-          <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl md:text-3xl font-extrabold text-[var(--text-dark)] mb-8 text-center">
-            The 4-Part MAYA Formula
-          </motion.h2>
-          <div className="grid grid-cols-2 gap-3 max-w-xl w-full">
-            {steps.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
-                className="bg-[var(--bg-gray)] rounded-2xl p-5 hover:shadow-lg transition-shadow">
-                <div className="w-10 h-10 rounded-xl bg-[var(--primary)] text-white font-bold text-lg flex items-center justify-center mb-3">{s.n}</div>
-                <h3 className="font-bold text-[var(--text-dark)] mb-1">{s.title}</h3>
-                <p className="text-[var(--text-medium)] text-sm leading-relaxed">{s.desc}</p>
-              </motion.div>
-            ))}
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+          <div className="h-full p-4 md:p-6">
+            <div className="h-full rounded-[32px] flex flex-col justify-center px-8 py-10" style={{ backgroundColor: '#000' }}>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-3xl md:text-4xl font-black text-center mb-12"
+                style={{ color: '#fff', letterSpacing: '-0.02em' }}
+              >
+                The 4-Step MAYA Formula
+              </motion.h2>
+
+              <div className="grid md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+                {steps.map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 100 }}
+                    className="relative p-6 rounded-2xl"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
+                  >
+                    {/* Step number */}
+                    <div className="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                      <span className="text-xl font-black" style={{ color: '#000' }}>{step.num}</span>
+                    </div>
+
+                    <h3 className="font-bold text-lg mb-2" style={{ color: '#fff' }}>{step.title}</h3>
+                    <p className="text-sm mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>{step.desc}</p>
+                    <p className="text-xs italic" style={{ color: 'rgba(136,218,28,0.8)' }}>{step.example}</p>
+
+                    {/* Arrow connector */}
+                    {i < 3 && (
+                      <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                        <Icons.ArrowRight />
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       );
     };
 
-    const BrainScienceSlide = () => {
-      const stats = [
-        { val: '40', suf: '%', title: 'Faster', desc: 'Brain processes familiar 40% faster' },
-        { val: '0', suf: '', title: 'Dopamine', desc: 'Pure familiarity = no excitement' },
-        { val: '2', suf: 'x', title: 'Attention', desc: 'Novel-familiar mix doubles engagement' }
-      ];
-      return (
-        <div className="h-full flex flex-col items-center justify-center px-6">
-          <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl md:text-3xl font-extrabold text-[var(--text-dark)] mb-2 text-center">The Brain Science</motion.h2>
-          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-[var(--text-light)] text-sm mb-8">Why this formula works neurologically</motion.p>
-          <div className="grid grid-cols-3 gap-4 max-w-xl w-full">
-            {stats.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
-                className="bg-[var(--text-dark)] rounded-2xl p-5 text-center">
-                <div className="text-4xl font-extrabold text-[var(--primary)] mb-1"><AnimatedNumber value={s.val} suffix={s.suf} /></div>
-                <div className="text-white font-bold text-sm mb-2">{s.title}</div>
-                <div className="text-white/60 text-xs">{s.desc}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      );
-    };
-
-    const ApplicationSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center px-6 text-center">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-extrabold text-[var(--text-dark)] mb-8">
-          Apply to Your Product Page
-        </motion.h2>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-[var(--bg-gray)] rounded-2xl p-6 max-w-md w-full space-y-4">
-          <div className="flex items-start gap-3 text-left">
-            <div className="w-8 h-8 rounded-lg bg-[var(--primary)] text-white font-bold flex items-center justify-center flex-shrink-0">1</div>
-            <div><span className="font-bold text-[var(--text-dark)]">Start with what they KNOW</span><p className="text-[var(--text-medium)] text-sm">The problem, desire, familiar category</p></div>
-          </div>
-          <div className="flex items-start gap-3 text-left">
-            <div className="w-8 h-8 rounded-lg bg-[var(--secondary)] text-white font-bold flex items-center justify-center flex-shrink-0">2</div>
-            <div><span className="font-bold text-[var(--text-dark)]">Then reveal what's different</span><p className="text-[var(--text-medium)] text-sm">Your mechanism, angle, proof</p></div>
-          </div>
-        </motion.div>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="text-[var(--primary)] font-bold mt-6">Familiar first, then novel.</motion.p>
-      </div>
-    );
-
+    // 11. CHECKLIST
     const ChecklistSlide = () => {
       const items = [
-        { title: 'Headline', q: 'Problem in their own words?' },
-        { title: 'Subheadline', q: 'Fresh angle without confusion?' },
-        { title: 'Body', q: 'Familiar desires before mechanism?' },
-        { title: 'CTA', q: 'Safe to click but exciting?' }
+        { area: 'Headline', question: 'Does it reference a problem they\'d describe in their own words?' },
+        { area: 'Subheadline', question: 'Does it hint at a fresh angle without being confusing?' },
+        { area: 'Body Copy', question: 'Do you anchor to familiar desires before explaining your mechanism?' },
+        { area: 'CTA', question: 'Does it feel safe enough to click but exciting enough to want to?' }
       ];
+
       return (
-        <div className="h-full flex flex-col items-center justify-center px-6">
-          <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-2xl md:text-3xl font-extrabold text-[var(--text-dark)] mb-8 text-center">Quick MAYA Checklist</motion.h2>
-          <div className="space-y-3 max-w-md w-full">
-            {items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }}
-                className="bg-[var(--bg-gray)] rounded-xl p-4 flex items-center gap-4">
-                <div className="w-6 h-6 rounded-full border-3 border-[var(--primary)] flex-shrink-0" />
-                <div className="text-left">
-                  <span className="font-bold text-[var(--text-dark)]">{item.title}</span>
-                  <p className="text-[var(--text-medium)] text-sm">{item.q}</p>
-                </div>
-              </motion.div>
-            ))}
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+                <Icons.CheckCircle size={14} />
+                Action Checklist
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#000', letterSpacing: '-0.02em' }}>
+                Quick MAYA Audit
+              </h2>
+              <p className="text-base mt-2" style={{ color: '#666' }}>Review your product page with these questions</p>
+            </motion.div>
+
+            <div className="space-y-4">
+              {items.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1, type: 'spring' }}
+                  className="p-6 rounded-2xl flex items-start gap-5"
+                  style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb' }}
+                >
+                  <div className="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center text-lg font-black" style={{ backgroundColor: '#88da1c', color: '#000' }}>
+                    {i + 1}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-base mb-1" style={{ color: '#000' }}>{item.area}</h3>
+                    <p className="text-sm" style={{ color: '#666' }}>{item.question}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       );
     };
 
+    // 12. QUIZ
     const QuizSlide = ({ onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
-      const [answered, setAnswered] = useState(false);
-      const correctIndex = 2;
-      const options = ['100% familiar', '50/50 balance', '70% familiar / 30% novel', '30% familiar / 70% novel'];
-      const celebrationGif = useMemo(() => getRandomGif(celebrationGifs), []);
-      const empathyGif = useMemo(() => getRandomGif(empathyGifs), []);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationGif = useMemo(() => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)], []);
+      const empathyGif = useMemo(() => empathyGifs[Math.floor(Math.random() * empathyGifs.length)], []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
 
-      const handleSelect = (i) => { if (answered) return; setSelected(i); setAnswered(true); };
+      const options = ['100% familiar - comfort is everything', '50/50 - perfect balance', '70% familiar / 30% novel', '30% familiar / 70% novel'];
+      const correctIndex = 2;
       const isCorrect = selected === correctIndex;
 
-      useEffect(() => { if (answered) onShowGif(isCorrect ? celebrationGif : empathyGif, '50%', gifSide); }, [answered]);
+      const handleSelect = (i) => { if (showFeedback) return; setSelected(i); setShowFeedback(true); };
+
+      useEffect(() => {
+        if (showFeedback) onShowGif(isCorrect ? celebrationGif : empathyGif, '50%', gifSide);
+      }, [showFeedback]);
+
       useEffect(() => () => onHideGif(), []);
 
       return (
-        <div className="h-full flex flex-col items-center justify-center px-6 relative z-20">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-[var(--warning)]/10 text-[var(--warning)] mb-3">QUIZ</span>
-            <h2 className="text-xl md:text-2xl font-extrabold text-[var(--text-dark)]">What's the optimal MAYA balance?</h2>
-          </motion.div>
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto py-10 relative z-30">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-10"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-4" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+                <Icons.Brain size={14} />
+                Knowledge Check
+              </div>
+              <h2 className="text-2xl md:text-3xl font-black leading-tight" style={{ color: '#000', letterSpacing: '-0.01em' }}>
+                What's the optimal balance for the MAYA Principle?
+              </h2>
+            </motion.div>
 
-          <div className="space-y-3 w-full max-w-md mb-6">
-            {options.map((opt, i) => (
-              <motion.button key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.05 }}
-                onClick={() => handleSelect(i)} disabled={answered}
-                className={`w-full p-4 rounded-xl text-left font-medium transition-all flex items-center gap-3 ${
-                  answered
-                    ? i === correctIndex ? 'bg-[var(--primary)]/10 border-2 border-[var(--primary)]'
-                      : i === selected ? 'bg-[var(--error)]/10 border-2 border-[var(--error)]' : 'bg-[var(--bg-gray)] opacity-40'
-                    : 'bg-[var(--bg-gray)] hover:bg-[var(--border)]'
-                }`}>
-                <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
-                  answered && i === correctIndex ? 'bg-[var(--primary)] text-white' :
-                  answered && i === selected && !isCorrect ? 'bg-[var(--error)] text-white' : 'bg-white text-[var(--text-medium)]'
-                }`}>
-                  {answered && i === correctIndex ? <Icons.Check /> : answered && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                </span>
-                <span className="text-[var(--text-dark)]">{opt}</span>
-              </motion.button>
-            ))}
+            <div className="space-y-3 mb-6">
+              {options.map((option, i) => (
+                <motion.button
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.08 }}
+                  onClick={() => handleSelect(i)}
+                  disabled={showFeedback}
+                  className="w-full p-5 rounded-xl text-left transition-all"
+                  style={{
+                    backgroundColor: showFeedback ? (i === correctIndex ? 'rgba(136,218,28,0.12)' : i === selected ? 'rgba(239,68,68,0.12)' : '#f8f9fa') : '#f8f9fa',
+                    border: showFeedback ? (i === correctIndex ? '2px solid #88da1c' : i === selected ? '2px solid #EF4444' : '2px solid #e5e7eb') : '2px solid #e5e7eb',
+                    opacity: showFeedback && i !== correctIndex && i !== selected ? 0.35 : 1,
+                    transform: showFeedback && i === correctIndex ? 'scale(1.02)' : 'scale(1)'
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="w-10 h-10 rounded-lg flex items-center justify-center text-base font-bold" style={{
+                      backgroundColor: showFeedback && i === correctIndex ? '#88da1c' : showFeedback && i === selected && !isCorrect ? '#EF4444' : '#e5e7eb',
+                      color: showFeedback && (i === correctIndex || (i === selected && !isCorrect)) ? '#fff' : '#666'
+                    }}>
+                      {showFeedback && i === correctIndex ? <Icons.Check size={18} /> : showFeedback && i === selected && !isCorrect ? <Icons.X size={18} /> : String.fromCharCode(65 + i)}
+                    </span>
+                    <span className="text-base" style={{ color: '#000' }}>{option}</span>
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+
+            <AnimatePresence>
+              {showFeedback && (
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-6 rounded-xl"
+                  style={{
+                    backgroundColor: isCorrect ? 'rgba(136,218,28,0.1)' : 'rgba(239,68,68,0.1)',
+                    border: isCorrect ? '1px solid rgba(136,218,28,0.25)' : '1px solid rgba(239,68,68,0.25)'
+                  }}
+                >
+                  <p className="text-base leading-relaxed" style={{ color: isCorrect ? '#166534' : '#991B1B' }}>
+                    {isCorrect
+                      ? '70% familiar foundation creates trust, 30% novel twist creates desire. This is the formula that converts.'
+                      : 'The magic ratio is 70% familiar to build comfort, then 30% novel to create excitement.'}
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-
-          <AnimatePresence>
-            {answered && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`p-4 rounded-xl max-w-md ${isCorrect ? 'bg-[var(--primary)]/10' : 'bg-[var(--warning)]/10'}`}>
-                <p className={`text-sm font-medium ${isCorrect ? 'text-[var(--primary-dark)]' : 'text-[var(--warning)]'}`}>
-                  {isCorrect ? "Exactly! 70% familiar builds trust, 30% novel creates desire." : "Not quite. The magic ratio is 70% familiar, 30% novel."}
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
         </div>
       );
     };
 
+    // 13. COMPLETION
     const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center px-6 text-center">
-        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.5 }}
-          className="w-20 h-20 rounded-full bg-[var(--primary)] flex items-center justify-center mb-6 text-white">
-          <Icons.Check />
-        </motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl font-extrabold text-[var(--text-dark)] mb-3">
-          Lesson Complete!
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-[var(--text-medium)] mb-8 max-w-sm">
-          Remember: <span className="font-bold text-[var(--text-dark)]">70% familiar + 30% novel</span> = irresistible.
-        </motion.p>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-[var(--text-dark)] rounded-2xl p-6 max-w-sm w-full text-left">
-          <p className="text-xs font-bold uppercase tracking-wider text-white/50 mb-2">Up Next</p>
-          <h3 className="text-white font-bold text-lg mb-1">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-white/70 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full flex flex-col items-center justify-center text-center px-8 py-10">
+          {/* Success icon */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 150 }}
+            className="relative mb-10"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.15, 0.3] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+              className="absolute rounded-full"
+              style={{ backgroundColor: '#88da1c', width: 140, height: 140, top: -30, left: -30, filter: 'blur(30px)' }}
+            />
+            <div className="w-20 h-20 rounded-full flex items-center justify-center relative" style={{ backgroundColor: '#88da1c' }}>
+              <Icons.Check size={40} strokeWidth={3} style={{ color: '#000' }} />
+            </div>
+          </motion.div>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-4xl md:text-5xl font-black mb-4"
+            style={{ color: '#000', letterSpacing: '-0.03em' }}
+          >
+            Lesson Complete
+          </motion.h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-lg mb-12 max-w-md"
+            style={{ color: '#666' }}
+          >
+            You now know the secret: <strong style={{ color: '#000' }}>70% familiar + 30% novel</strong>
+          </motion.p>
+
+          {/* Key takeaway */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="w-full max-w-md p-6 rounded-2xl mb-6"
+            style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb' }}
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Trophy size={20} style={{ color: '#000' }} />
+              </div>
+              <span className="font-bold" style={{ color: '#000' }}>Key Takeaway</span>
+            </div>
+            <p className="text-sm text-left" style={{ color: '#444' }}>
+              Lead with familiar problems, then reveal your novel solution. Comfort first, then surprise.
+            </p>
+          </motion.div>
+
+          {/* Next lesson */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="w-full max-w-md p-6 rounded-2xl"
+            style={{ backgroundColor: '#000' }}
+          >
+            <p className="text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: 'rgba(255,255,255,0.35)' }}>Up Next</p>
+            <h3 className="font-bold text-xl mb-2" style={{ color: '#fff' }}>{LESSON_CONFIG.nextLesson.title}</h3>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>{LESSON_CONFIG.nextLesson.teaser}</p>
+          </motion.div>
+        </div>
       </div>
     );
 
-    // ==================== MAIN APP ====================
+    // ============================================
+    // MAIN APP
+    // ============================================
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
-      const [isAnimating, setIsAnimating] = useState(false);
-      const [gifConfig, setGifConfig] = useState(null);
-      const currentSlideRef = useRef(0);
       const userName = useMemo(() => getUserName(), []);
+      const currentSlideRef = useRef(0);
+      const [gifConfig, setGifConfig] = useState(null);
+      const [isAnimating, setIsAnimating] = useState(false);
 
       const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-      useEffect(() => { window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*'); }, [currentSlide]);
+      useEffect(() => { window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', totalSlides: slides.length, slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*'); }, [currentSlide]);
 
-      const goToSlide = useCallback((newSlide) => {
-        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+      const goToSlide = useCallback((n) => {
+        if (isAnimating || n < 0 || n >= slides.length) return;
         setIsAnimating(true);
-        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
-        setCurrentSlide(newSlide);
+        setDirection(n > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(n);
       }, [isAnimating]);
 
       const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
       const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
 
       useEffect(() => {
-        const handleKey = (e) => {
+        const handleKeyDown = (e) => {
           if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
           if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
         };
-        window.addEventListener('keydown', handleKey);
-        return () => window.removeEventListener('keydown', handleKey);
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
       }, [nextSlide, prevSlide]);
 
-      const slideVariants = {
-        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-        center: { x: 0, opacity: 1 },
-        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
-      };
+      const slideVariants = { enter: (d) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }), center: { x: 0, opacity: 1 }, exit: (d) => ({ x: d > 0 ? '-100%' : '100%', opacity: 0 }) };
 
-      const renderSlide = () => {
-        const s = slides[currentSlide];
-        switch (s.type) {
+      const renderSlide = (slide) => {
+        switch (slide.type) {
           case 'welcome': return <WelcomeSlide onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide />;
           case 'revelation': return <RevelationSlide />;
-          case 'maya-visual': return <MayaVisualSlide />;
-          case 'why-matters': return <WhyMattersSlide />;
-          case 'example-1': return <ExampleSlide scenario="Posture Corrector" bad={{ label: 'Too Generic', text: 'Fix your posture with our back brace. Comfortable and adjustable.' }} good={{ label: 'MAYA Applied', text: 'The posture fix that works at your desk — no awkward straps visible under your shirt.' }} insight="Familiar problem + Novel twist (invisible)" />;
-          case 'formula': return <FormulaSlide />;
-          case 'example-2': return <ExampleSlide scenario="Pet Products" bad={{ label: 'Too Novel', text: 'AI-powered smart collar with biometric sensors and cloud connectivity.' }} good={{ label: 'MAYA Applied', text: 'A collar that tells you when your dog needs a vet visit. Before symptoms show.' }} insight="Familiar product + Novel benefit" />;
+          case 'principle': return <PrincipleSlide />;
+          case 'spectrum': return <SpectrumSlide />;
           case 'brain-science': return <BrainScienceSlide />;
           case 'application': return <ApplicationSlide />;
-          case 'example-3': return <ExampleSlide scenario="Skincare" bad={{ label: 'Wrong Order', text: 'Our patented CeraMatrix-7 uses nano-encapsulation at cellular level.' }} good={{ label: 'MAYA Applied', text: 'That stubborn dark spot? It\'s not your serum — it\'s the barrier your skin builds at night.' }} insight="Lead with familiar frustration" />;
+          case 'example-1': return <Example1Slide />;
+          case 'example-2': return <Example2Slide />;
+          case 'formula': return <FormulaSlide />;
           case 'checklist': return <ChecklistSlide />;
           case 'quiz': return <QuizSlide onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
@@ -545,43 +1250,29 @@
       const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
 
       return (
-        <div className="w-full h-screen bg-white flex flex-col relative overflow-hidden">
-          <div className="flex-1 relative overflow-hidden">
+        <div className="w-full h-screen flex flex-col relative" style={{ backgroundColor: '#fff' }}>
+          <div className="flex-1 relative overflow-hidden z-20">
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
-              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }} className="absolute inset-0">
-                {renderSlide()}
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }} className="absolute inset-0">
+                {renderSlide(slides[currentSlide])}
                 <AdminReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
 
-            {showPrev && (
-              <button onClick={prevSlide} className="absolute left-4 md:left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[var(--bg-gray)] hover:bg-[var(--border)] flex items-center justify-center text-[var(--text-medium)] hover:text-[var(--text-dark)] transition-colors z-10">
-                <Icons.ArrowLeft />
-              </button>
-            )}
-            {showNext && (
-              <button onClick={nextSlide} className="absolute right-4 md:right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-[var(--primary)] hover:bg-[var(--primary-dark)] flex items-center justify-center text-white transition-colors z-10 shadow-lg shadow-[var(--primary)]/30">
-                <Icons.ArrowRight />
-              </button>
-            )}
+            {showPrev && <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10" style={{ backgroundColor: '#f3f4f6', color: '#666' }} onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'} onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10" style={{ backgroundColor: '#f3f4f6', color: '#666' }} onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'} onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}><Icons.ArrowRight /></button>}
           </div>
 
-          <div className="px-6 py-4 flex-shrink-0">
-            <div className="flex items-center justify-center gap-1.5">
-              {slides.map((_, i) => (
-                <button key={i} onClick={() => goToSlide(i)}
-                  className={`h-2 rounded-full transition-all duration-300 ${i === currentSlide ? 'w-6 bg-[var(--primary)]' : 'w-2 bg-[var(--border)] hover:bg-[var(--text-light)]'}`} />
-              ))}
+          <div className="px-6 py-5 flex-shrink-0 relative z-10" style={{ borderTop: '1px solid #f0f0f0' }}>
+            <div className="flex items-center justify-center gap-2">
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2 h-2 rounded-full transition-all duration-300" style={{ backgroundColor: i === currentSlide ? '#88da1c' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.4)' : 'scale(1)' }} />)}
             </div>
           </div>
 
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }}
-                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 50, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-                  <source src={gifConfig.url} type="video/mp4" />
-                </video>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 120 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}><source src={gifConfig.url} type="video/mp4" /></video>
               </motion.div>
             )}
           </AnimatePresence>
