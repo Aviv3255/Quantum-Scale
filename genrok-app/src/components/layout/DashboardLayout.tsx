@@ -57,8 +57,10 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import { useBookmarksStore } from '@/store/bookmarks';
+import { useThemeStore, applyTheme } from '@/store/theme';
 import { signOut } from '@/lib/supabase';
 import { UserDropdown } from './UserDropdown';
+import ChatbotWidget from '@/components/ChatbotWidget';
 
 interface SubNavItem {
   title: string;
@@ -543,6 +545,7 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
             <UserDropdown />
           </div>
         </header>
+        )}
 
         {/* Main Content */}
         <main className={`main-content ${hideHeader ? 'no-header' : ''}`}>

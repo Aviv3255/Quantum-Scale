@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ExternalLink, Plus, Trash2, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ExternalLink, Plus, Trash2, X, ShoppingCart } from 'lucide-react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { useAuthStore } from '@/store/auth';
 

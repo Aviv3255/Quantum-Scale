@@ -71,7 +71,7 @@ interface GetAccessBarProps {
   onCheckout: () => void;
 }
 
-const GetAccessBar = ({ onCheckout }: GetAccessBarProps) => (
+const GetAccessBar = ({ onCheckout, price, isFree }: GetAccessBarProps) => (
   <div className="w-full bg-white border-b border-[#eee] py-4 px-6 lg:px-10 sticky top-0 z-40">
     <div className="max-w-6xl mx-auto flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -102,7 +102,7 @@ interface StickyCartProps {
   onCheckout: () => void;
 }
 
-const StickyCart = ({ title, onCheckout }: StickyCartProps) => (
+const StickyCart = ({ title, onCheckout, price, isFree }: StickyCartProps) => (
   <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-[#eee] shadow-lg py-4 px-6" style={{ marginLeft: 'var(--sidebar-width, 260px)' }}>
     <div className="max-w-4xl mx-auto flex items-center justify-between gap-4">
       <div className="flex-1 min-w-0">
