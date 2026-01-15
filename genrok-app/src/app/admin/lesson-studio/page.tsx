@@ -22,11 +22,20 @@ import { getAllComponents, LESSON_COMPONENTS } from '@/components/lessons';
 import { getAllLayouts, LAYOUT_TEMPLATES } from '@/components/lessons/layouts';
 
 // Category icons and colors
-const CATEGORY_CONFIG = {
+const CATEGORY_CONFIG: Record<string, { icon: typeof Sparkles; color: string; label: string }> = {
   slides: { icon: Sparkles, color: '#88da1c', label: 'Fixed Slides' },
   content: { icon: Layout, color: '#3B82F6', label: 'Content' },
+  chartsBasic: { icon: BarChart3, color: '#EF4444', label: 'Charts - Basic' },
+  chartsStatistical: { icon: BarChart3, color: '#F97316', label: 'Charts - Statistical' },
+  chartsTimeSeries: { icon: BarChart3, color: '#F59E0B', label: 'Charts - Time Series' },
+  chartsHierarchical: { icon: BarChart3, color: '#84CC16', label: 'Charts - Hierarchical' },
+  chartsNetwork: { icon: BarChart3, color: '#22C55E', label: 'Charts - Network' },
+  chartsKPI: { icon: BarChart3, color: '#14B8A6', label: 'Charts - KPI' },
+  chartsSpecialty: { icon: BarChart3, color: '#06B6D4', label: 'Charts - Specialty' },
   data: { icon: BarChart3, color: '#8B5CF6', label: 'Data' },
   comparison: { icon: GitCompare, color: '#F59E0B', label: 'Comparison' },
+  sequential: { icon: ListOrdered, color: '#EC4899', label: 'Sequential' },
+  emphasis: { icon: Quote, color: '#06B6D4', label: 'Emphasis' },
 };
 
 export default function LessonStudioPage() {
@@ -154,7 +163,7 @@ export default function LessonStudioPage() {
             const categoryKey = Object.entries(LESSON_COMPONENTS).find(
               ([, comps]) => comps.some(c => c.id === component.id)
             )?.[0] || 'slides';
-            const config = CATEGORY_CONFIG[categoryKey as keyof typeof CATEGORY_CONFIG];
+            const config = CATEGORY_CONFIG[categoryKey] || { icon: BarChart3, color: '#666', label: categoryKey };
 
             return (
               <motion.div
