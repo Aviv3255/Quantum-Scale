@@ -12,57 +12,43 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --accent: #88da1c;
-      --accent-dark: #6BC20C;
+      --accent-dark: #6bc40f;
       --accent-rgb: 136, 218, 28;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-    .premium-title {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-    h1, h2, h3, .slide-title {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-    ::selection { background: var(--accent); color: white; }
+    body { font-family: 'Inter', sans-serif; background: #fff; -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--accent); color: black; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 30px rgba(136, 218, 28, 0.3); } 50% { box-shadow: 0 0 50px rgba(136, 218, 28, 0.5); } }
+    .glow-pulse { animation: pulse-glow 2s ease-in-out infinite; }
+    @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
   </style>
 </head>
 <body>
   <div id="root"></div>
-
   <script type="text/babel">
     const { motion, AnimatePresence } = window.Motion;
-    const { useState, useEffect, useCallback, useMemo } = React;
+    const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
+    // ============================================
+    // CONFIG & UTILS
+    // ============================================
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
       return params.get('userName') || 'Builder';
     };
 
     const LESSON_CONFIG = {
-      id: 'familiar-surprise-secret',
+      id: 'familiar-surprise-secret-v2',
       title: 'The Familiar Surprise Secret',
       description: 'Why 70% familiar + 30% novel is the formula that makes customers say "I need this."',
       accentColor: '#88da1c',
-      duration: '5 min',
+      duration: '8 min',
       nextLesson: {
         id: 'red-button-effect',
         title: 'The Red Button Effect',
@@ -70,41 +56,23 @@
       }
     };
 
-    let __isAdmin = false;
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin;
-    });
-    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType,
-            lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-      return (
-        <button onClick={handleReport} title={`Report issue on Slide ${slideIndex + 1}`}
-          style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px',
-            borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white',
-            border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            zIndex: 1000, opacity: 0.6, transition: 'opacity 0.2s, transform 0.2s' }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/>
-          </svg>
-        </button>
-      );
+    // Animated Counter
+    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
+      const [count, setCount] = useState(0);
+      useEffect(() => {
+        let start = 0;
+        const increment = target / (duration / 16);
+        const timer = setInterval(() => {
+          start += increment;
+          if (start >= target) { setCount(target); clearInterval(timer); }
+          else { setCount(Math.floor(start)); }
+        }, 16);
+        return () => clearInterval(timer);
+      }, [target, duration]);
+      return <span>{prefix}{count}{suffix}</span>;
     };
 
+    // Celebration GIFs
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
@@ -114,357 +82,587 @@
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
-    const getRandomGif = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
+    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
+    // Admin Reporter
+    let __isAdmin = false;
+    window.addEventListener('message', (e) => { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
+    if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
+
+    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
+      const handleReport = (e) => {
+        e.stopPropagation();
+        if (window.parent !== window) {
+          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
+        }
+      };
+      return (
+        <button onClick={handleReport} title={`Report issue`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6 }} onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </button>
+      );
+    };
+
+    // ============================================
+    // SLIDE DATA
+    // ============================================
     const slides = [
-      { type: 'welcome', learningGoals: [
-        'The "MAYA Principle" that makes products irresistible',
-        'Why 100% unique products FAIL on Shopify',
-        'The 70/30 formula top stores use to convert browsers'
-      ]},
-      { type: 'hook', headline: 'Spotify almost killed their biggest feature.', subtext: 'Their "Discover Weekly" playlist served users 100% new music. Songs they\'d never heard. The result? Engagement tanked. Until they discovered the secret...', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Spotify_logo_without_text.svg.png' },
-      { type: 'insight', title: 'The Fix That Changed Everything', body: 'When Spotify added just 30% familiar songs - tracks users already loved - engagement skyrocketed 40%. Save rates tripled. Return rates doubled. Users didn\'t want ALL new. They wanted new wrapped in familiar.' },
-      { type: 'concept', title: 'The MAYA Principle', data: {
-        left: { label: 'Too Familiar', value: '100% Known', result: 'Boring - They scroll past' },
-        right: { label: 'Too Novel', value: '100% New', result: 'Scary - They back away' },
-        center: { label: 'MAYA Zone', value: '70/30 Mix', result: 'Irresistible - They BUY' }
-      }},
-      { type: 'application', title: 'Why This Matters for Your Store', body: 'Your Shopify store faces the same challenge. Show customers something TOO familiar - they think "I\'ve seen this before." Show them something TOO new - their brain flags it as risky. The sweet spot? 70% familiar foundation, 30% novel twist.' },
-      { type: 'example', scenario: 'Posture Corrector Store', before: { label: 'Too Generic', text: '"Fix your posture with our back brace. Comfortable and adjustable."' }, after: { label: 'MAYA Applied', text: '"The posture fix that works while you\'re sitting at your desk - no awkward straps visible under your shirt."' }, insight: 'Familiar problem (posture) + Novel twist (invisible, works while sitting)' },
-      { type: 'framework', title: 'The 4-Part MAYA Formula', items: [
-        { num: '1', title: 'Their Language', description: 'Use exact words your customers use. If they say "my back kills me" - say that, not "lumbar discomfort."' },
-        { num: '2', title: 'Known Problems', description: 'Anchor to struggles they instantly recognize. "You know that 3pm slump..."' },
-        { num: '3', title: 'The Twist', description: 'Once they\'re nodding, reveal your unique angle. "But what if the problem isn\'t your chair?"' },
-        { num: '4', title: 'Bridge to Solution', description: 'Connect your novel mechanism to their familiar goal. Same destination, surprising path.' }
-      ]},
-      { type: 'example', scenario: 'Pet Products Store', before: { label: 'Too Novel', text: '"Revolutionary AI-powered smart collar with biometric sensors and cloud connectivity."' }, after: { label: 'MAYA Applied', text: '"Finally - a collar that tells you when your dog needs a vet visit. Before they even show symptoms."' }, insight: 'Familiar product (collar) + Familiar concern (vet visits) + Novel benefit (early detection)' },
-      { type: 'stats', title: 'The Brain Science', data: [
-        { value: '40%', label: 'faster processing', subtext: 'Brain handles familiar 40% faster' },
-        { value: '0', label: 'dopamine spike', subtext: 'Pure familiarity = no excitement' },
-        { value: '2x', label: 'engagement', subtext: 'Novel-familiar mix doubles attention' }
-      ]},
-      { type: 'application', title: 'The Shopify Application', body: 'Your product page needs both anchors. Start with what they KNOW (the problem, the desire). Then reveal what makes YOU different (your mechanism, your proof). This order matters - familiar first, then novel.' },
-      { type: 'example', scenario: 'Skincare Store', before: { label: 'Wrong Order', text: '"Our patented CeraMatrix-7 technology uses nano-encapsulation to deliver actives at the cellular level."' }, after: { label: 'MAYA Applied', text: '"That stubborn dark spot that won\'t fade? There\'s a reason - and it\'s not your serum. It\'s the barrier your skin builds at night."' }, insight: 'Lead with familiar frustration, then introduce novel mechanism' },
-      { type: 'checklist', title: 'Quick MAYA Checklist', items: [
-        { title: 'Headline', description: 'Does it reference a problem they\'d describe in their own words?' },
-        { title: 'Subheadline', description: 'Does it hint at a fresh angle without being confusing?' },
-        { title: 'Body Copy', description: 'Do you anchor to familiar desires before explaining your mechanism?' },
-        { title: 'CTA', description: 'Does it feel safe enough to click but exciting enough to want to?' }
-      ]},
-      { type: 'quiz', question: 'What\'s the optimal balance for the MAYA Principle?', options: ['100% familiar', '50% / 50%', '70% familiar / 30% novel', '30% familiar / 70% novel'], correctIndex: 2, feedback: { correct: 'Exactly! 70% familiar builds trust, 30% novel creates desire.', incorrect: 'Not quite. The magic ratio is 70% familiar, 30% novel.' }},
+      { type: 'welcome', learningGoals: ['The "MAYA Principle" that makes products irresistible', 'Why 100% unique products FAIL on Shopify', 'The 70/30 formula top stores use to convert browsers'] },
+      { type: 'hook' },
+      { type: 'revelation' },
+      { type: 'spectrum' },
+      { type: 'brain-science' },
+      { type: 'application' },
+      { type: 'example-1' },
+      { type: 'example-2' },
+      { type: 'framework' },
+      { type: 'checklist' },
+      { type: 'quiz' },
       { type: 'completion' }
     ];
 
+    // ============================================
+    // ICONS
+    // ============================================
     const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      Clock: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
       ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
       ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      CheckCircle: () => <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
-      Trophy: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Sparkles: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>,
+      MessageSquare: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Link: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
+      Trophy: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
     };
 
-    // Welcome Slide
+    // ============================================
+    // PREMIUM SLIDE COMPONENTS
+    // ============================================
+
+    // 1. WELCOME SLIDE
     const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => typeof getTimeBasedWelcome === 'function' ? getTimeBasedWelcome() : { greeting: 'Hey {name}!', gif: null }, []);
+      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      useEffect(() => { if (welcomeData.gif) onShowGif(welcomeData.gif, '65%', gifSide); return () => onHideGif(); }, []);
+
+      useEffect(() => {
+        onShowGif(welcomeData.gif, '60%', gifSide);
+        return () => onHideGif();
+      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
 
       return (
-        <div className="h-full w-full relative overflow-hidden" style={{ backgroundColor: '#fff' }}>
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
           <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="premium-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 md:mb-3" style={{ color: '#000' }}>
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="mb-4">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
+                <Icons.Sparkles /> COPYWRITING MASTERCLASS
+              </span>
+            </motion.div>
+
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl lg:text-6xl font-black mb-4" style={{ color: '#000', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
               {LESSON_CONFIG.title}
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" style={{ color: '#666' }}
-              dangerouslySetInnerHTML={{ __html: typeof formatGreeting === 'function' ? formatGreeting(welcomeData.greeting, `<span style="font-weight: 700; color: #000;">${userName}</span>`) : `Hey <span style="font-weight: 700; color: #000;">${userName}</span>!` }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-              className="flex items-center justify-center gap-1.5 text-[10px] md:text-xs mb-2 md:mb-3" style={{ color: '#999' }}>
-              <Icons.Clock /><span>{LESSON_CONFIG.duration}</span>
+
+            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg mb-3 max-w-lg" style={{ color: '#666' }} dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span style="font-weight: 700; color: #000;">${userName}</span>`) }} />
+
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex items-center gap-2 mb-6" style={{ color: '#999' }}>
+              <Icons.Clock /><span className="text-sm">{LESSON_CONFIG.duration}</span>
             </motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="rounded-2xl p-4 md:p-6 mb-4 md:mb-5 max-w-sm w-full mx-auto" style={{ backgroundColor: '#000' }}>
-              <p className="text-[9px] md:text-[11px] uppercase tracking-widest mb-3 md:mb-4" style={{ color: 'rgba(255,255,255,0.5)' }}>In this lesson</p>
-              <ul className="space-y-2 md:space-y-3">
+
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="rounded-2xl p-6 mb-6 max-w-md w-full" style={{ backgroundColor: '#000' }}>
+              <p className="text-xs uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>What you'll master</p>
+              <ul className="space-y-3">
                 {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.08 }}
-                    className="flex items-start gap-3 text-left">
-                    <span className="w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5"
-                      style={{ backgroundColor: '#88da1c', color: '#000' }}>{i + 1}</span>
-                    <span className="text-[12px] md:text-sm leading-snug" style={{ color: 'rgba(255,255,255,0.9)' }}>{goal}</span>
+                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.08 }} className="flex items-start gap-3 text-left">
+                    <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5" style={{ backgroundColor: '#88da1c', color: '#000' }}>{i + 1}</span>
+                    <span className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>{goal}</span>
                   </motion.li>
                 ))}
               </ul>
             </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
-              onClick={onStart} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}
-              className="px-8 md:px-10 py-3 md:py-3.5 rounded-xl font-semibold text-sm md:text-base transition-all"
-              style={{ backgroundColor: '#88da1c', color: '#000', boxShadow: '0 4px 20px rgba(136, 218, 28, 0.3)' }}>
-              Let's Go
+
+            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={onStart} whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(136, 218, 28, 0.4)' }} whileTap={{ scale: 0.98 }} className="px-8 py-3.5 rounded-xl font-bold text-base" style={{ backgroundColor: '#88da1c', color: '#000' }}>
+              Start Learning →
             </motion.button>
           </div>
         </div>
       );
     };
 
-    // Hook Slide
-    const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden" style={{ backgroundColor: '#fff' }}>
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }}
-              className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-4 md:mb-5"
-              style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>The Hook</motion.span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl leading-tight" style={{ color: '#000' }}>{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="text-base md:text-xl leading-relaxed" style={{ color: '#555', lineHeight: '1.8' }}>{data.subtext}</motion.p>
-        </div>
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 0.9, x: 0 }} transition={{ delay: 0.3 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block"
-            style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt="" className="h-full w-auto object-contain" />
-          </motion.div>
-        )}
-      </div>
-    );
-
-    // Insight Slide
-    const InsightSlide = ({ data }) => (
-      <div className="h-full w-full" style={{ backgroundColor: '#fff' }}>
-        <div className="h-full p-6 md:p-8">
+    // 2. HOOK SLIDE - Spotify Story
+    const HookSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full p-6 md:p-10">
           <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
-            <div className="max-w-2xl mx-auto">
-              <motion.div initial={{ width: 0 }} animate={{ width: '60px' }} transition={{ duration: 0.6, delay: 0.1 }}
-                className="h-1 rounded-full mb-6" style={{ backgroundColor: '#88da1c' }} />
-              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                className="slide-title text-2xl md:text-3xl lg:text-4xl mb-6" style={{ color: '#fff' }}>{data.title}</motion.h2>
-              <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-                className="text-base md:text-lg leading-relaxed" style={{ color: 'rgba(255,255,255,0.8)', lineHeight: '1.8' }}>{data.body}</motion.p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-
-    // Concept Slide
-    const ConceptSlide = ({ data }) => (
-      <div className="h-full w-full" style={{ backgroundColor: '#fff' }}>
-        <div className="h-full p-6 md:p-8">
-          <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
-              className="slide-title text-2xl md:text-3xl text-center mb-8 md:mb-12" style={{ color: '#fff' }}>{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'rgba(148, 163, 184, 0.1)', border: '2px solid rgba(148, 163, 184, 0.3)' }}>
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#94a3b8' }}>{data.data.left.value}</div>
-                <div className="text-sm font-semibold mb-2" style={{ color: '#fff' }}>{data.data.left.label}</div>
-                <div className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{data.data.left.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.2 }}
-                className="rounded-2xl p-6 text-center relative"
-                style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', border: '2px solid #88da1c', boxShadow: '0 0 40px rgba(136, 218, 28, 0.2)' }}>
-                <motion.div animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-bold"
-                  style={{ backgroundColor: '#88da1c', color: '#000' }}>SWEET SPOT</motion.div>
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#88da1c' }}>{data.data.center.value}</div>
-                <div className="text-sm font-semibold mb-2" style={{ color: '#fff' }}>{data.data.center.label}</div>
-                <div className="text-xs" style={{ color: 'rgba(255,255,255,0.7)' }}>{data.data.center.result}</div>
-              </motion.div>
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-                className="rounded-2xl p-6 text-center" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', border: '2px solid rgba(245, 158, 11, 0.3)' }}>
-                <div className="text-3xl md:text-4xl font-bold mb-2" style={{ color: '#f59e0b' }}>{data.data.right.value}</div>
-                <div className="text-sm font-semibold mb-2" style={{ color: '#fff' }}>{data.data.right.label}</div>
-                <div className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{data.data.right.result}</div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-
-    // Application Slide
-    const ApplicationSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto py-10" style={{ backgroundColor: '#fff' }}>
-        <motion.div initial={{ width: 0 }} animate={{ width: '50px' }} transition={{ duration: 0.5 }}
-          className="h-1 rounded-full mb-6" style={{ backgroundColor: '#88da1c' }} />
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          className="slide-title text-2xl md:text-3xl lg:text-4xl mb-6" style={{ color: '#000' }}>{data.title}</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="text-base md:text-lg leading-relaxed" style={{ color: '#555', lineHeight: '1.8' }}>{data.body}</motion.p>
-      </div>
-    );
-
-    // Example Slide
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full w-full" style={{ backgroundColor: '#fff' }}>
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-            <span className="inline-block px-4 py-1.5 rounded-full text-xs font-semibold mb-3"
-              style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>Real Example</span>
-            <h2 className="slide-title text-xl md:text-2xl" style={{ color: '#000' }}>{data.scenario}</h2>
-          </motion.div>
-          <div className="grid md:grid-cols-2 gap-4 mb-6">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-              className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fff', border: '2px solid #fecaca' }}>
-              <div className="h-1.5" style={{ backgroundColor: '#ef4444' }} />
-              <div className="p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: '#ef4444' }}>
-                    <span style={{ color: '#fff' }}><Icons.X /></span>
-                  </div>
-                  <span className="font-semibold text-sm" style={{ color: '#dc2626' }}>{data.before.label}</span>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto">
+              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="flex items-center gap-4 mb-8">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ backgroundColor: '#1DB954' }}>
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
                 </div>
-                <p className="text-sm leading-relaxed italic" style={{ color: '#555' }}>"{data.before.text}"</p>
-              </div>
+                <div>
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#88da1c' }}>Case Study</span>
+                  <h3 className="text-xl font-bold" style={{ color: '#fff' }}>Spotify</h3>
+                </div>
+              </motion.div>
+
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl md:text-5xl font-black mb-6 leading-tight" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                Spotify almost <span style={{ color: '#EF4444' }}>killed</span> their biggest feature.
+              </motion.h2>
+
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg md:text-xl leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                Their "Discover Weekly" playlist served users <span style={{ color: '#fff', fontWeight: 600 }}>100% new music</span>. Songs they'd never heard. Artists they'd never seen.
+              </motion.p>
+
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex items-center gap-4 p-6 rounded-2xl" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)' }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold" style={{ color: '#EF4444' }}>The Result?</p>
+                  <p className="text-lg font-bold" style={{ color: '#fff' }}>Engagement tanked. Users stopped clicking.</p>
+                </div>
+              </motion.div>
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-              className="rounded-2xl overflow-hidden" style={{ backgroundColor: '#fff', border: '2px solid #bbf7d0' }}>
-              <div className="h-1.5" style={{ backgroundColor: '#88da1c' }} />
-              <div className="p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
-                    <span style={{ color: '#000' }}><Icons.Check /></span>
-                  </div>
-                  <span className="font-semibold text-sm" style={{ color: '#16a34a' }}>{data.after.label}</span>
-                </div>
-                <p className="text-sm leading-relaxed italic" style={{ color: '#555' }}>"{data.after.text}"</p>
+          </div>
+        </div>
+      </div>
+    );
+
+    // 3. REVELATION SLIDE
+    const RevelationSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full p-6 md:p-10">
+          <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', delay: 0.1 }} className="w-20 h-20 rounded-full mx-auto mb-8 flex items-center justify-center glow-pulse" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb />
+              </motion.div>
+
+              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl md:text-5xl font-black mb-6 leading-tight" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                The Fix That Changed Everything
+              </motion.h2>
+
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg md:text-xl leading-relaxed mb-10" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                When Spotify added just <span style={{ color: '#88da1c', fontWeight: 700 }}>30% familiar songs</span> — tracks users already loved — everything changed.
+              </motion.p>
+
+              <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
+                {[
+                  { value: '40%', label: 'Engagement↑', delay: 0.4 },
+                  { value: '3x', label: 'Save Rate↑', delay: 0.5 },
+                  { value: '2x', label: 'Return Rate↑', delay: 0.6 }
+                ].map((stat, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: stat.delay }} className="p-4 rounded-2xl" style={{ backgroundColor: 'rgba(136, 218, 28, 0.1)', border: '1px solid rgba(136, 218, 28, 0.2)' }}>
+                    <div className="text-3xl md:text-4xl font-black mb-1" style={{ color: '#88da1c' }}>{stat.value}</div>
+                    <div className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.label}</div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-            className="rounded-xl p-4 text-center" style={{ backgroundColor: '#000' }}>
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.9)' }}>
-              <span style={{ color: '#88da1c', marginRight: '8px' }}>&#10022;</span>{data.insight}
-            </p>
+        </div>
+      </div>
+    );
+
+    // 4. SPECTRUM SLIDE - MAYA Visualization
+    const SpectrumSlide = () => {
+      const [animationComplete, setAnimationComplete] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setAnimationComplete(true), 1500);
+        return () => clearTimeout(timer);
+      }, []);
+
+      return (
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+          <div className="h-full p-6 md:p-10">
+            <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto w-full">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center mb-10">
+                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold mb-4" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
+                    THE FRAMEWORK
+                  </span>
+                  <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#fff', letterSpacing: '-0.02em' }}>The MAYA Principle</h2>
+                  <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Most Advanced Yet Acceptable</p>
+                </motion.div>
+
+                {/* Visual Spectrum */}
+                <div className="relative mb-8">
+                  <svg viewBox="0 0 800 200" className="w-full">
+                    {/* Gradient Background Bar */}
+                    <defs>
+                      <linearGradient id="spectrumGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#6B7280" />
+                        <stop offset="35%" stopColor="#88da1c" />
+                        <stop offset="65%" stopColor="#88da1c" />
+                        <stop offset="100%" stopColor="#F59E0B" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Main Bar */}
+                    <motion.rect initial={{ width: 0 }} animate={{ width: 700 }} transition={{ duration: 1, ease: 'easeOut' }} x="50" y="80" height="40" rx="20" fill="url(#spectrumGradient)" opacity="0.3" />
+
+                    {/* Sweet Spot Highlight */}
+                    <motion.rect initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.5 }} x="280" y="75" width="240" height="50" rx="25" fill="#88da1c" opacity="0.4" />
+
+                    {/* Position Markers */}
+                    <motion.circle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: 'spring' }} cx="100" cy="100" r="12" fill="#6B7280" />
+                    <motion.circle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.8, type: 'spring' }} cx="400" cy="100" r="16" fill="#88da1c" style={{ filter: 'drop-shadow(0 0 10px rgba(136, 218, 28, 0.5))' }} />
+                    <motion.circle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.1, type: 'spring' }} cx="700" cy="100" r="12" fill="#F59E0B" />
+
+                    {/* Labels */}
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} x="100" y="160" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">100% Familiar</motion.text>
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} x="100" y="180" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="11">BORING</motion.text>
+
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} x="400" y="160" textAnchor="middle" fill="#88da1c" fontSize="16" fontWeight="bold">70/30 Mix</motion.text>
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} x="400" y="180" textAnchor="middle" fill="#88da1c" fontSize="12">IRRESISTIBLE</motion.text>
+
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} x="700" y="160" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">100% Novel</motion.text>
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} x="700" y="180" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="11">SCARY</motion.text>
+
+                    {/* Zone Labels at top */}
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} x="100" y="50" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="10">They scroll past</motion.text>
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} x="400" y="45" textAnchor="middle" fill="#88da1c" fontSize="12" fontWeight="bold">✨ SWEET SPOT ✨</motion.text>
+                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.7 }} x="700" y="50" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="10">They back away</motion.text>
+                  </svg>
+                </div>
+
+                {/* Bottom Insight */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.8 }} className="text-center p-6 rounded-2xl" style={{ backgroundColor: 'rgba(136, 218, 28, 0.1)', border: '1px solid rgba(136, 218, 28, 0.2)' }}>
+                  <p className="text-lg font-semibold" style={{ color: '#fff' }}>
+                    <span style={{ color: '#88da1c' }}>70% familiar</span> foundation + <span style={{ color: '#88da1c' }}>30% novel</span> twist = They BUY
+                  </p>
+                </motion.div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // 5. BRAIN SCIENCE SLIDE
+    const BrainScienceSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full p-6 md:p-10">
+          <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto w-full">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mb-10">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }} className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)' }}>
+                  <Icons.Brain />
+                </motion.div>
+                <h2 className="text-3xl md:text-4xl font-black mb-2" style={{ color: '#fff', letterSpacing: '-0.02em' }}>The Brain Science</h2>
+                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Why this formula works neurologically</p>
+              </motion.div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {[
+                  { value: 40, suffix: '%', label: 'Faster Processing', desc: 'Brain handles familiar things 40% faster', icon: '⚡', color: '#88da1c' },
+                  { value: 0, suffix: '', label: 'Dopamine Spike', desc: 'Pure familiarity = no excitement', icon: '😴', color: '#6B7280' },
+                  { value: 2, suffix: 'x', label: 'More Engagement', desc: 'Novel-familiar mix doubles attention', icon: '🎯', color: '#88da1c' }
+                ].map((stat, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="relative p-6 rounded-2xl overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="text-4xl mb-4">{stat.icon}</div>
+                    <div className="text-4xl md:text-5xl font-black mb-2" style={{ color: stat.color }}>
+                      <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={1500} />
+                    </div>
+                    <div className="text-sm font-bold mb-1" style={{ color: '#fff' }}>{stat.label}</div>
+                    <div className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.desc}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // 6. APPLICATION SLIDE
+    const ApplicationSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto py-10">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-8">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
+              <Icons.Target /> YOUR SHOPIFY STORE
+            </span>
+          </motion.div>
+
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl font-black mb-6" style={{ color: '#000', letterSpacing: '-0.02em' }}>
+            Why This Matters For You
+          </motion.h2>
+
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg leading-relaxed mb-8" style={{ color: '#444' }}>
+            Your product page faces the same challenge:
+          </motion.p>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-2xl" style={{ backgroundColor: '#fef2f2', border: '2px solid #fecaca' }}>
+              <div className="w-10 h-10 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: '#EF4444' }}>
+                <span style={{ color: '#fff' }}>😐</span>
+              </div>
+              <h3 className="font-bold mb-2" style={{ color: '#991B1B' }}>TOO Familiar</h3>
+              <p className="text-sm" style={{ color: '#7F1D1D' }}>"I've seen this before" → They scroll past</p>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="p-6 rounded-2xl" style={{ backgroundColor: '#fffbeb', border: '2px solid #fde68a' }}>
+              <div className="w-10 h-10 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: '#F59E0B' }}>
+                <span style={{ color: '#fff' }}>😰</span>
+              </div>
+              <h3 className="font-bold mb-2" style={{ color: '#92400E' }}>TOO Novel</h3>
+              <p className="text-sm" style={{ color: '#78350F' }}>Brain flags it as risky → They back away</p>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-6 rounded-2xl" style={{ backgroundColor: '#000' }}>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Zap />
+              </div>
+              <div>
+                <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>The Sweet Spot</p>
+                <p className="font-bold" style={{ color: '#fff' }}><span style={{ color: '#88da1c' }}>70% familiar</span> foundation → <span style={{ color: '#88da1c' }}>30% novel</span> twist</p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
     );
 
-    // Framework Slide
-    const FrameworkSlide = ({ data }) => (
-      <div className="h-full w-full" style={{ backgroundColor: '#fff' }}>
+    // 7. EXAMPLE 1 SLIDE - Posture Corrector
+    const Example1Slide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
         <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
-            className="slide-title text-2xl md:text-3xl text-center mb-8" style={{ color: '#000' }}>{data.title}</motion.h2>
-          <div className="grid md:grid-cols-2 gap-4">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
-                className="rounded-2xl p-5" style={{ backgroundColor: '#fff', border: '2px solid #e5e5e5' }}>
-                <div className="flex items-start gap-4">
-                  <span className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-base font-bold"
-                    style={{ backgroundColor: '#88da1c', color: '#000' }}>{item.num}</span>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
+              REAL EXAMPLE
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black mt-4" style={{ color: '#000', letterSpacing: '-0.02em' }}>Posture Corrector Store</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden" style={{ border: '2px solid #fecaca' }}>
+              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#EF4444' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                  <Icons.X />
+                </div>
+                <span className="font-bold" style={{ color: '#fff' }}>Too Generic</span>
+              </div>
+              <div className="p-6" style={{ backgroundColor: '#fef2f2' }}>
+                <p className="italic text-base leading-relaxed" style={{ color: '#7F1D1D' }}>"Fix your posture with our back brace. Comfortable and adjustable."</p>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl overflow-hidden" style={{ border: '2px solid rgba(136, 218, 28, 0.5)' }}>
+              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#88da1c' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                  <Icons.Check />
+                </div>
+                <span className="font-bold" style={{ color: '#000' }}>MAYA Applied</span>
+              </div>
+              <div className="p-6" style={{ backgroundColor: 'rgba(136, 218, 28, 0.1)' }}>
+                <p className="italic text-base leading-relaxed" style={{ color: '#166534' }}>"The posture fix that works while you're sitting at your desk — no awkward straps visible under your shirt."</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-2xl" style={{ backgroundColor: '#000' }}>
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb />
+              </div>
+              <div>
+                <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>The Insight</p>
+                <p className="font-medium" style={{ color: '#fff' }}><span style={{ color: '#88da1c' }}>Familiar problem</span> (posture) + <span style={{ color: '#88da1c' }}>Novel twist</span> (invisible, works while sitting)</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // 8. EXAMPLE 2 SLIDE - Pet Products
+    const Example2Slide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
+              REAL EXAMPLE
+            </span>
+            <h2 className="text-2xl md:text-3xl font-black mt-4" style={{ color: '#000', letterSpacing: '-0.02em' }}>Pet Products Store</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden" style={{ border: '2px solid #fde68a' }}>
+              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#F59E0B' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                  <Icons.X />
+                </div>
+                <span className="font-bold" style={{ color: '#fff' }}>Too Novel</span>
+              </div>
+              <div className="p-6" style={{ backgroundColor: '#fffbeb' }}>
+                <p className="italic text-base leading-relaxed" style={{ color: '#78350F' }}>"Revolutionary AI-powered smart collar with biometric sensors and cloud connectivity."</p>
+              </div>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl overflow-hidden" style={{ border: '2px solid rgba(136, 218, 28, 0.5)' }}>
+              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#88da1c' }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                  <Icons.Check />
+                </div>
+                <span className="font-bold" style={{ color: '#000' }}>MAYA Applied</span>
+              </div>
+              <div className="p-6" style={{ backgroundColor: 'rgba(136, 218, 28, 0.1)' }}>
+                <p className="italic text-base leading-relaxed" style={{ color: '#166534' }}>"Finally — a collar that tells you when your dog needs a vet visit. Before they even show symptoms."</p>
+              </div>
+            </motion.div>
+          </div>
+
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-2xl" style={{ backgroundColor: '#000' }}>
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb />
+              </div>
+              <div>
+                <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>The Insight</p>
+                <p className="font-medium" style={{ color: '#fff' }}><span style={{ color: '#88da1c' }}>Familiar product</span> (collar) + <span style={{ color: '#88da1c' }}>Familiar concern</span> (vet visits) + <span style={{ color: '#88da1c' }}>Novel benefit</span> (early detection)</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    );
+
+    // 9. FRAMEWORK SLIDE - 4-Part Formula
+    const FrameworkSlide = () => {
+      const steps = [
+        { icon: '💬', title: 'Their Language', desc: 'Use exact words customers use. "My back kills me" not "lumbar discomfort."' },
+        { icon: '🎯', title: 'Known Problems', desc: 'Anchor to struggles they instantly recognize. Get them nodding.' },
+        { icon: '✨', title: 'The Twist', desc: 'Once they\'re nodding, reveal your unique angle.' },
+        { icon: '🌉', title: 'Bridge to Solution', desc: 'Connect your novel mechanism to their familiar goal.' }
+      ];
+
+      return (
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+          <div className="h-full p-6 md:p-10">
+            <div className="h-full rounded-3xl p-8 md:p-10 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto w-full">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mb-10">
+                  <h2 className="text-2xl md:text-3xl font-black" style={{ color: '#fff', letterSpacing: '-0.02em' }}>The 4-Part MAYA Formula</h2>
+                </motion.div>
+
+                <div className="grid md:grid-cols-4 gap-4">
+                  {steps.map((step, i) => (
+                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative">
+                      <div className="p-5 rounded-2xl h-full" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                        <div className="text-3xl mb-3">{step.icon}</div>
+                        <div className="text-xs font-bold mb-2" style={{ color: '#88da1c' }}>STEP {i + 1}</div>
+                        <h3 className="font-bold text-sm mb-2" style={{ color: '#fff' }}>{step.title}</h3>
+                        <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{step.desc}</p>
+                      </div>
+                      {i < 3 && (
+                        <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10" style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    // 10. CHECKLIST SLIDE
+    const ChecklistSlide = () => {
+      const items = [
+        { area: 'Headline', question: 'Does it reference a problem they\'d describe in their own words?' },
+        { area: 'Subheadline', question: 'Does it hint at a fresh angle without being confusing?' },
+        { area: 'Body Copy', question: 'Do you anchor to familiar desires before explaining your mechanism?' },
+        { area: 'CTA', question: 'Does it feel safe enough to click but exciting enough to want to?' }
+      ];
+
+      return (
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
+                ✅ ACTION CHECKLIST
+              </span>
+              <h2 className="text-2xl md:text-3xl font-black mt-4" style={{ color: '#000', letterSpacing: '-0.02em' }}>Quick MAYA Audit</h2>
+              <p className="text-sm mt-2" style={{ color: '#666' }}>Review your product page with these questions</p>
+            </motion.div>
+
+            <div className="space-y-4">
+              {items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-5 rounded-2xl flex items-start gap-4" style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb' }}>
+                  <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-lg font-bold" style={{ backgroundColor: '#88da1c', color: '#000' }}>{i + 1}</div>
                   <div>
-                    <h3 className="font-bold mb-2 text-sm md:text-base" style={{ color: '#000' }}>{item.title}</h3>
-                    <p className="text-xs md:text-sm leading-relaxed" style={{ color: '#666' }}>{item.description}</p>
+                    <h3 className="font-bold text-sm mb-1" style={{ color: '#000' }}>{item.area}</h3>
+                    <p className="text-sm" style={{ color: '#666' }}>{item.question}</p>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-
-    // Stats Slide
-    const StatsSlide = ({ data }) => (
-      <div className="h-full w-full" style={{ backgroundColor: '#fff' }}>
-        <div className="h-full p-6 md:p-8">
-          <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
-              className="slide-title text-xl md:text-3xl text-center mb-8 md:mb-10" style={{ color: '#fff' }}>{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-4 md:gap-6 max-w-3xl mx-auto">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.12 }}
-                  className="rounded-2xl p-6 md:p-8 text-center"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  <div className="text-3xl md:text-5xl font-bold mb-2" style={{ color: '#88da1c' }}>{stat.value}</div>
-                  <div className="text-xs md:text-sm font-semibold mb-1" style={{ color: '#fff' }}>{stat.label}</div>
-                  <div className="text-[10px] md:text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.subtext}</div>
                 </motion.div>
               ))}
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    };
 
-    // Checklist Slide
-    const ChecklistSlide = ({ data }) => (
-      <div className="h-full w-full" style={{ backgroundColor: '#fff' }}>
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
-            className="slide-title text-2xl md:text-3xl text-center mb-8" style={{ color: '#000' }}>{data.title}</motion.h2>
-          <div className="space-y-4">
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }}
-                className="flex items-start gap-4 p-4 rounded-xl" style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e5e5' }}>
-                <span className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
-                  style={{ backgroundColor: '#88da1c', color: '#000' }}>{i + 1}</span>
-                <div>
-                  <h3 className="font-bold text-sm mb-1" style={{ color: '#000' }}>{item.title}</h3>
-                  <p className="text-sm" style={{ color: '#666' }}>{item.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-
-    // Quiz Slide
-    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
+    // 11. QUIZ SLIDE
+    const QuizSlide = ({ onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
-      const celebrationGif = useMemo(() => getRandomGif(celebrationGifs), []);
-      const empathyGif = useMemo(() => getRandomGif(empathyGifs), []);
+      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
+      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
+
+      const question = "What's the optimal balance for the MAYA Principle?";
+      const options = ['100% familiar — comfort is everything', '50/50 — perfect balance', '70% familiar / 30% novel', '30% familiar / 70% novel'];
+      const correctIndex = 2;
+
       const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
-      const isCorrect = selected === data.correctIndex;
-      useEffect(() => { if (showFeedback) onShowGif(isCorrect ? celebrationGif : empathyGif, '60%', gifSide); }, [showFeedback]);
-      useEffect(() => () => onHideGif(), []);
+      const isCorrect = selected === correctIndex;
+
+      useEffect(() => {
+        if (showFeedback) {
+          onShowGif(isCorrect ? celebrationGif : empathyGif, '55%', gifSide);
+        }
+      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+
+      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
 
       return (
-        <div className="h-full w-full relative overflow-hidden" style={{ backgroundColor: '#fff' }}>
+        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-              <p className="text-xs uppercase tracking-widest mb-3" style={{ color: '#999' }}>Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl leading-tight" style={{ color: '#000' }}>{data.question}</h2>
+            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
+                🧠 KNOWLEDGE CHECK
+              </span>
+              <h2 className="text-xl md:text-2xl font-black mt-4 leading-tight" style={{ color: '#000', letterSpacing: '-0.01em' }}>{question}</h2>
             </motion.div>
+
             <div className="space-y-3 mb-6">
-              {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }}
-                  onClick={() => handleSelect(i)} disabled={showFeedback}
-                  className="w-full p-4 rounded-xl text-left transition-all"
-                  style={{
-                    backgroundColor: showFeedback ? i === data.correctIndex ? 'rgba(136, 218, 28, 0.1)' : i === selected ? 'rgba(239, 68, 68, 0.1)' : '#fff' : '#fff',
-                    border: `2px solid ${showFeedback ? i === data.correctIndex ? '#88da1c' : i === selected ? '#ef4444' : '#e5e5e5' : '#e5e5e5'}`,
-                    opacity: showFeedback && i !== data.correctIndex && i !== selected ? 0.4 : 1
-                  }}>
+              {options.map((option, i) => (
+                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className="w-full p-4 rounded-xl text-left transition-all" style={{ backgroundColor: showFeedback ? (i === correctIndex ? 'rgba(136, 218, 28, 0.15)' : i === selected ? 'rgba(239, 68, 68, 0.15)' : '#f8f9fa') : '#f8f9fa', border: showFeedback ? (i === correctIndex ? '2px solid #88da1c' : i === selected ? '2px solid #EF4444' : '2px solid #e5e7eb') : '2px solid #e5e7eb', opacity: showFeedback && i !== correctIndex && i !== selected ? 0.4 : 1 }}>
                   <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
-                      style={{
-                        backgroundColor: showFeedback && i === data.correctIndex ? '#88da1c' : showFeedback && i === selected && !isCorrect ? '#ef4444' : '#f5f5f5',
-                        color: showFeedback && (i === data.correctIndex || (i === selected && !isCorrect)) ? '#fff' : '#666'
-                      }}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                    <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold" style={{ backgroundColor: showFeedback && i === correctIndex ? '#88da1c' : showFeedback && i === selected && !isCorrect ? '#EF4444' : '#e5e7eb', color: showFeedback && (i === correctIndex || (i === selected && !isCorrect)) ? '#fff' : '#666' }}>
+                      {showFeedback && i === correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span style={{ color: '#333' }}>{option}</span>
+                    <span style={{ color: '#000' }}>{option}</span>
                   </div>
                 </motion.button>
               ))}
             </div>
+
             <AnimatePresence>
               {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="p-5 rounded-xl"
-                  style={{ backgroundColor: isCorrect ? 'rgba(136, 218, 28, 0.1)' : 'rgba(251, 191, 36, 0.1)', border: `1px solid ${isCorrect ? 'rgba(136, 218, 28, 0.3)' : 'rgba(251, 191, 36, 0.3)'}` }}>
-                  <p className="text-sm leading-relaxed" style={{ color: isCorrect ? '#15803d' : '#92400e' }}>
-                    {isCorrect ? data.feedback.correct : data.feedback.incorrect}
+                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="p-5 rounded-xl" style={{ backgroundColor: isCorrect ? 'rgba(136, 218, 28, 0.15)' : 'rgba(239, 68, 68, 0.15)', border: isCorrect ? '1px solid rgba(136, 218, 28, 0.3)' : '1px solid rgba(239, 68, 68, 0.3)' }}>
+                  <p className="text-sm leading-relaxed" style={{ color: isCorrect ? '#166534' : '#991B1B' }}>
+                    {isCorrect ? 'Exactly! 70% familiar foundation creates trust, 30% novel twist creates desire. This is the formula that converts.' : 'Not quite. The magic ratio is 70% familiar to build comfort, then 30% novel to create excitement.'}
                   </p>
                 </motion.div>
               )}
@@ -474,61 +672,63 @@
       );
     };
 
-    // Completion Slide - BRIGHT VERSION
+    // 12. COMPLETION SLIDE (BRIGHT)
     const CompletionSlide = () => (
-      <div className="h-full w-full" style={{ backgroundColor: '#fff' }}>
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
         <div className="h-full flex flex-col items-center justify-center text-center px-8 py-10">
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 15 }} className="relative mb-8">
-            <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.2, 0.5] }} transition={{ duration: 2, repeat: Infinity }}
-              className="absolute inset-0 rounded-full blur-xl" style={{ backgroundColor: 'rgba(136, 218, 28, 0.3)', width: 120, height: 120, margin: -20 }} />
+          <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.6 }} className="relative mb-8">
+            <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.1, 0.3] }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full" style={{ backgroundColor: '#88da1c', width: 120, height: 120, margin: -20, filter: 'blur(20px)' }} />
             <div className="w-20 h-20 rounded-full flex items-center justify-center relative" style={{ backgroundColor: '#88da1c' }}>
-              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3, type: 'spring' }}><Icons.CheckCircle /></motion.div>
+              <Icons.Check />
             </div>
           </motion.div>
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-            className="slide-title text-3xl md:text-4xl mb-3" style={{ color: '#000' }}>Lesson Complete!</motion.h2>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-            className="text-base mb-8 max-w-md" style={{ color: '#666' }}>You've finished "{LESSON_CONFIG.title}"</motion.p>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-            className="w-full max-w-xl rounded-2xl p-6 mb-6" style={{ backgroundColor: '#f8f9fa' }}>
+
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl md:text-4xl font-black mb-4" style={{ color: '#000', letterSpacing: '-0.02em' }}>
+            Lesson Complete! 🎉
+          </motion.h2>
+
+          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-base mb-8 max-w-md" style={{ color: '#666' }}>
+            You now know the secret: <span style={{ color: '#000', fontWeight: 600 }}>70% familiar + 30% novel</span>. Use this ratio everywhere.
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="w-full max-w-md p-6 rounded-2xl mb-6" style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb' }}>
             <div className="flex items-center gap-3 mb-4">
-              <span style={{ color: '#88da1c' }}><Icons.Trophy /></span>
-              <h3 className="font-bold" style={{ color: '#000' }}>Key Takeaway</h3>
-            </div>
-            <p className="text-sm leading-relaxed" style={{ color: '#555' }}>
-              Remember: <strong>70% familiar + 30% novel</strong> = irresistible. Use this in every product page, ad, and email.
-            </p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="w-full max-w-xl">
-            <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: '#999' }}>Up Next</p>
-            <div className="rounded-2xl p-6 text-left" style={{ backgroundColor: '#000' }}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold text-lg mb-1" style={{ color: '#fff' }}>{LESSON_CONFIG.nextLesson.title}</h4>
-                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{LESSON_CONFIG.nextLesson.teaser}</p>
-                </div>
-                <div className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
-                  <span style={{ color: '#000' }}><Icons.ArrowRight /></span>
-                </div>
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Trophy />
               </div>
+              <span className="font-bold text-sm" style={{ color: '#000' }}>Key Takeaway</span>
             </div>
+            <p className="text-sm" style={{ color: '#444' }}>Lead with familiar problems, then reveal your novel solution. Comfort first, then surprise.</p>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="w-full max-w-md p-6 rounded-2xl" style={{ backgroundColor: '#000' }}>
+            <p className="text-xs uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>Up Next</p>
+            <h3 className="font-bold text-xl mb-2" style={{ color: '#fff' }}>{LESSON_CONFIG.nextLesson.title}</h3>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{LESSON_CONFIG.nextLesson.teaser}</p>
           </motion.div>
         </div>
       </div>
     );
 
-    // Main App
+    // ============================================
+    // MAIN APP
+    // ============================================
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
       const userName = useMemo(() => getUserName(), []);
-      const currentSlideRef = React.useRef(0);
+      const currentSlideRef = useRef(0);
       const [gifConfig, setGifConfig] = useState(null);
       const [isAnimating, setIsAnimating] = useState(false);
+
       const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
       const hideGif = useCallback(() => setGifConfig(null), []);
-      React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
-      useEffect(() => { window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', totalSlides: slides.length, slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*'); }, [currentSlide]);
+
+      useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+
+      useEffect(() => {
+        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', totalSlides: slides.length, slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
+      }, [currentSlide]);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -536,8 +736,10 @@
         setDirection(newSlide > currentSlideRef.current ? 1 : -1);
         setCurrentSlide(newSlide);
       }, [isAnimating]);
+
       const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
       const prevSlide = useCallback(() => { if (currentSlideRef.current - 1 >= 0) goToSlide(currentSlideRef.current - 1); }, [goToSlide]);
+
       useEffect(() => {
         const handleKeyDown = (e) => {
           if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
@@ -556,15 +758,16 @@
       const renderSlide = (slide) => {
         switch (slide.type) {
           case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
-          case 'hook': return <HookSlide data={slide} />;
-          case 'insight': return <InsightSlide data={slide} />;
-          case 'concept': return <ConceptSlide data={slide} />;
-          case 'application': return <ApplicationSlide data={slide} />;
-          case 'example': return <ExampleSlide data={slide} />;
-          case 'framework': return <FrameworkSlide data={slide} />;
-          case 'stats': return <StatsSlide data={slide} />;
-          case 'checklist': return <ChecklistSlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'hook': return <HookSlide />;
+          case 'revelation': return <RevelationSlide />;
+          case 'spectrum': return <SpectrumSlide />;
+          case 'brain-science': return <BrainScienceSlide />;
+          case 'application': return <ApplicationSlide />;
+          case 'example-1': return <Example1Slide />;
+          case 'example-2': return <Example2Slide />;
+          case 'framework': return <FrameworkSlide />;
+          case 'checklist': return <ChecklistSlide />;
+          case 'quiz': return <QuizSlide onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }
@@ -577,44 +780,36 @@
         <div className="w-full h-screen flex flex-col relative" style={{ backgroundColor: '#fff' }}>
           <div className="flex-1 relative overflow-hidden z-20">
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
-              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit"
-                transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
                 <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
+
             {showPrev && (
-              <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10"
-                style={{ backgroundColor: '#f5f5f5', color: '#666' }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#e5e5e5'; e.currentTarget.style.color = '#000'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#f5f5f5'; e.currentTarget.style.color = '#666'; }}>
+              <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10" style={{ backgroundColor: '#f3f4f6', color: '#666' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}>
                 <Icons.ArrowLeft />
               </button>
             )}
             {showNext && (
-              <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10"
-                style={{ backgroundColor: '#f5f5f5', color: '#666' }}
-                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#e5e5e5'; e.currentTarget.style.color = '#000'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#f5f5f5'; e.currentTarget.style.color = '#666'; }}>
+              <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10" style={{ backgroundColor: '#f3f4f6', color: '#666' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}>
                 <Icons.ArrowRight />
               </button>
             )}
           </div>
-          <div className="px-6 md:px-8 py-5 flex-shrink-0 relative z-10" style={{ borderTop: '1px solid #f0f0f0' }}>
-            <div className="flex items-center justify-center gap-2.5">
+
+          <div className="px-6 md:px-8 py-5 flex-shrink-0 relative z-10" style={{ borderTop: '1px solid #f3f4f6' }}>
+            <div className="flex items-center justify-center gap-2">
               {slides.map((_, i) => (
-                <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300"
-                  style={{ backgroundColor: i === currentSlide ? '#88da1c' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />
+                <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ backgroundColor: i === currentSlide ? '#88da1c' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />
               ))}
             </div>
           </div>
+
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }}
-                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`}
-                style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom"
-                  style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
                   <source src={gifConfig.url} type="video/mp4" />
                 </video>
               </motion.div>
