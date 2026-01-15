@@ -14,254 +14,592 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --accent: #88da1c;
-      --accent-dark: #6bc40f;
-      --accent-rgb: 136, 218, 28;
-    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: #fff; -webkit-font-smoothing: antialiased; }
-    ::selection { background: var(--accent); color: black; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #fff; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    ::selection { background: #88da1c; color: #000; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-    @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 30px rgba(136, 218, 28, 0.3); } 50% { box-shadow: 0 0 50px rgba(136, 218, 28, 0.5); } }
-    .glow-pulse { animation: pulse-glow 2s ease-in-out infinite; }
-    @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 0.2; } 100% { transform: scale(0.8); opacity: 0.5; } }
+    @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
-    const { motion, AnimatePresence } = window.Motion;
+    const { motion, AnimatePresence, useMotionValue, useTransform, animate } = window.Motion;
     const { useState, useEffect, useCallback, useMemo, useRef } = React;
 
     // ============================================
-    // CONFIG & UTILS
+    // CONFIG
     // ============================================
-    const getUserName = () => {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('userName') || 'Builder';
-    };
+    const getUserName = () => new URLSearchParams(window.location.search).get('userName') || 'Builder';
 
     const LESSON_CONFIG = {
       id: 'familiar-surprise-secret-v2',
       title: 'The Familiar Surprise Secret',
-      description: 'Why 70% familiar + 30% novel is the formula that makes customers say "I need this."',
-      accentColor: '#88da1c',
       duration: '8 min',
-      nextLesson: {
-        id: 'red-button-effect',
-        title: 'The Red Button Effect',
-        teaser: 'How to create irresistible CTAs that customers physically cannot ignore.'
-      }
+      nextLesson: { id: 'red-button-effect', title: 'The Red Button Effect', teaser: 'How to create irresistible CTAs that customers cannot ignore.' }
     };
 
-    // Animated Counter
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{prefix}{count}{suffix}</span>;
-    };
-
-    // Celebration GIFs
     const celebrationGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4'
+      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4'
     ];
     const empathyGifs = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4'
     ];
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
 
     // Admin Reporter
     let __isAdmin = false;
     window.addEventListener('message', (e) => { if (e.data?.type === 'ADMIN_STATUS') __isAdmin = e.data.isAdmin; });
     if (window.parent !== window) window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
 
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      const handleReport = (e) => {
-        e.stopPropagation();
-        if (window.parent !== window) {
-          window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id, elementId: slideType + '-' + slideIndex }, '*');
-        }
-      };
-      return (
-        <button onClick={handleReport} title={`Report issue`} style={{ position: 'absolute', top: '12px', right: '12px', width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.6 }} onMouseEnter={(e) => e.currentTarget.style.opacity = '1'} onMouseLeave={(e) => e.currentTarget.style.opacity = '0.6'}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </button>
-      );
+    const AdminReportButton = ({ slideIndex, slideType }) => (
+      <button onClick={(e) => { e.stopPropagation(); window.parent.postMessage({ type: 'ADMIN_REPORT_REQUEST', slideIndex, slideType, lessonSlug: LESSON_CONFIG.id }, '*'); }} style={{ position: 'absolute', top: 12, right: 12, width: 32, height: 32, borderRadius: 8, backgroundColor: 'rgba(239,68,68,0.9)', color: '#fff', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, opacity: 0.5 }} onMouseEnter={e => e.currentTarget.style.opacity = 1} onMouseLeave={e => e.currentTarget.style.opacity = 0.5}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </button>
+    );
+
+    // ============================================
+    // ICONS (SVG Only)
+    // ============================================
+    const Icons = {
+      Clock: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: ({ size = 24, strokeWidth = 3 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth}><polyline points="20 6 9 17 4 12"/></svg>,
+      X: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      ArrowUpRight: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>,
+      Zap: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Brain: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
+      Target: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+      Lightbulb: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
+      Trophy: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
+      Sparkles: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>,
+      TrendingUp: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
+      TrendingDown: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>,
+      Eye: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+      Music: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>,
+      Play: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+      Star: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+      Circle: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/></svg>,
+      CheckCircle: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
+      AlertTriangle: ({ size = 24 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
     };
 
     // ============================================
-    // SLIDE DATA
+    // PREMIUM ANIMATED COMPONENTS
+    // ============================================
+
+    // Animated Counter with spring physics
+    const AnimatedCounter = ({ value, suffix = '', prefix = '', duration = 2000, delay = 0, className = '', style = {} }) => {
+      const [displayValue, setDisplayValue] = useState(0);
+      const [hasStarted, setHasStarted] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => setHasStarted(true), delay);
+        return () => clearTimeout(timer);
+      }, [delay]);
+
+      useEffect(() => {
+        if (!hasStarted) return;
+        const startTime = Date.now();
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setDisplayValue(Math.floor(eased * value));
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      }, [hasStarted, value, duration]);
+
+      return <span className={className} style={style}>{prefix}{displayValue}{suffix}</span>;
+    };
+
+    // Large Progress Ring with glow
+    const ProgressRing = ({ value, maxValue = 100, size = 200, thickness = 16, color = '#88da1c', delay = 0, children }) => {
+      const radius = (size - thickness) / 2;
+      const circumference = 2 * Math.PI * radius;
+      const percentage = (value / maxValue) * 100;
+      const [offset, setOffset] = useState(circumference);
+
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          setOffset(circumference - (percentage / 100) * circumference);
+        }, delay);
+        return () => clearTimeout(timer);
+      }, [circumference, percentage, delay]);
+
+      return (
+        <div className="relative" style={{ width: size, height: size }}>
+          <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+            <defs>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <circle cx={size/2} cy={size/2} r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={thickness} />
+            <circle
+              cx={size/2} cy={size/2} r={radius} fill="none" stroke={color} strokeWidth={thickness} strokeLinecap="round"
+              strokeDasharray={circumference} strokeDashoffset={offset}
+              style={{ transition: 'stroke-dashoffset 1.8s cubic-bezier(0.22, 1, 0.36, 1)', filter: 'url(#glow)' }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            {children}
+          </div>
+        </div>
+      );
+    };
+
+    // Premium Stat Card
+    const StatCard = ({ value, suffix = '', label, icon: Icon, delay = 0, color = '#88da1c' }) => (
+      <motion.div
+        initial={{ opacity: 0, y: 40, scale: 0.9 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ delay, duration: 0.6, type: 'spring', stiffness: 100 }}
+        className="relative p-8 rounded-3xl overflow-hidden"
+        style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
+      >
+        <motion.div
+          className="absolute -top-8 -right-8 w-32 h-32 rounded-full"
+          style={{ backgroundColor: `${color}10`, filter: 'blur(40px)' }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        />
+        <div className="relative">
+          <div className="w-14 h-14 rounded-2xl mb-6 flex items-center justify-center" style={{ backgroundColor: `${color}20` }}>
+            <Icon size={28} style={{ color }} />
+          </div>
+          <div className="text-5xl md:text-6xl font-black mb-3" style={{ color }}>
+            <AnimatedCounter value={value} suffix={suffix} delay={delay * 1000 + 200} />
+          </div>
+          <div className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>{label}</div>
+        </div>
+      </motion.div>
+    );
+
+    // Animated Spectrum Bar
+    const SpectrumBar = ({ delay = 0 }) => {
+      const [animated, setAnimated] = useState(false);
+      useEffect(() => { const t = setTimeout(() => setAnimated(true), delay); return () => clearTimeout(t); }, [delay]);
+
+      return (
+        <div className="relative w-full max-w-2xl mx-auto">
+          {/* Main spectrum bar */}
+          <div className="relative h-20 rounded-full overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
+            <motion.div
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: animated ? 1 : 0 }}
+              transition={{ duration: 1 }}
+              style={{
+                background: 'linear-gradient(90deg, #6B7280 0%, #EF4444 25%, #88da1c 50%, #F59E0B 75%, #6B7280 100%)',
+              }}
+            />
+            {/* Sweet spot highlight */}
+            <motion.div
+              className="absolute top-0 bottom-0 rounded-full"
+              style={{ left: '40%', width: '20%', backgroundColor: '#88da1c', boxShadow: '0 0 40px #88da1c' }}
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: animated ? 0.8 : 0, scaleY: animated ? 1 : 0 }}
+              transition={{ delay: 0.8, duration: 0.6, type: 'spring' }}
+            />
+            {/* Needle */}
+            <motion.div
+              className="absolute top-1/2 w-2 h-28 -mt-14 rounded-full"
+              style={{ backgroundColor: '#fff', boxShadow: '0 0 20px rgba(255,255,255,0.5)' }}
+              initial={{ left: '10%' }}
+              animate={{ left: animated ? '50%' : '10%' }}
+              transition={{ delay: 0.5, duration: 1.5, type: 'spring', stiffness: 50 }}
+            />
+          </div>
+
+          {/* Labels */}
+          <div className="flex justify-between mt-4 px-4">
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Boring</span>
+            <motion.span
+              className="text-sm font-bold"
+              style={{ color: '#88da1c' }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: animated ? 1 : 0, y: animated ? 0 : 10 }}
+              transition={{ delay: 1.5 }}
+            >
+              70/30 Sweet Spot
+            </motion.span>
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Scary</span>
+          </div>
+        </div>
+      );
+    };
+
+    // Giant Percentage Display
+    const GiantPercentage = ({ value, label, sublabel, delay = 0, color = '#88da1c' }) => (
+      <motion.div
+        className="text-center"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay, duration: 0.8, type: 'spring', stiffness: 80 }}
+      >
+        <div className="relative inline-block">
+          <motion.div
+            className="absolute inset-0 rounded-full"
+            style={{ backgroundColor: color, filter: 'blur(80px)', opacity: 0.3 }}
+            animate={{ scale: [1, 1.2, 1] }}
+            transition={{ duration: 3, repeat: Infinity }}
+          />
+          <span className="relative text-[120px] md:text-[180px] font-black leading-none" style={{ color, textShadow: `0 0 60px ${color}50` }}>
+            <AnimatedCounter value={value} suffix="%" delay={delay * 1000} duration={2500} />
+          </span>
+        </div>
+        <motion.p
+          className="text-2xl md:text-3xl font-bold mt-4"
+          style={{ color: '#fff' }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: delay + 0.5 }}
+        >
+          {label}
+        </motion.p>
+        {sublabel && (
+          <motion.p
+            className="text-base mt-2"
+            style={{ color: 'rgba(255,255,255,0.5)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: delay + 0.7 }}
+          >
+            {sublabel}
+          </motion.p>
+        )}
+      </motion.div>
+    );
+
+    // ============================================
+    // SLIDES DATA
     // ============================================
     const slides = [
-      { type: 'welcome', learningGoals: ['The "MAYA Principle" that makes products irresistible', 'Why 100% unique products FAIL on Shopify', 'The 70/30 formula top stores use to convert browsers'] },
+      { type: 'welcome' },
       { type: 'hook' },
       { type: 'revelation' },
+      { type: 'principle' },
       { type: 'spectrum' },
       { type: 'brain-science' },
       { type: 'application' },
       { type: 'example-1' },
       { type: 'example-2' },
-      { type: 'framework' },
+      { type: 'formula' },
       { type: 'checklist' },
       { type: 'quiz' },
       { type: 'completion' }
     ];
 
     // ============================================
-    // ICONS
-    // ============================================
-    const Icons = {
-      Clock: () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-      Brain: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.54"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.54"/></svg>,
-      Target: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
-      Sparkles: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>,
-      MessageSquare: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
-      Lightbulb: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>,
-      Link: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
-      Trophy: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>,
-    };
-
-    // ============================================
-    // PREMIUM SLIDE COMPONENTS
+    // SLIDE COMPONENTS
     // ============================================
 
-    // 1. WELCOME SLIDE
-    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
+    // 1. WELCOME - Premium Hero
+    const WelcomeSlide = ({ onStart, userName, onShowGif, onHideGif }) => {
       const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
 
       useEffect(() => {
-        onShowGif(welcomeData.gif, '60%', gifSide);
+        onShowGif(welcomeData.gif, '55%', gifSide);
         return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+      }, []);
+
+      const goals = ['The "MAYA Principle" that makes products irresistible', 'Why 100% unique products fail on Shopify', 'The 70/30 formula top stores use to convert'];
 
       return (
         <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="mb-4">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
-                <Icons.Sparkles /> COPYWRITING MASTERCLASS
-              </span>
+          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-8">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+                <Icons.Sparkles size={14} />
+                <span>COPYWRITING</span>
+              </div>
             </motion.div>
 
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl lg:text-6xl font-black mb-4" style={{ color: '#000', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-6xl font-black mb-6" style={{ color: '#000', letterSpacing: '-0.04em', lineHeight: 1.05 }}>
               {LESSON_CONFIG.title}
             </motion.h1>
 
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-lg mb-3 max-w-lg" style={{ color: '#666' }} dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span style="font-weight: 700; color: #000;">${userName}</span>`) }} />
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-base mb-2" style={{ color: '#666' }} dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<strong style="color:#000">${userName}</strong>`) }} />
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="flex items-center gap-2 mb-6" style={{ color: '#999' }}>
-              <Icons.Clock /><span className="text-sm">{LESSON_CONFIG.duration}</span>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25 }} className="flex items-center gap-2 mb-8" style={{ color: '#999' }}>
+              <Icons.Clock size={14} /><span className="text-sm">{LESSON_CONFIG.duration}</span>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="rounded-2xl p-6 mb-6 max-w-md w-full" style={{ backgroundColor: '#000' }}>
-              <p className="text-xs uppercase tracking-widest mb-4" style={{ color: 'rgba(255,255,255,0.4)' }}>What you'll master</p>
-              <ul className="space-y-3">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.08 }} className="flex items-start gap-3 text-left">
-                    <span className="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5" style={{ backgroundColor: '#88da1c', color: '#000' }}>{i + 1}</span>
-                    <span className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>{goal}</span>
-                  </motion.li>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="rounded-2xl p-6 mb-8 w-full max-w-md" style={{ backgroundColor: '#000' }}>
+              <p className="text-[10px] uppercase tracking-[0.2em] mb-5" style={{ color: 'rgba(255,255,255,0.35)' }}>What you'll learn</p>
+              <div className="space-y-4">
+                {goals.map((goal, i) => (
+                  <motion.div key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 + i * 0.1 }} className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#88da1c' }}>
+                      <span className="text-xs font-bold" style={{ color: '#000' }}>{i + 1}</span>
+                    </div>
+                    <span className="text-sm text-left leading-relaxed" style={{ color: 'rgba(255,255,255,0.8)' }}>{goal}</span>
+                  </motion.div>
                 ))}
-              </ul>
+              </div>
             </motion.div>
 
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={onStart} whileHover={{ scale: 1.02, boxShadow: '0 8px 30px rgba(136, 218, 28, 0.4)' }} whileTap={{ scale: 0.98 }} className="px-8 py-3.5 rounded-xl font-bold text-base" style={{ backgroundColor: '#88da1c', color: '#000' }}>
-              Start Learning →
+            <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-8 py-4 rounded-xl font-bold text-base flex items-center gap-2" style={{ backgroundColor: '#88da1c', color: '#000' }}>
+              Start Learning
+              <Icons.ArrowRight />
             </motion.button>
           </div>
         </div>
       );
     };
 
-    // 2. HOOK SLIDE - Spotify Story
+    // 2. HOOK - Massive Typography Hero
     const HookSlide = () => (
       <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-        <div className="h-full p-6 md:p-10">
-          <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto">
-              <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.1 }} className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ backgroundColor: '#1DB954' }}>
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-                </div>
-                <div>
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#88da1c' }}>Case Study</span>
-                  <h3 className="text-xl font-bold" style={{ color: '#fff' }}>Spotify</h3>
-                </div>
+        <div className="h-full p-4 md:p-6">
+          <div className="h-full rounded-[32px] relative overflow-hidden flex items-center justify-center" style={{ backgroundColor: '#000' }}>
+            {/* Background glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(136,218,28,0.08) 0%, transparent 70%)' }} />
+
+            <div className="relative z-10 max-w-4xl mx-auto px-8 text-center">
+              {/* Spotify badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-10"
+                style={{ backgroundColor: '#1DB954', boxShadow: '0 0 40px rgba(29,185,84,0.4)' }}
+              >
+                <Icons.Music size={20} style={{ color: '#fff' }} />
+                <span className="font-bold text-sm" style={{ color: '#fff' }}>SPOTIFY CASE STUDY</span>
               </motion.div>
 
-              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl md:text-5xl font-black mb-6 leading-tight" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
-                Spotify almost <span style={{ color: '#EF4444' }}>killed</span> their biggest feature.
-              </motion.h2>
+              {/* Massive headline */}
+              <motion.h1
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.8, type: 'spring', stiffness: 80 }}
+                className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] mb-8"
+                style={{ color: '#fff', letterSpacing: '-0.04em' }}
+              >
+                They almost{' '}
+                <span className="relative">
+                  <span style={{ color: '#EF4444' }}>destroyed</span>
+                  <motion.svg
+                    className="absolute -bottom-2 left-0 w-full"
+                    viewBox="0 0 200 12"
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ delay: 0.8, duration: 0.8 }}
+                  >
+                    <motion.path d="M0 8 Q100 0, 200 8" fill="none" stroke="#EF4444" strokeWidth="4" strokeLinecap="round" />
+                  </motion.svg>
+                </span>
+                {' '}their best feature.
+              </motion.h1>
 
-              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg md:text-xl leading-relaxed mb-8" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                Their "Discover Weekly" playlist served users <span style={{ color: '#fff', fontWeight: 600 }}>100% new music</span>. Songs they'd never heard. Artists they'd never seen.
+              {/* Subtitle */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+                className="text-xl md:text-2xl max-w-2xl mx-auto"
+                style={{ color: 'rgba(255,255,255,0.6)' }}
+              >
+                Their "Discover Weekly" playlist served users{' '}
+                <span style={{ color: '#fff', fontWeight: 700 }}>100% new music</span>
+                . Songs they'd never heard. Artists they'd never seen.
               </motion.p>
 
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="flex items-center gap-4 p-6 rounded-2xl" style={{ backgroundColor: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)' }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </div>
-                <div>
-                  <p className="text-sm font-semibold" style={{ color: '#EF4444' }}>The Result?</p>
-                  <p className="text-lg font-bold" style={{ color: '#fff' }}>Engagement tanked. Users stopped clicking.</p>
+              {/* Result card */}
+              <motion.div
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 0.8, duration: 0.6, type: 'spring' }}
+                className="mt-12 inline-flex items-center gap-4 px-8 py-5 rounded-2xl"
+                style={{ backgroundColor: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)' }}
+              >
+                <motion.div
+                  animate={{ rotate: [0, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Icons.TrendingDown size={32} style={{ color: '#EF4444' }} />
+                </motion.div>
+                <div className="text-left">
+                  <p className="text-lg font-bold" style={{ color: '#fff' }}>Engagement collapsed</p>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Users stopped clicking entirely</p>
                 </div>
               </motion.div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
     );
 
-    // 3. REVELATION SLIDE
+    // 3. REVELATION - Giant Stats
     const RevelationSlide = () => (
       <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-        <div className="h-full p-6 md:p-10">
-          <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-3xl mx-auto text-center">
-              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', delay: 0.1 }} className="w-20 h-20 rounded-full mx-auto mb-8 flex items-center justify-center glow-pulse" style={{ backgroundColor: '#88da1c' }}>
-                <Icons.Lightbulb />
-              </motion.div>
+        <div className="h-full p-4 md:p-6">
+          <div className="h-full rounded-[32px] flex flex-col items-center justify-center px-8 py-12" style={{ backgroundColor: '#000' }}>
+            {/* Light bulb icon with glow */}
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ duration: 0.8, type: 'spring', stiffness: 150 }}
+              className="relative mb-10"
+            >
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{ backgroundColor: '#88da1c', filter: 'blur(30px)', width: 100, height: 100, margin: -10 }}
+                animate={{ opacity: [0.3, 0.6, 0.3] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <div className="w-20 h-20 rounded-2xl flex items-center justify-center relative" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb size={40} style={{ color: '#000' }} />
+              </div>
+            </motion.div>
 
-              <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl md:text-5xl font-black mb-6 leading-tight" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
-                The Fix That Changed Everything
-              </motion.h2>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-4xl md:text-5xl font-black text-center mb-4"
+              style={{ color: '#fff', letterSpacing: '-0.03em' }}
+            >
+              The Fix That Changed Everything
+            </motion.h2>
 
-              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-lg md:text-xl leading-relaxed mb-10" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                When Spotify added just <span style={{ color: '#88da1c', fontWeight: 700 }}>30% familiar songs</span> — tracks users already loved — everything changed.
-              </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-lg md:text-xl text-center mb-16 max-w-xl"
+              style={{ color: 'rgba(255,255,255,0.6)' }}
+            >
+              Spotify added just <span style={{ color: '#88da1c', fontWeight: 700 }}>30% familiar songs</span>
+            </motion.p>
 
-              <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
-                {[
-                  { value: '40%', label: 'Engagement↑', delay: 0.4 },
-                  { value: '3x', label: 'Save Rate↑', delay: 0.5 },
-                  { value: '2x', label: 'Return Rate↑', delay: 0.6 }
-                ].map((stat, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: stat.delay }} className="p-4 rounded-2xl" style={{ backgroundColor: 'rgba(136, 218, 28, 0.1)', border: '1px solid rgba(136, 218, 28, 0.2)' }}>
-                    <div className="text-3xl md:text-4xl font-black mb-1" style={{ color: '#88da1c' }}>{stat.value}</div>
-                    <div className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.label}</div>
-                  </motion.div>
-                ))}
+            {/* Stats grid */}
+            <div className="grid md:grid-cols-3 gap-6 w-full max-w-4xl">
+              <StatCard value={40} suffix="%" label="More engagement" icon={Icons.TrendingUp} delay={0.6} />
+              <StatCard value={3} suffix="x" label="More saves" icon={Icons.Star} delay={0.75} color="#F59E0B" />
+              <StatCard value={2} suffix="x" label="Return rate" icon={Icons.ArrowUpRight} delay={0.9} color="#3B82F6" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // 4. THE PRINCIPLE - Name reveal
+    const PrincipleSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full flex flex-col items-center justify-center px-8 py-12">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
+          >
+            <motion.p
+              className="text-sm font-semibold uppercase tracking-[0.3em] mb-8"
+              style={{ color: '#999' }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              Introducing
+            </motion.p>
+
+            {/* Giant MAYA text */}
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.8, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8, type: 'spring', stiffness: 80 }}
+              className="text-[80px] md:text-[140px] lg:text-[180px] font-black leading-none mb-6"
+              style={{
+                color: '#000',
+                letterSpacing: '-0.05em',
+                textShadow: '0 20px 60px rgba(0,0,0,0.1)'
+              }}
+            >
+              MAYA
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 }}
+              className="text-xl md:text-2xl font-medium"
+              style={{ color: '#666' }}
+            >
+              <span style={{ color: '#88da1c', fontWeight: 700 }}>M</span>ost{' '}
+              <span style={{ color: '#88da1c', fontWeight: 700 }}>A</span>dvanced{' '}
+              <span style={{ color: '#88da1c', fontWeight: 700 }}>Y</span>et{' '}
+              <span style={{ color: '#88da1c', fontWeight: 700 }}>A</span>cceptable
+            </motion.p>
+
+            {/* Quote */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1 }}
+              className="mt-12 max-w-lg mx-auto p-6 rounded-2xl"
+              style={{ backgroundColor: '#f8f9fa' }}
+            >
+              <p className="text-base italic" style={{ color: '#444' }}>
+                "To sell something surprising, make it familiar. To sell something familiar, make it surprising."
+              </p>
+              <p className="text-sm font-semibold mt-3" style={{ color: '#88da1c' }}>
+                - Raymond Loewy, Industrial Designer
+              </p>
+            </motion.div>
+          </motion.p>
+        </div>
+      </div>
+    );
+
+    // 5. SPECTRUM - Visual slider
+    const SpectrumSlide = () => (
+      <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
+        <div className="h-full p-4 md:p-6">
+          <div className="h-full rounded-[32px] flex flex-col items-center justify-center px-8 py-12" style={{ backgroundColor: '#000' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] mb-4" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+                The Formula
+              </div>
+              <h2 className="text-3xl md:text-5xl font-black" style={{ color: '#fff', letterSpacing: '-0.03em' }}>
+                Find The Sweet Spot
+              </h2>
+            </motion.div>
+
+            <SpectrumBar delay={400} />
+
+            {/* The formula */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 2 }}
+              className="mt-16 grid md:grid-cols-3 gap-4 max-w-3xl w-full"
+            >
+              <div className="p-6 rounded-2xl text-center" style={{ backgroundColor: 'rgba(136,218,28,0.1)', border: '1px solid rgba(136,218,28,0.2)' }}>
+                <div className="text-4xl font-black mb-2" style={{ color: '#88da1c' }}>70%</div>
+                <div className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>Familiar foundation</div>
+              </div>
+              <div className="p-6 rounded-2xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.03)' }}>
+                <span className="text-3xl font-black" style={{ color: 'rgba(255,255,255,0.3)' }}>+</span>
+              </div>
+              <div className="p-6 rounded-2xl text-center" style={{ backgroundColor: 'rgba(136,218,28,0.1)', border: '1px solid rgba(136,218,28,0.2)' }}>
+                <div className="text-4xl font-black mb-2" style={{ color: '#88da1c' }}>30%</div>
+                <div className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>Novel twist</div>
               </div>
             </motion.div>
           </div>
@@ -269,162 +607,134 @@
       </div>
     );
 
-    // 4. SPECTRUM SLIDE - MAYA Visualization
-    const SpectrumSlide = () => {
-      const [animationComplete, setAnimationComplete] = useState(false);
-
-      useEffect(() => {
-        const timer = setTimeout(() => setAnimationComplete(true), 1500);
-        return () => clearTimeout(timer);
-      }, []);
-
-      return (
-        <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-          <div className="h-full p-6 md:p-10">
-            <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto w-full">
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }} className="text-center mb-10">
-                  <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold mb-4" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
-                    THE FRAMEWORK
-                  </span>
-                  <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#fff', letterSpacing: '-0.02em' }}>The MAYA Principle</h2>
-                  <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.5)' }}>Most Advanced Yet Acceptable</p>
-                </motion.div>
-
-                {/* Visual Spectrum */}
-                <div className="relative mb-8">
-                  <svg viewBox="0 0 800 200" className="w-full">
-                    {/* Gradient Background Bar */}
-                    <defs>
-                      <linearGradient id="spectrumGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#6B7280" />
-                        <stop offset="35%" stopColor="#88da1c" />
-                        <stop offset="65%" stopColor="#88da1c" />
-                        <stop offset="100%" stopColor="#F59E0B" />
-                      </linearGradient>
-                    </defs>
-
-                    {/* Main Bar */}
-                    <motion.rect initial={{ width: 0 }} animate={{ width: 700 }} transition={{ duration: 1, ease: 'easeOut' }} x="50" y="80" height="40" rx="20" fill="url(#spectrumGradient)" opacity="0.3" />
-
-                    {/* Sweet Spot Highlight */}
-                    <motion.rect initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.5 }} x="280" y="75" width="240" height="50" rx="25" fill="#88da1c" opacity="0.4" />
-
-                    {/* Position Markers */}
-                    <motion.circle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: 'spring' }} cx="100" cy="100" r="12" fill="#6B7280" />
-                    <motion.circle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.8, type: 'spring' }} cx="400" cy="100" r="16" fill="#88da1c" style={{ filter: 'drop-shadow(0 0 10px rgba(136, 218, 28, 0.5))' }} />
-                    <motion.circle initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.1, type: 'spring' }} cx="700" cy="100" r="12" fill="#F59E0B" />
-
-                    {/* Labels */}
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} x="100" y="160" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">100% Familiar</motion.text>
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }} x="100" y="180" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="11">BORING</motion.text>
-
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} x="400" y="160" textAnchor="middle" fill="#88da1c" fontSize="16" fontWeight="bold">70/30 Mix</motion.text>
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4 }} x="400" y="180" textAnchor="middle" fill="#88da1c" fontSize="12">IRRESISTIBLE</motion.text>
-
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} x="700" y="160" textAnchor="middle" fill="white" fontSize="14" fontWeight="bold">100% Novel</motion.text>
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }} x="700" y="180" textAnchor="middle" fill="rgba(255,255,255,0.5)" fontSize="11">SCARY</motion.text>
-
-                    {/* Zone Labels at top */}
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }} x="100" y="50" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="10">They scroll past</motion.text>
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }} x="400" y="45" textAnchor="middle" fill="#88da1c" fontSize="12" fontWeight="bold">✨ SWEET SPOT ✨</motion.text>
-                    <motion.text initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.7 }} x="700" y="50" textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize="10">They back away</motion.text>
-                  </svg>
-                </div>
-
-                {/* Bottom Insight */}
-                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.8 }} className="text-center p-6 rounded-2xl" style={{ backgroundColor: 'rgba(136, 218, 28, 0.1)', border: '1px solid rgba(136, 218, 28, 0.2)' }}>
-                  <p className="text-lg font-semibold" style={{ color: '#fff' }}>
-                    <span style={{ color: '#88da1c' }}>70% familiar</span> foundation + <span style={{ color: '#88da1c' }}>30% novel</span> twist = They BUY
-                  </p>
-                </motion.div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    // 5. BRAIN SCIENCE SLIDE
+    // 6. BRAIN SCIENCE - Progress rings
     const BrainScienceSlide = () => (
       <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-        <div className="h-full p-6 md:p-10">
-          <div className="h-full rounded-3xl p-8 md:p-12 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto w-full">
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mb-10">
-                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring' }} className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)' }}>
-                  <Icons.Brain />
-                </motion.div>
-                <h2 className="text-3xl md:text-4xl font-black mb-2" style={{ color: '#fff', letterSpacing: '-0.02em' }}>The Brain Science</h2>
-                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>Why this formula works neurologically</p>
-              </motion.div>
-
-              <div className="grid md:grid-cols-3 gap-6">
-                {[
-                  { value: 40, suffix: '%', label: 'Faster Processing', desc: 'Brain handles familiar things 40% faster', icon: '⚡', color: '#88da1c' },
-                  { value: 0, suffix: '', label: 'Dopamine Spike', desc: 'Pure familiarity = no excitement', icon: '😴', color: '#6B7280' },
-                  { value: 2, suffix: 'x', label: 'More Engagement', desc: 'Novel-familiar mix doubles attention', icon: '🎯', color: '#88da1c' }
-                ].map((stat, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }} className="relative p-6 rounded-2xl overflow-hidden" style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                    <div className="text-4xl mb-4">{stat.icon}</div>
-                    <div className="text-4xl md:text-5xl font-black mb-2" style={{ color: stat.color }}>
-                      <AnimatedCounter target={stat.value} suffix={stat.suffix} duration={1500} />
-                    </div>
-                    <div className="text-sm font-bold mb-1" style={{ color: '#fff' }}>{stat.label}</div>
-                    <div className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>{stat.desc}</div>
-                  </motion.div>
-                ))}
+        <div className="h-full p-4 md:p-6">
+          <div className="h-full rounded-[32px] flex flex-col items-center justify-center px-8 py-12" style={{ backgroundColor: '#000' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <div className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: 'rgba(136,218,28,0.15)' }}>
+                <Icons.Brain size={32} style={{ color: '#88da1c' }} />
               </div>
+              <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#fff', letterSpacing: '-0.02em' }}>
+                Why It Works
+              </h2>
+              <p className="text-base mt-2" style={{ color: 'rgba(255,255,255,0.4)' }}>The neuroscience behind MAYA</p>
             </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl">
+              {[
+                { value: 40, label: 'Faster Processing', desc: 'Brain handles familiar patterns 40% faster', color: '#88da1c' },
+                { value: 0, label: 'Zero Excitement', desc: 'Pure familiarity creates no dopamine spike', color: '#6B7280' },
+                { value: 200, label: 'More Attention', desc: 'Novel-familiar mix doubles engagement', color: '#3B82F6', suffix: '%' }
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.2, type: 'spring', stiffness: 100 }}
+                  className="text-center"
+                >
+                  <ProgressRing value={item.value > 100 ? 100 : item.value} size={140} thickness={10} color={item.color} delay={300 + i * 200}>
+                    <span className="text-3xl font-black" style={{ color: item.color }}>
+                      <AnimatedCounter value={item.value} suffix={item.suffix || '%'} delay={400 + i * 200} />
+                    </span>
+                  </ProgressRing>
+                  <h3 className="text-lg font-bold mt-6 mb-2" style={{ color: '#fff' }}>{item.label}</h3>
+                  <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>{item.desc}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
     );
 
-    // 6. APPLICATION SLIDE
+    // 7. APPLICATION - Visual comparison
     const ApplicationSlide = () => (
       <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-        <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-4xl mx-auto py-10">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
-              <Icons.Target /> YOUR SHOPIFY STORE
-            </span>
+        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-5xl mx-auto py-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-5xl font-black" style={{ color: '#000', letterSpacing: '-0.03em' }}>
+              The Danger Zones
+            </h2>
+            <p className="text-lg mt-2" style={{ color: '#666' }}>Where most stores fail</p>
           </motion.div>
 
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl font-black mb-6" style={{ color: '#000', letterSpacing: '-0.02em' }}>
-            Why This Matters For You
-          </motion.h2>
-
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg leading-relaxed mb-8" style={{ color: '#444' }}>
-            Your product page faces the same challenge:
-          </motion.p>
-
-          <div className="grid md:grid-cols-2 gap-4 mb-8">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }} className="p-6 rounded-2xl" style={{ backgroundColor: '#fef2f2', border: '2px solid #fecaca' }}>
-              <div className="w-10 h-10 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: '#EF4444' }}>
-                <span style={{ color: '#fff' }}>😐</span>
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            {/* Too Familiar */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="relative p-8 rounded-3xl overflow-hidden"
+              style={{ backgroundColor: '#fef2f2', border: '2px solid #fecaca' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1.5" style={{ backgroundColor: '#EF4444' }} />
+              <div className="w-16 h-16 rounded-2xl mb-6 flex items-center justify-center" style={{ backgroundColor: '#EF4444' }}>
+                <Icons.Eye size={32} style={{ color: '#fff' }} />
               </div>
-              <h3 className="font-bold mb-2" style={{ color: '#991B1B' }}>TOO Familiar</h3>
-              <p className="text-sm" style={{ color: '#7F1D1D' }}>"I've seen this before" → They scroll past</p>
+              <h3 className="text-2xl font-black mb-3" style={{ color: '#991B1B' }}>TOO Familiar</h3>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#7F1D1D' }}>
+                "I've seen this before"
+              </p>
+              <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(239,68,68,0.1)' }}>
+                <p className="text-sm font-medium" style={{ color: '#991B1B' }}>
+                  They scroll past without a second thought
+                </p>
+              </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="p-6 rounded-2xl" style={{ backgroundColor: '#fffbeb', border: '2px solid #fde68a' }}>
-              <div className="w-10 h-10 rounded-xl mb-4 flex items-center justify-center" style={{ backgroundColor: '#F59E0B' }}>
-                <span style={{ color: '#fff' }}>😰</span>
+            {/* Too Novel */}
+            <motion.div
+              initial={{ opacity: 0, x: 40 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3, type: 'spring' }}
+              className="relative p-8 rounded-3xl overflow-hidden"
+              style={{ backgroundColor: '#fffbeb', border: '2px solid #fde68a' }}
+            >
+              <div className="absolute top-0 left-0 w-full h-1.5" style={{ backgroundColor: '#F59E0B' }} />
+              <div className="w-16 h-16 rounded-2xl mb-6 flex items-center justify-center" style={{ backgroundColor: '#F59E0B' }}>
+                <Icons.AlertTriangle size={32} style={{ color: '#fff' }} />
               </div>
-              <h3 className="font-bold mb-2" style={{ color: '#92400E' }}>TOO Novel</h3>
-              <p className="text-sm" style={{ color: '#78350F' }}>Brain flags it as risky → They back away</p>
+              <h3 className="text-2xl font-black mb-3" style={{ color: '#92400E' }}>TOO Novel</h3>
+              <p className="text-base leading-relaxed mb-4" style={{ color: '#78350F' }}>
+                "This seems risky..."
+              </p>
+              <div className="p-4 rounded-xl" style={{ backgroundColor: 'rgba(245,158,11,0.1)' }}>
+                <p className="text-sm font-medium" style={{ color: '#92400E' }}>
+                  Brain flags it as uncertain - they hesitate and leave
+                </p>
+              </div>
             </motion.div>
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="p-6 rounded-2xl" style={{ backgroundColor: '#000' }}>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
-                <Icons.Zap />
+          {/* The sweet spot */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="p-8 rounded-3xl"
+            style={{ backgroundColor: '#000' }}
+          >
+            <div className="flex items-center gap-5">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Target size={32} style={{ color: '#000' }} />
               </div>
               <div>
-                <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>The Sweet Spot</p>
-                <p className="font-bold" style={{ color: '#fff' }}><span style={{ color: '#88da1c' }}>70% familiar</span> foundation → <span style={{ color: '#88da1c' }}>30% novel</span> twist</p>
+                <p className="text-xs uppercase tracking-[0.2em] mb-1" style={{ color: 'rgba(255,255,255,0.4)' }}>The Sweet Spot</p>
+                <p className="text-xl font-bold" style={{ color: '#fff' }}>
+                  <span style={{ color: '#88da1c' }}>70% familiar</span> to build trust, then{' '}
+                  <span style={{ color: '#88da1c' }}>30% novel</span> to create desire
+                </p>
               </div>
             </div>
           </motion.div>
@@ -432,51 +742,84 @@
       </div>
     );
 
-    // 7. EXAMPLE 1 SLIDE - Posture Corrector
+    // 8. EXAMPLE 1 - Side by side comparison
     const Example1Slide = () => (
       <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
-              REAL EXAMPLE
-            </span>
-            <h2 className="text-2xl md:text-3xl font-black mt-4" style={{ color: '#000', letterSpacing: '-0.02em' }}>Posture Corrector Store</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-10"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+              Case Study
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#000', letterSpacing: '-0.02em' }}>
+              Posture Corrector Store
+            </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden" style={{ border: '2px solid #fecaca' }}>
-              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#EF4444' }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                  <Icons.X />
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Before */}
+            <motion.div
+              initial={{ opacity: 0, x: -30, rotateY: -10 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 0.1, type: 'spring' }}
+              className="rounded-3xl overflow-hidden"
+              style={{ border: '2px solid #fecaca' }}
+            >
+              <div className="px-6 py-5 flex items-center gap-3" style={{ backgroundColor: '#EF4444' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                  <Icons.X size={20} style={{ color: '#fff' }} />
                 </div>
                 <span className="font-bold" style={{ color: '#fff' }}>Too Generic</span>
               </div>
-              <div className="p-6" style={{ backgroundColor: '#fef2f2' }}>
-                <p className="italic text-base leading-relaxed" style={{ color: '#7F1D1D' }}>"Fix your posture with our back brace. Comfortable and adjustable."</p>
+              <div className="p-8" style={{ backgroundColor: '#fef2f2' }}>
+                <p className="text-lg italic leading-relaxed" style={{ color: '#7F1D1D' }}>
+                  "Fix your posture with our back brace. Comfortable and adjustable."
+                </p>
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl overflow-hidden" style={{ border: '2px solid rgba(136, 218, 28, 0.5)' }}>
-              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#88da1c' }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
-                  <Icons.Check />
+            {/* After */}
+            <motion.div
+              initial={{ opacity: 0, x: 30, rotateY: 10 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="rounded-3xl overflow-hidden"
+              style={{ border: '2px solid rgba(136,218,28,0.4)', boxShadow: '0 20px 60px rgba(136,218,28,0.15)' }}
+            >
+              <div className="px-6 py-5 flex items-center gap-3" style={{ backgroundColor: '#88da1c' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.15)' }}>
+                  <Icons.Check size={20} strokeWidth={3} style={{ color: '#000' }} />
                 </div>
                 <span className="font-bold" style={{ color: '#000' }}>MAYA Applied</span>
               </div>
-              <div className="p-6" style={{ backgroundColor: 'rgba(136, 218, 28, 0.1)' }}>
-                <p className="italic text-base leading-relaxed" style={{ color: '#166534' }}>"The posture fix that works while you're sitting at your desk — no awkward straps visible under your shirt."</p>
+              <div className="p-8" style={{ backgroundColor: 'rgba(136,218,28,0.08)' }}>
+                <p className="text-lg italic leading-relaxed" style={{ color: '#166534' }}>
+                  "The posture fix that works while you're sitting at your desk - no awkward straps visible under your shirt."
+                </p>
               </div>
             </motion.div>
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-2xl" style={{ backgroundColor: '#000' }}>
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
-                <Icons.Lightbulb />
+          {/* Breakdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 p-6 rounded-2xl"
+            style={{ backgroundColor: '#000' }}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb size={24} style={{ color: '#000' }} />
               </div>
               <div>
-                <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>The Insight</p>
-                <p className="font-medium" style={{ color: '#fff' }}><span style={{ color: '#88da1c' }}>Familiar problem</span> (posture) + <span style={{ color: '#88da1c' }}>Novel twist</span> (invisible, works while sitting)</p>
+                <p className="text-sm font-medium" style={{ color: '#fff' }}>
+                  <span style={{ color: '#88da1c' }}>Familiar problem</span> (bad posture) +{' '}
+                  <span style={{ color: '#88da1c' }}>Novel twist</span> (invisible, works while sitting)
+                </p>
               </div>
             </div>
           </motion.div>
@@ -484,51 +827,85 @@
       </div>
     );
 
-    // 8. EXAMPLE 2 SLIDE - Pet Products
+    // 9. EXAMPLE 2
     const Example2Slide = () => (
       <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto py-8">
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
-              REAL EXAMPLE
-            </span>
-            <h2 className="text-2xl md:text-3xl font-black mt-4" style={{ color: '#000', letterSpacing: '-0.02em' }}>Pet Products Store</h2>
+        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-5xl mx-auto py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-10"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+              Case Study
+            </div>
+            <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#000', letterSpacing: '-0.02em' }}>
+              Pet Products Store
+            </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-6">
-            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="rounded-2xl overflow-hidden" style={{ border: '2px solid #fde68a' }}>
-              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#F59E0B' }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                  <Icons.X />
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Before */}
+            <motion.div
+              initial={{ opacity: 0, x: -30, rotateY: -10 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 0.1, type: 'spring' }}
+              className="rounded-3xl overflow-hidden"
+              style={{ border: '2px solid #fde68a' }}
+            >
+              <div className="px-6 py-5 flex items-center gap-3" style={{ backgroundColor: '#F59E0B' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                  <Icons.X size={20} style={{ color: '#fff' }} />
                 </div>
                 <span className="font-bold" style={{ color: '#fff' }}>Too Novel</span>
               </div>
-              <div className="p-6" style={{ backgroundColor: '#fffbeb' }}>
-                <p className="italic text-base leading-relaxed" style={{ color: '#78350F' }}>"Revolutionary AI-powered smart collar with biometric sensors and cloud connectivity."</p>
+              <div className="p-8" style={{ backgroundColor: '#fffbeb' }}>
+                <p className="text-lg italic leading-relaxed" style={{ color: '#78350F' }}>
+                  "Revolutionary AI-powered smart collar with biometric sensors and cloud connectivity."
+                </p>
               </div>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="rounded-2xl overflow-hidden" style={{ border: '2px solid rgba(136, 218, 28, 0.5)' }}>
-              <div className="p-4 flex items-center gap-3" style={{ backgroundColor: '#88da1c' }}>
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
-                  <Icons.Check />
+            {/* After */}
+            <motion.div
+              initial={{ opacity: 0, x: 30, rotateY: 10 }}
+              animate={{ opacity: 1, x: 0, rotateY: 0 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+              className="rounded-3xl overflow-hidden"
+              style={{ border: '2px solid rgba(136,218,28,0.4)', boxShadow: '0 20px 60px rgba(136,218,28,0.15)' }}
+            >
+              <div className="px-6 py-5 flex items-center gap-3" style={{ backgroundColor: '#88da1c' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(0,0,0,0.15)' }}>
+                  <Icons.Check size={20} strokeWidth={3} style={{ color: '#000' }} />
                 </div>
                 <span className="font-bold" style={{ color: '#000' }}>MAYA Applied</span>
               </div>
-              <div className="p-6" style={{ backgroundColor: 'rgba(136, 218, 28, 0.1)' }}>
-                <p className="italic text-base leading-relaxed" style={{ color: '#166534' }}>"Finally — a collar that tells you when your dog needs a vet visit. Before they even show symptoms."</p>
+              <div className="p-8" style={{ backgroundColor: 'rgba(136,218,28,0.08)' }}>
+                <p className="text-lg italic leading-relaxed" style={{ color: '#166534' }}>
+                  "Finally - a collar that tells you when your dog needs a vet visit. Before they even show symptoms."
+                </p>
               </div>
             </motion.div>
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="p-5 rounded-2xl" style={{ backgroundColor: '#000' }}>
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
-                <Icons.Lightbulb />
+          {/* Breakdown */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-8 p-6 rounded-2xl"
+            style={{ backgroundColor: '#000' }}
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Lightbulb size={24} style={{ color: '#000' }} />
               </div>
               <div>
-                <p className="text-sm mb-1" style={{ color: 'rgba(255,255,255,0.5)' }}>The Insight</p>
-                <p className="font-medium" style={{ color: '#fff' }}><span style={{ color: '#88da1c' }}>Familiar product</span> (collar) + <span style={{ color: '#88da1c' }}>Familiar concern</span> (vet visits) + <span style={{ color: '#88da1c' }}>Novel benefit</span> (early detection)</p>
+                <p className="text-sm font-medium" style={{ color: '#fff' }}>
+                  <span style={{ color: '#88da1c' }}>Familiar product</span> (collar) +{' '}
+                  <span style={{ color: '#88da1c' }}>Familiar concern</span> (vet visits) +{' '}
+                  <span style={{ color: '#88da1c' }}>Novel benefit</span> (early detection)
+                </p>
               </div>
             </div>
           </motion.div>
@@ -536,47 +913,63 @@
       </div>
     );
 
-    // 9. FRAMEWORK SLIDE - 4-Part Formula
-    const FrameworkSlide = () => {
+    // 10. FORMULA - Step by step
+    const FormulaSlide = () => {
       const steps = [
-        { icon: '💬', title: 'Their Language', desc: 'Use exact words customers use. "My back kills me" not "lumbar discomfort."' },
-        { icon: '🎯', title: 'Known Problems', desc: 'Anchor to struggles they instantly recognize. Get them nodding.' },
-        { icon: '✨', title: 'The Twist', desc: 'Once they\'re nodding, reveal your unique angle.' },
-        { icon: '🌉', title: 'Bridge to Solution', desc: 'Connect your novel mechanism to their familiar goal.' }
+        { num: 1, title: 'Their Language', desc: 'Use exact words customers use', example: '"My back kills me" not "lumbar discomfort"' },
+        { num: 2, title: 'Known Problems', desc: 'Anchor to struggles they recognize', example: 'Get them nodding before you pitch' },
+        { num: 3, title: 'The Twist', desc: 'Reveal your unique angle', example: 'After comfort, add the surprise' },
+        { num: 4, title: 'Bridge It', desc: 'Connect novel to familiar goal', example: 'Link your mechanism to their desire' }
       ];
 
       return (
         <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
-          <div className="h-full p-6 md:p-10">
-            <div className="h-full rounded-3xl p-8 md:p-10 flex flex-col justify-center" style={{ backgroundColor: '#000' }}>
-              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto w-full">
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center mb-10">
-                  <h2 className="text-2xl md:text-3xl font-black" style={{ color: '#fff', letterSpacing: '-0.02em' }}>The 4-Part MAYA Formula</h2>
-                </motion.div>
+          <div className="h-full p-4 md:p-6">
+            <div className="h-full rounded-[32px] flex flex-col justify-center px-8 py-10" style={{ backgroundColor: '#000' }}>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-3xl md:text-4xl font-black text-center mb-12"
+                style={{ color: '#fff', letterSpacing: '-0.02em' }}
+              >
+                The 4-Step MAYA Formula
+              </motion.h2>
 
-                <div className="grid md:grid-cols-4 gap-4">
-                  {steps.map((step, i) => (
-                    <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="relative">
-                      <div className="p-5 rounded-2xl h-full" style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                        <div className="text-3xl mb-3">{step.icon}</div>
-                        <div className="text-xs font-bold mb-2" style={{ color: '#88da1c' }}>STEP {i + 1}</div>
-                        <h3 className="font-bold text-sm mb-2" style={{ color: '#fff' }}>{step.title}</h3>
-                        <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)' }}>{step.desc}</p>
+              <div className="grid md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+                {steps.map((step, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: 0.1 + i * 0.1, type: 'spring', stiffness: 100 }}
+                    className="relative p-6 rounded-2xl"
+                    style={{ backgroundColor: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
+                  >
+                    {/* Step number */}
+                    <div className="w-12 h-12 rounded-xl mb-5 flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                      <span className="text-xl font-black" style={{ color: '#000' }}>{step.num}</span>
+                    </div>
+
+                    <h3 className="font-bold text-lg mb-2" style={{ color: '#fff' }}>{step.title}</h3>
+                    <p className="text-sm mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>{step.desc}</p>
+                    <p className="text-xs italic" style={{ color: 'rgba(136,218,28,0.8)' }}>{step.example}</p>
+
+                    {/* Arrow connector */}
+                    {i < 3 && (
+                      <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                        <Icons.ArrowRight />
                       </div>
-                      {i < 3 && (
-                        <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10" style={{ color: 'rgba(255,255,255,0.2)' }}>→</div>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       );
     };
 
-    // 10. CHECKLIST SLIDE
+    // 11. CHECKLIST
     const ChecklistSlide = () => {
       const items = [
         { area: 'Headline', question: 'Does it reference a problem they\'d describe in their own words?' },
@@ -588,20 +981,36 @@
       return (
         <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
           <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-3xl mx-auto py-8">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
-                ✅ ACTION CHECKLIST
-              </span>
-              <h2 className="text-2xl md:text-3xl font-black mt-4" style={{ color: '#000', letterSpacing: '-0.02em' }}>Quick MAYA Audit</h2>
-              <p className="text-sm mt-2" style={{ color: '#666' }}>Review your product page with these questions</p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-3" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+                <Icons.CheckCircle size={14} />
+                Action Checklist
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black" style={{ color: '#000', letterSpacing: '-0.02em' }}>
+                Quick MAYA Audit
+              </h2>
+              <p className="text-base mt-2" style={{ color: '#666' }}>Review your product page with these questions</p>
             </motion.div>
 
             <div className="space-y-4">
               {items.map((item, i) => (
-                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="p-5 rounded-2xl flex items-start gap-4" style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb' }}>
-                  <div className="w-10 h-10 rounded-xl flex-shrink-0 flex items-center justify-center text-lg font-bold" style={{ backgroundColor: '#88da1c', color: '#000' }}>{i + 1}</div>
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.1, type: 'spring' }}
+                  className="p-6 rounded-2xl flex items-start gap-5"
+                  style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb' }}
+                >
+                  <div className="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center text-lg font-black" style={{ backgroundColor: '#88da1c', color: '#000' }}>
+                    {i + 1}
+                  </div>
                   <div>
-                    <h3 className="font-bold text-sm mb-1" style={{ color: '#000' }}>{item.area}</h3>
+                    <h3 className="font-bold text-base mb-1" style={{ color: '#000' }}>{item.area}</h3>
                     <p className="text-sm" style={{ color: '#666' }}>{item.question}</p>
                   </div>
                 </motion.div>
@@ -612,47 +1021,68 @@
       );
     };
 
-    // 11. QUIZ SLIDE
+    // 12. QUIZ
     const QuizSlide = ({ onShowGif, onHideGif }) => {
       const [selected, setSelected] = useState(null);
       const [showFeedback, setShowFeedback] = useState(false);
-      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
-      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
+      const celebrationGif = useMemo(() => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)], []);
+      const empathyGif = useMemo(() => empathyGifs[Math.floor(Math.random() * empathyGifs.length)], []);
       const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
 
-      const question = "What's the optimal balance for the MAYA Principle?";
-      const options = ['100% familiar — comfort is everything', '50/50 — perfect balance', '70% familiar / 30% novel', '30% familiar / 70% novel'];
+      const options = ['100% familiar - comfort is everything', '50/50 - perfect balance', '70% familiar / 30% novel', '30% familiar / 70% novel'];
       const correctIndex = 2;
-
-      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
       const isCorrect = selected === correctIndex;
 
-      useEffect(() => {
-        if (showFeedback) {
-          onShowGif(isCorrect ? celebrationGif : empathyGif, '55%', gifSide);
-        }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
+      const handleSelect = (i) => { if (showFeedback) return; setSelected(i); setShowFeedback(true); };
 
-      useEffect(() => { return () => onHideGif(); }, [onHideGif]);
+      useEffect(() => {
+        if (showFeedback) onShowGif(isCorrect ? celebrationGif : empathyGif, '50%', gifSide);
+      }, [showFeedback]);
+
+      useEffect(() => () => onHideGif(), []);
 
       return (
         <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
           <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold" style={{ backgroundColor: 'rgba(136, 218, 28, 0.15)', color: '#88da1c' }}>
-                🧠 KNOWLEDGE CHECK
-              </span>
-              <h2 className="text-xl md:text-2xl font-black mt-4 leading-tight" style={{ color: '#000', letterSpacing: '-0.01em' }}>{question}</h2>
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center mb-10"
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-[0.15em] mb-4" style={{ backgroundColor: 'rgba(136,218,28,0.12)', color: '#88da1c' }}>
+                <Icons.Brain size={14} />
+                Knowledge Check
+              </div>
+              <h2 className="text-2xl md:text-3xl font-black leading-tight" style={{ color: '#000', letterSpacing: '-0.01em' }}>
+                What's the optimal balance for the MAYA Principle?
+              </h2>
             </motion.div>
 
             <div className="space-y-3 mb-6">
               {options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className="w-full p-4 rounded-xl text-left transition-all" style={{ backgroundColor: showFeedback ? (i === correctIndex ? 'rgba(136, 218, 28, 0.15)' : i === selected ? 'rgba(239, 68, 68, 0.15)' : '#f8f9fa') : '#f8f9fa', border: showFeedback ? (i === correctIndex ? '2px solid #88da1c' : i === selected ? '2px solid #EF4444' : '2px solid #e5e7eb') : '2px solid #e5e7eb', opacity: showFeedback && i !== correctIndex && i !== selected ? 0.4 : 1 }}>
-                  <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold" style={{ backgroundColor: showFeedback && i === correctIndex ? '#88da1c' : showFeedback && i === selected && !isCorrect ? '#EF4444' : '#e5e7eb', color: showFeedback && (i === correctIndex || (i === selected && !isCorrect)) ? '#fff' : '#666' }}>
-                      {showFeedback && i === correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
+                <motion.button
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 + i * 0.08 }}
+                  onClick={() => handleSelect(i)}
+                  disabled={showFeedback}
+                  className="w-full p-5 rounded-xl text-left transition-all"
+                  style={{
+                    backgroundColor: showFeedback ? (i === correctIndex ? 'rgba(136,218,28,0.12)' : i === selected ? 'rgba(239,68,68,0.12)' : '#f8f9fa') : '#f8f9fa',
+                    border: showFeedback ? (i === correctIndex ? '2px solid #88da1c' : i === selected ? '2px solid #EF4444' : '2px solid #e5e7eb') : '2px solid #e5e7eb',
+                    opacity: showFeedback && i !== correctIndex && i !== selected ? 0.35 : 1,
+                    transform: showFeedback && i === correctIndex ? 'scale(1.02)' : 'scale(1)'
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="w-10 h-10 rounded-lg flex items-center justify-center text-base font-bold" style={{
+                      backgroundColor: showFeedback && i === correctIndex ? '#88da1c' : showFeedback && i === selected && !isCorrect ? '#EF4444' : '#e5e7eb',
+                      color: showFeedback && (i === correctIndex || (i === selected && !isCorrect)) ? '#fff' : '#666'
+                    }}>
+                      {showFeedback && i === correctIndex ? <Icons.Check size={18} /> : showFeedback && i === selected && !isCorrect ? <Icons.X size={18} /> : String.fromCharCode(65 + i)}
                     </span>
-                    <span style={{ color: '#000' }}>{option}</span>
+                    <span className="text-base" style={{ color: '#000' }}>{option}</span>
                   </div>
                 </motion.button>
               ))}
@@ -660,9 +1090,19 @@
 
             <AnimatePresence>
               {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="p-5 rounded-xl" style={{ backgroundColor: isCorrect ? 'rgba(136, 218, 28, 0.15)' : 'rgba(239, 68, 68, 0.15)', border: isCorrect ? '1px solid rgba(136, 218, 28, 0.3)' : '1px solid rgba(239, 68, 68, 0.3)' }}>
-                  <p className="text-sm leading-relaxed" style={{ color: isCorrect ? '#166534' : '#991B1B' }}>
-                    {isCorrect ? 'Exactly! 70% familiar foundation creates trust, 30% novel twist creates desire. This is the formula that converts.' : 'Not quite. The magic ratio is 70% familiar to build comfort, then 30% novel to create excitement.'}
+                <motion.div
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-6 rounded-xl"
+                  style={{
+                    backgroundColor: isCorrect ? 'rgba(136,218,28,0.1)' : 'rgba(239,68,68,0.1)',
+                    border: isCorrect ? '1px solid rgba(136,218,28,0.25)' : '1px solid rgba(239,68,68,0.25)'
+                  }}
+                >
+                  <p className="text-base leading-relaxed" style={{ color: isCorrect ? '#166534' : '#991B1B' }}>
+                    {isCorrect
+                      ? '70% familiar foundation creates trust, 30% novel twist creates desire. This is the formula that converts.'
+                      : 'The magic ratio is 70% familiar to build comfort, then 30% novel to create excitement.'}
                   </p>
                 </motion.div>
               )}
@@ -672,39 +1112,78 @@
       );
     };
 
-    // 12. COMPLETION SLIDE (BRIGHT)
+    // 13. COMPLETION
     const CompletionSlide = () => (
       <div style={{ height: '100%', width: '100%', backgroundColor: '#fff' }}>
         <div className="h-full flex flex-col items-center justify-center text-center px-8 py-10">
-          <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.6 }} className="relative mb-8">
-            <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.1, 0.3] }} transition={{ duration: 2, repeat: Infinity }} className="absolute inset-0 rounded-full" style={{ backgroundColor: '#88da1c', width: 120, height: 120, margin: -20, filter: 'blur(20px)' }} />
+          {/* Success icon */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 150 }}
+            className="relative mb-10"
+          >
+            <motion.div
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.15, 0.3] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+              className="absolute rounded-full"
+              style={{ backgroundColor: '#88da1c', width: 140, height: 140, top: -30, left: -30, filter: 'blur(30px)' }}
+            />
             <div className="w-20 h-20 rounded-full flex items-center justify-center relative" style={{ backgroundColor: '#88da1c' }}>
-              <Icons.Check />
+              <Icons.Check size={40} strokeWidth={3} style={{ color: '#000' }} />
             </div>
           </motion.div>
 
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl md:text-4xl font-black mb-4" style={{ color: '#000', letterSpacing: '-0.02em' }}>
-            Lesson Complete! 🎉
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-4xl md:text-5xl font-black mb-4"
+            style={{ color: '#000', letterSpacing: '-0.03em' }}
+          >
+            Lesson Complete
           </motion.h2>
 
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-base mb-8 max-w-md" style={{ color: '#666' }}>
-            You now know the secret: <span style={{ color: '#000', fontWeight: 600 }}>70% familiar + 30% novel</span>. Use this ratio everywhere.
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="text-lg mb-12 max-w-md"
+            style={{ color: '#666' }}
+          >
+            You now know the secret: <strong style={{ color: '#000' }}>70% familiar + 30% novel</strong>
           </motion.p>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="w-full max-w-md p-6 rounded-2xl mb-6" style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb' }}>
+          {/* Key takeaway */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="w-full max-w-md p-6 rounded-2xl mb-6"
+            style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb' }}
+          >
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
-                <Icons.Trophy />
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#88da1c' }}>
+                <Icons.Trophy size={20} style={{ color: '#000' }} />
               </div>
-              <span className="font-bold text-sm" style={{ color: '#000' }}>Key Takeaway</span>
+              <span className="font-bold" style={{ color: '#000' }}>Key Takeaway</span>
             </div>
-            <p className="text-sm" style={{ color: '#444' }}>Lead with familiar problems, then reveal your novel solution. Comfort first, then surprise.</p>
+            <p className="text-sm text-left" style={{ color: '#444' }}>
+              Lead with familiar problems, then reveal your novel solution. Comfort first, then surprise.
+            </p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="w-full max-w-md p-6 rounded-2xl" style={{ backgroundColor: '#000' }}>
-            <p className="text-xs uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>Up Next</p>
+          {/* Next lesson */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="w-full max-w-md p-6 rounded-2xl"
+            style={{ backgroundColor: '#000' }}
+          >
+            <p className="text-[10px] uppercase tracking-[0.2em] mb-3" style={{ color: 'rgba(255,255,255,0.35)' }}>Up Next</p>
             <h3 className="font-bold text-xl mb-2" style={{ color: '#fff' }}>{LESSON_CONFIG.nextLesson.title}</h3>
-            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.6)' }}>{LESSON_CONFIG.nextLesson.teaser}</p>
+            <p className="text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>{LESSON_CONFIG.nextLesson.teaser}</p>
           </motion.div>
         </div>
       </div>
@@ -725,16 +1204,13 @@
       const hideGif = useCallback(() => setGifConfig(null), []);
 
       useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
+      useEffect(() => { window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', totalSlides: slides.length, slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*'); }, [currentSlide]);
 
-      useEffect(() => {
-        window.parent.postMessage({ type: 'LESSON_SLIDE_UPDATE', totalSlides: slides.length, slideIndex: currentSlide, slideType: slides[currentSlide]?.type, lessonSlug: LESSON_CONFIG.id }, '*');
-      }, [currentSlide]);
-
-      const goToSlide = useCallback((newSlide) => {
-        if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
+      const goToSlide = useCallback((n) => {
+        if (isAnimating || n < 0 || n >= slides.length) return;
         setIsAnimating(true);
-        setDirection(newSlide > currentSlideRef.current ? 1 : -1);
-        setCurrentSlide(newSlide);
+        setDirection(n > currentSlideRef.current ? 1 : -1);
+        setCurrentSlide(n);
       }, [isAnimating]);
 
       const nextSlide = useCallback(() => { if (currentSlideRef.current + 1 < slides.length) goToSlide(currentSlideRef.current + 1); }, [goToSlide]);
@@ -749,23 +1225,20 @@
         return () => window.removeEventListener('keydown', handleKeyDown);
       }, [nextSlide, prevSlide]);
 
-      const slideVariants = {
-        enter: (dir) => ({ x: dir > 0 ? '100%' : '-100%', opacity: 0 }),
-        center: { x: 0, opacity: 1 },
-        exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 })
-      };
+      const slideVariants = { enter: (d) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }), center: { x: 0, opacity: 1 }, exit: (d) => ({ x: d > 0 ? '-100%' : '100%', opacity: 0 }) };
 
       const renderSlide = (slide) => {
         switch (slide.type) {
-          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'welcome': return <WelcomeSlide onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
           case 'hook': return <HookSlide />;
           case 'revelation': return <RevelationSlide />;
+          case 'principle': return <PrincipleSlide />;
           case 'spectrum': return <SpectrumSlide />;
           case 'brain-science': return <BrainScienceSlide />;
           case 'application': return <ApplicationSlide />;
           case 'example-1': return <Example1Slide />;
           case 'example-2': return <Example2Slide />;
-          case 'framework': return <FrameworkSlide />;
+          case 'formula': return <FormulaSlide />;
           case 'checklist': return <ChecklistSlide />;
           case 'quiz': return <QuizSlide onShowGif={showGif} onHideGif={hideGif} />;
           case 'completion': return <CompletionSlide />;
@@ -780,38 +1253,26 @@
         <div className="w-full h-screen flex flex-col relative" style={{ backgroundColor: '#fff' }}>
           <div className="flex-1 relative overflow-hidden z-20">
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
-              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
+                <AdminReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
 
-            {showPrev && (
-              <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10" style={{ backgroundColor: '#f3f4f6', color: '#666' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}>
-                <Icons.ArrowLeft />
-              </button>
-            )}
-            {showNext && (
-              <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10" style={{ backgroundColor: '#f3f4f6', color: '#666' }} onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'} onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}>
-                <Icons.ArrowRight />
-              </button>
-            )}
+            {showPrev && <button onClick={prevSlide} className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10" style={{ backgroundColor: '#f3f4f6', color: '#666' }} onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'} onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}><Icons.ArrowLeft /></button>}
+            {showNext && <button onClick={nextSlide} className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center transition-all z-10" style={{ backgroundColor: '#f3f4f6', color: '#666' }} onMouseEnter={e => e.currentTarget.style.backgroundColor = '#e5e7eb'} onMouseLeave={e => e.currentTarget.style.backgroundColor = '#f3f4f6'}><Icons.ArrowRight /></button>}
           </div>
 
-          <div className="px-6 md:px-8 py-5 flex-shrink-0 relative z-10" style={{ borderTop: '1px solid #f3f4f6' }}>
+          <div className="px-6 py-5 flex-shrink-0 relative z-10" style={{ borderTop: '1px solid #f0f0f0' }}>
             <div className="flex items-center justify-center gap-2">
-              {slides.map((_, i) => (
-                <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ backgroundColor: i === currentSlide ? '#88da1c' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />
-              ))}
+              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2 h-2 rounded-full transition-all duration-300" style={{ backgroundColor: i === currentSlide ? '#88da1c' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.4)' : 'scale(1)' }} />)}
             </div>
           </div>
 
           <AnimatePresence>
             {gifConfig && (
-              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 100 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
-                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}>
-                  <source src={gifConfig.url} type="video/mp4" />
-                </video>
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} transition={{ type: 'spring', stiffness: 120 }} className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`} style={{ zIndex: 15, height: gifConfig.height }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom" style={{ background: 'transparent' }}><source src={gifConfig.url} type="video/mp4" /></video>
               </motion.div>
             )}
           </AnimatePresence>
