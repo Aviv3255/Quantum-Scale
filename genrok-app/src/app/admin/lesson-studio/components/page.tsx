@@ -10,7 +10,10 @@ import {
   Grid3X3,
   Sun,
   Moon,
+  Bug,
+  Send,
 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import {
@@ -116,14 +119,12 @@ import {
   LorenzCurve,
   ErrorBarChart,
   RegressionPlot,
-  SmallMultiples,
   ForecastChart,
   SensitivityChart,
   // Charts - Distribution/Specialized (Batch 7)
   HexbinPlot,
   SwarmPlot,
   StripPlot,
-  AlluvialDiagram,
   MosaicPlot,
   AdjacencyMatrix,
   PhylogeneticTree,
@@ -1089,19 +1090,6 @@ const SAMPLE_DATA = {
       { x: 40, y: 65 }, { x: 50, y: 78 }, { x: 60, y: 88 },
     ],
   },
-  SmallMultiples: {
-    title: 'Regional Sales Trends',
-    columns: 3,
-    xLabels: ['Q1', 'Q2', 'Q3', 'Q4'],
-    data: [
-      { label: 'North', values: [30, 45, 52, 60] },
-      { label: 'South', values: [25, 32, 42, 52] },
-      { label: 'East', values: [40, 48, 55, 70] },
-      { label: 'West', values: [35, 42, 48, 58] },
-      { label: 'Central', values: [28, 38, 50, 65] },
-      { label: 'Overseas', values: [15, 25, 42, 55] },
-    ],
-  },
   ForecastChart: {
     title: 'Revenue Forecast',
     data: [
@@ -1152,30 +1140,6 @@ const SAMPLE_DATA = {
       ...Array.from({ length: 12 }, () => ({ category: 'Control', value: 45 + Math.random() * 20 })),
       ...Array.from({ length: 12 }, () => ({ category: 'Treatment A', value: 55 + Math.random() * 25 })),
       ...Array.from({ length: 12 }, () => ({ category: 'Treatment B', value: 60 + Math.random() * 20 })),
-    ],
-  },
-  AlluvialDiagram: {
-    title: 'Customer Journey Flow',
-    columnLabels: ['Source', 'Engagement', 'Action', 'Outcome'],
-    nodes: [
-      { id: 'organic', label: 'Organic', column: 0 },
-      { id: 'paid', label: 'Paid Ads', column: 0 },
-      { id: 'browse', label: 'Browsing', column: 1 },
-      { id: 'search', label: 'Search', column: 1 },
-      { id: 'cart', label: 'Add to Cart', column: 2 },
-      { id: 'abandon', label: 'Abandon', column: 2 },
-      { id: 'purchase', label: 'Purchase', column: 3 },
-      { id: 'churn', label: 'Churn', column: 3 },
-    ],
-    flows: [
-      { source: 'organic', target: 'browse', value: 40 },
-      { source: 'organic', target: 'search', value: 25 },
-      { source: 'paid', target: 'browse', value: 30 },
-      { source: 'browse', target: 'cart', value: 35 },
-      { source: 'browse', target: 'abandon', value: 15 },
-      { source: 'search', target: 'cart', value: 20 },
-      { source: 'cart', target: 'purchase', value: 40 },
-      { source: 'cart', target: 'churn', value: 15 },
     ],
   },
   MosaicPlot: {
@@ -1986,7 +1950,6 @@ const ComponentPreview = ({ componentId, variant = 'dark' }: { componentId: stri
     case 'LorenzCurve': return <LorenzCurve {...propsWithVariant as typeof SAMPLE_DATA.LorenzCurve & { variant: 'dark' | 'light' }} />;
     case 'ErrorBarChart': return <ErrorBarChart {...propsWithVariant as typeof SAMPLE_DATA.ErrorBarChart & { variant: 'dark' | 'light' }} />;
     case 'RegressionPlot': return <RegressionPlot {...propsWithVariant as typeof SAMPLE_DATA.RegressionPlot & { variant: 'dark' | 'light' }} />;
-    case 'SmallMultiples': return <SmallMultiples {...propsWithVariant as typeof SAMPLE_DATA.SmallMultiples & { variant: 'dark' | 'light' }} />;
     case 'ForecastChart': return <ForecastChart {...propsWithVariant as typeof SAMPLE_DATA.ForecastChart & { variant: 'dark' | 'light' }} />;
     case 'SensitivityChart': return <SensitivityChart {...propsWithVariant as typeof SAMPLE_DATA.SensitivityChart & { variant: 'dark' | 'light' }} />;
 
@@ -1994,7 +1957,6 @@ const ComponentPreview = ({ componentId, variant = 'dark' }: { componentId: stri
     case 'HexbinPlot': return <HexbinPlot {...propsWithVariant as typeof SAMPLE_DATA.HexbinPlot & { variant: 'dark' | 'light' }} />;
     case 'SwarmPlot': return <SwarmPlot {...propsWithVariant as typeof SAMPLE_DATA.SwarmPlot & { variant: 'dark' | 'light' }} />;
     case 'StripPlot': return <StripPlot {...propsWithVariant as typeof SAMPLE_DATA.StripPlot & { variant: 'dark' | 'light' }} />;
-    case 'AlluvialDiagram': return <AlluvialDiagram {...propsWithVariant as typeof SAMPLE_DATA.AlluvialDiagram & { variant: 'dark' | 'light' }} />;
     case 'MosaicPlot': return <MosaicPlot {...propsWithVariant as typeof SAMPLE_DATA.MosaicPlot & { variant: 'dark' | 'light' }} />;
     case 'AdjacencyMatrix': return <AdjacencyMatrix {...propsWithVariant as typeof SAMPLE_DATA.AdjacencyMatrix & { variant: 'dark' | 'light' }} />;
     case 'PhylogeneticTree': return <PhylogeneticTree {...propsWithVariant as typeof SAMPLE_DATA.PhylogeneticTree & { variant: 'dark' | 'light' }} />;
@@ -2095,6 +2057,10 @@ function ComponentBrowserContent() {
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [variant, setVariant] = useState<'dark' | 'light'>('dark');
+  const [showBugReport, setShowBugReport] = useState(false);
+  const [bugDescription, setBugDescription] = useState('');
+  const [bugSubmitting, setBugSubmitting] = useState(false);
+  const [bugSubmitted, setBugSubmitted] = useState(false);
 
   const allComponents = getAllComponents();
 
@@ -2105,6 +2071,37 @@ function ComponentBrowserContent() {
       navigator.clipboard.writeText(JSON.stringify(config, null, 2));
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleSubmitBug = async () => {
+    if (!selectedComponent || !bugDescription.trim()) return;
+
+    setBugSubmitting(true);
+    try {
+      const componentInfo = allComponents.find(c => c.id === selectedComponent);
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any).from('component_bugs').insert({
+        component_id: selectedComponent,
+        component_name: componentInfo?.name || selectedComponent,
+        component_category: componentInfo?.category || 'unknown',
+        description: bugDescription.trim(),
+        variant_mode: variant,
+        status: 'open',
+        created_at: new Date().toISOString(),
+      });
+
+      setBugSubmitted(true);
+      setBugDescription('');
+      setTimeout(() => {
+        setShowBugReport(false);
+        setBugSubmitted(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Failed to submit bug report:', error);
+    } finally {
+      setBugSubmitting(false);
     }
   };
 
@@ -2264,6 +2261,13 @@ function ComponentBrowserContent() {
                       )}
                     </button>
                     <button
+                      onClick={() => setShowBugReport(!showBugReport)}
+                      className={`p-2 rounded-lg transition-colors ${showBugReport ? 'bg-red-100 text-red-600' : 'bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)]'}`}
+                      title="Report a bug"
+                    >
+                      <Bug size={18} />
+                    </button>
+                    <button
                       onClick={() => setSelectedComponent(null)}
                       className="p-2 rounded-lg bg-[var(--bg-secondary)] hover:bg-[var(--bg-hover)] transition-colors"
                     >
@@ -2271,6 +2275,69 @@ function ComponentBrowserContent() {
                     </button>
                   </div>
                 </div>
+
+                {/* Bug Report Form */}
+                <AnimatePresence>
+                  {showBugReport && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="border-b border-[#E5E5E5] overflow-hidden"
+                    >
+                      <div className="px-6 py-4 bg-red-50">
+                        <div className="flex items-start gap-3">
+                          <Bug size={20} className="text-red-500 mt-1 flex-shrink-0" />
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-red-700 mb-2">Report an Issue</h4>
+                            {bugSubmitted ? (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="flex items-center gap-2 text-green-600"
+                              >
+                                <Check size={18} />
+                                <span className="font-medium">Bug report submitted! Thank you.</span>
+                              </motion.div>
+                            ) : (
+                              <>
+                                <textarea
+                                  value={bugDescription}
+                                  onChange={(e) => setBugDescription(e.target.value)}
+                                  placeholder="Describe the issue... (e.g., 'Title text is black instead of white in dark mode')"
+                                  className="w-full px-3 py-2 border border-red-200 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-red-300 bg-white"
+                                  rows={3}
+                                />
+                                <div className="flex items-center justify-between mt-2">
+                                  <span className="text-xs text-red-400">
+                                    Currently viewing: {variant} mode
+                                  </span>
+                                  <button
+                                    onClick={handleSubmitBug}
+                                    disabled={!bugDescription.trim() || bugSubmitting}
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                  >
+                                    {bugSubmitting ? (
+                                      <>
+                                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                        Submitting...
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Send size={14} />
+                                        Submit Report
+                                      </>
+                                    )}
+                                  </button>
+                                </div>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
                 {/* Modal Content */}
                 <div className="overflow-auto max-h-[calc(90vh-80px)]">

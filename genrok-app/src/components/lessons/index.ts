@@ -122,7 +122,6 @@ export { RetentionCurve } from './charts/RetentionCurve';
 export { LorenzCurve } from './charts/LorenzCurve';
 export { ErrorBarChart } from './charts/ErrorBarChart';
 export { RegressionPlot } from './charts/RegressionPlot';
-export { SmallMultiples } from './charts/SmallMultiples';
 export { ForecastChart } from './charts/ForecastChart';
 export { SensitivityChart } from './charts/SensitivityChart';
 
@@ -132,7 +131,6 @@ export { SensitivityChart } from './charts/SensitivityChart';
 export { HexbinPlot } from './charts/HexbinPlot';
 export { SwarmPlot } from './charts/SwarmPlot';
 export { StripPlot } from './charts/StripPlot';
-export { AlluvialDiagram } from './charts/AlluvialDiagram';
 export { MosaicPlot } from './charts/MosaicPlot';
 export { AdjacencyMatrix } from './charts/AdjacencyMatrix';
 export { PhylogeneticTree } from './charts/PhylogeneticTree';
@@ -341,7 +339,6 @@ export const LESSON_COMPONENTS = {
     { id: 'LorenzCurve', name: 'Lorenz Curve', category: 'Charts - Analysis', description: 'Distribution inequality' },
     { id: 'ErrorBarChart', name: 'Error Bar Chart', category: 'Charts - Analysis', description: 'Values with error ranges' },
     { id: 'RegressionPlot', name: 'Regression Plot', category: 'Charts - Analysis', description: 'Scatter with trend line' },
-    { id: 'SmallMultiples', name: 'Small Multiples', category: 'Charts - Analysis', description: 'Repeated mini charts' },
     { id: 'ForecastChart', name: 'Forecast Chart', category: 'Charts - Analysis', description: 'Prediction with confidence' },
     { id: 'SensitivityChart', name: 'Sensitivity Chart', category: 'Charts - Analysis', description: 'Variable impact analysis' },
   ],
@@ -351,7 +348,6 @@ export const LESSON_COMPONENTS = {
     { id: 'HexbinPlot', name: 'Hexbin Plot', category: 'Charts - Advanced', description: 'Hexagonal bin density' },
     { id: 'SwarmPlot', name: 'Swarm Plot', category: 'Charts - Advanced', description: 'Non-overlapping dots' },
     { id: 'StripPlot', name: 'Strip Plot', category: 'Charts - Advanced', description: 'Categorical dot distribution' },
-    { id: 'AlluvialDiagram', name: 'Alluvial Diagram', category: 'Charts - Advanced', description: 'Flow between categories' },
     { id: 'MosaicPlot', name: 'Mosaic Plot', category: 'Charts - Advanced', description: 'Categorical area proportions' },
     { id: 'AdjacencyMatrix', name: 'Adjacency Matrix', category: 'Charts - Advanced', description: 'Network connection grid' },
     { id: 'PhylogeneticTree', name: 'Phylogenetic Tree', category: 'Charts - Advanced', description: 'Evolutionary branching' },

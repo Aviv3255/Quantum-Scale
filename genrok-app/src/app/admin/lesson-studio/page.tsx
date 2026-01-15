@@ -15,6 +15,7 @@ import {
   Type,
   ListOrdered,
   Quote,
+  Bug,
 } from 'lucide-react';
 import Link from 'next/link';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -235,7 +236,7 @@ export default function LessonStudioPage() {
         </motion.div>
 
         {/* Quick Actions */}
-        <div className="mt-12 grid md:grid-cols-2 gap-6">
+        <div className="mt-12 grid md:grid-cols-3 gap-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -282,6 +283,31 @@ export default function LessonStudioPage() {
               >
                 <Grid3X3 size={18} />
                 Open Layouts ({stats.layouts})
+              </Link>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="p-8 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl"
+          >
+            <div className="flex flex-col h-full">
+              <div className="flex-1 mb-6">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Bug Reports
+                </h3>
+                <p className="text-white/80">
+                  Track and manage reported issues in components
+                </p>
+              </div>
+              <Link
+                href="/admin/lesson-studio/bugs"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-black font-semibold hover:bg-white/90 transition-colors"
+              >
+                <Bug size={18} />
+                View Bug Reports
               </Link>
             </div>
           </motion.div>
