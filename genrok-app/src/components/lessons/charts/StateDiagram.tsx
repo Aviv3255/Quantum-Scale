@@ -251,6 +251,7 @@ export function StateDiagram({
                     fill="#fff"
                     fontSize="12"
                     fontWeight="600"
+                    style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
                   >
                     {state.name}
                   </text>

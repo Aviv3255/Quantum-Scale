@@ -109,6 +109,9 @@ export function BayesianNetwork({
           <filter id="bayesShadow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="3" stdDeviation="4" floodOpacity="0.2" />
           </filter>
+          <filter id="bayesTextShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000" floodOpacity="0.5" />
+          </filter>
           <linearGradient id="probGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#88da1c" />
             <stop offset="100%" stopColor="#22C55E" />
@@ -186,6 +189,7 @@ export function BayesianNetwork({
                   fill="#fff"
                   fontSize="11"
                   fontWeight="600"
+                  filter="url(#bayesTextShadow)"
                 >
                   {node.name}
                 </text>

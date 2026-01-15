@@ -303,9 +303,10 @@ export function ArchitectureDiagram({
                   x={comp.x + compWidth / 2}
                   y={comp.y + compHeight - 8}
                   textAnchor="middle"
-                  fill="#fff"
+                  fill="white"
                   fontSize="10"
                   fontWeight="600"
+                  style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}
                 >
                   {comp.name}
                 </text>

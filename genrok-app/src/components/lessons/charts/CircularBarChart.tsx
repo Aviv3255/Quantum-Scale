@@ -142,6 +142,7 @@ export function CircularBarChart({
                 fill="white"
                 fontSize="10"
                 fontWeight="bold"
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {d.value}
               </motion.text>

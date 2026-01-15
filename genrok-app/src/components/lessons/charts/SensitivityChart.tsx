@@ -212,6 +212,7 @@ export function SensitivityChart({
                   fill="#fff"
                   fontSize="10"
                   fontWeight="600"
+                  style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
                 >
                   {item.lowImpact > 0 ? '+' : ''}{item.lowImpact}%
                 </motion.text>
@@ -227,6 +228,7 @@ export function SensitivityChart({
                   fill="#fff"
                   fontSize="10"
                   fontWeight="600"
+                  style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
                 >
                   {item.highImpact > 0 ? '+' : ''}{item.highImpact}%
                 </motion.text>

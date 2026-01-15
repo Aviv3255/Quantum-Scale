@@ -108,6 +108,7 @@ export function TreeMap({
                 fill="white"
                 fontSize={Math.min(14, rect.w / 6)}
                 fontWeight="bold"
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {rect.item.label}
               </motion.text>
@@ -123,6 +124,7 @@ export function TreeMap({
                 dominantBaseline="middle"
                 fill="rgba(255,255,255,0.8)"
                 fontSize={Math.min(11, rect.w / 8)}
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {((rect.item.value / total) * 100).toFixed(0)}%
               </motion.text>

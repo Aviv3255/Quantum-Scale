@@ -91,17 +91,17 @@ export function FunnelChart({
                     }}
                   />
 
-                  {/* Content */}
+                  {/* Content - text on colored bars should be white for better contrast */}
                   <motion.div
                     className="relative z-10 flex items-center gap-3 px-4"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 + index * 0.15 }}
                   >
-                    <span className="text-black font-bold text-lg">
+                    <span className="text-white font-bold text-lg drop-shadow-sm">
                       {stage.value.toLocaleString()}
                     </span>
-                    <span className="text-black/70 text-sm font-medium">
+                    <span className="text-white/90 text-sm font-medium drop-shadow-sm">
                       {stage.label}
                     </span>
                   </motion.div>

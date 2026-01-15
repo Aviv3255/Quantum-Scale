@@ -216,6 +216,7 @@ export function FeedbackLoop({
                 fill="white"
                 fontSize="11"
                 fontWeight="700"
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {step.label}
               </text>

@@ -151,6 +151,7 @@ export function MindMap({
                 fill="white"
                 fontSize={isCenter ? 13 : 10}
                 fontWeight="bold"
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {pos.label}
               </motion.text>

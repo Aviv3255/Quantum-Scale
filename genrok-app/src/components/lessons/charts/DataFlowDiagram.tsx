@@ -59,6 +59,7 @@ export function DataFlowDiagram({
               fill="#fff"
               fontSize="11"
               fontWeight="600"
+              filter="url(#dfdTextShadow)"
             >
               {name}
             </text>
@@ -82,6 +83,7 @@ export function DataFlowDiagram({
               fill="#fff"
               fontSize="11"
               fontWeight="600"
+              filter="url(#dfdTextShadow)"
             >
               {name}
             </text>
@@ -234,6 +236,9 @@ export function DataFlowDiagram({
           </marker>
           <filter id="dfdShadow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="3" stdDeviation="4" floodOpacity="0.2" />
+          </filter>
+          <filter id="dfdTextShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000" floodOpacity="0.5" />
           </filter>
         </defs>
 

@@ -168,6 +168,9 @@ export function ActivityDiagram({
           <filter id="activityShadow" x="-20%" y="-20%" width="140%" height="140%">
             <feDropShadow dx="0" dy="3" stdDeviation="3" floodOpacity="0.2" />
           </filter>
+          <filter id="activityTextShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="1" stdDeviation="1" floodColor="#000" floodOpacity="0.5" />
+          </filter>
         </defs>
 
         {/* Flows/Connections */}
@@ -225,6 +228,7 @@ export function ActivityDiagram({
                     fill="#fff"
                     fontSize="11"
                     fontWeight="600"
+                    filter="url(#activityTextShadow)"
                   >
                     {node.label}
                   </text>

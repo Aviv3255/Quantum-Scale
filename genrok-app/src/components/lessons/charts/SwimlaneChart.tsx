@@ -251,6 +251,7 @@ export function SwimlaneChart({
                 fill="#fff"
                 fontSize="10"
                 fontWeight="600"
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {task.label}
               </motion.text>

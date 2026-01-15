@@ -235,6 +235,7 @@ export function ProcessMap({
                 fill="#fff"
                 fontSize="9"
                 fontWeight="600"
+                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}
               >
                 {step.label.length > 12 ? step.label.slice(0, 12) + '...' : step.label}
               </motion.text>
