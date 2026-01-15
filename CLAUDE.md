@@ -333,6 +333,41 @@ Required in Render (for production):
 
 ---
 
+## Interactive Lessons Guidelines
+
+### Character GIF/Video Placement Rules
+
+When working with character GIF/video overlays in interactive lessons (`/public/lessons/`):
+
+1. **Z-Index**: Always use `zIndex: 50` or higher for GIF overlays (content areas use z-20)
+2. **Bottom Position**: Use `bottom-16` or `bottom-20` to position above navigation dots
+3. **Max Height**: Limit to `maxHeight: '50%'` or `maxHeight: '55%'` to prevent overlapping content
+4. **Correct Implementation**:
+   ```jsx
+   <motion.div
+     className={`absolute ${side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-16 pointer-events-none`}
+     style={{ zIndex: 50, height: config.height, maxHeight: '55%' }}
+   >
+   ```
+
+### Image/Video Preservation Rules
+
+**CRITICAL**: Never delete or modify existing images/videos in lessons. They are hosted on Supabase and referenced by URL.
+
+- Always preserve `celebrationGifs[]` and `empathyGifs[]` arrays
+- Never change image URLs or video sources
+- Keep person images (e.g., Casey Neistat, Jensen Huang) intact
+
+### Design System for Lessons
+
+- **Accent Color**: `#88da1c` (lime green)
+- **Error Color**: `#EF4444` (red)
+- **Backgrounds**: White slides with dark contained blocks (not full-width)
+- **Font**: Inter font family
+- **Animation**: Use framer-motion for all transitions
+
+---
+
 ## DO's and DON'Ts
 
 ### DO:
