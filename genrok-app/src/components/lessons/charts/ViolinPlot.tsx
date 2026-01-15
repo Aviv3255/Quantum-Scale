@@ -49,7 +49,7 @@ export function ViolinPlot({
   const gridStroke = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const axisStroke = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
   const labelFill = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
-  const pointFill = isDark ? '#000' : '#fff';
+  const pointFill = isDark ? '#fff' : '#000';
 
   const allValues = data.flatMap(d => d.values);
   const globalMin = Math.min(...allValues);

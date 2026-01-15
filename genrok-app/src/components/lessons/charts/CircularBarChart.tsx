@@ -139,7 +139,7 @@ export function CircularBarChart({
                 y={cy + (innerRadius + barRadius) / 2 * Math.sin((startAngle + endAngle) / 2)}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fill="white"
+                fill="black"
                 fontSize="10"
                 fontWeight="bold"
               >

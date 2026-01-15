@@ -1587,46 +1587,69 @@ Keep the red background, make it feel like IMMINENT DISASTER.
 
   'pain-escalation-ladder': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191052.png',
-    concept: `Create a NETFLIX-QUALITY thumbnail with these elements:
+    referenceImage: 'Screenshot 2026-01-08 182912.png',
+    concept: `Create a PREMIUM NETFLIX DOCUMENTARY THUMBNAIL:
 
-MAIN VISUAL: A dramatic vertical THERMOMETER or GAUGE in the center, styled like a danger meter
-- Bottom section (GREEN): "Annoyed" - small spark, $10 price tag
-- Middle section (YELLOW): "Frustrated" - flame, $100 price tag
-- Upper section (ORANGE): "Desperate" - fire, $500 price tag
-- Top section (RED/EXPLODING): "URGENT" - massive explosion, $5,000+ price tag
+SCENE: A dramatic dark staircase ascending into flames. Each step represents escalating pain levels.
 
-STYLE: Dark cinematic background with dramatic rim lighting. The gauge GLOWS with intensity as it rises.
-TEXT: "THE PAIN LADDER" in bold white at top, subtitle: "Higher Pain = Higher Price"
+COMPOSITION:
+- Ultra-wide cinematic framing (2.39:1 feel within 16:10)
+- Pure black background with volumetric fog/smoke
+- Stone steps ascending from bottom-left to top-right
+- Each step GLOWS with increasing intensity: blue → yellow → orange → red → WHITE HOT
 
-MOOD: Like a Netflix thriller poster - tense, dramatic, revealing a dark truth about pricing psychology.
-Use professional product photography lighting with deep shadows.
+THE STEPS (subtle text on each):
+Step 1: "Mild Irritation" - cool blue glow
+Step 2: "Frustration" - warm amber
+Step 3: "Desperation" - burning orange
+Step 4: "CRISIS" - engulfed in flames, price tags floating: $5K, $10K, $50K
 
-16:10 ratio (1600x1000px). No timestamp. Premium, cinematic quality.`,
-    images: [imageAssets.monkey],
+FOCAL POINT: A silhouette stands at the bottom, looking up at the inferno. Their shadow stretches dramatically.
+
+TYPOGRAPHY:
+- "THE PAIN LADDER" - Bold condensed sans-serif, slight 3D depth, positioned top-center
+- Subtitle: "Why desperate customers pay 100x more" - smaller, elegant, below
+
+LIGHTING: Cinematic rim lighting from the flames above. God rays piercing through smoke.
+
+MOOD: Like a Netflix true crime documentary poster. Dark. Revelatory. Unsettling truth being exposed.
+
+TECHNICAL: 16:10 ratio. 1600x1000px. No watermarks. No timestamp. Photorealistic quality.`,
+    images: [],
   },
 
   'telescope-flip': {
     template: 'reference-based',
-    referenceImage: 'Screenshot 2026-01-08 191148.png',
-    concept: `Create a NETFLIX-QUALITY thumbnail with these elements:
+    referenceImage: 'Screenshot 2026-01-08 183014.png',
+    concept: `Create a PREMIUM NETFLIX SERIES THUMBNAIL:
 
-MAIN VISUAL: Split composition showing the SAME telescope held two different ways
-- LEFT SIDE (dark, muted): Silhouette looking through WRONG end - tiny pinhole view, confused posture
-- CENTER: A beautiful brass/gold telescope with motion blur showing the FLIP/ROTATION
-- RIGHT SIDE (golden, illuminated): Figure looking through CORRECT end - expansive galaxy/treasure view
+SCENE: A single magnificent brass telescope floating in dramatic space - but it's positioned WRONG. The revelation moment.
 
-VISUAL METAPHOR: The left shows a tiny, dim world. The right shows INFINITE possibility.
-The telescope itself should look premium - antique brass with golden accents.
+COMPOSITION:
+- Center-focused hero shot
+- Luxurious antique brass telescope with intricate engravings, gold trim, leather grip
+- The telescope is being ROTATED mid-air (motion blur trail showing the flip)
+- One end shows a TINY keyhole of light (wrong way)
+- Other end EXPLODES with golden light, stars, galaxies pouring out (right way)
 
-TEXT: "THE TELESCOPE FLIP" in elegant serif font, "97% Get This Backwards" as subtitle
+VISUAL STORY:
+- Left side of frame: dark, cold, confined - representing limited vision
+- Right side: warm golden explosion of possibility - representing infinite opportunity
+- The telescope bridges both worlds, caught mid-rotation
 
-STYLE: Cinematic lighting like a Netflix documentary about hidden truths.
-Left side: blue/gray cold tones. Right side: warm gold/amber tones.
-The contrast should be DRAMATIC.
+BACKGROUND: Deep space black with subtle star field. Nebula colors (purple/blue) on the dark side, warm gold dust on the light side.
 
-16:10 ratio (1600x1000px). No timestamp. Premium, cinematic quality.`,
-    images: [imageAssets.monkey],
+TYPOGRAPHY:
+- "THE TELESCOPE FLIP" - Premium serif font (like Playfair Display), white with subtle gold gradient
+- "97% of marketers see it backwards" - Clean sans-serif subtitle below
+- Text positioned in upper third, leaving space for the dramatic visual
+
+LIGHTING: Dramatic chiaroscuro. The "wrong end" side is almost silhouette dark. The "right end" erupts with volumetric golden light rays.
+
+MOOD: Like a Netflix limited series about a hidden truth that changes everything. Elegant. Mysterious. The moment of revelation.
+
+TECHNICAL: 16:10 ratio. 1600x1000px. No watermarks. No timestamp. Photorealistic cinematic quality.`,
+    images: [],
   },
 
   'trust-blueprint': {

@@ -25,7 +25,8 @@ export function MatrixChart({
   const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
   const legendMutedClass = isDark ? 'text-white/50' : 'text-black/50';
-  const cellTextColor = isDark ? 'white' : 'black';
+  // Cell text should be black on bright colored backgrounds for contrast
+  const cellTextColor = 'black';
 
   const width = 500;
   const height = 400;

@@ -33,7 +33,8 @@ export function SocialProof({
   const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/60' : 'text-black/60';
   const crowdIconColor = isDark ? 'text-white' : 'text-black';
-  const typeIconBgColor = isDark ? 'text-black' : 'text-white';
+  // Icon on lime green accent should always be black for contrast
+  const typeIconBgColor = 'text-black';
 
   // Generate crowd of user icons
   const crowdIcons = Array.from({ length: crowdSize }, (_, i) => ({

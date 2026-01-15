@@ -154,7 +154,7 @@ export function IcicleChart({
                 x={rect.x + rect.w / 2}
                 y={rect.y + rect.h / 2 + 4}
                 textAnchor="middle"
-                fill="white"
+                fill="black"
                 fontSize={Math.min(10, rect.w / 5, rect.h / 2)}
                 fontWeight="bold"
               >

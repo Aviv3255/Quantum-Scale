@@ -29,7 +29,8 @@ export function QuoteBlock({
   const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/60' : 'text-black/60';
   const decorativeIconColor = isDark ? 'text-white' : 'text-black';
-  const quoteIconBgColor = isDark ? 'text-black' : 'text-white';
+  // Icon on lime green accent should always be black for contrast
+  const quoteIconBgColor = 'text-black';
 
   // Content
   const content = (
