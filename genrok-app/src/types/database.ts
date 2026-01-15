@@ -387,6 +387,85 @@ export interface Database {
           updated_at?: string;
         };
       };
+      poll_votes: {
+        Row: {
+          id: string;
+          poll_id: number;
+          option_index: number;
+          user_id: string;
+          user_email: string | null;
+          user_name: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          poll_id: number;
+          option_index: number;
+          user_id: string;
+          user_email?: string | null;
+          user_name?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          poll_id?: number;
+          option_index?: number;
+          user_id?: string;
+          user_email?: string | null;
+          user_name?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      poll_requests: {
+        Row: {
+          id: string;
+          question: string;
+          options: Json;
+          buttons: Json | null;
+          status: 'pending' | 'approved' | 'rejected';
+          submitted_by: string;
+          submitted_by_email: string | null;
+          submitted_by_name: string | null;
+          reviewed_by: string | null;
+          reviewed_at: string | null;
+          admin_notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          question: string;
+          options: Json;
+          buttons?: Json | null;
+          status?: 'pending' | 'approved' | 'rejected';
+          submitted_by: string;
+          submitted_by_email?: string | null;
+          submitted_by_name?: string | null;
+          reviewed_by?: string | null;
+          reviewed_at?: string | null;
+          admin_notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          question?: string;
+          options?: Json;
+          buttons?: Json | null;
+          status?: 'pending' | 'approved' | 'rejected';
+          submitted_by?: string;
+          submitted_by_email?: string | null;
+          submitted_by_name?: string | null;
+          reviewed_by?: string | null;
+          reviewed_at?: string | null;
+          admin_notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

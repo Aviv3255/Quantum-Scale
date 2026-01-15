@@ -1,44 +1,240 @@
 'use client';
 
-import { useState } from 'react';
-import { ExternalLink, Search } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useState, memo } from 'react';
+import { ExternalLink, Search, RefreshCw } from 'lucide-react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { metaAdTemplates } from '@/data/meta-ad-templates';
+import { metaAdTemplates, MetaAdTemplate } from '@/data/meta-ad-templates';
+
+// Alternate layout card for first 12 templates - buttons below image
+const TemplateCardAlt = memo(function TemplateCardAlt({ template }: { template: MetaAdTemplate }) {
+  const [showEditable, setShowEditable] = useState(false);
+
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowEditable(!showEditable);
+  };
+
+  return (
+    <div className="flex flex-col py-2">
+      {/* Image container - less rounded, no border on bottom */}
+      <a
+        href={template.canvaLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block relative aspect-square rounded-t overflow-hidden bg-[#f5f5f5] transition-shadow duration-200 hover:shadow-sm"
+        style={{ borderTop: '1px solid #ddd', borderLeft: '1px solid #ddd', borderRight: '1px solid #ddd' }}
+      >
+        {/* Cover Image - lazy loaded */}
+        {template.coverImage ? (
+          <Image
+            src={template.coverImage}
+            alt={template.name}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className={`object-cover transition-opacity duration-200 ${showEditable && template.hoverImage ? 'opacity-0' : 'opacity-100'}`}
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
+            <div className="text-center p-4">
+              <div className="w-10 h-10 mx-auto mb-2 rounded-lg bg-[#7435E6]/10 flex items-center justify-center">
+                <ExternalLink size={20} className="text-[#7435E6]" />
+              </div>
+              <span className="text-xs text-[var(--text-muted)]">
+                {template.name}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Editable Image - only load when toggled */}
+        {template.hoverImage && showEditable && (
+          <Image
+            src={template.hoverImage}
+            alt={`${template.name} - Editable`}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover"
+            loading="lazy"
+          />
+        )}
+      </a>
+
+      {/* Button container below image - white with lighter border, responsive */}
+      <div
+        className="flex items-center justify-between gap-1 px-2 py-2 bg-white rounded-b"
+        style={{ border: '1px solid #ddd' }}
+      >
+        {/* Toggle button - only if has editable version */}
+        {template.hoverImage ? (
+          <button
+            onClick={handleToggle}
+            className="flex items-center gap-1 px-2 py-1.5 rounded font-semibold border whitespace-nowrap text-xs"
+            style={{ color: '#7435E6', borderColor: '#7435E6' }}
+          >
+            <RefreshCw size={12} className="flex-shrink-0" color="#7435E6" />
+            {showEditable ? 'Original' : 'Editable'}
+          </button>
+        ) : (
+          <div></div>
+        )}
+
+        {/* Edit in Canva button */}
+        <a
+          href={template.canvaLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 px-2 py-1.5 rounded font-semibold whitespace-nowrap text-xs"
+          style={{ backgroundColor: '#7435E6', color: '#FFFFFF' }}
+        >
+          <ExternalLink size={12} className="flex-shrink-0" color="#FFFFFF" />
+          Canva
+        </a>
+      </div>
+    </div>
+  );
+});
+
+// Original template card - prevents re-renders
+const TemplateCard = memo(function TemplateCard({ template }: { template: MetaAdTemplate }) {
+  const [showEditable, setShowEditable] = useState(false);
+
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowEditable(!showEditable);
+  };
+
+  return (
+    <div className="relative">
+      <a
+        href={template.canvaLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-shadow duration-200 hover:shadow-xl hover:border-[#7435E6]"
+      >
+        {/* Cover Image - lazy loaded */}
+        {template.coverImage ? (
+          <Image
+            src={template.coverImage}
+            alt={template.name}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className={`object-cover transition-opacity duration-200 ${showEditable && template.hoverImage ? 'opacity-0' : 'opacity-100'}`}
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
+            <div className="text-center p-4">
+              <div className="w-10 h-10 mx-auto mb-2 rounded-lg bg-[#7435E6]/10 flex items-center justify-center">
+                <ExternalLink size={20} className="text-[#7435E6]" />
+              </div>
+              <span className="text-xs text-[var(--text-muted)]">
+                {template.name}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Editable Image - only load when toggled */}
+        {template.hoverImage && showEditable && (
+          <Image
+            src={template.hoverImage}
+            alt={`${template.name} - Editable`}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover"
+            loading="lazy"
+          />
+        )}
+
+        {/* Edit in Canva button */}
+        <div
+          className="absolute bottom-3 right-3 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold z-20"
+          style={{ backgroundColor: '#7435E6', color: '#FFFFFF' }}
+        >
+          <ExternalLink size={16} color="#FFFFFF" />
+          Edit in Canva
+        </div>
+      </a>
+
+      {/* Toggle button - only if has editable version */}
+      {template.hoverImage && (
+        <button
+          onClick={handleToggle}
+          className="absolute bottom-3 left-3 flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold z-30 border-2 bg-white/90 backdrop-blur-sm"
+          style={{ color: '#7435E6', borderColor: '#7435E6' }}
+        >
+          <RefreshCw size={14} color="#7435E6" />
+          {showEditable ? 'See original' : 'See editable'}
+        </button>
+      )}
+    </div>
+  );
+});
+
+// Category tabs configuration
+const categories = [
+  { id: 'all', label: 'All', filter: () => true },
+  { id: 'bfcm', label: 'BFCM/Sales', filter: (t: MetaAdTemplate) => t.category === 'bfcm' },
+  { id: 'digital', label: 'Digital Products/Service/SaaS', filter: (t: MetaAdTemplate) => t.category === 'digital' },
+];
 
 export default function MetaTemplatesPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('all');
 
-  // Filter templates based on search
-  const filteredTemplates = metaAdTemplates.filter((template) =>
-    template.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Filter templates based on category and search
+  const filteredTemplates = metaAdTemplates
+    .filter(categories.find(c => c.id === activeCategory)?.filter || (() => true))
+    .filter((template) =>
+      searchQuery
+        ? template.name.toLowerCase().includes(searchQuery.toLowerCase())
+        : true
+    );
 
   return (
     <DashboardLayout>
       <div className="min-h-screen" style={{ background: '#FFFFFF', margin: '-40px -48px', padding: '48px' }}>
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-10"
-          >
+          <div className="text-center mb-6">
             <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-3">
               Meta Ad Templates
             </h1>
             <p className="text-[var(--text-muted)] text-lg">
-              Ready-to-use templates. Hover to preview, click to edit in Canva.
+              {metaAdTemplates.length} ready-to-use templates. Click to edit in Canva.
             </p>
-          </motion.div>
+          </div>
+
+          {/* Category Tabs */}
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex bg-[#f5f5f5] rounded-xl p-1 gap-1">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setActiveCategory(cat.id)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                    activeCategory === cat.id
+                      ? 'bg-white text-[#7435E6] shadow-sm'
+                      : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+                  }`}
+                >
+                  {cat.label}
+                  <span className="ml-2 text-xs opacity-60">
+                    ({cat.id === 'all'
+                      ? metaAdTemplates.length
+                      : metaAdTemplates.filter(cat.filter).length})
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Search Bar */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mb-10 flex justify-center"
-          >
+          <div className="mb-8 flex justify-center">
             <div className="relative w-full max-w-md">
               <Search
                 size={20}
@@ -49,81 +245,26 @@ export default function MetaTemplatesPage() {
                 placeholder="Search templates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#e5e5e5] bg-white text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#7435E6] focus:border-transparent transition-all"
+                className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#e5e5e5] bg-white text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[#7435E6] focus:border-transparent"
               />
             </div>
-          </motion.div>
+          </div>
+
+          {/* Results count */}
+          <p className="text-center text-sm text-[var(--text-muted)] mb-6">
+            Showing {filteredTemplates.length} templates
+          </p>
 
           {/* Templates Grid */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-          >
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredTemplates.map((template) => (
-              <motion.div
-                key={template.id}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="group relative"
-              >
-                <a
-                  href={template.canvaLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block relative aspect-square rounded-xl overflow-hidden bg-[#f5f5f5] border border-[#e5e5e5] transition-all duration-300 hover:shadow-xl hover:border-[#7435E6]"
-                >
-                  {/* Cover Image (default) */}
-                  {template.coverImage ? (
-                    <img
-                      src={template.coverImage}
-                      alt={template.name}
-                      className="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#f0f0f0] to-[#e5e5e5]">
-                      <div className="text-center p-4">
-                        <div className="w-10 h-10 mx-auto mb-2 rounded-lg bg-[#7435E6]/10 flex items-center justify-center">
-                          <ExternalLink size={20} className="text-[#7435E6]" />
-                        </div>
-                        <span className="text-xs text-[var(--text-muted)]">
-                          {template.name}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Hover Image (editable version - slide 2) */}
-                  {template.hoverImage && (
-                    <img
-                      src={template.hoverImage}
-                      alt={`${template.name} - Editable`}
-                      className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                    />
-                  )}
-
-                  {/* Always visible button - bottom right */}
-                  <div
-                    className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-semibold transition-transform duration-200 group-hover:scale-105 z-10"
-                    style={{ backgroundColor: '#7435E6' }}
-                  >
-                    <ExternalLink size={12} />
-                    Edit in Canva
-                  </div>
-                </a>
-              </motion.div>
+              <TemplateCardAlt key={template.id} template={template} />
             ))}
-          </motion.div>
+          </div>
 
           {/* Empty State */}
           {filteredTemplates.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
-            >
+            <div className="text-center py-20">
               <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[var(--bg-secondary)] flex items-center justify-center">
                 <Search size={32} className="text-[var(--text-muted)]" />
               </div>
@@ -133,7 +274,7 @@ export default function MetaTemplatesPage() {
               <p className="text-[var(--text-muted)]">
                 Try adjusting your search query
               </p>
-            </motion.div>
+            </div>
           )}
         </div>
       </div>

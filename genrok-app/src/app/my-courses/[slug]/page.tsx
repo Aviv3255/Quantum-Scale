@@ -41,6 +41,12 @@ import { supabase } from '@/lib/supabase';
 import CourseChecklist from '@/components/CourseChecklist';
 import { useChecklist } from '@/hooks/useChecklist';
 import { hasChecklist } from '@/data/course-checklists';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+
+// Configure PDF.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface CourseData {
   id: string;
@@ -113,12 +119,15 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [readingProgress, setReadingProgress] = useState(() => Math.max(initialProgress, 10));
   const [showResumePrompt, setShowResumePrompt] = useState(initialPage > 1 && initialProgress > 0);
-  const [pdfUrl, setPdfUrl] = useState(fileUrl);
+  const [numPages, setNumPages] = useState<number | null>(null);
+  const [pdfLoading, setPdfLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastSavedProgressRef = useRef(Math.max(initialProgress, 10));
   const currentPageRef = useRef(initialPage);
   const readingProgressRef = useRef(Math.max(initialProgress, 10));
+  const pageRefs = useRef<Map<number, HTMLDivElement>>(new Map());
 
   const courseHasChecklist = hasChecklist(courseSlug);
   const [isChecklistOpen, setIsChecklistOpen] = useState(courseHasChecklist);
@@ -126,17 +135,34 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
   const { items, isLoading: checklistLoading, progress, toggleItem, isItemCompleted, resetProgress } =
     useChecklist(courseSlug, userId);
 
+  // Handle PDF document load success
+  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+    setNumPages(numPages);
+    setPdfLoading(false);
+  };
+
   // Resume from last page
   const handleResume = () => {
-    setPdfUrl(`${fileUrl}#page=${initialPage}`);
+    setCurrentPage(initialPage);
     setShowResumePrompt(false);
+    // Scroll to the saved page after render
+    setTimeout(() => {
+      const pageElement = pageRefs.current.get(initialPage);
+      if (pageElement && scrollContainerRef.current) {
+        pageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   // Start from beginning
   const handleStartOver = () => {
-    setPdfUrl(`${fileUrl}#page=1`);
+    setCurrentPage(1);
     currentPageRef.current = 1;
     setShowResumePrompt(false);
+    // Scroll to top
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
   };
 
   // Save initial progress on mount
@@ -335,19 +361,42 @@ function PDFViewer({ file, fileUrl, onClose, courseSlug, userId, courseId, onPro
           <div
             className="mx-auto transition-transform duration-200"
             style={{
-              width: `${zoom}%`,
-              maxWidth: `${zoom * 10}px`,
+              transform: `scale(${zoom / 100})`,
+              transformOrigin: 'top center',
             }}
           >
-            <iframe
-              src={`${pdfUrl}#toolbar=0&navpanes=0`}
-              className="w-full bg-white rounded-lg shadow-2xl"
-              style={{
-                height: 'calc(100vh - 120px)',
-                border: 'none',
-              }}
-              title={file.title}
-            />
+            {/* PDF Loading Indicator */}
+            {pdfLoading && (
+              <div className="flex items-center justify-center py-20">
+                <Loader2 size={32} className="animate-spin text-white" />
+              </div>
+            )}
+
+            {/* PDF Document - externalLinkTarget="_blank" makes all PDF links open in new tab */}
+            <Document
+              file={fileUrl}
+              onLoadSuccess={onDocumentLoadSuccess}
+              loading={null}
+              externalLinkTarget="_blank"
+              className="flex flex-col items-center gap-4"
+            >
+              {numPages && Array.from(new Array(numPages), (_, index) => (
+                <div
+                  key={`page_${index + 1}`}
+                  ref={(el) => {
+                    if (el) pageRefs.current.set(index + 1, el);
+                  }}
+                  className="bg-white rounded-lg shadow-2xl overflow-hidden"
+                >
+                  <Page
+                    pageNumber={index + 1}
+                    width={800}
+                    renderTextLayer={true}
+                    renderAnnotationLayer={true}
+                  />
+                </div>
+              ))}
+            </Document>
           </div>
         </div>
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Copy, Check, Ban, TrendingDown, DollarSign, Target } from 'lucide-react';
+import { Copy, Check, Ban, TrendingDown, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
@@ -59,7 +59,7 @@ export default function GoogleNegativeKeywordsPage() {
         </header>
 
         {/* Stats Row */}
-        <div className="grid grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-2 gap-6 mb-16 max-w-md mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -84,19 +84,6 @@ export default function GoogleNegativeKeywordsPage() {
             </div>
             <p className="text-3xl font-bold text-[var(--text-primary)]">90%</p>
             <p className="text-sm text-[var(--text-muted)]">Less Junk Traffic</p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-center"
-          >
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--bg-secondary)] mb-4">
-              <DollarSign size={20} className="text-[var(--text-primary)]" />
-            </div>
-            <p className="text-3xl font-bold text-[var(--text-primary)]">2-3x</p>
-            <p className="text-sm text-[var(--text-muted)]">Better ROAS</p>
           </motion.div>
         </div>
 

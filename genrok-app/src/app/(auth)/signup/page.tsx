@@ -1,14 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, Check } from 'lucide-react';
-import { signUp, signIn, createUserProfile } from '@/lib/supabase';
+import { createUserProfile, supabase } from '@/lib/supabase';
+import { useAuthStore } from '@/store/auth';
 
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
@@ -26,12 +27,29 @@ const signupSchema = z.object({
 
 type SignupFormData = z.infer<typeof signupSchema>;
 
-
-export default function SignupPage() {
+function SignupForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const referralCode = searchParams.get('ref');
+  const { setUser } = useAuthStore();
+  const [userIp, setUserIp] = useState<string>('unknown');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Capture user IP on mount
+  useEffect(() => {
+    const getIp = async () => {
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        setUserIp(data.ip);
+      } catch {
+        setUserIp('unknown');
+      }
+    };
+    getIp();
+  }, []);
 
   const {
     register,
@@ -54,29 +72,95 @@ export default function SignupPage() {
   const onSubmit = async (data: SignupFormData) => {
     setError(null);
 
-    const { error: signUpError } = await signUp(data.email, data.password, data.fullName);
+    try {
+      // Sign up - this returns a session if email confirmation is disabled
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            full_name: data.fullName,
+          },
+        },
+      });
 
-    if (signUpError) {
-      setError(signUpError.message);
-      return;
+      if (signUpError) {
+        setError(signUpError.message);
+        return;
+      }
+
+      const userId = signUpData?.user?.id;
+
+      if (!userId) {
+        setError('Failed to create account. Please try again.');
+        return;
+      }
+
+      // Create user profile
+      await createUserProfile(userId);
+
+      // Process referral if user signed up via referral link
+      if (referralCode) {
+        try {
+          // Look up the referrer by their referral code
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { data: referrer, error: lookupError } = await (supabase as any)
+            .from('user_profiles')
+            .select('user_id')
+            .eq('referral_code', referralCode)
+            .single();
+
+          console.log('Referral lookup:', { referralCode, referrer, lookupError });
+
+          if (referrer && referrer.user_id !== userId) {
+            // Create referral record
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const { error: insertError } = await (supabase as any)
+              .from('referrals')
+              .insert({
+                referrer_id: referrer.user_id,
+                referred_user_id: userId,
+                referred_email: data.email,
+                referred_ip: userIp,
+                referral_code: referralCode,
+                is_valid: true,
+              });
+
+            console.log('Referral insert:', { insertError });
+          }
+        } catch (err) {
+          console.log('Referral processing error:', err);
+        }
+      }
+
+      // If we have a session, user is auto-logged in (email confirmation disabled)
+      if (signUpData?.session) {
+        setUser(signUpData.user);
+        router.push('/onboarding');
+        return;
+      }
+
+      // If no session but user exists, try to sign in
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+
+      if (signInError) {
+        // Email confirmation might be required
+        setError('Account created! Please check your email to confirm, then log in.');
+        setTimeout(() => router.push('/login'), 3000);
+        return;
+      }
+
+      if (signInData?.user) {
+        setUser(signInData.user);
+        router.push('/onboarding');
+      }
+    } catch (err) {
+      console.error('Signup error:', err);
+      setError('An unexpected error occurred. Please try again.');
     }
-
-    // Auto sign-in after signup (skip email verification)
-    const { data: signInData, error: signInError } = await signIn(data.email, data.password);
-
-    if (signInError) {
-      // If sign-in fails, show success but redirect to login
-      router.push('/login');
-      return;
-    }
-
-    // Create user profile for onboarding
-    if (signInData?.user) {
-      await createUserProfile(signInData.user.id);
-    }
-
-    // Redirect to onboarding
-    router.push('/onboarding');
   };
 
   return (
@@ -269,5 +353,21 @@ export default function SignupPage() {
         </p>
       </form>
     </motion.div>
+  );
+}
+
+function SignupLoading() {
+  return (
+    <div className="flex items-center justify-center py-20">
+      <div className="animate-spin w-8 h-8 border-2 border-[var(--primary)] border-t-transparent rounded-full" />
+    </div>
+  );
+}
+
+export default function SignupPage() {
+  return (
+    <Suspense fallback={<SignupLoading />}>
+      <SignupForm />
+    </Suspense>
   );
 }

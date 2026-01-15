@@ -1,13 +1,23 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Plus, Search, CheckCircle, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Search, CheckCircle, ExternalLink, Loader2, X, Trash2 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
+import { submitPollVote, getUserPollVotes, getAllPollVotes, submitPollRequest } from '@/lib/supabase';
 
-// All polls from original Base44 data
+// Base votes per poll option (100,000 total per poll distributed by percentage)
+// This ensures each individual vote has minimal impact on percentages
+const BASE_TOTAL_VOTES = 100000;
+
+// Helper to calculate initial votes from percentage
+const votesFromPercentage = (percentage: number, totalVotes: number = BASE_TOTAL_VOTES) => {
+  return Math.round((percentage / 100) * totalVotes);
+};
+
+// All polls data with base vote counts
 const pollsData = [
   {
     id: 1,
@@ -402,6 +412,151 @@ const pollsData = [
       { text: 'Sometimes', percentage: 25.20 },
     ],
   },
+  // ============ NEW POLLS (40-51) ============
+  {
+    id: 40,
+    question: 'Do you use post-purchase upsells (one-click upsells after checkout)?',
+    options: [
+      { text: 'Yes, generates significant revenue', percentage: 24.60 },
+      { text: 'Tried it, minimal impact', percentage: 19.40 },
+      { text: 'Not yet implemented', percentage: 56.00 },
+    ],
+    buttons: [
+      { text: 'Add Post-Purchase Upsells →', url: 'https://apps.shopify.com/reconvert-upsell-cross-sell?mref=lsbqcbva' }
+    ]
+  },
+  {
+    id: 41,
+    question: 'What is the maximum discount you set on TxtCart?',
+    options: [
+      { text: '5-10%', percentage: 13.40 },
+      { text: '10-15%', percentage: 54.27 },
+      { text: '15-20%', percentage: 12.60 },
+      { text: '20%+', percentage: 6.20 },
+      { text: "I don't use it", percentage: 13.53 },
+    ],
+    buttons: [
+      { text: 'Set Up TxtCart →', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' }
+    ]
+  },
+  {
+    id: 42,
+    question: 'Do you use real or fake countdown timers?',
+    options: [
+      { text: 'Real (sale actually ends)', percentage: 21.60 },
+      { text: 'Fake timers (reset daily)', percentage: 11.80 },
+      { text: "Don't use timers", percentage: 11.20 },
+      { text: 'Auto Geo-location based Holiday discount', percentage: 32.00 },
+      { text: 'Planning to try', percentage: 23.40 },
+    ],
+    buttons: [
+      { text: 'Add Regular Timer →', url: 'https://platform.shoffi.app/r/rl_6EEzhlj9' },
+      { text: 'Add Geo-location Timer →', url: 'https://geo-convert.com/' }
+    ]
+  },
+  {
+    id: 43,
+    question: 'Meta ad copy: Short or long?',
+    options: [
+      { text: 'Shortest as possible', percentage: 17.50 },
+      { text: 'Longest as possible', percentage: 19.00 },
+      { text: 'Mid (80-150 words)', percentage: 63.50 },
+    ],
+  },
+  {
+    id: 44,
+    question: 'If you could start over, what would you do FIRST?',
+    options: [
+      { text: 'Pick better niche (not trending one)', percentage: 48.20 },
+      { text: 'Build email list from day 1', percentage: 32.60 },
+      { text: 'Test products before scaling ads', percentage: 14.80 },
+      { text: 'Hire expert instead of DIY everything', percentage: 4.40 },
+    ],
+    buttons: [
+      { text: 'Build an Email List →', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL&utm_medium=partner' }
+    ]
+  },
+  {
+    id: 45,
+    question: 'Your first sale - how long did it take?',
+    options: [
+      { text: 'Within first week', percentage: 18.20 },
+      { text: '2-4 weeks', percentage: 32.80 },
+      { text: '1-3 months', percentage: 38.40 },
+      { text: '3+ months', percentage: 10.60 },
+    ],
+  },
+  {
+    id: 46,
+    question: 'The one app you wish you installed from DAY ONE?',
+    options: [
+      { text: 'Email marketing (Klaviyo)', percentage: 14.20 },
+      { text: 'SMS Cart recovery (TxtCart)', percentage: 12.00 },
+      { text: 'Help desk', percentage: 3.00 },
+      { text: 'DataDrew (Customer LTV)', percentage: 26.00 },
+      { text: 'Geo Convert', percentage: 24.00 },
+      { text: 'Reviews app', percentage: 3.00 },
+      { text: 'All of them', percentage: 11.80 },
+      { text: 'Other', percentage: 6.00 },
+    ],
+    buttons: [
+      { text: 'Connect Klaviyo →', url: 'https://www.klaviyo.com/partner/signup?utm_source=001Nu00000NY5EeIAL' },
+      { text: 'Add Cart Recovery →', url: 'https://txtcartapp.com/affiliate/?mref=lsbqcbva' },
+      { text: 'Connect Geo Convert →', url: 'https://geo-convert.com/' },
+      { text: 'Connect DataDrew →', url: 'https://apps.shopify.com/customer-lifetime-value?mref=lsbqcbva' }
+    ]
+  },
+  {
+    id: 47,
+    question: 'Reddit/4chan marketing - would you try it?',
+    options: [
+      { text: 'Yes, untapped audience', percentage: 24.60 },
+      { text: 'Maybe for specific niches', percentage: 42.80 },
+      { text: 'Too risky', percentage: 28.20 },
+      { text: 'Already tried', percentage: 4.40 },
+    ],
+  },
+  {
+    id: 48,
+    question: 'How do you handle returns/refunds?',
+    options: [
+      { text: 'Give best service to prevent them', percentage: 42.80 },
+      { text: 'It happens, just deal with it', percentage: 28.60 },
+      { text: 'Struggling to manage them', percentage: 18.40 },
+      { text: 'Part of business, small % anyway', percentage: 10.20 },
+    ],
+  },
+  {
+    id: 49,
+    question: 'Are you using Google Shopping ads?',
+    options: [
+      { text: 'Yes, main traffic source', percentage: 18.40 },
+      { text: 'Yes, testing it out', percentage: 32.60 },
+      { text: 'Not yet, planning to', percentage: 24.80 },
+      { text: 'No, focusing on other channels', percentage: 24.20 },
+    ],
+  },
+  {
+    id: 50,
+    question: 'Where do you get ad creative inspiration?',
+    options: [
+      { text: 'Competitor ads (Facebook Ad Library)', percentage: 28.20 },
+      { text: 'Creative templates', percentage: 23.00 },
+      { text: 'TikTok/Instagram trending content', percentage: 26.20 },
+      { text: 'Hire UGC creators', percentage: 14.20 },
+      { text: 'Make it myself / wing it', percentage: 8.40 },
+    ],
+  },
+  {
+    id: 51,
+    question: "What's your Refund policy?",
+    options: [
+      { text: '30-day money back guarantee', percentage: 35.60 },
+      { text: '14-day return window', percentage: 45.40 },
+      { text: 'No returns (final sale)', percentage: 8.80 },
+      { text: 'Case by case basis', percentage: 10.20 },
+    ],
+  },
 ];
 
 interface PollOption {
@@ -421,6 +576,12 @@ interface Poll {
   buttons?: PollButton[];
 }
 
+// Vote data structure for backend tracking
+interface PollVoteData {
+  votes: number[];  // Vote count per option
+  totalVotes: number;
+}
+
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -434,11 +595,101 @@ const itemVariants = {
   visible: { opacity: 1, y: 0 },
 };
 
+// Initialize vote data from poll percentages with 100k base
+const initializeVoteData = (): Record<number, PollVoteData> => {
+  const data: Record<number, PollVoteData> = {};
+  pollsData.forEach(poll => {
+    const votes = poll.options.map(opt => votesFromPercentage(opt.percentage));
+    data[poll.id] = {
+      votes,
+      totalVotes: votes.reduce((sum, v) => sum + v, 0),
+    };
+  });
+  return data;
+};
+
+// Calculate live percentages from vote counts
+const calculatePercentages = (voteData: PollVoteData): number[] => {
+  if (voteData.totalVotes === 0) return voteData.votes.map(() => 0);
+  return voteData.votes.map(v => (v / voteData.totalVotes) * 100);
+};
+
+// Aggregate real votes from Supabase into vote counts per poll
+const aggregateVotes = (
+  votes: { poll_id: number; option_index: number }[],
+  baseVoteData: Record<number, PollVoteData>
+): Record<number, PollVoteData> => {
+  const result = { ...baseVoteData };
+
+  // Count real votes per poll per option
+  votes.forEach(vote => {
+    if (result[vote.poll_id]) {
+      const pollData = { ...result[vote.poll_id] };
+      pollData.votes = [...pollData.votes];
+      pollData.votes[vote.option_index]++;
+      pollData.totalVotes++;
+      result[vote.poll_id] = pollData;
+    }
+  });
+
+  return result;
+};
+
 export default function DataCenterPage() {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuthStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [userVotes, setUserVotes] = useState<Record<number, number>>({});
+  const [pollVoteData, setPollVoteData] = useState<Record<number, PollVoteData>>(() => initializeVoteData());
+  const [isVoting, setIsVoting] = useState<number | null>(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  // Post a Poll modal state
+  const [showPollModal, setShowPollModal] = useState(false);
+  const [pollQuestion, setPollQuestion] = useState('');
+  const [pollOptions, setPollOptions] = useState<string[]>(['', '']);
+  const [isSubmittingPoll, setIsSubmittingPoll] = useState(false);
+  const [pollSubmitSuccess, setPollSubmitSuccess] = useState(false);
+
+  // Load votes from Supabase on mount
+  useEffect(() => {
+    const loadVotes = async () => {
+      if (!user) return;
+
+      try {
+        // Fetch user's votes and all community votes in parallel
+        const [userVotesResult, allVotesResult] = await Promise.all([
+          getUserPollVotes(user.id),
+          getAllPollVotes()
+        ]);
+
+        // Set user's votes
+        if (userVotesResult.data) {
+          const votesMap: Record<number, number> = {};
+          userVotesResult.data.forEach(v => {
+            votesMap[v.poll_id] = v.option_index;
+          });
+          setUserVotes(votesMap);
+        }
+
+        // Aggregate all community votes on top of base votes
+        if (allVotesResult.data) {
+          const baseData = initializeVoteData();
+          const aggregatedData = aggregateVotes(allVotesResult.data, baseData);
+          setPollVoteData(aggregatedData);
+        }
+
+        setDataLoaded(true);
+      } catch (e) {
+        console.error('Error loading poll votes:', e);
+        setDataLoaded(true);
+      }
+    };
+
+    if (user && !dataLoaded) {
+      loadVotes();
+    }
+  }, [user, dataLoaded]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -446,8 +697,109 @@ export default function DataCenterPage() {
     }
   }, [user, authLoading, router]);
 
-  const handleVote = (pollId: number, optionIndex: number) => {
-    setUserVotes(prev => ({ ...prev, [pollId]: optionIndex }));
+  // Handle voting with Supabase backend
+  const handleVote = useCallback(async (pollId: number, optionIndex: number) => {
+    if (!user || isVoting !== null) return;
+
+    const previousVote = userVotes[pollId];
+    if (previousVote === optionIndex) return; // Already voted for this option
+
+    setIsVoting(pollId);
+
+    try {
+      // Submit vote to Supabase
+      const { error } = await submitPollVote(
+        pollId,
+        optionIndex,
+        user.id,
+        user.email || undefined,
+        user.user_metadata?.full_name || undefined
+      );
+
+      if (error) {
+        console.error('Error submitting vote:', error);
+        setIsVoting(null);
+        return;
+      }
+
+      // Update local state optimistically
+      setPollVoteData(prev => {
+        const pollData = { ...prev[pollId] };
+        pollData.votes = [...pollData.votes];
+
+        // If changing vote, decrement old option
+        if (previousVote !== undefined) {
+          pollData.votes[previousVote] = Math.max(0, pollData.votes[previousVote] - 1);
+          pollData.totalVotes--;
+        }
+
+        // Increment new option
+        pollData.votes[optionIndex]++;
+        pollData.totalVotes++;
+
+        return { ...prev, [pollId]: pollData };
+      });
+
+      // Update user votes
+      setUserVotes(prev => ({ ...prev, [pollId]: optionIndex }));
+
+    } catch (e) {
+      console.error('Error voting:', e);
+    } finally {
+      setIsVoting(null);
+    }
+  }, [user, userVotes, isVoting]);
+
+  // Handle poll submission
+  const handleSubmitPoll = async () => {
+    if (!user || !pollQuestion.trim() || pollOptions.filter(o => o.trim()).length < 2) return;
+
+    setIsSubmittingPoll(true);
+    try {
+      const validOptions = pollOptions.filter(o => o.trim()).map(text => ({ text: text.trim() }));
+      const { error } = await submitPollRequest(
+        pollQuestion.trim(),
+        validOptions,
+        user.id,
+        user.email || undefined,
+        user.user_metadata?.full_name || undefined
+      );
+
+      if (error) {
+        console.error('Error submitting poll:', error);
+        return;
+      }
+
+      setPollSubmitSuccess(true);
+      setTimeout(() => {
+        setShowPollModal(false);
+        setPollQuestion('');
+        setPollOptions(['', '']);
+        setPollSubmitSuccess(false);
+      }, 2000);
+    } catch (e) {
+      console.error('Error submitting poll:', e);
+    } finally {
+      setIsSubmittingPoll(false);
+    }
+  };
+
+  const addPollOption = () => {
+    if (pollOptions.length < 6) {
+      setPollOptions([...pollOptions, '']);
+    }
+  };
+
+  const removePollOption = (index: number) => {
+    if (pollOptions.length > 2) {
+      setPollOptions(pollOptions.filter((_, i) => i !== index));
+    }
+  };
+
+  const updatePollOption = (index: number, value: string) => {
+    const newOptions = [...pollOptions];
+    newOptions[index] = value;
+    setPollOptions(newOptions);
   };
 
   if (authLoading || !user) {
@@ -472,7 +824,10 @@ export default function DataCenterPage() {
               <h1>Data Center</h1>
               <p>Real insights from real eCommerce operators. Updated live as the community votes.</p>
             </div>
-            <button className="btn btn-secondary flex-shrink-0">
+            <button
+              className="btn btn-secondary flex-shrink-0"
+              onClick={() => setShowPollModal(true)}
+            >
               <Plus size={16} strokeWidth={1.5} />
               Post a Poll
             </button>
@@ -501,15 +856,22 @@ export default function DataCenterPage() {
             animate="visible"
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-5"
           >
-            {filteredPolls.map((poll) => (
-              <motion.div key={poll.id} variants={itemVariants} className="h-full">
-                <PollCard
-                  poll={poll}
-                  userVote={userVotes[poll.id]}
-                  onVote={(optionIndex) => handleVote(poll.id, optionIndex)}
-                />
-              </motion.div>
-            ))}
+            {filteredPolls.map((poll) => {
+              const voteData = pollVoteData[poll.id];
+              const livePercentages = voteData ? calculatePercentages(voteData) : poll.options.map(o => o.percentage);
+
+              return (
+                <motion.div key={poll.id} variants={itemVariants} className="h-full">
+                  <PollCard
+                    poll={poll}
+                    userVote={userVotes[poll.id]}
+                    livePercentages={livePercentages}
+                    isVoting={isVoting === poll.id}
+                    onVote={(optionIndex) => handleVote(poll.id, optionIndex)}
+                  />
+                </motion.div>
+              );
+            })}
           </motion.div>
 
         {filteredPolls.length === 0 && (
@@ -520,6 +882,128 @@ export default function DataCenterPage() {
           </div>
         )}
       </div>
+
+      {/* Post a Poll Modal */}
+      <AnimatePresence>
+        {showPollModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+            onClick={() => !isSubmittingPoll && setShowPollModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {pollSubmitSuccess ? (
+                <div className="text-center py-8">
+                  <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">Poll Submitted!</h3>
+                  <p className="text-sm text-[var(--text-muted)]">
+                    Your poll has been sent for review. We&apos;ll notify you once it&apos;s approved.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold text-[var(--text-primary)]">Post a Poll</h3>
+                    <button
+                      onClick={() => setShowPollModal(false)}
+                      className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                        Your Question
+                      </label>
+                      <input
+                        type="text"
+                        value={pollQuestion}
+                        onChange={(e) => setPollQuestion(e.target.value)}
+                        placeholder="e.g., What's your main traffic source?"
+                        className="w-full px-4 py-3 rounded-xl text-sm bg-[var(--bg-secondary)] border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-[var(--text-secondary)] mb-2">
+                        Answer Options (2-6)
+                      </label>
+                      <div className="space-y-2">
+                        {pollOptions.map((option, index) => (
+                          <div key={index} className="flex gap-2">
+                            <input
+                              type="text"
+                              value={option}
+                              onChange={(e) => updatePollOption(index, e.target.value)}
+                              placeholder={`Option ${index + 1}`}
+                              className="flex-1 px-4 py-2.5 rounded-xl text-sm bg-[var(--bg-secondary)] border border-[var(--border-light)] text-[var(--text-primary)] focus:border-[var(--primary)] focus:outline-none transition-colors"
+                            />
+                            {pollOptions.length > 2 && (
+                              <button
+                                onClick={() => removePollOption(index)}
+                                className="p-2.5 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      {pollOptions.length < 6 && (
+                        <button
+                          onClick={addPollOption}
+                          className="mt-2 text-sm text-[var(--info)] hover:underline flex items-center gap-1"
+                        >
+                          <Plus size={14} /> Add another option
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 flex gap-3">
+                    <button
+                      onClick={() => setShowPollModal(false)}
+                      className="btn btn-secondary flex-1"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleSubmitPoll}
+                      disabled={isSubmittingPoll || !pollQuestion.trim() || pollOptions.filter(o => o.trim()).length < 2}
+                      className="btn btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSubmittingPoll ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        'Submit for Review'
+                      )}
+                    </button>
+                  </div>
+
+                  <p className="mt-4 text-xs text-center text-[var(--text-muted)]">
+                    Your poll will be reviewed before appearing in the Data Center.
+                  </p>
+                </>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </DashboardLayout>
   );
 }
@@ -527,17 +1011,19 @@ export default function DataCenterPage() {
 interface PollCardProps {
   poll: Poll;
   userVote?: number;
+  livePercentages: number[];
+  isVoting?: boolean;
   onVote: (optionIndex: number) => void;
 }
 
-function PollCard({ poll, userVote, onVote }: PollCardProps) {
-  const maxPercentage = Math.max(...poll.options.map(o => o.percentage));
+function PollCard({ poll, userVote, livePercentages, isVoting, onVote }: PollCardProps) {
+  const maxPercentage = Math.max(...livePercentages);
 
   return (
     <div className="card card-hover h-full flex flex-col" style={{ padding: 0 }}>
       {/* Question */}
       <div className="p-5 pb-3">
-        <h3 className="text-sm font-semibold leading-tight text-[var(--text-primary)]">
+        <h3 className="text-sm font-bold leading-snug text-[var(--text-primary)]">
           {poll.question}
         </h3>
       </div>
@@ -546,26 +1032,30 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
       <div className="px-5 pb-4 space-y-2 flex-1">
         {poll.options.map((option, index) => {
           const isUserChoice = userVote === index;
-          const isTopChoice = option.percentage === maxPercentage;
+          const percentage = livePercentages[index] || 0;
+          const isTopChoice = percentage === maxPercentage && percentage > 0;
 
           return (
             <button
               key={index}
               onClick={() => onVote(index)}
-              className="w-full text-left relative overflow-hidden rounded-lg transition-all hover:border-[var(--primary)]"
+              disabled={isVoting}
+              className="w-full text-left relative overflow-hidden rounded-lg transition-all hover:border-[var(--primary)] disabled:opacity-60 disabled:cursor-not-allowed"
               style={{
                 border: isUserChoice ? '2px solid var(--primary)' : '1px solid var(--border-light)',
                 background: 'var(--bg-card)',
-                cursor: 'pointer'
+                cursor: isVoting ? 'not-allowed' : 'pointer'
               }}
             >
               <div
-                className="absolute inset-0 transition-all"
+                className="absolute inset-0 transition-all duration-300"
                 style={{
                   background: isUserChoice
-                    ? 'linear-gradient(90deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.01) 100%)'
-                    : 'linear-gradient(90deg, rgba(0, 125, 255, 0.02) 0%, transparent 100%)',
-                  width: `${option.percentage}%`
+                    ? 'linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0%, rgba(0, 0, 0, 0.02) 100%)'
+                    : isTopChoice
+                    ? 'linear-gradient(90deg, rgba(0, 125, 255, 0.08) 0%, rgba(0, 125, 255, 0.02) 100%)'
+                    : 'linear-gradient(90deg, rgba(0, 125, 255, 0.03) 0%, transparent 100%)',
+                  width: `${percentage}%`
                 }}
               />
 
@@ -587,7 +1077,7 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
                   </span>
                 </div>
                 <span className={`font-bold text-xs flex-shrink-0 ml-2 ${isTopChoice ? 'text-[var(--info)]' : 'text-[var(--text-muted)]'}`}>
-                  {option.percentage.toFixed(2)}%
+                  {percentage.toFixed(1)}%
                 </span>
               </div>
             </button>
@@ -595,7 +1085,7 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
         })}
       </div>
 
-      {/* Buttons */}
+      {/* CTA Buttons */}
       {poll.buttons && poll.buttons.length > 0 && (
         <div className="p-5 pt-0 mt-auto">
           <div className="flex flex-col gap-2 pt-3 border-t border-[var(--border-light)]">
@@ -608,7 +1098,7 @@ function PollCard({ poll, userVote, onVote }: PollCardProps) {
                 className="btn btn-primary w-full justify-center text-xs py-2"
               >
                 {button.text}
-                <ArrowRight className="w-3 h-3" />
+                <ExternalLink className="w-3 h-3" />
               </a>
             ))}
           </div>

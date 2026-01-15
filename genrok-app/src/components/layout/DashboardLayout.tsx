@@ -58,9 +58,7 @@ import {
 import { useAuthStore } from '@/store/auth';
 import { useBookmarksStore } from '@/store/bookmarks';
 import { signOut } from '@/lib/supabase';
-import { BookmarkModal } from '@/components/BookmarkModal';
-import ChatbotWidget from '@/components/ChatbotWidget';
-import { useThemeStore, applyTheme } from '@/store/theme';
+import { UserDropdown } from './UserDropdown';
 
 interface SubNavItem {
   title: string;
@@ -88,10 +86,10 @@ const navigationItems: NavItem[] = [
     icon: Server,
     isCategory: true,
     subItems: [
-      { title: "Dream Team", href: "/backend/dream-team", icon: Users },
-      { title: "Secret Apps", href: "/apps/secret", icon: Sparkles },
-      { title: "Shopify Apps", href: "/apps/shopify", icon: AppWindow },
-      { title: "Private Agent", href: "/products/private-agent", icon: Truck }
+      { title: "The Dream Team", href: "/backend/dream-team" },
+      { title: "Secret Apps", href: "/apps/secret" },
+      { title: "Discounted Shopify Apps", href: "/apps/shopify" },
+      { title: "Private Agent", href: "/products/private-agent" }
     ]
   },
   {
@@ -109,12 +107,13 @@ const navigationItems: NavItem[] = [
     icon: Megaphone,
     isCategory: true,
     subItems: [
-      { title: "TikTok Credits", href: "/tiktok-credits", icon: CreditCard },
-      { title: "AI Image Ads", href: "/ads/ai-image", icon: Image },
-      { title: "AI Video Ads", href: "/ads/ai-video", icon: Video },
-      { title: "Meta Templates", href: "/ads/meta-templates", icon: Target },
-      { title: "Ad Copy", href: "/ads/ad-copy-templates", icon: FileText },
-      { title: "Negative Keywords", href: "/ads/google-negative-keywords", icon: Tag }
+      { title: "$6,000 TikTok Ads Credit", href: "/tiktok-credits" },
+      { title: "1,000 Meta Ad Templates", href: "/ads/meta-templates" },
+      { title: "Meta Ads Structure", href: "/ads/meta-structure" },
+      { title: "AI Image Ads", href: "/ads/ai-image" },
+      { title: "AI Video Ads", href: "/ads/ai-video" },
+      { title: "Ad Copy Templates", href: "/ads/ad-copy-templates" },
+      { title: "Google Negative Keywords", href: "/ads/google-negative-keywords" }
     ]
   },
   {
@@ -531,47 +530,19 @@ export default function DashboardLayout({ children, hideHeader = false }: Dashbo
               </div>
             </div>
 
-            <div className="topbar-right">
-              {/* Bookmarks */}
-              <div className="relative">
-                <button
-                  ref={bookmarkButtonRef}
-                  onClick={() => setBookmarkModalOpen(!bookmarkModalOpen)}
-                  className="topbar-notification-btn"
-                  data-testid="topbar-bookmark-btn"
-                  aria-label="Open bookmarks"
-                >
-                  <Bookmark size={20} strokeWidth={1.5} />
-                  {(counts.all || 0) > 0 && (
-                    <span className="notification-badge">{counts.all > 99 ? '99+' : counts.all}</span>
-                  )}
-                </button>
-                <BookmarkModal
-                  isOpen={bookmarkModalOpen}
-                  onClose={() => setBookmarkModalOpen(false)}
-                  anchorRef={bookmarkButtonRef}
-                />
-              </div>
+          <div className="topbar-right">
+            {/* Notifications */}
+            <button className="btn-icon relative">
+              <Bell size={20} strokeWidth={1.5} />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[var(--primary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                3
+              </span>
+            </button>
 
-              {/* Notifications */}
-              <button className="topbar-notification-btn">
-                <Bell size={20} strokeWidth={1.5} />
-                <span className="notification-badge">3</span>
-              </button>
-
-              {/* User Profile */}
-              <div className="topbar-user">
-                <div className="topbar-user-avatar">
-                  {userInitials}
-                </div>
-                <div className="topbar-user-info">
-                  <span className="topbar-user-name">{userName}</span>
-                  <span className="topbar-user-email">{userEmail}</span>
-                </div>
-              </div>
-            </div>
-          </header>
-        )}
+            {/* User Dropdown */}
+            <UserDropdown />
+          </div>
+        </header>
 
         {/* Main Content */}
         <main className={`main-content ${hideHeader ? 'no-header' : ''}`}>
