@@ -35,11 +35,7 @@ export function QuarterlyTrend({
   variant = 'dark',
 }: QuarterlyTrendProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const fillLabel = isDark ? 'fill-white' : 'fill-black';
-  const fillMuted = isDark ? 'fill-white/50' : 'fill-black/50';
 
   const width = 400;
   const height = 200;
@@ -84,7 +80,8 @@ export function QuarterlyTrend({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -132,7 +129,8 @@ export function QuarterlyTrend({
                 y={padding.top + chartHeight * pct}
                 textAnchor="end"
                 dominantBaseline="middle"
-                className={`text-xs ${fillMuted}`}
+                className="text-xs"
+                style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.1 + i * 0.05 }}
@@ -185,7 +183,8 @@ export function QuarterlyTrend({
                 x={point.x}
                 y={point.y - 18}
                 textAnchor="middle"
-                className={`text-xs font-bold ${fillLabel}`}
+                className="text-xs font-bold"
+                style={{ fill: isDark ? '#fff' : '#000' }}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 + i * 0.1 }}
@@ -198,7 +197,8 @@ export function QuarterlyTrend({
                 x={point.x}
                 y={height - 15}
                 textAnchor="middle"
-                className={`text-xs ${fillMuted}`}
+                className="text-xs"
+                style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 + i * 0.05 }}
@@ -212,7 +212,8 @@ export function QuarterlyTrend({
                   x={point.x}
                   y={point.y + 22}
                   textAnchor="middle"
-                  className={`text-xs font-medium ${point.change >= 0 ? 'fill-green-500' : 'fill-red-500'}`}
+                  className="text-xs font-medium"
+                  style={{ fill: point.change >= 0 ? '#22c55e' : '#ef4444' }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 + i * 0.1 }}
@@ -233,22 +234,22 @@ export function QuarterlyTrend({
         transition={{ delay: 1.2 }}
       >
         <div className="text-center">
-          <div className={`text-2xl font-bold ${textColor}`}>
+          <div className="text-2xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
             {formatValue(data[data.length - 1]?.value || 0)}
           </div>
-          <div className={`text-xs ${mutedColor}`}>Latest Quarter</div>
+          <div className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Latest Quarter</div>
         </div>
         <div className="text-center">
-          <div className={`text-2xl font-bold ${isPositiveTrend ? 'text-green-500' : 'text-red-500'}`}>
+          <div className="text-2xl font-bold" style={{ color: isPositiveTrend ? '#22c55e' : '#ef4444' }}>
             {isPositiveTrend ? '+' : ''}{overallChange.toFixed(1)}%
           </div>
-          <div className={`text-xs ${mutedColor}`}>Overall Change</div>
+          <div className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Overall Change</div>
         </div>
         <div className="text-center">
-          <div className={`text-2xl font-bold ${textColor}`}>
+          <div className="text-2xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
             {formatValue(Math.round(data.reduce((acc, d) => acc + d.value, 0) / data.length))}
           </div>
-          <div className={`text-xs ${mutedColor}`}>Average</div>
+          <div className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Average</div>
         </div>
       </motion.div>
 
@@ -259,19 +260,20 @@ export function QuarterlyTrend({
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4 }}
       >
-        <div className={`flex items-center gap-2 px-4 py-2 rounded-full ${isPositiveTrend ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full" style={{ backgroundColor: isPositiveTrend ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)' }}>
           <svg
             width="16"
             height="16"
             viewBox="0 0 16 16"
-            className={isPositiveTrend ? 'text-green-500' : 'text-red-500 rotate-180'}
+            className={isPositiveTrend ? '' : 'rotate-180'}
+            style={{ color: isPositiveTrend ? '#22c55e' : '#ef4444' }}
           >
             <path
               d="M8 3L14 11H2L8 3Z"
               fill="currentColor"
             />
           </svg>
-          <span className={`text-sm font-medium ${isPositiveTrend ? 'text-green-500' : 'text-red-500'}`}>
+          <span className="text-sm font-medium" style={{ color: isPositiveTrend ? '#22c55e' : '#ef4444' }}>
             {isPositiveTrend ? 'Upward Trend' : 'Downward Trend'}
           </span>
         </div>

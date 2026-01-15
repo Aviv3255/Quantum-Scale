@@ -87,7 +87,7 @@ export function Heatmap({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-6`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-6" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
       )}
 
       <div className="overflow-x-auto">

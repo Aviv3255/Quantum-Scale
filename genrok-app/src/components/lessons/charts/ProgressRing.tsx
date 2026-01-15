@@ -30,7 +30,6 @@ export function ProgressRing({
   variant = 'dark',
 }: ProgressRingProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const trackColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
 
@@ -42,7 +41,7 @@ export function ProgressRing({
   const content = (
     <>
       {label && (
-        <h3 className={`text-lg font-bold ${textColor} mb-4`}>{label}</h3>
+        <h3 className="text-lg font-bold mb-4" style={{ color: isDark ? '#fff' : '#000' }}>{label}</h3>
       )}
 
       <div className="relative" style={{ width: size, height: size }}>
@@ -90,7 +89,8 @@ export function ProgressRing({
           {showPercent ? (
             <>
               <motion.span
-                className={`text-4xl font-bold ${textColor}`}
+                className="text-4xl font-bold"
+                style={{ color: isDark ? '#fff' : '#000' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
@@ -104,7 +104,8 @@ export function ProgressRing({
           ) : (
             <>
               <motion.span
-                className={`text-4xl font-bold ${textColor}`}
+                className="text-4xl font-bold"
+                style={{ color: isDark ? '#fff' : '#000' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}

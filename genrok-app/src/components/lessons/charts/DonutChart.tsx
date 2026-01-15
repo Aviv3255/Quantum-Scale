@@ -38,8 +38,6 @@ export function DonutChart({
   const center = size / 2;
 
   // Colors based on variant
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const bgRing = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
 
   // Default colors - premium palette
@@ -71,7 +69,7 @@ export function DonutChart({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-6 text-center`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-6 text-center" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
       )}
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
@@ -123,10 +121,10 @@ export function DonutChart({
               transition={{ delay: 0.6, duration: 0.4 }}
             >
               {centerValue && (
-                <span className={`text-4xl font-bold ${textColor}`}>{centerValue}</span>
+                <span className="text-4xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{centerValue}</span>
               )}
               {centerLabel && (
-                <span className={`text-sm ${mutedColor}`}>{centerLabel}</span>
+                <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{centerLabel}</span>
               )}
             </motion.div>
           )}
@@ -146,8 +144,8 @@ export function DonutChart({
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: segment.color }}
               />
-              <span className={`text-sm ${textColor}`}>{segment.label}</span>
-              <span className={`text-sm font-semibold ${mutedColor} ml-auto`}>
+              <span className="text-sm" style={{ color: isDark ? '#fff' : '#000' }}>{segment.label}</span>
+              <span className="text-sm font-semibold ml-auto" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>
                 {(segment.percentage * 100).toFixed(0)}%
               </span>
             </motion.div>

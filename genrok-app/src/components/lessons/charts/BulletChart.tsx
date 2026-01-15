@@ -26,7 +26,6 @@ export function BulletChart({
   variant = 'dark',
 }: BulletChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const legendColor = isDark ? 'text-white/70' : 'text-black/70';
   const targetBarBg = isDark ? 'bg-white' : 'bg-black';
@@ -40,7 +39,7 @@ export function BulletChart({
   const content = (
     <>
       <div className="mb-4">
-        <h3 className={`text-lg font-bold ${textColor}`}>{title}</h3>
+        <h3 className="text-lg font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
         {subtitle && <p className={`text-sm ${mutedColor}`}>{subtitle}</p>}
       </div>
 

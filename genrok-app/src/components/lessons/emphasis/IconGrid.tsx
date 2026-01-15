@@ -53,8 +53,6 @@ export function IconGrid({
   const isDark = variant === 'dark';
 
   // Color variables
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/60' : 'text-black/60';
   const itemBg = isDark ? 'bg-white/5 hover:bg-white/10' : 'bg-black/5 hover:bg-black/10';
 
   const gridCols = {
@@ -67,7 +65,12 @@ export function IconGrid({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-8 text-center`}>{title}</h3>
+        <h3
+          className="text-xl font-bold mb-8 text-center"
+          style={{ color: isDark ? '#fff' : '#000' }}
+        >
+          {title}
+        </h3>
       )}
 
       <div className={`grid ${gridCols[columns]} gap-4`}>
@@ -103,13 +106,19 @@ export function IconGrid({
               </motion.div>
 
               {/* Label */}
-              <h4 className={`font-semibold ${textColor} mb-1`}>
+              <h4
+                className="font-semibold mb-1"
+                style={{ color: isDark ? '#fff' : '#000' }}
+              >
                 {item.label}
               </h4>
 
               {/* Description */}
               {item.description && (
-                <p className={`text-sm ${mutedColor}`}>
+                <p
+                  className="text-sm"
+                  style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}
+                >
                   {item.description}
                 </p>
               )}

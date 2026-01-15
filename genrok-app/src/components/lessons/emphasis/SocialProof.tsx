@@ -29,13 +29,6 @@ export function SocialProof({
 }: SocialProofProps) {
   const isDark = variant === 'dark';
 
-  // Color variables
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/60' : 'text-black/60';
-  const crowdIconColor = isDark ? 'text-white' : 'text-black';
-  // Icon on lime green accent should always be black for contrast
-  const typeIconBgColor = 'text-black';
-
   // Generate crowd of user icons
   const crowdIcons = Array.from({ length: crowdSize }, (_, i) => ({
     id: i,
@@ -69,7 +62,7 @@ export function SocialProof({
             }}
             className="p-1"
           >
-            <User size={20} className={crowdIconColor} />
+            <User size={20} style={{ color: isDark ? '#fff' : '#000' }} />
           </motion.div>
         ))}
       </div>
@@ -93,14 +86,14 @@ export function SocialProof({
             className="w-16 h-16 rounded-2xl flex items-center justify-center"
             style={{ backgroundColor: accentColor }}
           >
-            <TypeIcon size={32} className={typeIconBgColor} />
+            <TypeIcon size={32} style={{ color: '#000' }} />
           </div>
         </motion.div>
 
         {/* Stat */}
         <motion.div
-          className={`text-6xl md:text-7xl font-bold ${textColor} mb-2`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-6xl md:text-7xl font-bold mb-2"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -110,7 +103,8 @@ export function SocialProof({
 
         {/* Label */}
         <motion.div
-          className={`text-xl font-semibold ${textColor} mb-3`}
+          className="text-xl font-semibold mb-3"
+          style={{ color: isDark ? '#fff' : '#000' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
@@ -121,7 +115,8 @@ export function SocialProof({
         {/* Description */}
         {description && (
           <motion.p
-            className={`text-sm ${mutedColor} max-w-md mx-auto`}
+            className="text-sm max-w-md mx-auto"
+            style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
@@ -140,7 +135,10 @@ export function SocialProof({
           {[1, 2, 3].map((i) => (
             <div key={i} className="flex items-center gap-1.5">
               <CheckCircle size={14} style={{ color: accentColor }} />
-              <span className={`text-xs ${mutedColor}`}>
+              <span
+                className="text-xs"
+                style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}
+              >
                 {i === 1 ? 'Verified' : i === 2 ? 'Trusted' : 'Secure'}
               </span>
             </div>

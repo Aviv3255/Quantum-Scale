@@ -35,12 +35,8 @@ export function CompetitorMap({
   variant = 'dark',
 }: CompetitorMapProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const axisColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
-  const fillLabel = isDark ? 'fill-white' : 'fill-black';
-  const fillMuted = isDark ? 'fill-white/50' : 'fill-black/50';
 
   const size = 320;
   const padding = 50;
@@ -55,7 +51,8 @@ export function CompetitorMap({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -167,7 +164,8 @@ export function CompetitorMap({
                   y={cy}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className={`text-xs font-bold ${comp.isYou ? 'fill-black' : (isDark ? 'fill-white' : 'fill-black')}`}
+                  className="text-xs font-bold"
+                  style={{ fill: comp.isYou ? '#000' : (isDark ? '#fff' : '#000') }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 + i * 0.1 }}
@@ -183,7 +181,8 @@ export function CompetitorMap({
             x={size / 2}
             y={size - 5}
             textAnchor="middle"
-            className={`text-sm font-medium ${fillLabel}`}
+            className="text-sm font-medium"
+            style={{ fill: isDark ? '#fff' : '#000' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -194,7 +193,8 @@ export function CompetitorMap({
             x={15}
             y={size / 2}
             textAnchor="middle"
-            className={`text-sm font-medium ${fillLabel}`}
+            className="text-sm font-medium"
+            style={{ fill: isDark ? '#fff' : '#000' }}
             transform={`rotate(-90, 15, ${size / 2})`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -204,10 +204,10 @@ export function CompetitorMap({
           </motion.text>
 
           {/* Scale labels */}
-          <text x={padding} y={size - 5} textAnchor="middle" className={`text-xs ${fillMuted}`}>Low</text>
-          <text x={padding + chartSize} y={size - 5} textAnchor="middle" className={`text-xs ${fillMuted}`}>High</text>
-          <text x={padding - 15} y={padding + chartSize} textAnchor="middle" className={`text-xs ${fillMuted}`}>Low</text>
-          <text x={padding - 15} y={padding + 10} textAnchor="middle" className={`text-xs ${fillMuted}`}>High</text>
+          <text x={padding} y={size - 5} textAnchor="middle" className="text-xs" style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Low</text>
+          <text x={padding + chartSize} y={size - 5} textAnchor="middle" className="text-xs" style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>High</text>
+          <text x={padding - 15} y={padding + chartSize} textAnchor="middle" className="text-xs" style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Low</text>
+          <text x={padding - 15} y={padding + 10} textAnchor="middle" className="text-xs" style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>High</text>
         </svg>
       </div>
 
@@ -226,7 +226,7 @@ export function CompetitorMap({
                 className="w-4 h-4 rounded-full"
                 style={{ backgroundColor: color }}
               />
-              <span className={`text-sm ${comp.isYou ? textColor : mutedColor}`}>
+              <span className="text-sm" style={{ color: comp.isYou ? (isDark ? '#fff' : '#000') : (isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)') }}>
                 {comp.name}
               </span>
             </div>

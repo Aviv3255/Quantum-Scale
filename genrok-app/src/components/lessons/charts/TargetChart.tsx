@@ -24,8 +24,6 @@ export function TargetChart({
   variant = 'dark',
 }: TargetChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const trackColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const targetLineColor = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
 
@@ -43,7 +41,8 @@ export function TargetChart({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -98,13 +97,13 @@ export function TargetChart({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.8 }}
           >
-            <div className={`text-4xl font-bold ${textColor}`}>
+            <div className="text-4xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
               {actual}{unit}
             </div>
-            <div className={`text-sm ${mutedColor} mt-1`}>
+            <div className="text-sm mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>
               of {target}{unit} target
             </div>
-            <div className={`text-lg font-semibold mt-2 ${isOverTarget ? 'text-green-500' : textColor}`}>
+            <div className="text-lg font-semibold mt-2" style={{ color: isOverTarget ? '#34C759' : (isDark ? '#fff' : '#000') }}>
               {Math.round((actual / target) * 100)}%
             </div>
           </motion.div>
@@ -123,14 +122,14 @@ export function TargetChart({
             className="w-3 h-3 rounded-full"
             style={{ backgroundColor: isOverTarget ? '#34C759' : accentColor }}
           />
-          <span className={`text-sm ${mutedColor}`}>Actual</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Actual</span>
         </div>
         <div className="flex items-center gap-2">
           <div
             className="w-3 h-3 rounded-full"
             style={{ backgroundColor: targetLineColor }}
           />
-          <span className={`text-sm ${mutedColor}`}>Target</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Target</span>
         </div>
       </motion.div>
     </>

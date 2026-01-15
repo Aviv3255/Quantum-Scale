@@ -59,7 +59,6 @@ export function StripPlot({
   const height = 400;
   const padding = { top: 50, right: 40, bottom: 80, left: 80 };
 
-  const textColor = isDark ? 'text-white' : 'text-black';
   const gridStroke = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const labelFill = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
 
@@ -90,8 +89,8 @@ export function StripPlot({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-6"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>

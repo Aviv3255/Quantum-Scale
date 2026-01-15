@@ -37,10 +37,7 @@ export function SkillRadar({
   variant = 'dark',
 }: SkillRadarProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const fillLabel = isDark ? 'fill-white' : 'fill-black';
 
   const size = 320;
   const center = size / 2;
@@ -82,7 +79,8 @@ export function SkillRadar({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -218,7 +216,8 @@ export function SkillRadar({
                 y={point.y - 8}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className={`text-xs font-medium ${fillLabel}`}
+                className="text-xs font-medium"
+                style={{ fill: isDark ? '#fff' : '#000' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 + i * 0.05 }}
@@ -230,7 +229,8 @@ export function SkillRadar({
                 y={point.y + 8}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className={`text-xs ${isDark ? 'fill-white/50' : 'fill-black/50'}`}
+                className="text-xs"
+                style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7 + i * 0.05 }}
@@ -254,7 +254,7 @@ export function SkillRadar({
             className="w-4 h-1 rounded"
             style={{ backgroundColor: currentColor }}
           />
-          <span className={`text-sm ${mutedColor}`}>Current Level</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Current Level</span>
         </div>
         {showTarget && (
           <div className="flex items-center gap-2">
@@ -262,7 +262,7 @@ export function SkillRadar({
               className="w-4 h-1 rounded"
               style={{ backgroundColor: targetColor, opacity: 0.5 }}
             />
-            <span className={`text-sm ${mutedColor}`}>Target Level</span>
+            <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Target Level</span>
           </div>
         )}
       </motion.div>
@@ -275,17 +275,17 @@ export function SkillRadar({
         transition={{ delay: 1.2 }}
       >
         <div className="text-center">
-          <div className={`text-2xl font-bold ${textColor}`}>
+          <div className="text-2xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
             {Math.round(skills.reduce((acc, s) => acc + s.current, 0) / skills.length)}%
           </div>
-          <div className={`text-xs ${mutedColor}`}>Avg. Current</div>
+          <div className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Avg. Current</div>
         </div>
         {showTarget && (
           <div className="text-center">
-            <div className={`text-2xl font-bold ${textColor}`}>
+            <div className="text-2xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
               {Math.round(skills.reduce((acc, s) => acc + (s.target || s.current), 0) / skills.length)}%
             </div>
-            <div className={`text-xs ${mutedColor}`}>Avg. Target</div>
+            <div className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Avg. Target</div>
           </div>
         )}
       </motion.div>

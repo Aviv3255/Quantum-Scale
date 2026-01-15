@@ -57,7 +57,6 @@ export function ConceptMap({
   const width = 500;
   const height = 420;
 
-  const textColor = isDark ? 'text-white' : 'text-black';
   const labelFill = isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)';
   const relationLabelFill = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
   const linkStroke = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
@@ -104,8 +103,8 @@ export function ConceptMap({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-6"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>

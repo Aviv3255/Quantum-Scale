@@ -37,8 +37,6 @@ export function BarChart({
   const max = maxValue || Math.max(...data.map(d => d.value)) * 1.1;
 
   // Colors based on variant
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const bgTrack = isDark ? 'bg-white/10' : 'bg-black/10';
 
   const content = horizontal ? (
@@ -46,8 +44,8 @@ export function BarChart({
       {/* Header */}
       {(title || subtitle) && (
         <div className="mb-8">
-          {title && <h3 className={`text-xl font-bold ${textColor} mb-1`}>{title}</h3>}
-          {subtitle && <p className={`text-sm ${mutedColor}`}>{subtitle}</p>}
+          {title && <h3 className="text-xl font-bold mb-1" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>}
+          {subtitle && <p className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{subtitle}</p>}
         </div>
       )}
 
@@ -65,10 +63,11 @@ export function BarChart({
               transition={{ delay: index * 0.1 }}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className={`text-sm font-medium ${textColor}`}>{item.label}</span>
+                <span className="text-sm font-medium" style={{ color: isDark ? '#fff' : '#000' }}>{item.label}</span>
                 {showValues && (
                   <motion.span
-                    className={`text-sm font-bold ${textColor}`}
+                    className="text-sm font-bold"
+                    style={{ color: isDark ? '#fff' : '#000' }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.5 + index * 0.1 }}
@@ -100,8 +99,8 @@ export function BarChart({
       {/* Header */}
       {(title || subtitle) && (
         <div className="mb-8">
-          {title && <h3 className={`text-xl font-bold ${textColor} mb-1`}>{title}</h3>}
-          {subtitle && <p className={`text-sm ${mutedColor}`}>{subtitle}</p>}
+          {title && <h3 className="text-xl font-bold mb-1" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>}
+          {subtitle && <p className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{subtitle}</p>}
         </div>
       )}
 
@@ -122,7 +121,8 @@ export function BarChart({
               {/* Value */}
               {showValues && (
                 <motion.span
-                  className={`text-sm font-bold ${textColor} mb-2`}
+                  className="text-sm font-bold mb-2"
+                  style={{ color: isDark ? '#fff' : '#000' }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 + index * 0.1 }}
@@ -147,7 +147,7 @@ export function BarChart({
               </div>
 
               {/* Label */}
-              <span className={`text-xs ${mutedColor} mt-3 text-center`}>{item.label}</span>
+              <span className="text-xs mt-3 text-center" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{item.label}</span>
             </motion.div>
           );
         })}

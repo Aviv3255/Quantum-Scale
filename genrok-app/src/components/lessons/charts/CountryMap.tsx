@@ -26,7 +26,6 @@ export function CountryMap({
   variant = 'dark',
 }: CountryMapProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const mapBaseColor = isDark ? '#333333' : '#e5e5e5';
 
@@ -56,7 +55,8 @@ export function CountryMap({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -134,7 +134,7 @@ export function CountryMap({
         transition={{ delay: 0.6 }}
         className="mt-6"
       >
-        <h4 className={`text-sm font-semibold ${textColor} mb-3`}>Highlighted Countries</h4>
+        <h4 className="text-sm font-semibold mb-3" style={{ color: isDark ? '#fff' : '#000' }}>Highlighted Countries</h4>
         <div className="flex flex-wrap gap-2">
           {highlightedCountries.map((country, index) => (
             <motion.div
@@ -149,7 +149,7 @@ export function CountryMap({
                 className="w-2 h-2 rounded-full"
                 style={{ backgroundColor: highlightColor }}
               />
-              <span className={`text-xs font-medium ${textColor}`}>{country.name}</span>
+              <span className="text-xs font-medium" style={{ color: isDark ? '#fff' : '#000' }}>{country.name}</span>
               {country.value !== undefined && (
                 <span className={`text-xs ${mutedColor}`}>({country.value}%)</span>
               )}

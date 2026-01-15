@@ -16,7 +16,6 @@ export function CalendarHeatmap({
   variant = 'dark',
 }: CalendarHeatmapProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor40 = isDark ? 'text-white/40' : 'text-black/40';
   const svgMutedFill = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
   const emptyCell = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
@@ -71,8 +70,8 @@ export function CalendarHeatmap({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-4`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-4"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>

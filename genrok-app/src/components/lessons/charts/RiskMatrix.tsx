@@ -28,11 +28,7 @@ export function RiskMatrix({
   variant = 'dark',
 }: RiskMatrixProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const borderColor = isDark ? 'border-white/20' : 'border-black/20';
-  const fillLabel = isDark ? 'fill-white' : 'fill-black';
-  const fillMuted = isDark ? 'fill-white/50' : 'fill-black/50';
 
   const gridSize = 5;
   const cellSize = 50;
@@ -62,7 +58,8 @@ export function RiskMatrix({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -123,7 +120,8 @@ export function RiskMatrix({
                   y={cy}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className={`text-xs font-bold ${isDark ? 'fill-black' : 'fill-white'}`}
+                  className="text-xs font-bold"
+                  style={{ fill: isDark ? '#000' : '#fff' }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.7 + i * 0.1 }}
@@ -139,7 +137,8 @@ export function RiskMatrix({
             x={padding + size / 2}
             y={size + padding + 35}
             textAnchor="middle"
-            className={`text-sm font-medium ${fillLabel}`}
+            className="text-sm font-medium"
+            style={{ fill: isDark ? '#fff' : '#000' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -150,7 +149,8 @@ export function RiskMatrix({
             x={padding - 35}
             y={padding + size / 2}
             textAnchor="middle"
-            className={`text-sm font-medium ${fillLabel}`}
+            className="text-sm font-medium"
+            style={{ fill: isDark ? '#fff' : '#000' }}
             transform={`rotate(-90, ${padding - 35}, ${padding + size / 2})`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -166,7 +166,8 @@ export function RiskMatrix({
               x={padding + (i * 2 + 1) * cellSize}
               y={size + padding + 15}
               textAnchor="middle"
-              className={`text-xs ${fillMuted}`}
+              className="text-xs"
+              style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 + i * 0.05 }}
@@ -181,7 +182,8 @@ export function RiskMatrix({
               y={padding + (gridSize - 1 - i * 2) * cellSize + cellSize / 2}
               textAnchor="end"
               dominantBaseline="middle"
-              className={`text-xs ${fillMuted}`}
+              className="text-xs"
+              style={{ fill: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 + i * 0.05 }}
@@ -208,7 +210,7 @@ export function RiskMatrix({
               >
                 {i + 1}
               </div>
-              <span className={`text-sm ${textColor}`}>{risk.label}</span>
+              <span className="text-sm" style={{ color: isDark ? '#fff' : '#000' }}>{risk.label}</span>
               <span
                 className="text-xs font-medium px-2 py-0.5 rounded"
                 style={{ backgroundColor: getRiskColor(risk.probability, risk.impact), color: isDark ? '#000' : '#fff' }}

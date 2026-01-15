@@ -31,7 +31,6 @@ export function RoadmapDiagram({
   variant = 'dark',
 }: RoadmapDiagramProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
   const lineColor = isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)';
 
@@ -71,8 +70,8 @@ export function RoadmapDiagram({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-8`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-8"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -116,7 +115,8 @@ export function RoadmapDiagram({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 + phaseIndex * 0.15 }}
-                  className={`mt-4 font-semibold text-sm ${textColor}`}
+                  className="mt-4 font-semibold text-sm"
+                  style={{ color: isDark ? '#fff' : '#000' }}
                 >
                   {phase.name}
                 </motion.h4>
@@ -143,7 +143,7 @@ export function RoadmapDiagram({
                             {statusStyle.icon}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className={`text-xs font-medium ${textColor} truncate`}>
+                            <p className="text-xs font-medium truncate" style={{ color: isDark ? '#fff' : '#000' }}>
                               {milestone.title}
                             </p>
                             {milestone.date && (

@@ -35,9 +35,9 @@ export function MetricDashboard({
 }: MetricDashboardProps) {
   const isDark = variant === 'dark';
 
-  // Color variables based on variant
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  // Color values based on variant
+  const textColorValue = isDark ? '#fff' : '#000';
+  const mutedColorValue = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
   const cardBg = isDark ? 'bg-white/5' : 'bg-black/5';
 
   const gridCols = {
@@ -61,7 +61,7 @@ export function MetricDashboard({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-6`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-6" style={{ color: textColorValue }}>{title}</h3>
       )}
 
       <div className={`grid ${gridCols[columns]} gap-4`}>
@@ -81,17 +81,18 @@ export function MetricDashboard({
             >
               {/* Header with icon */}
               <div className="flex items-center justify-between mb-3">
-                <span className={`text-xs font-medium uppercase tracking-wider ${mutedColor}`}>
+                <span className="text-xs font-medium uppercase tracking-wider" style={{ color: mutedColorValue }}>
                   {metric.label}
                 </span>
                 {Icon && (
-                  <Icon size={16} className={mutedColor} />
+                  <Icon size={16} style={{ color: mutedColorValue }} />
                 )}
               </div>
 
               {/* Value */}
               <motion.div
-                className={`text-3xl font-bold ${metric.highlight ? 'text-[#88da1c]' : textColor} mb-2`}
+                className="text-3xl font-bold mb-2"
+                style={{ color: metric.highlight ? '#88da1c' : textColorValue }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 + index * 0.1 }}

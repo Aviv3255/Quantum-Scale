@@ -24,11 +24,9 @@ export function GaugeChart({
   variant = 'dark',
 }: GaugeChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const trackColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const tickColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
-  const fillMutedClass = isDark ? 'fill-white/50' : 'fill-black/50';
+  const fillMutedColor = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
 
   const size = 240;
   const strokeWidth = 20;
@@ -40,7 +38,7 @@ export function GaugeChart({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-6 text-center`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-6 text-center" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
       )}
 
       <div className="flex justify-center">
@@ -86,7 +84,8 @@ export function GaugeChart({
                     y={size / 2 + (radius - 55) * Math.sin(rad)}
                     textAnchor="middle"
                     dominantBaseline="middle"
-                    className={`text-xs ${fillMutedClass}`}
+                    className="text-xs"
+                    style={{ fill: fillMutedColor }}
                   >
                     {tick}
                   </text>
@@ -103,8 +102,8 @@ export function GaugeChart({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.8 }}
           >
-            <div className={`text-4xl font-bold ${textColor}`}>{value}</div>
-            {label && <div className={`text-sm ${mutedColor} mt-1`}>{label}</div>}
+            <div className="text-4xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{value}</div>
+            {label && <div className="text-sm mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{label}</div>}
           </motion.div>
         </div>
       </div>

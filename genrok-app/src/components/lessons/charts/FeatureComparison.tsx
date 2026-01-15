@@ -29,9 +29,6 @@ export function FeatureComparison({
   variant = 'dark',
 }: FeatureComparisonProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
-  const mutedColor70 = isDark ? 'text-white/70' : 'text-black/70';
   const borderColor = isDark ? 'border-white/10' : 'border-black/10';
   const headerBg = isDark ? 'bg-white/5' : 'bg-black/5';
   const rowBg = isDark ? 'hover:bg-white/5' : 'hover:bg-black/5';
@@ -94,7 +91,7 @@ export function FeatureComparison({
     if (value === false) return <CrossIcon />;
     if (value === 'partial') return <PartialIcon />;
     return (
-      <span className={`text-sm font-medium ${textColor}`}>{value}</span>
+      <span className="text-sm font-medium" style={{ color: isDark ? '#fff' : '#000' }}>{value}</span>
     );
   };
 
@@ -104,8 +101,8 @@ export function FeatureComparison({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-8`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-8"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -125,7 +122,7 @@ export function FeatureComparison({
                 className={`py-4 px-4 text-left border-b ${borderColor}`}
                 style={{ width: '40%' }}
               >
-                <span className={`${mutedColor70} text-sm font-semibold uppercase tracking-wider`}>
+                <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>
                   Feature
                 </span>
               </th>
@@ -138,8 +135,8 @@ export function FeatureComparison({
                 >
                   <div className="flex flex-col items-center gap-1">
                     <span
-                      className={`font-bold ${col.highlight ? '' : textColor}`}
-                      style={{ color: col.highlight ? accentColor : undefined }}
+                      className="font-bold"
+                      style={{ color: col.highlight ? accentColor : (isDark ? '#fff' : '#000') }}
                     >
                       {col.name}
                     </span>
@@ -172,11 +169,11 @@ export function FeatureComparison({
               >
                 <td className={`py-4 px-4 border-b ${borderColor}`}>
                   <div>
-                    <span className={`${textColor} font-medium`}>
+                    <span className="font-medium" style={{ color: isDark ? '#fff' : '#000' }}>
                       {feature.feature}
                     </span>
                     {feature.description && (
-                      <p className={`${mutedColor} text-sm mt-1`}>
+                      <p className="text-sm mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>
                         {feature.description}
                       </p>
                     )}
@@ -218,15 +215,15 @@ export function FeatureComparison({
       >
         <div className="flex items-center gap-2">
           <CheckIcon />
-          <span className={`text-sm ${mutedColor70}`}>Included</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>Included</span>
         </div>
         <div className="flex items-center gap-2">
           <PartialIcon />
-          <span className={`text-sm ${mutedColor70}`}>Partial</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>Partial</span>
         </div>
         <div className="flex items-center gap-2">
           <CrossIcon />
-          <span className={`text-sm ${mutedColor70}`}>Not Included</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>Not Included</span>
         </div>
       </motion.div>
     </>

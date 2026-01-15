@@ -46,8 +46,6 @@ export function OKRTracker({
   variant = 'dark',
 }: OKRTrackerProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const borderColor = isDark ? 'border-white/10' : 'border-black/10';
   const bgMuted = isDark ? 'bg-white/5' : 'bg-black/5';
   const trackBg = isDark ? 'bg-white/10' : 'bg-black/10';
@@ -79,7 +77,8 @@ export function OKRTracker({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -107,7 +106,7 @@ export function OKRTracker({
                   >
                     O{objIndex + 1}
                   </div>
-                  <h4 className={`font-semibold ${textColor}`}>{objective.title}</h4>
+                  <h4 className="font-semibold" style={{ color: isDark ? '#fff' : '#000' }}>{objective.title}</h4>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className={`text-2xl font-bold`} style={{ color: progressColor }}>
@@ -132,10 +131,10 @@ export function OKRTracker({
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <span className={`text-xs font-medium ${mutedColor}`}>KR{krIndex + 1}</span>
-                          <span className={`text-sm ${textColor}`}>{kr.title}</span>
+                          <span className="text-xs font-medium" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>KR{krIndex + 1}</span>
+                          <span className="text-sm" style={{ color: isDark ? '#fff' : '#000' }}>{kr.title}</span>
                         </div>
-                        <span className={`text-sm font-medium ${textColor}`}>
+                        <span className="text-sm font-medium" style={{ color: isDark ? '#fff' : '#000' }}>
                           {formatValue(kr.current, kr.unit)} / {formatValue(kr.target, kr.unit)}
                         </span>
                       </div>
@@ -177,28 +176,29 @@ export function OKRTracker({
         transition={{ delay: 1 }}
       >
         <div className="text-center">
-          <div className={`text-3xl font-bold ${textColor}`}>
+          <div className="text-3xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
             {Math.round(objectives.reduce((acc, obj) => acc + getOverallProgress(obj), 0) / objectives.length)}%
           </div>
-          <div className={`text-xs ${mutedColor} mt-1`}>Overall Progress</div>
+          <div className="text-xs mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Overall Progress</div>
         </div>
         <div className="text-center">
-          <div className={`text-3xl font-bold ${textColor}`}>
+          <div className="text-3xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
             {objectives.length}
           </div>
-          <div className={`text-xs ${mutedColor} mt-1`}>Objectives</div>
+          <div className="text-xs mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Objectives</div>
         </div>
         <div className="text-center">
-          <div className={`text-3xl font-bold ${textColor}`}>
+          <div className="text-3xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
             {objectives.reduce((acc, obj) => acc + obj.keyResults.length, 0)}
           </div>
-          <div className={`text-xs ${mutedColor} mt-1`}>Key Results</div>
+          <div className="text-xs mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Key Results</div>
         </div>
       </motion.div>
 
       {/* Legend */}
       <motion.div
-        className={`mt-4 flex justify-center gap-4 text-xs ${mutedColor}`}
+        className="mt-4 flex justify-center gap-4 text-xs"
+        style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}

@@ -28,7 +28,6 @@ export function PortfolioBreakdown({
   variant = 'dark',
 }: PortfolioBreakdownProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
 
   const total = data.reduce((sum, item) => sum + item.value, 0);
@@ -53,7 +52,8 @@ export function PortfolioBreakdown({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -94,7 +94,7 @@ export function PortfolioBreakdown({
             className="absolute inset-0 flex flex-col items-center justify-center"
           >
             <span className={`text-sm ${mutedColor}`}>{centerLabel}</span>
-            <span className={`text-2xl font-bold ${textColor}`}>{centerValue}</span>
+            <span className="text-2xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{centerValue}</span>
           </motion.div>
         </div>
 
@@ -113,7 +113,7 @@ export function PortfolioBreakdown({
                 style={{ backgroundColor: segment.color }}
               />
               <div className="flex flex-col">
-                <span className={`text-sm font-medium ${textColor}`}>
+                <span className="text-sm font-medium" style={{ color: isDark ? '#fff' : '#000' }}>
                   {segment.label}
                 </span>
                 <span className={`text-xs ${mutedColor}`}>

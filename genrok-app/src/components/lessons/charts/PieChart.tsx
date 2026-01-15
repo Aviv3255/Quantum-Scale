@@ -32,9 +32,7 @@ export function PieChart({
   const center = size / 2;
   const radius = size / 2 - 10;
 
-  // Colors based on variant
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/60' : 'text-black/60';
+  // Colors based on variant - using inline styles for proper contrast
 
   const defaultColors = ['#88da1c', '#3B82F6', '#8B5CF6', '#F59E0B', '#EC4899', '#10B981'];
 
@@ -70,7 +68,7 @@ export function PieChart({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-6 text-center`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-6 text-center" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
       )}
 
       <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
@@ -109,8 +107,8 @@ export function PieChart({
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: segment.color }}
                 />
-                <span className={`text-sm ${textColor}`}>{segment.label}</span>
-                <span className={`text-sm font-semibold ${mutedColor} ml-auto`}>
+                <span className="text-sm" style={{ color: isDark ? '#fff' : '#000' }}>{segment.label}</span>
+                <span className="text-sm font-semibold ml-auto" style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>
                   {(segment.percentage * 100).toFixed(0)}%
                 </span>
               </motion.div>

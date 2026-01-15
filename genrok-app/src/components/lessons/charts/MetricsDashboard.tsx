@@ -37,9 +37,6 @@ export function MetricsDashboard({
   variant = 'dark',
 }: MetricsDashboardProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
-  const mutedColor70 = isDark ? 'text-white/70' : 'text-black/70';
   const cardBg = isDark ? 'bg-white/5' : 'bg-black/5';
   const sparklineBg = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
 
@@ -99,8 +96,8 @@ export function MetricsDashboard({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-8`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-8"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -127,7 +124,7 @@ export function MetricsDashboard({
             >
               {/* Header with icon */}
               <div className="flex items-start justify-between mb-3">
-                <span className={`${mutedColor70} text-sm`}>{metric.label}</span>
+                <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{metric.label}</span>
                 {metric.icon && (
                   <div
                     className="w-8 h-8 rounded-lg flex items-center justify-center"
@@ -154,8 +151,8 @@ export function MetricsDashboard({
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 + i * 0.08 }}
-                className={`text-2xl font-bold ${textColor} mb-2`}
-                style={{ fontFamily: "'General Sans', sans-serif" }}
+                className="text-2xl font-bold mb-2"
+                style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
               >
                 {metric.value}
               </motion.div>
@@ -203,8 +200,8 @@ export function MetricsDashboard({
                   className="mt-3"
                 >
                   <div className="flex justify-between text-xs mb-1">
-                    <span className={mutedColor}>Progress</span>
-                    <span className={mutedColor70}>
+                    <span style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Progress</span>
+                    <span style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>
                       {typeof metric.value === 'number'
                         ? Math.round((metric.value / metric.target) * 100)
                         : 0}

@@ -37,7 +37,6 @@ export function QuizSlide({
   const [showFeedback, setShowFeedback] = useState(false);
 
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const cardBg = isDark ? 'bg-white/5' : 'bg-[#F8F9FA]';
   const cardBorder = isDark ? 'border-white/10' : 'border-[#E5E5E5]';
@@ -65,8 +64,8 @@ export function QuizSlide({
             Knowledge Check
           </span>
           <h2
-            className={`text-3xl font-bold ${textColor} tracking-tight`}
-            style={{ fontFamily: "'General Sans', sans-serif" }}
+            className="text-3xl font-bold tracking-tight"
+            style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
           >
             {question}
           </h2>
@@ -100,7 +99,10 @@ export function QuizSlide({
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className={`text-lg font-medium ${showFeedback && isSelected ? '' : textColor}`}>
+                  <span
+                    className="text-lg font-medium"
+                    style={{ color: showFeedback && isSelected ? undefined : (isDark ? '#fff' : '#000') }}
+                  >
                     {option.text}
                   </span>
                   {showFeedback && isSelected && (
@@ -146,7 +148,7 @@ export function QuizSlide({
                   )}
                 </span>
                 <div>
-                  <h3 className={`text-xl font-bold mb-2 ${textColor}`}>
+                  <h3 className="text-xl font-bold mb-2" style={{ color: isDark ? '#fff' : '#000' }}>
                     {isCorrect ? 'Correct!' : 'Not Quite'}
                   </h3>
                   <p className={mutedColor}>

@@ -56,8 +56,8 @@ export function PolarAreaChart({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-4`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-4"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -139,7 +139,7 @@ export function PolarAreaChart({
               className="w-3 h-3 rounded-full"
               style={{ backgroundColor: d.color || colors[i % colors.length] }}
             />
-            <span className={`${legendColor} text-xs`}>{d.value}</span>
+            <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{d.value}</span>
           </div>
         ))}
       </motion.div>

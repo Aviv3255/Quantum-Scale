@@ -30,8 +30,6 @@ export function SplitContent({
   variant = 'dark',
 }: SplitContentProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/70' : 'text-black/70';
 
   const textContent = (
     <motion.div
@@ -47,16 +45,16 @@ export function SplitContent({
       />
 
       <h2
-        className={`text-4xl font-bold ${textColor} mb-6 tracking-tight leading-tight`}
-        style={{ fontFamily: "'General Sans', sans-serif" }}
+        className="text-4xl font-bold mb-6 tracking-tight leading-tight"
+        style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
       >
         {title}
       </h2>
 
       {typeof content === 'string' ? (
-        <p className={`text-lg ${mutedColor} leading-relaxed`}>{content}</p>
+        <p className="text-lg leading-relaxed" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{content}</p>
       ) : (
-        <div className={`text-lg ${mutedColor} leading-relaxed`}>{content}</div>
+        <div className="text-lg leading-relaxed" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{content}</div>
       )}
     </motion.div>
   );

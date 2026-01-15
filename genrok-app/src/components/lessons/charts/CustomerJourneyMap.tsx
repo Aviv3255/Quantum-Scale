@@ -32,7 +32,6 @@ export function CustomerJourneyMap({
   variant = 'dark',
 }: CustomerJourneyMapProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
   const lineColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)';
 
@@ -93,8 +92,8 @@ export function CustomerJourneyMap({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-2`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-2"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -227,7 +226,7 @@ export function CustomerJourneyMap({
                       {emotionIcons[touchpoint.emotion || 'neutral']}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-xs font-medium ${textColor}`}>
+                      <p className="text-xs font-medium" style={{ color: isDark ? '#fff' : '#000' }}>
                         {touchpoint.label}
                       </p>
                       {touchpoint.description && (

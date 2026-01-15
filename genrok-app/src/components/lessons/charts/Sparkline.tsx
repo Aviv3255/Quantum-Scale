@@ -24,8 +24,6 @@ export function Sparkline({
   variant = 'dark',
 }: SparklineProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
 
   const padding = 4;
   const maxValue = Math.max(...data);
@@ -70,10 +68,10 @@ export function Sparkline({
       {/* Info */}
       <div className="flex flex-col">
         {label && (
-          <span className={`${mutedColor} text-sm`}>{label}</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{label}</span>
         )}
         {value && (
-          <span className={`${textColor} text-2xl font-bold`}>{value}</span>
+          <span className="text-2xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{value}</span>
         )}
         {change !== undefined && (
           <span

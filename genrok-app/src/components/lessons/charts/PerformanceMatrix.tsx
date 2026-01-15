@@ -32,12 +32,8 @@ export function PerformanceMatrix({
   variant = 'dark',
 }: PerformanceMatrixProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const axisColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
-  const fillMuted = isDark ? 'fill-white/30' : 'fill-black/30';
-  const fillLabel = isDark ? 'fill-white' : 'fill-black';
 
   const size = 320;
   const padding = 40;
@@ -51,7 +47,8 @@ export function PerformanceMatrix({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -105,7 +102,8 @@ export function PerformanceMatrix({
                 y={positions[i].y}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className={`text-xs ${fillMuted}`}
+                className="text-xs"
+                style={{ fill: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 + i * 0.1 }}
@@ -141,7 +139,8 @@ export function PerformanceMatrix({
                   y={cy}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className={`text-xs font-medium ${fillLabel}`}
+                  className="text-xs font-medium"
+                  style={{ fill: isDark ? '#fff' : '#000' }}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.7 + i * 0.1 }}
@@ -157,7 +156,8 @@ export function PerformanceMatrix({
             x={size / 2}
             y={size - 5}
             textAnchor="middle"
-            className={`text-sm ${fillLabel}`}
+            className="text-sm"
+            style={{ fill: isDark ? '#fff' : '#000' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
@@ -168,7 +168,8 @@ export function PerformanceMatrix({
             x={15}
             y={size / 2}
             textAnchor="middle"
-            className={`text-sm ${fillLabel}`}
+            className="text-sm"
+            style={{ fill: isDark ? '#fff' : '#000' }}
             transform={`rotate(-90, 15, ${size / 2})`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -192,7 +193,7 @@ export function PerformanceMatrix({
               className="w-3 h-3 rounded-full"
               style={{ backgroundColor: item.color || defaultColors[i % defaultColors.length] }}
             />
-            <span className={`text-sm ${mutedColor}`}>{item.label}</span>
+            <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{item.label}</span>
           </div>
         ))}
       </motion.div>

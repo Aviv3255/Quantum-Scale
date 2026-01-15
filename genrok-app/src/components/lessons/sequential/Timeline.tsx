@@ -33,17 +33,17 @@ export function Timeline({
   const isDark = variant === 'dark';
 
   // Color variables
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const textColorValue = isDark ? '#fff' : '#000';
+  const mutedColorValue = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
   const lineColor = isDark ? 'bg-white/10' : 'bg-black/10';
   const nodeBorder = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
-  const nodeIconColor = isDark ? 'text-white/50' : 'text-black/50';
+  const nodeIconColorValue = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
 
   // Content
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-8`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-8" style={{ color: textColorValue }}>{title}</h3>
       )}
 
       <div className="relative pl-8">
@@ -89,7 +89,7 @@ export function Timeline({
                   >
                     <Icon
                       size={12}
-                      className={item.completed ? (isDark ? 'text-black' : 'text-white') : nodeIconColor}
+                      style={{ color: item.completed ? (isDark ? '#000' : '#fff') : nodeIconColorValue }}
                       strokeWidth={2.5}
                     />
                   </div>
@@ -105,11 +105,11 @@ export function Timeline({
                       {item.date}
                     </span>
                   )}
-                  <h4 className={`text-lg font-semibold ${textColor} mb-1`}>
+                  <h4 className="text-lg font-semibold mb-1" style={{ color: textColorValue }}>
                     {item.title}
                   </h4>
                   {item.description && (
-                    <p className={`text-sm ${mutedColor} leading-relaxed`}>
+                    <p className="text-sm leading-relaxed" style={{ color: mutedColorValue }}>
                       {item.description}
                     </p>
                   )}

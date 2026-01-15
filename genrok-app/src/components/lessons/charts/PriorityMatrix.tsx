@@ -29,8 +29,6 @@ export function PriorityMatrix({
   variant = 'dark',
 }: PriorityMatrixProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const borderColor = isDark ? 'border-white/20' : 'border-black/20';
 
   const quadrants = [
@@ -74,7 +72,8 @@ export function PriorityMatrix({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -83,7 +82,8 @@ export function PriorityMatrix({
       {/* Axis labels */}
       <div className="flex justify-center mb-2">
         <motion.span
-          className={`text-sm font-medium ${textColor}`}
+          className="text-sm font-medium"
+          style={{ color: isDark ? '#fff' : '#000' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -92,7 +92,8 @@ export function PriorityMatrix({
         </motion.span>
         <span className="flex-1" />
         <motion.span
-          className={`text-sm font-medium ${mutedColor}`}
+          className="text-sm font-medium"
+          style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -105,8 +106,8 @@ export function PriorityMatrix({
         {/* Y-axis label */}
         <div className="flex flex-col justify-center">
           <motion.span
-            className={`text-sm font-medium ${textColor} writing-vertical rotate-180`}
-            style={{ writingMode: 'vertical-lr' }}
+            className="text-sm font-medium writing-vertical rotate-180"
+            style={{ writingMode: 'vertical-lr', color: isDark ? '#fff' : '#000' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
@@ -134,7 +135,7 @@ export function PriorityMatrix({
                   >
                     {quadrant.title}
                   </h4>
-                  <p className={`text-xs ${mutedColor}`}>{quadrant.subtitle}</p>
+                  <p className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{quadrant.subtitle}</p>
                 </div>
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold"
@@ -149,7 +150,8 @@ export function PriorityMatrix({
                 {quadrant.tasks.map((task, j) => (
                   <motion.li
                     key={j}
-                    className={`flex items-center gap-2 text-sm ${textColor}`}
+                    className="flex items-center gap-2 text-sm"
+                    style={{ color: isDark ? '#fff' : '#000' }}
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 + i * 0.1 + j * 0.05 }}
@@ -162,18 +164,19 @@ export function PriorityMatrix({
                   </motion.li>
                 ))}
                 {quadrant.tasks.length === 0 && (
-                  <li className={`text-sm ${mutedColor} italic`}>No tasks</li>
+                  <li className="text-sm italic" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>No tasks</li>
                 )}
               </ul>
 
               {/* Action */}
               <motion.div
-                className={`text-xs ${mutedColor} pt-2 border-t ${borderColor}`}
+                className={`text-xs pt-2 border-t ${borderColor}`}
+                style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 + i * 0.1 }}
               >
-                Action: <span className={textColor}>{quadrant.action}</span>
+                Action: <span style={{ color: isDark ? '#fff' : '#000' }}>{quadrant.action}</span>
               </motion.div>
             </motion.div>
           ))}
@@ -182,8 +185,8 @@ export function PriorityMatrix({
         {/* Y-axis label (bottom) */}
         <div className="flex flex-col justify-center">
           <motion.span
-            className={`text-sm font-medium ${mutedColor} writing-vertical rotate-180`}
-            style={{ writingMode: 'vertical-lr' }}
+            className="text-sm font-medium writing-vertical rotate-180"
+            style={{ writingMode: 'vertical-lr', color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
@@ -195,7 +198,8 @@ export function PriorityMatrix({
 
       {/* Summary */}
       <motion.div
-        className={`mt-6 flex justify-center gap-4 text-xs ${mutedColor}`}
+        className="mt-6 flex justify-center gap-4 text-xs"
+        style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}

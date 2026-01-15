@@ -27,7 +27,6 @@ export function StackedBarChart({
   variant = 'dark',
 }: StackedBarChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const legendColor = isDark ? 'text-white/70' : 'text-black/70';
   const trackBg = isDark ? 'bg-white/10' : 'bg-black/10';
@@ -38,7 +37,7 @@ export function StackedBarChart({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-6`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-6" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
       )}
 
       {/* Legend */}
@@ -69,7 +68,7 @@ export function StackedBarChart({
               transition={{ delay: barIndex * 0.1 }}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className={`text-sm font-medium ${textColor}`}>{item.label}</span>
+                <span className="text-sm font-medium" style={{ color: isDark ? '#fff' : '#000' }}>{item.label}</span>
                 <span className={`text-sm ${mutedColor}`}>{total.toLocaleString()}</span>
               </div>
               <div className={`h-8 ${trackBg} rounded-lg overflow-hidden flex`}>

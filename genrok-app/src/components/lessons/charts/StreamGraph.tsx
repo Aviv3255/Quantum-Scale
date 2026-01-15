@@ -24,10 +24,7 @@ export function StreamGraph({
   variant = 'dark',
 }: StreamGraphProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const mutedFill = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
-  const legendTextClass = isDark ? 'text-white/70' : 'text-black/70';
 
   const width = 550;
   const height = 350;
@@ -109,8 +106,8 @@ export function StreamGraph({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-6"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -165,7 +162,7 @@ export function StreamGraph({
               className="w-3 h-3 rounded"
               style={{ backgroundColor: series.color || colors[i % colors.length] }}
             />
-            <span className={`${legendTextClass} text-xs`}>{series.label}</span>
+            <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{series.label}</span>
           </div>
         ))}
       </motion.div>

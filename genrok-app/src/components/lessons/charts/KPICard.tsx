@@ -26,9 +26,8 @@ export function KPICard({
   variant = 'dark',
 }: KPICardProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
-  const mutedColor40 = isDark ? 'text-white/40' : 'text-black/40';
+  const mutedColor = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
+  const mutedColor40 = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const Icon = iconName
@@ -50,7 +49,8 @@ export function KPICard({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className={`${mutedColor} text-sm mb-2`}
+            className="text-sm mb-2"
+            style={{ color: mutedColor }}
           >
             {label}
           </motion.p>
@@ -58,8 +58,8 @@ export function KPICard({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className={`text-4xl font-bold ${textColor}`}
-            style={{ fontFamily: "'General Sans', sans-serif" }}
+            className="text-4xl font-bold"
+            style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
           >
             {value}
           </motion.h2>
@@ -94,7 +94,7 @@ export function KPICard({
             </span>
           )}
           {changeLabel && (
-            <span className={`${mutedColor40} text-sm`}>{changeLabel}</span>
+            <span className="text-sm" style={{ color: mutedColor40 }}>{changeLabel}</span>
           )}
         </motion.div>
       )}

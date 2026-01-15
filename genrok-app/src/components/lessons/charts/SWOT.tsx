@@ -28,8 +28,6 @@ export function SWOT({
   variant = 'dark',
 }: SWOTProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/70' : 'text-black/70';
   const borderColor = isDark ? 'border-white/20' : 'border-black/20';
 
   const quadrants = [
@@ -69,7 +67,8 @@ export function SWOT({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -99,8 +98,8 @@ export function SWOT({
                 {quadrant.icon}
               </div>
               <div>
-                <h4 className={`font-semibold ${textColor}`}>{quadrant.title}</h4>
-                <p className={`text-xs ${mutedColor}`}>{quadrant.position}</p>
+                <h4 className="font-semibold" style={{ color: isDark ? '#fff' : '#000' }}>{quadrant.title}</h4>
+                <p className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{quadrant.position}</p>
               </div>
             </div>
 
@@ -109,7 +108,8 @@ export function SWOT({
               {quadrant.items.map((item, j) => (
                 <motion.li
                   key={j}
-                  className={`flex items-start gap-2 text-sm ${textColor}`}
+                  className="flex items-start gap-2 text-sm"
+                  style={{ color: isDark ? '#fff' : '#000' }}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 + i * 0.1 + j * 0.05 }}
@@ -125,7 +125,8 @@ export function SWOT({
 
       {/* Legend */}
       <motion.div
-        className={`mt-6 flex justify-center gap-6 text-xs ${mutedColor}`}
+        className="mt-6 flex justify-center gap-6 text-xs"
+        style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}

@@ -36,10 +36,8 @@ export function RadarChart({
   const angleSlice = (Math.PI * 2) / data.length;
 
   // Colors based on variant
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const fillLabel = isDark ? 'fill-white' : 'fill-black';
+  const fillLabelColor = isDark ? '#fff' : '#000';
   const pointStroke = isDark ? '#000' : '#fff';
 
   const gradientId = `radarGradient-${variant}`;
@@ -71,7 +69,7 @@ export function RadarChart({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-6 text-center`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-6 text-center" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
       )}
 
       <div className="flex justify-center">
@@ -187,7 +185,8 @@ export function RadarChart({
               y={point.y}
               textAnchor="middle"
               dominantBaseline="middle"
-              className={`text-xs font-medium ${fillLabel}`}
+              className="text-xs font-medium"
+              style={{ fill: fillLabelColor }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 + i * 0.05 }}
@@ -208,8 +207,8 @@ export function RadarChart({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 + i * 0.05 }}
           >
-            <span className={`text-sm ${mutedColor}`}>{item.axis}:</span>
-            <span className={`text-sm font-bold ${textColor}`}>{item.value}</span>
+            <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{item.axis}:</span>
+            <span className="text-sm font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{item.value}</span>
           </motion.div>
         ))}
       </div>

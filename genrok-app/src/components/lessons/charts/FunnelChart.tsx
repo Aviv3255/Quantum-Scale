@@ -49,7 +49,7 @@ export function FunnelChart({
       {/* Header */}
       {(title || subtitle) && (
         <div className="mb-8 text-center">
-          {title && <h3 className={`text-xl font-bold ${textColor} mb-1`}>{title}</h3>}
+          {title && <h3 className="text-xl font-bold mb-1" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>}
           {subtitle && <p className={`text-sm ${mutedColor}`}>{subtitle}</p>}
         </div>
       )}

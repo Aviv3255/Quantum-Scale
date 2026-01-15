@@ -82,7 +82,7 @@ export function LineChart({
         <div className="mb-6">
           {title && (
             <div className="flex items-center justify-between mb-1">
-              <h3 className={`text-xl font-bold ${textColor}`}>{title}</h3>
+              <h3 className="text-xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
               {showTrend && (
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}

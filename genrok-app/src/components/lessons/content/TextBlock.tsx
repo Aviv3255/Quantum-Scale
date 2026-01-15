@@ -28,8 +28,6 @@ export function TextBlock({
   variant = 'dark',
 }: TextBlockProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/70' : 'text-black/70';
 
   const alignClass = alignment === 'center' ? 'text-center items-center' : 'text-left items-start';
   const headlineSize = size === 'large' ? 'text-5xl' : 'text-3xl';
@@ -61,8 +59,8 @@ export function TextBlock({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className={`${headlineSize} font-bold ${textColor} mb-6 tracking-tight leading-tight`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className={`${headlineSize} font-bold mb-6 tracking-tight leading-tight`}
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {headline}
         </motion.h2>
@@ -73,7 +71,8 @@ export function TextBlock({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className={`${bodySize} ${mutedColor} leading-relaxed`}
+        className={`${bodySize} leading-relaxed`}
+        style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}
       >
         {typeof body === 'string' ? (
           <p>{body}</p>

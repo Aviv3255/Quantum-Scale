@@ -28,9 +28,9 @@ export function BeforeAfter({
 }: BeforeAfterProps) {
   const isDark = variant === 'dark';
 
-  // Color variables
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/70' : 'text-black/70';
+  // Color values
+  const textColorValue = isDark ? '#fff' : '#000';
+  const mutedColorValue = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
   const cardBg = isDark ? 'bg-white/5' : 'bg-black/5';
 
   const CardSection = ({
@@ -74,7 +74,7 @@ export function BeforeAfter({
                 strokeWidth={3}
               />
             </span>
-            <h3 className={`text-xl font-bold ${textColor}`}>
+            <h3 className="text-xl font-bold" style={{ color: textColorValue }}>
               {title || (isBefore ? 'Before' : 'After')}
             </h3>
           </div>
@@ -99,7 +99,7 @@ export function BeforeAfter({
                     strokeWidth={3}
                   />
                 </span>
-                <span className={mutedColor}>{item}</span>
+                <span style={{ color: mutedColorValue }}>{item}</span>
               </motion.li>
             ))}
           </ul>
@@ -116,8 +116,8 @@ export function BeforeAfter({
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-3xl font-bold ${textColor} text-center mb-10`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-3xl font-bold text-center mb-10"
+          style={{ color: textColorValue, fontFamily: "'General Sans', sans-serif" }}
         >
           {headline}
         </motion.h2>

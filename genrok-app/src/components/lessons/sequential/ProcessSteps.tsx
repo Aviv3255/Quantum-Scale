@@ -33,8 +33,8 @@ export function ProcessSteps({
   const isDark = variant === 'dark';
 
   // Color variables
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  const textColorValue = isDark ? '#fff' : '#000';
+  const mutedColorValue = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
   const inactiveBg = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const inactiveTextColor = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
 
@@ -42,7 +42,7 @@ export function ProcessSteps({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-8 text-center`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-8 text-center" style={{ color: textColorValue }}>{title}</h3>
       )}
 
       {/* Steps */}
@@ -96,13 +96,13 @@ export function ProcessSteps({
                 </motion.div>
 
                 {/* Title */}
-                <h4 className={`text-sm font-semibold ${isActive ? textColor : mutedColor} mb-1`}>
+                <h4 className="text-sm font-semibold mb-1" style={{ color: isActive ? textColorValue : mutedColorValue }}>
                   {step.title}
                 </h4>
 
                 {/* Description */}
                 {step.description && (
-                  <p className={`text-xs ${mutedColor} max-w-[140px]`}>
+                  <p className="text-xs max-w-[140px]" style={{ color: mutedColorValue }}>
                     {step.description}
                   </p>
                 )}
@@ -118,8 +118,7 @@ export function ProcessSteps({
                 >
                   <ChevronRight
                     size={20}
-                    className={index < currentStep ? '' : mutedColor}
-                    style={index < currentStep ? { color: accentColor } : undefined}
+                    style={{ color: index < currentStep ? accentColor : mutedColorValue }}
                   />
                 </motion.div>
               )}

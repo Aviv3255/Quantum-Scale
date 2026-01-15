@@ -30,8 +30,6 @@ export function PredictionBand({
   variant = 'dark',
 }: PredictionBandProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
 
   const chartHeight = 240;
@@ -94,7 +92,8 @@ export function PredictionBand({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -227,15 +226,15 @@ export function PredictionBand({
       >
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#88da1c]" />
-          <span className={`text-xs ${mutedColor}`}>Historical</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Historical</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#3B82F6]" />
-          <span className={`text-xs ${mutedColor}`}>Predicted</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Predicted</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-8 h-3 rounded bg-[#3B82F6]/20" />
-          <span className={`text-xs ${mutedColor}`}>Confidence Band</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Confidence Band</span>
         </div>
       </motion.div>
     </>

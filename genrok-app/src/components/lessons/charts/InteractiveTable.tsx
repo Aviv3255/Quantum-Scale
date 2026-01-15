@@ -82,7 +82,8 @@ export function InteractiveTable({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -129,7 +130,8 @@ export function InteractiveTable({
                 {columns.map((col, colIndex) => (
                   <td
                     key={col.key}
-                    className={`px-4 py-3 ${getAlignClass(col.align)} ${colIndex === 0 ? `font-medium ${textColor}` : mutedColor} text-sm`}
+                    className={`px-4 py-3 ${getAlignClass(col.align)} ${colIndex === 0 ? 'font-medium' : mutedColor} text-sm`}
+                    style={colIndex === 0 ? { color: isDark ? '#fff' : '#000' } : undefined}
                   >
                     {row[col.key]}
                   </td>

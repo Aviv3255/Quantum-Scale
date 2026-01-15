@@ -26,7 +26,6 @@ export function WaterfallChart({
   variant = 'dark',
 }: WaterfallChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const connectorColor = isDark ? 'bg-white/20' : 'bg-black/20';
 
@@ -50,7 +49,7 @@ export function WaterfallChart({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-6`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-6" style={{ color: isDark ? '#fff' : '#000' }}>{title}</h3>
       )}
 
       <div className="flex items-end justify-between gap-2" style={{ height: barHeight + 40 }}>
@@ -73,8 +72,9 @@ export function WaterfallChart({
               {/* Value label */}
               <motion.div
                 className={`text-sm font-bold mb-2 ${
-                  item.isTotal ? 'text-[#88da1c]' : isPositive ? textColor : 'text-red-400'
+                  item.isTotal ? 'text-[#88da1c]' : isPositive ? '' : 'text-red-400'
                 }`}
+                style={!item.isTotal && isPositive ? { color: isDark ? '#fff' : '#000' } : undefined}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 + index * 0.1 }}

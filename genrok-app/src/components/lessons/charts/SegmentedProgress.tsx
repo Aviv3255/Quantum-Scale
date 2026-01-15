@@ -27,7 +27,6 @@ export function SegmentedProgress({
   variant = 'dark',
 }: SegmentedProgressProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const trackColor = isDark ? 'bg-white/10' : 'bg-black/10';
 
@@ -41,7 +40,8 @@ export function SegmentedProgress({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -55,8 +55,8 @@ export function SegmentedProgress({
         className="mb-8"
       >
         <div className="flex justify-between items-center mb-2">
-          <span className={`text-sm font-medium ${textColor}`}>Overall Progress</span>
-          <span className={`text-sm font-bold ${textColor}`}>
+          <span className="text-sm font-medium" style={{ color: isDark ? '#fff' : '#000' }}>Overall Progress</span>
+          <span className="text-sm font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
             {Math.round(overallPercentage)}%
           </span>
         </div>
@@ -93,7 +93,7 @@ export function SegmentedProgress({
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: segment.color }}
                   />
-                  <span className={`text-sm font-medium ${textColor}`}>
+                  <span className="text-sm font-medium" style={{ color: isDark ? '#fff' : '#000' }}>
                     {segment.label}
                   </span>
                 </div>
@@ -138,7 +138,7 @@ export function SegmentedProgress({
         transition={{ delay: 0.8 }}
         className="mt-8"
       >
-        <span className={`text-sm font-medium ${textColor} mb-2 block`}>
+        <span className="text-sm font-medium mb-2 block" style={{ color: isDark ? '#fff' : '#000' }}>
           Distribution
         </span>
         <div className="flex h-8 rounded-lg overflow-hidden">

@@ -23,9 +23,6 @@ export function BenchmarkChart({
   variant = 'dark',
 }: BenchmarkChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
-  const mutedColor70 = isDark ? 'text-white/70' : 'text-black/70';
   const bgTrack = isDark ? 'bg-white/10' : 'bg-black/10';
   const borderColor = isDark ? 'border-white/10' : 'border-black/10';
 
@@ -46,8 +43,8 @@ export function BenchmarkChart({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-8`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-8"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -65,11 +62,11 @@ export function BenchmarkChart({
             className="w-3 h-3 rounded-full"
             style={{ backgroundColor: accentColor }}
           />
-          <span className={`text-sm ${mutedColor70}`}>Your Value</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>Your Value</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-gray-500" />
-          <span className={`text-sm ${mutedColor70}`}>Industry Average</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>Industry Average</span>
         </div>
       </motion.div>
 
@@ -87,13 +84,13 @@ export function BenchmarkChart({
               transition={{ delay: 0.15 + i * 0.1 }}
             >
               <div className="flex justify-between items-center mb-2">
-                <span className={`${mutedColor70} text-sm`}>{item.label}</span>
+                <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{item.label}</span>
                 <div className="flex items-center gap-3">
-                  <span className={`text-sm ${mutedColor}`}>
+                  <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>
                     Avg: {item.benchmark}
                     {item.unit || ''}
                   </span>
-                  <span className={`${textColor} font-bold`}>
+                  <span className="font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
                     {item.value}
                     {item.unit || ''}
                   </span>
@@ -138,7 +135,7 @@ export function BenchmarkChart({
         className={`mt-8 pt-6 border-t ${borderColor}`}
       >
         <div className="flex justify-between items-center">
-          <span className={`${mutedColor} text-sm`}>Performance vs Benchmark</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Performance vs Benchmark</span>
           <span className="text-2xl font-bold" style={{ color: accentColor }}>
             {Math.round(
               (items.reduce((sum, item) => sum + item.value / item.benchmark, 0) /

@@ -30,8 +30,6 @@ export function AnomalyChart({
   variant = 'dark',
 }: AnomalyChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
 
   const chartHeight = 260;
@@ -67,7 +65,8 @@ export function AnomalyChart({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -249,7 +248,7 @@ export function AnomalyChart({
           transition={{ delay: 1 }}
           className="mt-4"
         >
-          <h4 className={`text-sm font-semibold ${textColor} mb-2`}>Detected Anomalies</h4>
+          <h4 className="text-sm font-semibold mb-2" style={{ color: isDark ? '#fff' : '#000' }}>Detected Anomalies</h4>
           <div className="space-y-2">
             {anomalies.map((anomaly, i) => (
               <motion.div
@@ -267,12 +266,12 @@ export function AnomalyChart({
                     backgroundColor: anomaly.anomalyType === 'high' ? '#EF4444' : '#F59E0B',
                   }}
                 />
-                <span className={`text-sm ${textColor}`}>
+                <span className="text-sm" style={{ color: isDark ? '#fff' : '#000' }}>
                   <span className="font-medium">{anomaly.label}:</span>{' '}
                   {valuePrefix}{anomaly.value} ({anomaly.anomalyType === 'high' ? 'Above' : 'Below'} threshold)
                 </span>
                 {anomaly.note && (
-                  <span className={`text-xs ${mutedColor}`}>- {anomaly.note}</span>
+                  <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>- {anomaly.note}</span>
                 )}
               </motion.div>
             ))}
@@ -289,15 +288,15 @@ export function AnomalyChart({
       >
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#88da1c]" />
-          <span className={`text-xs ${mutedColor}`}>Normal</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Normal</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#EF4444]" />
-          <span className={`text-xs ${mutedColor}`}>High Anomaly</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>High Anomaly</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#F59E0B]" />
-          <span className={`text-xs ${mutedColor}`}>Low Anomaly</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Low Anomaly</span>
         </div>
       </motion.div>
     </>

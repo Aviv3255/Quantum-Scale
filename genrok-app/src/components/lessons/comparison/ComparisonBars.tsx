@@ -35,9 +35,9 @@ export function ComparisonBars({
 }: ComparisonBarsProps) {
   const isDark = variant === 'dark';
 
-  // Color variables
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
+  // Color values
+  const textColorValue = isDark ? '#fff' : '#000';
+  const mutedColorValue = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
   const bgTrack = isDark ? 'bg-white/10' : 'bg-black/10';
 
   const maxValue = Math.max(
@@ -53,7 +53,7 @@ export function ComparisonBars({
   const content = (
     <>
       {title && (
-        <h3 className={`text-xl font-bold ${textColor} mb-8 text-center`}>{title}</h3>
+        <h3 className="text-xl font-bold mb-8 text-center" style={{ color: textColorValue }}>{title}</h3>
       )}
 
       {/* Comparison visualization */}
@@ -71,9 +71,9 @@ export function ComparisonBars({
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: colorA }}
               />
-              <span className={`text-sm font-medium ${textColor}`}>{labelA}</span>
+              <span className="text-sm font-medium" style={{ color: textColorValue }}>{labelA}</span>
             </div>
-            <span className={`text-sm ${mutedColor}`}>{itemA.label}</span>
+            <span className="text-sm" style={{ color: mutedColorValue }}>{itemA.label}</span>
           </div>
           <div className={`h-12 ${bgTrack} rounded-lg overflow-hidden relative`}>
             <motion.div
@@ -108,9 +108,9 @@ export function ComparisonBars({
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: colorB }}
               />
-              <span className={`text-sm font-medium ${textColor}`}>{labelB}</span>
+              <span className="text-sm font-medium" style={{ color: textColorValue }}>{labelB}</span>
             </div>
-            <span className={`text-sm ${mutedColor}`}>{itemB.label}</span>
+            <span className="text-sm" style={{ color: mutedColorValue }}>{itemB.label}</span>
           </div>
           <div className={`h-12 ${bgTrack} rounded-lg overflow-hidden relative`}>
             <motion.div
@@ -143,7 +143,7 @@ export function ComparisonBars({
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full"
             style={{ backgroundColor: `${colorB}20` }}
           >
-            <span className={mutedColor}>Improvement:</span>
+            <span style={{ color: mutedColorValue }}>Improvement:</span>
             <span
               className="text-2xl font-bold"
               style={{ color: colorB }}

@@ -24,7 +24,6 @@ export function ThermometerChart({
   variant = 'dark',
 }: ThermometerChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const tubeColor = isDark ? 'bg-white/10' : 'bg-black/10';
 
@@ -47,7 +46,8 @@ export function ThermometerChart({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -61,7 +61,8 @@ export function ThermometerChart({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className={`text-sm font-bold ${textColor} mb-2`}
+            className="text-sm font-bold mb-2"
+            style={{ color: isDark ? '#fff' : '#000' }}
           >
             Goal: {valuePrefix}{goal.toLocaleString()}
           </motion.div>
@@ -111,7 +112,7 @@ export function ThermometerChart({
             transition={{ delay: 0.8 }}
             className={`mt-4 text-center`}
           >
-            <span className={`text-2xl font-bold ${textColor}`}>
+            <span className="text-2xl font-bold" style={{ color: isDark ? '#fff' : '#000' }}>
               {valuePrefix}{value.toLocaleString()}
             </span>
             <span className={`block text-sm ${mutedColor}`}>Current</span>
@@ -144,7 +145,7 @@ export function ThermometerChart({
                     }`}
                   />
                   <div className="flex flex-col">
-                    <span className={`text-xs font-medium ${isReached ? 'text-[#22C55E]' : textColor}`}>
+                    <span className="text-xs font-medium" style={{ color: isReached ? '#22C55E' : isDark ? '#fff' : '#000' }}>
                       {milestone.label}
                     </span>
                     <span className={`text-xs ${mutedColor}`}>

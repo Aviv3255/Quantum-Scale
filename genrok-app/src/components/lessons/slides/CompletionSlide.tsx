@@ -26,7 +26,6 @@ export function CompletionSlide({
   variant = 'dark',
 }: CompletionSlideProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const cardBg = isDark ? 'bg-white/5' : 'bg-[#F8F9FA]';
 
@@ -68,8 +67,8 @@ export function CompletionSlide({
         className="text-center mb-10"
       >
         <h2
-          className={`text-4xl font-bold ${textColor} mb-3`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-4xl font-bold mb-3"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           Lesson Complete!
         </h2>
@@ -87,7 +86,7 @@ export function CompletionSlide({
       >
         <div className="flex items-center gap-3 mb-6">
           <Trophy size={20} className="text-[#88da1c]" />
-          <h3 className={`text-lg font-bold ${textColor}`}>Key Takeaways</h3>
+          <h3 className="text-lg font-bold" style={{ color: isDark ? '#fff' : '#000' }}>Key Takeaways</h3>
         </div>
         <ul className="space-y-4">
           {keyTakeaways.map((takeaway, index) => (
@@ -101,7 +100,7 @@ export function CompletionSlide({
               <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#88da1c]/20 flex items-center justify-center mt-0.5">
                 <Star size={12} className="text-[#88da1c]" fill="currentColor" />
               </span>
-              <span className={textColor}>{takeaway}</span>
+              <span style={{ color: isDark ? '#fff' : '#000' }}>{takeaway}</span>
             </motion.li>
           ))}
         </ul>
@@ -124,7 +123,10 @@ export function CompletionSlide({
           >
             <div className="flex items-center justify-between">
               <div>
-                <h4 className={`text-xl font-bold ${textColor} mb-2 group-hover:text-[#88da1c] transition-colors`}>
+                <h4
+                  className="text-xl font-bold mb-2 group-hover:text-[#88da1c] transition-colors"
+                  style={{ color: isDark ? '#fff' : '#000' }}
+                >
                   {nextLesson.title}
                 </h4>
                 <p className={mutedColor}>{nextLesson.description}</p>

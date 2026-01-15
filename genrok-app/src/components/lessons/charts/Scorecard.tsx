@@ -23,7 +23,6 @@ export function Scorecard({
   variant = 'dark',
 }: ScorecardProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const mutedColor70 = isDark ? 'text-white/70' : 'text-black/70';
   const mutedColor40 = isDark ? 'text-white/40' : 'text-black/40';
@@ -37,8 +36,8 @@ export function Scorecard({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-8`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-8"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -60,7 +59,7 @@ export function Scorecard({
               <div className="flex justify-between items-center mb-2">
                 <span className={`${mutedColor70} text-sm`}>{item.label}</span>
                 <div className="flex items-center gap-2">
-                  <span className={`${textColor} font-bold`}>{item.value}</span>
+                  <span className="font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{item.value}</span>
                   {item.target && (
                     <span className={`${mutedColor40} text-sm`}>/ {item.target}</span>
                   )}

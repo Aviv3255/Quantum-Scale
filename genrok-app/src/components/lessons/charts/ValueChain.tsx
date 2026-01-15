@@ -37,8 +37,6 @@ export function ValueChain({
   variant = 'dark',
 }: ValueChainProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const borderColor = isDark ? 'border-white/20' : 'border-black/20';
   const bgMuted = isDark ? 'bg-white/5' : 'bg-black/5';
 
@@ -51,7 +49,8 @@ export function ValueChain({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
+          className="text-xl font-bold text-center mb-6"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -61,7 +60,8 @@ export function ValueChain({
         {/* Support Activities */}
         <div className="space-y-2">
           <motion.p
-            className={`text-xs uppercase tracking-wider ${mutedColor} mb-2`}
+            className="text-xs uppercase tracking-wider mb-2"
+            style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
@@ -82,9 +82,9 @@ export function ValueChain({
                   style={{ backgroundColor: activity.color || supportColors[i % supportColors.length] }}
                 />
                 <div>
-                  <span className={`text-sm font-medium ${textColor}`}>{activity.name}</span>
+                  <span className="text-sm font-medium" style={{ color: isDark ? '#fff' : '#000' }}>{activity.name}</span>
                   {activity.description && (
-                    <p className={`text-xs ${mutedColor} mt-0.5`}>{activity.description}</p>
+                    <p className="text-xs mt-0.5" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{activity.description}</p>
                   )}
                 </div>
               </motion.div>
@@ -95,7 +95,8 @@ export function ValueChain({
         {/* Primary Activities */}
         <div>
           <motion.p
-            className={`text-xs uppercase tracking-wider ${mutedColor} mb-2`}
+            className="text-xs uppercase tracking-wider mb-2"
+            style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
@@ -115,11 +116,11 @@ export function ValueChain({
                   className="absolute inset-x-0 top-0 h-1"
                   style={{ backgroundColor: activity.color || primaryColors[i % primaryColors.length] }}
                 />
-                <span className={`text-xs font-medium ${textColor} block mt-1`}>
+                <span className="text-xs font-medium block mt-1" style={{ color: isDark ? '#fff' : '#000' }}>
                   {activity.name}
                 </span>
                 {activity.description && (
-                  <p className={`text-xs ${mutedColor} mt-1`}>{activity.description}</p>
+                  <p className="text-xs mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{activity.description}</p>
                 )}
               </motion.div>
             ))}
@@ -134,7 +135,7 @@ export function ValueChain({
                 clipPath: 'polygon(0 0, 70% 0, 100% 50%, 70% 100%, 0 100%)',
               }}
             >
-              <span className={`text-xs font-bold ${textColor} rotate-90`}>MARGIN</span>
+              <span className="text-xs font-bold rotate-90" style={{ color: isDark ? '#fff' : '#000' }}>MARGIN</span>
             </motion.div>
           </div>
         </div>
@@ -146,7 +147,7 @@ export function ValueChain({
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
         >
-          <div className={`flex items-center gap-2 ${mutedColor}`}>
+          <div className="flex items-center gap-2" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>
             <span className="text-xs">Value Creation Flow</span>
             <svg width="60" height="12" viewBox="0 0 60 12">
               <path

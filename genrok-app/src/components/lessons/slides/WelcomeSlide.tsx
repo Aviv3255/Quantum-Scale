@@ -26,7 +26,6 @@ export function WelcomeSlide({
   variant = 'dark',
 }: WelcomeSlideProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
 
   const content = (
@@ -51,8 +50,8 @@ export function WelcomeSlide({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className={`text-5xl font-bold ${textColor} mb-4 tracking-tight leading-tight`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-5xl font-bold mb-4 tracking-tight leading-tight"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h1>
@@ -91,7 +90,7 @@ export function WelcomeSlide({
                 <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#88da1c] flex items-center justify-center mt-0.5">
                   <Check size={14} className="text-black" strokeWidth={3} />
                 </span>
-                <span className={`text-lg ${textColor}`}>{goal}</span>
+                <span className="text-lg" style={{ color: isDark ? '#fff' : '#000' }}>{goal}</span>
               </motion.li>
             ))}
           </ul>

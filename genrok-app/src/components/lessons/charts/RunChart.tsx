@@ -20,8 +20,6 @@ export function RunChart({
   variant = 'dark',
 }: RunChartProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const gridColor = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
   const axisColor = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
   const dataLineColor = isDark ? 'white' : 'black';
@@ -69,8 +67,8 @@ export function RunChart({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-6"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -189,12 +187,12 @@ export function RunChart({
         className="flex justify-center gap-8 mt-4"
       >
         <div className="text-center">
-          <p className={`${mutedColor} text-xs`}>Median</p>
-          <p className={`${textColor} font-bold`}>{median.toFixed(1)}</p>
+          <p className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Median</p>
+          <p className="font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{median.toFixed(1)}</p>
         </div>
         <div className="text-center">
-          <p className={`${mutedColor} text-xs`}>Total Runs</p>
-          <p className={`${textColor} font-bold`}>{runs.length}</p>
+          <p className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Total Runs</p>
+          <p className="font-bold" style={{ color: isDark ? '#fff' : '#000' }}>{runs.length}</p>
         </div>
       </motion.div>
     </>

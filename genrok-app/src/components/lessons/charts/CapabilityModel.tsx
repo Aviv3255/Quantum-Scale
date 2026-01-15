@@ -38,9 +38,6 @@ export function CapabilityModel({
   variant = 'dark',
 }: CapabilityModelProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
-  const mutedColor70 = isDark ? 'text-white/70' : 'text-black/70';
   const bgLevel = isDark ? 'bg-white/5' : 'bg-black/5';
   const borderColor = isDark ? 'border-white/10' : 'border-black/10';
 
@@ -52,8 +49,8 @@ export function CapabilityModel({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-8`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-8"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -74,10 +71,10 @@ export function CapabilityModel({
                 className="h-2 rounded-full mb-2"
                 style={{ backgroundColor: levelColors[i] }}
               />
-              <span className={`text-xs font-semibold ${mutedColor70}`}>
+              <span className="text-xs font-semibold" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>
                 L{level.level}
               </span>
-              <p className={`text-xs ${mutedColor} mt-1`}>{level.name}</p>
+              <p className="text-xs mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>{level.name}</p>
             </motion.div>
           ))}
         </div>
@@ -94,9 +91,9 @@ export function CapabilityModel({
             className={`${bgLevel} rounded-xl p-4`}
           >
             <div className="flex items-center justify-between mb-3">
-              <span className={`${textColor} font-semibold`}>{area.name}</span>
+              <span className="font-semibold" style={{ color: isDark ? '#fff' : '#000' }}>{area.name}</span>
               <div className="flex items-center gap-2">
-                <span className={`text-sm ${mutedColor}`}>Level</span>
+                <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Level</span>
                 <span
                   className="font-bold text-lg"
                   style={{ color: levelColors[area.currentLevel - 1] }}
@@ -105,8 +102,8 @@ export function CapabilityModel({
                 </span>
                 {area.targetLevel && area.targetLevel !== area.currentLevel && (
                   <>
-                    <span className={mutedColor}>/</span>
-                    <span className={`${mutedColor70} text-sm`}>
+                    <span style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>/</span>
+                    <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>
                       Target: {area.targetLevel}
                     </span>
                   </>
@@ -172,7 +169,7 @@ export function CapabilityModel({
         className={`mt-6 pt-6 border-t ${borderColor}`}
       >
         <div className="flex justify-between items-center">
-          <span className={`${mutedColor} text-sm`}>Average Maturity Level</span>
+          <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Average Maturity Level</span>
           <span className="text-2xl font-bold" style={{ color: accentColor }}>
             {(areas.reduce((sum, a) => sum + a.currentLevel, 0) / areas.length).toFixed(
               1

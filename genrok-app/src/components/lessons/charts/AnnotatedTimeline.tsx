@@ -25,8 +25,6 @@ export function AnnotatedTimeline({
   variant = 'dark',
 }: AnnotatedTimelineProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/50' : 'text-black/50';
   const lineColor = isDark ? 'bg-white/20' : 'bg-black/20';
 
   const getTypeColor = (type?: string) => {
@@ -43,7 +41,8 @@ export function AnnotatedTimeline({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-8`}
+          className="text-xl font-bold text-center mb-8"
+          style={{ color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -144,11 +143,11 @@ export function AnnotatedTimeline({
                     >
                       {event.date}
                     </span>
-                    <span className={`text-sm font-medium ${textColor} block`}>
+                    <span className="text-sm font-medium block" style={{ color: isDark ? '#fff' : '#000' }}>
                       {event.title}
                     </span>
                     {event.description && (
-                      <span className={`text-xs ${mutedColor} block mt-1`}>
+                      <span className="text-xs block mt-1" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>
                         {event.description}
                       </span>
                     )}
@@ -169,11 +168,11 @@ export function AnnotatedTimeline({
       >
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#88da1c]" />
-          <span className={`text-xs ${mutedColor}`}>Milestone</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Milestone</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-[#3B82F6]" />
-          <span className={`text-xs ${mutedColor}`}>Highlight</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Highlight</span>
         </div>
         <div className="flex items-center gap-2">
           <div
@@ -181,7 +180,7 @@ export function AnnotatedTimeline({
               isDark ? 'border-white' : 'border-black'
             }`}
           />
-          <span className={`text-xs ${mutedColor}`}>Event</span>
+          <span className="text-xs" style={{ color: isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)' }}>Event</span>
         </div>
       </motion.div>
     </>

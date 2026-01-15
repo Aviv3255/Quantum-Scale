@@ -32,7 +32,6 @@ export function KanbanBoard({
   variant = 'dark',
 }: KanbanBoardProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const cardBg = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)';
   const cardHoverBg = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)';
   const mutedColor = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)';
@@ -51,8 +50,8 @@ export function KanbanBoard({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-6"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -78,7 +77,7 @@ export function KanbanBoard({
                   className="w-3 h-3 rounded-full"
                   style={{ backgroundColor: columnColor }}
                 />
-                <span className={`font-semibold text-sm ${textColor}`}>
+                <span className="font-semibold text-sm" style={{ color: isDark ? '#fff' : '#000' }}>
                   {column.title}
                 </span>
                 <span
@@ -121,7 +120,7 @@ export function KanbanBoard({
                     )}
 
                     {/* Task title */}
-                    <h4 className={`text-sm font-medium ${textColor} mb-1`}>
+                    <h4 className="text-sm font-medium mb-1" style={{ color: isDark ? '#fff' : '#000' }}>
                       {task.title}
                     </h4>
 

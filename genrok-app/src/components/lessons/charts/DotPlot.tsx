@@ -28,12 +28,10 @@ export function DotPlot({
   variant = 'dark',
 }: DotPlotProps) {
   const isDark = variant === 'dark';
-  const textColor = isDark ? 'text-white' : 'text-black';
   const mutedFill = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)';
   const labelFill = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
   const axisStroke = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)';
   const gridStroke = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-  const legendTextClass = isDark ? 'text-white/70' : 'text-black/70';
 
   const width = 500;
   const height = 350;
@@ -56,8 +54,8 @@ export function DotPlot({
         <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`text-xl font-bold ${textColor} text-center mb-6`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-xl font-bold text-center mb-6"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
         >
           {title}
         </motion.h3>
@@ -176,11 +174,11 @@ export function DotPlot({
         >
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: accentColor }} />
-            <span className={`${legendTextClass} text-sm`}>{valueLabel || 'Value 1'}</span>
+            <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{valueLabel || 'Value 1'}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: accentColor2 }} />
-            <span className={`${legendTextClass} text-sm`}>{value2Label || 'Value 2'}</span>
+            <span className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)' }}>{value2Label || 'Value 2'}</span>
           </div>
         </motion.div>
       )}

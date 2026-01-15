@@ -25,13 +25,6 @@ export function QuoteBlock({
 }: QuoteBlockProps) {
   const isDark = variant === 'dark';
 
-  // Color variables
-  const textColor = isDark ? 'text-white' : 'text-black';
-  const mutedColor = isDark ? 'text-white/60' : 'text-black/60';
-  const decorativeIconColor = isDark ? 'text-white' : 'text-black';
-  // Icon on lime green accent should always be black for contrast
-  const quoteIconBgColor = 'text-black';
-
   // Content
   const content = (
     <div className="relative overflow-hidden">
@@ -42,7 +35,7 @@ export function QuoteBlock({
         animate={{ opacity: 0.05, scale: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <Quote size={200} strokeWidth={1} className={decorativeIconColor} />
+        <Quote size={200} strokeWidth={1} style={{ color: isDark ? '#fff' : '#000' }} />
       </motion.div>
 
       {/* Accent line */}
@@ -67,14 +60,14 @@ export function QuoteBlock({
             className="w-12 h-12 rounded-xl flex items-center justify-center"
             style={{ backgroundColor: accentColor }}
           >
-            <Quote size={24} className={quoteIconBgColor} />
+            <Quote size={24} style={{ color: '#000' }} />
           </div>
         </motion.div>
 
         {/* Quote text */}
         <motion.blockquote
-          className={`text-2xl md:text-3xl font-medium ${textColor} leading-relaxed mb-8`}
-          style={{ fontFamily: "'General Sans', sans-serif" }}
+          className="text-2xl md:text-3xl font-medium leading-relaxed mb-8"
+          style={{ fontFamily: "'General Sans', sans-serif", color: isDark ? '#fff' : '#000' }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -103,10 +96,10 @@ export function QuoteBlock({
 
             <div>
               {author && (
-                <div className={`font-semibold ${textColor}`}>{author}</div>
+                <div className="font-semibold" style={{ color: isDark ? '#fff' : '#000' }}>{author}</div>
               )}
               {role && (
-                <div className={`text-sm ${mutedColor}`}>{role}</div>
+                <div className="text-sm" style={{ color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)' }}>{role}</div>
               )}
             </div>
           </motion.div>
