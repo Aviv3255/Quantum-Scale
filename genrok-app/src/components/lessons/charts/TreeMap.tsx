@@ -105,7 +105,7 @@ export function TreeMap({
                 y={rect.y + rect.h / 2}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fill="black"
+                fill="white"
                 fontSize={Math.min(14, rect.w / 6)}
                 fontWeight="bold"
               >
@@ -121,7 +121,7 @@ export function TreeMap({
                 y={rect.y + rect.h / 2 + 16}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fill="rgba(0,0,0,0.7)"
+                fill="rgba(255,255,255,0.8)"
                 fontSize={Math.min(11, rect.w / 8)}
               >
                 {((rect.item.value / total) * 100).toFixed(0)}%

@@ -99,6 +99,100 @@ export { DotPlot } from './charts/DotPlot';
 export { ParallelCoordinates } from './charts/ParallelCoordinates';
 
 // ============================================
+// CHARTS - BUSINESS & PROCESS (10)
+// ============================================
+export { GanttChart } from './charts/GanttChart';
+export { FlowChart } from './charts/FlowChart';
+export { KanbanBoard } from './charts/KanbanBoard';
+export { RoadmapDiagram } from './charts/RoadmapDiagram';
+export { CustomerJourneyMap } from './charts/CustomerJourneyMap';
+export { SwimlaneChart } from './charts/SwimlaneChart';
+export { DecisionTree } from './charts/DecisionTree';
+export { ProcessMap } from './charts/ProcessMap';
+export { EventSequence } from './charts/EventSequence';
+export { TornadoChart } from './charts/TornadoChart';
+
+// ============================================
+// CHARTS - STATISTICAL ANALYSIS (10)
+// ============================================
+export { ROCCurve } from './charts/ROCCurve';
+export { ConfusionMatrix } from './charts/ConfusionMatrix';
+export { CohortChart } from './charts/CohortChart';
+export { RetentionCurve } from './charts/RetentionCurve';
+export { LorenzCurve } from './charts/LorenzCurve';
+export { ErrorBarChart } from './charts/ErrorBarChart';
+export { RegressionPlot } from './charts/RegressionPlot';
+export { SmallMultiples } from './charts/SmallMultiples';
+export { ForecastChart } from './charts/ForecastChart';
+export { SensitivityChart } from './charts/SensitivityChart';
+
+// ============================================
+// CHARTS - ADVANCED VISUALIZATION (10)
+// ============================================
+export { HexbinPlot } from './charts/HexbinPlot';
+export { SwarmPlot } from './charts/SwarmPlot';
+export { StripPlot } from './charts/StripPlot';
+export { AlluvialDiagram } from './charts/AlluvialDiagram';
+export { MosaicPlot } from './charts/MosaicPlot';
+export { AdjacencyMatrix } from './charts/AdjacencyMatrix';
+export { PhylogeneticTree } from './charts/PhylogeneticTree';
+export { EulerDiagram } from './charts/EulerDiagram';
+export { IsotypeChart } from './charts/IsotypeChart';
+export { ConceptMap } from './charts/ConceptMap';
+
+// ============================================
+// CHARTS - TECHNICAL DIAGRAMS (10)
+// ============================================
+export { SequenceDiagram } from './charts/SequenceDiagram';
+export { ActivityDiagram } from './charts/ActivityDiagram';
+export { ERDiagram } from './charts/ERDiagram';
+export { StateDiagram } from './charts/StateDiagram';
+export { DataFlowDiagram } from './charts/DataFlowDiagram';
+export { ArchitectureDiagram } from './charts/ArchitectureDiagram';
+export { NetworkTopology } from './charts/NetworkTopology';
+export { InfrastructureDiagram } from './charts/InfrastructureDiagram';
+export { BayesianNetwork } from './charts/BayesianNetwork';
+export { CausalLoopDiagram } from './charts/CausalLoopDiagram';
+
+// ============================================
+// CHARTS - INTERACTIVE & TABLES (10)
+// ============================================
+export { InteractiveTable } from './charts/InteractiveTable';
+export { ComparisonSlider } from './charts/ComparisonSlider';
+export { PortfolioBreakdown } from './charts/PortfolioBreakdown';
+export { RevenueWaterfall } from './charts/RevenueWaterfall';
+export { CountryMap } from './charts/CountryMap';
+export { ThermometerChart } from './charts/ThermometerChart';
+export { SegmentedProgress } from './charts/SegmentedProgress';
+export { AnnotatedTimeline } from './charts/AnnotatedTimeline';
+export { PredictionBand } from './charts/PredictionBand';
+export { AnomalyChart } from './charts/AnomalyChart';
+
+// ============================================
+// CHARTS - STRATEGIC & BUSINESS (10)
+// ============================================
+export { TargetChart } from './charts/TargetChart';
+export { PerformanceMatrix } from './charts/PerformanceMatrix';
+export { ValueChain } from './charts/ValueChain';
+export { SWOT } from './charts/SWOT';
+export { RiskMatrix } from './charts/RiskMatrix';
+export { PriorityMatrix } from './charts/PriorityMatrix';
+export { CompetitorMap } from './charts/CompetitorMap';
+export { SkillRadar } from './charts/SkillRadar';
+export { OKRTracker } from './charts/OKRTracker';
+export { QuarterlyTrend } from './charts/QuarterlyTrend';
+
+// ============================================
+// CHARTS - MODELS & FLOWS (6)
+// ============================================
+export { BenchmarkChart } from './charts/BenchmarkChart';
+export { CapabilityModel } from './charts/CapabilityModel';
+export { UserFlowDiagram } from './charts/UserFlowDiagram';
+export { FeatureComparison } from './charts/FeatureComparison';
+export { MetricsDashboard } from './charts/MetricsDashboard';
+export { FeedbackLoop } from './charts/FeedbackLoop';
+
+// ============================================
 // DATA VISUALIZATION - STATS
 // ============================================
 export { StatCard } from './data/StatCard';
@@ -224,6 +318,100 @@ export const LESSON_COMPONENTS = {
     { id: 'ParallelCoordinates', name: 'Parallel Coordinates', category: 'Charts - Specialty', description: 'Multi-dimensional comparison' },
   ],
 
+  // Charts - Business & Process (10)
+  chartsBusiness: [
+    { id: 'GanttChart', name: 'Gantt Chart', category: 'Charts - Business', description: 'Project timeline with task bars' },
+    { id: 'FlowChart', name: 'Flow Chart', category: 'Charts - Business', description: 'Process flow with decision nodes' },
+    { id: 'KanbanBoard', name: 'Kanban Board', category: 'Charts - Business', description: 'Task cards in columns' },
+    { id: 'RoadmapDiagram', name: 'Roadmap Diagram', category: 'Charts - Business', description: 'Product roadmap timeline' },
+    { id: 'CustomerJourneyMap', name: 'Customer Journey Map', category: 'Charts - Business', description: 'User journey visualization' },
+    { id: 'SwimlaneChart', name: 'Swimlane Chart', category: 'Charts - Business', description: 'Process flow by department' },
+    { id: 'DecisionTree', name: 'Decision Tree', category: 'Charts - Business', description: 'Branching decision paths' },
+    { id: 'ProcessMap', name: 'Process Map', category: 'Charts - Business', description: 'Workflow process steps' },
+    { id: 'EventSequence', name: 'Event Sequence', category: 'Charts - Business', description: 'Sequential event timeline' },
+    { id: 'TornadoChart', name: 'Tornado Chart', category: 'Charts - Business', description: 'Sensitivity analysis bars' },
+  ],
+
+  // Charts - Statistical Analysis (10)
+  chartsAnalysis: [
+    { id: 'ROCCurve', name: 'ROC Curve', category: 'Charts - Analysis', description: 'Receiver operating characteristic' },
+    { id: 'ConfusionMatrix', name: 'Confusion Matrix', category: 'Charts - Analysis', description: 'Classification performance grid' },
+    { id: 'CohortChart', name: 'Cohort Chart', category: 'Charts - Analysis', description: 'User cohort retention' },
+    { id: 'RetentionCurve', name: 'Retention Curve', category: 'Charts - Analysis', description: 'User retention over time' },
+    { id: 'LorenzCurve', name: 'Lorenz Curve', category: 'Charts - Analysis', description: 'Distribution inequality' },
+    { id: 'ErrorBarChart', name: 'Error Bar Chart', category: 'Charts - Analysis', description: 'Values with error ranges' },
+    { id: 'RegressionPlot', name: 'Regression Plot', category: 'Charts - Analysis', description: 'Scatter with trend line' },
+    { id: 'SmallMultiples', name: 'Small Multiples', category: 'Charts - Analysis', description: 'Repeated mini charts' },
+    { id: 'ForecastChart', name: 'Forecast Chart', category: 'Charts - Analysis', description: 'Prediction with confidence' },
+    { id: 'SensitivityChart', name: 'Sensitivity Chart', category: 'Charts - Analysis', description: 'Variable impact analysis' },
+  ],
+
+  // Charts - Advanced Visualization (10)
+  chartsAdvanced: [
+    { id: 'HexbinPlot', name: 'Hexbin Plot', category: 'Charts - Advanced', description: 'Hexagonal bin density' },
+    { id: 'SwarmPlot', name: 'Swarm Plot', category: 'Charts - Advanced', description: 'Non-overlapping dots' },
+    { id: 'StripPlot', name: 'Strip Plot', category: 'Charts - Advanced', description: 'Categorical dot distribution' },
+    { id: 'AlluvialDiagram', name: 'Alluvial Diagram', category: 'Charts - Advanced', description: 'Flow between categories' },
+    { id: 'MosaicPlot', name: 'Mosaic Plot', category: 'Charts - Advanced', description: 'Categorical area proportions' },
+    { id: 'AdjacencyMatrix', name: 'Adjacency Matrix', category: 'Charts - Advanced', description: 'Network connection grid' },
+    { id: 'PhylogeneticTree', name: 'Phylogenetic Tree', category: 'Charts - Advanced', description: 'Evolutionary branching' },
+    { id: 'EulerDiagram', name: 'Euler Diagram', category: 'Charts - Advanced', description: 'Set relationships' },
+    { id: 'IsotypeChart', name: 'Isotype Chart', category: 'Charts - Advanced', description: 'Pictogram statistics' },
+    { id: 'ConceptMap', name: 'Concept Map', category: 'Charts - Advanced', description: 'Linked concept nodes' },
+  ],
+
+  // Charts - Technical Diagrams (10)
+  chartsTechnical: [
+    { id: 'SequenceDiagram', name: 'Sequence Diagram', category: 'Charts - Technical', description: 'Message flow timeline' },
+    { id: 'ActivityDiagram', name: 'Activity Diagram', category: 'Charts - Technical', description: 'Workflow activity flow' },
+    { id: 'ERDiagram', name: 'ER Diagram', category: 'Charts - Technical', description: 'Entity relationships' },
+    { id: 'StateDiagram', name: 'State Diagram', category: 'Charts - Technical', description: 'State machine transitions' },
+    { id: 'DataFlowDiagram', name: 'Data Flow Diagram', category: 'Charts - Technical', description: 'Data process flow' },
+    { id: 'ArchitectureDiagram', name: 'Architecture Diagram', category: 'Charts - Technical', description: 'System architecture' },
+    { id: 'NetworkTopology', name: 'Network Topology', category: 'Charts - Technical', description: 'Network structure layout' },
+    { id: 'InfrastructureDiagram', name: 'Infrastructure Diagram', category: 'Charts - Technical', description: 'IT infrastructure view' },
+    { id: 'BayesianNetwork', name: 'Bayesian Network', category: 'Charts - Technical', description: 'Probabilistic dependencies' },
+    { id: 'CausalLoopDiagram', name: 'Causal Loop Diagram', category: 'Charts - Technical', description: 'Feedback loop visualization' },
+  ],
+
+  // Charts - Interactive & Tables (10)
+  chartsInteractive: [
+    { id: 'InteractiveTable', name: 'Interactive Table', category: 'Charts - Interactive', description: 'Sortable data table' },
+    { id: 'ComparisonSlider', name: 'Comparison Slider', category: 'Charts - Interactive', description: 'Before/after slider' },
+    { id: 'PortfolioBreakdown', name: 'Portfolio Breakdown', category: 'Charts - Interactive', description: 'Asset allocation view' },
+    { id: 'RevenueWaterfall', name: 'Revenue Waterfall', category: 'Charts - Interactive', description: 'Revenue breakdown flow' },
+    { id: 'CountryMap', name: 'Country Map', category: 'Charts - Interactive', description: 'Geographic visualization' },
+    { id: 'ThermometerChart', name: 'Thermometer Chart', category: 'Charts - Interactive', description: 'Goal progress thermometer' },
+    { id: 'SegmentedProgress', name: 'Segmented Progress', category: 'Charts - Interactive', description: 'Multi-segment progress' },
+    { id: 'AnnotatedTimeline', name: 'Annotated Timeline', category: 'Charts - Interactive', description: 'Timeline with callouts' },
+    { id: 'PredictionBand', name: 'Prediction Band', category: 'Charts - Interactive', description: 'Forecast confidence bands' },
+    { id: 'AnomalyChart', name: 'Anomaly Chart', category: 'Charts - Interactive', description: 'Anomaly detection view' },
+  ],
+
+  // Charts - Strategic (10)
+  chartsStrategic: [
+    { id: 'TargetChart', name: 'Target Chart', category: 'Charts - Strategic', description: 'Target vs actual comparison' },
+    { id: 'PerformanceMatrix', name: 'Performance Matrix', category: 'Charts - Strategic', description: 'BCG-style 2x2 matrix' },
+    { id: 'ValueChain', name: 'Value Chain', category: 'Charts - Strategic', description: 'Porter value chain diagram' },
+    { id: 'SWOT', name: 'SWOT Analysis', category: 'Charts - Strategic', description: 'SWOT 4-quadrant view' },
+    { id: 'RiskMatrix', name: 'Risk Matrix', category: 'Charts - Strategic', description: 'Risk probability/impact' },
+    { id: 'PriorityMatrix', name: 'Priority Matrix', category: 'Charts - Strategic', description: 'Eisenhower matrix' },
+    { id: 'CompetitorMap', name: 'Competitor Map', category: 'Charts - Strategic', description: 'Competitive positioning' },
+    { id: 'SkillRadar', name: 'Skill Radar', category: 'Charts - Strategic', description: 'Competency radar chart' },
+    { id: 'OKRTracker', name: 'OKR Tracker', category: 'Charts - Strategic', description: 'OKR progress tracking' },
+    { id: 'QuarterlyTrend', name: 'Quarterly Trend', category: 'Charts - Strategic', description: 'Quarter-over-quarter' },
+  ],
+
+  // Charts - Models & Flows (6)
+  chartsModels: [
+    { id: 'BenchmarkChart', name: 'Benchmark Chart', category: 'Charts - Models', description: 'Industry benchmark comparison' },
+    { id: 'CapabilityModel', name: 'Capability Model', category: 'Charts - Models', description: 'Maturity model view' },
+    { id: 'UserFlowDiagram', name: 'User Flow Diagram', category: 'Charts - Models', description: 'User journey flow' },
+    { id: 'FeatureComparison', name: 'Feature Comparison', category: 'Charts - Models', description: 'Feature check table' },
+    { id: 'MetricsDashboard', name: 'Metrics Dashboard', category: 'Charts - Models', description: 'Multi-metric view' },
+    { id: 'FeedbackLoop', name: 'Feedback Loop', category: 'Charts - Models', description: 'Circular feedback diagram' },
+  ],
+
   // Data Stats (3)
   data: [
     { id: 'StatCard', name: 'Stat Card', category: 'Data', description: 'Large stat with label and trend' },
@@ -263,6 +451,13 @@ export const getAllComponents = () => {
     ...LESSON_COMPONENTS.chartsNetwork,
     ...LESSON_COMPONENTS.chartsKPI,
     ...LESSON_COMPONENTS.chartsSpecialty,
+    ...LESSON_COMPONENTS.chartsBusiness,
+    ...LESSON_COMPONENTS.chartsAnalysis,
+    ...LESSON_COMPONENTS.chartsAdvanced,
+    ...LESSON_COMPONENTS.chartsTechnical,
+    ...LESSON_COMPONENTS.chartsInteractive,
+    ...LESSON_COMPONENTS.chartsStrategic,
+    ...LESSON_COMPONENTS.chartsModels,
     ...LESSON_COMPONENTS.data,
     ...LESSON_COMPONENTS.comparison,
     ...LESSON_COMPONENTS.sequential,
@@ -280,6 +475,13 @@ export const getAllCharts = () => {
     ...LESSON_COMPONENTS.chartsNetwork,
     ...LESSON_COMPONENTS.chartsKPI,
     ...LESSON_COMPONENTS.chartsSpecialty,
+    ...LESSON_COMPONENTS.chartsBusiness,
+    ...LESSON_COMPONENTS.chartsAnalysis,
+    ...LESSON_COMPONENTS.chartsAdvanced,
+    ...LESSON_COMPONENTS.chartsTechnical,
+    ...LESSON_COMPONENTS.chartsInteractive,
+    ...LESSON_COMPONENTS.chartsStrategic,
+    ...LESSON_COMPONENTS.chartsModels,
   ];
 };
 

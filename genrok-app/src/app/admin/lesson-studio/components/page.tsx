@@ -97,6 +97,83 @@ import {
   CircularBarChart,
   DotPlot,
   ParallelCoordinates,
+  // Charts - Process/Workflow (Batch 5)
+  GanttChart,
+  FlowChart,
+  KanbanBoard,
+  RoadmapDiagram,
+  CustomerJourneyMap,
+  SwimlaneChart,
+  DecisionTree,
+  ProcessMap,
+  EventSequence,
+  // Charts - Advanced Statistical (Batch 6)
+  TornadoChart,
+  ROCCurve,
+  ConfusionMatrix,
+  CohortChart,
+  RetentionCurve,
+  LorenzCurve,
+  ErrorBarChart,
+  RegressionPlot,
+  SmallMultiples,
+  ForecastChart,
+  SensitivityChart,
+  // Charts - Distribution/Specialized (Batch 7)
+  HexbinPlot,
+  SwarmPlot,
+  StripPlot,
+  AlluvialDiagram,
+  MosaicPlot,
+  AdjacencyMatrix,
+  PhylogeneticTree,
+  EulerDiagram,
+  IsotypeChart,
+  ConceptMap,
+  // Charts - UML/Technical (Batch 8)
+  SequenceDiagram,
+  ActivityDiagram,
+  ERDiagram,
+  // Charts - Technical Diagrams (Batch 9)
+  StateDiagram,
+  DataFlowDiagram,
+  ArchitectureDiagram,
+  NetworkTopology,
+  InfrastructureDiagram,
+  // Charts - Probabilistic/Causal (Batch 9)
+  BayesianNetwork,
+  CausalLoopDiagram,
+  // Charts - Interactive/Comparison (Batch 9)
+  InteractiveTable,
+  ComparisonSlider,
+  PortfolioBreakdown,
+  RevenueWaterfall,
+  CountryMap,
+  // Charts - Goal/Progress (Batch 9)
+  ThermometerChart,
+  SegmentedProgress,
+  AnnotatedTimeline,
+  PredictionBand,
+  AnomalyChart,
+  TargetChart,
+  // Charts - Matrix/Strategy (Batch 9)
+  PerformanceMatrix,
+  ValueChain,
+  SWOT,
+  RiskMatrix,
+  PriorityMatrix,
+  CompetitorMap,
+  // Charts - Metrics/OKR (Batch 9)
+  SkillRadar,
+  OKRTracker,
+  QuarterlyTrend,
+  BenchmarkChart,
+  CapabilityModel,
+  // Charts - UX/Product (Batch 9)
+  UserFlowDiagram,
+  FeatureComparison,
+  MetricsDashboard,
+  FeedbackLoop,
   getAllComponents,
 } from '@/components/lessons';
 
@@ -736,6 +813,1008 @@ const SAMPLE_DATA = {
     ],
   },
 
+  // Charts - Process/Workflow (Batch 5)
+  GanttChart: {
+    title: 'Project Timeline',
+    totalDays: 30,
+    tasks: [
+      { id: '1', name: 'Research', start: 0, duration: 5, progress: 100 },
+      { id: '2', name: 'Design', start: 5, duration: 7, progress: 80, dependencies: ['1'] },
+      { id: '3', name: 'Development', start: 12, duration: 10, progress: 30, dependencies: ['2'] },
+      { id: '4', name: 'Testing', start: 22, duration: 5, progress: 0, dependencies: ['3'] },
+      { id: '5', name: 'Launch', start: 27, duration: 3, progress: 0, dependencies: ['4'] },
+    ],
+  },
+  FlowChart: {
+    title: 'User Registration Flow',
+    nodes: [
+      { id: 'start', label: 'Start', type: 'start' as const, x: 300, y: 50 },
+      { id: 'input', label: 'Enter Email', type: 'io' as const, x: 300, y: 130 },
+      { id: 'validate', label: 'Valid Email?', type: 'decision' as const, x: 300, y: 210 },
+      { id: 'create', label: 'Create Account', type: 'process' as const, x: 150, y: 290 },
+      { id: 'error', label: 'Show Error', type: 'process' as const, x: 450, y: 290 },
+      { id: 'end', label: 'End', type: 'end' as const, x: 300, y: 370 },
+    ],
+    connections: [
+      { from: 'start', to: 'input' },
+      { from: 'input', to: 'validate' },
+      { from: 'validate', to: 'create', label: 'Yes' },
+      { from: 'validate', to: 'error', label: 'No' },
+      { from: 'create', to: 'end' },
+      { from: 'error', to: 'input' },
+    ],
+  },
+  KanbanBoard: {
+    title: 'Sprint Board',
+    columns: [
+      {
+        id: 'backlog',
+        title: 'Backlog',
+        tasks: [
+          { id: 't1', title: 'User authentication', priority: 'high' as const, tags: ['backend'] },
+          { id: 't2', title: 'Dashboard redesign', priority: 'medium' as const, tags: ['frontend'] },
+        ],
+      },
+      {
+        id: 'inprogress',
+        title: 'In Progress',
+        tasks: [
+          { id: 't3', title: 'API integration', priority: 'high' as const, assignee: 'Alice', tags: ['backend'] },
+        ],
+      },
+      {
+        id: 'review',
+        title: 'Review',
+        tasks: [
+          { id: 't4', title: 'Payment gateway', priority: 'medium' as const, assignee: 'Bob' },
+        ],
+      },
+      {
+        id: 'done',
+        title: 'Done',
+        tasks: [
+          { id: 't5', title: 'Database setup', priority: 'low' as const, assignee: 'Carol' },
+        ],
+      },
+    ],
+  },
+  RoadmapDiagram: {
+    title: 'Product Roadmap',
+    phases: [
+      {
+        id: 'q1',
+        name: 'Q1 2024',
+        milestones: [
+          { id: 'm1', title: 'MVP Launch', status: 'completed' as const, date: 'Jan 15' },
+          { id: 'm2', title: 'Beta Testing', status: 'completed' as const, date: 'Feb 1' },
+        ],
+      },
+      {
+        id: 'q2',
+        name: 'Q2 2024',
+        milestones: [
+          { id: 'm3', title: 'Public Launch', status: 'in-progress' as const, date: 'Apr 1' },
+          { id: 'm4', title: 'Mobile App', status: 'planned' as const, date: 'May 15' },
+        ],
+      },
+      {
+        id: 'q3',
+        name: 'Q3 2024',
+        milestones: [
+          { id: 'm5', title: 'Enterprise Features', status: 'planned' as const, date: 'Jul 1' },
+          { id: 'm6', title: 'API v2', status: 'planned' as const, date: 'Aug 15' },
+        ],
+      },
+    ],
+  },
+  CustomerJourneyMap: {
+    title: 'E-Commerce Customer Journey',
+    customerName: 'Sarah',
+    stages: [
+      {
+        id: 'awareness',
+        name: 'Awareness',
+        touchpoints: [
+          { id: 'tp1', label: 'Social Ad', emotion: 'neutral' as const },
+          { id: 'tp2', label: 'Blog Post', emotion: 'positive' as const },
+        ],
+      },
+      {
+        id: 'consideration',
+        name: 'Consideration',
+        touchpoints: [
+          { id: 'tp3', label: 'Product Page', emotion: 'positive' as const },
+          { id: 'tp4', label: 'Reviews', emotion: 'positive' as const },
+        ],
+      },
+      {
+        id: 'purchase',
+        name: 'Purchase',
+        touchpoints: [
+          { id: 'tp5', label: 'Checkout', emotion: 'negative' as const },
+          { id: 'tp6', label: 'Payment', emotion: 'neutral' as const },
+        ],
+      },
+      {
+        id: 'retention',
+        name: 'Retention',
+        touchpoints: [
+          { id: 'tp7', label: 'Delivery', emotion: 'positive' as const },
+          { id: 'tp8', label: 'Support', emotion: 'positive' as const },
+        ],
+      },
+    ],
+  },
+  SwimlaneChart: {
+    title: 'Order Processing Workflow',
+    columns: ['Request', 'Process', 'Approve', 'Complete'],
+    lanes: [
+      { id: 'customer', name: 'Customer' },
+      { id: 'sales', name: 'Sales' },
+      { id: 'warehouse', name: 'Warehouse' },
+    ],
+    tasks: [
+      { id: 't1', label: 'Place Order', lane: 'customer', column: 0 },
+      { id: 't2', label: 'Review Order', lane: 'sales', column: 1, connectedTo: ['t3'] },
+      { id: 't3', label: 'Check Stock', lane: 'warehouse', column: 1, connectedTo: ['t4'] },
+      { id: 't4', label: 'Approve', lane: 'sales', column: 2, connectedTo: ['t5'] },
+      { id: 't5', label: 'Ship Order', lane: 'warehouse', column: 3 },
+    ],
+  },
+  DecisionTree: {
+    title: 'Customer Support Flow',
+    rootId: 'start',
+    nodes: [
+      { id: 'start', label: 'Issue Type?', type: 'decision' as const },
+      { id: 'billing', label: 'Billing?', type: 'decision' as const, yes: 'refund', no: 'support' },
+      { id: 'technical', label: 'Technical?', type: 'decision' as const, yes: 'debug', no: 'general' },
+      { id: 'refund', label: 'Process Refund', type: 'outcome' as const },
+      { id: 'support', label: 'Contact Support', type: 'outcome' as const },
+      { id: 'debug', label: 'Debug Issue', type: 'outcome' as const },
+      { id: 'general', label: 'FAQ', type: 'outcome' as const },
+    ],
+  },
+  ProcessMap: {
+    title: 'Order Fulfillment Process',
+    steps: [
+      { id: 's1', label: 'Order Received', type: 'start' as const },
+      { id: 's2', label: 'Validate Order', type: 'process' as const, nextSteps: ['s3'] },
+      { id: 's3', label: 'Check Inventory', type: 'decision' as const, nextSteps: ['s4', 's5'] },
+      { id: 's4', label: 'Pick Items', type: 'process' as const, duration: '5m', nextSteps: ['s6'] },
+      { id: 's5', label: 'Backorder', type: 'subprocess' as const, nextSteps: ['s4'] },
+      { id: 's6', label: 'Pack Order', type: 'process' as const, duration: '3m', nextSteps: ['s7'] },
+      { id: 's7', label: 'Ship', type: 'end' as const },
+    ],
+  },
+  EventSequence: {
+    title: 'User Onboarding Flow',
+    orientation: 'horizontal' as const,
+    events: [
+      { id: 'e1', title: 'Sign Up', time: 'Day 0', icon: 'start' as const },
+      { id: 'e2', title: 'Welcome Email', time: 'Day 0', icon: 'process' as const },
+      { id: 'e3', title: 'First Login', time: 'Day 1', icon: 'milestone' as const },
+      { id: 'e4', title: 'Complete Profile', time: 'Day 2', icon: 'success' as const },
+      { id: 'e5', title: 'First Purchase', time: 'Day 7', icon: 'end' as const },
+    ],
+  },
+
+  // Charts - Advanced Statistical (Batch 6)
+  TornadoChart: {
+    title: 'Sensitivity Analysis',
+    baselineValue: 0,
+    xAxisLabel: 'Impact on NPV ($M)',
+    items: [
+      { id: 'price', label: 'Price', low: -15, high: 20 },
+      { id: 'volume', label: 'Volume', low: -12, high: 18 },
+      { id: 'costs', label: 'Operating Costs', low: -8, high: 10 },
+      { id: 'discount', label: 'Discount Rate', low: -5, high: 6 },
+    ],
+  },
+  ROCCurve: {
+    title: 'Model Performance',
+    auc: 0.87,
+    data: [
+      { fpr: 0, tpr: 0 },
+      { fpr: 0.1, tpr: 0.5 },
+      { fpr: 0.2, tpr: 0.7 },
+      { fpr: 0.4, tpr: 0.85 },
+      { fpr: 0.6, tpr: 0.92 },
+      { fpr: 0.8, tpr: 0.97 },
+      { fpr: 1, tpr: 1 },
+    ],
+  },
+  ConfusionMatrix: {
+    title: 'Classification Results',
+    labels: ['Negative', 'Positive'],
+    matrix: [
+      [85, 15],
+      [10, 90],
+    ],
+  },
+  CohortChart: {
+    title: 'User Retention by Cohort',
+    periodLabels: ['Week 0', 'Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    data: [
+      { cohort: 'Jan', periods: [100, 75, 60, 50, 42] },
+      { cohort: 'Feb', periods: [100, 72, 58, 48] },
+      { cohort: 'Mar', periods: [100, 78, 62] },
+      { cohort: 'Apr', periods: [100, 70] },
+    ],
+  },
+  RetentionCurve: {
+    title: 'App Retention Over Time',
+    data: [
+      { day: 0, retention: 100 },
+      { day: 1, retention: 65 },
+      { day: 7, retention: 32 },
+      { day: 14, retention: 25 },
+      { day: 30, retention: 18 },
+    ],
+    benchmarkData: [
+      { day: 0, retention: 100 },
+      { day: 1, retention: 55 },
+      { day: 7, retention: 22 },
+      { day: 14, retention: 15 },
+      { day: 30, retention: 10 },
+    ],
+  },
+  LorenzCurve: {
+    title: 'Income Distribution',
+    giniCoefficient: 0.38,
+    data: [
+      { population: 0, income: 0 },
+      { population: 20, income: 5 },
+      { population: 40, income: 17 },
+      { population: 60, income: 38 },
+      { population: 80, income: 68 },
+      { population: 100, income: 100 },
+    ],
+  },
+  ErrorBarChart: {
+    title: 'Treatment Comparison',
+    data: [
+      { label: 'Control', value: 45, errorLow: 40, errorHigh: 50 },
+      { label: 'Treatment A', value: 62, errorLow: 55, errorHigh: 69 },
+      { label: 'Treatment B', value: 58, errorLow: 52, errorHigh: 64 },
+      { label: 'Treatment C', value: 72, errorLow: 65, errorHigh: 79 },
+    ],
+  },
+  RegressionPlot: {
+    title: 'Price vs Sales Correlation',
+    xLabel: 'Price ($)',
+    yLabel: 'Units Sold',
+    showEquation: true,
+    data: [
+      { x: 10, y: 25 }, { x: 20, y: 38 }, { x: 30, y: 52 },
+      { x: 40, y: 65 }, { x: 50, y: 78 }, { x: 60, y: 88 },
+    ],
+  },
+  SmallMultiples: {
+    title: 'Regional Sales Trends',
+    columns: 3,
+    xLabels: ['Q1', 'Q2', 'Q3', 'Q4'],
+    data: [
+      { label: 'North', values: [30, 45, 52, 60] },
+      { label: 'South', values: [25, 32, 42, 52] },
+      { label: 'East', values: [40, 48, 55, 70] },
+      { label: 'West', values: [35, 42, 48, 58] },
+      { label: 'Central', values: [28, 38, 50, 65] },
+      { label: 'Overseas', values: [15, 25, 42, 55] },
+    ],
+  },
+  ForecastChart: {
+    title: 'Revenue Forecast',
+    data: [
+      { date: 'Jan', value: 42, isActual: true },
+      { date: 'Feb', value: 48, isActual: true },
+      { date: 'Mar', value: 52, isActual: true },
+      { date: 'Apr', value: 58, isActual: true },
+      { date: 'May', value: 65, isActual: false, lowerBound: 58, upperBound: 72 },
+      { date: 'Jun', value: 75, isActual: false, lowerBound: 65, upperBound: 85 },
+    ],
+  },
+  SensitivityChart: {
+    title: 'Profit Sensitivity Analysis',
+    baselineOutput: 100,
+    data: [
+      { parameter: 'Price', lowValue: -20, baseValue: 0, highValue: 20, lowImpact: 35, highImpact: -25 },
+      { parameter: 'Volume', lowValue: -15, baseValue: 0, highValue: 15, lowImpact: -28, highImpact: 22 },
+      { parameter: 'COGS', lowValue: -10, baseValue: 0, highValue: 10, lowImpact: 18, highImpact: -15 },
+    ],
+  },
+
+  // Charts - Distribution/Specialized (Batch 7)
+  HexbinPlot: {
+    title: 'Customer Activity Distribution',
+    xLabel: 'Session Duration (min)',
+    yLabel: 'Pages Viewed',
+    hexRadius: 15,
+    data: Array.from({ length: 100 }, () => ({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+    })),
+  },
+  SwarmPlot: {
+    title: 'Score Distribution by Group',
+    valueLabel: 'Score',
+    dotRadius: 4,
+    data: [
+      ...Array.from({ length: 15 }, () => ({ category: 'Group A', value: 40 + Math.random() * 30 })),
+      ...Array.from({ length: 15 }, () => ({ category: 'Group B', value: 50 + Math.random() * 25 })),
+      ...Array.from({ length: 15 }, () => ({ category: 'Group C', value: 35 + Math.random() * 35 })),
+    ],
+  },
+  StripPlot: {
+    title: 'Treatment Response Distribution',
+    valueLabel: 'Response Score',
+    jitterWidth: 15,
+    data: [
+      ...Array.from({ length: 12 }, () => ({ category: 'Control', value: 45 + Math.random() * 20 })),
+      ...Array.from({ length: 12 }, () => ({ category: 'Treatment A', value: 55 + Math.random() * 25 })),
+      ...Array.from({ length: 12 }, () => ({ category: 'Treatment B', value: 60 + Math.random() * 20 })),
+    ],
+  },
+  AlluvialDiagram: {
+    title: 'Customer Journey Flow',
+    columnLabels: ['Source', 'Engagement', 'Action', 'Outcome'],
+    nodes: [
+      { id: 'organic', label: 'Organic', column: 0 },
+      { id: 'paid', label: 'Paid Ads', column: 0 },
+      { id: 'browse', label: 'Browsing', column: 1 },
+      { id: 'search', label: 'Search', column: 1 },
+      { id: 'cart', label: 'Add to Cart', column: 2 },
+      { id: 'abandon', label: 'Abandon', column: 2 },
+      { id: 'purchase', label: 'Purchase', column: 3 },
+      { id: 'churn', label: 'Churn', column: 3 },
+    ],
+    flows: [
+      { source: 'organic', target: 'browse', value: 40 },
+      { source: 'organic', target: 'search', value: 25 },
+      { source: 'paid', target: 'browse', value: 30 },
+      { source: 'browse', target: 'cart', value: 35 },
+      { source: 'browse', target: 'abandon', value: 15 },
+      { source: 'search', target: 'cart', value: 20 },
+      { source: 'cart', target: 'purchase', value: 40 },
+      { source: 'cart', target: 'churn', value: 15 },
+    ],
+  },
+  MosaicPlot: {
+    title: 'Age vs Purchase Frequency',
+    rowLabel: 'Age Group',
+    columnLabel: 'Purchase Frequency',
+    data: [
+      { row: '18-24', column: 'Rare', value: 15 },
+      { row: '18-24', column: 'Occasional', value: 35 },
+      { row: '18-24', column: 'Frequent', value: 25 },
+      { row: '25-34', column: 'Rare', value: 10 },
+      { row: '25-34', column: 'Occasional', value: 40 },
+      { row: '25-34', column: 'Frequent', value: 45 },
+      { row: '35-44', column: 'Rare', value: 20 },
+      { row: '35-44', column: 'Occasional', value: 35 },
+      { row: '35-44', column: 'Frequent', value: 30 },
+    ],
+  },
+  AdjacencyMatrix: {
+    title: 'Team Communication Network',
+    nodes: ['Marketing', 'Sales', 'Product', 'Engineering', 'Design'],
+    matrix: [
+      [0, 8, 5, 3, 6],
+      [8, 0, 7, 4, 3],
+      [5, 7, 0, 10, 8],
+      [3, 4, 10, 0, 7],
+      [6, 3, 8, 7, 0],
+    ],
+  },
+  PhylogeneticTree: {
+    title: 'Product Category Evolution',
+    showBranchLengths: true,
+    data: {
+      id: 'root',
+      label: '',
+      branchLength: 0,
+      children: [
+        {
+          id: 'a1',
+          label: '',
+          branchLength: 2,
+          children: [
+            { id: 'p1', label: 'Electronics', branchLength: 3 },
+            { id: 'p2', label: 'Gadgets', branchLength: 2.5 },
+          ],
+        },
+        {
+          id: 'b1',
+          label: '',
+          branchLength: 3,
+          children: [
+            { id: 'p3', label: 'Software', branchLength: 2 },
+            { id: 'p4', label: 'Services', branchLength: 1.8 },
+          ],
+        },
+      ],
+    },
+  },
+  EulerDiagram: {
+    title: 'Customer Segmentation',
+    sets: [
+      { id: 'all', label: 'All Customers', size: 100 },
+      { id: 'active', label: 'Active Users', size: 70, parent: 'all' },
+      { id: 'premium', label: 'Premium', size: 25, parent: 'active' },
+      { id: 'enterprise', label: 'Enterprise', size: 8, parent: 'premium' },
+    ],
+  },
+  IsotypeChart: {
+    title: 'User Growth Over Time',
+    unitValue: 10,
+    data: [
+      { category: '2021', value: 45, icon: 'person' as const },
+      { category: '2022', value: 68, icon: 'person' as const },
+      { category: '2023', value: 82, icon: 'person' as const },
+      { category: '2024', value: 95, icon: 'person' as const },
+    ],
+  },
+  ConceptMap: {
+    title: 'Business Model Concepts',
+    nodes: [
+      { id: 'business', label: 'Business Model', x: 250, y: 50, type: 'primary' as const },
+      { id: 'revenue', label: 'Revenue', x: 100, y: 140, type: 'secondary' as const },
+      { id: 'costs', label: 'Costs', x: 400, y: 140, type: 'secondary' as const },
+      { id: 'profit', label: 'Profit', x: 250, y: 230, type: 'primary' as const },
+    ],
+    relations: [
+      { source: 'business', target: 'revenue', label: 'generates' },
+      { source: 'business', target: 'costs', label: 'incurs' },
+      { source: 'revenue', target: 'profit', label: 'contributes to' },
+      { source: 'costs', target: 'profit', label: 'reduces' },
+    ],
+  },
+
+  // Charts - UML/Technical (Batch 8)
+  SequenceDiagram: {
+    title: 'API Request Flow',
+    actors: [
+      { id: 'client', name: 'Client' },
+      { id: 'api', name: 'API Server' },
+      { id: 'db', name: 'Database' },
+      { id: 'cache', name: 'Cache' },
+    ],
+    messages: [
+      { from: 'client', to: 'api', label: 'GET /users', type: 'sync' as const },
+      { from: 'api', to: 'cache', label: 'Check cache', type: 'sync' as const },
+      { from: 'cache', to: 'api', label: 'Cache miss', type: 'return' as const },
+      { from: 'api', to: 'db', label: 'Query users', type: 'sync' as const },
+      { from: 'db', to: 'api', label: 'User data', type: 'return' as const },
+      { from: 'api', to: 'cache', label: 'Store in cache', type: 'async' as const },
+      { from: 'api', to: 'client', label: 'Response', type: 'return' as const },
+    ],
+  },
+  ActivityDiagram: {
+    title: 'Order Processing Flow',
+    nodes: [
+      { id: 'start', label: '', type: 'start' as const, x: 300, y: 30 },
+      { id: 'receive', label: 'Receive Order', type: 'action' as const, x: 300, y: 100 },
+      { id: 'check', label: 'In Stock?', type: 'decision' as const, x: 300, y: 180 },
+      { id: 'process', label: 'Process Order', type: 'action' as const, x: 150, y: 260 },
+      { id: 'backorder', label: 'Backorder', type: 'action' as const, x: 450, y: 260 },
+      { id: 'merge', label: '', type: 'merge' as const, x: 300, y: 340 },
+      { id: 'ship', label: 'Ship Order', type: 'action' as const, x: 300, y: 400 },
+      { id: 'end', label: '', type: 'end' as const, x: 300, y: 470 },
+    ],
+    flows: [
+      { from: 'start', to: 'receive' },
+      { from: 'receive', to: 'check' },
+      { from: 'check', to: 'process', condition: 'Yes' },
+      { from: 'check', to: 'backorder', condition: 'No' },
+      { from: 'process', to: 'merge' },
+      { from: 'backorder', to: 'merge' },
+      { from: 'merge', to: 'ship' },
+      { from: 'ship', to: 'end' },
+    ],
+  },
+  ERDiagram: {
+    title: 'E-Commerce Database Schema',
+    entities: [
+      {
+        id: 'users',
+        name: 'Users',
+        x: 100,
+        y: 100,
+        attributes: [
+          { name: 'id', type: 'INT', isPrimary: true },
+          { name: 'email', type: 'VARCHAR' },
+          { name: 'name', type: 'VARCHAR' },
+        ],
+      },
+      {
+        id: 'orders',
+        name: 'Orders',
+        x: 350,
+        y: 100,
+        attributes: [
+          { name: 'id', type: 'INT', isPrimary: true },
+          { name: 'user_id', type: 'INT', isForeign: true },
+          { name: 'total', type: 'DECIMAL' },
+          { name: 'status', type: 'VARCHAR' },
+        ],
+      },
+      {
+        id: 'products',
+        name: 'Products',
+        x: 550,
+        y: 100,
+        attributes: [
+          { name: 'id', type: 'INT', isPrimary: true },
+          { name: 'name', type: 'VARCHAR' },
+          { name: 'price', type: 'DECIMAL' },
+        ],
+      },
+    ],
+    relationships: [
+      { from: 'users', to: 'orders', label: 'places', fromCardinality: '1' as const, toCardinality: 'N' as const },
+      { from: 'orders', to: 'products', label: 'contains', fromCardinality: 'N' as const, toCardinality: 'N' as const },
+    ],
+  },
+
+  // Charts - Technical Diagrams (Batch 9)
+  StateDiagram: {
+    title: 'Order State Machine',
+    states: [
+      { id: 'init', name: 'Initial', type: 'initial' as const, x: 100, y: 200 },
+      { id: 'pending', name: 'Pending', type: 'normal' as const, x: 250, y: 200 },
+      { id: 'processing', name: 'Processing', type: 'normal' as const, x: 400, y: 120 },
+      { id: 'shipped', name: 'Shipped', type: 'normal' as const, x: 400, y: 280 },
+      { id: 'delivered', name: 'Delivered', type: 'final' as const, x: 550, y: 200 },
+    ],
+    transitions: [
+      { from: 'init', to: 'pending', trigger: 'submit' },
+      { from: 'pending', to: 'processing', trigger: 'confirm' },
+      { from: 'processing', to: 'shipped', trigger: 'ship' },
+      { from: 'shipped', to: 'delivered', trigger: 'deliver' },
+    ],
+  },
+  DataFlowDiagram: {
+    title: 'Order Processing System',
+    elements: [
+      { id: 'customer', name: 'Customer', type: 'external' as const, x: 100, y: 200 },
+      { id: 'process', name: 'Process Order', type: 'process' as const, x: 325, y: 200 },
+      { id: 'inventory', name: 'Inventory DB', type: 'datastore' as const, x: 325, y: 350 },
+      { id: 'supplier', name: 'Supplier', type: 'external' as const, x: 550, y: 200 },
+    ],
+    flows: [
+      { from: 'customer', to: 'process', label: 'Order Request' },
+      { from: 'process', to: 'inventory', label: 'Check Stock' },
+      { from: 'inventory', to: 'process', label: 'Stock Level' },
+      { from: 'process', to: 'supplier', label: 'Purchase Order' },
+    ],
+  },
+  ArchitectureDiagram: {
+    title: 'Microservices Architecture',
+    components: [
+      { id: 'client', name: 'Web Client', type: 'client' as const, x: 100, y: 80 },
+      { id: 'lb', name: 'Load Balancer', type: 'loadbalancer' as const, x: 300, y: 80 },
+      { id: 'api', name: 'API Gateway', type: 'server' as const, x: 500, y: 80 },
+      { id: 'auth', name: 'Auth Service', type: 'service' as const, x: 200, y: 200 },
+      { id: 'orders', name: 'Order Service', type: 'service' as const, x: 400, y: 200 },
+      { id: 'db', name: 'Database', type: 'database' as const, x: 300, y: 320 },
+      { id: 'cache', name: 'Redis Cache', type: 'cache' as const, x: 500, y: 320 },
+    ],
+    connections: [
+      { from: 'client', to: 'lb' },
+      { from: 'lb', to: 'api' },
+      { from: 'api', to: 'auth', type: 'sync' as const },
+      { from: 'api', to: 'orders', type: 'sync' as const },
+      { from: 'orders', to: 'db' },
+      { from: 'orders', to: 'cache' },
+    ],
+  },
+  NetworkTopology: {
+    title: 'Office Network',
+    nodes: [
+      { id: 'router', name: 'Main Router', type: 'router' as const, x: 325, y: 80 },
+      { id: 'firewall', name: 'Firewall', type: 'firewall' as const, x: 325, y: 180 },
+      { id: 'switch', name: 'Core Switch', type: 'switch' as const, x: 325, y: 280 },
+      { id: 'server1', name: 'Web Server', type: 'server' as const, x: 150, y: 380 },
+      { id: 'server2', name: 'DB Server', type: 'server' as const, x: 325, y: 380 },
+      { id: 'pc1', name: 'Workstation', type: 'computer' as const, x: 500, y: 380 },
+    ],
+    links: [
+      { from: 'router', to: 'firewall', type: 'wired' as const },
+      { from: 'firewall', to: 'switch', type: 'wired' as const },
+      { from: 'switch', to: 'server1', type: 'wired' as const },
+      { from: 'switch', to: 'server2', type: 'wired' as const },
+      { from: 'switch', to: 'pc1', type: 'wired' as const },
+    ],
+  },
+  InfrastructureDiagram: {
+    title: 'AWS Cloud Infrastructure',
+    provider: 'aws' as const,
+    components: [
+      { id: 'cf', name: 'CloudFront', type: 'cloudfront' as const, x: 325, y: 50 },
+      { id: 'alb', name: 'ALB', type: 'elb' as const, x: 325, y: 150 },
+      { id: 'ec2-1', name: 'EC2 Instance', type: 'ec2' as const, x: 200, y: 250 },
+      { id: 'ec2-2', name: 'EC2 Instance', type: 'ec2' as const, x: 450, y: 250 },
+      { id: 'rds', name: 'RDS MySQL', type: 'rds' as const, x: 325, y: 350 },
+      { id: 's3', name: 'S3 Bucket', type: 's3' as const, x: 550, y: 150 },
+    ],
+    connections: [
+      { from: 'cf', to: 'alb', type: 'request' as const },
+      { from: 'alb', to: 'ec2-1' },
+      { from: 'alb', to: 'ec2-2' },
+      { from: 'ec2-1', to: 'rds', type: 'data' as const },
+      { from: 'ec2-2', to: 'rds', type: 'data' as const },
+      { from: 'cf', to: 's3' },
+    ],
+  },
+
+  // Charts - Probabilistic/Causal (Batch 9)
+  BayesianNetwork: {
+    title: 'Customer Purchase Prediction',
+    showProbabilities: true,
+    nodes: [
+      { id: 'income', name: 'High Income', probability: 0.3, x: 100, y: 100 },
+      { id: 'age', name: 'Young Adult', probability: 0.4, x: 400, y: 100 },
+      { id: 'interest', name: 'Tech Interest', probability: 0.6, x: 250, y: 200 },
+      { id: 'purchase', name: 'Will Purchase', probability: 0.45, x: 250, y: 320 },
+    ],
+    edges: [
+      { from: 'income', to: 'interest', strength: 0.7 },
+      { from: 'age', to: 'interest', strength: 0.6 },
+      { from: 'interest', to: 'purchase', strength: 0.8 },
+      { from: 'income', to: 'purchase', strength: 0.5 },
+    ],
+  },
+  CausalLoopDiagram: {
+    title: 'Business Growth Dynamics',
+    variables: [
+      { id: 'sales', name: 'Sales', x: 325, y: 80 },
+      { id: 'revenue', name: 'Revenue', x: 500, y: 180 },
+      { id: 'investment', name: 'Investment', x: 400, y: 320 },
+      { id: 'marketing', name: 'Marketing', x: 150, y: 320 },
+      { id: 'customers', name: 'Customers', x: 150, y: 180 },
+    ],
+    links: [
+      { from: 'sales', to: 'revenue', polarity: '+' as const },
+      { from: 'revenue', to: 'investment', polarity: '+' as const },
+      { from: 'investment', to: 'marketing', polarity: '+' as const },
+      { from: 'marketing', to: 'customers', polarity: '+' as const },
+      { from: 'customers', to: 'sales', polarity: '+' as const },
+    ],
+    loops: [
+      { id: 'r1', name: 'Growth Loop', type: 'reinforcing' as const, x: 325, y: 220 },
+    ],
+  },
+
+  // Charts - Interactive/Comparison (Batch 9)
+  InteractiveTable: {
+    title: 'Sales Performance',
+    columns: [
+      { key: 'name', label: 'Sales Rep', sortable: true },
+      { key: 'deals', label: 'Deals', sortable: true, align: 'right' as const },
+      { key: 'revenue', label: 'Revenue', sortable: true, align: 'right' as const },
+      { key: 'conversion', label: 'Conv. Rate', sortable: true, align: 'right' as const },
+    ],
+    rows: [
+      { name: 'Alice Johnson', deals: 45, revenue: '$125,000', conversion: '28%' },
+      { name: 'Bob Smith', deals: 38, revenue: '$98,000', conversion: '24%' },
+      { name: 'Carol White', deals: 52, revenue: '$142,000', conversion: '32%' },
+      { name: 'David Brown', deals: 41, revenue: '$115,000', conversion: '26%' },
+    ],
+  },
+  ComparisonSlider: {
+    title: 'Conversion Rate Improvement',
+    beforeLabel: 'Before',
+    afterLabel: 'After',
+    beforeColor: '#EF4444',
+    afterColor: '#22C55E',
+    beforeValue: '2.1%',
+    afterValue: '8.7%',
+  },
+  PortfolioBreakdown: {
+    title: 'Investment Portfolio',
+    centerLabel: 'Total',
+    centerValue: '$250K',
+    data: [
+      { label: 'Stocks', value: 100000, color: '#88da1c' },
+      { label: 'Bonds', value: 62500, color: '#3B82F6' },
+      { label: 'Real Estate', value: 50000, color: '#F59E0B' },
+      { label: 'Crypto', value: 25000, color: '#A855F7' },
+      { label: 'Cash', value: 12500, color: '#6B7280' },
+    ],
+  },
+  RevenueWaterfall: {
+    title: 'Revenue Bridge Analysis',
+    valuePrefix: '$',
+    data: [
+      { label: 'Starting Revenue', value: 100000, type: 'initial' as const },
+      { label: 'New Customers', value: 35000, type: 'add' as const },
+      { label: 'Upsells', value: 15000, type: 'add' as const },
+      { label: 'Churn', value: 12000, type: 'subtract' as const },
+      { label: 'Downgrades', value: 8000, type: 'subtract' as const },
+      { label: 'Ending Revenue', value: 130000, type: 'total' as const },
+    ],
+  },
+  CountryMap: {
+    title: 'Global Customer Distribution',
+    highlightColor: '#88da1c',
+    highlightedCountries: [
+      { code: 'US', name: 'United States', value: 45 },
+      { code: 'GB', name: 'United Kingdom', value: 18 },
+      { code: 'DE', name: 'Germany', value: 12 },
+      { code: 'AU', name: 'Australia', value: 8 },
+      { code: 'JP', name: 'Japan', value: 7 },
+    ],
+  },
+
+  // Charts - Goal/Progress (Batch 9)
+  ThermometerChart: {
+    title: 'Fundraising Goal',
+    value: 78500,
+    goal: 100000,
+    valuePrefix: '$',
+    milestones: [
+      { value: 25000, label: 'Phase 1' },
+      { value: 50000, label: 'Phase 2' },
+      { value: 75000, label: 'Phase 3' },
+    ],
+  },
+  SegmentedProgress: {
+    title: 'Project Completion',
+    showPercentages: true,
+    segments: [
+      { label: 'Research', value: 100, max: 100, color: '#22C55E' },
+      { label: 'Design', value: 85, max: 100, color: '#88da1c' },
+      { label: 'Development', value: 60, max: 100, color: '#3B82F6' },
+      { label: 'Testing', value: 25, max: 100, color: '#F59E0B' },
+      { label: 'Launch', value: 0, max: 100, color: '#EF4444' },
+    ],
+  },
+  AnnotatedTimeline: {
+    title: 'Company History',
+    events: [
+      { date: '2020', title: 'Founded', description: 'Company established', type: 'milestone' as const },
+      { date: '2021', title: 'Seed Round', description: '$2M funding secured', type: 'highlight' as const },
+      { date: '2022', title: 'Product Launch', description: 'V1.0 released', type: 'milestone' as const },
+      { date: '2023', title: 'Series A', description: '$15M funding', type: 'highlight' as const },
+      { date: '2024', title: '100K Users', description: 'Reached milestone', type: 'milestone' as const },
+    ],
+  },
+  PredictionBand: {
+    title: 'Revenue Forecast with Confidence',
+    yAxisLabel: 'Revenue',
+    valuePrefix: '$',
+    data: [
+      { label: 'Jan', value: 42000 },
+      { label: 'Feb', value: 48000 },
+      { label: 'Mar', value: 52000 },
+      { label: 'Apr', value: 58000 },
+      { label: 'May', value: 65000, predicted: true, upperBound: 72000, lowerBound: 58000 },
+      { label: 'Jun', value: 75000, predicted: true, upperBound: 85000, lowerBound: 65000 },
+    ],
+  },
+  AnomalyChart: {
+    title: 'Traffic Anomaly Detection',
+    valuePrefix: '',
+    threshold: { upper: 4500, lower: 1500 },
+    data: [
+      { label: 'Mon', value: 2500 },
+      { label: 'Tue', value: 2800 },
+      { label: 'Wed', value: 3200 },
+      { label: 'Thu', value: 5200, isAnomaly: true, anomalyType: 'high' as const, note: 'Viral post' },
+      { label: 'Fri', value: 2900 },
+      { label: 'Sat', value: 1200, isAnomaly: true, anomalyType: 'low' as const, note: 'Server issue' },
+      { label: 'Sun', value: 2600 },
+    ],
+  },
+  TargetChart: {
+    title: 'Quarterly Sales Target',
+    actual: 87500,
+    target: 100000,
+    unit: '$',
+    accentColor: '#88da1c',
+  },
+
+  // Charts - Matrix/Strategy (Batch 9)
+  PerformanceMatrix: {
+    title: 'BCG Growth-Share Matrix',
+    xAxisLabel: 'Market Share',
+    yAxisLabel: 'Growth Rate',
+    quadrantLabels: ['Question Marks', 'Stars', 'Dogs', 'Cash Cows'] as [string, string, string, string],
+    items: [
+      { label: 'Product A', x: 75, y: 80, size: 40 },
+      { label: 'Product B', x: 30, y: 70, size: 25 },
+      { label: 'Product C', x: 80, y: 25, size: 50 },
+      { label: 'Product D', x: 20, y: 30, size: 20 },
+    ],
+  },
+  ValueChain: {
+    title: 'Porter Value Chain',
+    primaryActivities: [
+      { name: 'Inbound Logistics', description: 'Receiving and warehousing' },
+      { name: 'Operations', description: 'Manufacturing' },
+      { name: 'Outbound Logistics', description: 'Distribution' },
+      { name: 'Marketing & Sales', description: 'Promotion' },
+      { name: 'Service', description: 'Customer support' },
+    ],
+    supportActivities: [
+      { name: 'Firm Infrastructure', description: 'Management, finance' },
+      { name: 'Human Resources', description: 'Recruiting, training' },
+      { name: 'Technology', description: 'R&D, IT' },
+      { name: 'Procurement', description: 'Purchasing' },
+    ],
+  },
+  SWOT: {
+    title: 'Strategic SWOT Analysis',
+    strengths: [{ text: 'Strong brand recognition' }, { text: 'Loyal customer base' }, { text: 'Proprietary technology' }],
+    weaknesses: [{ text: 'Limited market presence' }, { text: 'High operating costs' }],
+    opportunities: [{ text: 'Emerging markets' }, { text: 'Digital transformation' }, { text: 'Strategic partnerships' }],
+    threats: [{ text: 'Intense competition' }, { text: 'Economic uncertainty' }, { text: 'Regulatory changes' }],
+  },
+  RiskMatrix: {
+    title: 'Project Risk Assessment',
+    risks: [
+      { label: 'Data Breach', probability: 2, impact: 5 },
+      { label: 'Budget Overrun', probability: 4, impact: 3 },
+      { label: 'Timeline Delay', probability: 3, impact: 4 },
+      { label: 'Resource Shortage', probability: 3, impact: 2 },
+      { label: 'Tech Failure', probability: 2, impact: 4 },
+    ],
+  },
+  PriorityMatrix: {
+    title: 'Eisenhower Task Matrix',
+    tasks: [
+      { label: 'Crisis management', urgent: true, important: true },
+      { label: 'Strategic planning', urgent: false, important: true },
+      { label: 'Email responses', urgent: true, important: false },
+      { label: 'Meeting prep', urgent: false, important: false },
+      { label: 'Client call', urgent: true, important: true },
+      { label: 'Training', urgent: false, important: true },
+    ],
+  },
+  CompetitorMap: {
+    title: 'Competitive Positioning',
+    xAxisLabel: 'Price',
+    yAxisLabel: 'Quality',
+    competitors: [
+      { name: 'You', x: 70, y: 85, isYou: true },
+      { name: 'Competitor A', x: 40, y: 60, size: 30 },
+      { name: 'Competitor B', x: 85, y: 70, size: 45 },
+      { name: 'Competitor C', x: 55, y: 45, size: 25 },
+    ],
+  },
+
+  // Charts - Metrics/OKR (Batch 9)
+  SkillRadar: {
+    title: 'Team Competency Assessment',
+    showTarget: true,
+    currentColor: '#88da1c',
+    targetColor: '#3B82F6',
+    skills: [
+      { name: 'Leadership', current: 75, target: 90 },
+      { name: 'Technical', current: 85, target: 90 },
+      { name: 'Communication', current: 70, target: 85 },
+      { name: 'Problem Solving', current: 80, target: 85 },
+      { name: 'Innovation', current: 65, target: 80 },
+      { name: 'Collaboration', current: 90, target: 95 },
+    ],
+  },
+  OKRTracker: {
+    title: 'Q4 Objectives & Key Results',
+    objectives: [
+      {
+        title: 'Increase Market Share',
+        keyResults: [
+          { title: 'New customer acquisition', current: 850, target: 1000 },
+          { title: 'Customer retention rate', current: 92, target: 95, unit: '%' },
+          { title: 'Revenue growth', current: 28, target: 30, unit: '%' },
+        ],
+      },
+      {
+        title: 'Improve Product Quality',
+        keyResults: [
+          { title: 'Customer satisfaction', current: 4.3, target: 4.5 },
+          { title: 'Bug resolution time', current: 18, target: 24, unit: 'hrs' },
+        ],
+      },
+    ],
+  },
+  QuarterlyTrend: {
+    title: 'Quarterly Revenue Trend',
+    unit: '$',
+    accentColor: '#88da1c',
+    showChange: true,
+    data: [
+      { quarter: 'Q1 2024', value: 125000, change: 15 },
+      { quarter: 'Q2 2024', value: 142000, change: 13.6 },
+      { quarter: 'Q3 2024', value: 138000, change: -2.8 },
+      { quarter: 'Q4 2024', value: 165000, change: 19.6 },
+    ],
+  },
+  BenchmarkChart: {
+    title: 'Industry Benchmark Comparison',
+    accentColor: '#88da1c',
+    items: [
+      { label: 'Customer Satisfaction', value: 4.2, benchmark: 4.0 },
+      { label: 'Response Time', value: 2.5, benchmark: 3.0, unit: 'hrs' },
+      { label: 'Conversion Rate', value: 3.8, benchmark: 4.5, unit: '%' },
+      { label: 'NPS Score', value: 72, benchmark: 65 },
+    ],
+  },
+  CapabilityModel: {
+    title: 'Process Maturity Assessment',
+    accentColor: '#88da1c',
+    areas: [
+      { name: 'Project Management', currentLevel: 3, targetLevel: 4 },
+      { name: 'Quality Assurance', currentLevel: 4, targetLevel: 5 },
+      { name: 'DevOps', currentLevel: 2, targetLevel: 4 },
+      { name: 'Security', currentLevel: 3, targetLevel: 4 },
+      { name: 'Documentation', currentLevel: 2, targetLevel: 3 },
+    ],
+  },
+
+  // Charts - UX/Product (Batch 9)
+  UserFlowDiagram: {
+    title: 'Checkout User Flow',
+    accentColor: '#88da1c',
+    steps: [
+      { id: 'start', label: 'Start', type: 'start' as const },
+      { id: 'cart', label: 'View Cart', type: 'page' as const, conversion: 100 },
+      { id: 'shipping', label: 'Shipping', type: 'page' as const, dropoff: 15 },
+      { id: 'payment', label: 'Payment', type: 'page' as const, dropoff: 10 },
+      { id: 'review', label: 'Review', type: 'decision' as const },
+      { id: 'confirm', label: 'Confirm', type: 'action' as const },
+      { id: 'end', label: 'Complete', type: 'end' as const, conversion: 65 },
+    ],
+    paths: [
+      { from: 'start', to: 'cart' },
+      { from: 'cart', to: 'shipping' },
+      { from: 'shipping', to: 'payment' },
+      { from: 'payment', to: 'review' },
+      { from: 'review', to: 'confirm', label: 'Approve' },
+      { from: 'review', to: 'cart', label: 'Edit', isAlternate: true },
+      { from: 'confirm', to: 'end' },
+    ],
+  },
+  FeatureComparison: {
+    title: 'Plan Feature Comparison',
+    accentColor: '#88da1c',
+    features: [
+      { feature: 'Unlimited Users', description: 'Add team members' },
+      { feature: 'Custom Integrations', description: 'Connect your tools' },
+      { feature: 'Priority Support', description: '24/7 assistance' },
+      { feature: 'Advanced Analytics', description: 'Deep insights' },
+      { feature: 'API Access', description: 'Build custom solutions' },
+    ],
+    columns: [
+      { name: 'Basic', values: [false, false, false, false, false] },
+      { name: 'Pro', values: [true, 'partial' as const, true, false, false], highlight: true },
+      { name: 'Enterprise', values: [true, true, true, true, true] },
+    ],
+  },
+  MetricsDashboard: {
+    title: 'Key Performance Metrics',
+    columns: 3 as const,
+    accentColor: '#88da1c',
+    metrics: [
+      { label: 'Revenue', value: '$125.4K', change: 12.5, trend: 'up' as const, icon: 'revenue' as const, sparkline: [85, 90, 88, 95, 102, 110, 125] },
+      { label: 'Users', value: '12,847', change: 8.2, trend: 'up' as const, icon: 'users' as const, sparkline: [10, 11, 10.5, 11.5, 12, 12.5, 12.8] },
+      { label: 'Conversion', value: '4.2%', change: -0.3, trend: 'down' as const, icon: 'percent' as const },
+      { label: 'Avg. Time', value: '3.2m', change: 15, trend: 'up' as const, icon: 'time' as const },
+      { label: 'Satisfaction', value: '4.8', change: 0.2, icon: 'star' as const, target: 5 },
+      { label: 'Growth', value: '23%', change: 5, trend: 'up' as const, icon: 'chart' as const },
+    ],
+  },
+  FeedbackLoop: {
+    title: 'PDCA Improvement Cycle',
+    centerLabel: 'Continuous Improvement',
+    accentColor: '#88da1c',
+    steps: [
+      { id: '1', label: 'Plan', description: 'Define objectives and processes', icon: 'input' as const },
+      { id: '2', label: 'Do', description: 'Implement the plan', icon: 'process' as const },
+      { id: '3', label: 'Check', description: 'Monitor and measure results', icon: 'measure' as const },
+      { id: '4', label: 'Act', description: 'Take corrective actions', icon: 'feedback' as const },
+    ],
+  },
+
   // Sequential
   Timeline: {
     title: 'Project Milestones',
@@ -886,6 +1965,94 @@ const ComponentPreview = ({ componentId, variant = 'dark' }: { componentId: stri
     case 'CircularBarChart': return <CircularBarChart {...propsWithVariant as typeof SAMPLE_DATA.CircularBarChart & { variant: 'dark' | 'light' }} />;
     case 'DotPlot': return <DotPlot {...propsWithVariant as typeof SAMPLE_DATA.DotPlot & { variant: 'dark' | 'light' }} />;
     case 'ParallelCoordinates': return <ParallelCoordinates {...propsWithVariant as typeof SAMPLE_DATA.ParallelCoordinates & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Process/Workflow (Batch 5)
+    case 'GanttChart': return <GanttChart {...propsWithVariant as typeof SAMPLE_DATA.GanttChart & { variant: 'dark' | 'light' }} />;
+    case 'FlowChart': return <FlowChart {...propsWithVariant as typeof SAMPLE_DATA.FlowChart & { variant: 'dark' | 'light' }} />;
+    case 'KanbanBoard': return <KanbanBoard {...propsWithVariant as typeof SAMPLE_DATA.KanbanBoard & { variant: 'dark' | 'light' }} />;
+    case 'RoadmapDiagram': return <RoadmapDiagram {...propsWithVariant as typeof SAMPLE_DATA.RoadmapDiagram & { variant: 'dark' | 'light' }} />;
+    case 'CustomerJourneyMap': return <CustomerJourneyMap {...propsWithVariant as typeof SAMPLE_DATA.CustomerJourneyMap & { variant: 'dark' | 'light' }} />;
+    case 'SwimlaneChart': return <SwimlaneChart {...propsWithVariant as typeof SAMPLE_DATA.SwimlaneChart & { variant: 'dark' | 'light' }} />;
+    case 'DecisionTree': return <DecisionTree {...propsWithVariant as typeof SAMPLE_DATA.DecisionTree & { variant: 'dark' | 'light' }} />;
+    case 'ProcessMap': return <ProcessMap {...propsWithVariant as typeof SAMPLE_DATA.ProcessMap & { variant: 'dark' | 'light' }} />;
+    case 'EventSequence': return <EventSequence {...propsWithVariant as typeof SAMPLE_DATA.EventSequence & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Advanced Statistical (Batch 6)
+    case 'TornadoChart': return <TornadoChart {...propsWithVariant as typeof SAMPLE_DATA.TornadoChart & { variant: 'dark' | 'light' }} />;
+    case 'ROCCurve': return <ROCCurve {...propsWithVariant as typeof SAMPLE_DATA.ROCCurve & { variant: 'dark' | 'light' }} />;
+    case 'ConfusionMatrix': return <ConfusionMatrix {...propsWithVariant as typeof SAMPLE_DATA.ConfusionMatrix & { variant: 'dark' | 'light' }} />;
+    case 'CohortChart': return <CohortChart {...propsWithVariant as typeof SAMPLE_DATA.CohortChart & { variant: 'dark' | 'light' }} />;
+    case 'RetentionCurve': return <RetentionCurve {...propsWithVariant as typeof SAMPLE_DATA.RetentionCurve & { variant: 'dark' | 'light' }} />;
+    case 'LorenzCurve': return <LorenzCurve {...propsWithVariant as typeof SAMPLE_DATA.LorenzCurve & { variant: 'dark' | 'light' }} />;
+    case 'ErrorBarChart': return <ErrorBarChart {...propsWithVariant as typeof SAMPLE_DATA.ErrorBarChart & { variant: 'dark' | 'light' }} />;
+    case 'RegressionPlot': return <RegressionPlot {...propsWithVariant as typeof SAMPLE_DATA.RegressionPlot & { variant: 'dark' | 'light' }} />;
+    case 'SmallMultiples': return <SmallMultiples {...propsWithVariant as typeof SAMPLE_DATA.SmallMultiples & { variant: 'dark' | 'light' }} />;
+    case 'ForecastChart': return <ForecastChart {...propsWithVariant as typeof SAMPLE_DATA.ForecastChart & { variant: 'dark' | 'light' }} />;
+    case 'SensitivityChart': return <SensitivityChart {...propsWithVariant as typeof SAMPLE_DATA.SensitivityChart & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Distribution/Specialized (Batch 7)
+    case 'HexbinPlot': return <HexbinPlot {...propsWithVariant as typeof SAMPLE_DATA.HexbinPlot & { variant: 'dark' | 'light' }} />;
+    case 'SwarmPlot': return <SwarmPlot {...propsWithVariant as typeof SAMPLE_DATA.SwarmPlot & { variant: 'dark' | 'light' }} />;
+    case 'StripPlot': return <StripPlot {...propsWithVariant as typeof SAMPLE_DATA.StripPlot & { variant: 'dark' | 'light' }} />;
+    case 'AlluvialDiagram': return <AlluvialDiagram {...propsWithVariant as typeof SAMPLE_DATA.AlluvialDiagram & { variant: 'dark' | 'light' }} />;
+    case 'MosaicPlot': return <MosaicPlot {...propsWithVariant as typeof SAMPLE_DATA.MosaicPlot & { variant: 'dark' | 'light' }} />;
+    case 'AdjacencyMatrix': return <AdjacencyMatrix {...propsWithVariant as typeof SAMPLE_DATA.AdjacencyMatrix & { variant: 'dark' | 'light' }} />;
+    case 'PhylogeneticTree': return <PhylogeneticTree {...propsWithVariant as typeof SAMPLE_DATA.PhylogeneticTree & { variant: 'dark' | 'light' }} />;
+    case 'EulerDiagram': return <EulerDiagram {...propsWithVariant as typeof SAMPLE_DATA.EulerDiagram & { variant: 'dark' | 'light' }} />;
+    case 'IsotypeChart': return <IsotypeChart {...propsWithVariant as typeof SAMPLE_DATA.IsotypeChart & { variant: 'dark' | 'light' }} />;
+    case 'ConceptMap': return <ConceptMap {...propsWithVariant as typeof SAMPLE_DATA.ConceptMap & { variant: 'dark' | 'light' }} />;
+
+    // Charts - UML/Technical (Batch 8)
+    case 'SequenceDiagram': return <SequenceDiagram {...propsWithVariant as typeof SAMPLE_DATA.SequenceDiagram & { variant: 'dark' | 'light' }} />;
+    case 'ActivityDiagram': return <ActivityDiagram {...propsWithVariant as typeof SAMPLE_DATA.ActivityDiagram & { variant: 'dark' | 'light' }} />;
+    case 'ERDiagram': return <ERDiagram {...propsWithVariant as typeof SAMPLE_DATA.ERDiagram & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Technical Diagrams (Batch 9)
+    case 'StateDiagram': return <StateDiagram {...propsWithVariant as typeof SAMPLE_DATA.StateDiagram & { variant: 'dark' | 'light' }} />;
+    case 'DataFlowDiagram': return <DataFlowDiagram {...propsWithVariant as typeof SAMPLE_DATA.DataFlowDiagram & { variant: 'dark' | 'light' }} />;
+    case 'ArchitectureDiagram': return <ArchitectureDiagram {...propsWithVariant as typeof SAMPLE_DATA.ArchitectureDiagram & { variant: 'dark' | 'light' }} />;
+    case 'NetworkTopology': return <NetworkTopology {...propsWithVariant as typeof SAMPLE_DATA.NetworkTopology & { variant: 'dark' | 'light' }} />;
+    case 'InfrastructureDiagram': return <InfrastructureDiagram {...propsWithVariant as typeof SAMPLE_DATA.InfrastructureDiagram & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Probabilistic/Causal (Batch 9)
+    case 'BayesianNetwork': return <BayesianNetwork {...propsWithVariant as typeof SAMPLE_DATA.BayesianNetwork & { variant: 'dark' | 'light' }} />;
+    case 'CausalLoopDiagram': return <CausalLoopDiagram {...propsWithVariant as typeof SAMPLE_DATA.CausalLoopDiagram & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Interactive/Comparison (Batch 9)
+    case 'InteractiveTable': return <InteractiveTable {...propsWithVariant as typeof SAMPLE_DATA.InteractiveTable & { variant: 'dark' | 'light' }} />;
+    case 'ComparisonSlider': return <ComparisonSlider {...propsWithVariant as typeof SAMPLE_DATA.ComparisonSlider & { variant: 'dark' | 'light' }} />;
+    case 'PortfolioBreakdown': return <PortfolioBreakdown {...propsWithVariant as typeof SAMPLE_DATA.PortfolioBreakdown & { variant: 'dark' | 'light' }} />;
+    case 'RevenueWaterfall': return <RevenueWaterfall {...propsWithVariant as typeof SAMPLE_DATA.RevenueWaterfall & { variant: 'dark' | 'light' }} />;
+    case 'CountryMap': return <CountryMap {...propsWithVariant as typeof SAMPLE_DATA.CountryMap & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Goal/Progress (Batch 9)
+    case 'ThermometerChart': return <ThermometerChart {...propsWithVariant as typeof SAMPLE_DATA.ThermometerChart & { variant: 'dark' | 'light' }} />;
+    case 'SegmentedProgress': return <SegmentedProgress {...propsWithVariant as typeof SAMPLE_DATA.SegmentedProgress & { variant: 'dark' | 'light' }} />;
+    case 'AnnotatedTimeline': return <AnnotatedTimeline {...propsWithVariant as typeof SAMPLE_DATA.AnnotatedTimeline & { variant: 'dark' | 'light' }} />;
+    case 'PredictionBand': return <PredictionBand {...propsWithVariant as typeof SAMPLE_DATA.PredictionBand & { variant: 'dark' | 'light' }} />;
+    case 'AnomalyChart': return <AnomalyChart {...propsWithVariant as typeof SAMPLE_DATA.AnomalyChart & { variant: 'dark' | 'light' }} />;
+    case 'TargetChart': return <TargetChart {...propsWithVariant as typeof SAMPLE_DATA.TargetChart & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Matrix/Strategy (Batch 9)
+    case 'PerformanceMatrix': return <PerformanceMatrix {...propsWithVariant as typeof SAMPLE_DATA.PerformanceMatrix & { variant: 'dark' | 'light' }} />;
+    case 'ValueChain': return <ValueChain {...propsWithVariant as typeof SAMPLE_DATA.ValueChain & { variant: 'dark' | 'light' }} />;
+    case 'SWOT': return <SWOT {...propsWithVariant as typeof SAMPLE_DATA.SWOT & { variant: 'dark' | 'light' }} />;
+    case 'RiskMatrix': return <RiskMatrix {...propsWithVariant as typeof SAMPLE_DATA.RiskMatrix & { variant: 'dark' | 'light' }} />;
+    case 'PriorityMatrix': return <PriorityMatrix {...propsWithVariant as typeof SAMPLE_DATA.PriorityMatrix & { variant: 'dark' | 'light' }} />;
+    case 'CompetitorMap': return <CompetitorMap {...propsWithVariant as typeof SAMPLE_DATA.CompetitorMap & { variant: 'dark' | 'light' }} />;
+
+    // Charts - Metrics/OKR (Batch 9)
+    case 'SkillRadar': return <SkillRadar {...propsWithVariant as typeof SAMPLE_DATA.SkillRadar & { variant: 'dark' | 'light' }} />;
+    case 'OKRTracker': return <OKRTracker {...propsWithVariant as typeof SAMPLE_DATA.OKRTracker & { variant: 'dark' | 'light' }} />;
+    case 'QuarterlyTrend': return <QuarterlyTrend {...propsWithVariant as typeof SAMPLE_DATA.QuarterlyTrend & { variant: 'dark' | 'light' }} />;
+    case 'BenchmarkChart': return <BenchmarkChart {...propsWithVariant as typeof SAMPLE_DATA.BenchmarkChart & { variant: 'dark' | 'light' }} />;
+    case 'CapabilityModel': return <CapabilityModel {...propsWithVariant as typeof SAMPLE_DATA.CapabilityModel & { variant: 'dark' | 'light' }} />;
+
+    // Charts - UX/Product (Batch 9)
+    case 'UserFlowDiagram': return <UserFlowDiagram {...propsWithVariant as typeof SAMPLE_DATA.UserFlowDiagram & { variant: 'dark' | 'light' }} />;
+    case 'FeatureComparison': return <FeatureComparison {...propsWithVariant as typeof SAMPLE_DATA.FeatureComparison & { variant: 'dark' | 'light' }} />;
+    case 'MetricsDashboard': return <MetricsDashboard {...propsWithVariant as typeof SAMPLE_DATA.MetricsDashboard & { variant: 'dark' | 'light' }} />;
+    case 'FeedbackLoop': return <FeedbackLoop {...propsWithVariant as typeof SAMPLE_DATA.FeedbackLoop & { variant: 'dark' | 'light' }} />;
 
     // Sequential
     case 'Timeline': return <Timeline {...propsWithVariant as typeof SAMPLE_DATA.Timeline & { variant: 'dark' | 'light' }} />;

@@ -148,7 +148,7 @@ export function MindMap({
                 x={pos.x}
                 y={pos.y + (isCenter ? 5 : 4)}
                 textAnchor="middle"
-                fill={isCenter ? 'black' : 'white'}
+                fill="white"
                 fontSize={isCenter ? 13 : 10}
                 fontWeight="bold"
               >
