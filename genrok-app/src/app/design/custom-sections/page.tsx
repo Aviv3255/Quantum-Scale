@@ -1,13 +1,137 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { X, Copy, Check, Search, LayoutTemplate, ChevronDown } from 'lucide-react';
+import { X, Copy, Check, Search, LayoutTemplate } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { sectionsData, categories } from './sections-data';
 import { Section, CustomizableField } from './types';
+
+// Grid card preview component - renders scaled HTML in iframe
+function GridPreview({ html }: { html: string }) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+
+    const doc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (!doc) return;
+
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=1200">
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          html, body {
+            width: 1200px;
+            background: #fff;
+            overflow: hidden;
+          }
+        </style>
+      </head>
+      <body>${html}</body>
+      </html>
+    `);
+    doc.close();
+    setIsLoaded(true);
+  }, [html]);
+
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '180px',
+        overflow: 'hidden',
+        position: 'relative',
+        background: '#f9fafb'
+      }}
+    >
+      <iframe
+        ref={iframeRef}
+        style={{
+          width: '1200px',
+          height: '600px',
+          transform: 'scale(0.25)',
+          transformOrigin: 'top left',
+          border: 'none',
+          pointerEvents: 'none',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          opacity: isLoaded ? 1 : 0,
+          transition: 'opacity 0.2s'
+        }}
+        title="Section Preview"
+      />
+    </div>
+  );
+}
+
+// Modal preview component - full width rendering
+function ModalPreview({ html }: { html: string }) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+
+    const doc = iframe.contentDocument || iframe.contentWindow?.document;
+    if (!doc) return;
+
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          html, body {
+            background: #fff;
+            min-height: 100%;
+          }
+        </style>
+      </head>
+      <body>${html}</body>
+      </html>
+    `);
+    doc.close();
+  }, [html]);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        width: '100%',
+        height: '100%',
+        overflow: 'auto',
+        background: '#fff',
+        borderRadius: '8px'
+      }}
+    >
+      <iframe
+        ref={iframeRef}
+        style={{
+          width: '100%',
+          minHeight: '100%',
+          height: 'auto',
+          border: 'none',
+          display: 'block'
+        }}
+        title="Section Preview"
+      />
+    </div>
+  );
+}
 
 export default function CustomSectionsPage() {
   const router = useRouter();
@@ -44,14 +168,24 @@ export default function CustomSectionsPage() {
     });
   }, [searchQuery, activeCategory]);
 
-  const handleFieldChange = (fieldId: string, value: string) => {
+  const handleFieldChange = useCallback((fieldId: string, value: string) => {
     setFieldValues(prev => ({ ...prev, [fieldId]: value }));
-  };
+  }, []);
 
+  // Generate HTML based on current field values - updates preview and code
   const generatedHtml = useMemo(() => {
     if (!selectedSection) return '';
     return selectedSection.generateHtml(fieldValues);
   }, [selectedSection, fieldValues]);
+
+  // Generate preview HTML for grid cards (with default values)
+  const getDefaultHtml = useCallback((section: Section) => {
+    const defaults: Record<string, string> = {};
+    section.fields.forEach(field => {
+      defaults[field.id] = field.defaultValue;
+    });
+    return section.generateHtml(defaults);
+  }, []);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(generatedHtml);
@@ -91,7 +225,7 @@ export default function CustomSectionsPage() {
             Custom <span style={{ fontStyle: 'italic', fontFamily: 'Georgia, serif', fontWeight: '700' }}>Sections</span>
           </h1>
           <p className="text-base md:text-lg mb-8" style={{ color: '#6B7280' }}>
-            Professional HTML sections ready to embed in your Shopify store. Customize colors, images, and text, then copy the code.
+            Professional HTML sections ready to embed in your Shopify store. Customize and copy the code.
           </p>
 
           {/* Search and Filter */}
@@ -125,35 +259,30 @@ export default function CustomSectionsPage() {
           </div>
         </div>
 
-        {/* Sections Grid - 4 columns */}
+        {/* Sections Grid - 4 columns with actual section previews */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredSections.map((section) => (
             <div
               key={section.id}
               onClick={() => setSelectedSection(section)}
-              className="group cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1"
+              className="group cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               style={{
                 background: '#fff',
                 border: '1px solid #E5E7EB',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)'
               }}
             >
-              <div className="relative overflow-hidden" style={{ height: '180px', background: '#f9fafb' }}>
-                <img
-                  src={section.thumbnail}
-                  alt={section.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                  <span className="px-4 py-2 bg-white rounded-lg text-sm font-semibold text-gray-900">
-                    Customize Section
+              {/* Section Preview */}
+              <div className="relative overflow-hidden">
+                <GridPreview html={getDefaultHtml(section)} />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity px-4 py-2 bg-white rounded-lg text-sm font-semibold text-gray-900">
+                    Customize
                   </span>
                 </div>
               </div>
-              <div className="p-4">
+              <div className="p-4 border-t border-gray-100">
                 <div className="text-xs font-medium text-indigo-600 mb-1">{section.category}</div>
-                <h3 className="font-semibold text-gray-900 mb-1">{section.name}</h3>
-                <p className="text-sm text-gray-500 line-clamp-2">{section.description}</p>
+                <h3 className="font-semibold text-gray-900 text-sm">{section.name}</h3>
               </div>
             </div>
           ))}
@@ -166,7 +295,7 @@ export default function CustomSectionsPage() {
         )}
       </div>
 
-      {/* Modal */}
+      {/* Modal - 50% Config | 50% (Preview + Code) */}
       <AnimatePresence>
         {selectedSection && (
           <motion.div
@@ -174,25 +303,40 @@ export default function CustomSectionsPage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ background: 'rgba(0,0,0,0.7)' }}
+            style={{ background: 'rgba(0,0,0,0.8)' }}
             onClick={closeModal}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex"
+              className="bg-white rounded-2xl w-full max-w-7xl overflow-hidden flex"
+              style={{ height: '85vh', maxHeight: '900px' }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Left Panel - Customization */}
-              <div className="w-80 border-r border-gray-200 flex flex-col" style={{ background: '#fafafa' }}>
-                <div className="p-6 border-b border-gray-200">
-                  <h2 className="text-xl font-bold text-gray-900">{selectedSection.name}</h2>
-                  <p className="text-sm text-gray-500 mt-1">{selectedSection.description}</p>
+              {/* Left Panel - 50% Configuration */}
+              <div
+                className="flex flex-col border-r border-gray-200"
+                style={{ width: '50%', background: '#fafafa' }}
+              >
+                {/* Header */}
+                <div className="p-6 border-b border-gray-200 flex items-center justify-between flex-shrink-0">
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">{selectedSection.name}</h2>
+                    <p className="text-sm text-gray-500 mt-1">{selectedSection.category}</p>
+                  </div>
+                  <button
+                    onClick={closeModal}
+                    className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                  >
+                    <X className="w-5 h-5 text-gray-500" />
+                  </button>
                 </div>
+
+                {/* Scrollable Config Area */}
                 <div className="flex-1 overflow-y-auto p-6">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-4">Customize Section</h3>
-                  <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wide">Customize</h3>
+                  <div className="space-y-5">
                     {selectedSection.fields.map((field) => (
                       <FieldInput
                         key={field.id}
@@ -205,32 +349,31 @@ export default function CustomSectionsPage() {
                 </div>
               </div>
 
-              {/* Right Panel - Preview & Code */}
-              <div className="flex-1 flex flex-col">
-                {/* Header with close button */}
-                <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-medium text-gray-600">Live Preview</span>
+              {/* Right Panel - 50% (Preview top 50% + Code bottom 50%) */}
+              <div
+                className="flex flex-col"
+                style={{ width: '50%' }}
+              >
+                {/* Preview Area - Top 50% */}
+                <div
+                  className="flex flex-col p-4 border-b border-gray-200"
+                  style={{ height: '50%', background: '#f5f5f5' }}
+                >
+                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 flex-shrink-0">
+                    Live Preview
                   </div>
-                  <button
-                    onClick={closeModal}
-                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  >
-                    <X className="w-5 h-5 text-gray-500" />
-                  </button>
+                  <div className="flex-1 overflow-hidden rounded-lg border border-gray-200">
+                    <ModalPreview html={generatedHtml} />
+                  </div>
                 </div>
 
-                {/* Preview Area */}
-                <div className="flex-1 overflow-auto p-6" style={{ background: '#f5f5f5' }}>
-                  <div
-                    className="bg-white rounded-xl shadow-sm overflow-hidden"
-                    dangerouslySetInnerHTML={{ __html: generatedHtml }}
-                  />
-                </div>
-
-                {/* Code Area */}
-                <div className="border-t border-gray-200" style={{ height: '200px' }}>
-                  <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100" style={{ background: '#1e1e1e' }}>
+                {/* Code Area - Bottom 50% */}
+                <div
+                  className="flex flex-col"
+                  style={{ height: '50%', background: '#1e1e1e' }}
+                >
+                  {/* Code Header */}
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-gray-700 flex-shrink-0">
                     <span className="text-sm font-medium text-gray-400">HTML Code</span>
                     <button
                       onClick={handleCopy}
@@ -244,12 +387,13 @@ export default function CustomSectionsPage() {
                       {copied ? 'Copied!' : 'Copy Code'}
                     </button>
                   </div>
-                  <pre
-                    className="h-full overflow-auto p-4 text-xs"
-                    style={{ background: '#1e1e1e', color: '#d4d4d4' }}
-                  >
-                    <code>{generatedHtml}</code>
-                  </pre>
+
+                  {/* Code Content */}
+                  <div className="flex-1 overflow-auto p-4">
+                    <pre className="text-xs leading-relaxed" style={{ color: '#d4d4d4' }}>
+                      <code>{generatedHtml}</code>
+                    </pre>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -270,11 +414,11 @@ function FieldInput({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const inputClasses = "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black/10";
+  const inputClasses = "w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-gray-300 bg-white";
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1.5">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
         {field.label}
       </label>
       {field.type === 'textarea' ? (
@@ -287,12 +431,12 @@ function FieldInput({
           style={{ resize: 'vertical' }}
         />
       ) : field.type === 'color' ? (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <input
             type="color"
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="w-10 h-10 rounded cursor-pointer border-0"
+            className="w-12 h-10 rounded-lg cursor-pointer border border-gray-200"
           />
           <input
             type="text"
