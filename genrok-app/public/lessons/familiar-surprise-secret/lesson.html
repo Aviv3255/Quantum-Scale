@@ -12,36 +12,22 @@
   <script src="../shared/greetings.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-    <link rel="preconnect" href="https://pqvvrljykfvhpyvxmwzb.supabase.co" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --accent: #2563eb;
-      --accent-dark: #1d4ed8;
-      --accent-light: #3b82f6;
-      --accent-rgb: 37, 99, 235;
+      --accent: #88da1c;
+      --accent-dark: #6fb816;
+      --accent-rgb: 136, 218, 28;
+      --error: #EF4444;
+      --success: #88da1c;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', sans-serif;
-      background: transparent;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
       -webkit-font-smoothing: antialiased;
     }
-    .title-font {
-      font-family: 'Fraunces', serif;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-    h1, h2, h3, .slide-title {
-      font-family: 'Fraunces', serif;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-    ::selection { background: var(--accent); color: white; }
+    ::selection { background: var(--accent); color: #000; }
     .slide-scroll::-webkit-scrollbar { display: none; }
     .slide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
@@ -54,36 +40,20 @@
     const { useState, useEffect, useCallback, useMemo } = React;
 
     // ============================================
-    // GET USER NAME FROM URL PARAM
+    // USER NAME FROM URL
     // ============================================
     const getUserName = () => {
       const params = new URLSearchParams(window.location.search);
-
-    // Animated Counter Component
-    const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }) => {
-      const [count, setCount] = useState(0);
-      useEffect(() => {
-        let start = 0;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) { setCount(target); clearInterval(timer); }
-          else { setCount(Math.floor(start)); }
-        }, 16);
-        return () => clearInterval(timer);
-      }, [target, duration]);
-      return <span>{prefix}{count}{suffix}</span>;
-    };      return params.get('userName') || 'Builder';
+      return params.get('userName') || 'Builder';
     };
 
     // ============================================
-    // LESSON CONFIGURATION
+    // LESSON CONFIG
     // ============================================
     const LESSON_CONFIG = {
       id: 'familiar-surprise-secret',
       title: 'The Familiar Surprise Secret',
-      description: 'Why 70% familiar + 30% novel is the formula that makes customers say "I need this."',
-      accentColor: '#2563eb',
+      subtitle: 'Why 70% familiar + 30% novel is the formula that makes customers say "I need this."',
       duration: '5 min',
       nextLesson: {
         id: 'red-button-effect',
@@ -92,212 +62,141 @@
       }
     };
 
-    // ============ ADMIN REPORTER SYSTEM ============
-    // Per-slide bug reporting for admin users
-    let __isAdmin = false;
-
-    // Listen for admin status from parent
-    window.addEventListener('message', function(e) {
-      if (e.data?.type === 'ADMIN_STATUS') {
-        __isAdmin = e.data.isAdmin;
-      }
-    });
-
-    // Request admin status on load
-    if (window.parent !== window) {
-      window.parent.postMessage({ type: 'CHECK_ADMIN_STATUS' }, '*');
-    }
-
-    // Admin Report Button Component
-    const AdminSlideReportButton = ({ slideIndex, slideType }) => {
-      // TEMP: if (!__isAdmin) return null; // TODO: restore before going live
-
-      const handleReport = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'ADMIN_REPORT_REQUEST',
-            slideIndex: slideIndex,
-            slideType: slideType,
-            lessonSlug: LESSON_CONFIG.id,
-            elementId: slideType + '-' + slideIndex
-          }, '*');
-        }
-      };
-
-      return (
-        <button
-          onClick={handleReport}
-          title={`Report issue on Slide ${slideIndex + 1} (${slideType})`}
-          style={{
-            position: 'absolute',
-            top: '12px',
-            right: '12px',
-            width: '32px',
-            height: '32px',
-            borderRadius: '8px',
-            backgroundColor: 'rgba(239, 68, 68, 0.9)',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            opacity: 0.6,
-            transition: 'opacity 0.2s, transform 0.2s',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.1)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="m8 2 1.88 1.88"/><path d="M14.12 3.88 16 2"/>
-            <path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"/>
-            <path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"/>
-            <path d="M12 20v-9"/><path d="M6.53 9C4.6 8.8 3 7.1 3 5"/>
-            <path d="M6 13H2"/><path d="M3 21c0-2.1 1.7-3.9 3.8-4"/>
-            <path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"/><path d="M22 13h-4"/>
-            <path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"/>
-          </svg>
-        </button>
-      );
-    };
-    // ============ END ADMIN REPORTER SYSTEM ============
-
-
     // ============================================
-    // TIME-BASED WELCOME ANIMATIONS
+    // CELEBRATION & EMPATHY VIDEOS
     // ============================================
-    // welcomeAnimations and getTimeBasedWelcome are loaded from ../shared/greetings.js
-
-    // ============================================
-    // CELEBRATION GIFS (Quiz Correct Answer)
-    // ============================================
-    const celebrationGifs = [
+    const celebrationVideos = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_a_quick_victory_dance_move_high_energy_c_d03b798b-a518-4e6c-bcae-d69b2dd50486_2.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_jumping_in_the_air_arms_raised_high_YESSS_cele_201477e8-3df4-405a-bc81-81d1747e5c6c_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_playing_air_guitar_light_headbanging_rockstar__0702007e-9e84-4d9e-8f99-8ee23d0b65f8_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_doing_the_running_man_dance_move_vintage_cool__25682b0f-cf4c-4e93-8dcb-6c3dac8135cd_0.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_standing_and_clapping_enthusiastically_mouth_o_992ac4fd-9a0e-4963-bbcc-a5271f25f4fd_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_very_fast_huge_smile_extreme_exciteme_9a4dde09-55ca-4173-a47d-613bc2924230_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_clapping_above_head_world_champion_celebration_484bd560-f049-41ca-b3d1-c03d7468ab56_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_starting_with_slow_clap_accelerating_to_fast_c_ee478a38-0ee7-437d-bd13-d687f7dd624a_0.mp4'
     ];
-
-    const getRandomCelebrationGif = () => celebrationGifs[Math.floor(Math.random() * celebrationGifs.length)];
-
-    // ============================================
-    // EMPATHY GIFS (Quiz Incorrect Answer)
-    // ============================================
-    const empathyGifs = [
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_thumbs_down_with_encouraging_nod_close_keep_go_613e541f-c072-436f-aee7-f99cd6f834fc_2.mp4',
+    const empathyVideos = [
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_shaking_head_side_to_side_sadly_disappointed_e_c4a4be22-6a70-4738-8612-3039454fef37_1.mp4',
       'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_covering_face_with_palm_facepalm_gesture_disap_211b0566-078f-4d42-9c41-547b14f5827c_0.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_looking_down_sadly_shoulders_slumped_disappoin_790d48bd-e49e-40ea-9979-d3e86fa3a422_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_wiping_away_a_small_tear_sad_but_gentle_disapp_8d78571b-3c36-4502-abee-81683255843c_1.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_sighing_sadly_exhaling_with_disappointment_hea_f6014f2a-3a99-4378-a2a8-414e16b3e72d_2.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_slouching_with_disappointment_body_curling_inw_caedddbe-413c-492a-9fdf-1e8433f5e2a8_2%20(1).mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_placing_hand_on_forehead_sadly_eyes_closed_fru_3e048895-f365-4ff2-9e88-0d0a35b2a9e1_3.mp4',
-      'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/aviv3255_He_is_nodding_slowly_with_sadness_what_a_shame_expre_377f67ca-63da-41aa-9072-4926fc2f6e82_3.mp4'
     ];
-
-    const getRandomEmpathyGif = () => empathyGifs[Math.floor(Math.random() * empathyGifs.length)];
+    const getRandomVideo = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
     // ============================================
-    // SLIDE DATA - ECOMMERCE FOCUSED
+    // ICONS (Lucide-style SVGs)
+    // ============================================
+    const Icons = {
+      Clock: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+      Check: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+      X: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+      ArrowLeft: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+      ArrowRight: ({ size = 20 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
+      Sparkles: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
+      Zap: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
+      Brain: ({ size = 16 }) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/></svg>,
+    };
+
+    // ============================================
+    // SLIDE DATA
     // ============================================
     const slides = [
+      // 0: Welcome
       { type: 'welcome', learningGoals: [
         'The "MAYA Principle" that makes products irresistible',
         'Why 100% unique products FAIL on Shopify',
         'The 70/30 formula top stores use to convert browsers'
       ]},
-      { type: 'hook', headline: 'Spotify almost killed their biggest feature.', subtext: 'Their "Discover Weekly" playlist served users 100% new music. Songs they\'d never heard. Artists they\'d never seen. The result? Engagement tanked. Users stopped clicking. Until they discovered the secret...', brandImage: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Spotify_logo_without_text.svg.png', brandName: 'Spotify' },
+      // 1: Hook
+      { type: 'hook', headline: 'Spotify almost killed their biggest feature.', body: 'Their "Discover Weekly" playlist served users 100% new music. Songs they\'d never heard. Artists they\'d never seen. The result? Engagement tanked. Users stopped clicking. Until they discovered the secret...' },
+      // 2: Content - The Fix
       { type: 'content', title: 'The Fix That Changed Everything', body: 'When Spotify added just 30% familiar songs - tracks users already loved - engagement skyrocketed 40%. Save rates tripled. Return rates doubled. Users didn\'t want ALL new. They wanted new wrapped in familiar.' },
-      { type: 'visual', title: 'The MAYA Principle', visualType: 'comparison', data: {
-        left: { label: 'Too Familiar', value: '100% Known', result: 'Boring - They scroll past', color: '#94a3b8' },
-        right: { label: 'Too Novel', value: '100% New', result: 'Scary - They back away', color: '#f59e0b' },
-        center: { label: 'MAYA Zone', value: '70/30 Mix', result: 'Irresistible - They BUY', color: '#2563eb' }
-      }},
+      // 3: Visual - MAYA Principle
+      { type: 'maya', title: 'The MAYA Principle', subtitle: 'Most Advanced Yet Acceptable' },
+      // 4: Content - Why This Matters
       { type: 'content', title: 'Why This Matters for Your Store', body: 'Your Shopify store faces the same challenge. Show customers something TOO familiar - they think "I\'ve seen this before." Show them something TOO new - their brain flags it as risky. The sweet spot? 70% familiar foundation, 30% novel twist.' },
-      { type: 'example', scenario: 'Posture Corrector Store', before: { label: 'Too Generic', text: '"Fix your posture with our back brace. Comfortable and adjustable."' }, after: { label: 'MAYA Applied', text: '"The posture fix that works while you\'re sitting at your desk - no awkward straps visible under your shirt."' }, insight: 'Familiar problem (posture) + Novel twist (invisible, works while sitting)' },
+      // 5: Example - Posture
+      { type: 'example', scenario: 'Posture Corrector Store', before: { title: 'Too Generic', text: '"Fix your posture with our back brace. Comfortable and adjustable."' }, after: { title: 'MAYA Applied', text: '"The posture fix that works while you\'re sitting at your desk - no awkward straps visible under your shirt."' }, insight: 'Familiar problem (posture) + Novel twist (invisible, works while sitting)' },
+      // 6: Formula Cards
       { type: 'cards', title: 'The 4-Part MAYA Formula', items: [
-        { title: '1. Their Language', description: 'Use exact words your customers use. If they say "my back kills me" - say that, not "lumbar discomfort."' },
-        { title: '2. Known Problems', description: 'Anchor to struggles they instantly recognize. "You know that 3pm slump when your back starts aching..."' },
-        { title: '3. The Twist', description: 'Once they\'re nodding, reveal your unique angle. "But what if the problem isn\'t your chair - it\'s your first 10 minutes?"' },
-        { title: '4. Bridge to Solution', description: 'Connect your novel mechanism to their familiar goal. Same destination, surprising new path.' }
+        { number: '01', title: 'Their Language', description: 'Use exact words your customers use. If they say "my back kills me" - say that, not "lumbar discomfort."' },
+        { number: '02', title: 'Known Problems', description: 'Anchor to struggles they instantly recognize. "You know that 3pm slump when your back starts aching..."' },
+        { number: '03', title: 'The Twist', description: 'Once they\'re nodding, reveal your unique angle. "But what if the problem isn\'t your chair - it\'s your first 10 minutes?"' },
+        { number: '04', title: 'Bridge to Solution', description: 'Connect your novel mechanism to their familiar goal. Same destination, surprising new path.' }
       ]},
-      { type: 'example', scenario: 'Pet Products Store', before: { label: 'Too Novel', text: '"Revolutionary AI-powered smart collar with biometric sensors and cloud connectivity."' }, after: { label: 'MAYA Applied', text: '"Finally - a collar that tells you when your dog needs a vet visit. Before they even show symptoms."' }, insight: 'Familiar product (collar) + Familiar concern (vet visits) + Novel benefit (early detection)' },
-      { type: 'visual', title: 'The Brain Science', visualType: 'stats', data: [
-        { value: '40%', label: 'faster processing', subtext: 'Brain handles familiar things 40% faster' },
-        { value: '0', label: 'dopamine spike', subtext: 'Pure familiarity = no excitement' },
-        { value: '2x', label: 'engagement', subtext: 'Novel-familiar mix doubles attention' }
+      // 7: Example - Pet
+      { type: 'example', scenario: 'Pet Products Store', before: { title: 'Too Novel', text: '"Revolutionary AI-powered smart collar with biometric sensors and cloud connectivity."' }, after: { title: 'MAYA Applied', text: '"Finally - a collar that tells you when your dog needs a vet visit. Before they even show symptoms."' }, insight: 'Familiar product (collar) + Familiar concern (vet visits) + Novel benefit (early detection)' },
+      // 8: Stats - Brain Science
+      { type: 'stats', title: 'The Brain Science', stats: [
+        { value: '40%', label: 'Faster Processing', description: 'Brain handles familiar things 40% faster' },
+        { value: '0', label: 'Dopamine Spike', description: 'Pure familiarity = no excitement' },
+        { value: '2x', label: 'Engagement', description: 'Novel-familiar mix doubles attention' }
       ]},
+      // 9: Content - Application
       { type: 'content', title: 'The Shopify Application', body: 'Your product page needs both anchors. Start with what they KNOW (the problem, the desire, familiar product category). Then reveal what makes YOU different (your mechanism, your angle, your proof). This order matters - familiar first, then novel.' },
-      { type: 'example', scenario: 'Skincare Store', before: { label: 'Wrong Order', text: '"Our patented CeraMatrix-7 technology uses nano-encapsulation to deliver actives at the cellular level."' }, after: { label: 'MAYA Applied', text: '"That stubborn dark spot that won\'t fade? There\'s a reason - and it\'s not your serum. It\'s the barrier your skin builds at night."' }, insight: 'Lead with familiar frustration, then introduce novel mechanism' },
-      { type: 'cards', title: 'Quick MAYA Checklist', items: [
+      // 10: Example - Skincare
+      { type: 'example', scenario: 'Skincare Store', before: { title: 'Wrong Order', text: '"Our patented CeraMatrix-7 technology uses nano-encapsulation to deliver actives at the cellular level."' }, after: { title: 'MAYA Applied', text: '"That stubborn dark spot that won\'t fade? There\'s a reason - and it\'s not your serum. It\'s the barrier your skin builds at night."' }, insight: 'Lead with familiar frustration, then introduce novel mechanism' },
+      // 11: Checklist Cards
+      { type: 'checklist', title: 'Quick MAYA Checklist', items: [
         { title: 'Headline', description: 'Does it reference a problem they\'d describe in their own words?' },
         { title: 'Subheadline', description: 'Does it hint at a fresh angle without being confusing?' },
         { title: 'Body Copy', description: 'Do you anchor to familiar desires before explaining your mechanism?' },
         { title: 'CTA', description: 'Does it feel safe enough to click but exciting enough to want to?' }
       ]},
-      { type: 'quiz', question: 'What\'s the optimal balance for the MAYA Principle in your product page copy?', options: ['100% familiar language - comfort is everything', '50% familiar / 50% novel - perfect balance', '70% familiar / 30% novel - comfort then surprise', '30% familiar / 70% novel - mostly unique'], correctIndex: 2, feedback: { correct: 'Exactly! 70% familiar foundation creates trust, 30% novel twist creates desire. This is the formula that converts.', incorrect: 'Not quite. The magic ratio is 70% familiar to build comfort, then 30% novel to create excitement. Comfort first, then surprise.' }},
+      // 12: Quiz
+      { type: 'quiz', question: 'What\'s the optimal balance for the MAYA Principle in your product page copy?', options: [
+        { text: '100% familiar language - comfort is everything', correct: false },
+        { text: '50% familiar / 50% novel - perfect balance', correct: false },
+        { text: '70% familiar / 30% novel - comfort then surprise', correct: true },
+        { text: '30% familiar / 70% novel - mostly unique', correct: false }
+      ], feedback: { correct: 'Exactly! 70% familiar foundation creates trust, 30% novel twist creates desire. This is the formula that converts.', incorrect: 'Not quite. The magic ratio is 70% familiar to build comfort, then 30% novel to create excitement. Comfort first, then surprise.' }},
+      // 13: Completion
       { type: 'completion' }
     ];
-
-    // ============================================
-    // ICONS
-    // ============================================
-    const Icons = {
-      Clock: () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-      Check: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12"/></svg>,
-      X: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-      ArrowLeft: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-      ArrowRight: () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>,
-      Zap: () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-    };
 
     // ============================================
     // SLIDE COMPONENTS
     // ============================================
 
-    // Welcome Slide
-    const WelcomeSlide = ({ data, onStart, userName, onShowGif, onHideGif }) => {
-      const welcomeData = useMemo(() => getTimeBasedWelcome(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-
-      useEffect(() => {
-        onShowGif(welcomeData.gif, '65%', gifSide);
-        return () => onHideGif();
-      }, [welcomeData.gif, gifSide, onShowGif, onHideGif]);
+    // Welcome Slide - Dark variant
+    const WelcomeSlide = ({ data, onStart, userName }) => {
+      const welcomeData = useMemo(() => typeof getTimeBasedWelcome === 'function' ? getTimeBasedWelcome() : { greeting: 'Welcome back, {name}!', gif: null }, []);
 
       return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col items-center justify-center text-center px-6 py-4 relative z-20">
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="title-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black mb-2 md:mb-3">
-              {LESSON_CONFIG.title}
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-neutral-600 text-base md:text-lg lg:text-xl mb-2 md:mb-3 max-w-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatGreeting(welcomeData.greeting, `<span class="font-bold text-neutral-900">${userName}</span>`) }} />
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="flex items-center justify-center gap-1.5 text-neutral-400 text-[10px] md:text-xs mb-2 md:mb-3">
-              <Icons.Clock />
-              <span>{LESSON_CONFIG.duration}</span>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="bg-neutral-900 rounded-xl md:rounded-2xl p-3 md:p-5 mb-3 md:mb-4 max-w-sm w-full mx-auto">
-              <p className="text-neutral-500 text-[9px] md:text-[11px] uppercase tracking-wider mb-2 md:mb-3">In this lesson</p>
-              <ul className="space-y-1.5 md:space-y-2">
-                {data.learningGoals.map((goal, i) => (
-                  <motion.li key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.25 + i * 0.05 }} className="flex items-start gap-2 text-left">
-                    <span className="w-5 h-5 rounded-md flex items-center justify-center text-[9px] font-bold text-white flex-shrink-0 mt-0.5" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>{i + 1}</span>
-                    <span className="text-neutral-300 text-[11px] md:text-sm leading-snug">{goal}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </motion.div>
-            <motion.button initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-6 md:px-7 py-2.5 md:py-3 rounded-xl text-white font-semibold text-sm md:text-base" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))` }}>
-              Let's Go
-            </motion.button>
+        <div className="h-full w-full bg-white p-6">
+          <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center">
+            <div className="max-w-2xl mx-auto w-full">
+              {/* Duration Badge */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
+                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#88da1c] text-black text-sm font-semibold">
+                  <Icons.Clock size={14} />
+                  {LESSON_CONFIG.duration}
+                </span>
+              </motion.div>
+
+              {/* Title */}
+              <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight leading-tight">
+                {LESSON_CONFIG.title}
+              </motion.h1>
+
+              {/* Subtitle/Greeting */}
+              <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-lg text-white/60 mb-8">
+                {welcomeData.greeting.replace('{name}', userName)}
+              </motion.p>
+
+              {/* Learning Goals */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mb-8">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">What you'll learn</h3>
+                <ul className="space-y-3">
+                  {data.learningGoals.map((goal, i) => (
+                    <motion.li key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 + i * 0.08 }} className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#88da1c] flex items-center justify-center mt-0.5">
+                        <Icons.Check size={12} className="text-black" />
+                      </span>
+                      <span className="text-white text-base">{goal}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </motion.div>
+
+              {/* Start Button */}
+              <motion.button initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} onClick={onStart} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="px-8 py-4 rounded-xl bg-[#88da1c] text-black font-semibold text-base">
+                Start Learning
+              </motion.button>
+            </div>
           </div>
         </div>
       );
@@ -305,197 +204,332 @@
 
     // Hook Slide
     const HookSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-8 md:py-10 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} className="mb-4 md:mb-6">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-3 md:mb-4" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>The Hook</span>
-            <h2 className="slide-title text-2xl md:text-4xl lg:text-5xl text-black leading-tight">{data.headline}</h2>
-          </motion.div>
-          <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-base md:text-xl text-neutral-600 leading-relaxed">{data.subtext}</motion.p>
+      <div className="h-full w-full bg-white p-6">
+        <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center">
+          <div className="max-w-3xl mx-auto">
+            <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#88da1c]/10 text-[#88da1c] text-xs font-semibold mb-6">
+              <Icons.Zap size={12} />
+              The Hook
+            </motion.span>
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+              {data.headline}
+            </motion.h2>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-lg text-white/70 leading-relaxed">
+              {data.body}
+            </motion.p>
+          </div>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '52%', maxHeight: '400px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-        {data.brandImage && (
-          <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.5 }}
-            className="absolute bottom-0 right-0 z-0 pointer-events-none hidden md:block" style={{ height: '30%', maxHeight: '200px', marginRight: '80px', marginBottom: '5%' }}>
-            <img src={data.brandImage} alt={data.brandName || ''} className="h-full w-auto object-contain" style={{ opacity: 1 }} />
-          </motion.div>
-        )}
       </div>
     );
 
-        const ContentSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-8 md:px-16 max-w-3xl mx-auto slide-scroll overflow-y-auto py-10">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl lg:text-4xl text-black mb-6">
-          {data.title}
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-base md:text-lg text-neutral-600 leading-relaxed">
-          {data.body}
-        </motion.p>
-      
-        {data.characterVideo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-4' : 'right-4'} z-0 pointer-events-none`}
-            style={{ height: '25%', maxHeight: '180px', marginBottom: '3%' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
-      </div>
-    );
-
-    // Example Slide
-    const ExampleSlide = ({ data }) => (
-      <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-          <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold mb-2" style={{ background: `rgba(var(--accent-rgb), 0.1)`, color: 'var(--accent)' }}>Real Example</span>
-          <h2 className="slide-title text-xl md:text-2xl text-black">{data.scenario}</h2>
-        </motion.div>
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-red-50 border-2 border-red-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X /></div>
-              <span className="font-semibold text-red-700 text-sm">{data.before.label}</span>
-            </div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.before.text}"</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-green-50 border-2 border-green-200 rounded-xl p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white"><Icons.Check /></div>
-              <span className="font-semibold text-green-700 text-sm">{data.after.label}</span>
-            </div>
-            <p className="text-neutral-700 text-sm leading-relaxed italic">"{data.after.text}"</p>
-          </motion.div>
+    // Content Slide
+    const ContentSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6">
+        <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center">
+          <div className="max-w-3xl mx-auto">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
+              {data.title}
+            </motion.h2>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg text-white/70 leading-relaxed">
+              {data.body}
+            </motion.p>
+          </div>
         </div>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-neutral-900 rounded-xl p-4 text-center">
-          <p className="text-neutral-300 text-sm"><Icons.Zap className="inline mr-2" />{data.insight}</p>
-        </motion.div>
       </div>
     );
 
-    // Visual Slide
-    const VisualSlide = ({ data }) => {
-      if (data.visualType === 'stats') {
-        return (
-          <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8">
-            <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-xl md:text-3xl text-black text-center mb-6 md:mb-8">{data.title}</motion.h2>
-            <div className="grid md:grid-cols-3 gap-3 md:gap-4">
-              {data.data.map((stat, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-neutral-900 rounded-xl p-4 md:p-6 text-center" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 40px rgba(var(--accent-rgb),0.15)' }}>
-                  <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2" style={{ color: 'var(--accent)', textShadow: '0 0 20px rgba(var(--accent-rgb),0.4)' }}>{stat.value}</div>
-                  <div className="text-xs md:text-sm font-semibold text-white mb-0.5 md:mb-1">{stat.label}</div>
-                  <div className="text-[10px] md:text-xs text-neutral-400">{stat.subtext}</div>
-                </motion.div>
-              ))}
+    // MAYA Visual Slide
+    const MAYASlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6">
+        <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{data.title}</h2>
+              <p className="text-white/50 text-sm uppercase tracking-widest">{data.subtitle}</p>
+            </motion.div>
+
+            <div className="grid grid-cols-3 gap-4">
+              {/* Too Familiar */}
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white/5 rounded-2xl p-6 text-center border-t-2 border-white/20">
+                <div className="text-white/40 text-sm font-semibold uppercase tracking-wide mb-3">Too Familiar</div>
+                <div className="text-2xl font-bold text-white/60 mb-2">100% Known</div>
+                <div className="text-white/40 text-sm">Boring - They scroll past</div>
+              </motion.div>
+
+              {/* MAYA Zone */}
+              <motion.div initial={{ opacity: 0, y: 30, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ delay: 0.2 }} className="bg-[#88da1c]/10 rounded-2xl p-6 text-center border-t-2 border-[#88da1c] relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#88da1c] text-black text-xs font-bold rounded-full">SWEET SPOT</div>
+                <div className="text-[#88da1c] text-sm font-semibold uppercase tracking-wide mb-3 mt-2">MAYA Zone</div>
+                <div className="text-3xl font-bold text-white mb-2">70/30 Mix</div>
+                <div className="text-[#88da1c] text-sm font-medium">Irresistible - They BUY</div>
+              </motion.div>
+
+              {/* Too Novel */}
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-white/5 rounded-2xl p-6 text-center border-t-2 border-white/20">
+                <div className="text-white/40 text-sm font-semibold uppercase tracking-wide mb-3">Too Novel</div>
+                <div className="text-2xl font-bold text-white/60 mb-2">100% New</div>
+                <div className="text-white/40 text-sm">Scary - They back away</div>
+              </motion.div>
             </div>
           </div>
-        );
-      }
-      return null;
-    };
+        </div>
+      </div>
+    );
+
+    // Example/BeforeAfter Slide
+    const ExampleSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6">
+        <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center overflow-y-auto slide-scroll">
+          <div className="max-w-4xl mx-auto w-full">
+            {/* Header */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#88da1c]/10 text-[#88da1c] text-xs font-semibold mb-3">
+                Real Example
+              </span>
+              <h2 className="text-2xl md:text-3xl font-bold text-white">{data.scenario}</h2>
+            </motion.div>
+
+            {/* Before/After Cards */}
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
+              {/* Before */}
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="bg-white/5 rounded-2xl overflow-hidden">
+                <div className="h-1.5 bg-[#EF4444]" />
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="w-8 h-8 rounded-full bg-[#EF4444] flex items-center justify-center">
+                      <Icons.X size={14} className="text-white" />
+                    </span>
+                    <h3 className="text-lg font-bold text-white">{data.before.title}</h3>
+                  </div>
+                  <p className="text-white/60 text-sm leading-relaxed italic">"{data.before.text}"</p>
+                </div>
+              </motion.div>
+
+              {/* After */}
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="bg-white/5 rounded-2xl overflow-hidden">
+                <div className="h-1.5 bg-[#88da1c]" />
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="w-8 h-8 rounded-full bg-[#88da1c] flex items-center justify-center">
+                      <Icons.Check size={14} className="text-black" />
+                    </span>
+                    <h3 className="text-lg font-bold text-white">{data.after.title}</h3>
+                  </div>
+                  <p className="text-white/60 text-sm leading-relaxed italic">"{data.after.text}"</p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Insight */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="bg-[#88da1c]/10 rounded-xl p-4 text-center">
+              <p className="text-[#88da1c] text-sm font-medium flex items-center justify-center gap-2">
+                <Icons.Zap size={14} />
+                {data.insight}
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    );
 
     // Cards Slide
     const CardsSlide = ({ data }) => (
-      <div className="h-full relative overflow-hidden">
-        <div className="h-full flex flex-col justify-center px-6 md:px-12 max-w-4xl mx-auto slide-scroll overflow-y-auto py-8 relative z-10">
-          <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="slide-title text-2xl md:text-3xl text-black text-center mb-6">{data.title}</motion.h2>
-          <div className={`grid gap-3 relative z-10 ${data.items.length === 5 ? 'md:grid-cols-3' : data.items.length === 3 ? 'md:grid-cols-3' : data.items.length === 4 ? 'md:grid-cols-2' : 'md:grid-cols-2'}`}>
-            {data.items.map((item, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} className="bg-white border-2 border-neutral-200 rounded-xl p-4 hover:border-neutral-300 hover:shadow-lg transition-all">
-                <h3 className="font-bold text-neutral-900 mb-2 text-sm md:text-base">{item.title}</h3>
-                <p className="text-neutral-600 text-xs md:text-sm leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
+      <div className="h-full w-full bg-white p-6">
+        <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center overflow-y-auto slide-scroll">
+          <div className="max-w-4xl mx-auto w-full">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-bold text-white text-center mb-8">
+              {data.title}
+            </motion.h2>
+
+            <div className="grid md:grid-cols-2 gap-4">
+              {data.items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-[#88da1c]/30 transition-colors">
+                  {item.number && <span className="text-[#88da1c] text-xs font-bold mb-2 block">{item.number}</span>}
+                  <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+                  <p className="text-white/60 text-sm leading-relaxed">{item.description}</p>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
-        {data.characterVideo && (
-          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.6 }}
-            className={`absolute bottom-0 ${data.characterPosition === 'left' ? 'left-6' : 'right-6'} z-0 pointer-events-none hidden md:block`}
-            style={{ height: '45%', maxHeight: '350px' }}>
-            <video autoPlay loop muted playsInline className="h-full w-auto object-contain object-bottom">
-              <source src={data.characterVideo} type="video/mp4" />
-            </video>
-          </motion.div>
-        )}
       </div>
     );
 
-    const QuizSlide = ({ data, onShowGif, onHideGif }) => {
-      const [selected, setSelected] = useState(null);
-      const [showFeedback, setShowFeedback] = useState(false);
-      const celebrationGif = useMemo(() => getRandomCelebrationGif(), []);
-      const empathyGif = useMemo(() => getRandomEmpathyGif(), []);
-      const gifSide = useMemo(() => Math.random() > 0.5 ? 'left' : 'right', []);
-      const handleSelect = (index) => { if (showFeedback) return; setSelected(index); setShowFeedback(true); };
-      const isCorrect = selected === data.correctIndex;
-
-      useEffect(() => {
-        if (showFeedback) {
-          if (isCorrect) {
-            onShowGif(celebrationGif, '60%', gifSide);
-          } else {
-            onShowGif(empathyGif, '60%', gifSide);
-          }
-        }
-      }, [showFeedback, isCorrect, celebrationGif, empathyGif, gifSide, onShowGif]);
-
-      useEffect(() => {
-        return () => onHideGif();
-      }, [onHideGif]);
-
-      return (
-        <div className="h-full w-full relative overflow-hidden">
-          <div className="h-full flex flex-col justify-center px-8 md:px-12 max-w-2xl mx-auto slide-scroll overflow-y-auto py-10 relative z-30">
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-6">
-              <p className="text-xs uppercase tracking-wider text-neutral-400 mb-3">Quick Check</p>
-              <h2 className="slide-title text-xl md:text-2xl text-black leading-tight">{data.question}</h2>
+    // Stats Slide
+    const StatsSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6">
+        <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center">
+          <div className="max-w-4xl mx-auto w-full">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#88da1c]/10 text-[#88da1c] text-xs font-semibold mb-4">
+                <Icons.Brain size={14} />
+                Brain Science
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white">{data.title}</h2>
             </motion.div>
-            <div className="space-y-3 mb-6">
-              {data.options.map((option, i) => (
-                <motion.button key={i} initial={{ opacity: 0, x: -15 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-4 rounded-xl text-left transition-all border-2 ${showFeedback ? i === data.correctIndex ? 'border-green-500 bg-green-50' : i === selected ? 'border-red-400 bg-red-50' : 'border-neutral-200 bg-white opacity-40' : 'border-neutral-200 bg-white hover:border-neutral-300'}`}>
-                  <div className="flex items-center gap-3">
-                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold transition-all ${showFeedback && i === data.correctIndex ? 'bg-green-500 text-white' : showFeedback && i === selected && !isCorrect ? 'bg-red-400 text-white' : 'bg-neutral-100 text-neutral-500'}`}>
-                      {showFeedback && i === data.correctIndex ? <Icons.Check /> : showFeedback && i === selected && !isCorrect ? <Icons.X /> : String.fromCharCode(65 + i)}
-                    </span>
-                    <span className="text-neutral-700 text-base">{option}</span>
-                  </div>
-                </motion.button>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {data.stats.map((stat, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.1 }} className="bg-white/5 rounded-2xl p-8 text-center border border-white/10">
+                  <div className="text-4xl md:text-5xl font-bold text-[#88da1c] mb-2">{stat.value}</div>
+                  <div className="text-white font-semibold text-sm mb-1">{stat.label}</div>
+                  <div className="text-white/50 text-xs">{stat.description}</div>
+                </motion.div>
               ))}
             </div>
-            <AnimatePresence>
-              {showFeedback && (
-                <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className={`p-5 rounded-xl ${isCorrect ? 'bg-green-50 border border-green-200' : 'bg-amber-50 border border-amber-200'}`}>
-                  <p className={`text-sm leading-relaxed ${isCorrect ? 'text-green-800' : 'text-amber-800'}`}>{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Checklist Slide
+    const ChecklistSlide = ({ data }) => (
+      <div className="h-full w-full bg-white p-6">
+        <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center overflow-y-auto slide-scroll">
+          <div className="max-w-3xl mx-auto w-full">
+            <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-2xl md:text-3xl font-bold text-white text-center mb-8">
+              {data.title}
+            </motion.h2>
+
+            <div className="space-y-4">
+              {data.items.map((item, i) => (
+                <motion.div key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.08 }} className="bg-white/5 rounded-xl p-5 flex items-start gap-4 border border-white/10">
+                  <span className="flex-shrink-0 w-6 h-6 rounded-md bg-[#88da1c]/20 flex items-center justify-center mt-0.5">
+                    <Icons.Check size={12} className="text-[#88da1c]" />
+                  </span>
+                  <div>
+                    <h3 className="text-white font-semibold mb-1">{item.title}</h3>
+                    <p className="text-white/50 text-sm">{item.description}</p>
+                  </div>
                 </motion.div>
-              )}
-            </AnimatePresence>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Quiz Slide
+    const QuizSlide = ({ data, onShowVideo, onHideVideo }) => {
+      const [selected, setSelected] = useState(null);
+      const [showFeedback, setShowFeedback] = useState(false);
+      const celebrationVideo = useMemo(() => getRandomVideo(celebrationVideos), []);
+      const empathyVideo = useMemo(() => getRandomVideo(empathyVideos), []);
+
+      const isCorrect = selected !== null && data.options[selected]?.correct;
+
+      const handleSelect = (index) => {
+        if (showFeedback) return;
+        setSelected(index);
+        setTimeout(() => {
+          setShowFeedback(true);
+          if (data.options[index]?.correct) {
+            onShowVideo(celebrationVideo);
+          } else {
+            onShowVideo(empathyVideo);
+          }
+        }, 300);
+      };
+
+      useEffect(() => {
+        return () => onHideVideo();
+      }, [onHideVideo]);
+
+      return (
+        <div className="h-full w-full bg-white p-6">
+          <div className="h-full bg-black rounded-3xl p-8 md:p-12 flex flex-col justify-center overflow-y-auto slide-scroll relative">
+            <div className="max-w-2xl mx-auto w-full relative z-10">
+              {/* Header */}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
+                <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#88da1c]/10 text-[#88da1c] text-xs font-semibold mb-4">
+                  <Icons.Sparkles size={14} />
+                  Knowledge Check
+                </span>
+                <h2 className="text-2xl md:text-3xl font-bold text-white">{data.question}</h2>
+              </motion.div>
+
+              {/* Options */}
+              <div className="space-y-3 mb-6">
+                {data.options.map((option, i) => {
+                  const isSelected = selected === i;
+                  const isOptionCorrect = option.correct;
+                  let optionClass = 'bg-white/5 border-white/10 text-white';
+
+                  if (showFeedback) {
+                    if (isSelected && isOptionCorrect) {
+                      optionClass = 'bg-[#88da1c] border-[#88da1c] text-black';
+                    } else if (isSelected && !isOptionCorrect) {
+                      optionClass = 'bg-[#EF4444] border-[#EF4444] text-white';
+                    } else if (isOptionCorrect) {
+                      optionClass = 'bg-[#88da1c]/20 border-[#88da1c] text-white';
+                    } else {
+                      optionClass = 'bg-white/5 border-white/10 text-white/40';
+                    }
+                  }
+
+                  return (
+                    <motion.button key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.06 }} onClick={() => handleSelect(i)} disabled={showFeedback} className={`w-full p-5 rounded-xl text-left border transition-all ${optionClass} ${!showFeedback ? 'hover:bg-white/10 hover:border-white/20 cursor-pointer' : ''}`}>
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium">{option.text}</span>
+                        {showFeedback && isSelected && (
+                          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                            {isOptionCorrect ? <Icons.Check size={20} /> : <Icons.X size={20} />}
+                          </motion.span>
+                        )}
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+
+              {/* Feedback */}
+              <AnimatePresence>
+                {showFeedback && (
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className={`p-6 rounded-xl ${isCorrect ? 'bg-[#88da1c]/10' : 'bg-[#EF4444]/10'}`}>
+                    <div className="flex items-start gap-4">
+                      <span className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${isCorrect ? 'bg-[#88da1c]' : 'bg-[#EF4444]'}`}>
+                        {isCorrect ? <Icons.Check size={18} className="text-black" /> : <Icons.X size={18} className="text-white" />}
+                      </span>
+                      <div>
+                        <h3 className="text-lg font-bold text-white mb-1">{isCorrect ? 'Correct!' : 'Not Quite'}</h3>
+                        <p className="text-white/60 text-sm">{isCorrect ? data.feedback.correct : data.feedback.incorrect}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       );
     };
 
-    // Completion Slide
+    // Completion Slide - BRIGHT (white background)
     const CompletionSlide = () => (
-      <div className="h-full flex flex-col items-center justify-center text-center px-8 slide-scroll overflow-y-auto py-10">
-        <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', duration: 0.5 }} className="w-20 h-20 rounded-xl flex items-center justify-center mb-6 text-white" style={{ background: `linear-gradient(135deg, var(--accent), var(--accent-dark))`, boxShadow: `0 6px 24px rgba(var(--accent-rgb), 0.35)` }}><Icons.Check /></motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="slide-title text-3xl md:text-4xl text-black mb-4">Lesson Complete</motion.h2>
-        <motion.p initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }} className="text-neutral-500 text-base mb-8 max-w-md leading-relaxed">You now know the secret: 70% familiar + 30% novel. Use this ratio in every product page, every ad, every email. Watch conversions climb.</motion.p>
-        <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="bg-neutral-900 rounded-xl p-6 max-w-md w-full">
-          <p className="text-neutral-500 text-xs uppercase tracking-wider mb-3">Up Next</p>
-          <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
-          <p className="text-neutral-400 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
-        </motion.div>
+      <div className="h-full w-full bg-white p-6 flex flex-col items-center justify-center">
+        <div className="max-w-lg mx-auto text-center">
+          {/* Success Icon */}
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', duration: 0.6 }} className="w-20 h-20 rounded-2xl bg-[#88da1c] flex items-center justify-center mx-auto mb-6 shadow-lg">
+            <Icons.Check size={36} className="text-black" />
+          </motion.div>
+
+          {/* Title */}
+          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-3xl md:text-4xl font-bold text-black mb-4">
+            Lesson Complete
+          </motion.h2>
+
+          {/* Summary */}
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="text-neutral-500 text-lg mb-8 leading-relaxed">
+            You now know the secret: <span className="text-black font-semibold">70% familiar + 30% novel</span>. Use this ratio in every product page, every ad, every email. Watch conversions climb.
+          </motion.p>
+
+          {/* Next Lesson Preview */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="bg-black rounded-2xl p-6 text-left">
+            <p className="text-white/50 text-xs uppercase tracking-widest mb-2">Up Next</p>
+            <h3 className="text-white font-bold text-xl mb-2">{LESSON_CONFIG.nextLesson.title}</h3>
+            <p className="text-white/60 text-sm">{LESSON_CONFIG.nextLesson.teaser}</p>
+          </motion.div>
+        </div>
       </div>
     );
 
@@ -505,17 +539,14 @@
     const LessonApp = () => {
       const [currentSlide, setCurrentSlide] = useState(0);
       const [direction, setDirection] = useState(1);
+      const [isAnimating, setIsAnimating] = useState(false);
+      const [videoUrl, setVideoUrl] = useState(null);
       const userName = useMemo(() => getUserName(), []);
       const currentSlideRef = React.useRef(0);
-      const [gifConfig, setGifConfig] = useState(null);
-      const [isAnimating, setIsAnimating] = useState(false);
-
-      const showGif = useCallback((url, height, side) => setGifConfig({ url, height, side }), []);
-      const hideGif = useCallback(() => setGifConfig(null), []);
 
       React.useEffect(() => { currentSlideRef.current = currentSlide; }, [currentSlide]);
 
-      // Send slide update to parent for admin issue tracking
+      // Send slide update to parent
       useEffect(() => {
         window.parent.postMessage({
           type: 'LESSON_SLIDE_UPDATE',
@@ -525,6 +556,9 @@
           lessonSlug: LESSON_CONFIG.id
         }, '*');
       }, [currentSlide]);
+
+      const showVideo = useCallback((url) => setVideoUrl(url), []);
+      const hideVideo = useCallback(() => setVideoUrl(null), []);
 
       const goToSlide = useCallback((newSlide) => {
         if (isAnimating || newSlide < 0 || newSlide >= slides.length) return;
@@ -553,13 +587,15 @@
 
       const renderSlide = (slide) => {
         switch (slide.type) {
-          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'welcome': return <WelcomeSlide data={slide} onStart={nextSlide} userName={userName} />;
           case 'hook': return <HookSlide data={slide} />;
           case 'content': return <ContentSlide data={slide} />;
+          case 'maya': return <MAYASlide data={slide} />;
           case 'example': return <ExampleSlide data={slide} />;
-          case 'visual': return <VisualSlide data={slide} />;
           case 'cards': return <CardsSlide data={slide} />;
-          case 'quiz': return <QuizSlide data={slide} onShowGif={showGif} onHideGif={hideGif} />;
+          case 'checklist': return <ChecklistSlide data={slide} />;
+          case 'stats': return <StatsSlide data={slide} />;
+          case 'quiz': return <QuizSlide data={slide} onShowVideo={showVideo} onHideVideo={hideVideo} />;
           case 'completion': return <CompletionSlide />;
           default: return null;
         }
@@ -569,41 +605,43 @@
       const showNext = currentSlide < slides.length - 1 && slides[currentSlide].type !== 'welcome';
 
       return (
-        <div className="w-full h-screen bg-white flex flex-col relative">
-          <div className="flex-1 relative overflow-hidden z-20">
+        <div className="w-full h-screen bg-white flex flex-col relative overflow-hidden">
+          {/* Slide Content */}
+          <div className="flex-1 relative overflow-hidden">
             <AnimatePresence mode="wait" custom={direction} onExitComplete={() => setIsAnimating(false)}>
-              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
+              <motion.div key={currentSlide} custom={direction} variants={slideVariants} initial="enter" animate="center" exit="exit" transition={{ duration: 0.35, ease: [0.25, 0.1, 0.25, 1] }} className="absolute inset-0">
                 {renderSlide(slides[currentSlide])}
-                <AdminSlideReportButton slideIndex={currentSlide} slideType={slides[currentSlide].type} />
               </motion.div>
             </AnimatePresence>
-            {showPrev && <button onClick={prevSlide} className="absolute left-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowLeft /></button>}
-            {showNext && <button onClick={nextSlide} className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center text-neutral-500 hover:text-neutral-700 transition-all z-10"><Icons.ArrowRight /></button>}
+
+            {/* Navigation Arrows */}
+            {showPrev && (
+              <button onClick={prevSlide} className="absolute left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg border border-neutral-200 flex items-center justify-center text-neutral-500 hover:text-black hover:shadow-xl transition-all z-20">
+                <Icons.ArrowLeft size={20} />
+              </button>
+            )}
+            {showNext && (
+              <button onClick={nextSlide} className="absolute right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg border border-neutral-200 flex items-center justify-center text-neutral-500 hover:text-black hover:shadow-xl transition-all z-20">
+                <Icons.ArrowRight size={20} />
+              </button>
+            )}
           </div>
-          <div className="px-6 md:px-8 py-5 border-t border-neutral-100 flex-shrink-0 relative z-10">
-            <div className="flex items-center justify-center gap-2.5">
-              {slides.map((_, i) => <button key={i} onClick={() => goToSlide(i)} className="w-2.5 h-2.5 rounded-full transition-all duration-300" style={{ background: i === currentSlide ? 'var(--accent)' : '#d4d4d4', transform: i === currentSlide ? 'scale(1.3)' : 'scale(1)' }} />)}
+
+          {/* Progress Dots */}
+          <div className="py-5 border-t border-neutral-100 flex-shrink-0 bg-white">
+            <div className="flex items-center justify-center gap-2">
+              {slides.map((_, i) => (
+                <button key={i} onClick={() => goToSlide(i)} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === currentSlide ? 'bg-[#88da1c] scale-125' : 'bg-neutral-300 hover:bg-neutral-400'}`} />
+              ))}
             </div>
           </div>
+
+          {/* Video Overlay */}
           <AnimatePresence>
-            {gifConfig && (
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 30 }}
-                transition={{ type: 'spring', stiffness: 100 }}
-                className={`absolute ${gifConfig.side === 'left' ? 'left-4 md:left-8' : 'right-4 md:right-8'} bottom-0 pointer-events-none`}
-                style={{ zIndex: 15, height: gifConfig.height }}
-              >
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="h-full w-auto object-contain object-bottom"
-                  style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}
-                >
-                  <source src={gifConfig.url} type="video/mp4" />
+            {videoUrl && (
+              <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 30 }} className="absolute bottom-20 right-8 z-30 pointer-events-none" style={{ height: '50%', maxHeight: '350px' }}>
+                <video autoPlay loop muted playsInline className="h-full w-auto object-contain">
+                  <source src={videoUrl} type="video/mp4" />
                 </video>
               </motion.div>
             )}
