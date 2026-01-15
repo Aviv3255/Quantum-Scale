@@ -15,7 +15,7 @@ export const sectionsData: Section[] = [
       { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'FREE SHIPPING ON ORDERS $100+' },
       { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'PREMIUM QUALITY GUARANTEED' },
       { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'EASY 30-DAY RETURNS' },
-      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '25' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '45' },
     ],
     generateHtml: (v) => `<div class="${uid('mgshim')}" style="background:linear-gradient(180deg,#000 0%,#0a0a0a 100%);overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;position:relative;">
   <style>
@@ -24,16 +24,16 @@ export const sectionsData: Section[] = [
     .${uid('mgshim')}::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(191,149,63,0.2), transparent); }
     .${uid('mgshim')}-track { display: flex; animation: ${uid('mgshim')}-scroll ${v.speed}s linear infinite; width: max-content; }
     .${uid('mgshim')}-track:hover { animation-play-state: paused; }
-    .${uid('mgshim')}-item { display: flex; align-items: center; gap: 40px; padding: 16px 40px; white-space: nowrap; }
+    .${uid('mgshim')}-item { display: flex; align-items: center; gap: 48px; padding: 18px 48px; white-space: nowrap; }
     .${uid('mgshim')}-item span {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
       background: linear-gradient(90deg, #BF953F, #FCF6BA, #FBF5B7, #AA771C, #BF953F);
       background-size: 200% 100%;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       animation: ${uid('mgshim')}-shimmer 3s ease-in-out infinite;
       text-shadow: 0 0 30px rgba(191,149,63,0.3);
     }
-    .${uid('mgshim')}-sep { color: rgba(191,149,63,0.4); font-size: 6px; }
+    .${uid('mgshim')}-sep { color: rgba(191,149,63,0.5); font-size: 8px; }
     @keyframes ${uid('mgshim')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     @keyframes ${uid('mgshim')}-shimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
   </style>
@@ -63,22 +63,22 @@ export const sectionsData: Section[] = [
       { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'COMPLIMENTARY WORLDWIDE SHIPPING' },
       { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'HANDCRAFTED WITH PRECISION' },
       { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'LIFETIME WARRANTY INCLUDED' },
-      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '28' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '50' },
     ],
     generateHtml: (v) => `<div class="${uid('mplat')}" style="background:#050505;overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;">
   <style>
     .${uid('mplat')} * { box-sizing: border-box; margin: 0; padding: 0; }
     .${uid('mplat')}::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); }
     .${uid('mplat')}-track { display: flex; animation: ${uid('mplat')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('mplat')}-item { display: flex; align-items: center; gap: 48px; padding: 14px 48px; white-space: nowrap; position: relative; }
+    .${uid('mplat')}-item { display: flex; align-items: center; gap: 56px; padding: 18px 56px; white-space: nowrap; position: relative; }
     .${uid('mplat')}-item span {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
       background: linear-gradient(90deg, #888, #fff, #ccc, #fff, #888);
       background-size: 200% 100%;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       animation: ${uid('mplat')}-shine 4s ease-in-out infinite;
     }
-    .${uid('mplat')}-dot { width: 3px; height: 3px; background: linear-gradient(135deg, #666, #aaa); border-radius: 50%; opacity: 0.6; }
+    .${uid('mplat')}-dot { width: 4px; height: 4px; background: linear-gradient(135deg, #666, #aaa); border-radius: 50%; opacity: 0.6; }
     @keyframes ${uid('mplat')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     @keyframes ${uid('mplat')}-shine { 0%, 100% { background-position: 200% 50%; } 50% { background-position: 0% 50%; } }
   </style>
@@ -108,23 +108,23 @@ export const sectionsData: Section[] = [
       { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'NEW COLLECTION NOW AVAILABLE' },
       { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'EXCLUSIVE MEMBERS GET 15% OFF' },
       { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'FREE EXPRESS DELIVERY' },
-      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '24' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '42' },
     ],
     generateHtml: (v) => `<div class="${uid('mrose2')}" style="background:linear-gradient(180deg,#1a1516 0%,#120f10 100%);overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;">
   <style>
     .${uid('mrose2')} * { box-sizing: border-box; margin: 0; padding: 0; }
     .${uid('mrose2')}::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(183,110,121,0.4), transparent); }
     .${uid('mrose2')}-track { display: flex; animation: ${uid('mrose2')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('mrose2')}-item { display: flex; align-items: center; gap: 36px; padding: 15px 36px; white-space: nowrap; }
+    .${uid('mrose2')}-item { display: flex; align-items: center; gap: 44px; padding: 18px 44px; white-space: nowrap; }
     .${uid('mrose2')}-item span {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
       background: linear-gradient(90deg, #B76E79, #E8B4B8, #F5D0D0, #E8B4B8, #B76E79);
       background-size: 200% 100%;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       animation: ${uid('mrose2')}-glow 3s ease-in-out infinite;
       filter: drop-shadow(0 0 8px rgba(183,110,121,0.3));
     }
-    .${uid('mrose2')}-sep { color: rgba(183,110,121,0.5); font-size: 8px; }
+    .${uid('mrose2')}-sep { color: rgba(183,110,121,0.5); font-size: 10px; }
     @keyframes ${uid('mrose2')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     @keyframes ${uid('mrose2')}-glow { 0%, 100% { background-position: 0% 50%; filter: drop-shadow(0 0 8px rgba(183,110,121,0.3)); } 50% { background-position: 100% 50%; filter: drop-shadow(0 0 12px rgba(183,110,121,0.5)); } }
   </style>
@@ -154,22 +154,22 @@ export const sectionsData: Section[] = [
       { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'SUSTAINABLE LUXURY' },
       { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'ETHICALLY SOURCED' },
       { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'CARBON NEUTRAL SHIPPING' },
-      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '26' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '46' },
     ],
     generateHtml: (v) => `<div class="${uid('memer')}" style="background:linear-gradient(180deg,#0a0f0a 0%,#050805 100%);overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;">
   <style>
     .${uid('memer')} * { box-sizing: border-box; margin: 0; padding: 0; }
     .${uid('memer')}::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(80,200,120,0.3), transparent); }
     .${uid('memer')}-track { display: flex; animation: ${uid('memer')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('memer')}-item { display: flex; align-items: center; gap: 44px; padding: 15px 44px; white-space: nowrap; }
+    .${uid('memer')}-item { display: flex; align-items: center; gap: 52px; padding: 18px 52px; white-space: nowrap; }
     .${uid('memer')}-item span {
-      font-size: 10px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
       background: linear-gradient(90deg, #2E8B57, #50C878, #98FB98, #50C878, #2E8B57);
       background-size: 200% 100%;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
       animation: ${uid('memer')}-pulse 4s ease-in-out infinite;
     }
-    .${uid('memer')}-leaf { color: rgba(80,200,120,0.4); font-size: 10px; }
+    .${uid('memer')}-leaf { color: rgba(80,200,120,0.5); font-size: 12px; }
     @keyframes ${uid('memer')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     @keyframes ${uid('memer')}-pulse { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
   </style>
@@ -199,15 +199,15 @@ export const sectionsData: Section[] = [
       { id: 'text1', label: 'Text 1', type: 'text', defaultValue: 'FREE SHIPPING OVER $150' },
       { id: 'text2', label: 'Text 2', type: 'text', defaultValue: 'HASSLE-FREE RETURNS' },
       { id: 'text3', label: 'Text 3', type: 'text', defaultValue: 'SECURE CHECKOUT' },
-      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '35' },
+      { id: 'speed', label: 'Scroll Speed (seconds)', type: 'number', defaultValue: '48' },
     ],
     generateHtml: (v) => `<div class="${uid('mclean')}" style="background:#fafafa;border-bottom:1px solid #f0f0f0;overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
     .${uid('mclean')} * { box-sizing: border-box; margin: 0; padding: 0; }
     .${uid('mclean')}-track { display: flex; animation: ${uid('mclean')}-scroll ${v.speed}s linear infinite; width: max-content; }
-    .${uid('mclean')}-item { display: flex; align-items: center; gap: 56px; padding: 12px 56px; white-space: nowrap; }
-    .${uid('mclean')}-item span { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: #1a1a1a; }
-    .${uid('mclean')}-sep { width: 4px; height: 4px; background: #e0e0e0; border-radius: 50%; }
+    .${uid('mclean')}-item { display: flex; align-items: center; gap: 64px; padding: 16px 64px; white-space: nowrap; }
+    .${uid('mclean')}-item span { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #1a1a1a; }
+    .${uid('mclean')}-sep { width: 5px; height: 5px; background: #d0d0d0; border-radius: 50%; }
     @keyframes ${uid('mclean')}-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   </style>
   <div class="${uid('mclean')}-track">
@@ -235,20 +235,20 @@ export const sectionsData: Section[] = [
     fields: [
       { id: 'text1', label: 'Row 1', type: 'text', defaultValue: 'PREMIUM QUALITY  ✦  HANDCRAFTED  ✦  SUSTAINABLE  ✦  TIMELESS' },
       { id: 'text2', label: 'Row 2', type: 'text', defaultValue: 'FREE SHIPPING  ✦  EASY RETURNS  ✦  SECURE CHECKOUT  ✦  24/7 SUPPORT' },
-      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '20' },
+      { id: 'speed', label: 'Speed (seconds)', type: 'number', defaultValue: '35' },
     ],
     generateHtml: (v) => `<div class="${uid('mdual2')}" style="background:#000;overflow:hidden;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
   <style>
     .${uid('mdual2')} * { box-sizing: border-box; margin: 0; padding: 0; }
-    .${uid('mdual2')}-row { display: flex; width: max-content; padding: 10px 0; }
+    .${uid('mdual2')}-row { display: flex; width: max-content; padding: 12px 0; }
     .${uid('mdual2')}-row:first-child { animation: ${uid('mdual2')}-left ${v.speed}s linear infinite; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .${uid('mdual2')}-row:last-child { animation: ${uid('mdual2')}-right ${v.speed}s linear infinite; }
     .${uid('mdual2')}-row span {
-      font-size: 10px; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase;
-      color: rgba(255,255,255,0.4); padding: 0 24px; white-space: nowrap;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5); padding: 0 32px; white-space: nowrap;
       transition: color 0.3s;
     }
-    .${uid('mdual2')}-row:hover span { color: rgba(255,255,255,0.7); }
+    .${uid('mdual2')}-row:hover span { color: rgba(255,255,255,0.8); }
     @keyframes ${uid('mdual2')}-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     @keyframes ${uid('mdual2')}-right { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
   </style>

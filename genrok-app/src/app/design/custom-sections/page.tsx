@@ -10,9 +10,14 @@ import { sectionsData, categories } from './sections-data';
 import { Section, CustomizableField } from './types';
 
 // Grid card preview component - renders scaled HTML in iframe
-function GridPreview({ html }: { html: string }) {
+// isAnnouncement prop triggers larger scale for thin announcement bars
+function GridPreview({ html, isAnnouncement = false }: { html: string; isAnnouncement?: boolean }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Announcement bars need larger scale since they're thin strips
+  const scale = isAnnouncement ? 0.4 : 0.35;
+  const containerHeight = isAnnouncement ? 100 : 220;
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -44,41 +49,55 @@ function GridPreview({ html }: { html: string }) {
     setIsLoaded(true);
   }, [html]);
 
+  // Calculate centering offset
+  const scaledWidth = 1200 * scale;
+
   return (
     <div
       style={{
         width: '100%',
-        height: '180px',
+        height: `${containerHeight}px`,
         overflow: 'hidden',
         position: 'relative',
-        background: '#f9fafb'
+        background: '#f9fafb',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
     >
-      <iframe
-        ref={iframeRef}
-        style={{
-          width: '1200px',
-          height: '600px',
-          transform: 'scale(0.25)',
-          transformOrigin: 'top left',
-          border: 'none',
-          pointerEvents: 'none',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          opacity: isLoaded ? 1 : 0,
-          transition: 'opacity 0.2s'
-        }}
-        title="Section Preview"
-      />
+      <div style={{
+        width: `${scaledWidth}px`,
+        height: '100%',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        <iframe
+          ref={iframeRef}
+          style={{
+            width: '1200px',
+            height: '800px',
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            border: 'none',
+            pointerEvents: 'none',
+            position: 'absolute',
+            top: isAnnouncement ? 0 : 0,
+            left: 0,
+            opacity: isLoaded ? 1 : 0,
+            transition: 'opacity 0.2s'
+          }}
+          title="Section Preview"
+        />
+      </div>
     </div>
   );
 }
 
-// Modal preview component - full width rendering
+// Modal preview component - renders at fixed desktop width (1200px) and scales to fit
 function ModalPreview({ html }: { html: string }) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0.5);
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -93,9 +112,11 @@ function ModalPreview({ html }: { html: string }) {
       <html>
       <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=1200">
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           html, body {
+            width: 1200px;
             background: #fff;
             min-height: 100%;
           }
@@ -107,6 +128,23 @@ function ModalPreview({ html }: { html: string }) {
     doc.close();
   }, [html]);
 
+  // Calculate scale based on container width
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const updateScale = () => {
+      const containerWidth = container.offsetWidth;
+      const newScale = Math.min(containerWidth / 1200, 1);
+      setScale(newScale);
+    };
+
+    updateScale();
+    const resizeObserver = new ResizeObserver(updateScale);
+    resizeObserver.observe(container);
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
     <div
       ref={containerRef}
@@ -115,20 +153,32 @@ function ModalPreview({ html }: { html: string }) {
         height: '100%',
         overflow: 'auto',
         background: '#fff',
-        borderRadius: '8px'
+        borderRadius: '8px',
+        position: 'relative'
       }}
     >
-      <iframe
-        ref={iframeRef}
-        style={{
-          width: '100%',
-          minHeight: '100%',
-          height: 'auto',
-          border: 'none',
-          display: 'block'
-        }}
-        title="Section Preview"
-      />
+      <div style={{
+        width: `${1200 * scale}px`,
+        height: `${800 * scale}px`,
+        position: 'relative',
+        margin: '0 auto'
+      }}>
+        <iframe
+          ref={iframeRef}
+          style={{
+            width: '1200px',
+            height: '800px',
+            transform: `scale(${scale})`,
+            transformOrigin: 'top left',
+            border: 'none',
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            left: 0
+          }}
+          title="Section Preview"
+        />
+      </div>
     </div>
   );
 }
@@ -211,7 +261,7 @@ export default function CustomSectionsPage() {
 
   return (
     <DashboardLayout>
-      <div className="page-wrapper">
+      <div className="page-wrapper relative" style={{ minHeight: '100%' }}>
         {/* Page Header */}
         <div className="mb-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6"
@@ -262,33 +312,36 @@ export default function CustomSectionsPage() {
           </div>
         </div>
 
-        {/* Sections Grid - 4 columns with actual section previews */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredSections.map((section) => (
-            <div
-              key={section.id}
-              onClick={() => setSelectedSection(section)}
-              className="group cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-              style={{
-                background: '#fff',
-                border: '1px solid #E5E7EB',
-              }}
-            >
-              {/* Section Preview */}
-              <div className="relative overflow-hidden">
-                <GridPreview html={getDefaultHtml(section)} />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity px-4 py-2 bg-white rounded-lg text-sm font-semibold text-gray-900">
-                    Customize
-                  </span>
+        {/* Sections Grid - 3 columns with actual section previews */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredSections.map((section) => {
+            const isAnnouncement = section.category === 'Announcement';
+            return (
+              <div
+                key={section.id}
+                onClick={() => setSelectedSection(section)}
+                className="group cursor-pointer overflow-hidden rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                style={{
+                  background: '#fff',
+                  border: '1px solid #E5E7EB',
+                }}
+              >
+                {/* Section Preview */}
+                <div className="relative overflow-hidden">
+                  <GridPreview html={getDefaultHtml(section)} isAnnouncement={isAnnouncement} />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-center justify-center">
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity px-4 py-2 bg-white rounded-lg text-sm font-semibold text-gray-900">
+                      Customize
+                    </span>
+                  </div>
+                </div>
+                <div className="p-4 border-t border-gray-100">
+                  <div className="text-xs font-medium text-indigo-600 mb-1">{section.category}</div>
+                  <h3 className="font-semibold text-gray-900 text-sm">{section.name}</h3>
                 </div>
               </div>
-              <div className="p-4 border-t border-gray-100">
-                <div className="text-xs font-medium text-indigo-600 mb-1">{section.category}</div>
-                <h3 className="font-semibold text-gray-900 text-sm">{section.name}</h3>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {filteredSections.length === 0 && (
@@ -298,23 +351,23 @@ export default function CustomSectionsPage() {
         )}
       </div>
 
-      {/* Modal - 50% Config | 50% (Preview + Code) */}
+      {/* Modal - 50% Config | 50% (Preview + Code) - positioned within content area */}
       <AnimatePresence>
         {selectedSection && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ background: 'rgba(0,0,0,0.8)' }}
+            className="absolute inset-0 z-50 flex items-center justify-center p-6"
+            style={{ background: 'rgba(0,0,0,0.7)' }}
             onClick={closeModal}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl w-full max-w-7xl overflow-hidden flex"
-              style={{ height: '85vh', maxHeight: '900px' }}
+              className="bg-white rounded-2xl w-full overflow-hidden flex"
+              style={{ height: '90%', maxHeight: '900px' }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Left Panel - 50% Configuration */}
