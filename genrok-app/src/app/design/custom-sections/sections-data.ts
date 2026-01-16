@@ -2180,6 +2180,1501 @@ export const sectionsData: Section[] = [
   </div>
 </div>`
   },
+
+  // ========== PREMIUM HERO SECTIONS (21st.dev inspired) ==========
+  {
+    id: 'hero-typewriter',
+    name: 'Hero - Typewriter Effect',
+    category: 'Hero',
+    description: 'Animated typing text with blinking cursor on dark gradient',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Build fast. Ship clean.' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'A minimal React starter focused on clarity, speed, and maintainability.' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Get Started' },
+    ],
+    generateHtml: (v) => `<div class="${uid('htw')}" style="background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 100%);min-height:500px;display:flex;align-items:center;justify-content:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('htw')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('htw')}-wrap { text-align: center; padding: 80px 24px; max-width: 800px; }
+    .${uid('htw')}-title { font-size: 56px; font-weight: 700; color: #fff; line-height: 1.1; margin-bottom: 24px; }
+    .${uid('htw')}-cursor { display: inline-block; width: 3px; height: 56px; background: #fff; margin-left: 4px; animation: ${uid('htw')}-blink 1s step-end infinite; vertical-align: middle; }
+    .${uid('htw')}-sub { font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 40px; line-height: 1.6; }
+    .${uid('htw')}-btn { display: inline-block; padding: 16px 32px; background: #fff; color: #0a0a0a; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+    .${uid('htw')}-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(255,255,255,0.2); }
+    @keyframes ${uid('htw')}-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @media (max-width: 768px) { .${uid('htw')}-title { font-size: 36px; } .${uid('htw')}-cursor { height: 36px; } }
+  </style>
+  <div class="${uid('htw')}-wrap">
+    <h1 class="${uid('htw')}-title">${v.headline}<span class="${uid('htw')}-cursor"></span></h1>
+    <p class="${uid('htw')}-sub">${v.subtext}</p>
+    <a href="#" class="${uid('htw')}-btn">${v.btnText}</a>
+  </div>
+</div>`
+  },
+  {
+    id: 'hero-spotlight',
+    name: 'Hero - Spotlight Text',
+    category: 'Hero',
+    description: 'Moving spotlight effect illuminating headline text',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Spotlight' },
+      { id: 'subtitle', label: 'Subtitle', type: 'text', defaultValue: 'which is not overused.' },
+      { id: 'desc', label: 'Description', type: 'text', defaultValue: 'A subtle yet effective spotlight effect, because the previous version is used a bit too much these days.' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hspot')}" style="background:#0a0a0a;min-height:450px;display:flex;align-items:center;justify-content:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
+  <style>
+    .${uid('hspot')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hspot')}::before { content: ''; position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); animation: ${uid('hspot')}-move 8s ease-in-out infinite; pointer-events: none; }
+    .${uid('hspot')}-wrap { text-align: center; padding: 80px 24px; max-width: 700px; position: relative; z-index: 1; }
+    .${uid('hspot')}-title { font-size: 72px; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 8px; }
+    .${uid('hspot')}-sub { font-size: 72px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1; margin-bottom: 32px; }
+    .${uid('hspot')}-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; max-width: 400px; margin: 0 auto; }
+    @keyframes ${uid('hspot')}-move { 0%, 100% { transform: translate(-50%, -50%); top: 30%; left: 30%; } 25% { top: 40%; left: 70%; } 50% { top: 70%; left: 60%; } 75% { top: 60%; left: 30%; } }
+    @media (max-width: 768px) { .${uid('hspot')}-title, .${uid('hspot')}-sub { font-size: 42px; } }
+  </style>
+  <div class="${uid('hspot')}-wrap">
+    <h1 class="${uid('hspot')}-title">${v.headline}</h1>
+    <p class="${uid('hspot')}-sub">${v.subtitle}</p>
+    <p class="${uid('hspot')}-desc">${v.desc}</p>
+  </div>
+</div>`
+  },
+  {
+    id: 'hero-gradient-mesh',
+    name: 'Hero - Gradient Mesh',
+    category: 'Hero',
+    description: 'Animated colorful mesh gradient background',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'ARTIFICIAL' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Intelligence meets creativity' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Explore Now' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hmesh')}" style="background:#0a0a0a;min-height:500px;display:flex;align-items:center;justify-content:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
+  <style>
+    .${uid('hmesh')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hmesh')}-orb1 { position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(0,200,255,0.4) 0%, transparent 70%); top: -20%; right: -10%; animation: ${uid('hmesh')}-float1 12s ease-in-out infinite; }
+    .${uid('hmesh')}-orb2 { position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(150,50,255,0.4) 0%, transparent 70%); bottom: -20%; left: -10%; animation: ${uid('hmesh')}-float2 10s ease-in-out infinite; }
+    .${uid('hmesh')}-orb3 { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,100,150,0.3) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: ${uid('hmesh')}-pulse 8s ease-in-out infinite; }
+    .${uid('hmesh')}-wrap { text-align: center; padding: 80px 24px; position: relative; z-index: 1; }
+    .${uid('hmesh')}-title { font-size: 80px; font-weight: 800; letter-spacing: 0.2em; color: #fff; line-height: 1; margin-bottom: 16px; text-shadow: 0 0 60px rgba(0,200,255,0.5); }
+    .${uid('hmesh')}-sub { font-size: 20px; color: rgba(255,255,255,0.7); margin-bottom: 40px; }
+    .${uid('hmesh')}-btn { display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #00c8ff 0%, #9932ff 100%); color: #fff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; }
+    .${uid('hmesh')}-btn:hover { transform: scale(1.05); box-shadow: 0 10px 40px rgba(0,200,255,0.4); }
+    @keyframes ${uid('hmesh')}-float1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-30px, 30px); } }
+    @keyframes ${uid('hmesh')}-float2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
+    @keyframes ${uid('hmesh')}-pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; } }
+    @media (max-width: 768px) { .${uid('hmesh')}-title { font-size: 40px; letter-spacing: 0.1em; } }
+  </style>
+  <div class="${uid('hmesh')}-orb1"></div>
+  <div class="${uid('hmesh')}-orb2"></div>
+  <div class="${uid('hmesh')}-orb3"></div>
+  <div class="${uid('hmesh')}-wrap">
+    <h1 class="${uid('hmesh')}-title">${v.headline}</h1>
+    <p class="${uid('hmesh')}-sub">${v.subtext}</p>
+    <a href="#" class="${uid('hmesh')}-btn">${v.btnText}</a>
+  </div>
+</div>`
+  },
+  {
+    id: 'hero-floating-images',
+    name: 'Hero - Floating Images',
+    category: 'Hero',
+    description: 'Multiple floating images around centered text',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'A new way to learn & get knowledge' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'EduFlex is here for you with various courses & materials from skilled tutors all around the world.' },
+      { id: 'stat1', label: 'Stat 1', type: 'text', defaultValue: '15.2K' },
+      { id: 'stat1Label', label: 'Stat 1 Label', type: 'text', defaultValue: 'Active students' },
+      { id: 'stat2', label: 'Stat 2', type: 'text', defaultValue: '4.5K' },
+      { id: 'stat2Label', label: 'Stat 2 Label', type: 'text', defaultValue: 'Tutors' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hfloat')}" style="background:#fafafa;min-height:550px;display:flex;align-items:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
+  <style>
+    .${uid('hfloat')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hfloat')}-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 60px 24px; align-items: center; }
+    .${uid('hfloat')}-content { max-width: 500px; }
+    .${uid('hfloat')}-title { font-size: 48px; font-weight: 700; color: #1a1a1a; line-height: 1.1; margin-bottom: 20px; }
+    .${uid('hfloat')}-sub { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 32px; }
+    .${uid('hfloat')}-btns { display: flex; gap: 16px; margin-bottom: 40px; }
+    .${uid('hfloat')}-btn { padding: 14px 28px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+    .${uid('hfloat')}-btn.primary { background: #1a1a1a; color: #fff; }
+    .${uid('hfloat')}-btn.secondary { background: #fff; color: #1a1a1a; border: 1px solid #e0e0e0; }
+    .${uid('hfloat')}-stats { display: flex; gap: 32px; }
+    .${uid('hfloat')}-stat-num { font-size: 24px; font-weight: 700; color: #1a1a1a; }
+    .${uid('hfloat')}-stat-label { font-size: 13px; color: #888; }
+    .${uid('hfloat')}-images { position: relative; height: 400px; }
+    .${uid('hfloat')}-img { position: absolute; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); animation: ${uid('hfloat')}-bob 4s ease-in-out infinite; }
+    .${uid('hfloat')}-img:nth-child(1) { width: 200px; height: 200px; top: 0; right: 60px; animation-delay: 0s; }
+    .${uid('hfloat')}-img:nth-child(2) { width: 180px; height: 180px; top: 100px; right: 0; animation-delay: 1s; }
+    .${uid('hfloat')}-img:nth-child(3) { width: 160px; height: 160px; bottom: 40px; right: 80px; animation-delay: 2s; }
+    .${uid('hfloat')}-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
+    @keyframes ${uid('hfloat')}-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @media (max-width: 900px) { .${uid('hfloat')}-wrap { grid-template-columns: 1fr; } .${uid('hfloat')}-images { display: none; } }
+  </style>
+  <div class="${uid('hfloat')}-wrap">
+    <div class="${uid('hfloat')}-content">
+      <h1 class="${uid('hfloat')}-title">${v.headline}</h1>
+      <p class="${uid('hfloat')}-sub">${v.subtext}</p>
+      <div class="${uid('hfloat')}-btns">
+        <a href="#" class="${uid('hfloat')}-btn primary">Join the Class</a>
+        <a href="#" class="${uid('hfloat')}-btn secondary">Learn more</a>
+      </div>
+      <div class="${uid('hfloat')}-stats">
+        <div><div class="${uid('hfloat')}-stat-num">${v.stat1}</div><div class="${uid('hfloat')}-stat-label">${v.stat1Label}</div></div>
+        <div><div class="${uid('hfloat')}-stat-num">${v.stat2}</div><div class="${uid('hfloat')}-stat-label">${v.stat2Label}</div></div>
+      </div>
+    </div>
+    <div class="${uid('hfloat')}-images">
+      <div class="${uid('hfloat')}-img"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=400&fit=crop" alt=""></div>
+      <div class="${uid('hfloat')}-img"><img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=400&fit=crop" alt=""></div>
+      <div class="${uid('hfloat')}-img"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop" alt=""></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'hero-split-fashion',
+    name: 'Hero - Split Fashion',
+    category: 'Hero',
+    description: 'Minimalist 50/50 layout with category links and large image',
+    thumbnail: '',
+    fields: [
+      { id: 'brandName', label: 'Brand Name', type: 'text', defaultValue: 'Kokonut.' },
+      { id: 'collection', label: 'Collection Name', type: 'text', defaultValue: 'SUMMER 2025' },
+      { id: 'desc', label: 'Description', type: 'text', defaultValue: '"The Bright Young" draws inspiration from Anglomania, redefining sartorial elegance and school uniforms with a nod to British heritage.' },
+      { id: 'image', label: 'Hero Image', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&h=800&fit=crop' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hsplit')}" style="background:#f5f5f0;min-height:550px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('hsplit')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hsplit')}-wrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 550px; }
+    .${uid('hsplit')}-content { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; }
+    .${uid('hsplit')}-brand { font-size: 48px; font-weight: 700; color: #1a1a1a; margin-bottom: 40px; }
+    .${uid('hsplit')}-nav { display: flex; flex-direction: column; gap: 12px; margin-bottom: 60px; }
+    .${uid('hsplit')}-nav a { font-size: 15px; color: #666; text-decoration: none; transition: color 0.3s; }
+    .${uid('hsplit')}-nav a:hover { color: #1a1a1a; }
+    .${uid('hsplit')}-coll { font-size: 14px; font-weight: 600; letter-spacing: 0.1em; color: #1a1a1a; margin-bottom: 16px; }
+    .${uid('hsplit')}-desc { font-size: 14px; color: #666; line-height: 1.8; max-width: 350px; }
+    .${uid('hsplit')}-image { position: relative; overflow: hidden; }
+    .${uid('hsplit')}-image img { width: 100%; height: 100%; object-fit: cover; }
+    @media (max-width: 900px) { .${uid('hsplit')}-wrap { grid-template-columns: 1fr; } .${uid('hsplit')}-image { height: 400px; } }
+  </style>
+  <div class="${uid('hsplit')}-wrap">
+    <div class="${uid('hsplit')}-content">
+      <div class="${uid('hsplit')}-brand">${v.brandName}</div>
+      <nav class="${uid('hsplit')}-nav">
+        <a href="#">Ready-to-wear</a>
+        <a href="#">Accessories</a>
+        <a href="#">Footwear</a>
+        <a href="#">Leather goods</a>
+        <a href="#">Jewelry</a>
+      </nav>
+      <div class="${uid('hsplit')}-coll">${v.collection}</div>
+      <p class="${uid('hsplit')}-desc">${v.desc}</p>
+    </div>
+    <div class="${uid('hsplit')}-image">
+      <img src="${v.image}" alt="Fashion">
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'hero-video-dark',
+    name: 'Hero - Video Dark',
+    category: 'Hero',
+    description: 'Dark overlay hero with video background placeholder',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'BUILD YOUR DREAMS' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'AI-POWERED CREATIVITY FOR THE NEXT GENERATION.' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Scroll to explore' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hvid')}" style="background:linear-gradient(135deg,#0a0a0a 0%,#1a0a1a 50%,#0a0a1a 100%);min-height:500px;display:flex;align-items:center;justify-content:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
+  <style>
+    .${uid('hvid')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hvid')}::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=1200&h=800&fit=crop') center/cover; opacity: 0.3; }
+    .${uid('hvid')}-glow { position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,50,100,0.4) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: ${uid('hvid')}-pulse 4s ease-in-out infinite; }
+    .${uid('hvid')}-wrap { text-align: center; padding: 80px 24px; position: relative; z-index: 1; }
+    .${uid('hvid')}-title { font-size: 56px; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 16px; letter-spacing: 0.05em; }
+    .${uid('hvid')}-sub { font-size: 14px; color: rgba(255,255,255,0.6); letter-spacing: 0.2em; margin-bottom: 48px; }
+    .${uid('hvid')}-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); color: #fff; font-size: 13px; font-weight: 500; text-decoration: none; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease; }
+    .${uid('hvid')}-btn:hover { background: rgba(255,255,255,0.2); }
+    .${uid('hvid')}-btn::after { content: '↓'; }
+    @keyframes ${uid('hvid')}-pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; } 50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.6; } }
+    @media (max-width: 768px) { .${uid('hvid')}-title { font-size: 36px; } }
+  </style>
+  <div class="${uid('hvid')}-glow"></div>
+  <div class="${uid('hvid')}-wrap">
+    <h1 class="${uid('hvid')}-title">${v.headline}</h1>
+    <p class="${uid('hvid')}-sub">${v.subtext}</p>
+    <a href="#" class="${uid('hvid')}-btn">${v.btnText}</a>
+  </div>
+</div>`
+  },
+  {
+    id: 'hero-3d-cards',
+    name: 'Hero - 3D Cards',
+    category: 'Hero',
+    description: 'Perspective rotating cards with 3D effect',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Ready to Transform Your Management?' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Experience the future of finance with our cutting-edge SaaS platform.' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Download app' },
+    ],
+    generateHtml: (v) => `<div class="${uid('h3d')}" style="background:linear-gradient(180deg,#0f1419 0%,#1a2332 100%);min-height:500px;display:flex;align-items:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
+  <style>
+    .${uid('h3d')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('h3d')}-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 80px 24px; align-items: center; }
+    .${uid('h3d')}-content { max-width: 480px; }
+    .${uid('h3d')}-title { font-size: 42px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 20px; }
+    .${uid('h3d')}-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 32px; }
+    .${uid('h3d')}-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #3b82f6; color: #fff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+    .${uid('h3d')}-btn:hover { background: #2563eb; transform: translateY(-2px); }
+    .${uid('h3d')}-cards { perspective: 1000px; position: relative; height: 350px; }
+    .${uid('h3d')}-card { position: absolute; width: 280px; height: 180px; background: linear-gradient(135deg, #1e293b 0%, #334155 100%); border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); padding: 24px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+    .${uid('h3d')}-card:nth-child(1) { top: 0; left: 0; transform: rotateY(-15deg) rotateX(5deg); animation: ${uid('h3d')}-float1 6s ease-in-out infinite; }
+    .${uid('h3d')}-card:nth-child(2) { top: 80px; left: 100px; transform: rotateY(-10deg) rotateX(5deg); animation: ${uid('h3d')}-float2 6s ease-in-out infinite; z-index: 1; }
+    .${uid('h3d')}-card-title { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+    .${uid('h3d')}-card-value { font-size: 28px; font-weight: 700; color: #fff; }
+    @keyframes ${uid('h3d')}-float1 { 0%, 100% { transform: rotateY(-15deg) rotateX(5deg) translateY(0); } 50% { transform: rotateY(-15deg) rotateX(5deg) translateY(-10px); } }
+    @keyframes ${uid('h3d')}-float2 { 0%, 100% { transform: rotateY(-10deg) rotateX(5deg) translateY(0); } 50% { transform: rotateY(-10deg) rotateX(5deg) translateY(-15px); } }
+    @media (max-width: 900px) { .${uid('h3d')}-wrap { grid-template-columns: 1fr; } .${uid('h3d')}-cards { display: none; } }
+  </style>
+  <div class="${uid('h3d')}-wrap">
+    <div class="${uid('h3d')}-content">
+      <h1 class="${uid('h3d')}-title">${v.headline}</h1>
+      <p class="${uid('h3d')}-sub">${v.subtext}</p>
+      <a href="#" class="${uid('h3d')}-btn">${v.btnText} →</a>
+    </div>
+    <div class="${uid('h3d')}-cards">
+      <div class="${uid('h3d')}-card"><div class="${uid('h3d')}-card-title">Total Revenue</div><div class="${uid('h3d')}-card-value">$142,384</div></div>
+      <div class="${uid('h3d')}-card"><div class="${uid('h3d')}-card-title">Active Users</div><div class="${uid('h3d')}-card-value">12,847</div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'hero-particles',
+    name: 'Hero - Particle Animation',
+    category: 'Hero',
+    description: 'Floating glowing particles with dark background',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Elevate your creative workflow to an art form.' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Manage all of your media and assets in videos, photos, design files, docs, PDFs, and more.' },
+      { id: 'btn1', label: 'Button 1 Text', type: 'text', defaultValue: 'Start Free Trial' },
+      { id: 'btn2', label: 'Button 2 Text', type: 'text', defaultValue: 'Watch the Video' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hpart')}" style="background:#0a0a0a;min-height:500px;display:flex;align-items:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
+  <style>
+    .${uid('hpart')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hpart')}-particle { position: absolute; width: 4px; height: 4px; background: rgba(100,200,255,0.6); border-radius: 50%; box-shadow: 0 0 10px rgba(100,200,255,0.8); }
+    .${uid('hpart')}-particle:nth-child(1) { top: 20%; left: 10%; animation: ${uid('hpart')}-float 8s ease-in-out infinite; }
+    .${uid('hpart')}-particle:nth-child(2) { top: 60%; left: 20%; animation: ${uid('hpart')}-float 10s ease-in-out infinite 1s; }
+    .${uid('hpart')}-particle:nth-child(3) { top: 30%; right: 15%; animation: ${uid('hpart')}-float 9s ease-in-out infinite 2s; }
+    .${uid('hpart')}-particle:nth-child(4) { top: 70%; right: 25%; animation: ${uid('hpart')}-float 7s ease-in-out infinite 0.5s; }
+    .${uid('hpart')}-particle:nth-child(5) { top: 45%; left: 5%; animation: ${uid('hpart')}-float 11s ease-in-out infinite 1.5s; }
+    .${uid('hpart')}-particle:nth-child(6) { top: 80%; right: 10%; animation: ${uid('hpart')}-float 8s ease-in-out infinite 3s; }
+    .${uid('hpart')}-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 80px 24px; align-items: center; position: relative; z-index: 1; }
+    .${uid('hpart')}-content { max-width: 500px; }
+    .${uid('hpart')}-label { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; margin-bottom: 16px; }
+    .${uid('hpart')}-title { font-size: 44px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 20px; }
+    .${uid('hpart')}-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 32px; }
+    .${uid('hpart')}-btns { display: flex; gap: 16px; }
+    .${uid('hpart')}-btn { padding: 14px 28px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+    .${uid('hpart')}-btn.primary { background: #fff; color: #0a0a0a; }
+    .${uid('hpart')}-btn.secondary { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; gap: 8px; }
+    .${uid('hpart')}-btn.secondary::before { content: '▶'; font-size: 10px; }
+    .${uid('hpart')}-visual { height: 300px; background: linear-gradient(135deg, rgba(100,200,255,0.1) 0%, rgba(150,100,255,0.1) 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+    .${uid('hpart')}-visual-text { color: rgba(255,255,255,0.3); font-size: 14px; }
+    @keyframes ${uid('hpart')}-float { 0%, 100% { transform: translateY(0) translateX(0); opacity: 0.6; } 25% { transform: translateY(-20px) translateX(10px); opacity: 1; } 50% { transform: translateY(-10px) translateX(-10px); opacity: 0.8; } 75% { transform: translateY(-25px) translateX(5px); opacity: 1; } }
+    @media (max-width: 900px) { .${uid('hpart')}-wrap { grid-template-columns: 1fr; } .${uid('hpart')}-visual { display: none; } }
+  </style>
+  <div class="${uid('hpart')}-particle"></div>
+  <div class="${uid('hpart')}-particle"></div>
+  <div class="${uid('hpart')}-particle"></div>
+  <div class="${uid('hpart')}-particle"></div>
+  <div class="${uid('hpart')}-particle"></div>
+  <div class="${uid('hpart')}-particle"></div>
+  <div class="${uid('hpart')}-wrap">
+    <div class="${uid('hpart')}-content">
+      <div class="${uid('hpart')}-label">Collaborate</div>
+      <h1 class="${uid('hpart')}-title">${v.headline}</h1>
+      <p class="${uid('hpart')}-sub">${v.subtext}</p>
+      <div class="${uid('hpart')}-btns">
+        <a href="#" class="${uid('hpart')}-btn primary">${v.btn1}</a>
+        <a href="#" class="${uid('hpart')}-btn secondary">${v.btn2}</a>
+      </div>
+    </div>
+    <div class="${uid('hpart')}-visual">
+      <span class="${uid('hpart')}-visual-text">Video Preview</span>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== BENTO/GRID LAYOUTS (21st.dev inspired) ==========
+  {
+    id: 'bento-grid-4',
+    name: 'Bento Grid - 4 Panel',
+    category: 'Gallery',
+    description: 'Modern 2x2 asymmetric bento-style grid',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Let\'s change it up a bit' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit.' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Find a class' },
+    ],
+    generateHtml: (v) => `<div class="${uid('bento4')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('bento4')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('bento4')}-wrap { display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 80px 24px; align-items: center; }
+    .${uid('bento4')}-content { padding-right: 40px; }
+    .${uid('bento4')}-label { font-size: 13px; color: #22c55e; font-weight: 600; margin-bottom: 16px; }
+    .${uid('bento4')}-title { font-size: 48px; font-weight: 700; color: #1a1a1a; line-height: 1.1; margin-bottom: 20px; }
+    .${uid('bento4')}-sub { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 32px; }
+    .${uid('bento4')}-btn { display: inline-block; padding: 14px 28px; background: #1a1a1a; color: #fff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+    .${uid('bento4')}-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 80px); gap: 12px; }
+    .${uid('bento4')}-item { border-radius: 12px; overflow: hidden; transition: transform 0.3s ease; }
+    .${uid('bento4')}-item:hover { transform: scale(1.02); }
+    .${uid('bento4')}-item img { width: 100%; height: 100%; object-fit: cover; }
+    .${uid('bento4')}-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .${uid('bento4')}-item:nth-child(2) { grid-column: span 2; grid-row: span 2; }
+    .${uid('bento4')}-item:nth-child(3) { grid-column: span 2; grid-row: span 2; }
+    .${uid('bento4')}-item:nth-child(4) { grid-column: span 2; grid-row: span 2; }
+    @media (max-width: 900px) { .${uid('bento4')}-wrap { grid-template-columns: 1fr; } .${uid('bento4')}-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 150px); } .${uid('bento4')}-item { grid-column: span 1 !important; grid-row: span 1 !important; } }
+  </style>
+  <div class="${uid('bento4')}-wrap">
+    <div class="${uid('bento4')}-content">
+      <div class="${uid('bento4')}-label">Better every day</div>
+      <h2 class="${uid('bento4')}-title">${v.headline}</h2>
+      <p class="${uid('bento4')}-sub">${v.subtext}</p>
+      <a href="#" class="${uid('bento4')}-btn">${v.btnText}</a>
+    </div>
+    <div class="${uid('bento4')}-grid">
+      <div class="${uid('bento4')}-item"><img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400&h=400&fit=crop" alt=""></div>
+      <div class="${uid('bento4')}-item"><img src="https://images.unsplash.com/photo-1461896836934- voices?w=400&h=400&fit=crop" alt=""></div>
+      <div class="${uid('bento4')}-item"><img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=400&h=400&fit=crop" alt=""></div>
+      <div class="${uid('bento4')}-item"><img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop" alt=""></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'bento-grid-6',
+    name: 'Bento Grid - 6 Panel',
+    category: 'Gallery',
+    description: '6-panel asymmetric bento layout with hover effects',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Our Latest Collection' },
+    ],
+    generateHtml: (v) => `<div class="${uid('bento6')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('bento6')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('bento6')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('bento6')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('bento6')}-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 140px); gap: 16px; }
+    .${uid('bento6')}-item { position: relative; border-radius: 16px; overflow: hidden; cursor: pointer; }
+    .${uid('bento6')}-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .${uid('bento6')}-item:hover img { transform: scale(1.1); }
+    .${uid('bento6')}-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s ease; }
+    .${uid('bento6')}-item:hover::after { opacity: 1; }
+    .${uid('bento6')}-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .${uid('bento6')}-item:nth-child(2) { grid-column: span 1; grid-row: span 1; }
+    .${uid('bento6')}-item:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+    .${uid('bento6')}-item:nth-child(4) { grid-column: span 1; grid-row: span 2; }
+    .${uid('bento6')}-item:nth-child(5) { grid-column: span 1; grid-row: span 1; }
+    .${uid('bento6')}-item:nth-child(6) { grid-column: span 2; grid-row: span 1; }
+    @media (max-width: 768px) { .${uid('bento6')}-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; } .${uid('bento6')}-item { grid-column: span 1 !important; grid-row: span 1 !important; height: 200px; } }
+  </style>
+  <div class="${uid('bento6')}-wrap">
+    <h2 class="${uid('bento6')}-title">${v.headline}</h2>
+    <div class="${uid('bento6')}-grid">
+      <div class="${uid('bento6')}-item"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=600&fit=crop" alt=""></div>
+      <div class="${uid('bento6')}-item"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('bento6')}-item"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('bento6')}-item"><img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&h=600&fit=crop" alt=""></div>
+      <div class="${uid('bento6')}-item"><img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('bento6')}-item"><img src="https://images.unsplash.com/photo-1491553895911-0055uj8d?w=600&h=300&fit=crop" alt=""></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'shuffle-grid',
+    name: 'Image Shuffle Grid',
+    category: 'Gallery',
+    description: '4x4 image grid with hover zoom effects',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Explore Our Gallery' },
+    ],
+    generateHtml: (v) => `<div class="${uid('shuf')}" style="background:#0a0a0a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('shuf')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('shuf')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('shuf')}-title { font-size: 36px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 48px; }
+    .${uid('shuf')}-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .${uid('shuf')}-item { aspect-ratio: 1; position: relative; overflow: hidden; border-radius: 8px; cursor: pointer; }
+    .${uid('shuf')}-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .${uid('shuf')}-item:hover img { transform: scale(1.15); }
+    .${uid('shuf')}-item::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.3s ease; z-index: 1; }
+    .${uid('shuf')}-item:hover::before { opacity: 1; }
+    @media (max-width: 768px) { .${uid('shuf')}-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+  <div class="${uid('shuf')}-wrap">
+    <h2 class="${uid('shuf')}-title">${v.headline}</h2>
+    <div class="${uid('shuf')}-grid">
+      <div class="${uid('shuf')}-item"><img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('shuf')}-item"><img src="https://images.unsplash.com/photo-1461896836934-xt?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('shuf')}-item"><img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('shuf')}-item"><img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('shuf')}-item"><img src="https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('shuf')}-item"><img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('shuf')}-item"><img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('shuf')}-item"><img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=300&h=300&fit=crop" alt=""></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'masonry-gallery',
+    name: 'Masonry Gallery',
+    category: 'Gallery',
+    description: 'Pinterest-style masonry image layout',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Curated Collection' },
+    ],
+    generateHtml: (v) => `<div class="${uid('mason')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('mason')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('mason')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('mason')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('mason')}-grid { column-count: 3; column-gap: 16px; }
+    .${uid('mason')}-item { break-inside: avoid; margin-bottom: 16px; position: relative; border-radius: 12px; overflow: hidden; cursor: pointer; }
+    .${uid('mason')}-item img { width: 100%; display: block; transition: transform 0.5s ease; }
+    .${uid('mason')}-item:hover img { transform: scale(1.05); }
+    .${uid('mason')}-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s ease; display: flex; align-items: flex-end; padding: 20px; }
+    .${uid('mason')}-item:hover .${uid('mason')}-overlay { opacity: 1; }
+    .${uid('mason')}-overlay span { color: #fff; font-size: 14px; font-weight: 600; }
+    @media (max-width: 768px) { .${uid('mason')}-grid { column-count: 2; } }
+  </style>
+  <div class="${uid('mason')}-wrap">
+    <h2 class="${uid('mason')}-title">${v.headline}</h2>
+    <div class="${uid('mason')}-grid">
+      <div class="${uid('mason')}-item"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=500&fit=crop" alt=""><div class="${uid('mason')}-overlay"><span>View</span></div></div>
+      <div class="${uid('mason')}-item"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop" alt=""><div class="${uid('mason')}-overlay"><span>View</span></div></div>
+      <div class="${uid('mason')}-item"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop" alt=""><div class="${uid('mason')}-overlay"><span>View</span></div></div>
+      <div class="${uid('mason')}-item"><img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=350&fit=crop" alt=""><div class="${uid('mason')}-overlay"><span>View</span></div></div>
+      <div class="${uid('mason')}-item"><img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=450&fit=crop" alt=""><div class="${uid('mason')}-overlay"><span>View</span></div></div>
+      <div class="${uid('mason')}-item"><img src="https://images.unsplash.com/photo-1491553895911-0055uj8d?w=400&h=300&fit=crop" alt=""><div class="${uid('mason')}-overlay"><span>View</span></div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'image-mosaic',
+    name: 'Image Mosaic',
+    category: 'Gallery',
+    description: 'Overlapping image mosaic with depth effect',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Rediscover Your Memories with AI' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Our intelligent platform finds, organizes, and brings your most cherished moments back to life.' },
+    ],
+    generateHtml: (v) => `<div class="${uid('mosaic')}" style="background:linear-gradient(135deg,#0a0a0a 0%,#1a1a2e 100%);min-height:500px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
+  <style>
+    .${uid('mosaic')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('mosaic')}-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding: 80px 24px; align-items: center; }
+    .${uid('mosaic')}-content { max-width: 450px; }
+    .${uid('mosaic')}-title { font-size: 40px; font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 20px; }
+    .${uid('mosaic')}-sub { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 32px; }
+    .${uid('mosaic')}-btns { display: flex; gap: 16px; }
+    .${uid('mosaic')}-btn { padding: 12px 24px; font-size: 13px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+    .${uid('mosaic')}-btn.primary { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); color: #fff; }
+    .${uid('mosaic')}-btn.secondary { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.3); }
+    .${uid('mosaic')}-images { position: relative; height: 350px; perspective: 1000px; }
+    .${uid('mosaic')}-img { position: absolute; border-radius: 16px; box-shadow: 0 25px 50px rgba(0,0,0,0.4); overflow: hidden; }
+    .${uid('mosaic')}-img img { width: 100%; height: 100%; object-fit: cover; }
+    .${uid('mosaic')}-img:nth-child(1) { width: 180px; height: 180px; top: 20px; left: 0; transform: rotate(-8deg); animation: ${uid('mosaic')}-float1 5s ease-in-out infinite; }
+    .${uid('mosaic')}-img:nth-child(2) { width: 200px; height: 200px; top: 60px; left: 120px; z-index: 2; animation: ${uid('mosaic')}-float2 6s ease-in-out infinite; }
+    .${uid('mosaic')}-img:nth-child(3) { width: 160px; height: 160px; bottom: 20px; left: 40px; transform: rotate(5deg); animation: ${uid('mosaic')}-float3 5.5s ease-in-out infinite; }
+    @keyframes ${uid('mosaic')}-float1 { 0%, 100% { transform: rotate(-8deg) translateY(0); } 50% { transform: rotate(-8deg) translateY(-10px); } }
+    @keyframes ${uid('mosaic')}-float2 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+    @keyframes ${uid('mosaic')}-float3 { 0%, 100% { transform: rotate(5deg) translateY(0); } 50% { transform: rotate(5deg) translateY(-8px); } }
+    @media (max-width: 900px) { .${uid('mosaic')}-wrap { grid-template-columns: 1fr; } .${uid('mosaic')}-images { height: 300px; } }
+  </style>
+  <div class="${uid('mosaic')}-wrap">
+    <div class="${uid('mosaic')}-content">
+      <h2 class="${uid('mosaic')}-title">${v.headline}</h2>
+      <p class="${uid('mosaic')}-sub">${v.subtext}</p>
+      <div class="${uid('mosaic')}-btns">
+        <a href="#" class="${uid('mosaic')}-btn primary">Explore Your Past</a>
+        <a href="#" class="${uid('mosaic')}-btn secondary">How It Works</a>
+      </div>
+    </div>
+    <div class="${uid('mosaic')}-images">
+      <div class="${uid('mosaic')}-img"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('mosaic')}-img"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop" alt=""></div>
+      <div class="${uid('mosaic')}-img"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=300&fit=crop" alt=""></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'portfolio-grid',
+    name: 'Portfolio Grid',
+    category: 'Gallery',
+    description: 'Hover reveal portfolio grid with title overlay',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Featured Work' },
+    ],
+    generateHtml: (v) => `<div class="${uid('port')}" style="background:#0a0a0a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('port')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('port')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('port')}-title { font-size: 36px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 48px; }
+    .${uid('port')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .${uid('port')}-item { position: relative; aspect-ratio: 4/3; border-radius: 16px; overflow: hidden; cursor: pointer; }
+    .${uid('port')}-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .${uid('port')}-item:hover img { transform: scale(1.1); }
+    .${uid('port')}-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; transform: translateY(20px); opacity: 0; transition: all 0.4s ease; }
+    .${uid('port')}-item:hover .${uid('port')}-overlay { transform: translateY(0); opacity: 1; }
+    .${uid('port')}-overlay-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .${uid('port')}-overlay-cat { font-size: 13px; color: rgba(255,255,255,0.6); }
+    @media (max-width: 768px) { .${uid('port')}-grid { grid-template-columns: 1fr; } }
+  </style>
+  <div class="${uid('port')}-wrap">
+    <h2 class="${uid('port')}-title">${v.headline}</h2>
+    <div class="${uid('port')}-grid">
+      <div class="${uid('port')}-item"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=450&fit=crop" alt=""><div class="${uid('port')}-overlay"><div class="${uid('port')}-overlay-title">Brand Identity</div><div class="${uid('port')}-overlay-cat">Design / Branding</div></div></div>
+      <div class="${uid('port')}-item"><img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&h=450&fit=crop" alt=""><div class="${uid('port')}-overlay"><div class="${uid('port')}-overlay-title">Mobile App</div><div class="${uid('port')}-overlay-cat">UI/UX / Development</div></div></div>
+      <div class="${uid('port')}-item"><img src="https://images.unsplash.com/photo-1559028012-481c04fa702d?w=600&h=450&fit=crop" alt=""><div class="${uid('port')}-overlay"><div class="${uid('port')}-overlay-title">Web Platform</div><div class="${uid('port')}-overlay-cat">Web / Strategy</div></div></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== FEATURE SECTIONS (21st.dev inspired) ==========
+  {
+    id: 'features-icon-hover',
+    name: 'Features - Icon Hover Cards',
+    category: 'Features',
+    description: 'Feature cards with icons and hover lift effect',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Why Choose Us' },
+      { id: 'f1Title', label: 'Feature 1 Title', type: 'text', defaultValue: 'Lightning Fast' },
+      { id: 'f1Desc', label: 'Feature 1 Description', type: 'text', defaultValue: 'Optimized for speed and performance' },
+      { id: 'f2Title', label: 'Feature 2 Title', type: 'text', defaultValue: 'Secure by Design' },
+      { id: 'f2Desc', label: 'Feature 2 Description', type: 'text', defaultValue: 'Enterprise-grade security built in' },
+      { id: 'f3Title', label: 'Feature 3 Title', type: 'text', defaultValue: '24/7 Support' },
+      { id: 'f3Desc', label: 'Feature 3 Description', type: 'text', defaultValue: 'Always here when you need us' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ficon')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('ficon')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ficon')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('ficon')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('ficon')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .${uid('ficon')}-card { background: #fff; padding: 40px 32px; border-radius: 16px; text-align: center; transition: all 0.3s ease; border: 1px solid #f0f0f0; }
+    .${uid('ficon')}-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+    .${uid('ficon')}-icon { width: 64px; height: 64px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; font-size: 28px; }
+    .${uid('ficon')}-card-title { font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; }
+    .${uid('ficon')}-card-desc { font-size: 14px; color: #666; line-height: 1.6; }
+    @media (max-width: 768px) { .${uid('ficon')}-grid { grid-template-columns: 1fr; } }
+  </style>
+  <div class="${uid('ficon')}-wrap">
+    <h2 class="${uid('ficon')}-title">${v.headline}</h2>
+    <div class="${uid('ficon')}-grid">
+      <div class="${uid('ficon')}-card"><div class="${uid('ficon')}-icon">⚡</div><div class="${uid('ficon')}-card-title">${v.f1Title}</div><div class="${uid('ficon')}-card-desc">${v.f1Desc}</div></div>
+      <div class="${uid('ficon')}-card"><div class="${uid('ficon')}-icon">🔒</div><div class="${uid('ficon')}-card-title">${v.f2Title}</div><div class="${uid('ficon')}-card-desc">${v.f2Desc}</div></div>
+      <div class="${uid('ficon')}-card"><div class="${uid('ficon')}-icon">💬</div><div class="${uid('ficon')}-card-title">${v.f3Title}</div><div class="${uid('ficon')}-card-desc">${v.f3Desc}</div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'features-counter',
+    name: 'Features - Animated Counter',
+    category: 'Features',
+    description: 'Stats section with large animated numbers',
+    thumbnail: '',
+    fields: [
+      { id: 'stat1', label: 'Stat 1 Value', type: 'text', defaultValue: '10M+' },
+      { id: 'stat1Label', label: 'Stat 1 Label', type: 'text', defaultValue: 'Active Users' },
+      { id: 'stat2', label: 'Stat 2 Value', type: 'text', defaultValue: '99.9%' },
+      { id: 'stat2Label', label: 'Stat 2 Label', type: 'text', defaultValue: 'Uptime' },
+      { id: 'stat3', label: 'Stat 3 Value', type: 'text', defaultValue: '150+' },
+      { id: 'stat3Label', label: 'Stat 3 Label', type: 'text', defaultValue: 'Countries' },
+      { id: 'stat4', label: 'Stat 4 Value', type: 'text', defaultValue: '4.9' },
+      { id: 'stat4Label', label: 'Stat 4 Label', type: 'text', defaultValue: 'User Rating' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fcnt')}" style="background:#0a0a0a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('fcnt')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fcnt')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('fcnt')}-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+    .${uid('fcnt')}-item { text-align: center; }
+    .${uid('fcnt')}-value { font-size: 56px; font-weight: 800; background: linear-gradient(135deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 12px; animation: ${uid('fcnt')}-pulse 3s ease-in-out infinite; }
+    .${uid('fcnt')}-label { font-size: 14px; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; }
+    @keyframes ${uid('fcnt')}-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+    @media (max-width: 768px) { .${uid('fcnt')}-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; } .${uid('fcnt')}-value { font-size: 40px; } }
+  </style>
+  <div class="${uid('fcnt')}-wrap">
+    <div class="${uid('fcnt')}-grid">
+      <div class="${uid('fcnt')}-item"><div class="${uid('fcnt')}-value">${v.stat1}</div><div class="${uid('fcnt')}-label">${v.stat1Label}</div></div>
+      <div class="${uid('fcnt')}-item"><div class="${uid('fcnt')}-value">${v.stat2}</div><div class="${uid('fcnt')}-label">${v.stat2Label}</div></div>
+      <div class="${uid('fcnt')}-item"><div class="${uid('fcnt')}-value">${v.stat3}</div><div class="${uid('fcnt')}-label">${v.stat3Label}</div></div>
+      <div class="${uid('fcnt')}-item"><div class="${uid('fcnt')}-value">${v.stat4}</div><div class="${uid('fcnt')}-label">${v.stat4Label}</div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'features-glass',
+    name: 'Features - Glassmorphism',
+    category: 'Features',
+    description: 'Frosted glass effect feature cards',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Powerful Features' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Everything you need to succeed' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fglass')}" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:500px;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;">
+  <style>
+    .${uid('fglass')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fglass')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('fglass')}-header { text-align: center; margin-bottom: 48px; }
+    .${uid('fglass')}-title { font-size: 42px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+    .${uid('fglass')}-sub { font-size: 18px; color: rgba(255,255,255,0.8); }
+    .${uid('fglass')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .${uid('fglass')}-card { background: rgba(255,255,255,0.15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 32px; transition: all 0.3s ease; }
+    .${uid('fglass')}-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.2); }
+    .${uid('fglass')}-icon { font-size: 32px; margin-bottom: 20px; }
+    .${uid('fglass')}-card-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .${uid('fglass')}-card-desc { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+    @media (max-width: 768px) { .${uid('fglass')}-grid { grid-template-columns: 1fr; } }
+  </style>
+  <div class="${uid('fglass')}-wrap">
+    <div class="${uid('fglass')}-header">
+      <h2 class="${uid('fglass')}-title">${v.headline}</h2>
+      <p class="${uid('fglass')}-sub">${v.subtext}</p>
+    </div>
+    <div class="${uid('fglass')}-grid">
+      <div class="${uid('fglass')}-card"><div class="${uid('fglass')}-icon">🚀</div><div class="${uid('fglass')}-card-title">Blazing Fast</div><div class="${uid('fglass')}-card-desc">Optimized performance that loads in milliseconds.</div></div>
+      <div class="${uid('fglass')}-card"><div class="${uid('fglass')}-icon">🎨</div><div class="${uid('fglass')}-card-title">Beautiful Design</div><div class="${uid('fglass')}-card-desc">Stunning UI that your customers will love.</div></div>
+      <div class="${uid('fglass')}-card"><div class="${uid('fglass')}-icon">📊</div><div class="${uid('fglass')}-card-title">Analytics</div><div class="${uid('fglass')}-card-desc">Deep insights into your business metrics.</div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'features-floating-labels',
+    name: 'Features - Floating Labels',
+    category: 'Features',
+    description: 'Features with animated floating label badges',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'This is something wonderful' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Managing a small business today is already tough. Avoid further complications by ditching outdated, tedious trade methods.' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ffloat')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('ffloat')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ffloat')}-wrap { max-width: 800px; margin: 0 auto; padding: 100px 24px; text-align: center; position: relative; }
+    .${uid('ffloat')}-label { display: inline-block; background: #f0f9ff; color: #0369a1; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 50px; margin-bottom: 24px; }
+    .${uid('ffloat')}-title { font-size: 48px; font-weight: 700; color: #1a1a1a; line-height: 1.2; margin-bottom: 20px; }
+    .${uid('ffloat')}-sub { font-size: 16px; color: #666; line-height: 1.7; max-width: 600px; margin: 0 auto 40px; }
+    .${uid('ffloat')}-btns { display: flex; gap: 16px; justify-content: center; }
+    .${uid('ffloat')}-btn { padding: 14px 28px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; }
+    .${uid('ffloat')}-btn.primary { background: #3b82f6; color: #fff; }
+    .${uid('ffloat')}-btn.secondary { background: #f5f5f5; color: #1a1a1a; }
+    .${uid('ffloat')}-badge { position: absolute; background: #fff; padding: 8px 16px; border-radius: 50px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); font-size: 13px; font-weight: 500; color: #1a1a1a; animation: ${uid('ffloat')}-bob 3s ease-in-out infinite; }
+    .${uid('ffloat')}-badge:nth-child(1) { top: 20%; left: 5%; animation-delay: 0s; }
+    .${uid('ffloat')}-badge:nth-child(2) { top: 30%; right: 5%; animation-delay: 1s; }
+    .${uid('ffloat')}-badge:nth-child(3) { bottom: 25%; left: 10%; animation-delay: 2s; }
+    @keyframes ${uid('ffloat')}-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @media (max-width: 768px) { .${uid('ffloat')}-title { font-size: 32px; } .${uid('ffloat')}-badge { display: none; } }
+  </style>
+  <div class="${uid('ffloat')}-wrap">
+    <div class="${uid('ffloat')}-badge">✨ Easy to use</div>
+    <div class="${uid('ffloat')}-badge">🔥 Trending</div>
+    <div class="${uid('ffloat')}-badge">⭐ 5-star rated</div>
+    <div class="${uid('ffloat')}-label">Read our latest article</div>
+    <h2 class="${uid('ffloat')}-title">${v.headline}</h2>
+    <p class="${uid('ffloat')}-sub">${v.subtext}</p>
+    <div class="${uid('ffloat')}-btns">
+      <a href="#" class="${uid('ffloat')}-btn primary">Jump on a call</a>
+      <a href="#" class="${uid('ffloat')}-btn secondary">Sign up free</a>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'features-reveal',
+    name: 'Features - Reveal Cards',
+    category: 'Features',
+    description: 'Feature cards with reveal animation effect',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Built for Scale' },
+    ],
+    generateHtml: (v) => `<div class="${uid('frev')}" style="background:#0a0a0a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('frev')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('frev')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('frev')}-title { font-size: 42px; font-weight: 700; color: #fff; text-align: center; margin-bottom: 48px; }
+    .${uid('frev')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .${uid('frev')}-card { background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 1px solid #333; border-radius: 16px; padding: 32px; position: relative; overflow: hidden; transition: all 0.4s ease; }
+    .${uid('frev')}-card::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.6s ease; }
+    .${uid('frev')}-card:hover::before { left: 100%; }
+    .${uid('frev')}-card:hover { border-color: #555; transform: translateY(-5px); }
+    .${uid('frev')}-num { font-size: 48px; font-weight: 800; color: #333; margin-bottom: 16px; }
+    .${uid('frev')}-card-title { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .${uid('frev')}-card-desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+    @media (max-width: 768px) { .${uid('frev')}-grid { grid-template-columns: 1fr; } }
+  </style>
+  <div class="${uid('frev')}-wrap">
+    <h2 class="${uid('frev')}-title">${v.headline}</h2>
+    <div class="${uid('frev')}-grid">
+      <div class="${uid('frev')}-card"><div class="${uid('frev')}-num">01</div><div class="${uid('frev')}-card-title">Global CDN</div><div class="${uid('frev')}-card-desc">Content delivered from 200+ edge locations worldwide.</div></div>
+      <div class="${uid('frev')}-card"><div class="${uid('frev')}-num">02</div><div class="${uid('frev')}-card-title">Auto Scaling</div><div class="${uid('frev')}-card-desc">Automatically handles traffic spikes without intervention.</div></div>
+      <div class="${uid('frev')}-card"><div class="${uid('frev')}-num">03</div><div class="${uid('frev')}-card-title">Zero Config</div><div class="${uid('frev')}-card-desc">Works out of the box with sensible defaults.</div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'features-sliding',
+    name: 'Features - Sliding Panels',
+    category: 'Features',
+    description: 'Horizontal sliding feature panels',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Curate your products into simple collections.' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Use this page to group your products into themed collections, making it easy for customers to browse.' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fslide')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('fslide')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fslide')}-wrap { max-width: 1000px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+    .${uid('fslide')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; line-height: 1.2; margin-bottom: 16px; }
+    .${uid('fslide')}-sub { font-size: 16px; color: #666; margin-bottom: 48px; }
+    .${uid('fslide')}-cards { display: flex; gap: 20px; justify-content: center; }
+    .${uid('fslide')}-card { background: #fff; border-radius: 16px; padding: 32px 40px; min-width: 180px; border: 1px solid #e0e0e0; transition: all 0.3s ease; cursor: pointer; }
+    .${uid('fslide')}-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-color: #ccc; }
+    .${uid('fslide')}-card-icon { font-size: 40px; margin-bottom: 16px; }
+    .${uid('fslide')}-card-title { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    @media (max-width: 768px) { .${uid('fslide')}-cards { flex-direction: column; align-items: center; } }
+  </style>
+  <div class="${uid('fslide')}-wrap">
+    <h2 class="${uid('fslide')}-title">${v.headline}</h2>
+    <p class="${uid('fslide')}-sub">${v.subtext}</p>
+    <div class="${uid('fslide')}-cards">
+      <div class="${uid('fslide')}-card"><div class="${uid('fslide')}-card-icon">🪴</div><div class="${uid('fslide')}-card-title">Home</div></div>
+      <div class="${uid('fslide')}-card"><div class="${uid('fslide')}-card-icon">👟</div><div class="${uid('fslide')}-card-title">Footwear</div></div>
+      <div class="${uid('fslide')}-card"><div class="${uid('fslide')}-card-icon">🎧</div><div class="${uid('fslide')}-card-title">Technology</div></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== TESTIMONIAL SECTIONS (21st.dev inspired) ==========
+  {
+    id: 'testimonial-carousel',
+    name: 'Testimonials - Card Carousel',
+    category: 'Testimonials',
+    description: 'Horizontal scrolling testimonial cards',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'What Our Customers Say' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tcar')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('tcar')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tcar')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('tcar')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('tcar')}-track { display: flex; gap: 24px; overflow-x: auto; padding-bottom: 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .${uid('tcar')}-track::-webkit-scrollbar { height: 6px; }
+    .${uid('tcar')}-track::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 3px; }
+    .${uid('tcar')}-track::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+    .${uid('tcar')}-card { flex: 0 0 350px; background: #fafafa; border-radius: 16px; padding: 32px; scroll-snap-align: start; }
+    .${uid('tcar')}-stars { color: #fbbf24; font-size: 16px; margin-bottom: 16px; }
+    .${uid('tcar')}-quote { font-size: 15px; color: #333; line-height: 1.7; margin-bottom: 24px; }
+    .${uid('tcar')}-author { display: flex; align-items: center; gap: 12px; }
+    .${uid('tcar')}-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+    .${uid('tcar')}-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .${uid('tcar')}-role { font-size: 12px; color: #888; }
+  </style>
+  <div class="${uid('tcar')}-wrap">
+    <h2 class="${uid('tcar')}-title">${v.headline}</h2>
+    <div class="${uid('tcar')}-track">
+      <div class="${uid('tcar')}-card"><div class="${uid('tcar')}-stars">★★★★★</div><div class="${uid('tcar')}-quote">"This product completely transformed how we handle our daily operations. Couldn't be happier!"</div><div class="${uid('tcar')}-author"><img class="${uid('tcar')}-avatar" src="https://i.pravatar.cc/100?img=1" alt=""><div><div class="${uid('tcar')}-name">Sarah Johnson</div><div class="${uid('tcar')}-role">Marketing Director</div></div></div></div>
+      <div class="${uid('tcar')}-card"><div class="${uid('tcar')}-stars">★★★★★</div><div class="${uid('tcar')}-quote">"The best investment we've made this year. ROI was visible within the first month."</div><div class="${uid('tcar')}-author"><img class="${uid('tcar')}-avatar" src="https://i.pravatar.cc/100?img=2" alt=""><div><div class="${uid('tcar')}-name">Michael Chen</div><div class="${uid('tcar')}-role">CEO, TechStart</div></div></div></div>
+      <div class="${uid('tcar')}-card"><div class="${uid('tcar')}-stars">★★★★★</div><div class="${uid('tcar')}-quote">"Outstanding support team and the features keep getting better. Highly recommend!"</div><div class="${uid('tcar')}-author"><img class="${uid('tcar')}-avatar" src="https://i.pravatar.cc/100?img=3" alt=""><div><div class="${uid('tcar')}-name">Emily Davis</div><div class="${uid('tcar')}-role">Product Manager</div></div></div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'testimonial-spotlight',
+    name: 'Testimonials - Quote Spotlight',
+    category: 'Testimonials',
+    description: 'Large centered quote with spotlight effect',
+    thumbnail: '',
+    fields: [
+      { id: 'quote', label: 'Quote', type: 'textarea', defaultValue: 'This platform has revolutionized the way we work. The intuitive interface and powerful features have boosted our productivity by 300%.' },
+      { id: 'author', label: 'Author Name', type: 'text', defaultValue: 'Alexandra Rivera' },
+      { id: 'role', label: 'Author Role', type: 'text', defaultValue: 'VP of Engineering, Fortune 500' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tspot')}" style="background:#0a0a0a;min-height:450px;display:flex;align-items:center;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;position:relative;overflow:hidden;">
+  <style>
+    .${uid('tspot')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tspot')}::before { content: ''; position: absolute; width: 500px; height: 500px; background: radial-gradient(circle, rgba(100,150,255,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); animation: ${uid('tspot')}-pulse 6s ease-in-out infinite; }
+    .${uid('tspot')}-wrap { max-width: 800px; margin: 0 auto; padding: 80px 24px; text-align: center; position: relative; z-index: 1; }
+    .${uid('tspot')}-quote-mark { font-size: 80px; color: #333; line-height: 1; margin-bottom: 24px; }
+    .${uid('tspot')}-quote { font-size: 28px; font-weight: 400; color: #fff; line-height: 1.5; margin-bottom: 40px; font-style: italic; }
+    .${uid('tspot')}-author { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .${uid('tspot')}-role { font-size: 14px; color: rgba(255,255,255,0.5); }
+    @keyframes ${uid('tspot')}-pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.15; } 50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.25; } }
+    @media (max-width: 768px) { .${uid('tspot')}-quote { font-size: 20px; } }
+  </style>
+  <div class="${uid('tspot')}-wrap">
+    <div class="${uid('tspot')}-quote-mark">"</div>
+    <p class="${uid('tspot')}-quote">${v.quote}</p>
+    <div class="${uid('tspot')}-author">${v.author}</div>
+    <div class="${uid('tspot')}-role">${v.role}</div>
+  </div>
+</div>`
+  },
+  {
+    id: 'testimonial-video',
+    name: 'Testimonials - Video Style',
+    category: 'Testimonials',
+    description: 'Video thumbnail testimonial with play button',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'See Why Customers Love Us' },
+      { id: 'name', label: 'Customer Name', type: 'text', defaultValue: 'James Wilson' },
+      { id: 'company', label: 'Company', type: 'text', defaultValue: 'Founder, StartupXYZ' },
+    ],
+    generateHtml: (v) => `<div class="${uid('tvid')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('tvid')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('tvid')}-wrap { max-width: 1000px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('tvid')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('tvid')}-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+    .${uid('tvid')}-video { position: relative; aspect-ratio: 16/9; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .${uid('tvid')}-video::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&h=450&fit=crop') center/cover; opacity: 0.6; }
+    .${uid('tvid')}-play { width: 80px; height: 80px; background: rgba(255,255,255,0.95); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; transition: all 0.3s ease; }
+    .${uid('tvid')}-video:hover .${uid('tvid')}-play { transform: scale(1.1); }
+    .${uid('tvid')}-play::after { content: '▶'; font-size: 24px; color: #1a1a1a; margin-left: 4px; }
+    .${uid('tvid')}-info { padding: 32px; display: flex; align-items: center; gap: 16px; }
+    .${uid('tvid')}-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+    .${uid('tvid')}-name { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    .${uid('tvid')}-company { font-size: 14px; color: #888; }
+  </style>
+  <div class="${uid('tvid')}-wrap">
+    <h2 class="${uid('tvid')}-title">${v.headline}</h2>
+    <div class="${uid('tvid')}-card">
+      <div class="${uid('tvid')}-video"><div class="${uid('tvid')}-play"></div></div>
+      <div class="${uid('tvid')}-info"><img class="${uid('tvid')}-avatar" src="https://i.pravatar.cc/100?img=8" alt=""><div><div class="${uid('tvid')}-name">${v.name}</div><div class="${uid('tvid')}-company">${v.company}</div></div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'reviews-star-grid',
+    name: 'Reviews - Star Rating Grid',
+    category: 'Testimonials',
+    description: '3-column review cards with star ratings',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Customer Reviews' },
+    ],
+    generateHtml: (v) => `<div class="${uid('rstar')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('rstar')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('rstar')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('rstar')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('rstar')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .${uid('rstar')}-card { background: #fafafa; border-radius: 16px; padding: 28px; border: 1px solid #f0f0f0; }
+    .${uid('rstar')}-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .${uid('rstar')}-stars { color: #fbbf24; font-size: 14px; }
+    .${uid('rstar')}-date { font-size: 12px; color: #999; }
+    .${uid('rstar')}-text { font-size: 14px; color: #333; line-height: 1.7; margin-bottom: 20px; }
+    .${uid('rstar')}-author { display: flex; align-items: center; gap: 12px; }
+    .${uid('rstar')}-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .${uid('rstar')}-name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .${uid('rstar')}-verified { font-size: 11px; color: #22c55e; display: flex; align-items: center; gap: 4px; }
+    @media (max-width: 768px) { .${uid('rstar')}-grid { grid-template-columns: 1fr; } }
+  </style>
+  <div class="${uid('rstar')}-wrap">
+    <h2 class="${uid('rstar')}-title">${v.headline}</h2>
+    <div class="${uid('rstar')}-grid">
+      <div class="${uid('rstar')}-card"><div class="${uid('rstar')}-header"><div class="${uid('rstar')}-stars">★★★★★</div><div class="${uid('rstar')}-date">2 days ago</div></div><div class="${uid('rstar')}-text">"Absolutely love this product! The quality exceeded my expectations and shipping was super fast."</div><div class="${uid('rstar')}-author"><img class="${uid('rstar')}-avatar" src="https://i.pravatar.cc/100?img=5" alt=""><div><div class="${uid('rstar')}-name">Lisa M.</div><div class="${uid('rstar')}-verified">✓ Verified Purchase</div></div></div></div>
+      <div class="${uid('rstar')}-card"><div class="${uid('rstar')}-header"><div class="${uid('rstar')}-stars">★★★★★</div><div class="${uid('rstar')}-date">1 week ago</div></div><div class="${uid('rstar')}-text">"Best purchase I've made this year. Customer service was incredibly helpful too!"</div><div class="${uid('rstar')}-author"><img class="${uid('rstar')}-avatar" src="https://i.pravatar.cc/100?img=12" alt=""><div><div class="${uid('rstar')}-name">Robert K.</div><div class="${uid('rstar')}-verified">✓ Verified Purchase</div></div></div></div>
+      <div class="${uid('rstar')}-card"><div class="${uid('rstar')}-header"><div class="${uid('rstar')}-stars">★★★★☆</div><div class="${uid('rstar')}-date">2 weeks ago</div></div><div class="${uid('rstar')}-text">"Great value for money. Would definitely recommend to friends and family."</div><div class="${uid('rstar')}-author"><img class="${uid('rstar')}-avatar" src="https://i.pravatar.cc/100?img=9" alt=""><div><div class="${uid('rstar')}-name">Amanda T.</div><div class="${uid('rstar')}-verified">✓ Verified Purchase</div></div></div></div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== CTA SECTIONS (21st.dev inspired) ==========
+  {
+    id: 'cta-gradient-glow',
+    name: 'CTA - Gradient Glow Button',
+    category: 'CTA',
+    description: 'Call-to-action with animated glowing gradient button',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Ready to Get Started?' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Join thousands of happy customers today.' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Start Free Trial' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ctag')}" style="background:#0a0a0a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('ctag')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ctag')}-wrap { max-width: 800px; margin: 0 auto; padding: 100px 24px; text-align: center; }
+    .${uid('ctag')}-title { font-size: 48px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+    .${uid('ctag')}-sub { font-size: 18px; color: rgba(255,255,255,0.6); margin-bottom: 40px; }
+    .${uid('ctag')}-btn { position: relative; display: inline-block; padding: 18px 48px; background: linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #6366f1 100%); background-size: 200% 200%; color: #fff; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 12px; animation: ${uid('ctag')}-glow 3s ease-in-out infinite; transition: all 0.3s ease; }
+    .${uid('ctag')}-btn::before { content: ''; position: absolute; inset: -3px; background: linear-gradient(135deg, #6366f1 0%, #ec4899 50%, #6366f1 100%); background-size: 200% 200%; border-radius: 14px; z-index: -1; filter: blur(15px); opacity: 0.6; animation: ${uid('ctag')}-glow 3s ease-in-out infinite; }
+    .${uid('ctag')}-btn:hover { transform: translateY(-3px); }
+    @keyframes ${uid('ctag')}-glow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+    @media (max-width: 768px) { .${uid('ctag')}-title { font-size: 32px; } }
+  </style>
+  <div class="${uid('ctag')}-wrap">
+    <h2 class="${uid('ctag')}-title">${v.headline}</h2>
+    <p class="${uid('ctag')}-sub">${v.subtext}</p>
+    <a href="#" class="${uid('ctag')}-btn">${v.btnText}</a>
+  </div>
+</div>`
+  },
+  {
+    id: 'cta-split-image',
+    name: 'CTA - Split Image',
+    category: 'CTA',
+    description: 'Half image, half CTA layout',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Transform Your Business Today' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Get access to all our premium features and start growing your revenue immediately.' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Get Started Now' },
+      { id: 'image', label: 'Image URL', type: 'image', defaultValue: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=600&fit=crop' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ctasplit')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('ctasplit')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ctasplit')}-wrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 450px; }
+    .${uid('ctasplit')}-content { display: flex; flex-direction: column; justify-content: center; padding: 60px; background: #fafafa; }
+    .${uid('ctasplit')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; line-height: 1.2; margin-bottom: 20px; }
+    .${uid('ctasplit')}-sub { font-size: 16px; color: #666; line-height: 1.7; margin-bottom: 32px; }
+    .${uid('ctasplit')}-btn { display: inline-block; padding: 16px 32px; background: #1a1a1a; color: #fff; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 8px; transition: all 0.3s ease; align-self: flex-start; }
+    .${uid('ctasplit')}-btn:hover { background: #333; transform: translateY(-2px); }
+    .${uid('ctasplit')}-image { background-size: cover; background-position: center; }
+    @media (max-width: 768px) { .${uid('ctasplit')}-wrap { grid-template-columns: 1fr; } .${uid('ctasplit')}-image { min-height: 300px; } }
+  </style>
+  <div class="${uid('ctasplit')}-wrap">
+    <div class="${uid('ctasplit')}-content">
+      <h2 class="${uid('ctasplit')}-title">${v.headline}</h2>
+      <p class="${uid('ctasplit')}-sub">${v.subtext}</p>
+      <a href="#" class="${uid('ctasplit')}-btn">${v.btnText}</a>
+    </div>
+    <div class="${uid('ctasplit')}-image" style="background-image: url('${v.image}');"></div>
+  </div>
+</div>`
+  },
+  {
+    id: 'cta-newsletter',
+    name: 'CTA - Newsletter Minimal',
+    category: 'CTA',
+    description: 'Clean minimal email signup form',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Stay in the loop' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Get the latest updates delivered straight to your inbox.' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Subscribe' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ctanews')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('ctanews')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ctanews')}-wrap { max-width: 600px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+    .${uid('ctanews')}-title { font-size: 32px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px; }
+    .${uid('ctanews')}-sub { font-size: 16px; color: #666; margin-bottom: 32px; }
+    .${uid('ctanews')}-form { display: flex; gap: 12px; max-width: 450px; margin: 0 auto; }
+    .${uid('ctanews')}-input { flex: 1; padding: 16px 20px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; transition: border-color 0.3s; outline: none; }
+    .${uid('ctanews')}-input:focus { border-color: #1a1a1a; }
+    .${uid('ctanews')}-btn { padding: 16px 28px; background: #1a1a1a; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+    .${uid('ctanews')}-btn:hover { background: #333; }
+    @media (max-width: 500px) { .${uid('ctanews')}-form { flex-direction: column; } }
+  </style>
+  <div class="${uid('ctanews')}-wrap">
+    <h2 class="${uid('ctanews')}-title">${v.headline}</h2>
+    <p class="${uid('ctanews')}-sub">${v.subtext}</p>
+    <div class="${uid('ctanews')}-form">
+      <input type="email" class="${uid('ctanews')}-input" placeholder="Enter your email">
+      <button class="${uid('ctanews')}-btn">${v.btnText}</button>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'cta-countdown-premium',
+    name: 'CTA - Countdown Premium',
+    category: 'CTA',
+    description: 'Flip-clock style countdown timer',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Limited Time Offer' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Don\'t miss out on this exclusive deal' },
+      { id: 'btnText', label: 'Button Text', type: 'text', defaultValue: 'Claim Offer' },
+    ],
+    generateHtml: (v) => `<div class="${uid('ctacd')}" style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('ctacd')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('ctacd')}-wrap { max-width: 900px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+    .${uid('ctacd')}-title { font-size: 42px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .${uid('ctacd')}-sub { font-size: 18px; color: rgba(255,255,255,0.7); margin-bottom: 40px; }
+    .${uid('ctacd')}-timer { display: flex; gap: 16px; justify-content: center; margin-bottom: 40px; }
+    .${uid('ctacd')}-block { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 24px 32px; min-width: 100px; }
+    .${uid('ctacd')}-num { font-size: 48px; font-weight: 800; color: #fff; line-height: 1; margin-bottom: 8px; }
+    .${uid('ctacd')}-label { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; }
+    .${uid('ctacd')}-btn { display: inline-block; padding: 18px 48px; background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%); color: #fff; font-size: 16px; font-weight: 600; text-decoration: none; border-radius: 50px; transition: all 0.3s ease; }
+    .${uid('ctacd')}-btn:hover { transform: scale(1.05); box-shadow: 0 10px 40px rgba(245,158,11,0.3); }
+    @media (max-width: 600px) { .${uid('ctacd')}-timer { flex-wrap: wrap; } .${uid('ctacd')}-block { min-width: 80px; padding: 16px 20px; } .${uid('ctacd')}-num { font-size: 32px; } }
+  </style>
+  <div class="${uid('ctacd')}-wrap">
+    <h2 class="${uid('ctacd')}-title">${v.headline}</h2>
+    <p class="${uid('ctacd')}-sub">${v.subtext}</p>
+    <div class="${uid('ctacd')}-timer">
+      <div class="${uid('ctacd')}-block"><div class="${uid('ctacd')}-num">02</div><div class="${uid('ctacd')}-label">Days</div></div>
+      <div class="${uid('ctacd')}-block"><div class="${uid('ctacd')}-num">18</div><div class="${uid('ctacd')}-label">Hours</div></div>
+      <div class="${uid('ctacd')}-block"><div class="${uid('ctacd')}-num">45</div><div class="${uid('ctacd')}-label">Minutes</div></div>
+      <div class="${uid('ctacd')}-block"><div class="${uid('ctacd')}-num">30</div><div class="${uid('ctacd')}-label">Seconds</div></div>
+    </div>
+    <a href="#" class="${uid('ctacd')}-btn">${v.btnText}</a>
+  </div>
+</div>`
+  },
+
+  // ========== PRODUCT SECTIONS (21st.dev inspired) ==========
+  {
+    id: 'product-hover-reveal',
+    name: 'Product - Hover Reveal',
+    category: 'Product',
+    description: 'Product cards with details revealed on hover',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'New Arrivals' },
+    ],
+    generateHtml: (v) => `<div class="${uid('phover')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('phover')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('phover')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('phover')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('phover')}-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .${uid('phover')}-card { position: relative; overflow: hidden; border-radius: 16px; cursor: pointer; }
+    .${uid('phover')}-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; transition: transform 0.5s ease; }
+    .${uid('phover')}-card:hover img { transform: scale(1.1); }
+    .${uid('phover')}-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; opacity: 0; transition: opacity 0.3s ease; }
+    .${uid('phover')}-card:hover .${uid('phover')}-overlay { opacity: 1; }
+    .${uid('phover')}-name { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .${uid('phover')}-price { font-size: 14px; color: rgba(255,255,255,0.8); }
+    .${uid('phover')}-btn { margin-top: 16px; padding: 10px 20px; background: #fff; color: #1a1a1a; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; }
+    @media (max-width: 900px) { .${uid('phover')}-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+  <div class="${uid('phover')}-wrap">
+    <h2 class="${uid('phover')}-title">${v.headline}</h2>
+    <div class="${uid('phover')}-grid">
+      <div class="${uid('phover')}-card"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=500&fit=crop" alt=""><div class="${uid('phover')}-overlay"><div class="${uid('phover')}-name">Premium Watch</div><div class="${uid('phover')}-price">$299.00</div><button class="${uid('phover')}-btn">Quick View</button></div></div>
+      <div class="${uid('phover')}-card"><img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=500&fit=crop" alt=""><div class="${uid('phover')}-overlay"><div class="${uid('phover')}-name">Wireless Headphones</div><div class="${uid('phover')}-price">$199.00</div><button class="${uid('phover')}-btn">Quick View</button></div></div>
+      <div class="${uid('phover')}-card"><img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=500&fit=crop" alt=""><div class="${uid('phover')}-overlay"><div class="${uid('phover')}-name">Designer Sunglasses</div><div class="${uid('phover')}-price">$149.00</div><button class="${uid('phover')}-btn">Quick View</button></div></div>
+      <div class="${uid('phover')}-card"><img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=400&h=500&fit=crop" alt=""><div class="${uid('phover')}-overlay"><div class="${uid('phover')}-name">Leather Bag</div><div class="${uid('phover')}-price">$349.00</div><button class="${uid('phover')}-btn">Quick View</button></div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'product-category-icons',
+    name: 'Product - Category Icons',
+    category: 'Product',
+    description: 'Category cards with icon badges',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Shop by Category' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pcat')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('pcat')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('pcat')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('pcat')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('pcat')}-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .${uid('pcat')}-card { background: #fff; border-radius: 16px; padding: 32px; text-align: center; transition: all 0.3s ease; cursor: pointer; border: 1px solid #f0f0f0; }
+    .${uid('pcat')}-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+    .${uid('pcat')}-icon { width: 80px; height: 80px; margin: 0 auto 20px; border-radius: 50%; background: #f5f5f5; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+    .${uid('pcat')}-name { font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; }
+    .${uid('pcat')}-count { font-size: 13px; color: #888; }
+    @media (max-width: 768px) { .${uid('pcat')}-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+  <div class="${uid('pcat')}-wrap">
+    <h2 class="${uid('pcat')}-title">${v.headline}</h2>
+    <div class="${uid('pcat')}-grid">
+      <div class="${uid('pcat')}-card"><div class="${uid('pcat')}-icon">👕</div><div class="${uid('pcat')}-name">Clothing</div><div class="${uid('pcat')}-count">248 items</div></div>
+      <div class="${uid('pcat')}-card"><div class="${uid('pcat')}-icon">👟</div><div class="${uid('pcat')}-name">Footwear</div><div class="${uid('pcat')}-count">186 items</div></div>
+      <div class="${uid('pcat')}-card"><div class="${uid('pcat')}-icon">💍</div><div class="${uid('pcat')}-name">Accessories</div><div class="${uid('pcat')}-count">124 items</div></div>
+      <div class="${uid('pcat')}-card"><div class="${uid('pcat')}-icon">👜</div><div class="${uid('pcat')}-name">Bags</div><div class="${uid('pcat')}-count">92 items</div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'product-before-after',
+    name: 'Product - Before/After',
+    category: 'Product',
+    description: 'Visual comparison slider effect',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'See the Difference' },
+      { id: 'subtext', label: 'Subtext', type: 'text', defaultValue: 'Drag to compare before and after results' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pba')}" style="background:#0a0a0a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('pba')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('pba')}-wrap { max-width: 900px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+    .${uid('pba')}-title { font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .${uid('pba')}-sub { font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 40px; }
+    .${uid('pba')}-compare { position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 16/9; }
+    .${uid('pba')}-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .${uid('pba')}-img.after { clip-path: inset(0 50% 0 0); }
+    .${uid('pba')}-divider { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #fff; transform: translateX(-50%); cursor: ew-resize; }
+    .${uid('pba')}-divider::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: #fff; border-radius: 50%; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+    .${uid('pba')}-labels { display: flex; justify-content: space-between; margin-top: 20px; }
+    .${uid('pba')}-label { font-size: 14px; color: rgba(255,255,255,0.6); }
+  </style>
+  <div class="${uid('pba')}-wrap">
+    <h2 class="${uid('pba')}-title">${v.headline}</h2>
+    <p class="${uid('pba')}-sub">${v.subtext}</p>
+    <div class="${uid('pba')}-compare">
+      <img class="${uid('pba')}-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=450&fit=crop&sat=-100" alt="Before">
+      <img class="${uid('pba')}-img after" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=450&fit=crop" alt="After">
+      <div class="${uid('pba')}-divider"></div>
+    </div>
+    <div class="${uid('pba')}-labels"><span class="${uid('pba')}-label">Before</span><span class="${uid('pba')}-label">After</span></div>
+  </div>
+</div>`
+  },
+  {
+    id: 'product-quick-view',
+    name: 'Product - Quick View Style',
+    category: 'Product',
+    description: 'Modal-style product preview card',
+    thumbnail: '',
+    fields: [
+      { id: 'productName', label: 'Product Name', type: 'text', defaultValue: 'Premium Leather Jacket' },
+      { id: 'price', label: 'Price', type: 'text', defaultValue: '$449.00' },
+      { id: 'desc', label: 'Description', type: 'text', defaultValue: 'Crafted from the finest Italian leather, this jacket combines timeless style with modern comfort.' },
+    ],
+    generateHtml: (v) => `<div class="${uid('pqv')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('pqv')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('pqv')}-wrap { max-width: 1000px; margin: 0 auto; padding: 60px 24px; }
+    .${uid('pqv')}-card { display: grid; grid-template-columns: 1fr 1fr; background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1); }
+    .${uid('pqv')}-image { position: relative; }
+    .${uid('pqv')}-image img { width: 100%; height: 100%; object-fit: cover; }
+    .${uid('pqv')}-badge { position: absolute; top: 20px; left: 20px; background: #1a1a1a; color: #fff; font-size: 11px; font-weight: 600; padding: 6px 12px; border-radius: 4px; }
+    .${uid('pqv')}-content { padding: 48px; display: flex; flex-direction: column; justify-content: center; }
+    .${uid('pqv')}-name { font-size: 28px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+    .${uid('pqv')}-price { font-size: 24px; font-weight: 600; color: #1a1a1a; margin-bottom: 20px; }
+    .${uid('pqv')}-desc { font-size: 15px; color: #666; line-height: 1.7; margin-bottom: 32px; }
+    .${uid('pqv')}-sizes { display: flex; gap: 10px; margin-bottom: 32px; }
+    .${uid('pqv')}-size { width: 44px; height: 44px; border: 1px solid #e0e0e0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+    .${uid('pqv')}-size:hover { border-color: #1a1a1a; }
+    .${uid('pqv')}-size.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+    .${uid('pqv')}-btn { padding: 16px 32px; background: #1a1a1a; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+    .${uid('pqv')}-btn:hover { background: #333; }
+    @media (max-width: 768px) { .${uid('pqv')}-card { grid-template-columns: 1fr; } .${uid('pqv')}-image { height: 350px; } }
+  </style>
+  <div class="${uid('pqv')}-wrap">
+    <div class="${uid('pqv')}-card">
+      <div class="${uid('pqv')}-image"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&h=700&fit=crop" alt=""><div class="${uid('pqv')}-badge">NEW</div></div>
+      <div class="${uid('pqv')}-content">
+        <h2 class="${uid('pqv')}-name">${v.productName}</h2>
+        <div class="${uid('pqv')}-price">${v.price}</div>
+        <p class="${uid('pqv')}-desc">${v.desc}</p>
+        <div class="${uid('pqv')}-sizes"><div class="${uid('pqv')}-size">XS</div><div class="${uid('pqv')}-size">S</div><div class="${uid('pqv')}-size active">M</div><div class="${uid('pqv')}-size">L</div><div class="${uid('pqv')}-size">XL</div></div>
+        <button class="${uid('pqv')}-btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ========== TEAM/ABOUT SECTIONS (21st.dev inspired) ==========
+  {
+    id: 'team-flip-cards',
+    name: 'Team - Flip Cards',
+    category: 'Story',
+    description: '3D flip cards showing team members',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Meet Our Team' },
+    ],
+    generateHtml: (v) => `<div class="${uid('teamf')}" style="background:#fff;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('teamf')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('teamf')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('teamf')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 48px; }
+    .${uid('teamf')}-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    .${uid('teamf')}-card { perspective: 1000px; height: 380px; cursor: pointer; }
+    .${uid('teamf')}-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; }
+    .${uid('teamf')}-card:hover .${uid('teamf')}-inner { transform: rotateY(180deg); }
+    .${uid('teamf')}-front, .${uid('teamf')}-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 16px; overflow: hidden; }
+    .${uid('teamf')}-front img { width: 100%; height: 100%; object-fit: cover; }
+    .${uid('teamf')}-back { background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 32px; text-align: center; }
+    .${uid('teamf')}-name { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .${uid('teamf')}-role { font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 20px; }
+    .${uid('teamf')}-bio { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.6; }
+    @media (max-width: 768px) { .${uid('teamf')}-grid { grid-template-columns: 1fr; max-width: 350px; margin: 0 auto; } }
+  </style>
+  <div class="${uid('teamf')}-wrap">
+    <h2 class="${uid('teamf')}-title">${v.headline}</h2>
+    <div class="${uid('teamf')}-grid">
+      <div class="${uid('teamf')}-card"><div class="${uid('teamf')}-inner"><div class="${uid('teamf')}-front"><img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop" alt=""></div><div class="${uid('teamf')}-back"><div class="${uid('teamf')}-name">John Smith</div><div class="${uid('teamf')}-role">CEO & Founder</div><div class="${uid('teamf')}-bio">15+ years of experience building world-class products.</div></div></div></div>
+      <div class="${uid('teamf')}-card"><div class="${uid('teamf')}-inner"><div class="${uid('teamf')}-front"><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=500&fit=crop" alt=""></div><div class="${uid('teamf')}-back"><div class="${uid('teamf')}-name">Sarah Chen</div><div class="${uid('teamf')}-role">CTO</div><div class="${uid('teamf')}-bio">Former Google engineer passionate about innovation.</div></div></div></div>
+      <div class="${uid('teamf')}-card"><div class="${uid('teamf')}-inner"><div class="${uid('teamf')}-front"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop" alt=""></div><div class="${uid('teamf')}-back"><div class="${uid('teamf')}-name">Michael Lee</div><div class="${uid('teamf')}-role">Head of Design</div><div class="${uid('teamf')}-bio">Award-winning designer with a keen eye for detail.</div></div></div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'about-timeline',
+    name: 'About - Timeline',
+    category: 'Story',
+    description: 'Vertical timeline with milestone dots',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Our Journey' },
+    ],
+    generateHtml: (v) => `<div class="${uid('timeline')}" style="background:#fafafa;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('timeline')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('timeline')}-wrap { max-width: 800px; margin: 0 auto; padding: 80px 24px; }
+    .${uid('timeline')}-title { font-size: 36px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 60px; }
+    .${uid('timeline')}-list { position: relative; padding-left: 40px; }
+    .${uid('timeline')}-list::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #e0e0e0 0%, #1a1a1a 50%, #e0e0e0 100%); }
+    .${uid('timeline')}-item { position: relative; margin-bottom: 40px; }
+    .${uid('timeline')}-item::before { content: ''; position: absolute; left: -34px; top: 4px; width: 14px; height: 14px; background: #1a1a1a; border-radius: 50%; border: 3px solid #fafafa; }
+    .${uid('timeline')}-year { font-size: 14px; font-weight: 700; color: #6366f1; margin-bottom: 8px; }
+    .${uid('timeline')}-item-title { font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+    .${uid('timeline')}-item-desc { font-size: 15px; color: #666; line-height: 1.6; }
+  </style>
+  <div class="${uid('timeline')}-wrap">
+    <h2 class="${uid('timeline')}-title">${v.headline}</h2>
+    <div class="${uid('timeline')}-list">
+      <div class="${uid('timeline')}-item"><div class="${uid('timeline')}-year">2020</div><div class="${uid('timeline')}-item-title">Company Founded</div><div class="${uid('timeline')}-item-desc">Started in a small garage with a big dream and three passionate founders.</div></div>
+      <div class="${uid('timeline')}-item"><div class="${uid('timeline')}-year">2021</div><div class="${uid('timeline')}-item-title">First Product Launch</div><div class="${uid('timeline')}-item-desc">Released our flagship product to overwhelming positive response.</div></div>
+      <div class="${uid('timeline')}-item"><div class="${uid('timeline')}-year">2022</div><div class="${uid('timeline')}-item-title">Series A Funding</div><div class="${uid('timeline')}-item-desc">Raised $10M to accelerate growth and expand our team.</div></div>
+      <div class="${uid('timeline')}-item"><div class="${uid('timeline')}-year">2024</div><div class="${uid('timeline')}-item-title">Global Expansion</div><div class="${uid('timeline')}-item-desc">Now serving customers in over 50 countries worldwide.</div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'about-stats-row',
+    name: 'About - Stats Row',
+    category: 'Story',
+    description: 'Horizontal stats with icons',
+    thumbnail: '',
+    fields: [
+      { id: 'headline', label: 'Headline', type: 'text', defaultValue: 'Our Impact in Numbers' },
+    ],
+    generateHtml: (v) => `<div class="${uid('astats')}" style="background:#1a1a1a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('astats')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('astats')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+    .${uid('astats')}-title { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 60px; }
+    .${uid('astats')}-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+    .${uid('astats')}-item { text-align: center; }
+    .${uid('astats')}-icon { font-size: 40px; margin-bottom: 16px; }
+    .${uid('astats')}-num { font-size: 48px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .${uid('astats')}-label { font-size: 14px; color: rgba(255,255,255,0.6); }
+    @media (max-width: 768px) { .${uid('astats')}-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; } .${uid('astats')}-num { font-size: 36px; } }
+  </style>
+  <div class="${uid('astats')}-wrap">
+    <h2 class="${uid('astats')}-title">${v.headline}</h2>
+    <div class="${uid('astats')}-grid">
+      <div class="${uid('astats')}-item"><div class="${uid('astats')}-icon">🌍</div><div class="${uid('astats')}-num">50+</div><div class="${uid('astats')}-label">Countries</div></div>
+      <div class="${uid('astats')}-item"><div class="${uid('astats')}-icon">👥</div><div class="${uid('astats')}-num">100K+</div><div class="${uid('astats')}-label">Happy Customers</div></div>
+      <div class="${uid('astats')}-item"><div class="${uid('astats')}-icon">⭐</div><div class="${uid('astats')}-num">4.9</div><div class="${uid('astats')}-label">Average Rating</div></div>
+      <div class="${uid('astats')}-item"><div class="${uid('astats')}-icon">🏆</div><div class="${uid('astats')}-num">25+</div><div class="${uid('astats')}-label">Awards Won</div></div>
+    </div>
+  </div>
+</div>`
+  },
+  {
+    id: 'about-mission',
+    name: 'About - Mission Statement',
+    category: 'Story',
+    description: 'Large centered mission text with subtle animation',
+    thumbnail: '',
+    fields: [
+      { id: 'mission', label: 'Mission Statement', type: 'textarea', defaultValue: 'We believe in creating products that make a difference. Our mission is to empower every person and organization to achieve more through innovative technology and thoughtful design.' },
+    ],
+    generateHtml: (v) => `<div class="${uid('amiss')}" style="background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%);font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('amiss')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('amiss')}-wrap { max-width: 900px; margin: 0 auto; padding: 120px 24px; text-align: center; }
+    .${uid('amiss')}-label { font-size: 13px; font-weight: 600; color: #6366f1; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 24px; }
+    .${uid('amiss')}-text { font-size: 36px; font-weight: 400; color: #1a1a1a; line-height: 1.5; }
+    .${uid('amiss')}-text span { display: inline-block; animation: ${uid('amiss')}-fade 0.5s ease forwards; opacity: 0; }
+    @keyframes ${uid('amiss')}-fade { to { opacity: 1; } }
+    @media (max-width: 768px) { .${uid('amiss')}-text { font-size: 24px; } }
+  </style>
+  <div class="${uid('amiss')}-wrap">
+    <div class="${uid('amiss')}-label">Our Mission</div>
+    <p class="${uid('amiss')}-text">${v.mission}</p>
+  </div>
+</div>`
+  },
+
+  // ========== HEADER SECTIONS (21st.dev inspired) ==========
+  {
+    id: 'header-centered-logo',
+    name: 'Header - Centered Logo',
+    category: 'Banner',
+    description: 'Navigation with centered logo',
+    thumbnail: '',
+    fields: [
+      { id: 'brandName', label: 'Brand Name', type: 'text', defaultValue: 'BRAND' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hcent')}" style="background:#fff;border-bottom:1px solid #f0f0f0;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('hcent')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hcent')}-wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
+    .${uid('hcent')}-nav { display: flex; gap: 32px; }
+    .${uid('hcent')}-nav.right { justify-content: flex-end; }
+    .${uid('hcent')}-nav a { font-size: 13px; font-weight: 500; color: #666; text-decoration: none; transition: color 0.2s; }
+    .${uid('hcent')}-nav a:hover { color: #1a1a1a; }
+    .${uid('hcent')}-logo { font-size: 20px; font-weight: 700; letter-spacing: 0.2em; color: #1a1a1a; text-decoration: none; }
+    @media (max-width: 768px) { .${uid('hcent')}-nav { display: none; } .${uid('hcent')}-wrap { display: flex; justify-content: center; } }
+  </style>
+  <div class="${uid('hcent')}-wrap">
+    <nav class="${uid('hcent')}-nav"><a href="#">Shop</a><a href="#">Collections</a><a href="#">About</a></nav>
+    <a href="#" class="${uid('hcent')}-logo">${v.brandName}</a>
+    <nav class="${uid('hcent')}-nav right"><a href="#">Search</a><a href="#">Account</a><a href="#">Cart (0)</a></nav>
+  </div>
+</div>`
+  },
+  {
+    id: 'header-sticky-blur',
+    name: 'Header - Sticky Blur',
+    category: 'Banner',
+    description: 'Glassmorphism sticky header',
+    thumbnail: '',
+    fields: [
+      { id: 'brandName', label: 'Brand Name', type: 'text', defaultValue: 'Company' },
+    ],
+    generateHtml: (v) => `<div class="${uid('hblur')}" style="background:rgba(255,255,255,0.8);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.05);font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('hblur')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('hblur')}-wrap { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 16px 24px; }
+    .${uid('hblur')}-logo { font-size: 18px; font-weight: 700; color: #1a1a1a; text-decoration: none; }
+    .${uid('hblur')}-nav { display: flex; gap: 32px; }
+    .${uid('hblur')}-nav a { font-size: 14px; font-weight: 500; color: #666; text-decoration: none; transition: color 0.2s; }
+    .${uid('hblur')}-nav a:hover { color: #1a1a1a; }
+    .${uid('hblur')}-btn { padding: 10px 20px; background: #1a1a1a; color: #fff; font-size: 13px; font-weight: 600; text-decoration: none; border-radius: 6px; transition: all 0.2s; }
+    .${uid('hblur')}-btn:hover { background: #333; }
+    @media (max-width: 768px) { .${uid('hblur')}-nav { display: none; } }
+  </style>
+  <div class="${uid('hblur')}-wrap">
+    <a href="#" class="${uid('hblur')}-logo">${v.brandName}</a>
+    <nav class="${uid('hblur')}-nav"><a href="#">Features</a><a href="#">Pricing</a><a href="#">About</a><a href="#">Contact</a></nav>
+    <a href="#" class="${uid('hblur')}-btn">Get Started</a>
+  </div>
+</div>`
+  },
+
+  // ========== FOOTER SECTIONS (21st.dev inspired) ==========
+  {
+    id: 'footer-dark-columns',
+    name: 'Footer - Multi-Column Dark',
+    category: 'Footer',
+    description: '4-column dark footer with newsletter',
+    thumbnail: '',
+    fields: [
+      { id: 'brandName', label: 'Brand Name', type: 'text', defaultValue: 'BRAND' },
+      { id: 'tagline', label: 'Tagline', type: 'text', defaultValue: 'Building the future of commerce.' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fdark')}" style="background:#0a0a0a;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('fdark')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fdark')}-wrap { max-width: 1200px; margin: 0 auto; padding: 80px 24px 40px; }
+    .${uid('fdark')}-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+    .${uid('fdark')}-brand { font-size: 20px; font-weight: 700; letter-spacing: 0.1em; color: #fff; margin-bottom: 16px; }
+    .${uid('fdark')}-tagline { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 24px; }
+    .${uid('fdark')}-social { display: flex; gap: 16px; }
+    .${uid('fdark')}-social a { width: 36px; height: 36px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 14px; transition: background 0.2s; }
+    .${uid('fdark')}-social a:hover { background: rgba(255,255,255,0.2); }
+    .${uid('fdark')}-col-title { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+    .${uid('fdark')}-links { display: flex; flex-direction: column; gap: 12px; }
+    .${uid('fdark')}-links a { font-size: 14px; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+    .${uid('fdark')}-links a:hover { color: #fff; }
+    .${uid('fdark')}-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
+    .${uid('fdark')}-copy { font-size: 13px; color: rgba(255,255,255,0.4); }
+    @media (max-width: 768px) { .${uid('fdark')}-grid { grid-template-columns: 1fr 1fr; gap: 40px; } }
+  </style>
+  <div class="${uid('fdark')}-wrap">
+    <div class="${uid('fdark')}-grid">
+      <div><div class="${uid('fdark')}-brand">${v.brandName}</div><div class="${uid('fdark')}-tagline">${v.tagline}</div><div class="${uid('fdark')}-social"><a href="#">𝕏</a><a href="#">in</a><a href="#">ig</a></div></div>
+      <div><div class="${uid('fdark')}-col-title">Product</div><div class="${uid('fdark')}-links"><a href="#">Features</a><a href="#">Pricing</a><a href="#">Integrations</a><a href="#">API</a></div></div>
+      <div><div class="${uid('fdark')}-col-title">Company</div><div class="${uid('fdark')}-links"><a href="#">About</a><a href="#">Blog</a><a href="#">Careers</a><a href="#">Press</a></div></div>
+      <div><div class="${uid('fdark')}-col-title">Support</div><div class="${uid('fdark')}-links"><a href="#">Help Center</a><a href="#">Contact</a><a href="#">Status</a><a href="#">Terms</a></div></div>
+    </div>
+    <div class="${uid('fdark')}-bottom"><div class="${uid('fdark')}-copy">© 2025 ${v.brandName}. All rights reserved.</div></div>
+  </div>
+</div>`
+  },
+  {
+    id: 'footer-minimal-center',
+    name: 'Footer - Minimal Centered',
+    category: 'Footer',
+    description: 'Clean centered minimal footer',
+    thumbnail: '',
+    fields: [
+      { id: 'brandName', label: 'Brand Name', type: 'text', defaultValue: 'Brand' },
+    ],
+    generateHtml: (v) => `<div class="${uid('fmin')}" style="background:#fafafa;border-top:1px solid #f0f0f0;font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,sans-serif;">
+  <style>
+    .${uid('fmin')} * { box-sizing: border-box; margin: 0; padding: 0; }
+    .${uid('fmin')}-wrap { max-width: 800px; margin: 0 auto; padding: 60px 24px; text-align: center; }
+    .${uid('fmin')}-logo { font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 24px; }
+    .${uid('fmin')}-links { display: flex; gap: 32px; justify-content: center; margin-bottom: 32px; }
+    .${uid('fmin')}-links a { font-size: 14px; color: #666; text-decoration: none; transition: color 0.2s; }
+    .${uid('fmin')}-links a:hover { color: #1a1a1a; }
+    .${uid('fmin')}-social { display: flex; gap: 20px; justify-content: center; margin-bottom: 32px; }
+    .${uid('fmin')}-social a { font-size: 18px; color: #666; text-decoration: none; transition: color 0.2s; }
+    .${uid('fmin')}-social a:hover { color: #1a1a1a; }
+    .${uid('fmin')}-copy { font-size: 13px; color: #999; }
+    @media (max-width: 500px) { .${uid('fmin')}-links { flex-wrap: wrap; gap: 16px; } }
+  </style>
+  <div class="${uid('fmin')}-wrap">
+    <div class="${uid('fmin')}-logo">${v.brandName}</div>
+    <div class="${uid('fmin')}-links"><a href="#">Home</a><a href="#">Shop</a><a href="#">About</a><a href="#">Contact</a><a href="#">FAQ</a></div>
+    <div class="${uid('fmin')}-social"><a href="#">Twitter</a><a href="#">Instagram</a><a href="#">LinkedIn</a></div>
+    <div class="${uid('fmin')}-copy">© 2025 ${v.brandName}. Made with care.</div>
+  </div>
+</div>`
+  },
 ];
 
 // Categories with counts - auto-calculated
