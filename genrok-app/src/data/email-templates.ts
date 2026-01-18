@@ -5,13 +5,14 @@
 export interface EmailTemplate {
   id: string;
   name: string;
-  category: 'abandoned-cart' | 'welcome' | 'post-purchase' | 'win-back' | 'flash-sale' | 'vip-loyalty';
+  category: 'abandoned-cart' | 'welcome' | 'post-purchase' | 'win-back' | 'flash-sale' | 'vip-loyalty' | 'quiz-skincare' | 'quiz-fashion' | 'quiz-supplements';
   timing: string;
   subjectLine: string;
   description: string;
   fields: TemplateField[];
   html: string;
   suggestedImages: string[]; // Suggested hero images for this template type
+  niche?: string; // For quiz funnel templates - the specific niche
 }
 
 export interface TemplateField {
@@ -983,63 +984,62 @@ const winBack1: EmailTemplate = {
   name: 'We Miss You',
   category: 'win-back',
   timing: '30 days inactive',
-  subjectLine: 'We miss you! Come back for something special',
-  description: 'Warm reconnection message',
+  subjectLine: 'We miss you',
+  description: 'Elegant reconnection - full-bleed hero with overlay',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/man-in-classic-polo-shirt.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'We Miss You', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '20', placeholder: 'e.g., 15' },
     { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'MISSYOU20', placeholder: 'e.g., COMEBACK15' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'It\'s been a while! Here\'s something special.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Reconnect Now' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'COME BACK', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:450px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:13px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        It's been a while
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#ffffff; line-height:1.1; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- Dark Discount Section -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:420px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                It's been too long
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, we've missed you around here. A lot has changed since your last visit—come see what's new with {{discount_percent}}% off.
+            <td style="padding:40px; background:#1a1a1a; text-align:center;">
+              <p style="margin:0 0 4px; font-size:11px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.15em;">
+                Welcome Back Gift
               </p>
-
-              <!-- Code Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td style="padding:24px; background:#fef3c7; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:12px; color:#92400e; text-transform:uppercase; letter-spacing:0.1em;">Welcome Back Gift</p>
-                    <p style="margin:0; font-size:24px; font-weight:700; color:#92400e; letter-spacing:0.03em;">{{discount_code}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+              <p style="margin:0 0 8px; font-size:32px; font-weight:600; color:#ffffff;">
+                {{discount_percent}}% OFF
+              </p>
+              <p style="margin:0; font-size:14px; color:rgba(255,255,255,0.7);">
+                Code: <span style="color:#ffffff; font-weight:600;">{{discount_code}}</span>
+              </p>
             </td>
           </tr>
   `),
@@ -1050,54 +1050,50 @@ const winBack2: EmailTemplate = {
   name: 'What\'s New',
   category: 'win-back',
   timing: '45 days inactive',
-  subjectLine: 'So much has changed since you\'ve been away',
-  description: 'Showcase new arrivals and changes',
+  subjectLine: 'See what\'s new',
+  description: 'Elegant new arrivals - lavender color block',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(12).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'See what\'s new at {{brand_name}}.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Explore New Arrivals' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'What\'s New', placeholder: 'Main headline' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#E9D5FF' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'See what\'s new.', placeholder: 'Email preview text' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'EXPLORE NOW', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- LAVENDER COLOR BLOCK - NEW ARRIVALS -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#7c3aed; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      New Arrivals
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 32px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
           <!-- Hero Image -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="New Arrivals" style="display:block; width:100%; height:auto; max-height:420px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                New Arrivals
-              </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                You won't believe what's new
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, we've been busy! Fresh styles, new favorites, and pieces you'll love. Come see what's waiting for you.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
             </td>
           </tr>
   `),
@@ -1108,63 +1104,48 @@ const winBack3: EmailTemplate = {
   name: 'Exclusive Return Offer',
   category: 'win-back',
   timing: '60 days inactive',
-  subjectLine: 'Your exclusive offer expires soon',
-  description: 'Stronger incentive with urgency',
+  subjectLine: 'Your exclusive offer',
+  description: 'Elegant urgency - coral red color block',
   suggestedImages: imageLibrary.jewelry.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/womans-elegant-hand-with-delicate%20(2).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Just For You', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '25', placeholder: 'e.g., 20' },
     { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'EXCLUSIVE25', placeholder: 'e.g., VIP20' },
     { key: 'days_left', label: 'Days Left', type: 'text', defaultValue: '3', placeholder: 'e.g., 5' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FEE2E2' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'An exclusive offer just for you—expires soon.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Claim My Offer' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM OFFER', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CORAL RED COLOR BLOCK - URGENCY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Urgency Banner -->
-          <tr>
-            <td style="padding:16px 40px; background:#fef2f2; text-align:center;">
-              <p style="margin:0; font-size:14px; color:#dc2626; font-weight:600;">
-                ⏰ Only {{days_left}} days left to claim your offer
-              </p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:380px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:#dc2626; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Exclusive Offer
-              </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                {{discount_percent}}% off, just for you
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, we really want you back. This is our best offer yet—use code <strong>{{discount_code}}</strong> before it expires.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:#dc2626; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#dc2626; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Expires in {{days_left}} days
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:56px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em;">
+                      {{discount_percent}}%
+                    </p>
+                    <p style="margin:0 0 32px; font-size:16px; color:#374151;">
+                      Code: <strong>{{discount_code}}</strong>
+                    </p>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#dc2626;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
@@ -1179,56 +1160,53 @@ const winBack4: EmailTemplate = {
   category: 'win-back',
   timing: '90 days inactive',
   subjectLine: 'Is this goodbye?',
-  description: 'Final attempt before sunset',
+  description: 'Elegant farewell - full-bleed hero with muted overlay',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Solitary%20Cabin%20on%20Hill.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Is This Goodbye?', placeholder: 'Main headline' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'We\'ll miss you if you go.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Stay Connected' },
-    { key: 'unsubscribe_text', label: 'Unsubscribe Text', type: 'text', defaultValue: 'Unsubscribe', placeholder: 'e.g., Let me go' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'STAY WITH US', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:450px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:13px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        Before you go
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#ffffff; line-height:1.1; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Hero Image -->
+          <!-- Muted Text Section -->
           <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{brand_name}}" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Is this goodbye?
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, we noticed it's been a while. We'd hate to see you go, but we understand if our emails aren't for you anymore.
+            <td style="padding:32px 40px; text-align:center;">
+              <p style="margin:0; font-size:14px; color:#9ca3af; line-height:1.7;">
+                We'd hate to see you go. If you'd like to unsubscribe, click below.
               </p>
-
-              <!-- Two Buttons -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                <tr>
-                  <td style="padding-right:12px;">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:14px 28px; font-size:14px; font-weight:600; color:#ffffff; background:{{accent_color}}; text-decoration:none; border-radius:8px;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                  <td>
-                    <a href="#" style="display:inline-block; padding:14px 28px; font-size:14px; font-weight:600; color:#6b7280; background:#f3f4f6; text-decoration:none; border-radius:8px;">
-                      {{unsubscribe_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -2083,56 +2061,59 @@ const postPurchase7: EmailTemplate = {
   name: 'Loyalty Points Update',
   category: 'post-purchase',
   timing: '+14 days after delivery',
-  subjectLine: 'You\'ve earned points! Here\'s your balance',
-  description: 'Show points earned from purchase',
+  subjectLine: 'You earned points',
+  description: 'Elegant points update - champagne gold color block',
   suggestedImages: imageLibrary.jewelry.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
     { key: 'points_earned', label: 'Points Earned', type: 'text', defaultValue: '150', placeholder: 'e.g., 200' },
     { key: 'total_points', label: 'Total Points', type: 'text', defaultValue: '350', placeholder: 'e.g., 500' },
-    { key: 'points_value', label: 'Points Value', type: 'text', defaultValue: '$17.50', placeholder: 'e.g., $25' },
-    { key: 'next_reward', label: 'Next Reward At', type: 'text', defaultValue: '500 points', placeholder: 'e.g., 1000 points' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Points Earned', placeholder: 'Main headline' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FEF3C7' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'See how many points you\'ve earned!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'View My Rewards' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'VIEW REWARDS', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CHAMPAGNE GOLD COLOR BLOCK - POINTS -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Points Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, {{accent_color}} 0%, {{primary_color}} 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:14px; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.1em;">Points Earned</p>
-              <p style="margin:0 0 8px; font-size:56px; font-weight:700; color:#ffffff;">+{{points_earned}}</p>
-              <p style="margin:0; font-size:16px; color:rgba(255,255,255,0.9);">Total balance: {{total_points}} points ({{points_value}})</p>
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:26px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                You're earning rewards!
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:400px; display:inline-block;">
-                Hey {{customer_name}}, you just earned {{points_earned}} points from your last purchase! You're only {{next_reward}} away from your next reward.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#92400e; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Rewards Update
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:44px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 32px; font-size:64px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em;">
+                      +{{points_earned}}
+                    </p>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Total Balance Section -->
+          <tr>
+            <td style="padding:32px 40px; text-align:center; border-top:1px solid #f0f0f0;">
+              <p style="margin:0 0 4px; font-size:12px; color:#6b7280; text-transform:uppercase; letter-spacing:0.15em;">
+                Total Balance
+              </p>
+              <p style="margin:0; font-size:28px; font-weight:600; color:#1a1a1a;">
+                {{total_points}} points
+              </p>
             </td>
           </tr>
   `),
@@ -2143,61 +2124,44 @@ const postPurchase8: EmailTemplate = {
   name: 'Replenishment Reminder',
   category: 'post-purchase',
   timing: '+30 days after delivery',
-  subjectLine: 'Time to restock?',
-  description: 'Reminder to reorder consumable products',
+  subjectLine: 'Time to restock',
+  description: 'Elegant replenishment - sage green color block',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(13).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'product_name', label: 'Product Name', type: 'text', defaultValue: 'your favorites', placeholder: 'e.g., Daily Serum' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Time to Refill?', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Reorder Discount %', type: 'number', defaultValue: '10', placeholder: 'e.g., 15' },
     { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'RESTOCK10', placeholder: 'e.g., REFILL15' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#D1FAE5' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Running low? Time to restock.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Reorder Now' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'REORDER NOW', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- SAGE GREEN COLOR BLOCK - RESTOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Replenishment" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Running low on {{product_name}}?
-              </h1>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, it's been about a month since your last order. Ready for a refill? We've got {{discount_percent}}% off waiting for you.
-              </p>
-
-              <!-- Discount Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:20px 24px; background:#f0fdf4; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 4px; font-size:13px; color:#059669; text-transform:uppercase; letter-spacing:0.1em;">Reorder Discount</p>
-                    <p style="margin:0; font-size:24px; font-weight:700; color:#059669;">{{discount_code}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#059669; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Reorder Reminder
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:44px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 32px; font-size:18px; color:#374151;">
+                      Use code <strong style="color:#059669;">{{discount_code}}</strong> for {{discount_percent}}% off
+                    </p>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
@@ -2211,56 +2175,46 @@ const postPurchase9: EmailTemplate = {
   name: 'Cross-Sell Suggestion',
   category: 'post-purchase',
   timing: '+45 days after delivery',
-  subjectLine: 'Pairs perfectly with what you bought',
-  description: 'Suggest related products',
+  subjectLine: 'Complete your look',
+  description: 'Elegant cross-sell - full-bleed hero with overlay',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/man-in-classic-polo-shirt.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'original_product', label: 'Original Product', type: 'text', defaultValue: 'your recent purchase', placeholder: 'e.g., The Classic Tee' },
-    { key: 'suggested_product', label: 'Suggested Product', type: 'text', defaultValue: 'The Perfect Pair', placeholder: 'e.g., Matching Shorts' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Complete the Look', placeholder: 'Main headline' },
+    { key: 'subheadline', label: 'Subheadline', type: 'text', defaultValue: 'Curated just for you', placeholder: 'Secondary text' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Complete your look with these picks.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Complete My Look' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP NOW', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Complete Your Look" style="display:block; width:100%; height:auto; max-height:420px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Curated For You
-              </p>
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Pairs perfectly with {{original_product}}
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, based on your purchase, we think you'll love <strong>{{suggested_product}}</strong>. It's the perfect complement to what you already have.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:500px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:13px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        {{subheadline}}
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 32px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#ffffff; line-height:1.1; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
   `),
@@ -2271,84 +2225,85 @@ const postPurchase10: EmailTemplate = {
   name: 'VIP Tier Unlock',
   category: 'post-purchase',
   timing: 'On milestone',
-  subjectLine: 'Congratulations! You\'ve unlocked VIP status 🏆',
-  description: 'VIP tier upgrade celebration',
+  subjectLine: 'Welcome to VIP',
+  description: 'Elegant VIP unlock - gold luxe color block',
   suggestedImages: imageLibrary.jewelry.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/womans-elegant-hand-with-delicate%20(2).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
     { key: 'tier_name', label: 'VIP Tier Name', type: 'text', defaultValue: 'Gold', placeholder: 'e.g., Platinum' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'You Made It', placeholder: 'Main headline' },
     { key: 'perk_1', label: 'Perk 1', type: 'text', defaultValue: 'Free shipping on all orders', placeholder: 'VIP benefit' },
     { key: 'perk_2', label: 'Perk 2', type: 'text', defaultValue: 'Early access to new releases', placeholder: 'VIP benefit' },
     { key: 'perk_3', label: 'Perk 3', type: 'text', defaultValue: 'Exclusive VIP-only sales', placeholder: 'VIP benefit' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FEF3C7' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'You\'ve unlocked exclusive VIP benefits!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Explore VIP Benefits' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'EXPLORE BENEFITS', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- GOLD LUXE COLOR BLOCK - VIP UNLOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- VIP Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #fbbf24 0%, {{accent_color}} 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:48px;">🏆</p>
-              <p style="margin:0 0 8px; font-size:14px; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:0.15em;">Welcome to</p>
-              <h1 style="margin:0; font-size:36px; font-weight:700; color:#ffffff; letter-spacing:-0.01em;">
-                {{tier_name}} VIP
-              </h1>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="VIP" style="display:block; width:100%; height:auto; max-height:300px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h2 style="margin:0 0 16px; font-size:24px; font-weight:600; color:{{primary_color}}; line-height:1.25;">
-                Your exclusive perks
-              </h2>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, you've unlocked VIP status! Here's what you get:
-              </p>
-
-              <!-- Perks List -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:14px 20px; background:#fffbeb; border-radius:8px;">
-                    <p style="margin:0; font-size:15px; color:#92400e;">⭐ {{perk_1}}</p>
-                  </td>
-                </tr>
-                <tr><td style="height:8px;"></td></tr>
-                <tr>
-                  <td style="padding:14px 20px; background:#fffbeb; border-radius:8px;">
-                    <p style="margin:0; font-size:15px; color:#92400e;">⭐ {{perk_2}}</p>
-                  </td>
-                </tr>
-                <tr><td style="height:8px;"></td></tr>
-                <tr>
-                  <td style="padding:14px 20px; background:#fffbeb; border-radius:8px;">
-                    <p style="margin:0; font-size:15px; color:#92400e;">⭐ {{perk_3}}</p>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#92400e; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Welcome to {{tier_name}} VIP
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 32px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
 
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+          <!-- Perks Section -->
+          <tr>
+            <td class="mobile-padding" style="padding:40px;">
+              <p style="margin:0 0 20px; font-size:13px; color:#6b7280; text-transform:uppercase; letter-spacing:0.15em; text-align:center;">
+                Your Exclusive Perks
+              </p>
+              <!-- Numbered Perks -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:16px 24px; border-bottom:1px solid #f0f0f0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tr>
+                        <td width="32" style="font-family:'Playfair Display',Georgia,serif; font-size:24px; color:#d4a574; font-weight:400; vertical-align:top;">1</td>
+                        <td style="font-size:15px; color:#374151; line-height:1.5;">{{perk_1}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:16px 24px; border-bottom:1px solid #f0f0f0;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tr>
+                        <td width="32" style="font-family:'Playfair Display',Georgia,serif; font-size:24px; color:#d4a574; font-weight:400; vertical-align:top;">2</td>
+                        <td style="font-size:15px; color:#374151; line-height:1.5;">{{perk_2}}</td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:16px 24px;">
+                    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                      <tr>
+                        <td width="32" style="font-family:'Playfair Display',Georgia,serif; font-size:24px; color:#d4a574; font-weight:400; vertical-align:top;">3</td>
+                        <td style="font-size:15px; color:#374151; line-height:1.5;">{{perk_3}}</td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
@@ -2366,45 +2321,52 @@ const winBack5: EmailTemplate = {
   name: 'Feedback Request',
   category: 'win-back',
   timing: '75 days inactive',
-  subjectLine: 'We\'d love your feedback',
-  description: 'Ask for feedback on experience',
+  subjectLine: 'Share your thoughts',
+  description: 'Elegant feedback request - light blue color block',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
-    { key: 'survey_incentive', label: 'Survey Incentive', type: 'text', defaultValue: '15% off your next order', placeholder: 'e.g., $10 credit' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Your Voice Matters', placeholder: 'Main headline' },
+    { key: 'survey_incentive', label: 'Survey Incentive', type: 'text', defaultValue: '15% off', placeholder: 'e.g., $10 credit' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#DBEAFE' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Help us improve and get a reward.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Share My Feedback' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHARE FEEDBACK', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- LIGHT BLUE COLOR BLOCK - FEEDBACK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:56px; text-align:center;">
-              <p style="margin:0 0 16px; font-size:48px;">💬</p>
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                We'd love to hear from you
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, your opinion matters to us! Share your thoughts and get <strong style="color:{{accent_color}};">{{survey_incentive}}</strong> as a thank you.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#2563eb; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      We'd love to hear from you
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 32px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Incentive Section -->
+          <tr>
+            <td style="padding:32px 40px; text-align:center; border-top:1px solid #f0f0f0;">
+              <p style="margin:0; font-size:15px; color:#6b7280;">
+                As a thank you, get <strong style="color:#1a1a1a;">{{survey_incentive}}</strong> after your feedback
+              </p>
             </td>
           </tr>
   `),
@@ -2415,63 +2377,56 @@ const winBack6: EmailTemplate = {
   name: 'Birthday/Anniversary',
   category: 'win-back',
   timing: 'Date-based',
-  subjectLine: 'Happy Birthday! Here\'s a gift for you 🎂',
-  description: 'Birthday or anniversary celebration',
+  subjectLine: 'Happy Birthday',
+  description: 'Elegant birthday - pink/rose color block',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Happy Birthday', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Birthday Discount %', type: 'number', defaultValue: '20', placeholder: 'e.g., 25' },
     { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'BDAY20', placeholder: 'e.g., BIRTHDAY25' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FCE7F3' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'A special birthday gift, just for you!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Claim My Gift' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM MY GIFT', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- PINK/ROSE COLOR BLOCK - BIRTHDAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Birthday Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:56px;">🎂</p>
-              <h1 style="margin:0 0 8px; font-size:32px; font-weight:600; color:#ffffff; letter-spacing:-0.01em;">
-                Happy Birthday!
-              </h1>
-              <p style="margin:0; font-size:18px; color:rgba(255,255,255,0.9);">
-                Here's {{discount_percent}}% off to celebrate
-              </p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Birthday Gift" style="display:block; width:100%; height:auto; max-height:300px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <p style="margin:0 0 24px; font-size:17px; color:#4b5563; line-height:1.7; max-width:400px; display:inline-block;">
-                Hey {{customer_name}}, it's your special day! Use code <strong style="color:{{primary_color}};">{{discount_code}}</strong> to treat yourself.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#db2777; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      It's Your Day
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 32px; font-size:56px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em;">
+                      {{discount_percent}}% OFF
+                    </p>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Code Section -->
+          <tr>
+            <td style="padding:32px 40px; text-align:center; border-top:1px solid #f0f0f0;">
+              <p style="margin:0; font-size:15px; color:#6b7280;">
+                Use code <strong style="color:#1a1a1a;">{{discount_code}}</strong>
+              </p>
             </td>
           </tr>
   `),
@@ -2483,54 +2438,45 @@ const winBack7: EmailTemplate = {
   category: 'win-back',
   timing: 'Holiday-based',
   subjectLine: 'New season, new favorites',
-  description: 'Seasonal reconnection email',
+  description: 'Elegant seasonal - full-bleed hero with overlay',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'New Season', placeholder: 'Main headline' },
     { key: 'season', label: 'Season Name', type: 'text', defaultValue: 'Spring', placeholder: 'e.g., Summer, Fall, Winter' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Fresh styles for a fresh season.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop the New Season' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP NOW', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="{{season}} Collection" style="display:block; width:100%; height:auto; max-height:450px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                {{season}} is Here
-              </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                New season, new favorites
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, {{season}} is here and so are our latest arrivals! We've been busy creating pieces you'll love.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:500px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:13px; color:#ffffff; text-transform:uppercase; letter-spacing:0.2em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        {{season}} Collection
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#ffffff; line-height:1.1; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
   `),
@@ -2541,61 +2487,54 @@ const winBack8: EmailTemplate = {
   name: 'Category Restock Alert',
   category: 'win-back',
   timing: 'On restock',
-  subjectLine: 'Back in stock: Items you\'ll love',
-  description: 'Notify about restocked products',
+  subjectLine: 'Back in stock',
+  description: 'Elegant restock - mint green color block',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(12).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Back in Stock', placeholder: 'Main headline' },
     { key: 'category_name', label: 'Category Name', type: 'text', defaultValue: 'your favorites', placeholder: 'e.g., Dresses, Shoes' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#D1FAE5' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Items you browsed are back in stock!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Now' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP NOW', placeholder: 'Button text' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- MINT GREEN COLOR BLOCK - RESTOCK -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Restock Banner -->
-          <tr>
-            <td style="padding:20px 40px; background:#f0fdf4; text-align:center;">
-              <p style="margin:0; font-size:15px; color:#059669; font-weight:600;">
-                ✨ Back in Stock!
-              </p>
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:50px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:13px; color:#059669; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Just Restocked
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 32px; font-size:16px; color:#374151;">
+                      {{category_name}}
+                    </p>
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
           <!-- Hero Image -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Back in Stock" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                {{category_name}} is back!
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, good news! {{category_name}} you were interested in is back in stock. Don't wait—they tend to go fast!
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
             </td>
           </tr>
   `),
@@ -2699,62 +2638,59 @@ const flashSale2: EmailTemplate = {
   name: 'Early Access VIP',
   category: 'flash-sale' as EmailTemplate['category'],
   timing: 'Before public sale',
-  subjectLine: 'VIP Early Access: Sale starts NOW for you',
-  description: 'VIP-only early access to sale',
+  subjectLine: 'You\'re invited first.',
+  description: 'Gold champagne color block - VIP early access',
   suggestedImages: imageLibrary.jewelry.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/womans-elegant-hand-with-delicate%20(2).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'VIP', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Private sale preview', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '25', placeholder: 'e.g., 30' },
     { key: 'early_hours', label: 'Early Access Hours', type: 'text', defaultValue: '24 hours', placeholder: 'e.g., 12 hours' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#F5E6D3' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your VIP early access starts now.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Early Access' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP EARLY' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CHAMPAGNE GOLD COLOR BLOCK - VIP EARLY ACCESS -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- VIP Banner -->
-          <tr>
-            <td style="padding:40px 56px; background:linear-gradient(135deg, #fbbf24 0%, {{accent_color}} 100%); text-align:center;">
-              <p style="margin:0 0 4px; font-size:14px; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:0.15em;">VIP Early Access</p>
-              <h1 style="margin:0; font-size:36px; font-weight:700; color:#ffffff;">{{discount_percent}}% OFF</h1>
-              <p style="margin:8px 0 0; font-size:14px; color:rgba(255,255,255,0.8);">{{early_hours}} before everyone else</p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="VIP Early Access" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                You're first in line, {{customer_name}}
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                As a VIP, you get {{early_hours}} of early access before our sale goes public. Shop the best selection before anyone else!
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#92400e; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      VIP Early Access • {{early_hours}} head start
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:13px; color:#374151; line-height:1.6; max-width:340px; margin-left:auto; margin-right:auto;">
+                      As one of our most valued customers, you get first access to our sale.
+                    </p>
+                    <p style="margin:0 0 28px; font-size:32px; font-weight:600; color:#1a1a1a; letter-spacing:-0.02em;">
+                      {{discount_percent}}% off everything
+                    </p>
+
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Full Width Hero Image -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:380px; object-fit:cover;">
             </td>
           </tr>
   `),
@@ -2765,61 +2701,59 @@ const flashSale3: EmailTemplate = {
   name: 'Countdown Timer',
   category: 'flash-sale' as EmailTemplate['category'],
   timing: 'Hours before end',
-  subjectLine: '⏰ Only {{hours_left}} hours left!',
-  description: 'Urgency countdown for ending sale',
+  subjectLine: 'Ends tonight.',
+  description: 'Coral urgency color block - countdown timer',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(11).png', placeholder: 'https://...' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Final hours', placeholder: 'Main headline' },
     { key: 'hours_left', label: 'Hours Left', type: 'text', defaultValue: '6', placeholder: 'e.g., 3' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '30', placeholder: 'e.g., 25' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FED7D7' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Sale ending soon. Last chance!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Before It Ends' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP NOW' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CORAL URGENCY COLOR BLOCK - COUNTDOWN -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Urgency Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:#fef2f2; text-align:center;">
-              <p style="margin:0 0 8px; font-size:48px;">⏰</p>
-              <p style="margin:0 0 8px; font-size:14px; color:#dc2626; text-transform:uppercase; letter-spacing:0.15em; font-weight:600;">Sale Ending</p>
-              <p style="margin:0; font-size:48px; font-weight:700; color:#dc2626;">{{hours_left}} HOURS LEFT</p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Sale Ending" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Don't miss {{discount_percent}}% off
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:400px; display:inline-block;">
-                This is your last chance! Our sale ends in {{hours_left}} hours. Once it's gone, it's gone.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:#dc2626;">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:18px 48px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#dc2626; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Only {{hours_left}} hours left
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:56px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em;">
+                      {{discount_percent}}%
+                    </p>
+                    <p style="margin:0 0 28px; font-size:13px; color:#374151; line-height:1.6;">
+                      This is your final reminder. The sale ends tonight.
+                    </p>
+
+                    <!-- CTA Button - Red pill for urgency -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#dc2626;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Full Width Hero Image -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:380px; object-fit:cover;">
             </td>
           </tr>
   `),
@@ -2830,63 +2764,59 @@ const flashSale4: EmailTemplate = {
   name: 'BFCM Teaser',
   category: 'flash-sale' as EmailTemplate['category'],
   timing: 'Before BFCM',
-  subjectLine: 'Black Friday is coming... Get ready',
-  description: 'Black Friday/Cyber Monday teaser',
+  subjectLine: 'Something big is coming.',
+  description: 'Full-bleed hero with dark overlay - BFCM teaser',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Black Friday', placeholder: 'Main headline' },
     { key: 'sale_date', label: 'Sale Date', type: 'text', defaultValue: 'November 29th', placeholder: 'e.g., November 24th' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'The biggest sale of the year is almost here.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Get Early Access' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'GET EARLY ACCESS' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH DARK OVERLAY - BFCM TEASER -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:500px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center; background:rgba(0,0,0,0.4);">
+                      <p style="margin:0 0 8px; font-size:11px; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.25em; font-weight:500;">
+                        Coming {{sale_date}}
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:64px; font-weight:400; color:#ffffff; line-height:1.05; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.3);">
+                        {{headline}}
+                      </h1>
+                      <p style="margin:0 0 28px; font-size:14px; color:rgba(255,255,255,0.9); line-height:1.6;">
+                        Our biggest sale of the year is almost here.
+                      </p>
+
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Teaser Banner -->
+          <!-- Dark Bottom Bar -->
           <tr>
-            <td style="padding:56px; background:{{primary_color}}; text-align:center;">
-              <p style="margin:0 0 16px; font-size:16px; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.15em;">Coming {{sale_date}}</p>
-              <h1 style="margin:0; font-size:42px; font-weight:700; color:#ffffff; letter-spacing:-0.02em;">
-                BLACK FRIDAY
-              </h1>
-              <p style="margin:8px 0 0; font-size:18px; color:rgba(255,255,255,0.9);">Our biggest sale of the year</p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Black Friday" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:26px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Mark your calendar
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, Black Friday is coming on {{sale_date}}. Sign up for early access to shop before everyone else.
+            <td style="padding:32px 40px; background:#1a1a1a; text-align:center;">
+              <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.15em;">
+                Be the first to shop • Early access for subscribers
               </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -2897,62 +2827,56 @@ const flashSale5: EmailTemplate = {
   name: 'BFCM Live Now',
   category: 'flash-sale' as EmailTemplate['category'],
   timing: 'BFCM start',
-  subjectLine: '🔥 BLACK FRIDAY IS LIVE — Up to {{discount_percent}}% OFF',
-  description: 'Black Friday sale is live',
+  subjectLine: 'It\'s here.',
+  description: 'Full-bleed hero with text overlay - BFCM live',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(13).png', placeholder: 'https://...' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Black Friday is live', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Max Discount %', type: 'number', defaultValue: '50', placeholder: 'e.g., 40' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Black Friday is LIVE. Shop now!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Black Friday' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP NOW' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY - BFCM LIVE -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:480px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:11px; color:#ffffff; text-transform:uppercase; letter-spacing:0.25em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        Up to {{discount_percent}}% off everything
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 28px; font-family:'Playfair Display',Georgia,serif; font-size:56px; font-weight:400; color:#ffffff; line-height:1.1; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- BFCM Banner -->
+          <!-- Dark Urgency Bar -->
           <tr>
-            <td style="padding:56px; background:linear-gradient(135deg, #000000 0%, #1a1a1a 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:18px; color:#fbbf24;">🔥 IT'S HERE 🔥</p>
-              <h1 style="margin:0 0 8px; font-size:42px; font-weight:700; color:#ffffff; letter-spacing:-0.02em;">
-                BLACK FRIDAY
-              </h1>
-              <p style="margin:0; font-size:24px; color:#fbbf24; font-weight:600;">Up to {{discount_percent}}% OFF</p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Black Friday Sale" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                The wait is over
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:400px; display:inline-block;">
-                Our biggest sale of the year is LIVE. Up to {{discount_percent}}% off sitewide. Shop now before your favorites sell out!
+            <td style="padding:28px 40px; background:#1a1a1a; text-align:center;">
+              <p style="margin:0; font-size:13px; color:#fbbf24; font-weight:500; letter-spacing:0.05em;">
+                LIMITED TIME • WHILE SUPPLIES LAST
               </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                <tr>
-                  <td style="border-radius:8px; background:{{primary_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:18px 48px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -2963,61 +2887,59 @@ const flashSale6: EmailTemplate = {
   name: 'BFCM Extended',
   category: 'flash-sale' as EmailTemplate['category'],
   timing: 'After BFCM',
-  subjectLine: 'Good news: Sale extended!',
-  description: 'Extended Black Friday/Cyber Monday sale',
+  subjectLine: 'We extended it.',
+  description: 'Sage green color block - sale extended',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(15).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Good news', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '40', placeholder: 'e.g., 30' },
     { key: 'extension_days', label: 'Extended Days', type: 'text', defaultValue: '48 hours', placeholder: 'e.g., 3 days' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#D1E7DD' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'You asked, we listened. Sale extended!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Extended Sale' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP THE SALE' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- SAGE GREEN COLOR BLOCK - SALE EXTENDED -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Extended Banner -->
-          <tr>
-            <td style="padding:40px 56px; background:#f0fdf4; text-align:center;">
-              <p style="margin:0 0 8px; font-size:16px; color:#059669; font-weight:600;">🎉 GOOD NEWS!</p>
-              <h1 style="margin:0; font-size:28px; font-weight:700; color:#059669;">Sale Extended {{extension_days}}</h1>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Sale Extended" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                You asked, we listened
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, we've extended our sale for {{extension_days}}! That's {{discount_percent}}% off everything—don't miss your second chance.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#166534; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Extended {{extension_days}}
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:13px; color:#374151; line-height:1.6; max-width:360px; margin-left:auto; margin-right:auto;">
+                      You asked, we listened. The sale continues with {{discount_percent}}% off everything.
+                    </p>
+                    <p style="margin:0 0 28px; font-size:32px; font-weight:600; color:#166534; letter-spacing:-0.02em;">
+                      {{discount_percent}}% OFF
+                    </p>
+
+                    <!-- CTA Button - Dark green pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#166534;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Full Width Hero Image -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:380px; object-fit:cover;">
             </td>
           </tr>
   `),
@@ -3028,82 +2950,70 @@ const flashSale7: EmailTemplate = {
   name: 'Holiday Gift Guide',
   category: 'flash-sale' as EmailTemplate['category'],
   timing: 'Holiday season',
-  subjectLine: 'The Perfect Gift Guide 🎁',
-  description: 'Holiday gift suggestions',
+  subjectLine: 'The art of giving.',
+  description: 'Full-bleed hero with elegant overlay - holiday gift guide',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Gift Guide', placeholder: 'Main headline' },
     { key: 'gift_category_1', label: 'Gift Category 1', type: 'text', defaultValue: 'Gifts Under $50', placeholder: 'e.g., For Her' },
     { key: 'gift_category_2', label: 'Gift Category 2', type: 'text', defaultValue: 'Luxury Picks', placeholder: 'e.g., For Him' },
     { key: 'gift_category_3', label: 'Gift Category 3', type: 'text', defaultValue: 'Bestseller Bundles', placeholder: 'e.g., For Kids' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Find the perfect gift for everyone on your list.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Gift Guide' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP GIFTS' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH ELEGANT OVERLAY - HOLIDAY GIFT GUIDE -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:420px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center; background:rgba(255,255,255,0.85);">
+                      <p style="margin:0 0 8px; font-size:11px; color:#92400e; text-transform:uppercase; letter-spacing:0.25em; font-weight:500;">
+                        Holiday 2025
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 28px; font-family:'Playfair Display',Georgia,serif; font-size:56px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                        {{headline}}
+                      </h1>
+
+                      <!-- CTA Button - Dark pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#1a1a1a;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- Holiday Banner -->
+          <!-- Gift Categories Section -->
           <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #dc2626 0%, #16a34a 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:40px;">🎁</p>
-              <h1 style="margin:0; font-size:32px; font-weight:700; color:#ffffff; letter-spacing:-0.01em;">
-                Holiday Gift Guide
-              </h1>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Gift Guide" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:26px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Find the perfect gift
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, make this holiday season special with thoughtfully curated gifts for everyone on your list.
+            <td style="padding:48px 40px; background:#fafafa; text-align:center;">
+              <p style="margin:0 0 24px; font-size:11px; color:#666666; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                Shop by category
               </p>
-
-              <!-- Gift Categories -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:16px 20px; background:#fef2f2; border-radius:8px; text-align:center;">
-                    <p style="margin:0; font-size:15px; color:#dc2626; font-weight:600;">🎄 {{gift_category_1}}</p>
+                  <td width="32%" style="padding:16px 12px; background:#ffffff; border-radius:8px; text-align:center;">
+                    <p style="margin:0; font-size:14px; color:#1a1a1a; font-weight:500;">{{gift_category_1}}</p>
                   </td>
-                </tr>
-                <tr><td style="height:8px;"></td></tr>
-                <tr>
-                  <td style="padding:16px 20px; background:#f0fdf4; border-radius:8px; text-align:center;">
-                    <p style="margin:0; font-size:15px; color:#16a34a; font-weight:600;">🎄 {{gift_category_2}}</p>
+                  <td width="4%"></td>
+                  <td width="32%" style="padding:16px 12px; background:#ffffff; border-radius:8px; text-align:center;">
+                    <p style="margin:0; font-size:14px; color:#1a1a1a; font-weight:500;">{{gift_category_2}}</p>
                   </td>
-                </tr>
-                <tr><td style="height:8px;"></td></tr>
-                <tr>
-                  <td style="padding:16px 20px; background:#fef2f2; border-radius:8px; text-align:center;">
-                    <p style="margin:0; font-size:15px; color:#dc2626; font-weight:600;">🎄 {{gift_category_3}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td width="4%"></td>
+                  <td width="32%" style="padding:16px 12px; background:#ffffff; border-radius:8px; text-align:center;">
+                    <p style="margin:0; font-size:14px; color:#1a1a1a; font-weight:500;">{{gift_category_3}}</p>
                   </td>
                 </tr>
               </table>
@@ -3117,62 +3027,59 @@ const flashSale8: EmailTemplate = {
   name: 'End of Season Sale',
   category: 'flash-sale' as EmailTemplate['category'],
   timing: 'Season end',
-  subjectLine: 'End of Season Clearance — Up to {{discount_percent}}% OFF',
-  description: 'End of season clearance sale',
+  subjectLine: 'Making room for what\'s next.',
+  description: 'Peach color block - end of season clearance',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/man-in-classic-polo-shirt.png', placeholder: 'https://...' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'End of season', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Max Discount %', type: 'number', defaultValue: '60', placeholder: 'e.g., 50' },
     { key: 'season', label: 'Season', type: 'text', defaultValue: 'Summer', placeholder: 'e.g., Winter' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FFECD2' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Huge savings on last season\'s favorites.', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop Clearance' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP CLEARANCE' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- PEACH COLOR BLOCK - END OF SEASON -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Clearance Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #f97316 0%, #ea580c 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:14px; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:0.15em;">{{season}} Clearance</p>
-              <h1 style="margin:0; font-size:48px; font-weight:700; color:#ffffff; letter-spacing:-0.02em;">
-                Up to {{discount_percent}}% OFF
-              </h1>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Clearance Sale" style="display:block; width:100%; height:auto; max-height:400px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                End of {{season}} clearance
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                We're making room for new arrivals! Shop up to {{discount_percent}}% off on your favorite {{season}} styles while supplies last.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:#ea580c; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#c2410c; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      {{season}} clearance
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:56px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em;">
+                      {{discount_percent}}%
+                    </p>
+                    <p style="margin:0 0 28px; font-size:13px; color:#374151; line-height:1.6;">
+                      Making room for new arrivals. Shop while supplies last.
+                    </p>
+
+                    <!-- CTA Button - Orange pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#c2410c;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Full Width Hero Image -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:400px; object-fit:cover;">
             </td>
           </tr>
   `),
@@ -3187,82 +3094,83 @@ const vipLoyalty1: EmailTemplate = {
   name: 'Welcome to VIP',
   category: 'vip-loyalty' as EmailTemplate['category'],
   timing: 'On tier upgrade',
-  subjectLine: 'Welcome to the VIP club 👑',
-  description: 'VIP tier upgrade welcome',
+  subjectLine: 'You\'ve arrived.',
+  description: 'Gold luxe color block - VIP tier upgrade',
   suggestedImages: imageLibrary.jewelry.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/womans-elegant-hand-with-delicate%20(2).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Welcome to the inner circle', placeholder: 'Main headline' },
     { key: 'tier_name', label: 'Tier Name', type: 'text', defaultValue: 'Gold', placeholder: 'e.g., Platinum' },
     { key: 'perk_1', label: 'Perk 1', type: 'text', defaultValue: 'Free shipping on every order', placeholder: 'VIP benefit' },
     { key: 'perk_2', label: 'Perk 2', type: 'text', defaultValue: 'Early access to all sales', placeholder: 'VIP benefit' },
     { key: 'perk_3', label: 'Perk 3', type: 'text', defaultValue: 'Exclusive members-only products', placeholder: 'VIP benefit' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FEF3C7' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'You\'ve unlocked VIP status!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Explore VIP Perks' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'EXPLORE PERKS' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- GOLD LUXE COLOR BLOCK - VIP WELCOME -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- VIP Welcome Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #fbbf24 0%, {{accent_color}} 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:48px;">👑</p>
-              <p style="margin:0 0 8px; font-size:14px; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:0.15em;">Welcome to</p>
-              <h1 style="margin:0; font-size:36px; font-weight:700; color:#ffffff;">{{tier_name}} VIP</h1>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="VIP Welcome" style="display:block; width:100%; height:auto; max-height:300px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:26px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                You've made it, {{customer_name}}!
-              </h1>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7;">
-                As a {{tier_name}} VIP member, you now enjoy exclusive perks:
-              </p>
-
-              <!-- Perks -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:14px 20px; background:#fffbeb; border-radius:8px;">
-                    <p style="margin:0; font-size:15px; color:#92400e;">👑 {{perk_1}}</p>
-                  </td>
-                </tr>
-                <tr><td style="height:8px;"></td></tr>
-                <tr>
-                  <td style="padding:14px 20px; background:#fffbeb; border-radius:8px;">
-                    <p style="margin:0; font-size:15px; color:#92400e;">👑 {{perk_2}}</p>
-                  </td>
-                </tr>
-                <tr><td style="height:8px;"></td></tr>
-                <tr>
-                  <td style="padding:14px 20px; background:#fffbeb; border-radius:8px;">
-                    <p style="margin:0; font-size:15px; color:#92400e;">👑 {{perk_3}}</p>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#92400e; text-transform:uppercase; letter-spacing:0.25em; font-weight:500;">
+                      {{tier_name}} Member
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:44px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 28px; font-size:13px; color:#374151; line-height:1.6; max-width:360px; margin-left:auto; margin-right:auto;">
+                      Your loyalty has unlocked exclusive privileges. Here's what's waiting for you.
+                    </p>
+
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
 
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+          <!-- Full Width Hero Image -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:350px; object-fit:cover;">
+            </td>
+          </tr>
+
+          <!-- Perks Section -->
+          <tr>
+            <td style="padding:48px 40px; background:#fafafa; text-align:center;">
+              <p style="margin:0 0 24px; font-size:11px; color:#666666; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                Your VIP benefits
+              </p>
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:16px 20px; background:#ffffff; border-radius:8px; text-align:center; border-bottom:1px solid #f0f0f0;">
+                    <p style="margin:0; font-size:14px; color:#1a1a1a; font-weight:500;">{{perk_1}}</p>
+                  </td>
+                </tr>
+                <tr><td style="height:8px;"></td></tr>
+                <tr>
+                  <td style="padding:16px 20px; background:#ffffff; border-radius:8px; text-align:center; border-bottom:1px solid #f0f0f0;">
+                    <p style="margin:0; font-size:14px; color:#1a1a1a; font-weight:500;">{{perk_2}}</p>
+                  </td>
+                </tr>
+                <tr><td style="height:8px;"></td></tr>
+                <tr>
+                  <td style="padding:16px 20px; background:#ffffff; border-radius:8px; text-align:center;">
+                    <p style="margin:0; font-size:14px; color:#1a1a1a; font-weight:500;">{{perk_3}}</p>
                   </td>
                 </tr>
               </table>
@@ -3276,55 +3184,61 @@ const vipLoyalty2: EmailTemplate = {
   name: 'Points Balance Update',
   category: 'vip-loyalty' as EmailTemplate['category'],
   timing: 'Monthly',
-  subjectLine: 'Your points update: {{total_points}} points!',
-  description: 'Monthly loyalty points summary',
+  subjectLine: 'Your rewards are growing.',
+  description: 'Sage green color block - points balance',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Points update', placeholder: 'Main headline' },
     { key: 'total_points', label: 'Total Points', type: 'text', defaultValue: '1,250', placeholder: 'e.g., 500' },
     { key: 'points_value', label: 'Points Value', type: 'text', defaultValue: '$62.50', placeholder: 'e.g., $25' },
     { key: 'points_to_next', label: 'Points to Next Reward', type: 'text', defaultValue: '250', placeholder: 'e.g., 100' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#D1E7DD' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Check out your latest points balance!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Redeem Points' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'REDEEM NOW' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- SAGE GREEN COLOR BLOCK - POINTS UPDATE -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Points Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, {{accent_color}} 0%, {{primary_color}} 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:14px; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.1em;">Your Balance</p>
-              <p style="margin:0; font-size:56px; font-weight:700; color:#ffffff; letter-spacing:-0.02em;">{{total_points}}</p>
-              <p style="margin:8px 0 0; font-size:16px; color:rgba(255,255,255,0.9);">points ({{points_value}} value)</p>
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:26px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Your points are adding up!
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:400px; display:inline-block;">
-                Hey {{customer_name}}, you have {{total_points}} points ready to redeem. That's {{points_value}} in rewards! You're only {{points_to_next}} points away from your next reward tier.
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#166534; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Your balance
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 8px; font-family:'Playfair Display',Georgia,serif; font-size:44px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:64px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em;">
+                      {{total_points}}
+                    </p>
+                    <p style="margin:0 0 28px; font-size:14px; color:#374151;">
+                      points ({{points_value}} value)
+                    </p>
+
+                    <!-- CTA Button - Dark green pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#166534;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Next Tier Info -->
+          <tr>
+            <td style="padding:32px 40px; background:#fafafa; text-align:center;">
+              <p style="margin:0; font-size:13px; color:#666666;">
+                Only <strong style="color:#166534;">{{points_to_next}} points</strong> until your next reward tier
+              </p>
             </td>
           </tr>
   `),
@@ -3335,56 +3249,61 @@ const vipLoyalty3: EmailTemplate = {
   name: 'Points Expiring Soon',
   category: 'vip-loyalty' as EmailTemplate['category'],
   timing: 'Before expiry',
-  subjectLine: '⚠️ {{expiring_points}} points expiring soon!',
-  description: 'Urgency for expiring points',
+  subjectLine: 'Don\'t let these slip away.',
+  description: 'Coral urgency color block - points expiring',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Points expiring', placeholder: 'Main headline' },
     { key: 'expiring_points', label: 'Expiring Points', type: 'text', defaultValue: '500', placeholder: 'e.g., 250' },
     { key: 'expiry_date', label: 'Expiry Date', type: 'text', defaultValue: 'January 31st', placeholder: 'e.g., March 15th' },
     { key: 'points_value', label: 'Points Value', type: 'text', defaultValue: '$25', placeholder: 'e.g., $12.50' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FED7D7' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Use your points before they expire!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Use My Points' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'USE MY POINTS' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CORAL URGENCY COLOR BLOCK - POINTS EXPIRING -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Urgency Banner -->
-          <tr>
-            <td style="padding:40px 56px; background:#fef2f2; text-align:center;">
-              <p style="margin:0 0 8px; font-size:40px;">⚠️</p>
-              <p style="margin:0 0 8px; font-size:14px; color:#dc2626; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">Expiring {{expiry_date}}</p>
-              <p style="margin:0; font-size:36px; font-weight:700; color:#dc2626;">{{expiring_points}} points</p>
-              <p style="margin:8px 0 0; font-size:14px; color:#dc2626;">({{points_value}} value)</p>
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:26px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Don't lose your rewards!
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, you have {{expiring_points}} points ({{points_value}}) that will expire on {{expiry_date}}. Use them before they're gone!
-              </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="border-radius:8px; background:#dc2626;">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:18px 48px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#dc2626; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      Expires {{expiry_date}}
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 4px; font-size:56px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em;">
+                      {{expiring_points}}
+                    </p>
+                    <p style="margin:0 0 28px; font-size:14px; color:#374151;">
+                      points worth {{points_value}}
+                    </p>
+
+                    <!-- CTA Button - Red pill for urgency -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#dc2626;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Urgency Footer -->
+          <tr>
+            <td style="padding:28px 40px; background:#1a1a1a; text-align:center;">
+              <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.15em;">
+                Redeem before they're gone
+              </p>
             </td>
           </tr>
   `),
@@ -3395,62 +3314,60 @@ const vipLoyalty4: EmailTemplate = {
   name: 'Exclusive VIP Sale',
   category: 'vip-loyalty' as EmailTemplate['category'],
   timing: 'VIP events',
-  subjectLine: 'VIP-Only: {{discount_percent}}% OFF starts now',
-  description: 'Exclusive VIP member sale',
+  subjectLine: 'For your eyes only.',
+  description: 'Full-bleed hero with text overlay - VIP exclusive sale',
   suggestedImages: imageLibrary.fashion.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'VIP', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Private sale', placeholder: 'Main headline' },
     { key: 'discount_percent', label: 'Discount %', type: 'number', defaultValue: '30', placeholder: 'e.g., 25' },
     { key: 'sale_duration', label: 'Sale Duration', type: 'text', defaultValue: '48 hours', placeholder: 'e.g., 24 hours' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Exclusive VIP sale starts now!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Shop VIP Sale' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP NOW' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH TEXT OVERLAY - VIP EXCLUSIVE -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:480px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center;">
+                      <p style="margin:0 0 8px; font-size:11px; color:#ffffff; text-transform:uppercase; letter-spacing:0.25em; font-weight:500; text-shadow:0 1px 3px rgba(0,0,0,0.3);">
+                        VIP Exclusive • {{sale_duration}} only
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#ffffff; line-height:1.1; font-style:italic; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{headline}}
+                      </h1>
+                      <p style="margin:0 0 28px; font-size:36px; font-weight:600; color:#ffffff; text-shadow:0 2px 8px rgba(0,0,0,0.4);">
+                        {{discount_percent}}% OFF
+                      </p>
+
+                      <!-- CTA Button - White pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#ffffff;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#1a1a1a; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
 
-          <!-- VIP Sale Banner -->
+          <!-- Dark Bottom Bar -->
           <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #fbbf24 0%, {{primary_color}} 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:14px; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:0.15em;">👑 VIP Exclusive</p>
-              <h1 style="margin:0; font-size:48px; font-weight:700; color:#ffffff; letter-spacing:-0.02em;">{{discount_percent}}% OFF</h1>
-              <p style="margin:8px 0 0; font-size:16px; color:rgba(255,255,255,0.9);">{{sale_duration}} only</p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="VIP Sale" style="display:block; width:100%; height:auto; max-height:380px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                {{customer_name}}, this sale is just for you
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7;">
-                As a VIP member, you get exclusive access to {{discount_percent}}% off sitewide. This private sale lasts {{sale_duration}}—shop now!
+            <td style="padding:28px 40px; background:#1a1a1a; text-align:center;">
+              <p style="margin:0; font-size:12px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.15em;">
+                Members only • Not available to the public
               </p>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}}; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -3461,72 +3378,68 @@ const vipLoyalty5: EmailTemplate = {
   name: 'Birthday Reward',
   category: 'vip-loyalty' as EmailTemplate['category'],
   timing: 'Birthday month',
-  subjectLine: 'Happy Birthday! 🎂 Your gift is inside',
-  description: 'VIP birthday reward',
+  subjectLine: 'A little something for you.',
+  description: 'Pink/rose color block - birthday reward',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Happy birthday', placeholder: 'Main headline' },
     { key: 'birthday_reward', label: 'Birthday Reward', type: 'text', defaultValue: '$25 gift card', placeholder: 'e.g., 25% off' },
     { key: 'valid_until', label: 'Valid Until', type: 'text', defaultValue: 'end of the month', placeholder: 'e.g., 30 days' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#FCE7F3' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'A birthday surprise just for you!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Claim My Gift' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM GIFT' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- PINK/ROSE COLOR BLOCK - BIRTHDAY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#be185d; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      It's your special day
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:13px; color:#374151; line-height:1.6; max-width:340px; margin-left:auto; margin-right:auto;">
+                      Here's a little something from us to celebrate you.
+                    </p>
+                    <p style="margin:0 0 28px; font-size:28px; font-weight:600; color:#be185d;">
+                      {{birthday_reward}}
+                    </p>
+
+                    <!-- CTA Button - Pink pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#be185d;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Birthday Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:56px;">🎂</p>
-              <h1 style="margin:0 0 8px; font-size:32px; font-weight:700; color:#ffffff;">Happy Birthday!</h1>
-              <p style="margin:0; font-size:18px; color:rgba(255,255,255,0.9);">Here's a gift from us to you</p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
+          <!-- Full Width Hero Image -->
           <tr>
             <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Birthday Gift" style="display:block; width:100%; height:auto; max-height:300px; object-fit:cover;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:350px; object-fit:cover;">
             </td>
           </tr>
 
-          <!-- Content -->
+          <!-- Valid Until Footer -->
           <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:26px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Your VIP birthday reward
-              </h1>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7; max-width:400px; display:inline-block;">
-                Hey {{customer_name}}, it's your special month! As a VIP member, enjoy {{birthday_reward}}. Valid until {{valid_until}}.
+            <td style="padding:24px 40px; background:#fafafa; text-align:center;">
+              <p style="margin:0; font-size:12px; color:#666666;">
+                Valid until {{valid_until}}
               </p>
-
-              <!-- Gift Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td style="padding:24px; background:linear-gradient(135deg, #fdf4ff 0%, #faf5ff 100%); border-radius:16px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:14px; color:#9333ea; text-transform:uppercase; letter-spacing:0.1em;">Your Gift</p>
-                    <p style="margin:0; font-size:28px; font-weight:700; color:#9333ea;">{{birthday_reward}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -3537,64 +3450,60 @@ const vipLoyalty6: EmailTemplate = {
   name: 'Anniversary Celebration',
   category: 'vip-loyalty' as EmailTemplate['category'],
   timing: '1-year customer',
-  subjectLine: 'Celebrating 1 year together! 🎉',
-  description: 'Customer anniversary celebration',
+  subjectLine: 'One year together.',
+  description: 'Champagne color block - anniversary celebration',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Happy anniversary', placeholder: 'Main headline' },
     { key: 'anniversary_reward', label: 'Anniversary Reward', type: 'text', defaultValue: '20% off + double points', placeholder: 'e.g., $20 credit' },
     { key: 'total_orders', label: 'Total Orders', type: 'text', defaultValue: '12', placeholder: 'e.g., 8' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#F5E6D3' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'One year of amazing moments together!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Celebrate With Us' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM REWARD' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- CHAMPAGNE COLOR BLOCK - ANNIVERSARY -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tr>
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#92400e; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      {{total_orders}} orders later
+                    </p>
+                    <h1 class="mobile-headline" style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:13px; color:#374151; line-height:1.6; max-width:340px; margin-left:auto; margin-right:auto;">
+                      One year ago, you became part of our story. Here's to many more.
+                    </p>
+                    <p style="margin:0 0 28px; font-size:24px; font-weight:600; color:#1a1a1a;">
+                      {{anniversary_reward}}
+                    </p>
+
+                    <!-- CTA Button - Dark pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#1a1a1a;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
 
-          <!-- Anniversary Banner -->
+          <!-- Thank You Footer -->
           <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, {{accent_color}} 0%, {{primary_color}} 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:48px;">🎉</p>
-              <h1 style="margin:0 0 8px; font-size:32px; font-weight:700; color:#ffffff;">Happy Anniversary!</h1>
-              <p style="margin:0; font-size:18px; color:rgba(255,255,255,0.9);">1 year of being part of our family</p>
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <h1 style="margin:0 0 16px; font-size:26px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Thank you, {{customer_name}}!
-              </h1>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                One year ago, you joined our family. Since then, you've placed {{total_orders}} orders and become a valued member of our community. Here's a special reward to celebrate!
+            <td style="padding:32px 40px; background:#fafafa; text-align:center;">
+              <p style="margin:0; font-size:13px; color:#666666; font-style:italic;">
+                Thank you for being part of our journey.
               </p>
-
-              <!-- Reward Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td style="padding:24px; background:#f0fdf4; border-radius:16px; text-align:center;">
-                    <p style="margin:0 0 8px; font-size:14px; color:#059669; text-transform:uppercase; letter-spacing:0.1em;">Anniversary Reward</p>
-                    <p style="margin:0; font-size:24px; font-weight:700; color:#059669;">{{anniversary_reward}}</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
             </td>
           </tr>
   `),
@@ -3605,72 +3514,63 @@ const vipLoyalty7: EmailTemplate = {
   name: 'Referral Program Invite',
   category: 'vip-loyalty' as EmailTemplate['category'],
   timing: 'Post-purchase',
-  subjectLine: 'Give {{friend_reward}}, Get {{your_reward}}',
-  description: 'Invite to referral program',
+  subjectLine: 'Share the love.',
+  description: 'Full-bleed hero with overlay - referral program',
   suggestedImages: imageLibrary.lifestyle.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Farmer%20in%20Strawberry%20Field.png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Give & Get', placeholder: 'Main headline' },
     { key: 'your_reward', label: 'Your Reward', type: 'text', defaultValue: '$20', placeholder: 'e.g., $15' },
     { key: 'friend_reward', label: 'Friend Gets', type: 'text', defaultValue: '$20', placeholder: 'e.g., $15' },
-    { key: 'referral_link', label: 'Referral Link', type: 'url', defaultValue: 'https://yourstore.com/refer', placeholder: 'https://...' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Share the love and earn rewards!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Start Referring' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'START SHARING' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- FULL BLEED HERO WITH OVERLAY - REFERRAL -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
+            <td style="padding:0; position:relative;">
+              <div style="position:relative;">
+                <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:420px; object-fit:cover;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="position:absolute; top:0; left:0; width:100%; height:100%;">
+                  <tr>
+                    <td style="padding:60px 40px; vertical-align:center; text-align:center; background:rgba(255,255,255,0.88);">
+                      <p style="margin:0 0 8px; font-size:11px; color:#666666; text-transform:uppercase; letter-spacing:0.25em; font-weight:500;">
+                        Referral program
+                      </p>
+                      <h1 class="mobile-headline" style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:52px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                        {{headline}}
+                      </h1>
 
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Referral Program" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
+                      <!-- Rewards -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 28px;">
+                        <tr>
+                          <td style="padding:16px 24px; text-align:center;">
+                            <p style="margin:0 0 4px; font-size:11px; color:#666666; text-transform:uppercase; letter-spacing:0.1em;">They get</p>
+                            <p style="margin:0; font-size:24px; font-weight:600; color:#1a1a1a;">{{friend_reward}} OFF</p>
+                          </td>
+                          <td style="padding:0 20px; color:#cccccc;">|</td>
+                          <td style="padding:16px 24px; text-align:center;">
+                            <p style="margin:0 0 4px; font-size:11px; color:#666666; text-transform:uppercase; letter-spacing:0.1em;">You get</p>
+                            <p style="margin:0; font-size:24px; font-weight:600; color:#1a1a1a;">{{your_reward}} CREDIT</p>
+                          </td>
+                        </tr>
+                      </table>
 
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px; text-align:center;">
-              <p style="margin:0 0 8px; font-size:13px; color:{{accent_color}}; text-transform:uppercase; letter-spacing:0.1em; font-weight:600;">
-                Referral Program
-              </p>
-              <h1 style="margin:0 0 16px; font-size:30px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Give {{friend_reward}}, Get {{your_reward}}
-              </h1>
-              <p style="margin:0 0 32px; font-size:16px; color:#4b5563; line-height:1.7; max-width:420px; display:inline-block;">
-                Hey {{customer_name}}, share the love! When your friends make their first purchase, they get {{friend_reward}} off and you earn {{your_reward}} in credit.
-              </p>
-
-              <!-- Rewards Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
-                <tr>
-                  <td width="48%" style="padding:24px; background:{{primary_color}}; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 4px; font-size:12px; color:rgba(255,255,255,0.7); text-transform:uppercase;">They Get</p>
-                    <p style="margin:0; font-size:24px; font-weight:700; color:#ffffff;">{{friend_reward}} OFF</p>
-                  </td>
-                  <td width="4%"></td>
-                  <td width="48%" style="padding:24px; background:{{accent_color}}; border-radius:12px; text-align:center;">
-                    <p style="margin:0 0 4px; font-size:12px; color:rgba(255,255,255,0.7); text-transform:uppercase;">You Get</p>
-                    <p style="margin:0; font-size:24px; font-weight:700; color:#ffffff;">{{your_reward}} CREDIT</p>
-                  </td>
-                </tr>
-              </table>
-
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
-                <tr>
-                  <td style="border-radius:8px; background:{{accent_color}};">
-                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
-                      {{cta_text}}
-                    </a>
-                  </td>
-                </tr>
-              </table>
+                      <!-- CTA Button - Dark pill -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                        <tr>
+                          <td style="border-radius:50px; background:#1a1a1a;">
+                            <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                              {{cta_text}}
+                            </a>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </div>
             </td>
           </tr>
   `),
@@ -3681,68 +3581,1772 @@ const vipLoyalty8: EmailTemplate = {
   name: 'Double Points Event',
   category: 'vip-loyalty' as EmailTemplate['category'],
   timing: 'Promotional periods',
-  subjectLine: '🔥 Double Points Weekend — Earn 2X rewards!',
-  description: 'Double points promotional event',
+  subjectLine: 'Double the rewards.',
+  description: 'Lavender color block - double points event',
   suggestedImages: imageLibrary.products.map(i => i.url),
   fields: [
     ...commonBrandFields,
     { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/create-a-new-image-in%20(14).png', placeholder: 'https://...' },
-    { key: 'customer_name', label: 'Customer Name', type: 'text', defaultValue: 'there', placeholder: 'or use: Friend' },
+    { key: 'headline', label: 'Headline', type: 'text', defaultValue: 'Double points', placeholder: 'Main headline' },
     { key: 'event_duration', label: 'Event Duration', type: 'text', defaultValue: 'This weekend only', placeholder: 'e.g., 48 hours' },
     { key: 'current_points', label: 'Current Points', type: 'text', defaultValue: '500', placeholder: 'e.g., 250' },
+    { key: 'block_color', label: 'Block Color', type: 'color', defaultValue: '#E9D5FF' },
     { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Earn double points on every purchase!', placeholder: 'Email preview text' },
-    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'Earn Double Points' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'EARN 2X' },
   ],
   html: premiumWrapper(`
-          <!-- Logo Header -->
+          <!-- LAVENDER COLOR BLOCK - DOUBLE POINTS -->
           <tr>
-            <td style="padding:32px 40px 24px; text-align:center; border-bottom:1px solid #f3f4f6;">
-              <img src="{{logo_url}}" alt="{{brand_name}}" style="display:block; margin:0 auto; width:100%; max-width:280px; height:auto;">
-            </td>
-          </tr>
-
-          <!-- Double Points Banner -->
-          <tr>
-            <td style="padding:48px 56px; background:linear-gradient(135deg, #f97316 0%, #ea580c 100%); text-align:center;">
-              <p style="margin:0 0 8px; font-size:18px; color:rgba(255,255,255,0.9);">🔥 Limited Time</p>
-              <h1 style="margin:0 0 8px; font-size:48px; font-weight:700; color:#ffffff; letter-spacing:-0.02em;">2X POINTS</h1>
-              <p style="margin:0; font-size:16px; color:rgba(255,255,255,0.9);">{{event_duration}}</p>
-            </td>
-          </tr>
-
-          <!-- Hero Image -->
-          <tr>
-            <td style="padding:0;">
-              <img src="{{hero_image}}" alt="Double Points" style="display:block; width:100%; height:auto; max-height:350px; object-fit:cover;">
-            </td>
-          </tr>
-
-          <!-- Content -->
-          <tr>
-            <td class="mobile-padding" style="padding:48px 56px;">
-              <h1 style="margin:0 0 16px; font-size:28px; font-weight:600; color:{{primary_color}}; line-height:1.25; letter-spacing:-0.02em;">
-                Double your rewards!
-              </h1>
-              <p style="margin:0 0 24px; font-size:16px; color:#4b5563; line-height:1.7;">
-                Hey {{customer_name}}, {{event_duration}}, earn 2X points on every purchase. You currently have {{current_points}} points—imagine doubling your next earn!
-              </p>
-
-              <!-- Example Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-bottom:32px;">
+            <td style="padding:0; background:{{block_color}};">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tr>
-                  <td style="padding:20px 24px; background:#fff7ed; border-radius:12px; text-align:center;">
-                    <p style="margin:0; font-size:15px; color:#ea580c;">
-                      <strong>Example:</strong> $100 purchase = 200 points (normally 100)
+                  <td style="padding:60px 40px; text-align:center;">
+                    <p style="margin:0 0 8px; font-size:11px; color:#7c3aed; text-transform:uppercase; letter-spacing:0.2em; font-weight:500;">
+                      {{event_duration}}
                     </p>
+                    <h1 class="mobile-headline" style="margin:0 0 12px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:400; color:#1a1a1a; line-height:1.1; font-style:italic;">
+                      {{headline}}
+                    </h1>
+                    <p style="margin:0 0 8px; font-size:72px; font-weight:700; color:#1a1a1a; letter-spacing:-0.03em;">
+                      2X
+                    </p>
+                    <p style="margin:0 0 28px; font-size:13px; color:#374151; line-height:1.6;">
+                      You currently have {{current_points}} points. Imagine doubling your next earn.
+                    </p>
+
+                    <!-- CTA Button - Purple pill -->
+                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                      <tr>
+                        <td style="border-radius:50px; background:#7c3aed;">
+                          <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:13px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.1em; text-transform:uppercase;">
+                            {{cta_text}}
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
 
-              <!-- CTA Button -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%;">
+          <!-- Full Width Hero Image -->
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:380px; object-fit:cover;">
+            </td>
+          </tr>
+  `),
+};
+
+// =====================================================
+// QUIZ FUNNEL - SKINCARE (15 templates)
+// =====================================================
+
+const quizSkincare1: EmailTemplate = {
+  id: 'quiz-skincare-1',
+  name: 'Your Personalized Results',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: 'Immediately after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, your skin analysis is ready',
+  description: 'Delivers personalized quiz results with product recommendations',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Radiant%20Woman%20Portrait.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your personalized skincare routine awaits', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result Variable', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo quiz result' },
+    { key: 'product_name', label: 'Recommended Product', type: 'text', defaultValue: 'Hydrating Serum', placeholder: 'Product name' },
+    { key: 'product_benefit', label: 'Key Benefit', type: 'text', defaultValue: 'deep hydration', placeholder: 'Main benefit' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'VIEW MY ROUTINE', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:350px; object-fit:cover;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Your Results Are In
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:36px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                We Found Your Perfect Match
+              </h1>
+              <p style="margin:0 0 24px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:480px; margin-left:auto; margin-right:auto;">
+                Based on your answers, you have <strong>{{quiz_result}}</strong>. This means your skin craves {{product_benefit}} — and we have exactly what you need.
+              </p>
+              <div style="background:#f9f9f9; border-radius:12px; padding:24px; margin:0 0 32px; text-align:left;">
+                <p style="margin:0 0 8px; font-size:11px; color:#666; text-transform:uppercase; letter-spacing:0.1em;">Recommended For You</p>
+                <p style="margin:0; font-size:18px; font-weight:600; color:#1a1a1a;">{{product_name}}</p>
+                <p style="margin:8px 0 0; font-size:14px; color:#666;">Specifically formulated for {{quiz_result}}</p>
+              </div>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
                 <tr>
-                  <td style="border-radius:8px; background:#ea580c; text-align:center;">
-                    <a href="{{cta_url}}" style="display:block; padding:18px 40px; font-size:15px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.02em;">
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare2: EmailTemplate = {
+  id: 'quiz-skincare-2',
+  name: 'Understanding Your Skin Type',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '24 hours after quiz',
+  subjectLine: 'Why {{ event.quiz_results_name|default:"your skin" }} needs special care',
+  description: 'Educational email about their specific skin concern',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Radiant%20Portrait.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'The science behind your skin type', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo variable' },
+    { key: 'skin_fact_1', label: 'Skin Fact 1', type: 'text', defaultValue: 'Your skin loses 30% more moisture overnight', placeholder: 'Fact about their skin type' },
+    { key: 'skin_fact_2', label: 'Skin Fact 2', type: 'text', defaultValue: 'The wrong products can damage your moisture barrier', placeholder: 'Second fact' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP MY ROUTINE', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Skin Science
+              </p>
+              <h1 style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                What {{quiz_result}} Really Means
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px;">
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                {{ first_name|default:"Hey" }}, here's something most brands won't tell you:
+              </p>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                <strong>{{skin_fact_1}}</strong> — which is why using generic products simply doesn't work for {{quiz_result}}.
+              </p>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                {{skin_fact_2}}. That's exactly why we created a routine specifically for people like you.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare3: EmailTemplate = {
+  id: 'quiz-skincare-3',
+  name: 'Real Results From Your Skin Type',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '48 hours after quiz',
+  subjectLine: 'See what others with {{ event.quiz_results_name|default:"similar skin" }} achieved',
+  description: 'Social proof from customers with same quiz results',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Close-Up%20Portrait%20Duo.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Real transformations from people just like you', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo variable' },
+    { key: 'testimonial_name', label: 'Customer Name', type: 'text', defaultValue: 'Sarah M.', placeholder: 'Customer first name' },
+    { key: 'testimonial_text', label: 'Testimonial', type: 'text', defaultValue: 'After 2 weeks, my skin finally stopped feeling tight and dry. I wish I found this sooner!', placeholder: 'Customer quote' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'GET MY RESULTS', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px 32px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Real Stories
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                They Had {{quiz_result}} Too
+              </h1>
+              <p style="margin:0; font-size:15px; color:#666; line-height:1.6;">
+                And here's what happened when they found their match.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <div style="background:#faf9f7; border-radius:12px; padding:32px; border-left:3px solid #B8860B;">
+                <p style="margin:0 0 16px; font-size:16px; color:#1a1a1a; line-height:1.7; font-style:italic;">
+                  "{{testimonial_text}}"
+                </p>
+                <p style="margin:0; font-size:13px; color:#666; font-weight:600;">
+                  — {{testimonial_name}}, verified buyer with {{quiz_result}}
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <p style="margin:0 0 24px; font-size:15px; color:#4a4a4a; line-height:1.7;">
+                Your personalized routine is still waiting, {{ first_name|default:"friend" }}.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare4: EmailTemplate = {
+  id: 'quiz-skincare-4',
+  name: 'Exclusive Quiz Taker Discount',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '72 hours after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, 15% off your personalized routine',
+  description: 'First discount offer for quiz completers',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Radiant%20Woman%20Portrait.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'A thank you for taking our quiz', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo variable' },
+    { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'QUIZ15', placeholder: 'Discount code' },
+    { key: 'discount_amount', label: 'Discount Amount', type: 'text', defaultValue: '15%', placeholder: '15% or $10' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM MY DISCOUNT', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Quiz Taker Exclusive
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:36px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                {{discount_amount}} Off Your Match
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#666; line-height:1.6; max-width:420px; margin-left:auto; margin-right:auto;">
+                Because you took the time to find your perfect routine, here's something special.
+              </p>
+              <div style="background:#1a1a1a; color:#fff; padding:20px 40px; display:inline-block; margin:0 0 32px;">
+                <p style="margin:0 0 4px; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:#999;">Your Code</p>
+                <p style="margin:0; font-size:28px; font-weight:700; letter-spacing:0.05em;">{{discount_code}}</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <p style="margin:0 0 24px; font-size:15px; color:#4a4a4a; line-height:1.7;">
+                Your {{quiz_result}} routine is ready, {{ first_name|default:"friend" }}. Use code <strong>{{discount_code}}</strong> at checkout.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare5: EmailTemplate = {
+  id: 'quiz-skincare-5',
+  name: 'Your Skin Concern Deep Dive',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '4 days after quiz',
+  subjectLine: 'The #1 mistake people with {{ event.quiz_results_name|default:"your skin" }} make',
+  description: 'Educational content about common mistakes',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Radiant%20Portrait.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Avoid this common skincare mistake', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo variable' },
+    { key: 'mistake', label: 'Common Mistake', type: 'text', defaultValue: 'over-cleansing, which strips your natural oils', placeholder: 'The mistake they make' },
+    { key: 'solution', label: 'The Solution', type: 'text', defaultValue: 'gentle, pH-balanced cleansing that protects your barrier', placeholder: 'How to fix it' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP THE SOLUTION', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Skincare Truth
+              </p>
+              <h1 style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Stop Doing This to Your Skin
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px;">
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                {{ first_name|default:"Hey" }}, we see this all the time with {{quiz_result}}:
+              </p>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                The #1 mistake? <strong>{{mistake}}</strong>.
+              </p>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                What your skin actually needs is <strong>{{solution}}</strong>.
+              </p>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                That's exactly why we built your personalized routine the way we did.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare6: EmailTemplate = {
+  id: 'quiz-skincare-6',
+  name: 'Before & After Transformation',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '5 days after quiz',
+  subjectLine: '28 days of using products for {{ event.quiz_results_name|default:"your skin type" }}',
+  description: 'Visual transformation story with timeline',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Radiant%20Woman%20Portrait.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'See what 28 days can do', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo variable' },
+    { key: 'week1_result', label: 'Week 1 Result', type: 'text', defaultValue: 'Skin feels more balanced', placeholder: 'First week result' },
+    { key: 'week2_result', label: 'Week 2 Result', type: 'text', defaultValue: 'Visible hydration boost', placeholder: 'Second week result' },
+    { key: 'week4_result', label: 'Week 4 Result', type: 'text', defaultValue: 'Radiant, healthy glow', placeholder: 'Fourth week result' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'START MY JOURNEY', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px 32px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                The Timeline
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                What To Expect With {{quiz_result}}
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <div style="border-left:2px solid #f0f0f0; padding-left:24px;">
+                <div style="margin-bottom:24px;">
+                  <p style="margin:0 0 4px; font-size:11px; color:#B8860B; font-weight:600; text-transform:uppercase;">Week 1</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a;">{{week1_result}}</p>
+                </div>
+                <div style="margin-bottom:24px;">
+                  <p style="margin:0 0 4px; font-size:11px; color:#B8860B; font-weight:600; text-transform:uppercase;">Week 2</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a;">{{week2_result}}</p>
+                </div>
+                <div>
+                  <p style="margin:0 0 4px; font-size:11px; color:#B8860B; font-weight:600; text-transform:uppercase;">Week 4</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a;">{{week4_result}}</p>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare7: EmailTemplate = {
+  id: 'quiz-skincare-7',
+  name: 'Urgency - Routine Expiring',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '6 days after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, your personalized routine expires soon',
+  description: 'Creates urgency around their saved quiz results',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Radiant%20Portrait.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your custom routine wont wait forever', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo variable' },
+    { key: 'expiry_hours', label: 'Hours Until Expiry', type: 'text', defaultValue: '48', placeholder: 'Hours left' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SAVE MY ROUTINE', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#dc2626; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Time Sensitive
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Your Routine Expires in {{expiry_hours}} Hours
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                {{ first_name|default:"Hey" }}, we've been holding your personalized {{quiz_result}} routine, but we can't keep it reserved forever.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 32px;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare8: EmailTemplate = {
+  id: 'quiz-skincare-8',
+  name: 'Ingredient Spotlight',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '7 days after quiz',
+  subjectLine: 'Why {{ event.quiz_results_name|default:"your skin" }} loves this ingredient',
+  description: 'Educational email about key ingredient for their skin type',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Radiant%20Woman%20Portrait.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'The science behind your skincare', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo variable' },
+    { key: 'ingredient_name', label: 'Key Ingredient', type: 'text', defaultValue: 'Hyaluronic Acid', placeholder: 'Main ingredient' },
+    { key: 'ingredient_benefit', label: 'Ingredient Benefit', type: 'text', defaultValue: 'holds 1000x its weight in water, delivering deep hydration to thirsty skin', placeholder: 'What it does' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'TRY IT NOW', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Ingredient Science
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Why {{ingredient_name}} Is Perfect<br/>For {{quiz_result}}
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px;">
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                {{ first_name|default:"Hey" }}, let's talk about why we chose <strong>{{ingredient_name}}</strong> for your routine.
+              </p>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                {{ingredient_name}} {{ingredient_benefit}}.
+              </p>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                For {{quiz_result}}, this ingredient is essential — and it's at the heart of your personalized routine.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare9: EmailTemplate = {
+  id: 'quiz-skincare-9',
+  name: 'Last Chance Discount',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '10 days after quiz',
+  subjectLine: 'Final hours: 20% off your {{ event.quiz_results_name|default:"skin" }} routine',
+  description: 'Final discount push with increased urgency',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/Radiant%20Portrait.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your biggest discount expires at midnight', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Quiz Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your skin type" }}', placeholder: 'Klaviyo variable' },
+    { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'LASTCHANCE20', placeholder: 'Discount code' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM 20% OFF', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center; background:#1a1a1a;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Last Chance
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:500; color:#ffffff; line-height:1.1;">
+                20% OFF
+              </h1>
+              <p style="margin:0 0 24px; font-size:15px; color:#999; line-height:1.6;">
+                Your {{quiz_result}} routine. Expires at midnight.
+              </p>
+              <div style="background:#ffffff; color:#1a1a1a; padding:16px 32px; display:inline-block; margin:0 0 24px;">
+                <p style="margin:0; font-size:24px; font-weight:700; letter-spacing:0.05em;">{{discount_code}}</p>
+              </div>
+              <br/>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:#B8860B;">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizSkincare10: EmailTemplate = {
+  id: 'quiz-skincare-10',
+  name: 'Retake Quiz Reminder',
+  category: 'quiz-skincare',
+  niche: 'Skincare',
+  timing: '14 days after quiz',
+  subjectLine: 'Has your skin changed, {{ first_name|default:"friend" }}?',
+  description: 'Re-engagement for non-converters to retake quiz',
+  suggestedImages: imageLibrary.beauty.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Close-Up%20Portrait%20Duo.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your skin might have different needs now', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Previous Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your previous result" }}', placeholder: 'Klaviyo variable' },
+    { key: 'quiz_url', label: 'Quiz URL', type: 'url', defaultValue: 'https://yourstore.com/quiz', placeholder: 'Link to quiz' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'RETAKE THE QUIZ', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Check In
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Your Skin Evolves.<br/>So Should Your Routine.
+              </h1>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                Last time you had {{quiz_result}}. But skin changes with seasons, stress, and lifestyle.
+              </p>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                Want to make sure you're still using the right products?
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{quiz_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+// =====================================================
+// QUIZ FUNNEL - FASHION (10 templates)
+// =====================================================
+
+const quizFashion1: EmailTemplate = {
+  id: 'quiz-fashion-1',
+  name: 'Your Style Profile Results',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: 'Immediately after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, your style profile is ready',
+  description: 'Delivers personalized style quiz results',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your personalized style picks are here', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo quiz result' },
+    { key: 'style_description', label: 'Style Description', type: 'text', defaultValue: 'effortless elegance with timeless pieces', placeholder: 'Style traits' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP MY STYLE', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:400px; object-fit:cover;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Your Style Profile
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:36px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                You Are: {{quiz_result}}
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:440px; margin-left:auto; margin-right:auto;">
+                Your style is defined by {{style_description}}. We've curated pieces that match your aesthetic perfectly.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion2: EmailTemplate = {
+  id: 'quiz-fashion-2',
+  name: 'Style Tips For Your Type',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '24 hours after quiz',
+  subjectLine: '3 styling secrets for {{ event.quiz_results_name|default:"your style" }}',
+  description: 'Educational styling tips based on quiz result',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/man-in-classic-polo-shirt.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Styling tips just for you', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'tip_1', label: 'Styling Tip 1', type: 'text', defaultValue: 'Invest in quality basics that layer well', placeholder: 'First tip' },
+    { key: 'tip_2', label: 'Styling Tip 2', type: 'text', defaultValue: 'Choose neutral tones as your foundation', placeholder: 'Second tip' },
+    { key: 'tip_3', label: 'Styling Tip 3', type: 'text', defaultValue: 'Add one statement piece per outfit', placeholder: 'Third tip' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP THE LOOK', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Style Guide
+              </p>
+              <h1 style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                How To Master {{quiz_result}}
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <div style="text-align:left;">
+                <div style="padding:20px 0; border-bottom:1px solid #f0f0f0;">
+                  <p style="margin:0 0 4px; font-size:11px; color:#B8860B; font-weight:600;">01</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a; line-height:1.6;">{{tip_1}}</p>
+                </div>
+                <div style="padding:20px 0; border-bottom:1px solid #f0f0f0;">
+                  <p style="margin:0 0 4px; font-size:11px; color:#B8860B; font-weight:600;">02</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a; line-height:1.6;">{{tip_2}}</p>
+                </div>
+                <div style="padding:20px 0;">
+                  <p style="margin:0 0 4px; font-size:11px; color:#B8860B; font-weight:600;">03</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a; line-height:1.6;">{{tip_3}}</p>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion3: EmailTemplate = {
+  id: 'quiz-fashion-3',
+  name: 'Customers With Your Style',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '48 hours after quiz',
+  subjectLine: 'How others rock {{ event.quiz_results_name|default:"your style" }}',
+  description: 'Social proof showing other customers with same style',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/handsome-man-in-perfectly-tailored.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Real customers, real style inspiration', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'testimonial_name', label: 'Customer Name', type: 'text', defaultValue: 'Michael T.', placeholder: 'Customer name' },
+    { key: 'testimonial_text', label: 'Testimonial', type: 'text', defaultValue: 'Finally found pieces that actually match my vibe. The quiz nailed it!', placeholder: 'Customer quote' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'FIND MY PIECES', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:350px; object-fit:cover;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Style Inspo
+              </p>
+              <h1 style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                {{quiz_result}} In Action
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <div style="background:#faf9f7; padding:32px; border-left:3px solid #B8860B;">
+                <p style="margin:0 0 16px; font-size:16px; color:#1a1a1a; line-height:1.7; font-style:italic;">
+                  "{{testimonial_text}}"
+                </p>
+                <p style="margin:0; font-size:13px; color:#666; font-weight:600;">
+                  — {{testimonial_name}}, {{quiz_result}} style
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px; text-align:center;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion4: EmailTemplate = {
+  id: 'quiz-fashion-4',
+  name: 'Exclusive Style Quiz Discount',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '72 hours after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, 15% off your style picks',
+  description: 'First discount for quiz completers',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your exclusive quiz taker discount', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'MYSTYLE15', placeholder: 'Discount code' },
+    { key: 'discount_amount', label: 'Discount Amount', type: 'text', defaultValue: '15%', placeholder: '15% or $10' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'REDEEM NOW', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Quiz Taker Reward
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:36px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                {{discount_amount}} Off Your {{quiz_result}} Picks
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#666; line-height:1.6;">
+                Because you took the time to discover your style.
+              </p>
+              <div style="background:#1a1a1a; color:#fff; padding:20px 40px; display:inline-block; margin:0 0 32px;">
+                <p style="margin:0 0 4px; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:#999;">Your Code</p>
+                <p style="margin:0; font-size:28px; font-weight:700; letter-spacing:0.05em;">{{discount_code}}</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion5: EmailTemplate = {
+  id: 'quiz-fashion-5',
+  name: 'Wardrobe Building Blocks',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '4 days after quiz',
+  subjectLine: 'The 5 essentials every {{ event.quiz_results_name|default:"style" }} needs',
+  description: 'Educational content about wardrobe essentials',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/close-up-shot-of-mans-legs%20(1).png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Build your perfect wardrobe', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'essential_1', label: 'Essential 1', type: 'text', defaultValue: 'A perfectly fitted blazer', placeholder: 'First essential' },
+    { key: 'essential_2', label: 'Essential 2', type: 'text', defaultValue: 'Quality denim that flatters', placeholder: 'Second essential' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'BUILD MY WARDROBE', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Wardrobe Essentials
+              </p>
+              <h1 style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Building Blocks For {{quiz_result}}
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                Every great wardrobe starts with the right foundation. Here's what you need:
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px;">
+              <div style="background:#faf9f7; padding:24px; margin-bottom:16px;">
+                <p style="margin:0; font-size:15px; color:#1a1a1a;"><strong>Must-Have:</strong> {{essential_1}}</p>
+              </div>
+              <div style="background:#faf9f7; padding:24px; margin-bottom:32px;">
+                <p style="margin:0; font-size:15px; color:#1a1a1a;"><strong>Must-Have:</strong> {{essential_2}}</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion6: EmailTemplate = {
+  id: 'quiz-fashion-6',
+  name: 'New Arrivals For Your Style',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '5 days after quiz',
+  subjectLine: 'Just in: New pieces for {{ event.quiz_results_name|default:"your style" }}',
+  description: 'Showcases new arrivals matched to their style',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/man-in-classic-polo-shirt.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Fresh drops curated for you', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP NEW ARRIVALS', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:400px; object-fit:cover;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Just Dropped
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                New Arrivals For {{quiz_result}}
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                Fresh pieces just landed that perfectly match your style profile. Don't miss them.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion7: EmailTemplate = {
+  id: 'quiz-fashion-7',
+  name: 'Urgency - Style Picks Expiring',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '6 days after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, your curated picks are selling fast',
+  description: 'Creates urgency around their style recommendations',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your picks are going fast', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SECURE MY PICKS', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#dc2626; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Selling Fast
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Your {{quiz_result}} Picks Are Going
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                The pieces we curated for your style profile are popular — and sizes are limited.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 32px;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion8: EmailTemplate = {
+  id: 'quiz-fashion-8',
+  name: 'Outfit Inspiration',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '7 days after quiz',
+  subjectLine: 'Complete outfits for {{ event.quiz_results_name|default:"your style" }}',
+  description: 'Shows complete outfit combinations',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/handsome-man-in-perfectly-tailored.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Ready-to-wear outfit ideas', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'outfit_occasion', label: 'Outfit Occasion', type: 'text', defaultValue: 'weekend brunch to dinner date', placeholder: 'When to wear it' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'SHOP THE OUTFITS', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto; min-height:400px; object-fit:cover;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Outfit Ideas
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                {{quiz_result}} Outfits, Ready To Wear
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                We've put together complete looks for {{outfit_occasion}}. No more wondering what goes together.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion9: EmailTemplate = {
+  id: 'quiz-fashion-9',
+  name: 'Last Chance Style Discount',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '10 days after quiz',
+  subjectLine: 'Final hours: 20% off your {{ event.quiz_results_name|default:"style" }} picks',
+  description: 'Final discount push',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/man-in-classic-polo-shirt.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your biggest discount expires tonight', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Style Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'STYLE20', placeholder: 'Discount code' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'GET 20% OFF', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center; background:#1a1a1a;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Last Chance
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:500; color:#ffffff; line-height:1.1;">
+                20% OFF
+              </h1>
+              <p style="margin:0 0 24px; font-size:15px; color:#999; line-height:1.6;">
+                Your {{quiz_result}} wardrobe. Expires at midnight.
+              </p>
+              <div style="background:#ffffff; color:#1a1a1a; padding:16px 32px; display:inline-block; margin:0 0 24px;">
+                <p style="margin:0; font-size:24px; font-weight:700; letter-spacing:0.05em;">{{discount_code}}</p>
+              </div>
+              <br/>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:#B8860B;">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizFashion10: EmailTemplate = {
+  id: 'quiz-fashion-10',
+  name: 'Style Evolution Check-In',
+  category: 'quiz-fashion',
+  niche: 'Fashion',
+  timing: '14 days after quiz',
+  subjectLine: 'Has your style evolved, {{ first_name|default:"friend" }}?',
+  description: 'Re-engagement to retake style quiz',
+  suggestedImages: imageLibrary.fashion.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/woman-in-elegant-midi-linen%20(2).png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your style might have new dimensions', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Previous Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your previous style" }}', placeholder: 'Klaviyo variable' },
+    { key: 'quiz_url', label: 'Quiz URL', type: 'url', defaultValue: 'https://yourstore.com/style-quiz', placeholder: 'Link to quiz' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'RETAKE STYLE QUIZ', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Check In
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Style Evolves.<br/>So Do You.
+              </h1>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                Last time you were {{quiz_result}}. But tastes change with seasons and experiences.
+              </p>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7;">
+                Ready to see if there's a new dimension to your style?
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{quiz_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+// =====================================================
+// QUIZ FUNNEL - SUPPLEMENTS/FITNESS (10 templates)
+// =====================================================
+
+const quizSupplements1: EmailTemplate = {
+  id: 'quiz-supplements-1',
+  name: 'Your Personalized Formula',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: 'Immediately after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, your custom formula is ready',
+  description: 'Delivers personalized supplement/fitness quiz results',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your personalized supplement stack awaits', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo quiz result' },
+    { key: 'product_name', label: 'Recommended Product', type: 'text', defaultValue: 'Performance Stack', placeholder: 'Product name' },
+    { key: 'key_benefit', label: 'Key Benefit', type: 'text', defaultValue: 'optimized energy and recovery', placeholder: 'Main benefit' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'VIEW MY FORMULA', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Your Results
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:36px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Built For {{quiz_result}}
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:440px; margin-left:auto; margin-right:auto;">
+                Based on your answers, we've formulated the perfect stack for {{key_benefit}}.
+              </p>
+              <div style="background:#f9f9f9; border-radius:12px; padding:24px; margin:0 0 32px; text-align:left;">
+                <p style="margin:0 0 8px; font-size:11px; color:#666; text-transform:uppercase; letter-spacing:0.1em;">Your Personalized Stack</p>
+                <p style="margin:0; font-size:18px; font-weight:600; color:#1a1a1a;">{{product_name}}</p>
+                <p style="margin:8px 0 0; font-size:14px; color:#666;">Optimized for {{quiz_result}}</p>
+              </div>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements2: EmailTemplate = {
+  id: 'quiz-supplements-2',
+  name: 'Science Behind Your Stack',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '24 hours after quiz',
+  subjectLine: 'Why this formula works for {{ event.quiz_results_name|default:"your goals" }}',
+  description: 'Educational email about the science behind their recommendations',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'The science behind your personalized formula', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'science_fact', label: 'Science Fact', type: 'text', defaultValue: 'Studies show proper supplementation can improve performance by up to 25%', placeholder: 'Scientific backing' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'GET MY STACK', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                The Science
+              </p>
+              <h1 style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Why Your Formula Works
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                {{ first_name|default:"Hey" }}, your goal of {{quiz_result}} requires specific nutritional support.
+              </p>
+              <div style="background:#f0fdf4; padding:24px; border-left:3px solid #22c55e; margin:0 0 24px;">
+                <p style="margin:0; font-size:15px; color:#1a1a1a; line-height:1.7;">
+                  <strong>Research shows:</strong> {{science_fact}}
+                </p>
+              </div>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                That's exactly why we formulated your stack the way we did — every ingredient serves your specific goal.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements3: EmailTemplate = {
+  id: 'quiz-supplements-3',
+  name: 'Real Results From Your Goal',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '48 hours after quiz',
+  subjectLine: 'They had the same {{ event.quiz_results_name|default:"goal" }} as you',
+  description: 'Social proof from customers with same fitness goal',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'See what others achieved with your same goal', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'testimonial_name', label: 'Customer Name', type: 'text', defaultValue: 'Jason R.', placeholder: 'Customer name' },
+    { key: 'testimonial_text', label: 'Testimonial', type: 'text', defaultValue: 'After 30 days on my personalized stack, my energy levels completely transformed. I hit PRs I never thought possible.', placeholder: 'Customer quote' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'START MY JOURNEY', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Real Results
+              </p>
+              <h1 style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                {{quiz_result}} Success Stories
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <div style="background:#faf9f7; padding:32px; border-left:3px solid #B8860B;">
+                <p style="margin:0 0 16px; font-size:16px; color:#1a1a1a; line-height:1.7; font-style:italic;">
+                  "{{testimonial_text}}"
+                </p>
+                <p style="margin:0; font-size:13px; color:#666; font-weight:600;">
+                  — {{testimonial_name}}, {{quiz_result}} goal
+                </p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <p style="margin:0 0 24px; font-size:15px; color:#4a4a4a; line-height:1.7;">
+                Your personalized formula is ready, {{ first_name|default:"friend" }}.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements4: EmailTemplate = {
+  id: 'quiz-supplements-4',
+  name: 'Quiz Taker Discount',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '72 hours after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, 15% off your personalized stack',
+  description: 'First discount for quiz completers',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your exclusive quiz taker reward', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'MYSTACK15', placeholder: 'Discount code' },
+    { key: 'discount_amount', label: 'Discount Amount', type: 'text', defaultValue: '15%', placeholder: '15% or $10' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM MY DISCOUNT', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Quiz Taker Exclusive
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:36px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                {{discount_amount}} Off Your {{quiz_result}} Stack
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#666; line-height:1.6;">
+                Because you took the time to find your perfect formula.
+              </p>
+              <div style="background:#1a1a1a; color:#fff; padding:20px 40px; display:inline-block; margin:0 0 32px;">
+                <p style="margin:0 0 4px; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:#999;">Your Code</p>
+                <p style="margin:0; font-size:28px; font-weight:700; letter-spacing:0.05em;">{{discount_code}}</p>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements5: EmailTemplate = {
+  id: 'quiz-supplements-5',
+  name: 'Common Mistakes For Your Goal',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '4 days after quiz',
+  subjectLine: 'The #1 mistake people with {{ event.quiz_results_name|default:"your goal" }} make',
+  description: 'Educational content about common supplementation mistakes',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Avoid this common supplementation mistake', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'mistake', label: 'Common Mistake', type: 'text', defaultValue: 'taking generic supplements not formulated for your specific needs', placeholder: 'The mistake' },
+    { key: 'solution', label: 'The Solution', type: 'text', defaultValue: 'a personalized stack designed around your unique goals and body', placeholder: 'How to fix' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'GET MY FORMULA', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Important
+              </p>
+              <h1 style="margin:0 0 24px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Stop Making This Mistake
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                {{ first_name|default:"Hey" }}, we see this all the time with people pursuing {{quiz_result}}:
+              </p>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                The #1 mistake? <strong>{{mistake}}</strong>.
+              </p>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                What you actually need is <strong>{{solution}}</strong>.
+              </p>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                That's exactly why your personalized stack was built the way it was.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements6: EmailTemplate = {
+  id: 'quiz-supplements-6',
+  name: '30-Day Transformation Timeline',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '5 days after quiz',
+  subjectLine: 'What to expect in 30 days with your {{ event.quiz_results_name|default:"goal" }} stack',
+  description: 'Sets expectations with transformation timeline',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your 30-day transformation roadmap', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'week1', label: 'Week 1 Result', type: 'text', defaultValue: 'Increased energy and focus', placeholder: 'First week' },
+    { key: 'week2', label: 'Week 2 Result', type: 'text', defaultValue: 'Improved workout performance', placeholder: 'Second week' },
+    { key: 'week4', label: 'Week 4 Result', type: 'text', defaultValue: 'Visible strength and endurance gains', placeholder: 'Fourth week' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'START MY 30 DAYS', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px 32px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Your Roadmap
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                30 Days To {{quiz_result}}
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <div style="border-left:2px solid #22c55e; padding-left:24px;">
+                <div style="margin-bottom:24px;">
+                  <p style="margin:0 0 4px; font-size:11px; color:#22c55e; font-weight:600; text-transform:uppercase;">Week 1</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a;">{{week1}}</p>
+                </div>
+                <div style="margin-bottom:24px;">
+                  <p style="margin:0 0 4px; font-size:11px; color:#22c55e; font-weight:600; text-transform:uppercase;">Week 2</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a;">{{week2}}</p>
+                </div>
+                <div>
+                  <p style="margin:0 0 4px; font-size:11px; color:#22c55e; font-weight:600; text-transform:uppercase;">Week 4</p>
+                  <p style="margin:0; font-size:15px; color:#1a1a1a;">{{week4}}</p>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:40px; text-align:center;">
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements7: EmailTemplate = {
+  id: 'quiz-supplements-7',
+  name: 'Urgency - Formula Reserved',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '6 days after quiz',
+  subjectLine: '{{ first_name|default:"Hey" }}, your formula is still reserved',
+  description: 'Creates urgency around their personalized formula',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your personalized formula wont wait forever', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'expiry_hours', label: 'Hours Until Expiry', type: 'text', defaultValue: '48', placeholder: 'Hours left' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM MY FORMULA', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#dc2626; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Time Sensitive
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Your {{quiz_result}} Formula Expires in {{expiry_hours}}h
+              </h1>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                {{ first_name|default:"Hey" }}, we've been holding your personalized stack, but we can't reserve it forever.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 32px;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements8: EmailTemplate = {
+  id: 'quiz-supplements-8',
+  name: 'Key Ingredient Spotlight',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '7 days after quiz',
+  subjectLine: 'Why this ingredient is essential for {{ event.quiz_results_name|default:"your goal" }}',
+  description: 'Educational email about key ingredient in their stack',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'The science behind your key ingredient', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'ingredient_name', label: 'Key Ingredient', type: 'text', defaultValue: 'Creatine Monohydrate', placeholder: 'Main ingredient' },
+    { key: 'ingredient_benefit', label: 'Ingredient Benefit', type: 'text', defaultValue: 'increases strength output by up to 15% and supports faster muscle recovery', placeholder: 'What it does' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'GET MY STACK', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Ingredient Spotlight
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Why {{ingredient_name}} Is In Your Stack
+              </h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 40px 40px;">
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                {{ first_name|default:"Hey" }}, for your goal of {{quiz_result}}, one ingredient stands out:
+              </p>
+              <div style="background:#f0fdf4; padding:24px; border-left:3px solid #22c55e; margin:0 0 24px;">
+                <p style="margin:0 0 8px; font-size:18px; font-weight:600; color:#1a1a1a;">{{ingredient_name}}</p>
+                <p style="margin:0; font-size:15px; color:#4a4a4a; line-height:1.7;">
+                  {{ingredient_benefit}}
+                </p>
+              </div>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.8;">
+                This is just one of the carefully selected ingredients in your personalized formula.
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements9: EmailTemplate = {
+  id: 'quiz-supplements-9',
+  name: 'Last Chance Discount',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '10 days after quiz',
+  subjectLine: 'Final hours: 20% off your {{ event.quiz_results_name|default:"goal" }} stack',
+  description: 'Final discount push with maximum urgency',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your biggest discount expires at midnight', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Goal/Result', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'discount_code', label: 'Discount Code', type: 'text', defaultValue: 'LASTSTACK20', placeholder: 'Discount code' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'CLAIM 20% OFF', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:48px 40px; text-align:center; background:#1a1a1a;">
+              <p style="margin:0 0 8px; font-size:11px; color:#22c55e; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Last Chance
+              </p>
+              <h1 style="margin:0 0 16px; font-family:'Playfair Display',Georgia,serif; font-size:48px; font-weight:500; color:#ffffff; line-height:1.1;">
+                20% OFF
+              </h1>
+              <p style="margin:0 0 24px; font-size:15px; color:#999; line-height:1.6;">
+                Your {{quiz_result}} formula. Expires at midnight.
+              </p>
+              <div style="background:#ffffff; color:#1a1a1a; padding:16px 32px; display:inline-block; margin:0 0 24px;">
+                <p style="margin:0; font-size:24px; font-weight:700; letter-spacing:0.05em;">{{discount_code}}</p>
+              </div>
+              <br/>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:#22c55e;">
+                    <a href="{{cta_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
+                      {{cta_text}}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+  `),
+};
+
+const quizSupplements10: EmailTemplate = {
+  id: 'quiz-supplements-10',
+  name: 'Goals Check-In',
+  category: 'quiz-supplements',
+  niche: 'Supplements',
+  timing: '14 days after quiz',
+  subjectLine: 'Have your fitness goals changed, {{ first_name|default:"friend" }}?',
+  description: 'Re-engagement for non-converters to retake quiz',
+  suggestedImages: imageLibrary.lifestyle.map(i => i.url),
+  fields: [
+    ...commonBrandFields,
+    { key: 'hero_image', label: 'Hero Image URL', type: 'url', defaultValue: 'https://pqvvrljykfvhpyvxmwzb.supabase.co/storage/v1/object/public/images/Custom%20sections%20imaegs/luxurious-flat-lay-on-white.png', placeholder: 'https://...' },
+    { key: 'preview_text', label: 'Preview Text', type: 'text', defaultValue: 'Your goals might have evolved', placeholder: 'Email preview' },
+    { key: 'quiz_result', label: 'Previous Goal', type: 'text', defaultValue: '{{ event.quiz_results_name|default:"your previous goal" }}', placeholder: 'Klaviyo variable' },
+    { key: 'quiz_url', label: 'Quiz URL', type: 'url', defaultValue: 'https://yourstore.com/supplement-quiz', placeholder: 'Link to quiz' },
+    { key: 'cta_text', label: 'Button Text', type: 'text', defaultValue: 'RETAKE THE QUIZ', placeholder: 'Button text' },
+  ],
+  html: premiumWrapper(`
+          <tr>
+            <td style="padding:0;">
+              <img src="{{hero_image}}" alt="" style="display:block; width:100%; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:48px 40px; text-align:center;">
+              <p style="margin:0 0 8px; font-size:11px; color:#B8860B; text-transform:uppercase; letter-spacing:0.2em; font-weight:600;">
+                Check In
+              </p>
+              <h1 style="margin:0 0 20px; font-family:'Playfair Display',Georgia,serif; font-size:32px; font-weight:500; color:#1a1a1a; line-height:1.2;">
+                Goals Evolve.<br/>So Should Your Stack.
+              </h1>
+              <p style="margin:0 0 20px; font-size:15px; color:#4a4a4a; line-height:1.7; max-width:420px; margin-left:auto; margin-right:auto;">
+                Last time your goal was {{quiz_result}}. But priorities shift with training and life.
+              </p>
+              <p style="margin:0 0 32px; font-size:15px; color:#4a4a4a; line-height:1.7;">
+                Ready to see if your formula needs an update?
+              </p>
+              <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="border-radius:0; background:{{primary_color}};">
+                    <a href="{{quiz_url}}" style="display:inline-block; padding:16px 48px; font-size:12px; font-weight:600; color:#ffffff; text-decoration:none; letter-spacing:0.15em; text-transform:uppercase;">
                       {{cta_text}}
                     </a>
                   </td>
@@ -3814,6 +5418,39 @@ export const emailTemplates: EmailTemplate[] = [
   vipLoyalty6,
   vipLoyalty7,
   vipLoyalty8,
+  // Quiz Funnel - Skincare
+  quizSkincare1,
+  quizSkincare2,
+  quizSkincare3,
+  quizSkincare4,
+  quizSkincare5,
+  quizSkincare6,
+  quizSkincare7,
+  quizSkincare8,
+  quizSkincare9,
+  quizSkincare10,
+  // Quiz Funnel - Fashion
+  quizFashion1,
+  quizFashion2,
+  quizFashion3,
+  quizFashion4,
+  quizFashion5,
+  quizFashion6,
+  quizFashion7,
+  quizFashion8,
+  quizFashion9,
+  quizFashion10,
+  // Quiz Funnel - Supplements
+  quizSupplements1,
+  quizSupplements2,
+  quizSupplements3,
+  quizSupplements4,
+  quizSupplements5,
+  quizSupplements6,
+  quizSupplements7,
+  quizSupplements8,
+  quizSupplements9,
+  quizSupplements10,
 ];
 
 export const templateCategories = [
@@ -3823,4 +5460,7 @@ export const templateCategories = [
   { id: 'win-back', name: 'Win-Back', count: 8 },
   { id: 'flash-sale', name: 'Flash Sale', count: 8 },
   { id: 'vip-loyalty', name: 'VIP & Loyalty', count: 8 },
+  { id: 'quiz-skincare', name: 'Quiz Funnel - Skincare', count: 10 },
+  { id: 'quiz-fashion', name: 'Quiz Funnel - Fashion', count: 10 },
+  { id: 'quiz-supplements', name: 'Quiz Funnel - Supplements', count: 10 },
 ];
