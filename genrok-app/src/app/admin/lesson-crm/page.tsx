@@ -1,398 +1,426 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Layers,
-  Search,
-  Filter,
-  BarChart3,
-  Image as ImageIcon,
-  CheckCircle,
-  Clock,
-  PlayCircle,
-  RefreshCw,
-  ChevronRight,
   Palette,
-  ArrowRight,
+  Wand2,
+  Image as ImageIcon,
+  Copy,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Eye,
+  Layers,
+  RefreshCw,
+  CheckCircle,
+  Sparkles,
 } from 'lucide-react';
-import Link from 'next/link';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { lessonMeta, LessonMeta } from '@/data/lessons';
+import { copywritingLessonsConfig, LessonConfig, ComponentSlot } from '@/data/copywriting-lessons-config';
 
-// Types for CRM state
-interface LessonCRMData {
-  status: 'pending' | 'in_progress' | 'complete';
-  components: { componentId: string; slideIndex: number }[];
-  images: { slideIndex: number; type: string; prompt: string; url?: string }[];
-  colorMigrated: boolean;
+// Types for saved selections
+interface SavedSelections {
+  [lessonSlug: string]: {
+    [slideIndex: number]: string; // componentId
+  };
 }
 
-interface CRMState {
-  lessons: Record<string, LessonCRMData>;
-  componentUsage: Record<string, number>;
-}
-
-// Status config
-const STATUS_CONFIG = {
-  pending: { icon: Clock, color: '#6B7280', label: 'Pending', bg: 'rgba(107, 114, 128, 0.1)' },
-  in_progress: { icon: PlayCircle, color: '#F59E0B', label: 'In Progress', bg: 'rgba(245, 158, 11, 0.1)' },
-  complete: { icon: CheckCircle, color: '#22C55E', label: 'Complete', bg: 'rgba(34, 197, 94, 0.1)' },
-};
-
-// Default CRM state
-const getDefaultCRMState = (): CRMState => ({
-  lessons: {},
-  componentUsage: {},
-});
-
-// Load CRM state from localStorage
-const loadCRMState = (): CRMState => {
-  if (typeof window === 'undefined') return getDefaultCRMState();
+// Load saved selections from localStorage
+const loadSelections = (): SavedSelections => {
+  if (typeof window === 'undefined') return {};
   try {
-    const saved = localStorage.getItem('lesson-crm-state');
-    return saved ? JSON.parse(saved) : getDefaultCRMState();
+    const saved = localStorage.getItem('lesson-crm-selections');
+    return saved ? JSON.parse(saved) : {};
   } catch {
-    return getDefaultCRMState();
+    return {};
   }
 };
 
-// Save CRM state to localStorage
-const saveCRMState = (state: CRMState) => {
+// Save selections to localStorage
+const saveSelections = (selections: SavedSelections) => {
   if (typeof window === 'undefined') return;
-  localStorage.setItem('lesson-crm-state', JSON.stringify(state));
-};
-
-// Get lesson data with defaults
-const getLessonData = (slug: string, state: CRMState): LessonCRMData => {
-  return state.lessons[slug] || {
-    status: 'pending',
-    components: [],
-    images: [],
-    colorMigrated: false,
-  };
+  localStorage.setItem('lesson-crm-selections', JSON.stringify(selections));
 };
 
 export default function LessonCRMPage() {
-  const [crmState, setCRMState] = useState<CRMState>(getDefaultCRMState());
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'pending' | 'in_progress' | 'complete'>('all');
-  const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [migrationStatus, setMigrationStatus] = useState<{ migrated: number; pending: number; total: number } | null>(null);
+  const [isMigrating, setIsMigrating] = useState(false);
+  const [expandedLesson, setExpandedLesson] = useState<string | null>(null);
+  const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
+  const [selections, setSelections] = useState<SavedSelections>({});
+  const [previewComponent, setPreviewComponent] = useState<{ lesson: string; slot: ComponentSlot; optionIndex: number } | null>(null);
 
-  // Load state on mount
+  // Load selections on mount
   useEffect(() => {
-    setCRMState(loadCRMState());
-    setIsLoaded(true);
+    setSelections(loadSelections());
+    checkMigrationStatus();
   }, []);
 
-  // Save state on change
-  useEffect(() => {
-    if (isLoaded) {
-      saveCRMState(crmState);
+  // Check color migration status
+  const checkMigrationStatus = async () => {
+    try {
+      const res = await fetch('/api/admin/lesson-crm/migrate-colors');
+      const data = await res.json();
+      setMigrationStatus(data);
+    } catch (error) {
+      console.error('Failed to check migration status:', error);
     }
-  }, [crmState, isLoaded]);
+  };
 
-  // Get all lessons with metadata
-  const allLessons = useMemo(() => {
-    return Object.entries(lessonMeta).map(([slug, meta]) => ({
-      slug,
-      ...meta,
-      crm: getLessonData(slug, crmState),
-    }));
-  }, [crmState]);
-
-  // Filter lessons
-  const filteredLessons = useMemo(() => {
-    return allLessons.filter(lesson => {
-      // Search filter
-      if (search && !lesson.title.toLowerCase().includes(search.toLowerCase()) &&
-          !lesson.slug.toLowerCase().includes(search.toLowerCase())) {
-        return false;
+  // Run global color migration
+  const runMigration = async () => {
+    setIsMigrating(true);
+    try {
+      const res = await fetch('/api/admin/lesson-crm/migrate-colors', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        await checkMigrationStatus();
+        alert(`Migrated ${data.migratedLessons} lessons with ${data.totalChanges} color changes!`);
       }
-      // Status filter
-      if (statusFilter !== 'all' && lesson.crm.status !== statusFilter) {
-        return false;
-      }
-      // Category filter
-      if (categoryFilter !== 'all' && !lesson.categories.includes(categoryFilter as any)) {
-        return false;
-      }
-      return true;
-    });
-  }, [allLessons, search, statusFilter, categoryFilter]);
+    } catch (error) {
+      console.error('Migration failed:', error);
+      alert('Migration failed. Check console for details.');
+    } finally {
+      setIsMigrating(false);
+    }
+  };
 
-  // Calculate stats
-  const stats = useMemo(() => {
-    const total = allLessons.length;
-    const complete = allLessons.filter(l => l.crm.status === 'complete').length;
-    const inProgress = allLessons.filter(l => l.crm.status === 'in_progress').length;
-    const pending = allLessons.filter(l => l.crm.status === 'pending').length;
-    const colorMigrated = allLessons.filter(l => l.crm.colorMigrated).length;
-    const withComponents = allLessons.filter(l => l.crm.components.length > 0).length;
-    const withImages = allLessons.filter(l => l.crm.images.some(img => img.url)).length;
+  // Copy prompt to clipboard
+  const copyPrompt = async (prompt: string, id: string) => {
+    await navigator.clipboard.writeText(prompt);
+    setCopiedPrompt(id);
+    setTimeout(() => setCopiedPrompt(null), 2000);
+  };
 
-    // Calculate diversity score (unique components used / total components possible)
-    const uniqueComponents = Object.keys(crmState.componentUsage).length;
-    const diversityScore = Math.min(100, Math.round((uniqueComponents / 168) * 100));
+  // Select a component for a slide
+  const selectComponent = (lessonSlug: string, slideIndex: number, componentId: string) => {
+    const newSelections = {
+      ...selections,
+      [lessonSlug]: {
+        ...selections[lessonSlug],
+        [slideIndex]: componentId,
+      },
+    };
+    setSelections(newSelections);
+    saveSelections(newSelections);
+  };
 
-    return { total, complete, inProgress, pending, colorMigrated, withComponents, withImages, diversityScore };
-  }, [allLessons, crmState]);
+  // Get selected component for a slide
+  const getSelectedComponent = (lessonSlug: string, slideIndex: number): string | null => {
+    return selections[lessonSlug]?.[slideIndex] || null;
+  };
 
-  // Get unique categories
-  const categories = useMemo(() => {
-    const cats = new Set<string>();
-    allLessons.forEach(l => l.categories.forEach(c => cats.add(c)));
-    return Array.from(cats);
-  }, [allLessons]);
-
-  // Sync all lessons (initialize tracking)
-  const syncAllLessons = () => {
-    const newState = { ...crmState };
-    allLessons.forEach(lesson => {
-      if (!newState.lessons[lesson.slug]) {
-        newState.lessons[lesson.slug] = {
-          status: 'pending',
-          components: [],
-          images: [],
-          colorMigrated: false,
-        };
-      }
-    });
-    setCRMState(newState);
+  // Check if lesson is complete (all slots have selections)
+  const isLessonComplete = (lesson: LessonConfig): boolean => {
+    return lesson.componentSlots.every(slot =>
+      getSelectedComponent(lesson.slug, slot.slideIndex) !== null
+    );
   };
 
   return (
     <DashboardLayout>
-      <div className="page-wrapper">
+      <div className="page-wrapper max-w-6xl mx-auto">
         {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="page-header mb-6"
+          className="page-header mb-8"
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#88da1c] to-[#6BB516] flex items-center justify-center">
+              <Wand2 size={28} className="text-black" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-black">Lesson Redesign CRM</h1>
+              <p className="text-[var(--text-muted)]">Copywriting Lessons - Quick Redesign Mode</p>
+            </div>
+          </div>
+        </motion.header>
+
+        {/* Global Color Migration */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="bg-black text-white rounded-2xl p-6 mb-8"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#88da1c] to-[#6BB516] flex items-center justify-center">
-                <Layers size={28} className="text-black" />
+              <div className="w-12 h-12 rounded-xl bg-[#88da1c] flex items-center justify-center">
+                <Palette size={24} className="text-black" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-black">Lesson Redesign CRM</h1>
-                <p className="text-[var(--text-muted)]">
-                  Manage color palette, components, and images for all lessons
+                <h2 className="text-xl font-bold">Global Color Migration</h2>
+                <p className="text-white/60 text-sm">
+                  {migrationStatus
+                    ? `${migrationStatus.migrated}/${migrationStatus.total} lessons migrated to lime green`
+                    : 'Checking status...'}
                 </p>
               </div>
             </div>
             <button
-              onClick={syncAllLessons}
-              className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-xl hover:bg-black/80 transition-colors"
+              onClick={runMigration}
+              disabled={isMigrating}
+              className="flex items-center gap-2 px-6 py-3 bg-[#88da1c] text-black font-semibold rounded-xl hover:bg-[#a3e635] transition-colors disabled:opacity-50"
             >
-              <RefreshCw size={18} />
-              Sync All
+              {isMigrating ? (
+                <>
+                  <RefreshCw size={18} className="animate-spin" />
+                  Migrating...
+                </>
+              ) : (
+                <>
+                  <Sparkles size={18} />
+                  Migrate All Colors
+                </>
+              )}
             </button>
           </div>
-        </motion.header>
-
-        {/* Progress Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="bg-white rounded-2xl p-6 border border-black/5 mb-6"
-        >
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-black">Overall Progress</span>
-            <span className="text-sm text-[var(--text-muted)]">
-              {stats.complete}/{stats.total} lessons complete ({Math.round((stats.complete / stats.total) * 100)}%)
-            </span>
-          </div>
-          <div className="h-3 bg-black/5 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${(stats.complete / stats.total) * 100}%` }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="h-full bg-gradient-to-r from-[#88da1c] to-[#6BB516] rounded-full"
-            />
-          </div>
-        </motion.div>
-
-        {/* Stats Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6"
-        >
-          {[
-            { label: 'Total', value: stats.total, color: '#000', icon: Layers },
-            { label: 'Complete', value: stats.complete, color: '#22C55E', icon: CheckCircle },
-            { label: 'In Progress', value: stats.inProgress, color: '#F59E0B', icon: PlayCircle },
-            { label: 'Pending', value: stats.pending, color: '#6B7280', icon: Clock },
-            { label: 'Color Done', value: stats.colorMigrated, color: '#88da1c', icon: Palette },
-            { label: 'With Components', value: stats.withComponents, color: '#3B82F6', icon: BarChart3 },
-            { label: 'Diversity', value: `${stats.diversityScore}%`, color: '#EC4899', icon: RefreshCw },
-          ].map((stat, i) => (
-            <div
-              key={stat.label}
-              className="bg-white rounded-xl p-4 border border-black/5"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <stat.icon size={16} style={{ color: stat.color }} />
-                <span className="text-xs text-[var(--text-muted)]">{stat.label}</span>
+          {migrationStatus && (
+            <div className="mt-4">
+              <div className="h-2 bg-white/20 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-[#88da1c] transition-all duration-500"
+                  style={{ width: `${(migrationStatus.migrated / migrationStatus.total) * 100}%` }}
+                />
               </div>
-              <span className="text-2xl font-bold" style={{ color: stat.color }}>
-                {stat.value}
-              </span>
             </div>
-          ))}
-        </motion.div>
+          )}
+        </motion.section>
 
-        {/* Filters */}
-        <motion.div
+        {/* Lessons List */}
+        <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="flex flex-wrap gap-4 mb-6"
-        >
-          {/* Search */}
-          <div className="flex-1 min-w-[200px] relative">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
-            <input
-              type="text"
-              placeholder="Search lessons..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-black/10 rounded-xl text-sm focus:outline-none focus:border-[#88da1c]"
-            />
-          </div>
-
-          {/* Status Filter */}
-          <div className="flex items-center gap-2">
-            <Filter size={16} className="text-[var(--text-muted)]" />
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as any)}
-              className="px-3 py-2.5 bg-white border border-black/10 rounded-xl text-sm focus:outline-none focus:border-[#88da1c]"
-            >
-              <option value="all">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="in_progress">In Progress</option>
-              <option value="complete">Complete</option>
-            </select>
-          </div>
-
-          {/* Category Filter */}
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-3 py-2.5 bg-white border border-black/10 rounded-xl text-sm focus:outline-none focus:border-[#88da1c]"
-          >
-            <option value="all">All Categories</option>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
-            ))}
-          </select>
-        </motion.div>
-
-        {/* Lesson Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
         >
-          {filteredLessons.map((lesson, i) => {
-            const statusConfig = STATUS_CONFIG[lesson.crm.status];
-            const StatusIcon = statusConfig.icon;
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-black">Copywriting Lessons ({copywritingLessonsConfig.length})</h2>
+            <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
+              <CheckCircle size={16} className="text-[#88da1c]" />
+              {copywritingLessonsConfig.filter(l => isLessonComplete(l)).length} complete
+            </div>
+          </div>
 
-            return (
+          <div className="space-y-4">
+            {copywritingLessonsConfig.map((lesson, idx) => (
               <motion.div
                 key={lesson.slug}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.02 * i }}
+                transition={{ delay: 0.05 * idx }}
+                className="bg-white rounded-2xl border border-black/5 overflow-hidden"
               >
-                <Link href={`/admin/lesson-crm/${lesson.slug}`}>
-                  <div className="bg-white rounded-xl border border-black/5 p-4 hover:shadow-lg hover:border-[#88da1c]/30 transition-all cursor-pointer group">
-                    {/* Header */}
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-black text-sm truncate group-hover:text-[#88da1c] transition-colors">
-                          {lesson.title}
-                        </h3>
-                        <p className="text-xs text-[var(--text-muted)] truncate mt-0.5">
-                          {lesson.slug}
-                        </p>
-                      </div>
-                      <ChevronRight size={16} className="text-[var(--text-muted)] group-hover:text-[#88da1c] transition-colors flex-shrink-0" />
+                {/* Lesson Header */}
+                <button
+                  onClick={() => setExpandedLesson(expandedLesson === lesson.slug ? null : lesson.slug)}
+                  className="w-full px-6 py-4 flex items-center justify-between hover:bg-black/[0.02] transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                      isLessonComplete(lesson) ? 'bg-[#88da1c]/10' : 'bg-black/5'
+                    }`}>
+                      {isLessonComplete(lesson) ? (
+                        <CheckCircle size={20} className="text-[#88da1c]" />
+                      ) : (
+                        <Layers size={20} className="text-[var(--text-muted)]" />
+                      )}
                     </div>
-
-                    {/* Color Migration Indicator */}
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="flex items-center gap-1.5">
-                        <div
-                          className="w-4 h-4 rounded-full border-2"
-                          style={{
-                            backgroundColor: lesson.crm.colorMigrated ? '#88da1c' : '#8b5cf6',
-                            borderColor: lesson.crm.colorMigrated ? '#6BB516' : '#7c3aed',
-                          }}
-                        />
-                        {lesson.crm.colorMigrated && (
-                          <>
-                            <ArrowRight size={12} className="text-[var(--text-muted)]" />
-                            <div
-                              className="w-4 h-4 rounded-full border-2"
-                              style={{ backgroundColor: '#88da1c', borderColor: '#6BB516' }}
-                            />
-                          </>
-                        )}
-                      </div>
-                      <span className="text-xs text-[var(--text-muted)]">
-                        {lesson.crm.colorMigrated ? 'Color Updated' : 'Old Palette'}
-                      </span>
-                    </div>
-
-                    {/* Stats Row */}
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="flex items-center gap-1.5">
-                        <BarChart3 size={14} className="text-[#3B82F6]" />
-                        <span className="text-xs font-medium">{lesson.crm.components.length}/3</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <ImageIcon size={14} className="text-[#EC4899]" />
-                        <span className="text-xs font-medium">
-                          {lesson.crm.images.filter(i => i.url).length}/2
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Status Badge */}
-                    <div
-                      className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg w-fit"
-                      style={{ backgroundColor: statusConfig.bg }}
-                    >
-                      <StatusIcon size={14} style={{ color: statusConfig.color }} />
-                      <span className="text-xs font-medium" style={{ color: statusConfig.color }}>
-                        {statusConfig.label}
-                      </span>
+                    <div className="text-left">
+                      <h3 className="font-semibold text-black">{lesson.title}</h3>
+                      <p className="text-sm text-[var(--text-muted)]">{lesson.description}</p>
                     </div>
                   </div>
-                </Link>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 text-sm">
+                      <ImageIcon size={14} className="text-[#EC4899]" />
+                      <span>{lesson.imagePrompts.length} images</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <Layers size={14} className="text-[#3B82F6]" />
+                      <span>{lesson.componentSlots.length} components</span>
+                    </div>
+                    {expandedLesson === lesson.slug ? (
+                      <ChevronDown size={20} className="text-[var(--text-muted)]" />
+                    ) : (
+                      <ChevronRight size={20} className="text-[var(--text-muted)]" />
+                    )}
+                  </div>
+                </button>
 
-        {/* Empty State */}
-        {filteredLessons.length === 0 && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-black/5 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Search size={24} className="text-[var(--text-muted)]" />
-            </div>
-            <h3 className="text-lg font-semibold text-black mb-2">No lessons found</h3>
-            <p className="text-[var(--text-muted)]">Try adjusting your search or filters</p>
+                {/* Expanded Content */}
+                <AnimatePresence>
+                  {expandedLesson === lesson.slug && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="border-t border-black/5"
+                    >
+                      <div className="p-6 space-y-8">
+                        {/* Image Prompts */}
+                        {lesson.imagePrompts.length > 0 && (
+                          <div>
+                            <h4 className="font-semibold text-black mb-4 flex items-center gap-2">
+                              <ImageIcon size={18} className="text-[#EC4899]" />
+                              Image Prompts
+                            </h4>
+                            <div className="space-y-4">
+                              {lesson.imagePrompts.map((img, imgIdx) => (
+                                <div
+                                  key={imgIdx}
+                                  className={`p-4 rounded-xl border ${
+                                    img.background === 'black'
+                                      ? 'bg-black/5 border-black/10'
+                                      : 'bg-white border-black/10'
+                                  }`}
+                                >
+                                  <div className="flex items-start justify-between mb-2">
+                                    <div className="flex items-center gap-2">
+                                      <span className="px-2 py-1 text-xs font-medium bg-black/5 rounded">
+                                        Slide {img.slideIndex + 1}
+                                      </span>
+                                      <span className={`px-2 py-1 text-xs font-medium rounded ${
+                                        img.background === 'black'
+                                          ? 'bg-black text-white'
+                                          : 'bg-white border border-black/20 text-black'
+                                      }`}>
+                                        {img.background} bg
+                                      </span>
+                                    </div>
+                                    <button
+                                      onClick={() => copyPrompt(img.prompt, `${lesson.slug}-${imgIdx}`)}
+                                      className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium bg-[#88da1c] text-black rounded-lg hover:bg-[#a3e635] transition-colors"
+                                    >
+                                      {copiedPrompt === `${lesson.slug}-${imgIdx}` ? (
+                                        <>
+                                          <Check size={14} />
+                                          Copied!
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Copy size={14} />
+                                          Copy for ChatGPT
+                                        </>
+                                      )}
+                                    </button>
+                                  </div>
+                                  <p className="text-sm text-[var(--text-muted)] mb-2">{img.context}</p>
+                                  <p className="text-xs text-black/60 bg-black/5 p-3 rounded-lg font-mono">
+                                    {img.prompt}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Component Slots */}
+                        <div>
+                          <h4 className="font-semibold text-black mb-4 flex items-center gap-2">
+                            <Layers size={18} className="text-[#3B82F6]" />
+                            Component Options (Choose 1 per slide)
+                          </h4>
+                          <div className="space-y-6">
+                            {lesson.componentSlots.map((slot) => {
+                              const selectedId = getSelectedComponent(lesson.slug, slot.slideIndex);
+                              return (
+                                <div key={slot.slideIndex} className="border border-black/10 rounded-xl p-4">
+                                  <div className="flex items-center gap-3 mb-4">
+                                    <span className="px-3 py-1 text-sm font-medium bg-[#3B82F6]/10 text-[#3B82F6] rounded-lg">
+                                      Slide {slot.slideIndex + 1}
+                                    </span>
+                                    <span className="text-sm font-medium text-black">{slot.slideTitle}</span>
+                                    <span className="text-xs text-[var(--text-muted)]">
+                                      Current: {slot.currentType}
+                                    </span>
+                                  </div>
+
+                                  {/* Three Options */}
+                                  <div className="grid grid-cols-3 gap-4">
+                                    {slot.options.map((option, optIdx) => {
+                                      const isSelected = selectedId === option.id;
+                                      return (
+                                        <button
+                                          key={option.id}
+                                          onClick={() => selectComponent(lesson.slug, slot.slideIndex, option.id)}
+                                          className={`p-4 rounded-xl border-2 text-left transition-all ${
+                                            isSelected
+                                              ? 'border-[#88da1c] bg-[#88da1c]/5'
+                                              : 'border-black/10 hover:border-[#88da1c]/50 hover:bg-black/[0.02]'
+                                          }`}
+                                        >
+                                          <div className="flex items-start justify-between mb-2">
+                                            <h5 className="font-semibold text-black text-sm">{option.name}</h5>
+                                            {isSelected && (
+                                              <CheckCircle size={18} className="text-[#88da1c]" />
+                                            )}
+                                          </div>
+                                          <p className="text-xs text-[var(--text-muted)] mb-3">
+                                            {option.description}
+                                          </p>
+                                          <button
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              setPreviewComponent({ lesson: lesson.slug, slot, optionIndex: optIdx });
+                                            }}
+                                            className="flex items-center gap-1 text-xs text-[#3B82F6] hover:underline"
+                                          >
+                                            <Eye size={12} />
+                                            Preview Data
+                                          </button>
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
           </div>
-        )}
+        </motion.section>
+
+        {/* Preview Modal */}
+        <AnimatePresence>
+          {previewComponent && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+              onClick={() => setPreviewComponent(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.95, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+                className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto"
+              >
+                <h3 className="text-xl font-bold text-black mb-4">
+                  {previewComponent.slot.options[previewComponent.optionIndex].name} Preview
+                </h3>
+                <pre className="bg-black/5 p-4 rounded-xl text-xs overflow-x-auto">
+                  {JSON.stringify(previewComponent.slot.options[previewComponent.optionIndex].previewData, null, 2)}
+                </pre>
+                <button
+                  onClick={() => setPreviewComponent(null)}
+                  className="mt-4 px-4 py-2 bg-black text-white rounded-lg hover:bg-black/80"
+                >
+                  Close
+                </button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </DashboardLayout>
   );
